@@ -584,21 +584,30 @@ def generate_text_report(results: dict, matrix: list) -> str:
         lines.append("   [Not yet computed — run 10_fsi_temperature_sensitivity.py]")
     lines.append("")
 
-    # Section 4c: ESMFold structural validation
-    lines.append("4c. ESMFOLD STRUCTURAL VALIDATION (Top BoNT-A Designs)")
+    # Section 4c: ESM-IF1 structural compatibility validation
+    lines.append("4c. ESM-IF1 STRUCTURAL COMPATIBILITY (Top vs Bottom BoNT-A Designs)")
     lines.append("-" * 40)
     if results.get("esmfold_validation"):
         ev = results["esmfold_validation"]
         summary = ev.get("summary", {})
-        lines.append(f"   Sequences folded: {summary.get('n_sequences_folded', 'N/A')}")
-        if summary.get("mean_tmscore") is not None:
-            lines.append(f"   Mean TM-score vs 3BTA LC: {summary['mean_tmscore']:.3f}")
-            lines.append(f"   Fraction TM-score > 0.5: {summary.get('fraction_tmscore_above_0.5', float('nan')):.2f}")
-            lines.append(f"   Fraction TM-score > 0.7: {summary.get('fraction_tmscore_above_0.7', float('nan')):.2f}")
-            lines.append(f"   Mean pLDDT: {summary.get('mean_plddt', float('nan')):.1f}")
-            if summary["mean_tmscore"] > 0.5:
-                lines.append("   → Top functional designs fold to native-like LC structures")
-                lines.append("     (confirms FSI=3.07 reflects structurally realizable dangerous function)")
+        method = summary.get("model", "ESM-IF1")
+        lines.append(f"   Method: {method}")
+        top_ll = summary.get("top_sequences_mean_ll")
+        bot_ll = summary.get("bottom_sequences_mean_ll")
+        wt_ll = summary.get("wildtype_ll_per_residue")
+        if top_ll is not None and not np.isnan(top_ll):
+            lines.append(f"   Top FSI designs mean LL/L:    {top_ll:.4f}")
+            lines.append(f"   Bottom FSI designs mean LL/L: {bot_ll:.4f}")
+            if wt_ll and not np.isnan(wt_ll):
+                lines.append(f"   Wildtype LL/L:                {wt_ll:.4f}")
+            pval = summary.get("mannwhitney_top_vs_bottom_pvalue")
+            r = summary.get("rank_biserial_r")
+            if pval is not None:
+                sig = "***" if pval < 0.001 else "**" if pval < 0.01 else "*" if pval < 0.05 else "ns"
+                lines.append(f"   Mann-Whitney (top > bottom): p={pval:.3e}  r={r:.3f} {sig}")
+                if pval < 0.05:
+                    lines.append("   → High functional-recovery designs are significantly more")
+                    lines.append("     compatible with the 3BTA backbone (independent ESM-IF1 model)")
     else:
         lines.append("   [Not yet computed — run 11_esmfold_validation.py]")
     lines.append("")
@@ -775,11 +784,14 @@ def generate_text_report(results: dict, matrix: list) -> str:
     lines.append("     FSI computed at each temperature. Spearman rho (temp vs FSI mean) reported.")
     lines.append("     Output: results/proteinmpnn_temp_sweep/ (separate from main proteinmpnn_output/).")
     lines.append("")
-    lines.append("   ESMFold structural validation:")
-    lines.append("     Top-10 ProteinMPNN designs of 3BTA by functional recovery run through")
-    lines.append("     ESMFold v1 (Lin et al. 2022). TM-score vs. 3BTA LC domain (residues 1-430)")
-    lines.append("     computed by USalign (preferred), TMalign, or biotite fallback.")
-    lines.append("     pLDDT reported as mean over LC domain residues.")
+    lines.append("   ESM-IF1 structural compatibility validation:")
+    lines.append("     Top-10 and bottom-10 ProteinMPNN designs of 3BTA by functional recovery")
+    lines.append("     scored using ESM-IF1 (esm_if1_gvp4_t16_142M_UR50; Hsu et al. 2022).")
+    lines.append("     ESM-IF1 computes log P(sequence | backbone structure) per residue (LL/L),")
+    lines.append("     measuring how compatible each sequence is with the 3BTA backbone using")
+    lines.append("     an independent GVP-Transformer model. Higher LL/L = more backbone-compatible.")
+    lines.append("     Does not require openfold compilation. Mann-Whitney U (top > bottom).")
+    lines.append("     Hsu et al. 2022 doi:10.1126/science.add2187")
     lines.append("")
     lines.append("   Expanded protein annotations (Round 2):")
     lines.append("     Abrin A-chain (P11140/1ABR): Tahirov et al. 1995 doi:10.1006/jmbi.1995.0581")

@@ -1,38 +1,41 @@
 #!/usr/bin/env python3
 """
-11_esmfold_validation.py — ESMFold structural validation of top ProteinMPNN designs.
+11_esmfold_validation.py — Structural compatibility validation of top ProteinMPNN designs.
 
-Takes the top-10 ProteinMPNN sequences of BoNT-A LC (3BTA) that fully recover
-all functional residues, runs them through ESMFold, and computes TM-score vs.
-the 3BTA crystal structure LC domain.
+Scores top ProteinMPNN sequences of BoNT-A LC (3BTA) using ESM-IF1
+(esm.pretrained.esm_if1_gvp4_t16_142M_UR50), which measures
+log P(sequence | structure) — structural compatibility of a sequence
+given the 3BTA backbone, using a model independent of ProteinMPNN.
 
-Claim: sequences that recover dangerous function (FSI=3.07, 100% recovery)
-also fold to native-like structures (TM-score > 0.5), validating that FSI
-represents structurally plausible designs, not random sequence artifacts.
+WHY ESM-IF1 OVER ESMFOLD:
+  - ESMFold requires openfold (fails to compile on many HPC systems)
+  - ESM-IF1 is built into fair-esm 2.0.0, no extra dependencies
+  - ESM-IF1 directly answers: "does this sequence fit the dangerous backbone?"
+  - Higher LL/L = more backbone-compatible = structurally plausible
+
+CLAIM: Top functional-recovery designs (FSI > 3) receive significantly
+higher ESM-IF1 scores than low-recovery designs, validating that FSI
+captures structurally constrained functional recovery.
 
 Usage:
-    python src/11_esmfold_validation.py \
-        --proteinmpnn_fasta results/proteinmpnn_output/3BTA/seqs/3BTA.fa \
-        --reference_pdb data/structures/3BTA.pdb \
-        --lc_end_residue 430 \
-        --n_top 10 \
+    python src/11_esmfold_validation.py \\
+        --proteinmpnn_fasta results/proteinmpnn_output/3BTA/seqs/3BTA.fa \\
+        --reference_pdb data/structures/3BTA.pdb \\
+        --lc_end_residue 430 \\
+        --n_top 10 \\
+        --n_bottom 10 \\
         --device cuda
-
-Requires GPU and ESMFold (fair-esm >=2.0.0 + openfold).
-Memory: ~24GB for 430-aa sequences. Use 64GB partition.
 """
 from __future__ import annotations
 
 import argparse
 import json
-import os
-import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy import stats
 
 sys.path.insert(0, str(Path(__file__).parent))
 from utils import FIGURES_DIR, RESULTS_DIR, compute_fsi, compute_site_recovery, print_header
@@ -57,16 +60,13 @@ def load_functional_residues_for_pdb(pdb_id: str) -> list[int]:
     raise ValueError(f"No functional annotation found for {pdb_id}")
 
 
-def parse_proteinmpnn_fasta(fasta_path: Path) -> list[dict]:
+def parse_proteinmpnn_fasta(fasta_path: Path) -> tuple[str, list[dict]]:
     """Parse ProteinMPNN output FASTA.
 
-    ProteinMPNN FASTA header format:
-        >pdb_id, score=X.XXX, global_score=X.XXX, seq_recovery=X.XXX, sample=N
-    First sequence in the file is the wildtype (score=0, recovery=1.0). Skip it.
-
-    Returns list of dicts with: sequence, score, seq_recovery, sample_id.
+    Returns (wildtype_seq, list of designed sequence dicts).
+    Wildtype is the first entry (score=0 or seq_recovery=1.0).
     """
-    sequences = []
+    entries = []
     current_header = None
     current_seq = []
 
@@ -75,24 +75,21 @@ def parse_proteinmpnn_fasta(fasta_path: Path) -> list[dict]:
             line = line.strip()
             if line.startswith(">"):
                 if current_header is not None and current_seq:
-                    sequences.append((current_header, "".join(current_seq)))
+                    entries.append((current_header, "".join(current_seq)))
                 current_header = line[1:]
                 current_seq = []
             elif line:
                 current_seq.append(line)
         if current_header is not None and current_seq:
-            sequences.append((current_header, "".join(current_seq)))
+            entries.append((current_header, "".join(current_seq)))
 
-    # Skip first (wildtype) sequence
-    if sequences and "sample=0," not in sequences[0][0] and "seq_recovery=1.0" in sequences[0][0]:
-        sequences = sequences[1:]
-    elif sequences:
-        # More robust: skip entry with score=0.0000 (wildtype)
-        sequences = [s for s in sequences if "score=0.0000" not in s[0]]
+    if not entries:
+        return "", []
+
+    wildtype_seq = entries[0][1]
 
     result = []
-    for header, seq in sequences:
-        # Parse header fields
+    for header, seq in entries[1:]:  # skip wildtype
         info = {"sequence": seq, "score": float("nan"), "seq_recovery": float("nan"), "sample_id": -1}
         for part in header.split(","):
             part = part.strip()
@@ -113,392 +110,293 @@ def parse_proteinmpnn_fasta(fasta_path: Path) -> list[dict]:
                     pass
         result.append(info)
 
-    return result
+    return wildtype_seq, result
 
 
-def compute_functional_recovery_from_seq(
-    sequence: str,
-    wildtype_seq: str,
-    functional_positions_1idx: list[int],
-) -> tuple[float, float]:
-    """Compute functional and overall recovery.
-
-    Args:
-        functional_positions_1idx: 1-indexed positions.
-            compute_site_recovery() expects 1-indexed and subtracts 1 internally.
-            Do NOT pass 0-indexed positions.
-    """
-    func_rec, overall_rec = compute_site_recovery(sequence, wildtype_seq, functional_positions_1idx)
-    return func_rec, overall_rec
-
-
-def select_top_sequences(
+def annotate_with_fsi(
     parsed_sequences: list[dict],
     wildtype_seq: str,
     functional_positions_1idx: list[int],
-    n_top: int = 10,
 ) -> list[dict]:
-    """Rank sequences by functional recovery descending, tiebreak by overall FSI.
-
-    Only considers sequences of the same length as wildtype.
-    """
-    candidates = []
+    """Add func_recovery, overall_recovery, fsi to each sequence dict."""
+    annotated = []
     for item in parsed_sequences:
         seq = item["sequence"]
-        if len(seq) != len(wildtype_seq):
+        # Truncate to wildtype length if needed
+        seq_trunc = seq[:len(wildtype_seq)]
+        wt_trunc = wildtype_seq[:len(seq_trunc)]
+        if len(seq_trunc) != len(wt_trunc):
             continue
-        func_rec, overall_rec = compute_functional_recovery_from_seq(
-            seq, wildtype_seq, functional_positions_1idx
-        )
+        func_rec, overall_rec = compute_site_recovery(seq_trunc, wt_trunc, functional_positions_1idx)
         fsi = compute_fsi(func_rec, overall_rec)
-        candidates.append({
+        annotated.append({
             **item,
+            "sequence_lc": seq_trunc,
             "func_recovery": func_rec,
             "overall_recovery": overall_rec,
             "fsi": fsi,
         })
-
-    # Rank by func_recovery desc, tiebreak by fsi desc
-    candidates.sort(key=lambda x: (x["func_recovery"], x["fsi"]), reverse=True)
-    return candidates[:n_top]
+    return annotated
 
 
-def run_esmfold(sequences: list[str], device: str) -> list[tuple[str, float]]:
-    """Run ESMFold on list of sequences.
+def score_sequences_esmif1(
+    sequences: list[str],
+    pdb_path: str,
+    chain_id: str,
+    device: str,
+) -> list[float]:
+    """Score sequences using ESM-IF1 inverse folding model.
 
-    Returns list of (pdb_string, mean_plddt) per sequence.
-    Handles OOM with chunk_size fallback [128, 64, 32].
+    Returns log-likelihood per residue (LL/L) for each sequence given
+    the backbone structure. Higher = more structurally compatible.
+
+    ESM-IF1 does NOT require openfold — uses GVP-Transformer architecture.
     """
     try:
         import esm
         import torch
+        import torch.nn.functional as F
+        from esm.inverse_folding.util import CoordBatchConverter
     except ImportError:
-        print("ERROR: fair-esm not installed. Run: pip install fair-esm")
-        return [(None, float("nan"))] * len(sequences)
+        print("ERROR: fair-esm not installed")
+        return [float("nan")] * len(sequences)
 
-    print("  Loading ESMFold model...")
+    print("  Loading ESM-IF1 model (~600MB on first run)...")
     try:
-        model = esm.pretrained.esmfold_v1()
+        model, alphabet = esm.pretrained.esm_if1_gvp4_t16_142M_UR50()
         model = model.eval().to(device)
     except Exception as e:
-        print(f"  ERROR loading ESMFold: {e}")
-        return [(None, float("nan"))] * len(sequences)
+        print(f"  ERROR loading ESM-IF1: {e}")
+        return [float("nan")] * len(sequences)
 
-    results = []
-    import torch
-
-    for i, seq in enumerate(sequences):
-        print(f"  Folding sequence {i+1}/{len(sequences)} (len={len(seq)})...")
-        pdb_str = None
-        mean_plddt = float("nan")
-
-        for chunk_size in [128, 64, 32, None]:
-            try:
-                with torch.no_grad():
-                    if chunk_size:
-                        output = model.infer_pdb(seq, num_recycles=4, residue_index_offset=512)
-                    else:
-                        output = model.infer_pdb(seq)
-                pdb_str = output
-                # Extract pLDDT from output
-                try:
-                    ptm_output = model.infer(seq)
-                    plddt = ptm_output["plddt"].squeeze().cpu().numpy()
-                    mean_plddt = float(plddt.mean())
-                except Exception:
-                    mean_plddt = float("nan")
-                break
-            except RuntimeError as e:
-                if "out of memory" in str(e).lower():
-                    torch.cuda.empty_cache()
-                    if chunk_size is None:
-                        print(f"    OOM at all chunk sizes, skipping sequence {i+1}")
-                    continue
-                else:
-                    print(f"    ERROR: {e}")
-                    break
-
-        results.append((pdb_str, mean_plddt))
-
-    return results
-
-
-def extract_lc_domain(full_pdb_path: str, chain_id: str, end_residue: int, out_path: str):
-    """Write PDB with only chain_id residues <= end_residue (0-indexed end_residue = aa count)."""
-    lines_out = []
-    with open(full_pdb_path) as f:
-        for line in f:
-            if line.startswith(("ATOM", "HETATM")):
-                rec_chain = line[21]
-                try:
-                    resnum = int(line[22:26].strip())
-                except ValueError:
-                    continue
-                if rec_chain == chain_id and resnum <= end_residue:
-                    lines_out.append(line)
-            elif line.startswith("END"):
-                lines_out.append(line)
-    with open(out_path, "w") as f:
-        f.writelines(lines_out)
-
-
-def compute_tmscore(mobile_pdb: str, reference_pdb: str, usalign_binary: str = "USalign") -> float:
-    """Compute TM-score between mobile and reference PDB.
-
-    Tries USalign first, then TMalign, then biotite as fallback.
-    Returns float TM-score (normalized to reference length), or -1.0 on failure.
-    """
-    # Try USalign
-    for binary in [usalign_binary, "TMalign"]:
-        try:
-            result = subprocess.run(
-                [binary, mobile_pdb, reference_pdb],
-                capture_output=True, text=True, timeout=60
-            )
-            for line in result.stdout.splitlines():
-                if line.startswith("TM-score=") and "Chain_2" in line:
-                    return float(line.split("=")[1].split()[0])
-                elif line.startswith("TM-score="):
-                    return float(line.split("=")[1].split()[0])
-        except (FileNotFoundError, subprocess.TimeoutExpired, ValueError):
-            continue
-
-    # Fallback: biotite
+    # Load structure and extract coordinates
     try:
-        import biotite.structure.io.pdb as pdb_io
-        import biotite.structure as struc
+        structure = esm.inverse_folding.util.load_structure(pdb_path, chain_id)
+        coords, native_seq = esm.inverse_folding.util.extract_coords_from_structure(structure)
+    except Exception as e:
+        print(f"  ERROR loading structure: {e}")
+        return [float("nan")] * len(sequences)
 
-        ref_file = pdb_io.PDBFile.read(reference_pdb)
-        mob_file = pdb_io.PDBFile.read(mobile_pdb)
-        ref_atoms = pdb_io.get_structure(ref_file, model=1)
-        mob_atoms = pdb_io.get_structure(mob_file, model=1)
+    print(f"  Structure loaded: {len(native_seq)} residues, chain {chain_id}")
 
-        # Get CA atoms
-        ref_ca = ref_atoms[ref_atoms.atom_name == "CA"]
-        mob_ca = mob_atoms[mob_atoms.atom_name == "CA"]
+    def _score_one(seq_str):
+        """Score a single sequence — CoordBatchConverter returns CPU tensors;
+        we move everything to device before calling model.forward."""
+        batch_converter = CoordBatchConverter(alphabet)
+        coords_b, confidence, _, tokens, padding_mask = batch_converter(
+            [(coords, None, seq_str)]
+        )
+        coords_b = coords_b.to(device)
+        confidence = confidence.to(device)
+        tokens = tokens.to(device)
+        padding_mask = padding_mask.to(device)
 
-        n_ref = len(ref_ca)
-        if n_ref == 0 or len(mob_ca) == 0:
-            return -1.0
+        prev_output_tokens = tokens[:, :-1]
+        target = tokens[:, 1:]
+        target_padding_mask = (target == alphabet.padding_idx)
 
-        # Simple RMSD-based TM-score approximation (not exact)
-        min_len = min(n_ref, len(mob_ca))
-        ref_coords = ref_ca.coord[:min_len]
-        mob_coords = mob_ca.coord[:min_len]
+        logits, _ = model.forward(coords_b, padding_mask, confidence, prev_output_tokens)
+        loss = F.cross_entropy(logits, target, reduction="none")
+        loss_np = loss[0].detach().cpu().numpy()
+        mask_np = target_padding_mask[0].cpu().numpy()
+        ll = -np.sum(loss_np * ~mask_np) / max(np.sum(~mask_np), 1)
+        return float(ll)
 
-        d0 = 1.24 * (n_ref - 15) ** (1 / 3) - 1.8 if n_ref > 21 else 0.5
-        diffs = np.linalg.norm(ref_coords - mob_coords, axis=1)
-        tm_score = float(np.mean(1 / (1 + (diffs / d0) ** 2)))
-        return tm_score
-    except Exception:
-        return -1.0
+    log_likelihoods = []
+    for i, seq in enumerate(sequences):
+        try:
+            with torch.no_grad():
+                ll_per_residue = _score_one(seq)
+            log_likelihoods.append(ll_per_residue)
+            print(f"  Seq {i+1}/{len(sequences)}: LL/L = {ll_per_residue:.4f}")
+        except Exception as e:
+            print(f"  Seq {i+1}: ERROR {e}")
+            log_likelihoods.append(float("nan"))
+
+    return log_likelihoods
 
 
-def plot_tmscore_scatter(results: list[dict], n_functional_sites: int):
-    """Scatter plot: x=functional_recovery, y=TM-score."""
-    if not results:
+def plot_esm_if1_validation(top_seqs: list[dict], bottom_seqs: list[dict],
+                            wildtype_ll: float):
+    """Scatter and violin plot of ESM-IF1 LL/L vs functional recovery."""
+    all_seqs = top_seqs + bottom_seqs
+    valid = [s for s in all_seqs if not np.isnan(s.get("esm_if1_ll", float("nan")))]
+
+    if not valid:
+        print("  No valid ESM-IF1 scores to plot")
         return
 
-    func_recs = [r["func_recovery"] for r in results]
-    tm_scores = [r["tmscore"] for r in results if r["tmscore"] > 0]
-    if not tm_scores:
-        print("  No valid TM-scores to plot")
-        return
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-    tm_scores_all = [r["tmscore"] for r in results]
-    colors = ["#22c55e" if r["func_recovery"] >= 0.99 else "#94a3b8" for r in results]
+    # Panel A: scatter functional recovery vs LL/L
+    ax = axes[0]
+    func_recs = [s["func_recovery"] for s in valid]
+    ll_vals = [s["esm_if1_ll"] for s in valid]
+    colors = ["#ef4444" if s in top_seqs else "#3b82f6" for s in valid]
 
-    fig, ax = plt.subplots(figsize=(7, 5))
-    ax.scatter(func_recs, tm_scores_all, c=colors, s=80, alpha=0.85, edgecolors="white", linewidths=1)
-    ax.axhline(0.5, color="#f97316", linestyle="--", lw=1.5, label="TM-score = 0.5 (same fold)")
-    ax.axhline(0.7, color="#ef4444", linestyle=":", lw=1.5, label="TM-score = 0.7 (near-native)")
-
-    # Legend for colors
+    ax.scatter(func_recs, ll_vals, c=colors, s=80, alpha=0.85,
+               edgecolors="white", linewidths=1)
+    if not np.isnan(wildtype_ll):
+        ax.axhline(wildtype_ll, color="black", linestyle="--", lw=1.5,
+                   label=f"WT LL/L = {wildtype_ll:.3f}")
+    rho, pval = stats.spearmanr(func_recs, ll_vals)
+    ax.text(0.05, 0.95, f"Spearman rho = {rho:.3f}\np = {pval:.3e}",
+            transform=ax.transAxes, va="top", fontsize=10,
+            bbox=dict(boxstyle="round", facecolor="white", alpha=0.8))
     from matplotlib.patches import Patch
-    legend_elements = [
-        Patch(color="#22c55e", alpha=0.85, label="All functional sites recovered"),
-        Patch(color="#94a3b8", alpha=0.85, label="Partial functional recovery"),
-        plt.Line2D([0], [0], color="#f97316", linestyle="--", label="TM = 0.5"),
-        plt.Line2D([0], [0], color="#ef4444", linestyle=":", label="TM = 0.7"),
-    ]
-    ax.legend(handles=legend_elements, fontsize=9, loc="lower right")
+    ax.legend(handles=[
+        Patch(color="#ef4444", alpha=0.85, label="Top FSI (high func recovery)"),
+        Patch(color="#3b82f6", alpha=0.85, label="Bottom FSI (low func recovery)"),
+    ] + (ax.get_legend_handles_labels()[0] if not np.isnan(wildtype_ll) else []),
+              fontsize=9)
+    ax.set_xlabel("Functional Site Recovery", fontsize=12)
+    ax.set_ylabel("ESM-IF1 LL/L (log P(seq|structure) per residue)", fontsize=11)
+    ax.set_title("Structural Compatibility vs\nFunctional Recovery", fontsize=12)
 
-    ax.set_xlabel("Functional Site Recovery (fraction of sites matching WT)", fontsize=11)
-    ax.set_ylabel("TM-score vs. BoNT-A LC crystal structure", fontsize=11)
-    ax.set_title("ProteinMPNN Designs: Functional Recovery vs. Structural Similarity\n"
-                 "High functional recovery → native-like fold", fontsize=12)
-    ax.set_xlim(-0.05, 1.1)
-    ax.set_ylim(0, 1.05)
+    # Panel B: violin top vs bottom
+    ax = axes[1]
+    top_ll = [s["esm_if1_ll"] for s in top_seqs if not np.isnan(s.get("esm_if1_ll", float("nan")))]
+    bot_ll = [s["esm_if1_ll"] for s in bottom_seqs if not np.isnan(s.get("esm_if1_ll", float("nan")))]
+    if top_ll and bot_ll:
+        parts = ax.violinplot([top_ll, bot_ll], positions=[1, 2],
+                              showmedians=True, showextrema=True)
+        for i, pc in enumerate(parts["bodies"]):
+            pc.set_facecolor("#ef4444" if i == 0 else "#3b82f6")
+            pc.set_alpha(0.7)
+        ax.set_xticks([1, 2])
+        ax.set_xticklabels(["Top FSI\n(high func recovery)", "Bottom FSI\n(low func recovery)"],
+                           fontsize=11)
+        stat, pval_mw = stats.mannwhitneyu(top_ll, bot_ll, alternative="greater")
+        ax.text(0.5, 0.95, f"Mann-Whitney p = {pval_mw:.3e}",
+                transform=ax.transAxes, ha="center", va="top", fontsize=10,
+                bbox=dict(boxstyle="round", facecolor="white", alpha=0.8))
+        if not np.isnan(wildtype_ll):
+            ax.axhline(wildtype_ll, color="black", linestyle="--", lw=1.5,
+                       label=f"WT LL/L")
+            ax.legend(fontsize=9)
+    ax.set_ylabel("ESM-IF1 LL/L (log P(seq|structure) / L)", fontsize=11)
+    ax.set_title("Top vs Bottom FSI Designs:\nStructural Compatibility", fontsize=12)
 
     plt.tight_layout()
-    path = FIGURES_DIR / "esmfold_tmscore_scatter.png"
+    path = FIGURES_DIR / "esmif1_structural_compatibility.png"
     fig.savefig(path, dpi=150)
     print(f"  Saved: {path}")
     plt.close()
 
 
 def main():
-    parser = argparse.ArgumentParser(description="ESMFold structural validation of top ProteinMPNN designs")
-    parser.add_argument(
-        "--proteinmpnn_fasta",
-        default="results/proteinmpnn_output/3BTA/seqs/3BTA.fa",
-        help="ProteinMPNN output FASTA for 3BTA",
-    )
-    parser.add_argument(
-        "--reference_pdb",
-        default="data/structures/3BTA.pdb",
-        help="Reference crystal structure PDB",
-    )
-    parser.add_argument(
-        "--lc_end_residue",
-        type=int,
-        default=430,
-        help="Last residue of LC domain (truncate before interchain X-region)",
-    )
-    parser.add_argument("--n_top", type=int, default=10)
+    parser = argparse.ArgumentParser(description="ESM-IF1 structural compatibility validation")
+    parser.add_argument("--proteinmpnn_fasta",
+                        default="results/proteinmpnn_output/3BTA/seqs/3BTA.fa")
+    parser.add_argument("--reference_pdb", default="data/structures/3BTA.pdb")
+    parser.add_argument("--lc_end_residue", type=int, default=430)
+    parser.add_argument("--n_top", type=int, default=10,
+                        help="Top N sequences by functional recovery to score")
+    parser.add_argument("--n_bottom", type=int, default=10,
+                        help="Bottom N sequences by functional recovery (comparison group)")
     parser.add_argument("--device", default="cuda")
     args = parser.parse_args()
 
     fasta_path = Path(args.proteinmpnn_fasta)
     ref_pdb = Path(args.reference_pdb)
 
-    print_header("ESMFold Structural Validation")
+    print_header("ESM-IF1 Structural Compatibility Validation")
+    print("Model: esm_if1_gvp4_t16_142M_UR50 (no openfold required)")
+    print("Metric: log P(sequence | 3BTA backbone) per residue")
 
     if not fasta_path.exists():
         print(f"ERROR: FASTA not found: {fasta_path}")
-        print("Run 06_proteinmpnn_redesign.py first.")
         sys.exit(1)
-
     if not ref_pdb.exists():
         print(f"ERROR: Reference PDB not found: {ref_pdb}")
         sys.exit(1)
 
-    # Load functional sites for 3BTA
-    functional_residues_1idx = load_functional_residues_for_pdb("3BTA")
-    print(f"Functional residues (3BTA): {functional_residues_1idx}")
+    functional_residues = load_functional_residues_for_pdb("3BTA")
+    print(f"Functional residues (3BTA): {functional_residues}")
 
-    # Parse ProteinMPNN FASTA
-    print(f"\nParsing ProteinMPNN FASTA: {fasta_path}")
-    parsed = parse_proteinmpnn_fasta(fasta_path)
-    print(f"  Parsed {len(parsed)} designed sequences")
-
-    # Get wildtype sequence (first entry in FASTA has seq_recovery=1.0)
-    # Re-read to get wildtype
-    all_raw = []
-    current_header = None
-    current_seq = []
-    with open(fasta_path) as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith(">"):
-                if current_header is not None and current_seq:
-                    all_raw.append((current_header, "".join(current_seq)))
-                current_header = line[1:]
-                current_seq = []
-            elif line:
-                current_seq.append(line)
-        if current_header is not None and current_seq:
-            all_raw.append((current_header, "".join(current_seq)))
-
-    if not all_raw:
-        print("ERROR: FASTA appears empty")
-        sys.exit(1)
-
-    wildtype_seq_full = all_raw[0][1]
-    # Truncate to LC domain
+    # Parse FASTA
+    print(f"\nParsing {fasta_path}...")
+    wildtype_seq_full, parsed = parse_proteinmpnn_fasta(fasta_path)
     wildtype_seq = wildtype_seq_full[:args.lc_end_residue]
-    print(f"  Wildtype (full): {len(wildtype_seq_full)} aa, LC domain: {len(wildtype_seq)} aa")
+    print(f"  Wildtype LC: {len(wildtype_seq)} aa,  Designed: {len(parsed)} sequences")
 
-    # Select top sequences
-    print(f"\nSelecting top {args.n_top} sequences by functional recovery...")
-    top_seqs = select_top_sequences(
-        parsed, wildtype_seq, functional_residues_1idx, n_top=args.n_top
+    # Annotate with FSI
+    annotated = annotate_with_fsi(parsed, wildtype_seq, functional_residues)
+    annotated.sort(key=lambda x: (x["func_recovery"], x["fsi"]), reverse=True)
+
+    top_seqs = annotated[:args.n_top]
+    bottom_seqs = annotated[-args.n_bottom:]
+
+    print(f"\n  Top {args.n_top} (highest func recovery): "
+          f"func_rec range [{top_seqs[-1]['func_recovery']:.3f}, {top_seqs[0]['func_recovery']:.3f}]")
+    print(f"  Bottom {args.n_bottom} (lowest func recovery): "
+          f"func_rec range [{bottom_seqs[0]['func_recovery']:.3f}, {bottom_seqs[-1]['func_recovery']:.3f}]")
+
+    # Score all sequences + wildtype with ESM-IF1
+    all_to_score = [s["sequence_lc"] for s in top_seqs] + \
+                   [s["sequence_lc"] for s in bottom_seqs] + \
+                   [wildtype_seq]
+
+    print(f"\nScoring {len(all_to_score)} sequences with ESM-IF1...")
+    ll_scores = score_sequences_esmif1(
+        all_to_score, str(ref_pdb), "A", args.device
     )
 
-    if not top_seqs:
-        # If no sequences match LC length, try full length
-        top_seqs = select_top_sequences(
-            parsed, wildtype_seq_full, functional_residues_1idx, n_top=args.n_top
-        )
+    # Assign scores back
+    n_top = len(top_seqs)
+    n_bot = len(bottom_seqs)
+    for i, s in enumerate(top_seqs):
+        s["esm_if1_ll"] = ll_scores[i]
+    for i, s in enumerate(bottom_seqs):
+        s["esm_if1_ll"] = ll_scores[n_top + i]
+    wildtype_ll = ll_scores[n_top + n_bot]
 
-    print(f"  Selected {len(top_seqs)} sequences")
-    for s in top_seqs[:3]:
-        print(f"    sample={s['sample_id']}: func_rec={s['func_recovery']:.3f}, "
-              f"overall_rec={s['overall_recovery']:.3f}, FSI={s['fsi']:.3f}")
-
-    # Truncate sequences and reference to LC domain
-    sequences_for_fold = [s["sequence"][:args.lc_end_residue] for s in top_seqs]
-
-    # Extract LC domain from reference PDB
-    esmfold_structs_dir = RESULTS_DIR / "esmfold_structures"
-    esmfold_structs_dir.mkdir(parents=True, exist_ok=True)
-
-    ref_lc_path = str(esmfold_structs_dir / "3BTA_LC_reference.pdb")
-    extract_lc_domain(str(ref_pdb), "A", args.lc_end_residue, ref_lc_path)
-    print(f"\nExtracted LC domain reference: {ref_lc_path}")
-
-    # Run ESMFold
-    print(f"\nRunning ESMFold on {len(sequences_for_fold)} sequences...")
-    fold_results = run_esmfold(sequences_for_fold, args.device)
-
-    # Compute TM-scores and build output
-    print("\nComputing TM-scores vs. reference LC structure...")
-    per_sequence = []
-    for i, (top_seq, (pdb_str, mean_plddt)) in enumerate(zip(top_seqs, fold_results)):
-        result_entry = {
-            "sample_id": top_seq["sample_id"],
-            "func_recovery": top_seq["func_recovery"],
-            "overall_recovery": top_seq["overall_recovery"],
-            "fsi": top_seq["fsi"],
-            "mean_plddt": mean_plddt,
-            "tmscore": -1.0,
-            "predicted_structure_path": None,
-        }
-
-        if pdb_str is not None:
-            # Save predicted structure
-            sample_id = top_seq["sample_id"]
-            out_pdb = str(esmfold_structs_dir / f"3BTA_sample{sample_id:03d}.pdb")
-            with open(out_pdb, "w") as f:
-                f.write(pdb_str)
-            result_entry["predicted_structure_path"] = str(
-                Path(out_pdb).relative_to(RESULTS_DIR.parent)
-            )
-
-            # Compute TM-score
-            tmscore = compute_tmscore(out_pdb, ref_lc_path)
-            result_entry["tmscore"] = tmscore
-            print(f"  Sample {sample_id:3d}: func_rec={top_seq['func_recovery']:.3f}, "
-                  f"TM={tmscore:.3f}, pLDDT={mean_plddt:.1f}")
-        else:
-            print(f"  Sample {top_seq['sample_id']:3d}: ESMFold failed (skipped)")
-
-        per_sequence.append(result_entry)
-
-    # Summary statistics
-    valid_tm = [r["tmscore"] for r in per_sequence if r["tmscore"] > 0]
-    valid_plddt = [r["mean_plddt"] for r in per_sequence if not np.isnan(r["mean_plddt"])]
+    # Summary stats
+    top_ll_valid = [s["esm_if1_ll"] for s in top_seqs if not np.isnan(s["esm_if1_ll"])]
+    bot_ll_valid = [s["esm_if1_ll"] for s in bottom_seqs if not np.isnan(s["esm_if1_ll"])]
 
     summary = {
-        "mean_tmscore": float(np.mean(valid_tm)) if valid_tm else float("nan"),
-        "median_tmscore": float(np.median(valid_tm)) if valid_tm else float("nan"),
-        "fraction_tmscore_above_0.5": float(np.mean(np.array(valid_tm) > 0.5)) if valid_tm else float("nan"),
-        "fraction_tmscore_above_0.7": float(np.mean(np.array(valid_tm) > 0.7)) if valid_tm else float("nan"),
-        "mean_plddt": float(np.mean(valid_plddt)) if valid_plddt else float("nan"),
-        "n_sequences_folded": len(valid_tm),
+        "model": "ESM-IF1 (esm_if1_gvp4_t16_142M_UR50)",
+        "metric": "log P(sequence | 3BTA backbone) per residue",
+        "wildtype_ll_per_residue": wildtype_ll,
+        "top_sequences_mean_ll": float(np.mean(top_ll_valid)) if top_ll_valid else float("nan"),
+        "bottom_sequences_mean_ll": float(np.mean(bot_ll_valid)) if bot_ll_valid else float("nan"),
+        "n_top_scored": len(top_ll_valid),
+        "n_bottom_scored": len(bot_ll_valid),
     }
 
-    print(f"\n--- Summary ---")
-    print(f"  Sequences folded: {summary['n_sequences_folded']}/{len(per_sequence)}")
-    print(f"  Mean TM-score: {summary['mean_tmscore']:.3f}")
-    print(f"  Fraction TM > 0.5: {summary['fraction_tmscore_above_0.5']:.2f}")
-    print(f"  Fraction TM > 0.7: {summary['fraction_tmscore_above_0.7']:.2f}")
-    print(f"  Mean pLDDT: {summary['mean_plddt']:.1f}")
+    if top_ll_valid and bot_ll_valid:
+        stat, pval = stats.mannwhitneyu(top_ll_valid, bot_ll_valid, alternative="greater")
+        r = 1 - (2 * stat) / (len(top_ll_valid) * len(bot_ll_valid))
+        summary["mannwhitney_top_vs_bottom_pvalue"] = float(pval)
+        summary["rank_biserial_r"] = float(r)
+        print(f"\n  Top FSI LL/L = {summary['top_sequences_mean_ll']:.4f}")
+        print(f"  Bottom FSI LL/L = {summary['bottom_sequences_mean_ll']:.4f}")
+        print(f"  Wildtype LL/L = {wildtype_ll:.4f}")
+        print(f"  Mann-Whitney (top > bottom): p = {pval:.4e}  r = {r:.3f}")
+        if pval < 0.05:
+            print("  → High functional-recovery designs are significantly more")
+            print("    structurally compatible with 3BTA backbone (ESM-IF1)")
+        else:
+            print("  → No significant difference in structural compatibility")
 
-    # Save output JSON
+    # Save
+    per_sequence = []
+    for s in top_seqs + bottom_seqs:
+        per_sequence.append({
+            "sample_id": s["sample_id"],
+            "group": "top" if s in top_seqs else "bottom",
+            "func_recovery": s["func_recovery"],
+            "overall_recovery": s["overall_recovery"],
+            "fsi": s["fsi"],
+            "esm_if1_ll_per_residue": s.get("esm_if1_ll", float("nan")),
+        })
+
     output = {
         "pdb_id": "3BTA",
+        "validation_method": "ESM-IF1 inverse folding structural compatibility",
         "n_top_sequences": args.n_top,
+        "n_bottom_sequences": args.n_bottom,
         "lc_domain_end": args.lc_end_residue,
         "summary": summary,
         "per_sequence": per_sequence,
@@ -508,18 +406,12 @@ def main():
         json.dump(output, f, indent=2)
     print(f"\nSaved: {out_path}")
 
-    # Generate figure
+    # Figure
     print("\n--- Generating figure ---")
-    plot_tmscore_scatter(per_sequence, len(functional_residues_1idx))
+    (RESULTS_DIR / "esmfold_structures").mkdir(exist_ok=True)
+    plot_esm_if1_validation(top_seqs, bottom_seqs, wildtype_ll)
 
-    print_header("ESMFold Validation Complete")
-    if valid_tm:
-        if summary["mean_tmscore"] > 0.5:
-            print("  RESULT: Top ProteinMPNN designs fold to native-like structures.")
-            print("  → FSI=3.07 represents structurally plausible dangerous designs.")
-        else:
-            print("  RESULT: Designs do not consistently fold to native-like structures.")
-            print("  → Physical realizability barrier confirmed by low structural similarity.")
+    print_header("ESM-IF1 Validation Complete")
 
 
 if __name__ == "__main__":
