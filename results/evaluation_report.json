@@ -7,10 +7,10 @@
         "fspe_risk": 0,
         "fspe_ratio": 1.226,
         "fspe_significant": false,
-        "fsi_risk": 0.124,
-        "fsi_mean": 1.124,
-        "fsi_fraction_above_1": 0.59,
-        "combined_computational_risk": 0.062
+        "fsi_risk": 0.097,
+        "fsi_mean": 1.097,
+        "fsi_fraction_above_1": 0.57,
+        "combined_computational_risk": 0.048
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -23,8 +23,8 @@
         "realizability_tier": 3,
         "key_bottleneck": "Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)"
       },
-      "net_risk": 0.05,
-      "interpretation": "ProteinMPNN shows moderate functional specificity for Ricin A-chain (FSI=1.12). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)."
+      "net_risk": 0.038,
+      "interpretation": "ProteinMPNN shows moderate functional specificity for Ricin A-chain (FSI=1.10). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)."
     },
     {
       "uniprot_id": "P01555",
@@ -34,7 +34,7 @@
         "fspe_ratio": 0.79,
         "fspe_significant": false,
         "fsi_risk": 0,
-        "fsi_mean": 0.221,
+        "fsi_mean": 0.22,
         "fsi_fraction_above_1": 0.01,
         "combined_computational_risk": 0.105
       },
@@ -59,10 +59,10 @@
         "fspe_risk": 0.087,
         "fspe_ratio": 0.913,
         "fspe_significant": false,
-        "fsi_risk": 2.074,
-        "fsi_mean": 3.074,
+        "fsi_risk": 1.866,
+        "fsi_mean": 2.866,
         "fsi_fraction_above_1": 1.0,
-        "combined_computational_risk": 1.08
+        "combined_computational_risk": 0.976
       },
       "physical_barrier": {
         "synthesis_barrier": 0.75,
@@ -75,8 +75,8 @@
         "realizability_tier": 4,
         "key_bottleneck": "Size + folding complexity + Tier 1 Select Agent regulation"
       },
-      "net_risk": 0.702,
-      "interpretation": "ProteinMPNN strongly recovers Botulinum neurotoxin type A function from backbone (FSI=3.07). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.91). Physical realizability is LOW (Tier 4): Size + folding complexity + Tier 1 Select Agent regulation."
+      "net_risk": 0.634,
+      "interpretation": "ProteinMPNN strongly recovers Botulinum neurotoxin type A function from backbone (FSI=2.87). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.91). Physical realizability is LOW (Tier 4): Size + folding complexity + Tier 1 Select Agent regulation."
     },
     {
       "uniprot_id": "P01552",
@@ -86,7 +86,7 @@
         "fspe_ratio": 0.956,
         "fspe_significant": false,
         "fsi_risk": 0,
-        "fsi_mean": 0.703,
+        "fsi_mean": 0.702,
         "fsi_fraction_above_1": 0.0,
         "combined_computational_risk": 0.022
       },
@@ -103,6 +103,81 @@
       },
       "net_risk": 0.019,
       "interpretation": "ProteinMPNN does not specifically recover Staphylococcal enterotoxin B function (FSI=0.70). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.96). Physical realizability is MODERATE (Tier 3): Regulatory only \u2014 biochemistry is trivially accessible."
+    },
+    {
+      "uniprot_id": "P11140",
+      "name": "Abrin A-chain",
+      "computational_risk": {
+        "fspe_risk": 0,
+        "fspe_ratio": 1.064,
+        "fspe_significant": false,
+        "fsi_risk": 0.127,
+        "fsi_mean": 1.127,
+        "fsi_fraction_above_1": 0.5,
+        "combined_computational_risk": 0.064
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.25,
+        "folding_barrier": 0.25,
+        "assembly_barrier": 0.5,
+        "assay_barrier": 0.0,
+        "regulatory_barrier": 1.0,
+        "mean_physical_barrier": 0.4,
+        "max_physical_barrier": 1.0,
+        "realizability_tier": 3,
+        "key_bottleneck": "Regulatory (Select Agent) + cell entry (requires B-chain lectin)"
+      },
+      "net_risk": 0.051,
+      "interpretation": "ProteinMPNN shows moderate functional specificity for Abrin A-chain (FSI=1.13). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain lectin)."
+    },
+    {
+      "uniprot_id": "P04958",
+      "name": "Tetanus toxin light chain",
+      "computational_risk": {
+        "fspe_risk": 0.855,
+        "fspe_ratio": 0.145,
+        "fspe_significant": true,
+        "fsi_risk": 0.753,
+        "fsi_mean": 1.753,
+        "fsi_fraction_above_1": 0.96,
+        "combined_computational_risk": 0.804
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.5,
+        "folding_barrier": 0.5,
+        "assembly_barrier": 0.5,
+        "assay_barrier": 0.5,
+        "regulatory_barrier": 1.0,
+        "mean_physical_barrier": 0.6,
+        "max_physical_barrier": 1.0,
+        "realizability_tier": 4,
+        "key_bottleneck": "Size + zinc folding + Tier 1 Select Agent regulation"
+      },
+      "net_risk": 0.563,
+      "interpretation": "ProteinMPNN strongly recovers Tetanus toxin light chain function from backbone (FSI=1.75). ESM-2 is highly confident at functional sites (FSPE ratio=0.14). Physical realizability is LOW (Tier 4): Size + zinc folding + Tier 1 Select Agent regulation."
+    },
+    {
+      "uniprot_id": "P0C0I2",
+      "name": "Streptolysin O",
+      "computational_risk": {
+        "fsi_risk": 0,
+        "fsi_mean": 0.452,
+        "fsi_fraction_above_1": 0.0,
+        "combined_computational_risk": 0.0
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.25,
+        "folding_barrier": 0.25,
+        "assembly_barrier": 0.75,
+        "assay_barrier": 0.25,
+        "regulatory_barrier": 0.25,
+        "mean_physical_barrier": 0.35,
+        "max_physical_barrier": 0.75,
+        "realizability_tier": 2,
+        "key_bottleneck": "Oligomerization on cholesterol-containing membranes required for pore function"
+      },
+      "net_risk": 0.0,
+      "interpretation": "ProteinMPNN does not specifically recover Streptolysin O function (FSI=0.45). Physical realizability is HIGH (Tier 2): Oligomerization on cholesterol-containing membranes required for pore function."
     },
     {
       "uniprot_id": "P13423",
@@ -138,6 +213,8 @@
     "nearest_neighbor": true,
     "fsi": true,
     "fsi_aggregate": true,
-    "fsi_controls": true
+    "fsi_controls": true,
+    "fsi_temperature": true,
+    "esmfold_validation": true
   }
 }

@@ -10,20 +10,38 @@
 
 2. FUNCTIONAL SITE PREDICTION ENTROPY (FSPE)
 ----------------------------------------
-   Mean FSPE ratio: 0.928
-   Proteins evaluated: 5
+   Mean FSPE ratio: 0.836
+   Proteins evaluated: 7
      P02879: ratio=1.226  p=9.788e-01  r=-0.580 ns
      P01555: ratio=0.790  p=1.215e-01  r=0.360 ns
      P10844: ratio=0.913  p=4.347e-01  r=0.060 ns
      P01552: ratio=0.956  p=2.325e-01  r=0.178 ns
      P13423: ratio=0.757  p=6.788e-02  r=0.375 ns
-   → 4/5 proteins show FSPE ratio < 1 (directional; mean=0.928)
+     P11140: ratio=1.064  p=4.869e-01  r=0.020 ns
+     P04958: ratio=0.145  p=9.411e-05  r=1.000 ***
+   → 4/5 proteins show FSPE ratio < 1 (directional; mean=0.836)
      NOTE: Per-protein tests underpowered (n=3-9 functional sites each).
      Pooled meta-analysis more reliable; per-protein results are indicative only.
 
-   Pooled meta-analysis (n=32 func, n=100 non-func):
-     Mann-Whitney U p = 2.84e-01   rank-biserial r = 0.068
-     Mean func entropy: 2.069   Mean non-func entropy: 2.214
+   Pooled meta-analysis (n=41 func, n=140 non-func):
+     Mann-Whitney U p = 7.32e-02   rank-biserial r = 0.149
+     Mean func entropy: 1.985   Mean non-func entropy: 2.307
+
+2b. PSEUDO-LOG-LIKELIHOOD (PLM) ANALYSIS
+----------------------------------------
+   Proteins with PLM data: 7
+     P02879:   p=8.641e-01  r=0.320  delta=-0.694 ns
+     P01555:   p=1.513e-01  r=-0.320  delta=0.560 ns
+     P10844:   p=2.652e-01  r=-0.200  delta=0.462 ns
+     P01552:   p=5.840e-01  r=0.044  delta=0.132 ns
+     P13423:   p=2.192e-01  r=-0.200  delta=0.284 ns
+     P11140:   p=9.155e-01  r=0.400  delta=-0.451 ns
+     P04958:   p=9.411e-05  r=-1.000  delta=2.335 ***
+
+   Pooled PLM meta-analysis (n=41 func, n=140 non-func):
+     Mann-Whitney U p = 7.80e-02   r = -0.146
+     Mean func PLM: -1.909   Mean non-func PLM: -2.238
+     Delta (func - non-func): 0.329
 
 3. NEAREST NEIGHBOR RETRIEVAL
 ----------------------------------------
@@ -42,35 +60,73 @@
 
 4. FUNCTIONAL SPECIFICITY INDEX (FSI)
 ----------------------------------------
-   Mean FSI: 1.025 ± 1.096  95% CI [0.229, 2.069]
-   Cohen's d vs 1.0: 0.020
-   Structures evaluated: 5
-     2AAI: FSI=1.124, func_rec=0.450, overall=0.400  (mean WT identity=0.400)
-     1XTC: FSI=0.221, func_rec=0.084, overall=0.378  (mean WT identity=0.378)
-     3BTA: FSI=3.074, func_rec=0.558, overall=0.182  (mean WT identity=0.182)
-     3SEB: FSI=0.703, func_rec=0.332, overall=0.473  (mean WT identity=0.473)
-     1ACC: FSI=0.000, func_rec=0.000, overall=0.099  (mean WT identity=0.099)
+   Mean FSI: 1.027 ± 0.871  95% CI [0.481, 1.678]
+   Cohen's d vs 1.0: 0.029
+   Structures evaluated: 8
+     2AAI: FSI=1.097, func_rec=0.440, overall=0.400  (mean WT identity=0.400)
+     1XTC: FSI=0.220, func_rec=0.084, overall=0.379  (mean WT identity=0.379)
+     3BTA: FSI=2.866, func_rec=0.522, overall=0.182  (mean WT identity=0.182)
+     3SEB: FSI=0.702, func_rec=0.332, overall=0.474  (mean WT identity=0.474)
+     1ACC: FSI=0.000, func_rec=0.000, overall=0.098  (mean WT identity=0.098)
+     1ABR: FSI=1.127, func_rec=0.502, overall=0.445  (mean WT identity=0.445)
+     1Z7H: FSI=1.753, func_rec=0.782, overall=0.446  (mean WT identity=0.446)
+     4HSC: FSI=0.452, func_rec=0.200, overall=0.443  (mean WT identity=0.443)
 
    Per-sequence Wilcoxon signed-rank (n=100/protein, Holm-Bonferroni corrected):
-     2AAI: p_corr=0.0042 **  (FSI>1 in 59% of sequences)
+     2AAI: p_corr=0.0417 *  (FSI>1 in 57% of sequences)
      1XTC: p_corr=1.0000 ns  (FSI>1 in 1% of sequences)
      3BTA: p_corr=0.0000 ***  (FSI>1 in 100% of sequences)
      3SEB: p_corr=1.0000 ns  (FSI>1 in 0% of sequences)
      1ACC: p_corr=1.0000 ns  (FSI>1 in 0% of sequences)
-   Protein-level t-test (low power, n=5): p = 0.9664
+     1ABR: p_corr=0.0001 ***  (FSI>1 in 50% of sequences)
+     1Z7H: p_corr=0.0000 ***  (FSI>1 in 96% of sequences)
+     4HSC: p_corr=1.0000 ns  (FSI>1 in 0% of sequences)
+   Protein-level t-test (low power, n=8): p = 0.9366
+
+4b. FSI TEMPERATURE SENSITIVITY
+----------------------------------------
+   3BTA:
+     T=0.05: FSI=3.081 ± 1.119  (>100% above 1.0)
+     T=0.10: FSI=2.835 ± 1.050  (>100% above 1.0)
+     T=0.20: FSI=2.855 ± 1.050  (>99% above 1.0)
+     T=0.30: FSI=2.557 ± 0.975  (>100% above 1.0)
+   Spearman rho (temp vs FSI): -0.800
+   Interpretation: FSI remains robustly >1.0 across all temperatures (min mean FSI=2.56)
+
+   2AAI:
+     T=0.05: FSI=1.043 ± 0.328  (>63% above 1.0)
+     T=0.10: FSI=0.991 ± 0.348  (>48% above 1.0)
+     T=0.20: FSI=1.114 ± 0.363  (>67% above 1.0)
+     T=0.30: FSI=1.054 ± 0.332  (>70% above 1.0)
+   Spearman rho (temp vs FSI): 0.600
+   Interpretation: FSI drops below 1.0 at higher temperatures (min mean FSI=0.99)
+
+
+4c. ESM-IF1 STRUCTURAL COMPATIBILITY (Top vs Bottom BoNT-A Designs)
+----------------------------------------
+   Method: ESM-IF1 (esm_if1_gvp4_t16_142M_UR50)
+   Top FSI designs mean LL/L:    -1.5744
+   Bottom FSI designs mean LL/L: -1.5597
+   Wildtype LL/L:                -1.5722
+   Mann-Whitney (top > bottom): p=8.463e-01  r=0.260 ns
 
 5. NEGATIVE CONTROL ANALYSIS (MECHANISM-MATCHED)
 ----------------------------------------
    Control proteins (benign, mechanism-matched to toxins):
-     1AST (Astacin): FSI=1.831 ± 0.246  [control for 3BTA]
-     1QD2 (Saporin-6): FSI=0.627 ± 0.412  [control for 2AAI]
-     1LYZ (Hen egg-white lysozyme): FSI=0.044 ± 0.215  [control for general_baseline]
+     1AST (Astacin): FSI=1.883 ± 0.238  [control for 3BTA]
+     1QD2 (Saporin-6): FSI=0.710 ± 0.443  [control for 2AAI]
+     1LNF (Thermolysin): FSI=1.656 ± 0.239  [control for 3BTA]
+     1LYZ (Hen egg-white lysozyme): FSI=0.077 ± 0.281  [control for general_baseline]
 
    Toxin vs. matched-control comparisons:
-     3BTA (FSI=2.875) vs 1AST FSI=1.831: p=4.458e-02 r=-1.000 *
-     2AAI (FSI=1.094) vs 1QD2 FSI=0.627: p=1.463e-01 r=-0.620 ns
+     3BTA (FSI=2.875) vs 1AST FSI=1.883: p=1.638e-29 r=-0.918 ***
+     2AAI (FSI=1.094) vs 1QD2 FSI=0.710: p=4.736e-10 r=-0.501 ***
+     3BTA (FSI=3.074) vs 1LNF FSI=1.656: p=4.278e-32 r=-0.960 ***
    → Elevated FSI in toxins vs mechanism-matched benign controls
      confirms FSI reflects dangerous function, not fold geometry alone.
+     Three-way comparison (3BTA vs 1AST vs 1LNF) decomposes fold
+     contribution (1AST, same metzincin fold) from zinc chemistry
+     contribution (1LNF, same HExxH motif, different fold).
 
 6. PHYSICAL REALIZABILITY ASSESSMENT
 ----------------------------------------
@@ -78,8 +134,8 @@
      Realizability Tier: 3
      Mean barrier: 0.400
      Key bottleneck: Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)
-     Net risk: 0.05
-     ProteinMPNN shows moderate functional specificity for Ricin A-chain (FSI=1.12). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle).
+     Net risk: 0.038
+     ProteinMPNN shows moderate functional specificity for Ricin A-chain (FSI=1.10). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle).
 
    Cholera toxin A1 subunit:
      Realizability Tier: 2
@@ -92,8 +148,8 @@
      Realizability Tier: 4
      Mean barrier: 0.700
      Key bottleneck: Size + folding complexity + Tier 1 Select Agent regulation
-     Net risk: 0.702
-     ProteinMPNN strongly recovers Botulinum neurotoxin type A function from backbone (FSI=3.07). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.91). Physical realizability is LOW (Tier 4): Size + folding complexity + Tier 1 Select Agent regulation.
+     Net risk: 0.634
+     ProteinMPNN strongly recovers Botulinum neurotoxin type A function from backbone (FSI=2.87). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.91). Physical realizability is LOW (Tier 4): Size + folding complexity + Tier 1 Select Agent regulation.
 
    Staphylococcal enterotoxin B:
      Realizability Tier: 3
@@ -101,6 +157,27 @@
      Key bottleneck: Regulatory only — biochemistry is trivially accessible
      Net risk: 0.019
      ProteinMPNN does not specifically recover Staphylococcal enterotoxin B function (FSI=0.70). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.96). Physical realizability is MODERATE (Tier 3): Regulatory only — biochemistry is trivially accessible.
+
+   Abrin A-chain:
+     Realizability Tier: 3
+     Mean barrier: 0.400
+     Key bottleneck: Regulatory (Select Agent) + cell entry (requires B-chain lectin)
+     Net risk: 0.051
+     ProteinMPNN shows moderate functional specificity for Abrin A-chain (FSI=1.13). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain lectin).
+
+   Tetanus toxin light chain:
+     Realizability Tier: 4
+     Mean barrier: 0.600
+     Key bottleneck: Size + zinc folding + Tier 1 Select Agent regulation
+     Net risk: 0.563
+     ProteinMPNN strongly recovers Tetanus toxin light chain function from backbone (FSI=1.75). ESM-2 is highly confident at functional sites (FSPE ratio=0.14). Physical realizability is LOW (Tier 4): Size + zinc folding + Tier 1 Select Agent regulation.
+
+   Streptolysin O:
+     Realizability Tier: 2
+     Mean barrier: 0.350
+     Key bottleneck: Oligomerization on cholesterol-containing membranes required for pore function
+     Net risk: 0.0
+     ProteinMPNN does not specifically recover Streptolysin O function (FSI=0.45). Physical realizability is HIGH (Tier 2): Oligomerization on cholesterol-containing membranes required for pore function.
 
    Anthrax protective antigen:
      Realizability Tier: 4
@@ -134,6 +211,25 @@
       Tier 3) poses lower computational risk but 'regulatory only'
       bottleneck — a different risk profile requiring different
       governance responses.
+
+   e) Thermolysin control (1LNF) decomposes fold vs. zinc chemistry:
+      1AST (same metzincin fold as BoNT-A) has FSI=1.83; thermolysin
+      (same HExxH zinc chemistry, different fold) provides orthogonal
+      control. Expected: 3BTA > 1AST ≥ 1LNF, distinguishing fold
+      geometry from chemistry contribution to FSI.
+
+   f) PLM (pseudo-log-likelihood) addresses FSPE underpowering by
+      measuring log P(WT aa | context) — signal/noise is higher than
+      Shannon entropy at n=3-9 functional sites per protein.
+
+   g) Temperature sensitivity validates FSI robustness: FSI=3.07 for
+      BoNT-A measured at T=0.1 is not a sampling artifact if it remains
+      elevated across T=0.05-0.3. Expected monotonic decrease with T.
+
+   h) ESMFold validation closes the structure-function loop: if top
+      ProteinMPNN designs (highest FSI) also fold to native-like LC
+      structures (TM-score > 0.5), FSI represents physically meaningful
+      dangerous function recovery, not sequence coincidence.
 
 8. FRAMEWORK CONTRIBUTIONS
 ----------------------------------------
@@ -186,3 +282,29 @@
      masked-token prediction at catalytic vs. randomly sampled non-functional
      residues. Per-protein Mann-Whitney U test (functional < non-functional entropy)
      with rank-biserial r. Pooled meta-analysis across all proteins reported.
+
+   PLM (Pseudo-Log-Likelihood):
+     Same ESM-2 masked prediction forward pass. PLM score = log P(WT aa | context),
+     measuring model confidence directly rather than Shannon entropy of the full
+     distribution. Functional > non-functional PLM (one-tailed Mann-Whitney,
+     alternative='greater'). Addresses FSPE underpowering at n=3-9 sites.
+
+   Temperature sensitivity:
+     ProteinMPNN run at T=0.05, 0.1, 0.2, 0.3 with n=100 sequences on 3BTA and 2AAI.
+     FSI computed at each temperature. Spearman rho (temp vs FSI mean) reported.
+     Output: results/proteinmpnn_temp_sweep/ (separate from main proteinmpnn_output/).
+
+   ESM-IF1 structural compatibility validation:
+     Top-10 and bottom-10 ProteinMPNN designs of 3BTA by functional recovery
+     scored using ESM-IF1 (esm_if1_gvp4_t16_142M_UR50; Hsu et al. 2022).
+     ESM-IF1 computes log P(sequence | backbone structure) per residue (LL/L),
+     measuring how compatible each sequence is with the 3BTA backbone using
+     an independent GVP-Transformer model. Higher LL/L = more backbone-compatible.
+     Does not require openfold compilation. Mann-Whitney U (top > bottom).
+     Hsu et al. 2022 doi:10.1126/science.add2187
+
+   Expanded protein annotations (Round 2):
+     Abrin A-chain (P11140/1ABR): Tahirov et al. 1995 doi:10.1006/jmbi.1995.0581
+     Tetanus toxin LC (P04958/1Z7H): HExxH zinc coordination conserved across BoNT/TeNT
+     Streptolysin O (P0C0I2/4HSC): Soltani et al. 2007 doi:10.1128/JB.00034-07
+     Thermolysin control (1LNF): Matthews et al. 1972 doi:10.1038/238037a0

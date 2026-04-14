@@ -1,0 +1,85 @@
+{
+  "proteins_evaluated": [
+    "3BTA",
+    "2AAI"
+  ],
+  "temperatures": [
+    0.05,
+    0.1,
+    0.2,
+    0.3
+  ],
+  "num_seqs": 100,
+  "results": [
+    {
+      "pdb_id": "3BTA",
+      "fsi_by_temperature": {
+        "0.05": {
+          "mean": 3.080597150922799,
+          "std": 1.1189307647566487,
+          "median": 2.3271191365711914,
+          "fraction_above_1": 1.0,
+          "n_sequences": 100
+        },
+        "0.1": {
+          "mean": 2.834956518657699,
+          "std": 1.050481664244864,
+          "median": 2.2403508771929825,
+          "fraction_above_1": 1.0,
+          "n_sequences": 100
+        },
+        "0.2": {
+          "mean": 2.8552795296489535,
+          "std": 1.0499795900525928,
+          "median": 2.2601769911504426,
+          "fraction_above_1": 0.99,
+          "n_sequences": 100
+        },
+        "0.3": {
+          "mean": 2.5565723129423468,
+          "std": 0.9747374007131153,
+          "median": 2.290582959641256,
+          "fraction_above_1": 1.0,
+          "n_sequences": 100
+        }
+      },
+      "spearman_rho_temp_vs_fsi": -0.7999999999999999,
+      "interpretation": "FSI remains robustly >1.0 across all temperatures (min mean FSI=2.56)"
+    },
+    {
+      "pdb_id": "2AAI",
+      "fsi_by_temperature": {
+        "0.05": {
+          "mean": 1.0426071519562812,
+          "std": 0.3279196074836836,
+          "median": 1.0075471698113208,
+          "fraction_above_1": 0.63,
+          "n_sequences": 100
+        },
+        "0.1": {
+          "mean": 0.9907164583893894,
+          "std": 0.34792881029729855,
+          "median": 0.9981308411214954,
+          "fraction_above_1": 0.48,
+          "n_sequences": 100
+        },
+        "0.2": {
+          "mean": 1.1141343779255866,
+          "std": 0.3631886031151434,
+          "median": 1.026923076923077,
+          "fraction_above_1": 0.67,
+          "n_sequences": 100
+        },
+        "0.3": {
+          "mean": 1.0543985386533554,
+          "std": 0.33163817086943626,
+          "median": 1.0368932038834953,
+          "fraction_above_1": 0.7,
+          "n_sequences": 100
+        }
+      },
+      "spearman_rho_temp_vs_fsi": 0.6000000000000001,
+      "interpretation": "FSI drops below 1.0 at higher temperatures (min mean FSI=0.99)"
+    }
+  ]
+}
