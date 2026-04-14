@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+*.env
+.venv/
+venv/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code workspace config
+.claude/
+
+# HPC deployment (contains local paths)
+DEPLOY.sh
+
+# Logs
+logs/
+*.log
+
+# Large generated files (reproducible via pipeline)
+*.npy

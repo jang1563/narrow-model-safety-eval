@@ -1,0 +1,65 @@
+{
+  "sequences": {
+    "categories": {
+      "bacterial_toxins": {
+        "description": "Bacterial protein toxins (AB toxins, pore-forming, enzymatic)",
+        "positive_count": 20,
+        "negative_count": 22
+      },
+      "select_agent_proteins": {
+        "description": "CDC/APHIS Select Agent toxin proteins",
+        "positive_count": 10,
+        "negative_count": 12
+      },
+      "virulence_factors": {
+        "description": "Bacterial virulence factors (non-toxin)",
+        "positive_count": 15,
+        "negative_count": 15
+      },
+      "antimicrobial_resistance": {
+        "description": "Beta-lactamases and resistance enzymes",
+        "positive_count": 15,
+        "negative_count": 15
+      }
+    },
+    "total_positive": 60,
+    "total_negative": 64
+  },
+  "structures": {
+    "2AAI": {
+      "description": "Ricin A-chain (ribosome-inactivating protein)",
+      "chain": "A",
+      "uniprot": "P02879",
+      "local_path": "data/structures/2AAI.pdb"
+    },
+    "1XTC": {
+      "description": "Cholera toxin A subunit (ADP-ribosyltransferase)",
+      "chain": "A",
+      "uniprot": "P01555",
+      "local_path": "data/structures/1XTC.pdb"
+    },
+    "3BTA": {
+      "description": "Botulinum toxin type A (zinc metalloprotease)",
+      "chain": "A",
+      "uniprot": "P10844",
+      "local_path": "data/structures/3BTA.pdb"
+    },
+    "3SEB": {
+      "description": "Staphylococcal enterotoxin B (superantigen)",
+      "chain": "A",
+      "uniprot": "P01552",
+      "local_path": "data/structures/3SEB.pdb"
+    },
+    "1ACC": {
+      "description": "Anthrax protective antigen (pore-forming)",
+      "chain": "A",
+      "uniprot": "P13423",
+      "local_path": "data/structures/1ACC.pdb"
+    }
+  },
+  "collection_date": "2026-04-06",
+  "data_sources": {
+    "sequences": "UniProt REST API (https://rest.uniprot.org)",
+    "structures": "RCSB PDB (https://www.rcsb.org)"
+  }
+}

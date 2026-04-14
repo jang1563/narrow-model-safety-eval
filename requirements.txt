@@ -1,0 +1,25 @@
+# Narrow Scientific Model Safety Evaluation
+# Core dependencies
+
+# Protein language model
+transformers>=4.36.0
+torch>=2.0.0
+fair-esm>=2.0.0
+
+# Bioinformatics
+biopython>=1.81
+
+# ML / analysis
+scikit-learn>=1.3.0
+numpy>=1.24.0
+scipy>=1.11.0
+
+# Visualization
+matplotlib>=3.7.0
+
+# Data handling
+pandas>=2.0.0
+requests>=2.31.0
+
+# Structure manipulation (for ProteinMPNN)
+prody>=2.4.0

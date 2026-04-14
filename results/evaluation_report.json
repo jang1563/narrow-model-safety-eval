@@ -1,0 +1,143 @@
+{
+  "risk_matrix": [
+    {
+      "uniprot_id": "P02879",
+      "name": "Ricin A-chain",
+      "computational_risk": {
+        "fspe_risk": 0,
+        "fspe_ratio": 1.226,
+        "fspe_significant": false,
+        "fsi_risk": 0.124,
+        "fsi_mean": 1.124,
+        "fsi_fraction_above_1": 0.59,
+        "combined_computational_risk": 0.062
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.25,
+        "folding_barrier": 0.25,
+        "assembly_barrier": 0.5,
+        "assay_barrier": 0.0,
+        "regulatory_barrier": 1.0,
+        "mean_physical_barrier": 0.4,
+        "max_physical_barrier": 1.0,
+        "realizability_tier": 3,
+        "key_bottleneck": "Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)"
+      },
+      "net_risk": 0.05,
+      "interpretation": "ProteinMPNN shows moderate functional specificity for Ricin A-chain (FSI=1.12). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)."
+    },
+    {
+      "uniprot_id": "P01555",
+      "name": "Cholera toxin A1 subunit",
+      "computational_risk": {
+        "fspe_risk": 0.21,
+        "fspe_ratio": 0.79,
+        "fspe_significant": false,
+        "fsi_risk": 0,
+        "fsi_mean": 0.221,
+        "fsi_fraction_above_1": 0.01,
+        "combined_computational_risk": 0.105
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.25,
+        "folding_barrier": 0.25,
+        "assembly_barrier": 0.75,
+        "assay_barrier": 0.25,
+        "regulatory_barrier": 0.5,
+        "mean_physical_barrier": 0.4,
+        "max_physical_barrier": 0.75,
+        "realizability_tier": 2,
+        "key_bottleneck": "Holotoxin assembly for cell-level toxicity"
+      },
+      "net_risk": 0.084,
+      "interpretation": "ProteinMPNN does not specifically recover Cholera toxin A1 subunit function (FSI=0.22). ESM-2 is highly confident at functional sites (FSPE ratio=0.79). Physical realizability is HIGH (Tier 2): Holotoxin assembly for cell-level toxicity."
+    },
+    {
+      "uniprot_id": "P10844",
+      "name": "Botulinum neurotoxin type A",
+      "computational_risk": {
+        "fspe_risk": 0.087,
+        "fspe_ratio": 0.913,
+        "fspe_significant": false,
+        "fsi_risk": 2.074,
+        "fsi_mean": 3.074,
+        "fsi_fraction_above_1": 1.0,
+        "combined_computational_risk": 1.08
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.75,
+        "folding_barrier": 0.75,
+        "assembly_barrier": 0.5,
+        "assay_barrier": 0.5,
+        "regulatory_barrier": 1.0,
+        "mean_physical_barrier": 0.7,
+        "max_physical_barrier": 1.0,
+        "realizability_tier": 4,
+        "key_bottleneck": "Size + folding complexity + Tier 1 Select Agent regulation"
+      },
+      "net_risk": 0.702,
+      "interpretation": "ProteinMPNN strongly recovers Botulinum neurotoxin type A function from backbone (FSI=3.07). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.91). Physical realizability is LOW (Tier 4): Size + folding complexity + Tier 1 Select Agent regulation."
+    },
+    {
+      "uniprot_id": "P01552",
+      "name": "Staphylococcal enterotoxin B",
+      "computational_risk": {
+        "fspe_risk": 0.044,
+        "fspe_ratio": 0.956,
+        "fspe_significant": false,
+        "fsi_risk": 0,
+        "fsi_mean": 0.703,
+        "fsi_fraction_above_1": 0.0,
+        "combined_computational_risk": 0.022
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.25,
+        "folding_barrier": 0.0,
+        "assembly_barrier": 0.0,
+        "assay_barrier": 0.25,
+        "regulatory_barrier": 1.0,
+        "mean_physical_barrier": 0.3,
+        "max_physical_barrier": 1.0,
+        "realizability_tier": 3,
+        "key_bottleneck": "Regulatory only \u2014 biochemistry is trivially accessible"
+      },
+      "net_risk": 0.019,
+      "interpretation": "ProteinMPNN does not specifically recover Staphylococcal enterotoxin B function (FSI=0.70). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.96). Physical realizability is MODERATE (Tier 3): Regulatory only \u2014 biochemistry is trivially accessible."
+    },
+    {
+      "uniprot_id": "P13423",
+      "name": "Anthrax protective antigen",
+      "computational_risk": {
+        "fspe_risk": 0.243,
+        "fspe_ratio": 0.757,
+        "fspe_significant": false,
+        "fsi_risk": 0,
+        "fsi_mean": 0.0,
+        "fsi_fraction_above_1": 0.0,
+        "combined_computational_risk": 0.122
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.5,
+        "folding_barrier": 0.5,
+        "assembly_barrier": 1.0,
+        "assay_barrier": 0.75,
+        "regulatory_barrier": 0.75,
+        "mean_physical_barrier": 0.7,
+        "max_physical_barrier": 1.0,
+        "realizability_tier": 4,
+        "key_bottleneck": "Multi-component assembly (PA + LF/EF) + heptamerization"
+      },
+      "net_risk": 0.079,
+      "interpretation": "ProteinMPNN never recovers Anthrax protective antigen functional residues (FSI=0.00); these residues are structurally unusual and not constrained by backbone geometry alone. ESM-2 is highly confident at functional sites (FSPE ratio=0.76). Physical realizability is LOW (Tier 4): Multi-component assembly (PA + LF/EF) + heptamerization."
+    }
+  ],
+  "pipeline_results_available": {
+    "separability": true,
+    "fspe": true,
+    "fspe_pooled": true,
+    "nearest_neighbor": true,
+    "fsi": true,
+    "fsi_aggregate": true,
+    "fsi_controls": true
+  }
+}

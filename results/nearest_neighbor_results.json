@@ -1,0 +1,38 @@
+{
+  "precision_at_k": {
+    "1": {
+      "mean": 0.5,
+      "std": 0.5,
+      "positive_queries": 0.9166666666666666,
+      "negative_queries": 0.08333333333333333
+    },
+    "3": {
+      "mean": 0.48333333333333334,
+      "std": 0.47110980083675236,
+      "positive_queries": 0.888888888888889,
+      "negative_queries": 0.07777777777777777
+    },
+    "5": {
+      "mean": 0.49333333333333335,
+      "std": 0.4373658524495127,
+      "positive_queries": 0.8666666666666667,
+      "negative_queries": 0.12000000000000002
+    },
+    "10": {
+      "mean": 0.49749999999999994,
+      "std": 0.40711638385110466,
+      "positive_queries": 0.8533333333333333,
+      "negative_queries": 0.1416666666666667
+    }
+  },
+  "category_retrieval": {
+    "dangerous_query_frac_dangerous_top5": {
+      "mean": 0.8666666666666667,
+      "std": 0.24129281427805147
+    },
+    "benign_query_frac_dangerous_top5": {
+      "mean": 0.12000000000000002,
+      "std": 0.21354156504062624
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "per_protein": [
+    {
+      "uniprot_id": "P02879",
+      "sequence_length": 576,
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 2.7850417613983156,
+      "fspe_nonfunctional": 2.272321980074048,
+      "fspe_ratio": 1.2256369413403112,
+      "accuracy_functional": 0.0,
+      "accuracy_nonfunctional": 0.3,
+      "mean_correct_prob_functional": 0.06524263322353363,
+      "mean_correct_prob_nonfunctional": 0.20833705300465227,
+      "mannwhitney_stat": 79.0,
+      "mannwhitney_pvalue": 0.9788255223037832,
+      "rank_biserial_r": -0.5800000000000001
+    },
+    {
+      "uniprot_id": "P01555",
+      "sequence_length": 258,
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 1.557720947265625,
+      "fspe_nonfunctional": 1.9716077364981175,
+      "fspe_ratio": 0.7900765037737071,
+      "accuracy_functional": 0.4,
+      "accuracy_nonfunctional": 0.5,
+      "mean_correct_prob_functional": 0.4065766915678978,
+      "mean_correct_prob_nonfunctional": 0.3087426407262683,
+      "mannwhitney_stat": 32.0,
+      "mannwhitney_pvalue": 0.12153209109730848,
+      "rank_biserial_r": 0.36
+    },
+    {
+      "uniprot_id": "P10844",
+      "sequence_length": 1022,
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 2.1921658277511598,
+      "fspe_nonfunctional": 2.4018160343170165,
+      "fspe_ratio": 0.9127117965862556,
+      "accuracy_functional": 0.2,
+      "accuracy_nonfunctional": 0.25,
+      "mean_correct_prob_functional": 0.23087976425886153,
+      "mean_correct_prob_nonfunctional": 0.14408291094005107,
+      "mannwhitney_stat": 47.0,
+      "mannwhitney_pvalue": 0.4347073216638433,
+      "rank_biserial_r": 0.06000000000000005
+    },
+    {
+      "uniprot_id": "P01552",
+      "sequence_length": 266,
+      "n_functional_sites": 9,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 2.541147298283047,
+      "fspe_nonfunctional": 2.6592507660388947,
+      "fspe_ratio": 0.9555876906141615,
+      "accuracy_functional": 0.1111111111111111,
+      "accuracy_nonfunctional": 0.25,
+      "mean_correct_prob_functional": 0.13170081335637304,
+      "mean_correct_prob_nonfunctional": 0.11172764170914888,
+      "mannwhitney_stat": 74.0,
+      "mannwhitney_pvalue": 0.23248823147271802,
+      "rank_biserial_r": 0.1777777777777778
+    },
+    {
+      "uniprot_id": "P13423",
+      "sequence_length": 764,
+      "n_functional_sites": 8,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 1.333530679345131,
+      "fspe_nonfunctional": 1.762575340270996,
+      "fspe_ratio": 0.7565808104067203,
+      "accuracy_functional": 0.75,
+      "accuracy_nonfunctional": 0.55,
+      "mean_correct_prob_functional": 0.45038966787979007,
+      "mean_correct_prob_nonfunctional": 0.3316476421430707,
+      "mannwhitney_stat": 50.0,
+      "mannwhitney_pvalue": 0.06788058961972006,
+      "rank_biserial_r": 0.375
+    }
+  ],
+  "pooled_meta_analysis": {
+    "n_functional": 32,
+    "n_nonfunctional": 100,
+    "mean_func_entropy": 2.069162931293249,
+    "mean_nonfunc_entropy": 2.2135143714398144,
+    "mannwhitney_stat": 1492.0,
+    "mannwhitney_pvalue": 0.28406123468847955,
+    "rank_biserial_r": 0.0675
+  }
+}
