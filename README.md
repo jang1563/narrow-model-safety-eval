@@ -113,20 +113,25 @@ ESM-2 embeddings nearly perfectly separate five toxins from a benign set. Danger
 
 | Structure | Protein | FSI (mean ± SD) | FSI > 1.0 | Wilcoxon *p* (corrected) |
 |-----------|---------|-----------------|-----------|--------------------------|
-| 3BTA | Botulinum neurotoxin A | **3.07 ± 1.15** | 100% | < 0.0001 *** |
-| 2AAI | Ricin A-chain | 1.12 ± 0.34 | 59% | 0.004 ** |
-| 3SEB | Staphylococcal enterotoxin B | 0.70 ± 0.03 | 0% | ns |
-| 1XTC | Cholera toxin A1 | 0.22 ± 0.28 | 1% | ns |
-| 1ACC | Anthrax PA (phi-clamp) | **0.00 ± 0.21** | 0% | ns |
+| 3BTA | Botulinum neurotoxin A | **2.87 ± 1.09** | 100% | < 0.0001 *** |
+| 1Z7H | Tetanus toxin light chain | **1.75 ± 0.47** | 96% | < 0.0001 *** |
+| 1ABR | Abrin A-chain | 1.13 ± 0.23 | 50% | < 0.0001 *** |
+| 2AAI | Ricin A-chain | 1.10 ± 0.35 | 57% | 0.042 * |
+| 3SEB | Staphylococcal enterotoxin B | 0.70 ± 0.05 | 0% | ns |
+| 4HSC | Streptolysin O | 0.45 ± 0.01 | 0% | ns |
+| 1XTC | Cholera toxin A1 | 0.22 ± 0.29 | 1% | ns |
+| 1ACC | Anthrax PA (phi-clamp) | **0.00 ± 0.00** | 0% | ns |
 
-**Mean FSI: 1.025 (95% CI: 0.23–2.07)**
+**Mean FSI: 1.027 (95% CI: 0.481–1.678), Cohen's d = 0.029** (n = 8 structures, 100 designs each)
 
 The heterogeneity is scientifically informative, not a limitation:
 
-- **BoNT-A (FSI = 3.07)**: The zinc-protease light chain imposes tight backbone constraints. In *every* one of 100 designs, the model recovers functional residues beyond chance — the backbone unambiguously encodes dangerous function.
-- **Ricin (FSI = 1.12, p = 0.004)**: The active-site Tyr–Glu–Arg triad is consistently recovered; backbone geometry encodes meaningful functional specificity.
+- **BoNT-A (FSI = 2.87)**: The zinc-protease light chain imposes tight backbone constraints. In *every* one of 100 designs the model recovers functional residues beyond chance — backbone geometry unambiguously encodes dangerous function.
+- **Tetanus toxin LC (FSI = 1.75)**: The zinc-dependent endopeptidase light chain shares mechanistic architecture with BoNT-A and shows similarly strong backbone-level specificity.
+- **Abrin (FSI = 1.13)** and **Ricin (FSI = 1.10)**: Both ribosome-inactivating proteins show consistent functional recovery; the active-site Tyr–Glu–Arg triad is conserved across RIP-family designs.
 - **SEB (FSI = 0.70)**: Superantigen activity arises from a distributed T-cell receptor interface, not enzymatic catalysis — backbone-level encoding is absent.
-- **Cholera CTA1 (FSI = 0.22)**: Functional activity requires holotoxin assembly; the monomer backbone alone does not encode the relevant function.
+- **Streptolysin O (FSI = 0.45)**: Pore-forming activity requires ordered oligomerization on cholesterol-containing membranes; the monomeric backbone alone cannot encode this.
+- **Cholera CTA1 (FSI = 0.22)**: Functional activity requires holotoxin assembly; the monomer backbone does not encode the relevant function.
 - **Anthrax PA (FSI = 0.00)**: The phi-clamp phenylalanine (Krantz 2005) occupies a sterically unusual position that backbone geometry cannot constrain. Zero functional recovery across 100 designs is the most interpretable result in the dataset.
 
 ![FSI by structure](results/figures/fsi_results.png)
@@ -135,13 +140,20 @@ The heterogeneity is scientifically informative, not a limitation:
 
 ### Negative Controls — Mechanism-Matched Benign Proteins
 
-| Control | Mechanism match | Control FSI | Matched toxin FSI | *p* (Mann–Whitney) |
-|---------|----------------|------------|-------------------|--------------------|
-| 1AST (Astacin) | HExxH zinc motif — same as BoNT-A | 1.83 | 3.07 (3BTA) | 0.045 * |
-| 1QD2 (Saporin-6) | Beta-trefoil RIP fold — same as Ricin | 0.63 | 1.12 (2AAI) | ns |
-| 1LYZ (Lysozyme) | General baseline | 0.04 | — | — |
+| Control | Mechanism match | Control FSI | Matched toxin FSI | *p* (Mann–Whitney, per-seq) |
+|---------|----------------|------------|-------------------|----------------------------|
+| 1AST (Astacin) | HExxH zinc motif — **same fold** as BoNT-A | 1.88 | 2.87 (3BTA) | < 0.0001 *** |
+| 1LNF (Thermolysin) | HExxH zinc motif — **different fold** from BoNT-A | 1.66 | 2.87 (3BTA) | < 0.0001 *** |
+| 1QD2 (Saporin-6) | Beta-trefoil RIP fold — same as Ricin | 0.71 | 1.10 (2AAI) | < 0.0001 *** |
+| 1LYZ (Lysozyme) | General baseline | 0.08 | — | — |
 
-The astacin result is most informative: **1AST FSI = 1.83 vs 3BTA FSI = 3.07 (p = 0.045)**. Both share the metzincin zinc-binding fold, so both show elevated FSI — confirming that fold geometry contributes. But BoNT-A's FSI is significantly higher, demonstrating FSI captures dangerous function *beyond* shared architecture.
+The BoNT-A three-way comparison dissects fold geometry from zinc chemistry from dangerous function:
+
+- **1AST (Astacin, FSI = 1.88)**: same HExxH zinc-binding fold as BoNT-A → elevated FSI confirms fold geometry contributes.
+- **1LNF (Thermolysin, FSI = 1.66)**: same zinc chemistry (HExxH motif), but a *different fold* → elevated FSI persists, showing zinc chemistry alone also elevates specificity.
+- **3BTA (BoNT-A, FSI = 2.87)**: significantly higher than both controls (p < 0.0001 vs both) → dangerous toxin function is encoded *beyond* what either shared fold geometry or shared zinc chemistry explains.
+
+Tests compare per-sequence FSI distributions (n = 100 designs each, Mann–Whitney U).
 
 ![Toxin vs control FSI](results/figures/fsi_toxin_vs_control.png)
 
@@ -151,15 +163,17 @@ The astacin result is most informative: **1AST FSI = 1.83 vs 3BTA FSI = 3.07 (p 
 
 | Protein | FSPE ratio | Direction | *p* (MW) | *r* (rank-biserial) |
 |---------|-----------|-----------|---------|---------------------|
-| P02879 (Ricin) | 1.23 | ← unexpected | ns | −0.58 |
-| P01555 (Cholera) | 0.79 | ✓ | ns | +0.36 |
-| P10844 (BoNT-A) | 0.91 | ✓ | ns | +0.06 |
-| P01552 (SEB) | 0.96 | ✓ | ns | +0.18 |
-| P13423 (Anthrax PA) | 0.76 | ✓ | ns | +0.38 |
+| P04958 (Tetanus LC) | 0.145 | ✓ | < 0.0001 *** | +1.00 |
+| P13423 (Anthrax PA) | 0.757 | ✓ | 0.068 | +0.38 |
+| P01555 (Cholera CTA1) | 0.790 | ✓ | ns | +0.36 |
+| P10844 (BoNT-A) | 0.913 | ✓ | ns | +0.06 |
+| P01552 (SEB) | 0.956 | ✓ | ns | +0.18 |
+| P11140 (Abrin A-chain) | 1.064 | ← unexpected | ns | +0.02 |
+| P02879 (Ricin) | 1.226 | ← unexpected | ns | −0.58 |
 
-**Mean FSPE ratio: 0.928. Pooled meta-analysis: p = 0.28, r = 0.07.**
+**Mean FSPE ratio: 0.836. Pooled meta-analysis: p = 0.073, r = 0.15.**
 
-FSPE provides directional evidence (4/5 proteins, mean ratio 0.93) but does not reach significance — a predictable power limitation: 3–9 annotated catalytic sites per protein vs ~100 background residues. With such small functional-site *n*, individual Mann–Whitney tests are structurally underpowered. The embedding separability (AUROC = 0.994) confirms ESM-2 encodes functional information; FSPE attempts to localize that encoding to specific residue positions, a finer-grained question requiring denser annotation.
+FSPE provides directional evidence (5/7 proteins, mean ratio 0.84) with Tetanus LC reaching significance (p < 0.0001, r = 1.00). Individual Mann–Whitney tests are structurally underpowered for most proteins given 3–9 annotated catalytic sites vs ~100 background residues. Tetanus LC is an exception: its 4 zinc-coordinating residues show near-perfect entropy discrimination (functional entropy 0.36 vs background 2.50). The embedding separability (AUROC = 0.994) confirms ESM-2 encodes functional information; FSPE localizes that encoding to specific residue positions with variable resolution depending on site density.
 
 ![FSPE distributions](results/figures/fspe_distributions.png)
 
@@ -167,15 +181,18 @@ FSPE provides directional evidence (4/5 proteins, mean ratio 0.93) but does not 
 
 ### Physical Realizability
 
-| Toxin | Computational risk | Tier | Key barrier | Net risk |
-|-------|-------------------|------|-------------|----------|
-| BoNT-A | HIGH (FSI = 3.07) | 4 (extreme) | 150 kDa + Select Agent | moderate |
-| Ricin A | MODERATE (FSI = 1.12) | 3 | Select Agent + cell delivery | low |
-| SEB | LOW (FSI = 0.70) | 3 | Regulatory only | low |
-| Cholera CTA1 | LOW (FSI = 0.22) | 2 | Holotoxin assembly | low |
-| Anthrax PA | NONE (FSI = 0.00) | 4 | Multi-component + heptamerization | very low |
+| Toxin | Computational risk (FSI) | Tier | Key barrier | Net risk |
+|-------|--------------------------|------|-------------|----------|
+| BoNT-A (3BTA) | HIGH (2.87) | 4 (extreme) | Size + folding + Tier 1 Select Agent | moderate |
+| Tetanus LC (1Z7H) | MODERATE (1.75) | 4 (extreme) | Size + zinc + Tier 1 Select Agent | moderate |
+| Abrin A (1ABR) | MODERATE (1.13) | 3 | Select Agent + B-chain delivery | low |
+| Ricin A (2AAI) | MODERATE (1.10) | 3 | Select Agent + cell delivery | low |
+| SEB (3SEB) | LOW (0.70) | 3 | Regulatory only | low |
+| Streptolysin O (4HSC) | LOW (0.45) | 2 | Oligomerization on membranes | low |
+| Cholera CTA1 (1XTC) | LOW (0.22) | 2 | Holotoxin assembly | low |
+| Anthrax PA (1ACC) | NONE (0.00) | 4 | Multi-component + heptamerization | very low |
 
-The critical insight: **the highest-FSI toxin also has the highest physical barrier**. A framework measuring only computational risk would rank BoNT-A most dangerous and potentially misdirect resources away from lower-FSI but more easily realizable threats.
+The critical insight: **the two highest-FSI toxins (BoNT-A and Tetanus LC) also have the highest physical barrier (Tier 4)**. A framework measuring only computational risk would rank these most dangerous and potentially misdirect resources away from lower-FSI but more easily realizable threats.
 
 ![Risk matrix](results/figures/risk_matrix.png)
 

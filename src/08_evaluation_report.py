@@ -381,7 +381,7 @@ def plot_barrier_breakdown(matrix: list):
     if not proteins:
         return
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(13, 6))
 
     x = np.arange(len(proteins))
     width = 0.15
@@ -394,7 +394,7 @@ def plot_barrier_breakdown(matrix: list):
     ax.set_ylabel("Barrier Score (0 = trivial, 1 = extreme)", fontsize=12)
     ax.set_title("Physical Realizability Barrier Breakdown", fontsize=13)
     ax.set_xticks(x)
-    ax.set_xticklabels(proteins, rotation=45, ha="right", fontsize=10)
+    ax.set_xticklabels(proteins, rotation=30, ha="right", fontsize=9)
     ax.legend(fontsize=9, ncol=5, loc="upper center", bbox_to_anchor=(0.5, -0.15))
     ax.set_ylim(0, 1.1)
 

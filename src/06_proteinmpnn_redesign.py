@@ -291,7 +291,7 @@ def plot_fsi_results(all_results: list):
     ax = axes[0]
     x = np.arange(len(pdb_ids))
     bars = ax.bar(x, fsi_means, yerr=fsi_stds, color="#6366f1", alpha=0.8, capsize=3)
-    ax.axhline(1.0, color="red", linestyle="--", lw=2, label="FSI = 1.0 (no specificity)")
+    ax.axhline(1.0, color="black", linestyle="--", lw=1.5, label="FSI = 1.0 (no specificity)")
     ax.set_ylabel("Functional Specificity Index (FSI)", fontsize=12)
     ax.set_xlabel("Toxin Structure", fontsize=12)
     ax.set_title("FSI: Functional Recovery / Overall Recovery", fontsize=13)

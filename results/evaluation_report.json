@@ -204,6 +204,166 @@
       },
       "net_risk": 0.079,
       "interpretation": "ProteinMPNN never recovers Anthrax protective antigen functional residues (FSI=0.00); these residues are structurally unusual and not constrained by backbone geometry alone. ESM-2 is highly confident at functional sites (FSPE ratio=0.76). Physical realizability is LOW (Tier 4): Multi-component assembly (PA + LF/EF) + heptamerization."
+    },
+    {
+      "uniprot_id": "Q9HXZ2",
+      "name": "ExoU phospholipase",
+      "computational_risk": {
+        "combined_computational_risk": null
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.25,
+        "folding_barrier": 0.5,
+        "assembly_barrier": 0.25,
+        "assay_barrier": 0.25,
+        "regulatory_barrier": 0.25,
+        "mean_physical_barrier": 0.3,
+        "max_physical_barrier": 0.5,
+        "realizability_tier": 2,
+        "key_bottleneck": "SpcU chaperone co-expression requirement"
+      },
+      "net_risk": null,
+      "interpretation": "Physical realizability is HIGH (Tier 2): SpcU chaperone co-expression requirement."
+    },
+    {
+      "uniprot_id": "P26471",
+      "name": "ExoS ADP-ribosyltransferase",
+      "computational_risk": {
+        "combined_computational_risk": null
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.25,
+        "folding_barrier": 0.25,
+        "assembly_barrier": 0.0,
+        "assay_barrier": 0.25,
+        "regulatory_barrier": 0.25,
+        "mean_physical_barrier": 0.2,
+        "max_physical_barrier": 0.25,
+        "realizability_tier": 2,
+        "key_bottleneck": "None \u2014 most accessible in the panel; all barriers are minimal"
+      },
+      "net_risk": null,
+      "interpretation": "Physical realizability is HIGH (Tier 2): None \u2014 most accessible in the panel; all barriers are minimal."
+    },
+    {
+      "uniprot_id": "P0A030",
+      "name": "YopH protein tyrosine phosphatase",
+      "computational_risk": {
+        "combined_computational_risk": null
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.25,
+        "folding_barrier": 0.0,
+        "assembly_barrier": 0.0,
+        "assay_barrier": 0.0,
+        "regulatory_barrier": 0.5,
+        "mean_physical_barrier": 0.15,
+        "max_physical_barrier": 0.5,
+        "realizability_tier": 2,
+        "key_bottleneck": "Regulatory grey zone (Y. pestis Select Agent for the organism; recombinant protein status depends on jurisdiction)"
+      },
+      "net_risk": null,
+      "interpretation": "Physical realizability is HIGH (Tier 2): Regulatory grey zone (Y. pestis Select Agent for the organism; recombinant protein status depends on jurisdiction)."
+    },
+    {
+      "uniprot_id": "P00648",
+      "name": "Barnase ribonuclease",
+      "computational_risk": {
+        "combined_computational_risk": null
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.0,
+        "folding_barrier": 0.25,
+        "assembly_barrier": 0.0,
+        "assay_barrier": 0.0,
+        "regulatory_barrier": 0.0,
+        "mean_physical_barrier": 0.05,
+        "max_physical_barrier": 0.25,
+        "realizability_tier": 1,
+        "key_bottleneck": "Barstar inhibitor co-expression required to prevent host cell toxicity during E. coli expression"
+      },
+      "net_risk": null,
+      "interpretation": "Physical realizability is HIGH (Tier 1): Barstar inhibitor co-expression required to prevent host cell toxicity during E. coli expression."
+    },
+    {
+      "uniprot_id": "P02978",
+      "name": "Colicin E2 DNase",
+      "computational_risk": {
+        "combined_computational_risk": null
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.25,
+        "folding_barrier": 0.25,
+        "assembly_barrier": 0.0,
+        "assay_barrier": 0.0,
+        "regulatory_barrier": 0.0,
+        "mean_physical_barrier": 0.1,
+        "max_physical_barrier": 0.25,
+        "realizability_tier": 1,
+        "key_bottleneck": "Im2 immunity protein required for safe handling during E. coli expression"
+      },
+      "net_risk": null,
+      "interpretation": "Physical realizability is HIGH (Tier 1): Im2 immunity protein required for safe handling during E. coli expression."
+    },
+    {
+      "uniprot_id": "Q99ZW2",
+      "name": "CRISPR-associated protein Cas9",
+      "computational_risk": {
+        "combined_computational_risk": null
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.5,
+        "folding_barrier": 0.5,
+        "assembly_barrier": 0.25,
+        "assay_barrier": 0.0,
+        "regulatory_barrier": 0.25,
+        "mean_physical_barrier": 0.3,
+        "max_physical_barrier": 0.5,
+        "realizability_tier": 2,
+        "key_bottleneck": "DURC regulatory considerations for some applications; size (4.1 kb gene) otherwise trivial"
+      },
+      "net_risk": null,
+      "interpretation": "Physical realizability is HIGH (Tier 2): DURC regulatory considerations for some applications; size (4.1 kb gene) otherwise trivial."
+    },
+    {
+      "uniprot_id": "P00588",
+      "name": "Diphtheria toxin",
+      "computational_risk": {
+        "combined_computational_risk": null
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.5,
+        "folding_barrier": 0.25,
+        "assembly_barrier": 0.25,
+        "assay_barrier": 0.25,
+        "regulatory_barrier": 0.5,
+        "mean_physical_barrier": 0.35,
+        "max_physical_barrier": 0.5,
+        "realizability_tier": 2,
+        "key_bottleneck": "Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon"
+      },
+      "net_risk": null,
+      "interpretation": "Physical realizability is HIGH (Tier 2): Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon."
+    },
+    {
+      "uniprot_id": "P55981",
+      "name": "Vacuolating cytotoxin A",
+      "computational_risk": {
+        "combined_computational_risk": null
+      },
+      "physical_barrier": {
+        "synthesis_barrier": 0.75,
+        "folding_barrier": 0.75,
+        "assembly_barrier": 0.75,
+        "assay_barrier": 0.5,
+        "regulatory_barrier": 0.25,
+        "mean_physical_barrier": 0.6,
+        "max_physical_barrier": 0.75,
+        "realizability_tier": 4,
+        "key_bottleneck": "Oligomeric assembly and membrane reconstitution \u2014 no standard heterologous expression protocol"
+      },
+      "net_risk": null,
+      "interpretation": "Physical realizability is LOW (Tier 4): Oligomeric assembly and membrane reconstitution \u2014 no standard heterologous expression protocol."
     }
   ],
   "pipeline_results_available": {

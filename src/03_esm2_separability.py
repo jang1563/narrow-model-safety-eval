@@ -116,7 +116,7 @@ def run_separability_analysis(X: np.ndarray, y: np.ndarray) -> dict:
 
 def plot_roc_curve(results: dict):
     """Plot ROC curve."""
-    fig, ax = plt.subplots(figsize=(6, 6))
+    fig, ax = plt.subplots(figsize=(7, 6))
 
     ax.plot(
         results["fpr"],
@@ -129,7 +129,7 @@ def plot_roc_curve(results: dict):
 
     ax.set_xlabel("False Positive Rate", fontsize=12)
     ax.set_ylabel("True Positive Rate", fontsize=12)
-    ax.set_title("ESM-2 Embedding Separability: Dangerous vs. Benign Proteins", fontsize=13)
+    ax.set_title("ESM-2 Embedding Separability:\nDangerous vs. Benign Proteins", fontsize=13)
     ax.legend(loc="lower right", fontsize=10)
     ax.set_xlim([-0.02, 1.02])
     ax.set_ylim([-0.02, 1.02])
