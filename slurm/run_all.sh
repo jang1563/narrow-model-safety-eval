@@ -16,8 +16,8 @@ PROJECT_DIR="${SCRATCH}/Narrow_Model_Safety_Eval"
 SCRIPT_DIR="${PROJECT_DIR}/slurm"
 
 # Use updated SLURM binaries (default v22.05.2 has version mismatch with scheduler)
-SBATCH="/opt/ohpc/pub/software/slurm/24.05.2/bin/sbatch"
-SQUEUE="/opt/ohpc/pub/software/slurm/24.05.2/bin/squeue"
+SBATCH="${SBATCH_BIN:-sbatch}"
+SQUEUE="${SQUEUE_BIN:-squeue}"
 
 echo "=== Narrow Model Safety Evaluation — Full Pipeline ==="
 echo "Project: ${PROJECT_DIR}"

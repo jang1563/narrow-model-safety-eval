@@ -4,12 +4,14 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+.eggs/
 
 # Environment
 .env
 *.env
 .venv/
 venv/
+env/
 
 # IDE / Editor
 .vscode/
@@ -34,3 +36,27 @@ logs/
 
 # Large generated files (reproducible via pipeline)
 *.npy
+results/embeddings_*.npy
+results/esmfold_structures/
+results/proteinmpnn_output/
+results/proteinmpnn_temp_sweep/
+
+# Model weights (too large for git)
+*.pt
+*.bin
+*.safetensors
+models/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Test / coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Type checking
+.mypy_cache/
+.ruff_cache/
