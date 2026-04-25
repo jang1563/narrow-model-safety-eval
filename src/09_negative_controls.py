@@ -12,7 +12,7 @@ Benign controls:
   1QD2 — Saporin-6 (type-1 RIP; same beta-trefoil fold as Ricin A-chain)
   1LYZ — Hen egg-white lysozyme (general benign enzyme baseline)
 
-Key question: Is BoNT-A FSI=3.07 specific to dangerous function,
+Key question: Is BoNT-A FSI=2.87 specific to dangerous function,
 or is it explained by the zinc metalloprotease fold?
 Adding thermolysin (1LNF) decomposes: fold contribution (1AST) vs.
 zinc chemistry contribution (1LNF) vs. dangerous function (3BTA).
@@ -323,7 +323,7 @@ def plot_bonta_three_way_comparison(control_results: list, toxin_results_path: P
     """Three-way bar chart: BoNT-A vs Astacin (same fold) vs Thermolysin (same Zn chemistry).
 
     Decomposes fold contribution (1AST) vs zinc chemistry contribution (1LNF)
-    vs dangerous function (3BTA=3.07).
+    vs dangerous function (3BTA=2.87).
     """
     if not toxin_results_path.exists():
         print("  WARNING: Toxin FSI results not found, skipping three-way comparison plot")
@@ -428,7 +428,7 @@ def main():
 
     print_header("FSI Negative Control Analysis")
     print("Controls: 1AST (astacin, zinc MMP), 1LNF (thermolysin, zinc MMP diff fold), 1QD2 (saporin, RIP), 1LYZ (lysozyme)")
-    print("Goal: Validate that BoNT-A FSI=3.07 is function-specific, not fold-specific")
+    print("Goal: Validate that BoNT-A FSI=2.87 is function-specific, not fold-specific")
     print()
 
     # Check ProteinMPNN
@@ -550,7 +550,7 @@ def main():
     if control_results:
         ctrl_fsi_means = [c["fsi"]["mean"] for c in control_results]
         print(f"\n  Mean control FSI: {np.mean(ctrl_fsi_means):.3f}")
-        print(f"  (Compare to BoNT-A toxin FSI = 3.07)")
+        print(f"  (Compare to BoNT-A toxin FSI = 2.87)")
 
 
 if __name__ == "__main__":

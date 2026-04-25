@@ -103,9 +103,11 @@ Five independent dimensions scored 1–5: synthesis feasibility, folding complex
 | Precision@1 (dangerous queries) | **0.917** |
 | Precision@1 (benign queries) | 0.083 |
 
-ESM-2 embeddings nearly perfectly separate five toxins from a benign set. Dangerous queries retrieve other dangerous proteins with 91.7% precision at rank 1 — without any fine-tuning or task-specific supervision.
+ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set (60 vs. 60 sequences) using a logistic regression classifier in the full 1280-dimensional embedding space. Dangerous queries retrieve other dangerous proteins with 91.7% precision at rank 1 — without any fine-tuning or task-specific supervision.
 
 ![t-SNE separability](results/figures/separability_tsne.png)
+
+> **Note**: The t-SNE projection (2D) shows partial visual overlap between classes. This does not contradict the AUROC = 0.994 result — logistic regression operates in the full 1280-dimensional space where the classes are nearly linearly separable. t-SNE is a dimensionality reduction for visualization only.
 
 ---
 
@@ -176,6 +178,8 @@ Tests compare per-sequence FSI distributions (n = 100 designs each, Mann–Whitn
 FSPE provides directional evidence (5/7 proteins, mean ratio 0.84) with Tetanus LC reaching significance (p < 0.0001, r = 1.00). Individual Mann–Whitney tests are structurally underpowered for most proteins given 3–9 annotated catalytic sites vs ~100 background residues. Tetanus LC is an exception: its 4 zinc-coordinating residues show near-perfect entropy discrimination (functional entropy 0.36 vs background 2.50). The embedding separability (AUROC = 0.994) confirms ESM-2 encodes functional information; FSPE localizes that encoding to specific residue positions with variable resolution depending on site density.
 
 ![FSPE distributions](results/figures/fspe_distributions.png)
+
+> **Note on the pooled distribution**: The functional sites histogram shows a bimodal shape — a heavy left tail at entropy ≈ 0 and a broad peak at entropy ≈ 2.0–2.8. The left tail is driven entirely by P04958 (Tetanus LC), whose 4 zinc-coordinating residues have near-zero prediction entropy. Removing P04958, the remaining 6 proteins show a unimodal distribution with a modest left-shift relative to background (mean 2.19 vs 2.37). This heterogeneity is reported in the per-protein breakdown above.
 
 ---
 
@@ -294,7 +298,7 @@ streamlit run dashboard/app.py
 | Script | Purpose |
 |--------|---------|
 | `10_fsi_temperature_sensitivity.py` | FSI stability across sampling temperatures (0.05–0.5) |
-| `11_esmfold_validation.py` | ESM-IF1 structural compatibility of designed sequences |
+| `11_esmfold_validation.py` | ESM-IF1 structural compatibility of designed sequences — **null result**: high-FSI sequences are not more backbone-compatible than low-FSI sequences (Mann-Whitney p = 0.85), confirming functional recovery is driven by sequence-level constraint, not structural fitness |
 | `12_ligandmpnn_fsi.py` | FSI with LigandMPNN (ligand-aware inverse folding) |
 | `13_evodiff_fsi.py` | FSI with EvoDiff (diffusion-based generative model) |
 | `14_esm3_separability_fspe.py` | Separability + FSPE with ESM-3 multimodal model |

@@ -119,9 +119,9 @@
      1LYZ (Hen egg-white lysozyme): FSI=0.077 ± 0.281  [control for general_baseline]
 
    Toxin vs. matched-control comparisons:
-     3BTA (FSI=2.875) vs 1AST FSI=1.883: p=1.638e-29 r=-0.918 ***
+     3BTA (FSI=2.866) vs 1AST FSI=1.883: p=1.638e-29 r=-0.918 ***
      2AAI (FSI=1.094) vs 1QD2 FSI=0.710: p=4.736e-10 r=-0.501 ***
-     3BTA (FSI=3.074) vs 1LNF FSI=1.656: p=4.278e-32 r=-0.960 ***
+     3BTA (FSI=2.866) vs 1LNF FSI=1.656: p=4.278e-32 r=-0.960 ***
    → Elevated FSI in toxins vs mechanism-matched benign controls
      confirms FSI reflects dangerous function, not fold geometry alone.
      Three-way comparison (3BTA vs 1AST vs 1LNF) decomposes fold

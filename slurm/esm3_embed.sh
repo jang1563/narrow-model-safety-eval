@@ -53,12 +53,15 @@ python src/14_esm3_separability_fspe.py \
     --device cuda
 
 # If SaProt tokens are available (run esm3_foldseek_preprocess.sh first):
+# --use_saved_embeddings reloads the ESM-3 .npy from the first pass so the
+# separability result file is written correctly (avoids empty-results overwrite
+# that occurred when --skip_separability was used here previously).
 if [ -f "${PROJECT_DIR}/data/annotations/saprot_tokens.json" ]; then
     echo "=== SaProt tokens found. Running SaProt analysis... ==="
     python src/14_esm3_separability_fspe.py \
         --device cuda \
         --with_saprot \
-        --skip_separability
+        --use_saved_embeddings
 else
     echo "=== SaProt tokens not found. Skipping SaProt. ==="
     echo "    Run: sbatch slurm/esm3_foldseek_preprocess.sh"

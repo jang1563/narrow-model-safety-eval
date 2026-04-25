@@ -433,6 +433,14 @@ def main():
         action="store_true",
         help="Skip separability analysis — only run FSPE",
     )
+    parser.add_argument(
+        "--use_saved_embeddings",
+        action="store_true",
+        help="Load pre-computed esm3_embeddings_positive/negative.npy from RESULTS_DIR "
+             "instead of re-running ESM-3 inference for separability. Skips ESM-3 model "
+             "loading entirely when combined with --skip_fspe. Useful when the SaProt "
+             "second-pass overwrites separability results without re-embedding.",
+    )
     args = parser.parse_args()
 
     if args.device:
@@ -462,40 +470,65 @@ def main():
     fspe_results = []
 
     # ========================================================================
-    # ESM-3
+    # ESM-3 — skip loading if only saved-embedding separability is needed
     # ========================================================================
-    print("\n--- Loading ESM-3 (esm3_sm_open_v1) ---")
-    esm3_model = load_esm3(device)
+    need_esm3_model = not (
+        args.use_saved_embeddings
+        and args.skip_fspe
+        and not args.with_saprot
+    )
+    esm3_model = None
+    if need_esm3_model:
+        print("\n--- Loading ESM-3 (esm3_sm_open_v1) ---")
+        esm3_model = load_esm3(device)
+    else:
+        print("\n--- ESM-3 model load skipped (--use_saved_embeddings --skip_fspe) ---")
 
     if not args.skip_separability:
         print("\n--- ESM-3 Embedding Separability ---")
 
-        print("  Computing ESM-3 embeddings for positive sequences...")
-        pos_embs = []
-        for seq_id, desc, seq in positive_seqs:
-            try:
-                emb = get_esm3_embedding(seq, esm3_model, device)
-                pos_embs.append(emb)
-            except RuntimeError as e:
-                print(f"  WARNING: Could not embed {seq_id}: {e}")
+        if args.use_saved_embeddings:
+            pos_emb_path = RESULTS_DIR / "esm3_embeddings_positive.npy"
+            neg_emb_path = RESULTS_DIR / "esm3_embeddings_negative.npy"
+            if pos_emb_path.exists() and neg_emb_path.exists():
+                print("  Loading pre-computed embeddings from disk...")
+                pos_embs_arr = np.load(pos_emb_path)
+                neg_embs_arr = np.load(neg_emb_path)
+                print(f"  {pos_embs_arr.shape[0]} positive, {neg_embs_arr.shape[0]} negative")
+            else:
+                print(f"  ERROR: --use_saved_embeddings set but files not found.")
+                print(f"    Expected: {pos_emb_path}")
+                pos_embs_arr = neg_embs_arr = None
+        else:
+            print("  Computing ESM-3 embeddings for positive sequences...")
+            pos_embs = []
+            for seq_id, desc, seq in positive_seqs:
+                try:
+                    emb = get_esm3_embedding(seq, esm3_model, device)
+                    pos_embs.append(emb)
+                except RuntimeError as e:
+                    print(f"  WARNING: Could not embed {seq_id}: {e}")
 
-        print("  Computing ESM-3 embeddings for negative sequences...")
-        neg_embs = []
-        for seq_id, desc, seq in negative_seqs:
-            try:
-                emb = get_esm3_embedding(seq, esm3_model, device)
-                neg_embs.append(emb)
-            except RuntimeError as e:
-                print(f"  WARNING: Could not embed {seq_id}: {e}")
+            print("  Computing ESM-3 embeddings for negative sequences...")
+            neg_embs = []
+            for seq_id, desc, seq in negative_seqs:
+                try:
+                    emb = get_esm3_embedding(seq, esm3_model, device)
+                    neg_embs.append(emb)
+                except RuntimeError as e:
+                    print(f"  WARNING: Could not embed {seq_id}: {e}")
 
-        if pos_embs and neg_embs:
-            # Save embeddings for downstream use
-            np.save(RESULTS_DIR / "esm3_embeddings_positive.npy", np.array(pos_embs))
-            np.save(RESULTS_DIR / "esm3_embeddings_negative.npy", np.array(neg_embs))
+            if pos_embs and neg_embs:
+                pos_embs_arr = np.array(pos_embs)
+                neg_embs_arr = np.array(neg_embs)
+                # Save embeddings for downstream use
+                np.save(RESULTS_DIR / "esm3_embeddings_positive.npy", pos_embs_arr)
+                np.save(RESULTS_DIR / "esm3_embeddings_negative.npy", neg_embs_arr)
+            else:
+                pos_embs_arr = neg_embs_arr = None
 
-            esm3_sep = run_auroc_analysis(
-                np.array(pos_embs), np.array(neg_embs), "esm3_sm_open_v1"
-            )
+        if pos_embs_arr is not None and neg_embs_arr is not None:
+            esm3_sep = run_auroc_analysis(pos_embs_arr, neg_embs_arr, "esm3_sm_open_v1")
             separability_results.append(esm3_sep)
 
             # Load ESM-2 results for comparison

@@ -314,14 +314,23 @@ def plot_risk_matrix(matrix: list):
         alpha=0.85, edgecolors="white", linewidths=2, zorder=5,
     )
 
-    # Label each point
+    # Label each point — custom offsets for the bottom-left cluster
+    _label_offsets = {
+        "Streptolysin O": (-78, -18),
+        "Staphylococcal": (-82, 8),
+        "Cholera": (10, 14),
+        "Abrin A-chain": (40, -16),
+        "Ricin A-chain": (10, 8),
+    }
     for i, name in enumerate(proteins):
-        # Shorten name for label
         short = name.split(" ")[0] if len(name) > 15 else name
+        offset = _label_offsets.get(short, (10, 5))
         ax.annotate(
             short, (phys_barriers[i], comp_risks[i]),
-            textcoords="offset points", xytext=(10, 5),
+            textcoords="offset points", xytext=offset,
             fontsize=9, fontweight="bold",
+            arrowprops=dict(arrowstyle="-", color="#94a3b8", lw=0.7)
+            if offset != (10, 5) else None,
         )
 
     # Quadrant labels

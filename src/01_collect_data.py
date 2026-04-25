@@ -347,6 +347,17 @@ def collect_all_sequences():
         print(f"  Retrieved {negative_count} negative sequences")
         all_negative_fasta.append(negative_fasta)
 
+        # Also fetch explicitly listed benign reference accessions if defined.
+        # These are canonical non-toxic enzymes used as structural/mechanistic
+        # controls (e.g. Barnase, Colicin E2, SpCas9).
+        if "benign_accessions" in cat_config and cat_config["benign_accessions"]:
+            print(f"  Fetching {len(cat_config['benign_accessions'])} benign reference sequences...")
+            benign_ref_fasta = fetch_sequences_by_accessions(cat_config["benign_accessions"])
+            benign_ref_count = benign_ref_fasta.count(">")
+            print(f"  Retrieved {benign_ref_count} benign reference sequences")
+            all_negative_fasta.append(benign_ref_fasta)
+            negative_count += benign_ref_count
+
         metadata["categories"][cat_name] = {
             "description": cat_config["description"],
             "positive_count": positive_count,
@@ -392,17 +403,117 @@ def download_structures():
     return structure_metadata
 
 
+def get_fasta_accessions(fasta_path: Path) -> set:
+    """Return the set of UniProt accessions present in a FASTA file."""
+    if not fasta_path.exists():
+        return set()
+    accessions = set()
+    with open(fasta_path) as f:
+        for line in f:
+            if line.startswith(">") and "|" in line:
+                parts = line.strip().lstrip(">").split("|")
+                if len(parts) >= 2:
+                    accessions.add(parts[1])
+    return accessions
+
+
+def append_missing_sequences():
+    """Idempotent: fetch and append any panel proteins not yet in the FASTAs.
+
+    Checks toxins_positive.fasta against all positive_accessions defined in
+    TOXIN_CATEGORIES, and benign_homologs.fasta against all benign_accessions.
+    Only fetches and appends accessions that are absent. Safe to run multiple times.
+    """
+    positive_path = SEQ_DIR / "toxins_positive.fasta"
+    negative_path = SEQ_DIR / "benign_homologs.fasta"
+
+    existing_pos = get_fasta_accessions(positive_path)
+    existing_neg = get_fasta_accessions(negative_path)
+
+    missing_pos = []
+    missing_neg = []
+
+    for cat_config in TOXIN_CATEGORIES.values():
+        for acc in cat_config.get("positive_accessions", []):
+            if acc not in existing_pos:
+                missing_pos.append(acc)
+        for acc in cat_config.get("benign_accessions", []):
+            if acc not in existing_neg:
+                missing_neg.append(acc)
+
+    # Deduplicate (same accession might appear in multiple categories)
+    missing_pos = list(dict.fromkeys(missing_pos))
+    missing_neg = list(dict.fromkeys(missing_neg))
+
+    print(f"Existing positive accessions: {len(existing_pos)}")
+    print(f"Missing positive accessions:  {missing_pos if missing_pos else '(none)'}")
+    print(f"Existing negative accessions: {len(existing_neg)}")
+    print(f"Missing negative accessions:  {missing_neg if missing_neg else '(none)'}")
+
+    if missing_pos:
+        print(f"\nFetching {len(missing_pos)} missing positive sequences from UniProt...")
+        fasta = fetch_sequences_by_accessions(missing_pos)
+        n = fasta.count(">")
+        print(f"  Retrieved {n} sequences")
+        if n > 0:
+            with open(positive_path, "a") as f:
+                f.write("\n" + fasta.strip() + "\n")
+            print(f"  Appended to {positive_path}")
+        else:
+            print("  WARNING: No sequences returned — check accessions")
+
+    if missing_neg:
+        print(f"\nFetching {len(missing_neg)} missing negative sequences from UniProt...")
+        fasta = fetch_sequences_by_accessions(missing_neg)
+        n = fasta.count(">")
+        print(f"  Retrieved {n} sequences")
+        if n > 0:
+            with open(negative_path, "a") as f:
+                f.write("\n" + fasta.strip() + "\n")
+            print(f"  Appended to {negative_path}")
+        else:
+            print("  WARNING: No sequences returned — check accessions")
+
+    if not missing_pos and not missing_neg:
+        print("\nAll panel accessions already present in FASTA files. Nothing to append.")
+
+
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Narrow Model Safety Eval — data collection")
+    parser.add_argument(
+        "--append_missing",
+        action="store_true",
+        help="Idempotent: fetch and append only panel proteins missing from the FASTAs. "
+             "Use this after adding new accessions to TOXIN_CATEGORIES instead of "
+             "regenerating the entire dataset from scratch.",
+    )
+    parser.add_argument(
+        "--skip_structures",
+        action="store_true",
+        help="Skip PDB structure downloads (useful when structures already exist).",
+    )
+    args = parser.parse_args()
+
     print("=" * 60)
     print("Narrow Scientific Model Safety Evaluation")
     print("Step 1: Data Collection")
     print("=" * 60)
 
+    if args.append_missing:
+        print("\nMode: append_missing — idempotent FASTA expansion")
+        append_missing_sequences()
+        return
+
     # 1. Collect sequences
     seq_metadata = collect_all_sequences()
 
     # 2. Download PDB structures
-    struct_metadata = download_structures()
+    if args.skip_structures:
+        print("\nSkipping PDB structure downloads (--skip_structures).")
+        struct_metadata = {}
+    else:
+        struct_metadata = download_structures()
 
     # 3. Save combined metadata
     combined_metadata = {
