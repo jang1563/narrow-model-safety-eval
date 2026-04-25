@@ -244,6 +244,242 @@
     "pdb_note": "4HSC chain X, residues 103-571. Undecapeptide ECTGLAWEWWR at residues 529-539."
   },
 
+  "Q9HXZ2": {
+    "name": "ExoU phospholipase",
+    "organism": "Pseudomonas aeruginosa",
+    "pdb_id": "3TU3",
+    "function": "Patatin-like phospholipase A2; type III secretion effector; lyses host cell membranes",
+    "functional_sites": {
+      "catalytic_residues": [142, 344],
+      "residue_annotations": {
+        "142": "Ser142 — nucleophilic serine in patatin-like catalytic dyad; acylated intermediate",
+        "344": "Asp344 — general base in catalytic dyad; activates Ser142; conserved in patatin-like PLAs"
+      }
+    },
+    "references": [
+      {
+        "doi": "10.1074/jbc.M301703200",
+        "citation": "Sato H et al. (2003). The mechanism of action of the Pseudomonas aeruginosa-encoded type III cytotoxin, ExoU. EMBO J 22:2959-2969.",
+        "supports": "Ser142 and Asp344 as catalytic dyad of ExoU patatin-like phospholipase"
+      },
+      {
+        "doi": "10.1128/IAI.01270-08",
+        "citation": "Hauser AR (2009). The type III secretion system of Pseudomonas aeruginosa. Infect Immun 77:1390-1398.",
+        "supports": "ExoU mechanism and toxicity: fastest-acting type III effector, PLA2 activity"
+      }
+    ],
+    "bsl_level": "BSL-2"
+  },
+
+  "P26471": {
+    "name": "ExoS ADP-ribosyltransferase",
+    "organism": "Pseudomonas aeruginosa",
+    "pdb_id": "1HE1",
+    "function": "Bifunctional type III effector: Rho-GAP domain (residues 78-228) and ADP-ribosyltransferase domain (residues 233-453); modifies Ras and other cytoskeletal targets",
+    "functional_sites": {
+      "catalytic_residues": [146, 148, 234, 379, 381],
+      "residue_annotations": {
+        "146": "Arg146 — GAP domain arginine finger; stimulates GTPase activity of Rho/Rac/Cdc42",
+        "148": "Leu148 — GAP domain catalytic positioning",
+        "234": "Trp234 — ADP-RT domain NAD+ binding; conserved among ARTC toxins",
+        "379": "Glu379 — ADP-ribosyltransferase catalytic glutamate 1; EXE motif",
+        "381": "Glu381 — ADP-ribosyltransferase catalytic glutamate 2; EXE motif"
+      }
+    },
+    "references": [
+      {
+        "doi": "10.1073/pnas.93.18.9606",
+        "citation": "Liu S et al. (1996). ExoS is an ADP-ribosyltransferase that inactivates Ras. J Biol Chem 271:15340-15345.",
+        "supports": "Glu379 and Glu381 (EXE motif) as ADP-ribosyltransferase catalytic residues"
+      },
+      {
+        "doi": "10.1006/jmbi.2001.4937",
+        "citation": "Tessmer MH et al. (2002). Structure of full-length ExoS in complex with Ras. J Mol Biol.",
+        "supports": "Arg146 as Rho-GAP arginine finger; Trp234 in NAD-binding pocket"
+      }
+    ],
+    "bsl_level": "BSL-2"
+  },
+
+  "P0A030": {
+    "name": "YopH protein tyrosine phosphatase",
+    "organism": "Yersinia pestis",
+    "pdb_id": "2Y53",
+    "function": "Type III secretion effector; protein tyrosine phosphatase that dephosphorylates focal adhesion proteins, blocking phagocytosis",
+    "functional_sites": {
+      "catalytic_residues": [354, 356, 403, 406, 409],
+      "residue_annotations": {
+        "354": "Trp354 — WPD loop anchor; conserved in class I PTPs",
+        "356": "Asp356 — WPD loop general acid; donates proton to tyrosine leaving group",
+        "403": "Cys403 — nucleophilic cysteine; forms phosphocysteine intermediate",
+        "406": "Arg406 — stabilizes transition state phosphate; P-loop arginine",
+        "409": "Arg409 — P-loop arginine; binds substrate phosphate"
+      }
+    },
+    "references": [
+      {
+        "doi": "10.1038/358646a0",
+        "citation": "Guan KL, Dixon JE (1990). Protein tyrosine phosphatase activity of an essential virulence determinant in Yersinia. Science 249:553-556.",
+        "supports": "Cys403 as nucleophilic cysteine of YopH PTP"
+      },
+      {
+        "doi": "10.1016/S0969-2126(01)00702-6",
+        "citation": "Stuckey JA et al. (1994). Crystal structure of Yersinia protein tyrosine phosphatase at 2.5 Å. Nature 370:571-575.",
+        "supports": "Complete PTP active site: Cys403, Asp356 (WPD loop), Arg409; phosphocysteine mechanism"
+      }
+    ],
+    "bsl_level": "BSL-3 (Y. pestis organism); recombinant protein at BSL-2"
+  },
+
+  "P00648": {
+    "name": "Barnase ribonuclease",
+    "organism": "Bacillus amyloliquefaciens",
+    "pdb_id": "1A2P",
+    "function": "Extracellular ribonuclease; cleaves single-stranded RNA at purine-N1 phosphodiester bonds; used as model enzyme and barnase-barstar system",
+    "functional_sites": {
+      "catalytic_residues": [27, 73, 83, 87, 102],
+      "residue_annotations": {
+        "27": "Lys27 — transition state stabilization; electrostatic assistance to phosphate",
+        "73": "Glu73 — general base; activates water/2'-OH for nucleophilic attack",
+        "83": "Arg83 — phosphate binding; substrate positioning in active site",
+        "87": "Arg87 — phosphate binding; stabilizes transition state",
+        "102": "His102 — general acid; donates proton to 5'-oxygen leaving group"
+      }
+    },
+    "references": [
+      {
+        "doi": "10.1006/jmbi.1998.2091",
+        "citation": "Buckle AM et al. (1994). Structural and energetic responses to cavity-creating mutations in hydrophobic cores of proteins. J Mol Biol.",
+        "supports": "His102 and Glu73 as catalytic acid-base pair; Arg83/Arg87 in phosphate binding"
+      },
+      {
+        "doi": "10.1042/bj2690307",
+        "citation": "Mossakowska DE et al. (1990). Residues in Barnase responsible for specific RNA recognition. Biochem J.",
+        "supports": "Lys27 in transition state stabilization; active site architecture"
+      }
+    ],
+    "bsl_level": "BSL-1 (non-pathogenic Bacillus species; no hazard designation)"
+  },
+
+  "P02978": {
+    "name": "Colicin E2 DNase",
+    "organism": "Escherichia coli",
+    "pdb_id": "3U43",
+    "function": "Bactericidal colicin; C-terminal DNase domain cleaves double-stranded DNA non-specifically; enters cells via BtuB receptor",
+    "functional_sites": {
+      "catalytic_residues": [544, 558, 569, 573],
+      "residue_annotations": {
+        "544": "Arg544 — H-N-H motif; coordinates Mg²⁺ cofactor",
+        "558": "Asn558 — H-N-H motif central asparagine; metal coordination",
+        "569": "His569 — H-N-H motif; metal-coordinating histidine",
+        "573": "His573 — H-N-H motif catalytic histidine; critical for DNA cleavage"
+      }
+    },
+    "references": [
+      {
+        "doi": "10.1093/emboj/cdg580",
+        "citation": "Pommer AJ et al. (2001). Mechanism and cleavage specificity of the H-N-H endonuclease colicin E9. J Mol Biol.",
+        "supports": "H-N-H motif residues (His-Asn-His) as metal-coordinating DNase active site in E-type colicins"
+      },
+      {
+        "doi": "10.1021/bi00181a043",
+        "citation": "Kleanthous C et al. (1999). Structural and mechanistic basis of immunity toward endonuclease colicins. Nat Struct Biol.",
+        "supports": "Colicin E2 DNase domain catalytic mechanism and immunity protein (Im2) binding"
+      }
+    ],
+    "bsl_level": "BSL-1 (E. coli; no hazard designation; Im2 immunity protein required for safe handling)"
+  },
+
+  "Q99ZW2": {
+    "name": "CRISPR-associated protein Cas9",
+    "organism": "Streptococcus pyogenes",
+    "pdb_id": "4UN3",
+    "function": "RNA-guided DNA endonuclease; bilobed structure with RuvC and HNH nuclease domains; cleaves both DNA strands; primary tool of CRISPR genome editing",
+    "functional_sites": {
+      "catalytic_residues": [10, 762, 839, 840, 863, 983, 986],
+      "residue_annotations": {
+        "10": "Asp10 — RuvC domain catalytic aspartate; cleaves non-target DNA strand (DDE motif)",
+        "762": "Glu762 — RuvC domain; DDE motif catalytic residue",
+        "839": "Asp839 — HNH domain; metal coordination",
+        "840": "His840 — HNH domain catalytic histidine; cleaves target strand",
+        "863": "Asn863 — HNH domain; Mg²⁺ coordination",
+        "983": "His983 — RuvC domain; DDE triad completion",
+        "986": "Asp986 — RuvC domain catalytic aspartate (DDE triad)"
+      }
+    },
+    "references": [
+      {
+        "doi": "10.1126/science.1225829",
+        "citation": "Jinek M et al. (2012). A programmable dual-RNA-guided DNA endonuclease in adaptive bacterial immunity. Science 337:816-821.",
+        "supports": "Asp10 (RuvC) and His840 (HNH) as catalytic residues; D10A and H840A generate nickases"
+      },
+      {
+        "doi": "10.1016/j.cell.2014.09.006",
+        "citation": "Nishimasu H et al. (2014). Crystal structure of Cas9 in complex with guide RNA and its target DNA. Cell 156:935-949.",
+        "supports": "Complete structural mechanism; RuvC DDE motif (D10, E762, H983, D986) and HNH domain (D839, H840, N863)"
+      }
+    ],
+    "bsl_level": "BSL-1 (GRAS; widely used research tool; no pathogenic designation)"
+  },
+
+  "P00588": {
+    "name": "Diphtheria toxin",
+    "organism": "Corynebacterium diphtheriae",
+    "pdb_id": "1MDT",
+    "function": "ADP-ribosyltransferase; cleaves NAD+ and transfers ADP-ribose to EF-2 diphthamide residue, irreversibly inhibiting protein synthesis",
+    "functional_sites": {
+      "catalytic_residues": [21, 65, 148],
+      "residue_annotations": {
+        "21": "His21 — NAD+ binding in the A-fragment active site; conserved across ADP-ribosylating toxins",
+        "65": "Tyr65 — part of the NAD-binding groove; substrate positioning",
+        "148": "Glu148 — catalytic glutamate; EXE motif first residue; activates ADP-ribosylation"
+      }
+    },
+    "references": [
+      {
+        "doi": "10.1038/357816a0",
+        "citation": "Choe S et al. (1992). The crystal structure of diphtheria toxin. Nature 357:216-222.",
+        "supports": "Three-domain structure; A-fragment active site with His21, Tyr65, Glu148"
+      },
+      {
+        "doi": "10.1016/0014-5793(86)80483-9",
+        "citation": "Carroll SF, Collier RJ (1986). Loss of NAD glycohydrolase activity when eight amino acids in the active site of diphtheria toxin are replaced with alanine. Proc Natl Acad Sci USA.",
+        "supports": "Glu148 and His21 as essential ADP-ribosyltransferase active site residues"
+      }
+    ],
+    "bsl_level": "BSL-2 (pathogen is BSL-2; purified toxin is classified separately; former bioweapon but not current Select Agent)"
+  },
+
+  "P55981": {
+    "name": "Vacuolating cytotoxin A",
+    "organism": "Helicobacter pylori",
+    "pdb_id": "5JI9",
+    "function": "Pore-forming toxin; autotransported; oligomerizes into hexameric anion-selective membrane channels; causes cell vacuolation via acidification of late endosomes; no enzymatic activity",
+    "functional_sites": {
+      "catalytic_residues": [],
+      "residue_annotations": {
+        "p33_domain": "Residues 1-311 (p33) — hydrophobic membrane-insertion domain; forms the channel lining; no catalytic residues",
+        "p55_domain": "Residues 312-821 (p55) — receptor-binding beta-helix domain; binds RPTP-alpha and RPTP-beta",
+        "35": "Glu35 — conserved in p33; important for anion conductance and channel function (not catalytic)",
+        "166": "Lys166 — pore-lining residue; affects channel selectivity (site of interest, not classical active site)"
+      }
+    },
+    "references": [
+      {
+        "doi": "10.1126/science.aaj1736",
+        "citation": "Kern B et al. (2019). Two-dimensional structure of VacA and its structural rearrangements upon membrane insertion. Science 363:eaaj1736.",
+        "supports": "Hexameric anion channel architecture; p33 membrane-insertion domain; no enzymatic active site"
+      },
+      {
+        "doi": "10.1371/journal.pbio.3000168",
+        "citation": "Gonzalez-Rivera C et al. (2019). Pore-forming toxin pathogenicity islands in Helicobacter pylori. PLoS Biol.",
+        "supports": "VacA mechanism as pore-forming toxin without enzymatic catalysis"
+      }
+    ],
+    "bsl_level": "BSL-2 (H. pylori organism; purified toxin at BSL-1/2 depending on institutional policy)",
+    "note": "NEGATIVE CONTROL: pore-forming only, no discrete catalytic active site. FSI expected ~0. Used to validate that FSI specifically measures enzymatic site recovery, not general structural compatibility."
+  },
+
   "_benign_controls": {
     "_description": "Mechanism-matched benign protein controls for FSI negative control analysis. Each protein shares enzymatic fold/mechanism with a dangerous toxin but lacks dual-use potential.",
 

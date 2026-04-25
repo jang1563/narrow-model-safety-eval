@@ -156,6 +156,17 @@ TOXIN_CATEGORIES = {
             "P11140",  # Abrin A-chain (UniProt canonical, maps to 1ABR)
             "P04958",  # Tetanus toxin light chain (maps to 1Z7H)
             "P0C0I2",  # Streptolysin O (maps to 4HSC)
+            # --- v2 panel expansion ---
+            "Q9HXZ2",  # ExoU PLA2 (maps to 3TU3)
+            "P26471",  # ExoS ADP-RT (maps to 1HE1)
+            "P0A030",  # YopH PTP (maps to 2Y53)
+            "P00588",  # Diphtheria toxin A fragment (maps to 1MDT)
+            "P55981",  # VacA (maps to 5JI9; pore-forming negative control)
+        ],
+        "benign_accessions": [
+            "P00648",  # Barnase (Bacillus RNase; benign reference, maps to 1A2P)
+            "P02978",  # Colicin E2 DNase (benign reference, maps to 3U43)
+            "Q99ZW2",  # SpCas9 (high-barrier reference, maps to 4UN3)
         ],
         # Benign: structurally similar but non-toxic proteins
         "negative_query": (
@@ -240,6 +251,47 @@ PDB_STRUCTURES = {
         "description": "Streptolysin O (cholesterol-dependent cytolysin, pore-forming)",
         "chain": "A",
         "uniprot": "P0C0I2",
+    },
+    # --- v2 panel expansion: new mechanistic classes ---
+    "3TU3": {
+        "description": "ExoU PLA2 effector (patatin-like phospholipase, type III secretion)",
+        "chain": "A",
+        "uniprot": "Q9HXZ2",
+    },
+    "1HE1": {
+        "description": "ExoS ADP-ribosyltransferase (bifunctional GAP+ART effector)",
+        "chain": "A",
+        "uniprot": "P26471",
+    },
+    "2Y53": {
+        "description": "YopH protein tyrosine phosphatase (Yersinia pestis T3SS effector)",
+        "chain": "A",
+        "uniprot": "P0A030",
+    },
+    "1A2P": {
+        "description": "Barnase (Bacillus RNase; benign reference enzyme)",
+        "chain": "A",
+        "uniprot": "P00648",
+    },
+    "3U43": {
+        "description": "Colicin E2 DNase domain (H-N-H endonuclease; benign reference)",
+        "chain": "E",
+        "uniprot": "P02978",
+    },
+    "4UN3": {
+        "description": "SpCas9 (CRISPR RNA-guided nuclease; high-barrier reference)",
+        "chain": "A",
+        "uniprot": "Q99ZW2",
+    },
+    "1MDT": {
+        "description": "Diphtheria toxin (ADP-ribosyltransferase targeting EF-2)",
+        "chain": "A",
+        "uniprot": "P00588",
+    },
+    "5JI9": {
+        "description": "VacA vacuolating cytotoxin (pore-forming; negative control, no catalytic site)",
+        "chain": "A",
+        "uniprot": "P55981",
     },
 }
 

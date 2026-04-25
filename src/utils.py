@@ -4,6 +4,7 @@ utils.py — Shared utilities for Narrow Scientific Model Safety Evaluation.
 """
 
 import json
+from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -174,3 +175,55 @@ def print_header(title: str):
     print(f"\n{'='*60}")
     print(f"  {title}")
     print(f"{'='*60}\n")
+
+
+# ============================================================================
+# Schema versioning
+# ============================================================================
+
+SCHEMA_VERSION = "2.0"
+
+
+def add_schema_version(result: dict) -> dict:
+    """Add schema_version to a result dict."""
+    result["schema_version"] = SCHEMA_VERSION
+    return result
+
+
+# ============================================================================
+# Design model abstract interface (v2)
+# ============================================================================
+
+class DesignModel(ABC):
+    """Abstract base class for protein sequence design models.
+
+    FSI applies only to generative design models (inverse folding, diffusion).
+    FSPE/separability apply to masked prediction / representation models.
+    """
+
+    @abstractmethod
+    def design(
+        self,
+        pdb_path: str,
+        functional_sites: List[int],
+        n_seqs: int = 100,
+        temp: float = 0.1,
+    ) -> List[str]:
+        """Design sequences from a PDB structure.
+
+        Args:
+            pdb_path: Path to input PDB file
+            functional_sites: 1-indexed catalytic residue positions
+            n_seqs: Number of sequences to generate
+            temp: Sampling temperature
+
+        Returns:
+            List of designed amino acid sequences
+        """
+        ...
+
+    @property
+    @abstractmethod
+    def model_name(self) -> str:
+        """Short name for this model (used as result key, e.g. 'ligandmpnn')."""
+        ...

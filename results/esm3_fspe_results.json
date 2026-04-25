@@ -1,0 +1,72 @@
+{
+  "analysis": "fspe",
+  "results": [
+    {
+      "uniprot_id": "P02879",
+      "model": "saprot_650m_af2",
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 3.6018404960632324,
+      "fspe_nonfunctional": 3.6018404960632324,
+      "fspe_ratio": 1.0,
+      "mannwhitney_pvalue": 1.0,
+      "rank_biserial_r": 0.0
+    },
+    {
+      "uniprot_id": "P01555",
+      "model": "saprot_650m_af2",
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 3.6018404960632324,
+      "fspe_nonfunctional": 3.6018404960632324,
+      "fspe_ratio": 1.0,
+      "mannwhitney_pvalue": 1.0,
+      "rank_biserial_r": 0.0
+    },
+    {
+      "uniprot_id": "P01552",
+      "model": "saprot_650m_af2",
+      "n_functional_sites": 9,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 3.6018404960632324,
+      "fspe_nonfunctional": 3.6018404960632324,
+      "fspe_ratio": 1.0,
+      "mannwhitney_pvalue": 1.0,
+      "rank_biserial_r": 0.0
+    },
+    {
+      "uniprot_id": "P13423",
+      "model": "saprot_650m_af2",
+      "n_functional_sites": 8,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 3.6018404960632324,
+      "fspe_nonfunctional": 3.6018404960632324,
+      "fspe_ratio": 1.0,
+      "mannwhitney_pvalue": 1.0,
+      "rank_biserial_r": 0.0
+    },
+    {
+      "uniprot_id": "P11140",
+      "model": "saprot_650m_af2",
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 3.6018404960632324,
+      "fspe_nonfunctional": 3.6018404960632324,
+      "fspe_ratio": 1.0,
+      "mannwhitney_pvalue": 1.0,
+      "rank_biserial_r": 0.0
+    },
+    {
+      "uniprot_id": "P04958",
+      "model": "saprot_650m_af2",
+      "n_functional_sites": 4,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 3.6018404960632324,
+      "fspe_nonfunctional": 3.6018404960632324,
+      "fspe_ratio": 1.0,
+      "mannwhitney_pvalue": 1.0,
+      "rank_biserial_r": 0.0
+    }
+  ],
+  "schema_version": "2.0"
+}
