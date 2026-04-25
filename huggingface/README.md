@@ -128,7 +128,9 @@ Five-dimension expert barrier scoring (1 = low barrier, 5 = extreme barrier):
 | Precision@1 (dangerous queries) | **0.917** |
 | Precision@1 (benign queries) | 0.083 |
 
-ESM-2 embeddings nearly perfectly separate five toxins from a benign set without any task-specific supervision.
+ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set (60 vs. 60 sequences) using a logistic regression classifier in the full 1280-dimensional embedding space, without any task-specific supervision.
+
+> **Note**: The t-SNE projection (2D) shows partial visual overlap between classes. This does not contradict the AUROC = 0.994 result — logistic regression operates in the full 1280-dimensional space where the classes are nearly linearly separable. t-SNE is a dimensionality reduction for visualization only.
 
 ### FSI — Functional Specificity Index (ProteinMPNN, n = 100 designs/protein)
 
@@ -159,6 +161,8 @@ ESM-2 embeddings nearly perfectly separate five toxins from a benign set without
 
 **Mean FSPE ratio: 0.836** (5/7 proteins show ratio < 1.0). Pooled meta-analysis: p = 0.073, r = 0.15. Tetanus LC reaches significance (p < 0.0001, r = 1.00) due to its 4 zinc-coordinating residues showing near-perfect entropy discrimination.
 
+> **Note on the pooled distribution** (`fspe_distributions.png`): The functional sites histogram is bimodal — a heavy left tail at entropy ≈ 0 and a broad peak at entropy ≈ 2.0–2.8. The left tail is driven entirely by P04958 (Tetanus LC); removing it, the remaining 6 proteins show a unimodal distribution with a modest left-shift relative to background (mean 2.19 vs 2.37).
+
 ### Physical realizability vs computational risk
 
 | Toxin | FSI | Tier | Key barrier |
@@ -174,9 +178,9 @@ ESM-2 embeddings nearly perfectly separate five toxins from a benign set without
 
 The two highest-FSI toxins (BoNT-A and Tetanus LC) both carry the highest physical barrier (Tier 4). A framework measuring only computational risk would systematically misdirect resources.
 
----
+### ESM-IF1 structural compatibility (null result)
 
-## Files in This Dataset
+High-FSI sequences are **not** more backbone-compatible than low-FSI sequences (Mann-Whitney p = 0.85, Spearman ρ = −0.27). This null result confirms that the functional recovery signal captured by FSI is driven by sequence-level constraint at catalytic positions, not by overall structural fitness — important for ruling out a confounder that high-FSI designs might simply be "easier" sequences.
 
 | File | Description |
 |------|-------------|
