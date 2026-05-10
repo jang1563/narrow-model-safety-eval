@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software or dataset, please cite it as below."
+title: "Narrow Scientific Model Safety Evaluation: Empirical Dual-Use Risk Assessment of Protein Language Models"
+authors:
+  - family-names: "Kim"
+    given-names: "JangKeun"
+    orcid: "https://orcid.org/0000-0002-8733-9925"
+    affiliation: "Weill Cornell Medicine"
+    email: "jak4013@med.cornell.edu"
+abstract: >-
+  Empirical dual-use risk assessment framework for protein language models (ESM-2) and structure-based design tools (ProteinMPNN, EvoDiff, LigandMPNN). Introduces FSPE (Functional Site Prediction Entropy) and FSI (Functional Specificity Index) metrics with Physical Realizability Tier system decoupling computational risk from physical risk.
+url: "https://github.com/jang1563/narrow-model-safety-eval"
+repository-code: "https://github.com/jang1563/narrow-model-safety-eval"
+date-released: "2026-04-13"
+version: "0.1.0"
+license: "MIT"
+keywords:
+  - ai-safety
+  - biosafety
+  - biosecurity
