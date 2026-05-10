@@ -361,10 +361,10 @@ narrow-model-safety-eval/
 If you use this framework or the FSPE/FSI metrics in your work, please cite:
 
 ```bibtex
-@misc{jang2025narrowmodelsafety,
+@misc{kim2025narrowmodelsafety,
   title   = {Narrow Scientific Model Safety Evaluation: A Framework for
              Dual-Use Risk Assessment in Protein Language Models},
-  author  = {Jang, Jaewon},
+  author  = {Kim, JangKeun},
   year    = {2025},
   url     = {https://github.com/jang1563/narrow-model-safety-eval},
   note    = {Preprint}
