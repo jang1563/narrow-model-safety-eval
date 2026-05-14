@@ -27,6 +27,12 @@
 
 ---
 
+## Reviewer Framing
+
+This is a **proof-of-concept evaluation framework**, not a deployed safety system. Each metric (FSPE, FSI, Physical Realizability Tier) is designed as a *measurement* over public reference proteins, not as an objective that an attack pipeline could target. Numbers should be read as evidence that text-based safety classifiers cannot detect dual-use risk in narrow scientific models, motivating the development of model-specific evaluation frameworks; they should not be read as a global capability claim about any protein language model in isolation. See [`SAFETY.md`](SAFETY.md) and [`DISCLAIMER.md`](DISCLAIMER.md) for the responsible-use scope.
+
+---
+
 ## The Problem
 
 Existing AI safety evaluations ask: *will the model say something dangerous?*
@@ -211,6 +217,18 @@ Narrow scientific models are increasingly capable and widely deployed, yet exist
 2. **Evaluation requires domain expertise.** FSI requires knowing *which* residues are catalytic and *why*: knowledge that cannot be derived from sequences or structures alone.
 
 3. **Computational risk ≠ physical risk.** The highest-FSI toxin (BoNT-A, Tier 4) is physically the hardest to realize. A safety framework that conflates these would systematically misallocate risk.
+
+### How This Maps to Other Safeguard Artifacts
+
+This framework sits in the safeguard stack alongside:
+
+- **Capability evaluations for general LLMs** (e.g. WMDP, biothreat-eval): measure upper-bound risk in *language-output* models. This work measures the analogous risk in *narrow scientific* models, which produce embeddings or sequences rather than text.
+- **Over-refusal calibration** ([bio-overrefusal-v0.1](https://github.com/jang1563/bio-overrefusal-v0.1)): measures whether text-based safeguards over-block legitimate biology research; this work measures what text-based safeguards *cannot detect at all* in adjacent scientific tools.
+- **Constitutional / classifier safeguards** ([constitutional-bioguard](https://github.com/jang1563/constitutional-bioguard)): operate on text-form queries and responses. The narrow-model gap motivates building model-specific safeguards (e.g. embedding-space anomaly detection, structure-aware filters) that text classifiers cannot provide.
+
+A safeguard team using this framework would: (a) run FSPE / FSI / Physical Realizability Tier on their organization's deployed narrow models, (b) treat any high-FSI / low-realizability-tier protein as a candidate input for additional gating, (c) extend the framework to other modalities (small molecule, RNA design) under the same measurement-not-objective discipline.
+
+This work is independent and does not represent any provider's internal evaluation pipeline.
 
 ---
 
