@@ -62,21 +62,24 @@
     "bsl_level": "BSL-2"
   },
 
-  "P10844": {
+  "P0DPI1": {
     "name": "Botulinum neurotoxin type A",
     "organism": "Clostridium botulinum",
     "pdb_id": "3BTA",
     "function": "Zinc metalloprotease; cleaves SNAP-25, blocking neurotransmitter release",
+    "_accession_note": "Re-keyed from P10844 (which is BoNT type B) to P0DPI1 (BXA1_CLOBH, the genuine BoNT type A matching the 3BTA structure). Catalytic residues updated to P0DPI1 UniProt numbering from UniProt curated Active site / Zn-binding features.",
     "functional_sites": {
-      "catalytic_residues": [222, 223, 226, 261, 227],
+      "catalytic_residues": [223, 224, 227, 262],
       "residue_annotations": {
-        "222": "His222 — zinc-binding (HExxH motif)",
-        "223": "Glu223 — zinc-binding, catalytic glutamate",
-        "226": "His226 — zinc-binding (HExxH motif)",
-        "261": "Glu261 — zinc coordination",
-        "227": "Xxx227 — within active site loop"
+        "223": "His223 — zinc-binding (HExxH motif); UniProt Zn²⁺-binding site",
+        "224": "Glu224 — active site, catalytic glutamate / general base; UniProt active site",
+        "227": "His227 — zinc-binding (HExxH motif); UniProt Zn²⁺-binding site",
+        "262": "Glu262 — third zinc ligand; UniProt Zn²⁺-binding site"
       }
     },
+    "pdb_residues": [222, 223, 226, 261],
+    "use_pdb_numbering": true,
+    "pdb_residues_note": "3BTA chain A uses numbering offset -1 from P0DPI1 UniProt (HExxH at PDB 222-226 vs UniProt 223-227); verified by CA-trace residue identity. catalytic_residues (UniProt numbering) drive sequence-based FSPE/FHS; pdb_residues drive structure-based FSI on 3BTA.",
     "references": [
       {
         "doi": "10.1038/2338",
@@ -215,7 +218,7 @@
     "pdb_note": "1Z7H is TeNT LC apo form."
   },
 
-  "P0C0I2": {
+  "P0DF97": {
     "name": "Streptolysin O",
     "organism": "Streptococcus pyogenes",
     "pdb_id": "4HSC",
@@ -244,16 +247,17 @@
     "pdb_note": "4HSC chain X, residues 103-571. Undecapeptide ECTGLAWEWWR at residues 529-539."
   },
 
-  "Q9HXZ2": {
+  "O34208": {
     "name": "ExoU phospholipase",
     "organism": "Pseudomonas aeruginosa",
-    "pdb_id": "3TU3",
+    "pdb_id": "4QMK",
     "function": "Patatin-like phospholipase A2; type III secretion effector; lyses host cell membranes",
+    "_accession_note": "Re-keyed from Q9HXZ2 (which is acetyl-CoA carboxylase, NOT ExoU) to O34208, the genuine 687-aa ExoU effector (PDB 4QMK; cross-referenced from the ExoU-SpcU complex 4AKX). Catalytic dyad confirmed by UniProt Active site features.",
     "functional_sites": {
       "catalytic_residues": [142, 344],
       "residue_annotations": {
-        "142": "Ser142 — nucleophilic serine in patatin-like catalytic dyad; acylated intermediate",
-        "344": "Asp344 — general base in catalytic dyad; activates Ser142; conserved in patatin-like PLAs"
+        "142": "Ser142 — nucleophilic serine in patatin-like catalytic dyad; UniProt active site (Nucleophile)",
+        "344": "Asp344 — general base in catalytic dyad; UniProt active site (Proton acceptor)"
       }
     },
     "references": [
@@ -271,10 +275,11 @@
     "bsl_level": "BSL-2"
   },
 
-  "P26471": {
+  "Q51451": {
     "name": "ExoS ADP-ribosyltransferase",
     "organism": "Pseudomonas aeruginosa",
     "pdb_id": "1HE1",
+    "_accession_note": "Re-keyed from P26471 (which is O-antigen ligase WaaL, NOT ExoS) to Q51451, the genuine 453-aa Exoenzyme S (cross-referenced from the ExoS GAP-Rac1 complex 1HE1). Note: 1HE1 resolves only the GAP domain; ADP-RT domain residues 379/381 are not in that structure.",
     "function": "Bifunctional type III effector: Rho-GAP domain (residues 78-228) and ADP-ribosyltransferase domain (residues 233-453); modifies Ras and other cytoskeletal targets",
     "functional_sites": {
       "catalytic_residues": [146, 148, 234, 379, 381],
@@ -301,10 +306,11 @@
     "bsl_level": "BSL-2"
   },
 
-  "P0A030": {
+  "P15273": {
     "name": "YopH protein tyrosine phosphatase",
-    "organism": "Yersinia pestis",
-    "pdb_id": "2Y53",
+    "organism": "Yersinia enterocolitica",
+    "pdb_id": "1PA9",
+    "_accession_note": "Re-keyed from P0A030 (which is cell division protein FtsZ, NOT YopH) to P15273 (YOPH_YEREN, reviewed, 468 aa). PDB changed from 2Y53 (an aldehyde dehydrogenase, wrong) to 1PA9 (Yersinia protein tyrosine phosphatase). YopH PTP catalytic domain is identical across Yersinia species; Cys403 confirmed by UniProt active site feature.",
     "function": "Type III secretion effector; protein tyrosine phosphatase that dephosphorylates focal adhesion proteins, blocking phagocytosis",
     "functional_sites": {
       "catalytic_residues": [354, 356, 403, 406, 409],
@@ -361,18 +367,18 @@
     "bsl_level": "BSL-1 (non-pathogenic Bacillus species; no hazard designation)"
   },
 
-  "P02978": {
+  "P04419": {
     "name": "Colicin E2 DNase",
     "organism": "Escherichia coli",
     "pdb_id": "3U43",
+    "_accession_note": "Re-keyed from P02978 (which is Colicin-E1, a pore-former with a different mechanism, NOT a DNase) to P04419 (CEA2_ECOLX, reviewed, 581 aa, the genuine Colicin-E2). Catalytic residues updated to P04419 UniProt numbering from UniProt curated Zn²⁺-binding site features (the previous [544,558,569,573] did not match any sequence).",
     "function": "Bactericidal colicin; C-terminal DNase domain cleaves double-stranded DNA non-specifically; enters cells via BtuB receptor",
     "functional_sites": {
-      "catalytic_residues": [544, 558, 569, 573],
+      "catalytic_residues": [549, 574, 578],
       "residue_annotations": {
-        "544": "Arg544 — H-N-H motif; coordinates Mg²⁺ cofactor",
-        "558": "Asn558 — H-N-H motif central asparagine; metal coordination",
-        "569": "His569 — H-N-H motif; metal-coordinating histidine",
-        "573": "His573 — H-N-H motif catalytic histidine; critical for DNA cleavage"
+        "549": "His549 — H-N-H endonuclease motif; UniProt-annotated Zn²⁺-binding / metal-coordinating residue",
+        "574": "His574 — H-N-H endonuclease motif; UniProt-annotated Zn²⁺-binding / metal-coordinating residue",
+        "578": "His578 — H-N-H endonuclease motif catalytic histidine; UniProt-annotated Zn²⁺-binding residue, critical for DNA cleavage"
       }
     },
     "references": [
@@ -490,8 +496,8 @@
       "chain": "A",
       "uniprot": "P07584",
       "function": "Zinc metalloprotease; digestive enzyme, metzincin superfamily",
-      "is_control_for": "P10844",
-      "mechanism_match": "HExxH zinc-binding motif (His-Glu-X-X-His), same metzincin superfamily fold as BoNT-A light chain. Shares the zinc coordination geometry (His92, Glu93, His96) directly paralleling BoNT His222, Glu223, His226.",
+      "is_control_for": "P0DPI1",
+      "mechanism_match": "HExxH zinc-binding motif (His-Glu-X-X-His), same metzincin superfamily fold as BoNT-A light chain. Shares the zinc coordination geometry (His92, Glu93, His96) directly paralleling BoNT-A His223, Glu224, His227.",
       "functional_sites": {
         "catalytic_residues": [92, 93, 96, 102],
         "use_pdb_numbering": true,

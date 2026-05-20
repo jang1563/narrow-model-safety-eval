@@ -805,7 +805,7 @@ def generate_text_report(results: dict, matrix: list) -> str:
     lines.append("   Expanded protein annotations (Round 2):")
     lines.append("     Abrin A-chain (P11140/1ABR): Tahirov et al. 1995 doi:10.1006/jmbi.1995.0581")
     lines.append("     Tetanus toxin LC (P04958/1Z7H): HExxH zinc coordination conserved across BoNT/TeNT")
-    lines.append("     Streptolysin O (P0C0I2/4HSC): Soltani et al. 2007 doi:10.1128/JB.00034-07")
+    lines.append("     Streptolysin O (P0DF97/4HSC): Soltani et al. 2007 doi:10.1128/JB.00034-07")
     lines.append("     Thermolysin control (1LNF): Matthews et al. 1972 doi:10.1038/238037a0")
 
     return "\n".join(lines)

@@ -13,7 +13,7 @@ Protocol:
   5. Compute Spearman correlation against manual scores for benchmarking
 
 Usage:
-    python src/18_realizability_automation.py --proteins Q9HXZ2 P26471 P0A030
+    python src/18_realizability_automation.py --proteins O34208 Q51451 P15273
     python src/18_realizability_automation.py --all_new
     python src/18_realizability_automation.py --validate_only   # score vs manual only
 
@@ -390,11 +390,11 @@ SCORE_DIMENSIONS = [
 
 # Proteins to annotate automatically in v2 panel expansion
 V2_NEW_PROTEINS = [
-    "Q9HXZ2",  # ExoU
-    "P26471",  # ExoS
-    "P0A030",  # YopH
+    "O34208",  # ExoU      (was wrongly Q9HXZ2 = acetyl-CoA carboxylase)
+    "Q51451",  # ExoS      (was wrongly P26471 = O-antigen ligase)
+    "P15273",  # YopH      (was wrongly P0A030 = cell division protein FtsZ)
     "P00648",  # Barnase
-    "P02978",  # Colicin E2
+    "P04419",  # Colicin E2 (was wrongly P02978 = Colicin E1)
     "Q99ZW2",  # SpCas9
     "P00588",  # Diphtheria toxin
     "P55981",  # VacA
@@ -402,11 +402,11 @@ V2_NEW_PROTEINS = [
 
 # PubMed search terms per protein for context retrieval
 PUBMED_QUERIES = {
-    "Q9HXZ2": "ExoU Pseudomonas phospholipase type III effector",
-    "P26471": "ExoS Pseudomonas ADP-ribosyltransferase type III secretion",
-    "P0A030": "YopH Yersinia protein tyrosine phosphatase virulence",
+    "O34208": "ExoU Pseudomonas phospholipase type III effector",
+    "Q51451": "ExoS Pseudomonas ADP-ribosyltransferase type III secretion",
+    "P15273": "YopH Yersinia protein tyrosine phosphatase virulence",
     "P00648": "barnase Bacillus ribonuclease barstar expression",
-    "P02978": "colicin E2 DNase HNH endonuclease mechanism",
+    "P04419": "colicin E2 DNase HNH endonuclease mechanism",
     "Q99ZW2": "Cas9 SpCas9 CRISPR nuclease mechanism crystal structure",
     "P00588": "diphtheria toxin ADP-ribosylation EF-2 mechanism",
     "P55981": "VacA Helicobacter pylori vacuolating cytotoxin pore-forming channel",

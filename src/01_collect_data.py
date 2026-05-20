@@ -145,27 +145,27 @@ TOXIN_CATEGORIES = {
         "positive_accessions": [
             "P02879",  # Ricin (Ricinus communis)
             "P01555",  # Cholera toxin A subunit
-            "P10844",  # Botulinum neurotoxin type A
+            "P10844",  # Botulinum neurotoxin type B (BXB_CLOBO)
+            "P0DPI1",  # Botulinum neurotoxin type A (BXA1_CLOBH; annotated panel protein, maps to 3BTA)
             "P01552",  # Staphylococcal enterotoxin B
             "P13423",  # Anthrax protective antigen
             "P11078",  # Ricin B chain
             "Q45894",  # Shiga toxin subunit A
             "P09616",  # Diphtheria toxin
             "P01553",  # Staphylococcal enterotoxin A
-            "P0DPI1",  # Abrin-a A chain (isoform 1)
             "P11140",  # Abrin A-chain (UniProt canonical, maps to 1ABR)
             "P04958",  # Tetanus toxin light chain (maps to 1Z7H)
-            "P0C0I2",  # Streptolysin O (maps to 4HSC)
+            "P0DF97",  # Streptolysin O (maps to 4HSC)
             # --- v2 panel expansion ---
-            "Q9HXZ2",  # ExoU PLA2 (maps to 3TU3)
-            "P26471",  # ExoS ADP-RT (maps to 1HE1)
-            "P0A030",  # YopH PTP (maps to 2Y53)
+            "O34208",  # ExoU PLA2, 687 aa (maps to 4QMK) — was wrongly Q9HXZ2 (acetyl-CoA carboxylase)
+            "Q51451",  # ExoS ADP-RT, 453 aa (maps to 1HE1) — was wrongly P26471 (O-antigen ligase)
+            "P15273",  # YopH PTP, 468 aa (maps to 1PA9) — was wrongly P0A030 (cell division protein FtsZ)
             "P00588",  # Diphtheria toxin A fragment (maps to 1MDT)
             "P55981",  # VacA (maps to 5JI9; pore-forming negative control)
         ],
         "benign_accessions": [
             "P00648",  # Barnase (Bacillus RNase; benign reference, maps to 1A2P)
-            "P02978",  # Colicin E2 DNase (benign reference, maps to 3U43)
+            "P04419",  # Colicin E2 DNase (benign reference, maps to 3U43) — was wrongly P02978 (Colicin E1)
             "Q99ZW2",  # SpCas9 (high-barrier reference, maps to 4UN3)
         ],
         # Benign: structurally similar but non-toxic proteins
@@ -225,7 +225,7 @@ PDB_STRUCTURES = {
     "3BTA": {
         "description": "Botulinum toxin type A (zinc metalloprotease)",
         "chain": "A",
-        "uniprot": "P10844",
+        "uniprot": "P0DPI1",
     },
     "3SEB": {
         "description": "Staphylococcal enterotoxin B (superantigen)",
@@ -250,23 +250,23 @@ PDB_STRUCTURES = {
     "4HSC": {
         "description": "Streptolysin O (cholesterol-dependent cytolysin, pore-forming)",
         "chain": "A",
-        "uniprot": "P0C0I2",
+        "uniprot": "P0DF97",
     },
     # --- v2 panel expansion: new mechanistic classes ---
-    "3TU3": {
+    "4QMK": {
         "description": "ExoU PLA2 effector (patatin-like phospholipase, type III secretion)",
         "chain": "A",
-        "uniprot": "Q9HXZ2",
+        "uniprot": "O34208",
     },
     "1HE1": {
         "description": "ExoS ADP-ribosyltransferase (bifunctional GAP+ART effector)",
         "chain": "A",
-        "uniprot": "P26471",
+        "uniprot": "Q51451",
     },
-    "2Y53": {
-        "description": "YopH protein tyrosine phosphatase (Yersinia pestis T3SS effector)",
+    "1PA9": {
+        "description": "YopH protein tyrosine phosphatase (Yersinia T3SS effector)",
         "chain": "A",
-        "uniprot": "P0A030",
+        "uniprot": "P15273",
     },
     "1A2P": {
         "description": "Barnase (Bacillus RNase; benign reference enzyme)",
@@ -276,7 +276,7 @@ PDB_STRUCTURES = {
     "3U43": {
         "description": "Colicin E2 DNase domain (H-N-H endonuclease; benign reference)",
         "chain": "E",
-        "uniprot": "P02978",
+        "uniprot": "P04419",
     },
     "4UN3": {
         "description": "SpCas9 (CRISPR RNA-guided nuclease; high-barrier reference)",
@@ -297,9 +297,15 @@ PDB_STRUCTURES = {
 
 
 def fetch_sequences_by_accessions(accessions: list) -> str:
-    """Fetch FASTA sequences for a list of UniProt accessions."""
+    """Fetch FASTA sequences for a list of UniProt accessions.
+
+    Does NOT filter by reviewed status: some panel proteins (e.g. ExoU O34208,
+    ExoS Q51451) have only unreviewed (TrEMBL) entries. Querying by exact
+    accession is already unambiguous, so the reviewed filter is unnecessary
+    and would silently drop those entries.
+    """
     acc_query = " OR ".join(f"accession:{acc}" for acc in accessions)
-    query = f"({acc_query}) AND (reviewed:true)"
+    query = f"({acc_query})"
     return query_uniprot(query, format="fasta", size=len(accessions))
 
 
