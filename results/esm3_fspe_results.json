@@ -3,69 +3,223 @@
   "results": [
     {
       "uniprot_id": "P02879",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 2.8258597373962404,
+      "fspe_nonfunctional": 2.412264811992645,
+      "fspe_ratio": 1.1714550257282683,
+      "mannwhitney_pvalue": 0.969922830792396,
+      "rank_biserial_r": -0.54
+    },
+    {
+      "uniprot_id": "P01555",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 2.2643866539001465,
+      "fspe_nonfunctional": 2.318087361752987,
+      "fspe_ratio": 0.9768340448514283,
+      "mannwhitney_pvalue": 0.12153209109730848,
+      "rank_biserial_r": 0.36
+    },
+    {
+      "uniprot_id": "P0DPI1",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 4,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 0.8109963834285736,
+      "fspe_nonfunctional": 2.575763130187988,
+      "fspe_ratio": 0.31485674048350254,
+      "mannwhitney_pvalue": 0.06747600225861095,
+      "rank_biserial_r": 0.5
+    },
+    {
+      "uniprot_id": "P01552",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 9,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 2.547770539919535,
+      "fspe_nonfunctional": 2.5640944451093675,
+      "fspe_ratio": 0.9936336568175296,
+      "mannwhitney_pvalue": 0.3443227723269383,
+      "rank_biserial_r": 0.09999999999999998
+    },
+    {
+      "uniprot_id": "P13423",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 8,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 2.1326267272233963,
+      "fspe_nonfunctional": 2.510375851392746,
+      "fspe_ratio": 0.8495248733532168,
+      "mannwhitney_pvalue": 0.061278496061104755,
+      "rank_biserial_r": 0.38749999999999996
+    },
+    {
+      "uniprot_id": "P11140",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 2.741387939453125,
+      "fspe_nonfunctional": 2.6040758192539215,
+      "fspe_ratio": 1.0527296936532915,
+      "mannwhitney_pvalue": 0.40897797854319584,
+      "rank_biserial_r": 0.07999999999999996
+    },
+    {
+      "uniprot_id": "P04958",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 4,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 0.8326956629753113,
+      "fspe_nonfunctional": 2.529288339614868,
+      "fspe_ratio": 0.3292213267792572,
+      "mannwhitney_pvalue": 0.00668172407302842,
+      "rank_biserial_r": 0.775
+    },
+    {
+      "uniprot_id": "P0DF97",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 2.6233520984649656,
+      "fspe_nonfunctional": 2.4394679427146913,
+      "fspe_ratio": 1.0753787957326646,
+      "mannwhitney_pvalue": 0.35864859777903246,
+      "rank_biserial_r": 0.12
+    },
+    {
+      "uniprot_id": "O34208",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 2,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 0.02782161720097065,
+      "fspe_nonfunctional": 2.39751937687397,
+      "fspe_ratio": 0.011604334659120105,
+      "mannwhitney_pvalue": 0.004329004329004329,
+      "rank_biserial_r": 1.0
+    },
+    {
+      "uniprot_id": "Q51451",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 1.4393587868660689,
+      "fspe_nonfunctional": 2.3227930843830107,
+      "fspe_ratio": 0.6196672430891093,
+      "mannwhitney_pvalue": 0.09585921325051758,
+      "rank_biserial_r": 0.4
+    },
+    {
+      "uniprot_id": "P15273",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 0.30424408297985794,
+      "fspe_nonfunctional": 2.3634128361940383,
+      "fspe_ratio": 0.12873082447576215,
+      "mannwhitney_pvalue": 1.8821757952192734e-05,
+      "rank_biserial_r": 1.0
+    },
+    {
+      "uniprot_id": "P00648",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 5,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 1.3756828635931015,
+      "fspe_nonfunctional": 1.2482456806697884,
+      "fspe_ratio": 1.1020930293585574,
+      "mannwhitney_pvalue": 0.6164313946922644,
+      "rank_biserial_r": -0.08000000000000007
+    },
+    {
+      "uniprot_id": "Q99ZW2",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 7,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 0.23496087880006858,
+      "fspe_nonfunctional": 2.495643252134323,
+      "fspe_ratio": 0.09414842389797717,
+      "mannwhitney_pvalue": 1.1260880826098217e-06,
+      "rank_biserial_r": 1.0
+    },
+    {
+      "uniprot_id": "P00588",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 3,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 2.474998712539673,
+      "fspe_nonfunctional": 2.5651904344558716,
+      "fspe_ratio": 0.9648401457042973,
+      "mannwhitney_pvalue": 0.2286843591191417,
+      "rank_biserial_r": 0.30000000000000004
+    },
+    {
+      "uniprot_id": "P02879",
       "model": "saprot_650m_af2",
       "n_functional_sites": 5,
       "n_nonfunctional_sites": 20,
-      "fspe_functional": 3.6018404960632324,
-      "fspe_nonfunctional": 3.6018404960632324,
-      "fspe_ratio": 1.0,
-      "mannwhitney_pvalue": 1.0,
-      "rank_biserial_r": 0.0
+      "fspe_functional": 0.6768021881580353,
+      "fspe_nonfunctional": 2.668016144633293,
+      "fspe_ratio": 0.25367244854174553,
+      "mannwhitney_pvalue": 7.528703180877094e-05,
+      "rank_biserial_r": 0.96
     },
     {
       "uniprot_id": "P01555",
       "model": "saprot_650m_af2",
       "n_functional_sites": 5,
       "n_nonfunctional_sites": 20,
-      "fspe_functional": 3.6018404960632324,
-      "fspe_nonfunctional": 3.6018404960632324,
-      "fspe_ratio": 1.0,
-      "mannwhitney_pvalue": 1.0,
-      "rank_biserial_r": 0.0
+      "fspe_functional": 1.443008005619049,
+      "fspe_nonfunctional": 2.994416671991348,
+      "fspe_ratio": 0.481899536265746,
+      "mannwhitney_pvalue": 0.021174477696216824,
+      "rank_biserial_r": 0.6
     },
     {
       "uniprot_id": "P01552",
       "model": "saprot_650m_af2",
       "n_functional_sites": 9,
       "n_nonfunctional_sites": 20,
-      "fspe_functional": 3.6018404960632324,
-      "fspe_nonfunctional": 3.6018404960632324,
-      "fspe_ratio": 1.0,
-      "mannwhitney_pvalue": 1.0,
-      "rank_biserial_r": 0.0
+      "fspe_functional": 3.881515476438734,
+      "fspe_nonfunctional": 3.0101965963840485,
+      "fspe_ratio": 1.2894558053455192,
+      "mannwhitney_pvalue": 0.977436525555662,
+      "rank_biserial_r": -0.46666666666666656
     },
     {
       "uniprot_id": "P13423",
       "model": "saprot_650m_af2",
       "n_functional_sites": 8,
       "n_nonfunctional_sites": 20,
-      "fspe_functional": 3.6018404960632324,
-      "fspe_nonfunctional": 3.6018404960632324,
-      "fspe_ratio": 1.0,
-      "mannwhitney_pvalue": 1.0,
-      "rank_biserial_r": 0.0
+      "fspe_functional": 2.282120253890753,
+      "fspe_nonfunctional": 2.740902316570282,
+      "fspe_ratio": 0.8326164125200901,
+      "mannwhitney_pvalue": 0.14029609681783597,
+      "rank_biserial_r": 0.275
     },
     {
       "uniprot_id": "P11140",
       "model": "saprot_650m_af2",
       "n_functional_sites": 5,
       "n_nonfunctional_sites": 20,
-      "fspe_functional": 3.6018404960632324,
-      "fspe_nonfunctional": 3.6018404960632324,
-      "fspe_ratio": 1.0,
-      "mannwhitney_pvalue": 1.0,
-      "rank_biserial_r": 0.0
+      "fspe_functional": 1.470762062072754,
+      "fspe_nonfunctional": 2.4462918907403948,
+      "fspe_ratio": 0.6012210021378982,
+      "mannwhitney_pvalue": 0.01756070016939582,
+      "rank_biserial_r": 0.62
     },
     {
       "uniprot_id": "P04958",
       "model": "saprot_650m_af2",
       "n_functional_sites": 4,
       "n_nonfunctional_sites": 20,
-      "fspe_functional": 3.6018404960632324,
-      "fspe_nonfunctional": 3.6018404960632324,
-      "fspe_ratio": 1.0,
-      "mannwhitney_pvalue": 1.0,
-      "rank_biserial_r": 0.0
+      "fspe_functional": 1.9398402273654938,
+      "fspe_nonfunctional": 2.897007481753826,
+      "fspe_ratio": 0.6696013868045413,
+      "mannwhitney_pvalue": 0.09128552606813475,
+      "rank_biserial_r": 0.44999999999999996
     }
   ],
   "schema_version": "2.0"

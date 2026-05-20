@@ -1,5 +1,22 @@
 {
   "analysis": "separability",
-  "results": [],
+  "results": [
+    {
+      "model": "esm3_sm_open_v1",
+      "auroc_mean": 0.9367948717948718,
+      "auroc_std": 0.045858567629029234,
+      "auroc_per_fold": [
+        0.8666666666666667,
+        0.9340659340659341,
+        0.9835164835164836,
+        0.989010989010989,
+        0.9107142857142857
+      ],
+      "accuracy_mean": 0.8507122507122507,
+      "accuracy_std": 0.07410913042912413,
+      "n_positive": 71,
+      "n_negative": 63
+    }
+  ],
   "schema_version": "2.0"
 }
