@@ -134,6 +134,17 @@
       "rank_biserial_r": -0.08000000000000007
     },
     {
+      "uniprot_id": "P04419",
+      "model": "esm3_sm_open_v1",
+      "n_functional_sites": 3,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 0.22560315330823263,
+      "fspe_nonfunctional": 2.213247334957123,
+      "fspe_ratio": 0.10193309610947898,
+      "mannwhitney_pvalue": 0.000564652738565782,
+      "rank_biserial_r": 1.0
+    },
+    {
       "uniprot_id": "Q99ZW2",
       "model": "esm3_sm_open_v1",
       "n_functional_sites": 7,
