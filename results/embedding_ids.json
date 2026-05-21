@@ -59,7 +59,18 @@
     "sp|O87489|BLAV1_PSEAI",
     "sp|P05193|AMPC_CITFR",
     "sp|P52699|BLBI1_SERMA",
-    "sp|Q9KJY7|BLAG1_KLEPN"
+    "sp|Q9KJY7|BLAG1_KLEPN",
+    "sp|P00588|DTX_CORBE",
+    "sp|P04958|TETX_CLOTE",
+    "sp|P11140|ABRA_ABRPR",
+    "sp|P55981|VACA_HELPY",
+    "sp|P0DF97|TACY_STRPQ",
+    "sp|P00648|RNBR_BACAM",
+    "sp|P04419|CEA2_ECOLX",
+    "sp|Q99ZW2|CAS9_STRP1",
+    "sp|P15273|YOPH_YEREN",
+    "tr|O34208|O34208_PSEAI",
+    "tr|Q51451|Q51451_PSEAI"
   ],
   "negative_ids": [
     "sp|O05512|MANB_BACSU",
@@ -121,7 +132,9 @@
     "sp|P0A962|ASPG1_ECOLI",
     "sp|P0AC00|FRLB_ECOLI",
     "sp|P0AED7|DAPE_ECOLI",
-    "sp|P77425|ALLC_ECOLI"
+    "sp|P77425|ALLC_ECOLI",
+    "sp|Q99ZW2|CAS9_STRP1",
+    "sp|P00648|RNBR_BACAM"
   ],
   "model": "facebook/esm2_t33_650M_UR50D",
   "embedding_dim": 1280

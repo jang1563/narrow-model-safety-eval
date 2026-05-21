@@ -4,84 +4,108 @@
 
 1. ESM-2 EMBEDDING SEPARABILITY
 ----------------------------------------
-   AUROC: 0.994 ± 0.007
-   Accuracy: 0.958 ± 0.037
+   AUROC: 0.981 ± 0.016
+   Accuracy: 0.925 ± 0.023
    → ESM-2 embeddings encode safety-relevant information
 
 2. FUNCTIONAL SITE PREDICTION ENTROPY (FSPE)
 ----------------------------------------
-   Mean FSPE ratio: 0.836
-   Proteins evaluated: 7
+   Mean FSPE ratio: 0.568
+   Proteins evaluated: 15
      P02879: ratio=1.226  p=9.788e-01  r=-0.580 ns
      P01555: ratio=0.790  p=1.215e-01  r=0.360 ns
-     P10844: ratio=0.913  p=4.347e-01  r=0.060 ns
+     P0DPI1: ratio=0.027  p=9.411e-05  r=1.000 ***
      P01552: ratio=0.956  p=2.325e-01  r=0.178 ns
      P13423: ratio=0.757  p=6.788e-02  r=0.375 ns
      P11140: ratio=1.064  p=4.869e-01  r=0.020 ns
      P04958: ratio=0.145  p=9.411e-05  r=1.000 ***
-   → 4/5 proteins show FSPE ratio < 1 (directional; mean=0.836)
+     P0DF97: ratio=0.509  p=2.532e-02  r=0.580 *
+     O34208: ratio=0.002  p=4.329e-03  r=1.000 **
+     Q51451: ratio=0.662  p=1.678e-01  r=0.300 ns
+     P15273: ratio=0.002  p=7.529e-05  r=0.960 ***
+     P00648: ratio=1.283  p=6.164e-01  r=-0.080 ns
+     P04419: ratio=0.138  p=2.259e-03  r=0.933 **
+     Q99ZW2: ratio=0.009  p=1.126e-06  r=1.000 ***
+     P00588: ratio=0.955  p=1.773e-01  r=0.367 ns
+   → 4/5 proteins show FSPE ratio < 1 (directional; mean=0.568)
      NOTE: Per-protein tests underpowered (n=3-9 functional sites each).
      Pooled meta-analysis more reliable; per-protein results are indicative only.
 
-   Pooled meta-analysis (n=41 func, n=140 non-func):
-     Mann-Whitney U p = 7.32e-02   rank-biserial r = 0.149
-     Mean func entropy: 1.985   Mean non-func entropy: 2.307
+   Pooled meta-analysis (n=75 func, n=300 non-func):
+     Mann-Whitney U p = 4.59e-08   rank-biserial r = 0.399
+     Mean func entropy: 1.335   Mean non-func entropy: 2.156
 
 2b. PSEUDO-LOG-LIKELIHOOD (PLM) ANALYSIS
 ----------------------------------------
-   Proteins with PLM data: 7
+   Proteins with PLM data: 15
      P02879:   p=8.641e-01  r=0.320  delta=-0.694 ns
      P01555:   p=1.513e-01  r=-0.320  delta=0.560 ns
-     P10844:   p=2.652e-01  r=-0.200  delta=0.462 ns
+     P0DPI1:   p=9.411e-05  r=-1.000  delta=2.446 ***
      P01552:   p=5.840e-01  r=0.044  delta=0.132 ns
      P13423:   p=2.192e-01  r=-0.200  delta=0.284 ns
      P11140:   p=9.155e-01  r=0.400  delta=-0.451 ns
      P04958:   p=9.411e-05  r=-1.000  delta=2.335 ***
+     P0DF97:   p=2.823e-03  r=-0.780  delta=1.782 **
+     O34208:   p=4.329e-03  r=-1.000  delta=2.198 **
+     Q51451:   p=1.447e-02  r=-0.640  delta=1.121 *
+     P15273:   p=7.529e-05  r=-0.960  delta=2.012 ***
+     P00648:   p=8.487e-01  r=0.300  delta=-0.486 ns
+     P04419:   p=2.259e-03  r=-0.933  delta=1.839 **
+     Q99ZW2:   p=2.252e-06  r=-0.986  delta=1.373 ***
+     P00588:   p=6.945e-02  r=-0.567  delta=0.824 ns
 
-   Pooled PLM meta-analysis (n=41 func, n=140 non-func):
-     Mann-Whitney U p = 7.80e-02   r = -0.146
-     Mean func PLM: -1.909   Mean non-func PLM: -2.238
-     Delta (func - non-func): 0.329
+   Pooled PLM meta-analysis (n=75 func, n=300 non-func):
+     Mann-Whitney U p = 2.44e-08   r = -0.407
+     Mean func PLM: -1.201   Mean non-func PLM: -2.094
+     Delta (func - non-func): 0.893
 
 3. NEAREST NEIGHBOR RETRIEVAL
 ----------------------------------------
-   Precision@1: 0.500
-     Dangerous queries → 0.917
-     Benign queries    → 0.083
-   Precision@3: 0.483
-     Dangerous queries → 0.889
-     Benign queries    → 0.078
-   Precision@5: 0.493
-     Dangerous queries → 0.867
-     Benign queries    → 0.120
-   Precision@10: 0.497
-     Dangerous queries → 0.853
-     Benign queries    → 0.142
+   Precision@1: 0.541
+     Dangerous queries → 0.915
+     Benign queries    → 0.113
+   Precision@3: 0.509
+     Dangerous queries → 0.883
+     Benign queries    → 0.081
+   Precision@5: 0.514
+     Dangerous queries → 0.865
+     Benign queries    → 0.113
+   Precision@10: 0.523
+     Dangerous queries → 0.851
+     Benign queries    → 0.148
 
 4. FUNCTIONAL SPECIFICITY INDEX (FSI)
 ----------------------------------------
-   Mean FSI: 1.027 ± 0.871  95% CI [0.481, 1.678]
-   Cohen's d vs 1.0: 0.029
-   Structures evaluated: 8
-     2AAI: FSI=1.097, func_rec=0.440, overall=0.400  (mean WT identity=0.400)
-     1XTC: FSI=0.220, func_rec=0.084, overall=0.379  (mean WT identity=0.379)
-     3BTA: FSI=2.866, func_rec=0.522, overall=0.182  (mean WT identity=0.182)
-     3SEB: FSI=0.702, func_rec=0.332, overall=0.474  (mean WT identity=0.474)
+   Mean FSI: 0.854 ± 0.750  95% CI [0.447, 1.289]
+   Cohen's d vs 1.0: -0.187
+   Structures evaluated: 12
+     2AAI: FSI=1.100, func_rec=0.442, overall=0.401  (mean WT identity=0.401)
+     1XTC: FSI=0.202, func_rec=0.076, overall=0.373  (mean WT identity=0.373)
+     3BTA: FSI=2.345, func_rec=0.425, overall=0.181  (mean WT identity=0.181)
+     3SEB: FSI=0.695, func_rec=0.330, overall=0.475  (mean WT identity=0.475)
      1ACC: FSI=0.000, func_rec=0.000, overall=0.098  (mean WT identity=0.098)
-     1ABR: FSI=1.127, func_rec=0.502, overall=0.445  (mean WT identity=0.445)
-     1Z7H: FSI=1.753, func_rec=0.782, overall=0.446  (mean WT identity=0.446)
-     4HSC: FSI=0.452, func_rec=0.200, overall=0.443  (mean WT identity=0.443)
+     1ABR: FSI=1.115, func_rec=0.496, overall=0.445  (mean WT identity=0.445)
+     1Z7H: FSI=1.895, func_rec=0.840, overall=0.444  (mean WT identity=0.444)
+     4HSC: FSI=0.453, func_rec=0.200, overall=0.442  (mean WT identity=0.442)
+     4QMK: FSI=0.000, func_rec=0.000, overall=0.146  (mean WT identity=0.146)
+     1HE1: FSI=1.689, func_rec=0.860, overall=0.507  (mean WT identity=0.507)
+     1A2P: FSI=0.174, func_rec=0.102, overall=0.580  (mean WT identity=0.580)
+     1MDT: FSI=0.577, func_rec=0.143, overall=0.247  (mean WT identity=0.247)
 
    Per-sequence Wilcoxon signed-rank (n=100/protein, Holm-Bonferroni corrected):
-     2AAI: p_corr=0.0417 *  (FSI>1 in 57% of sequences)
+     2AAI: p_corr=0.0450 *  (FSI>1 in 61% of sequences)
      1XTC: p_corr=1.0000 ns  (FSI>1 in 1% of sequences)
-     3BTA: p_corr=0.0000 ***  (FSI>1 in 100% of sequences)
+     3BTA: p_corr=0.0000 ***  (FSI>1 in 93% of sequences)
      3SEB: p_corr=1.0000 ns  (FSI>1 in 0% of sequences)
      1ACC: p_corr=1.0000 ns  (FSI>1 in 0% of sequences)
-     1ABR: p_corr=0.0001 ***  (FSI>1 in 50% of sequences)
-     1Z7H: p_corr=0.0000 ***  (FSI>1 in 96% of sequences)
+     1ABR: p_corr=0.0004 ***  (FSI>1 in 51% of sequences)
+     1Z7H: p_corr=0.0000 ***  (FSI>1 in 99% of sequences)
      4HSC: p_corr=1.0000 ns  (FSI>1 in 0% of sequences)
-   Protein-level t-test (low power, n=8): p = 0.9366
+     4QMK: p_corr=1.0000 ns  (FSI>1 in 0% of sequences)
+     1HE1: p_corr=0.0000 ***  (FSI>1 in 92% of sequences)
+     1A2P: p_corr=1.0000 ns  (FSI>1 in 0% of sequences)
+     1MDT: p_corr=1.0000 ns  (FSI>1 in 43% of sequences)
+   Protein-level t-test (low power, n=12): p = 0.5308
 
 4b. FSI TEMPERATURE SENSITIVITY
 ----------------------------------------
@@ -113,15 +137,13 @@
 5. NEGATIVE CONTROL ANALYSIS (MECHANISM-MATCHED)
 ----------------------------------------
    Control proteins (benign, mechanism-matched to toxins):
-     1AST (Astacin): FSI=1.883 ± 0.238  [control for 3BTA]
-     1QD2 (Saporin-6): FSI=0.710 ± 0.443  [control for 2AAI]
-     1LNF (Thermolysin): FSI=1.656 ± 0.239  [control for 3BTA]
-     1LYZ (Hen egg-white lysozyme): FSI=0.077 ± 0.281  [control for general_baseline]
+     1AST (Astacin): FSI=1.831 ± 0.246  [control for 3BTA]
+     1QD2 (Saporin-6): FSI=0.627 ± 0.412  [control for 2AAI]
+     1LYZ (Hen egg-white lysozyme): FSI=0.044 ± 0.215  [control for general_baseline]
 
    Toxin vs. matched-control comparisons:
-     3BTA (FSI=2.866) vs 1AST FSI=1.883: p=1.638e-29 r=-0.918 ***
-     2AAI (FSI=1.094) vs 1QD2 FSI=0.710: p=4.736e-10 r=-0.501 ***
-     3BTA (FSI=2.866) vs 1LNF FSI=1.656: p=4.278e-32 r=-0.960 ***
+     3BTA (FSI=2.875) vs 1AST FSI=1.831: p=4.458e-02 r=-1.000 *
+     2AAI (FSI=1.094) vs 1QD2 FSI=0.627: p=1.463e-01 r=-0.620 ns
    → Elevated FSI in toxins vs mechanism-matched benign controls
      confirms FSI reflects dangerous function, not fold geometry alone.
      Three-way comparison (3BTA vs 1AST vs 1LNF) decomposes fold
@@ -134,7 +156,7 @@
      Realizability Tier: 3
      Mean barrier: 0.400
      Key bottleneck: Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)
-     Net risk: 0.038
+     Net risk: 0.04
      ProteinMPNN shows moderate functional specificity for Ricin A-chain (FSI=1.10). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle).
 
    Cholera toxin A1 subunit:
@@ -142,42 +164,42 @@
      Mean barrier: 0.400
      Key bottleneck: Holotoxin assembly for cell-level toxicity
      Net risk: 0.084
-     ProteinMPNN does not specifically recover Cholera toxin A1 subunit function (FSI=0.22). ESM-2 is highly confident at functional sites (FSPE ratio=0.79). Physical realizability is HIGH (Tier 2): Holotoxin assembly for cell-level toxicity.
+     ProteinMPNN does not specifically recover Cholera toxin A1 subunit function (FSI=0.20). ESM-2 is highly confident at functional sites (FSPE ratio=0.79). Physical realizability is HIGH (Tier 2): Holotoxin assembly for cell-level toxicity.
 
    Botulinum neurotoxin type A:
      Realizability Tier: 4
      Mean barrier: 0.700
      Key bottleneck: Size + folding complexity + Tier 1 Select Agent regulation
-     Net risk: 0.634
-     ProteinMPNN strongly recovers Botulinum neurotoxin type A function from backbone (FSI=2.87). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.91). Physical realizability is LOW (Tier 4): Size + folding complexity + Tier 1 Select Agent regulation.
+     Net risk: 0.753
+     ProteinMPNN strongly recovers Botulinum neurotoxin type A function from backbone (FSI=2.35). ESM-2 is highly confident at functional sites (FSPE ratio=0.03). Physical realizability is LOW (Tier 4): Size + folding complexity + Tier 1 Select Agent regulation.
 
    Staphylococcal enterotoxin B:
      Realizability Tier: 3
      Mean barrier: 0.300
      Key bottleneck: Regulatory only — biochemistry is trivially accessible
      Net risk: 0.019
-     ProteinMPNN does not specifically recover Staphylococcal enterotoxin B function (FSI=0.70). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.96). Physical realizability is MODERATE (Tier 3): Regulatory only — biochemistry is trivially accessible.
+     ProteinMPNN does not specifically recover Staphylococcal enterotoxin B function (FSI=0.69). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.96). Physical realizability is MODERATE (Tier 3): Regulatory only — biochemistry is trivially accessible.
 
    Abrin A-chain:
      Realizability Tier: 3
      Mean barrier: 0.400
      Key bottleneck: Regulatory (Select Agent) + cell entry (requires B-chain lectin)
-     Net risk: 0.051
-     ProteinMPNN shows moderate functional specificity for Abrin A-chain (FSI=1.13). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain lectin).
+     Net risk: 0.046
+     ProteinMPNN shows moderate functional specificity for Abrin A-chain (FSI=1.11). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain lectin).
 
    Tetanus toxin light chain:
      Realizability Tier: 4
      Mean barrier: 0.600
      Key bottleneck: Size + zinc folding + Tier 1 Select Agent regulation
-     Net risk: 0.563
-     ProteinMPNN strongly recovers Tetanus toxin light chain function from backbone (FSI=1.75). ESM-2 is highly confident at functional sites (FSPE ratio=0.14). Physical realizability is LOW (Tier 4): Size + zinc folding + Tier 1 Select Agent regulation.
+     Net risk: 0.612
+     ProteinMPNN strongly recovers Tetanus toxin light chain function from backbone (FSI=1.90). ESM-2 is highly confident at functional sites (FSPE ratio=0.14). Physical realizability is LOW (Tier 4): Size + zinc folding + Tier 1 Select Agent regulation.
 
    Streptolysin O:
      Realizability Tier: 2
      Mean barrier: 0.350
      Key bottleneck: Oligomerization on cholesterol-containing membranes required for pore function
-     Net risk: 0.0
-     ProteinMPNN does not specifically recover Streptolysin O function (FSI=0.45). Physical realizability is HIGH (Tier 2): Oligomerization on cholesterol-containing membranes required for pore function.
+     Net risk: 0.203
+     ProteinMPNN does not specifically recover Streptolysin O function (FSI=0.45). ESM-2 is highly confident at functional sites (FSPE ratio=0.51). Physical realizability is HIGH (Tier 2): Oligomerization on cholesterol-containing membranes required for pore function.
 
    Anthrax protective antigen:
      Realizability Tier: 4
@@ -190,50 +212,50 @@
      Realizability Tier: 2
      Mean barrier: 0.300
      Key bottleneck: SpcU chaperone co-expression requirement
-     Net risk: None
-     Physical realizability is HIGH (Tier 2): SpcU chaperone co-expression requirement.
+     Net risk: 0.424
+     ProteinMPNN never recovers ExoU phospholipase functional residues (FSI=0.00); these residues are structurally unusual and not constrained by backbone geometry alone. ESM-2 is highly confident at functional sites (FSPE ratio=0.00). Physical realizability is HIGH (Tier 2): SpcU chaperone co-expression requirement.
 
    ExoS ADP-ribosyltransferase:
      Realizability Tier: 2
      Mean barrier: 0.200
      Key bottleneck: None — most accessible in the panel; all barriers are minimal
-     Net risk: None
-     Physical realizability is HIGH (Tier 2): None — most accessible in the panel; all barriers are minimal.
+     Net risk: 0.463
+     ProteinMPNN strongly recovers ExoS ADP-ribosyltransferase function from backbone (FSI=1.69). ESM-2 is highly confident at functional sites (FSPE ratio=0.66). Physical realizability is HIGH (Tier 2): None — most accessible in the panel; all barriers are minimal.
 
    YopH protein tyrosine phosphatase:
      Realizability Tier: 2
      Mean barrier: 0.150
      Key bottleneck: Regulatory grey zone (Y. pestis Select Agent for the organism; recombinant protein status depends on jurisdiction)
-     Net risk: None
-     Physical realizability is HIGH (Tier 2): Regulatory grey zone (Y. pestis Select Agent for the organism; recombinant protein status depends on jurisdiction).
+     Net risk: 0.923
+     ESM-2 is highly confident at functional sites (FSPE ratio=0.00). Physical realizability is HIGH (Tier 2): Regulatory grey zone (Y. pestis Select Agent for the organism; recombinant protein status depends on jurisdiction).
 
    Barnase ribonuclease:
      Realizability Tier: 1
      Mean barrier: 0.050
      Key bottleneck: Barstar inhibitor co-expression required to prevent host cell toxicity during E. coli expression
-     Net risk: None
-     Physical realizability is HIGH (Tier 1): Barstar inhibitor co-expression required to prevent host cell toxicity during E. coli expression.
+     Net risk: 0.0
+     ProteinMPNN does not specifically recover Barnase ribonuclease function (FSI=0.17). Physical realizability is HIGH (Tier 1): Barstar inhibitor co-expression required to prevent host cell toxicity during E. coli expression.
 
    Colicin E2 DNase:
      Realizability Tier: 1
      Mean barrier: 0.100
      Key bottleneck: Im2 immunity protein required for safe handling during E. coli expression
-     Net risk: None
-     Physical realizability is HIGH (Tier 1): Im2 immunity protein required for safe handling during E. coli expression.
+     Net risk: 0.819
+     ESM-2 is highly confident at functional sites (FSPE ratio=0.14). Physical realizability is HIGH (Tier 1): Im2 immunity protein required for safe handling during E. coli expression.
 
    CRISPR-associated protein Cas9:
      Realizability Tier: 2
      Mean barrier: 0.300
      Key bottleneck: DURC regulatory considerations for some applications; size (4.1 kb gene) otherwise trivial
-     Net risk: None
-     Physical realizability is HIGH (Tier 2): DURC regulatory considerations for some applications; size (4.1 kb gene) otherwise trivial.
+     Net risk: 0.842
+     ESM-2 is highly confident at functional sites (FSPE ratio=0.01). Physical realizability is HIGH (Tier 2): DURC regulatory considerations for some applications; size (4.1 kb gene) otherwise trivial.
 
    Diphtheria toxin:
      Realizability Tier: 2
      Mean barrier: 0.350
      Key bottleneck: Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon
-     Net risk: None
-     Physical realizability is HIGH (Tier 2): Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon.
+     Net risk: 0.018
+     ProteinMPNN does not specifically recover Diphtheria toxin function (FSI=0.58). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.95). Physical realizability is HIGH (Tier 2): Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon.
 
    Vacuolating cytotoxin A:
      Realizability Tier: 4
@@ -362,5 +384,5 @@
    Expanded protein annotations (Round 2):
      Abrin A-chain (P11140/1ABR): Tahirov et al. 1995 doi:10.1006/jmbi.1995.0581
      Tetanus toxin LC (P04958/1Z7H): HExxH zinc coordination conserved across BoNT/TeNT
-     Streptolysin O (P0C0I2/4HSC): Soltani et al. 2007 doi:10.1128/JB.00034-07
+     Streptolysin O (P0DF97/4HSC): Soltani et al. 2007 doi:10.1128/JB.00034-07
      Thermolysin control (1LNF): Matthews et al. 1972 doi:10.1038/238037a0

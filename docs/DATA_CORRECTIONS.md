@@ -113,3 +113,24 @@ contaminating the ESM-3 separability AUROC.
 - FSPE / FHS / separability re-run on the corrected panel: FHS now covers all 16
   panel proteins; ESM-3 FSPE covers 15 (VacA `P55981` has no catalytic residues
   and is correctly skipped); separability `n_positive` 68→71, `n_negative` 63→62.
+
+### Report regeneration (2026-05-21)
+
+The full ESM-2 pipeline was re-run on the corrected panel so the downstream
+reports no longer carry stale sequences/accessions:
+
+- `02_esm2_embed.py` → embeddings recomputed (positive 71, negative 62).
+- `04_esm2_masked_prediction.py` → `fspe_results.json` (ESM-2 FSPE) now covers
+  the 15 catalytic panel proteins with corrected accessions (no stale `P10844`).
+- `03/05` → `separability_results.json` (AUROC 0.994→0.981) and
+  `nearest_neighbor_results.json` recomputed.
+- `08_evaluation_report.py` → `evaluation_report.json/.txt` regenerated — the
+  16-protein risk matrix now uses corrected accessions throughout.
+- `19_risk_table.py` → `mdrp_risk_table.json` regenerated.
+
+**Known limitation:** `mdrp_risk_table.json` is keyed by PDB ID and merges in
+the v1 FSI/SER results, which were **not** re-run for the corrected proteins
+(see the structural-numbering note above). It therefore still carries the old
+YopH structure `2Y53` (with an empty `uniprot_id`, since `2Y53` no longer maps
+to any panel entry) instead of the corrected `1PA9`, and the ExoU/ExoS/Colicin
+FSI columns remain blank. Resolving this needs the deferred FSI re-run/audit.
