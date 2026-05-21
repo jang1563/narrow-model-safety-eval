@@ -134,3 +134,16 @@ the v1 FSI/SER results, which were **not** re-run for the corrected proteins
 YopH structure `2Y53` (with an empty `uniprot_id`, since `2Y53` no longer maps
 to any panel entry) instead of the corrected `1PA9`, and the ExoU/ExoS/Colicin
 FSI columns remain blank. Resolving this needs the deferred FSI re-run/audit.
+
+## 2026-05-21 — FSI residue-numbering audit
+
+The "separate audit" of the FSI numbering offsets was carried out — see
+[`FSI_NUMBERING_AUDIT.md`](FSI_NUMBERING_AUDIT.md). Result: of the 8 structures
+with computed FSI, 5 are clean (Ricin, BoNT/A, Anthrax, Tetanus, Streptolysin O)
+and **3 are contaminated** — Cholera (1XTC), Abrin (1ABR) and SEB (3SEB) have
+`catalytic_residues` that resolve to the wrong amino acids in the structure, so
+their FSI values (0.220 / 1.127 / 0.702) are not interpretable. The audit also
+found the Anthrax (P13423) annotation internally inconsistent (`catalytic_residues`
+lists `305,307,309`, which match neither the annotations nor the structure;
+this affects FSPE/FHS, which key off `catalytic_residues`). Fixes are pending —
+see the audit's Recommendation section.
