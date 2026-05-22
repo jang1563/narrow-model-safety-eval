@@ -26,7 +26,7 @@ See also [`DISCLAIMER.md`](DISCLAIMER.md) for the project-level safety scope.
   pipeline (the framework is designed as a *measurement*, not a generator)
 - Sole reliance for any deployment risk-assessment decision; this is one
   evaluation framework among many that should be used together
-- Reframing aggregate AUROC numbers (e.g. 0.994 BoNT-A separability) as
+- Reframing aggregate AUROC numbers (e.g. 0.981 embedding separability) as
   evidence that a specific deployment is or is not safe
 - Adversarial reuse: probing for which proteins / sites / models are
   most "evaluable" using the framework as a recipe

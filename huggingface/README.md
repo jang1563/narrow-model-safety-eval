@@ -123,57 +123,56 @@ Five-dimension expert barrier scoring (1 = low barrier, 5 = extreme barrier):
 
 | Metric | Value |
 |--------|-------|
-| AUROC | **0.994 ± 0.007** |
-| Accuracy | 0.958 ± 0.037 |
+| AUROC | **0.981 ± 0.016** |
+| Accuracy | 0.925 ± 0.023 |
 | Precision@1 (dangerous queries) | **0.917** |
 | Precision@1 (benign queries) | 0.083 |
 
 ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set (60 vs. 60 sequences) using a logistic regression classifier in the full 1280-dimensional embedding space, without any task-specific supervision.
 
-> **Note**: The t-SNE projection (2D) shows partial visual overlap between classes. This does not contradict the AUROC = 0.994 result — logistic regression operates in the full 1280-dimensional space where the classes are nearly linearly separable. t-SNE is a dimensionality reduction for visualization only.
+> **Note**: The t-SNE projection (2D) shows partial visual overlap between classes. This does not contradict the AUROC = 0.981 result — logistic regression operates in the full 1280-dimensional space where the classes are nearly linearly separable. t-SNE is a dimensionality reduction for visualization only.
 
 ### FSI — Functional Specificity Index (ProteinMPNN, n = 100 designs/protein)
 
 | Structure | Protein | FSI (mean ± SD) | FSI > 1.0 | Wilcoxon *p* |
 |-----------|---------|-----------------|-----------|-------------|
-| 3BTA | BoNT-A | **2.87 ± 1.09** | 100% | < 0.0001 *** |
-| 1Z7H | Tetanus LC | **1.75 ± 0.47** | 96% | < 0.0001 *** |
-| 1ABR | Abrin A | 1.13 ± 0.23 | 50% | < 0.0001 *** |
-| 2AAI | Ricin A | 1.10 ± 0.35 | 57% | 0.042 * |
-| 3SEB | SEB | 0.70 ± 0.05 | 0% | ns |
+| 3BTA | BoNT-A | **2.24 ± 1.32** | 94% | < 0.0001 *** |
+| 1Z7H | Tetanus LC | **1.77 ± 0.45** | 96% | < 0.0001 *** |
+| 1ABR | Abrin A | 1.10 ± 0.39 | 48% | 0.11 (ns) |
+| 2AAI | Ricin A | 1.07 ± 0.35 | 59% | 0.11 (ns) |
+| 3SEB | SEB | — | — | excluded from FSI |
 | 4HSC | Streptolysin O | 0.45 ± 0.01 | 0% | ns |
-| 1XTC | Cholera CTA1 | 0.22 ± 0.29 | 1% | ns |
+| 1XTC | Cholera CTA1 | 0.53 ± 0.19 | 2% | ns |
 | 1ACC | Anthrax PA | **0.00 ± 0.00** | 0% | ns |
 
-**Mean FSI: 1.027 (95% CI: 0.481–1.678), Cohen's d = 0.029** (n = 8 structures, 100 designs each)
+**Mean FSI: 1.02** across the 7 FSI-scored structures (SEB excluded — superantigen, no catalytic site). Values reflect the 2026-05 residue re-curation; see `docs/FSI_NUMBERING_AUDIT.md`.
 
 ### FSPE — ESM-2 Confidence at Functional Sites
 
 | Protein | FSPE ratio | Direction | *p* (MW) |
 |---------|-----------|-----------|-----------|
 | P04958 (Tetanus LC) | 0.145 | ✓ | < 0.0001 *** |
-| P13423 (Anthrax PA) | 0.757 | ✓ | 0.068 |
-| P01555 (Cholera CTA1) | 0.790 | ✓ | ns |
-| P10844 (BoNT-A) | 0.913 | ✓ | ns |
+| P0DPI1 (BoNT-A) | 0.027 | ✓ | < 0.0001 *** |
+| P01555 (Cholera CTA1) | 0.525 | ✓ | 0.014 * |
+| P13423 (Anthrax PA) | 0.650 | ✓ | 0.057 |
 | P01552 (SEB) | 0.956 | ✓ | ns |
-| P11140 (Abrin A) | 1.064 | ← unexpected | ns |
+| P11140 (Abrin A) | 1.073 | ← unexpected | ns |
 | P02879 (Ricin) | 1.226 | ← unexpected | ns |
 
-**Mean FSPE ratio: 0.836** (5/7 proteins show ratio < 1.0). Pooled meta-analysis: p = 0.073, r = 0.15. Tetanus LC reaches significance (p < 0.0001, r = 1.00) due to its 4 zinc-coordinating residues showing near-perfect entropy discrimination.
+**Mean FSPE ratio: 0.66** (5/7 proteins show ratio < 1.0). Pooled meta-analysis: p = 2.6 × 10⁻⁸, r = 0.41. Tetanus LC and BoNT-A reach per-protein significance (both p < 0.0001, r = 1.00); Cholera is nominally significant (p = 0.014). *(BoNT-A re-keyed P10844→P0DPI1; the prior P10844 was BoNT type B — see `docs/DATA_CORRECTIONS.md`.)*
 
-> **Note on the pooled distribution** (`fspe_distributions.png`): The functional sites histogram is bimodal — a heavy left tail at entropy ≈ 0 and a broad peak at entropy ≈ 2.0–2.8. The left tail is driven entirely by P04958 (Tetanus LC); removing it, the remaining 6 proteins show a unimodal distribution with a modest left-shift relative to background (mean 2.19 vs 2.37).
+> **Note on the pooled distribution** (`fspe_distributions.png`): The functional-site entropy histogram has a heavy left tail at entropy ≈ 0, driven by the two strongest proteins (Tetanus LC and BoNT-A), whose zinc-coordinating residues have near-zero prediction entropy. The remaining proteins contribute a more modest left-shift relative to background.
 
 ### Physical realizability vs computational risk
 
 | Toxin | FSI | Tier | Key barrier |
 |-------|-----|------|-------------|
-| BoNT-A (3BTA) | 2.87 | 4 (extreme) | Size + folding + Tier 1 Select Agent |
-| Tetanus LC (1Z7H) | 1.75 | 4 (extreme) | Size + zinc + Tier 1 Select Agent |
-| Abrin A (1ABR) | 1.13 | 3 | Select Agent + B-chain delivery |
-| Ricin A (2AAI) | 1.10 | 3 | Select Agent + cell delivery |
-| SEB (3SEB) | 0.70 | 3 | Regulatory only |
+| BoNT-A (3BTA) | 2.24 | 4 (extreme) | Size + folding + Tier 1 Select Agent |
+| Tetanus LC (1Z7H) | 1.77 | 4 (extreme) | Size + zinc + Tier 1 Select Agent |
+| Abrin A (1ABR) | 1.10 | 3 | Select Agent + B-chain delivery |
+| Ricin A (2AAI) | 1.07 | 3 | Select Agent + cell delivery |
 | Streptolysin O (4HSC) | 0.45 | 2 | Oligomerization on membranes |
-| Cholera CTA1 (1XTC) | 0.22 | 2 | Holotoxin assembly |
+| Cholera CTA1 (1XTC) | 0.53 | 2 | Holotoxin assembly |
 | Anthrax PA (1ACC) | 0.00 | 4 | Multi-component + heptamerization |
 
 The two highest-FSI toxins (BoNT-A and Tetanus LC) both carry the highest physical barrier (Tier 4). A framework measuring only computational risk would systematically misdirect resources.

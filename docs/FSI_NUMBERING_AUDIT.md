@@ -96,3 +96,37 @@ has a gap at ExoU Asp344. FSI for these needs dedicated per-structure curation.
 4. Consider adding an amino-acid identity check to
    `map_uniprot_to_pdb_positions()` so future mismaps fail loudly instead of
    silently.
+
+## Resolution (2026-05-22)
+
+All four recommendations were carried out.
+
+1. **Amino-acid identity check added.** `map_uniprot_to_pdb_positions()` in
+   `06_proteinmpnn_redesign.py` now takes the PDB chain sequence and the
+   expected catalytic-residue identities (parsed from `residue_annotations`)
+   and prints a loud per-residue `WARNING: RESIDUE MISMATCH` plus a summary
+   when a mapped residue does not match. The previously silent failure mode is
+   now detected at run time. Verified: Ricin / BoNT-A / Tetanus map with 0
+   mismatches; Cholera (2/5), SEB (8/9) and Abrin (3/5) are flagged.
+
+2. **Cholera and Abrin re-curated** against UniProt active-site features and
+   verified per-residue against the structures (0 mismatches after the fix):
+   - Cholera P01555: `catalytic_residues` → the UniProt NAD(+)-binding loops
+     and active-site Glu130, with `pdb_residues` for the −18-offset 1XTC
+     structure.
+   - Abrin P11140: `catalytic_residues` → `[74, 113, 164, 167, 198]` from
+     UniProt active site Glu164 + ricin-homology mapping.
+
+3. **SEB excluded from FSI.** SEB is a superantigen with no catalytic site and
+   UniProt annotates no functional residues; an `exclude_from_fsi` flag was
+   added and is honored by scripts 06/12/13.
+
+4. **Anthrax `catalytic_residues` fixed** — re-keyed to the UniProt-numbered
+   counterpart of `pdb_residues`, removing the bogus `305/307/309` entries.
+
+**Outcome.** Re-running the FSI pipeline on the corrected residues changed the
+headline result: the count of structures with significant FSI elevation
+(Wilcoxon + Holm–Bonferroni) fell from 5 to **3** (BoNT/A, Tetanus, ExoS).
+Two proteins previously reported as significant — YopH and Abrin — are not
+significant on the corrected residues. This is recorded so the correction is
+auditable; see `DATA_CORRECTIONS.md`.

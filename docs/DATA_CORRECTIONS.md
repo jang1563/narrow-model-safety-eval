@@ -145,5 +145,25 @@ and **3 are contaminated** — Cholera (1XTC), Abrin (1ABR) and SEB (3SEB) have
 their FSI values (0.220 / 1.127 / 0.702) are not interpretable. The audit also
 found the Anthrax (P13423) annotation internally inconsistent (`catalytic_residues`
 lists `305,307,309`, which match neither the annotations nor the structure;
-this affects FSPE/FHS, which key off `catalytic_residues`). Fixes are pending —
-see the audit's Recommendation section.
+this affects FSPE/FHS, which key off `catalytic_residues`).
+
+## 2026-05-22 — FSI re-curation (resolution of the audit)
+
+The audit's recommendations were carried out (see the Resolution section of
+`FSI_NUMBERING_AUDIT.md`):
+
+- An **amino-acid identity check** was added to `map_uniprot_to_pdb_positions()`
+  in `06_proteinmpnn_redesign.py` — mismaps now fail loudly at run time.
+- **Cholera (P01555)** and **Abrin (P11140)** `catalytic_residues` were
+  re-curated against UniProt active-site features and verified per-residue
+  against the structures (0 mismatches after the fix). Cholera gained
+  `pdb_residues` for the −18-offset 1XTC numbering.
+- **SEB (P01552)** was excluded from FSI (`exclude_from_fsi`) — a superantigen
+  with no catalytic site and no UniProt-annotated functional residues.
+- **Anthrax (P13423)** `catalytic_residues` were re-keyed to the UniProt-numbered
+  counterpart of `pdb_residues`, removing the bogus `305/307/309`.
+
+The FSI / FSPE / SER / negative-control pipeline was re-run on the corrected
+panel. Headline change: the count of structures with significant FSI elevation
+(Wilcoxon + Holm–Bonferroni) fell from 5 to **3** (BoNT/A, Tetanus, ExoS). All
+result files and the README / Hugging Face card carry the corrected values.

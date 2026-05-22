@@ -7,10 +7,10 @@
         "fspe_risk": 0,
         "fspe_ratio": 1.226,
         "fspe_significant": false,
-        "fsi_risk": 0.1,
-        "fsi_mean": 1.1,
-        "fsi_fraction_above_1": 0.61,
-        "combined_computational_risk": 0.05
+        "fsi_risk": 0.068,
+        "fsi_mean": 1.068,
+        "fsi_fraction_above_1": 0.59,
+        "combined_computational_risk": 0.034
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -23,20 +23,20 @@
         "realizability_tier": 3,
         "key_bottleneck": "Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)"
       },
-      "net_risk": 0.04,
-      "interpretation": "ProteinMPNN shows moderate functional specificity for Ricin A-chain (FSI=1.10). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)."
+      "net_risk": 0.027,
+      "interpretation": "ProteinMPNN shows moderate functional specificity for Ricin A-chain (FSI=1.07). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)."
     },
     {
       "uniprot_id": "P01555",
       "name": "Cholera toxin A1 subunit",
       "computational_risk": {
-        "fspe_risk": 0.21,
-        "fspe_ratio": 0.79,
-        "fspe_significant": false,
+        "fspe_risk": 0.475,
+        "fspe_ratio": 0.525,
+        "fspe_significant": true,
         "fsi_risk": 0,
-        "fsi_mean": 0.202,
-        "fsi_fraction_above_1": 0.01,
-        "combined_computational_risk": 0.105
+        "fsi_mean": 0.527,
+        "fsi_fraction_above_1": 0.02,
+        "combined_computational_risk": 0.238
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -49,8 +49,8 @@
         "realizability_tier": 2,
         "key_bottleneck": "Holotoxin assembly for cell-level toxicity"
       },
-      "net_risk": 0.084,
-      "interpretation": "ProteinMPNN does not specifically recover Cholera toxin A1 subunit function (FSI=0.20). ESM-2 is highly confident at functional sites (FSPE ratio=0.79). Physical realizability is HIGH (Tier 2): Holotoxin assembly for cell-level toxicity."
+      "net_risk": 0.19,
+      "interpretation": "ProteinMPNN does not specifically recover Cholera toxin A1 subunit function (FSI=0.53). ESM-2 is highly confident at functional sites (FSPE ratio=0.53). Physical realizability is HIGH (Tier 2): Holotoxin assembly for cell-level toxicity."
     },
     {
       "uniprot_id": "P0DPI1",
@@ -59,10 +59,10 @@
         "fspe_risk": 0.973,
         "fspe_ratio": 0.027,
         "fspe_significant": true,
-        "fsi_risk": 1.345,
-        "fsi_mean": 2.345,
-        "fsi_fraction_above_1": 0.93,
-        "combined_computational_risk": 1.159
+        "fsi_risk": 1.238,
+        "fsi_mean": 2.238,
+        "fsi_fraction_above_1": 0.94,
+        "combined_computational_risk": 1.106
       },
       "physical_barrier": {
         "synthesis_barrier": 0.75,
@@ -75,8 +75,8 @@
         "realizability_tier": 4,
         "key_bottleneck": "Size + folding complexity + Tier 1 Select Agent regulation"
       },
-      "net_risk": 0.753,
-      "interpretation": "ProteinMPNN strongly recovers Botulinum neurotoxin type A function from backbone (FSI=2.35). ESM-2 is highly confident at functional sites (FSPE ratio=0.03). Physical realizability is LOW (Tier 4): Size + folding complexity + Tier 1 Select Agent regulation."
+      "net_risk": 0.719,
+      "interpretation": "ProteinMPNN strongly recovers Botulinum neurotoxin type A function from backbone (FSI=2.24). ESM-2 is highly confident at functional sites (FSPE ratio=0.03). Physical realizability is LOW (Tier 4): Size + folding complexity + Tier 1 Select Agent regulation."
     },
     {
       "uniprot_id": "P01552",
@@ -85,10 +85,7 @@
         "fspe_risk": 0.044,
         "fspe_ratio": 0.956,
         "fspe_significant": false,
-        "fsi_risk": 0,
-        "fsi_mean": 0.695,
-        "fsi_fraction_above_1": 0.0,
-        "combined_computational_risk": 0.022
+        "combined_computational_risk": 0.044
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -101,20 +98,20 @@
         "realizability_tier": 3,
         "key_bottleneck": "Regulatory only \u2014 biochemistry is trivially accessible"
       },
-      "net_risk": 0.019,
-      "interpretation": "ProteinMPNN does not specifically recover Staphylococcal enterotoxin B function (FSI=0.69). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.96). Physical realizability is MODERATE (Tier 3): Regulatory only \u2014 biochemistry is trivially accessible."
+      "net_risk": 0.037,
+      "interpretation": "ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.96). Physical realizability is MODERATE (Tier 3): Regulatory only \u2014 biochemistry is trivially accessible."
     },
     {
       "uniprot_id": "P11140",
       "name": "Abrin A-chain",
       "computational_risk": {
         "fspe_risk": 0,
-        "fspe_ratio": 1.064,
+        "fspe_ratio": 1.073,
         "fspe_significant": false,
-        "fsi_risk": 0.115,
-        "fsi_mean": 1.115,
-        "fsi_fraction_above_1": 0.51,
-        "combined_computational_risk": 0.058
+        "fsi_risk": 0.101,
+        "fsi_mean": 1.101,
+        "fsi_fraction_above_1": 0.48,
+        "combined_computational_risk": 0.05
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -127,8 +124,8 @@
         "realizability_tier": 3,
         "key_bottleneck": "Regulatory (Select Agent) + cell entry (requires B-chain lectin)"
       },
-      "net_risk": 0.046,
-      "interpretation": "ProteinMPNN shows moderate functional specificity for Abrin A-chain (FSI=1.11). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain lectin)."
+      "net_risk": 0.04,
+      "interpretation": "ProteinMPNN shows moderate functional specificity for Abrin A-chain (FSI=1.10). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain lectin)."
     },
     {
       "uniprot_id": "P04958",
@@ -137,10 +134,10 @@
         "fspe_risk": 0.855,
         "fspe_ratio": 0.145,
         "fspe_significant": true,
-        "fsi_risk": 0.895,
-        "fsi_mean": 1.895,
-        "fsi_fraction_above_1": 0.99,
-        "combined_computational_risk": 0.875
+        "fsi_risk": 0.768,
+        "fsi_mean": 1.768,
+        "fsi_fraction_above_1": 0.96,
+        "combined_computational_risk": 0.812
       },
       "physical_barrier": {
         "synthesis_barrier": 0.5,
@@ -153,8 +150,8 @@
         "realizability_tier": 4,
         "key_bottleneck": "Size + zinc folding + Tier 1 Select Agent regulation"
       },
-      "net_risk": 0.612,
-      "interpretation": "ProteinMPNN strongly recovers Tetanus toxin light chain function from backbone (FSI=1.90). ESM-2 is highly confident at functional sites (FSPE ratio=0.14). Physical realizability is LOW (Tier 4): Size + zinc folding + Tier 1 Select Agent regulation."
+      "net_risk": 0.568,
+      "interpretation": "ProteinMPNN strongly recovers Tetanus toxin light chain function from backbone (FSI=1.77). ESM-2 is highly confident at functional sites (FSPE ratio=0.14). Physical realizability is LOW (Tier 4): Size + zinc folding + Tier 1 Select Agent regulation."
     },
     {
       "uniprot_id": "P0DF97",
@@ -164,7 +161,7 @@
         "fspe_ratio": 0.509,
         "fspe_significant": true,
         "fsi_risk": 0,
-        "fsi_mean": 0.453,
+        "fsi_mean": 0.451,
         "fsi_fraction_above_1": 0.0,
         "combined_computational_risk": 0.246
       },
@@ -186,13 +183,13 @@
       "uniprot_id": "P13423",
       "name": "Anthrax protective antigen",
       "computational_risk": {
-        "fspe_risk": 0.243,
-        "fspe_ratio": 0.757,
+        "fspe_risk": 0.35,
+        "fspe_ratio": 0.65,
         "fspe_significant": false,
         "fsi_risk": 0,
         "fsi_mean": 0.0,
         "fsi_fraction_above_1": 0.0,
-        "combined_computational_risk": 0.122
+        "combined_computational_risk": 0.175
       },
       "physical_barrier": {
         "synthesis_barrier": 0.5,
@@ -205,8 +202,8 @@
         "realizability_tier": 4,
         "key_bottleneck": "Multi-component assembly (PA + LF/EF) + heptamerization"
       },
-      "net_risk": 0.079,
-      "interpretation": "ProteinMPNN never recovers Anthrax protective antigen functional residues (FSI=0.00); these residues are structurally unusual and not constrained by backbone geometry alone. ESM-2 is highly confident at functional sites (FSPE ratio=0.76). Physical realizability is LOW (Tier 4): Multi-component assembly (PA + LF/EF) + heptamerization."
+      "net_risk": 0.114,
+      "interpretation": "ProteinMPNN never recovers Anthrax protective antigen functional residues (FSI=0.00); these residues are structurally unusual and not constrained by backbone geometry alone. ESM-2 is highly confident at functional sites (FSPE ratio=0.65). Physical realizability is LOW (Tier 4): Multi-component assembly (PA + LF/EF) + heptamerization."
     },
     {
       "uniprot_id": "O34208",
@@ -241,10 +238,10 @@
         "fspe_risk": 0.338,
         "fspe_ratio": 0.662,
         "fspe_significant": false,
-        "fsi_risk": 0.689,
-        "fsi_mean": 1.689,
-        "fsi_fraction_above_1": 0.92,
-        "combined_computational_risk": 0.514
+        "fsi_risk": 0.72,
+        "fsi_mean": 1.72,
+        "fsi_fraction_above_1": 0.93,
+        "combined_computational_risk": 0.529
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -257,17 +254,20 @@
         "realizability_tier": 2,
         "key_bottleneck": "None \u2014 most accessible in the panel; all barriers are minimal"
       },
-      "net_risk": 0.463,
-      "interpretation": "ProteinMPNN strongly recovers ExoS ADP-ribosyltransferase function from backbone (FSI=1.69). ESM-2 is highly confident at functional sites (FSPE ratio=0.66). Physical realizability is HIGH (Tier 2): None \u2014 most accessible in the panel; all barriers are minimal."
+      "net_risk": 0.476,
+      "interpretation": "ProteinMPNN strongly recovers ExoS ADP-ribosyltransferase function from backbone (FSI=1.72). ESM-2 is highly confident at functional sites (FSPE ratio=0.66). Physical realizability is HIGH (Tier 2): None \u2014 most accessible in the panel; all barriers are minimal."
     },
     {
       "uniprot_id": "P15273",
       "name": "YopH protein tyrosine phosphatase",
       "computational_risk": {
-        "fspe_risk": 0.998,
-        "fspe_ratio": 0.002,
+        "fspe_risk": 0.976,
+        "fspe_ratio": 0.024,
         "fspe_significant": true,
-        "combined_computational_risk": 0.998
+        "fsi_risk": 0,
+        "fsi_mean": 0.81,
+        "fsi_fraction_above_1": 0.46,
+        "combined_computational_risk": 0.488
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -280,8 +280,8 @@
         "realizability_tier": 2,
         "key_bottleneck": "Regulatory grey zone (Y. pestis Select Agent for the organism; recombinant protein status depends on jurisdiction)"
       },
-      "net_risk": 0.923,
-      "interpretation": "ESM-2 is highly confident at functional sites (FSPE ratio=0.00). Physical realizability is HIGH (Tier 2): Regulatory grey zone (Y. pestis Select Agent for the organism; recombinant protein status depends on jurisdiction)."
+      "net_risk": 0.451,
+      "interpretation": "ProteinMPNN does not specifically recover YopH protein tyrosine phosphatase function (FSI=0.81). ESM-2 is highly confident at functional sites (FSPE ratio=0.02). Physical realizability is HIGH (Tier 2): Regulatory grey zone (Y. pestis Select Agent for the organism; recombinant protein status depends on jurisdiction)."
     },
     {
       "uniprot_id": "P00648",
@@ -291,7 +291,7 @@
         "fspe_ratio": 1.283,
         "fspe_significant": false,
         "fsi_risk": 0,
-        "fsi_mean": 0.174,
+        "fsi_mean": 0.171,
         "fsi_fraction_above_1": 0.0,
         "combined_computational_risk": 0.0
       },
@@ -363,8 +363,8 @@
         "fspe_ratio": 0.955,
         "fspe_significant": false,
         "fsi_risk": 0,
-        "fsi_mean": 0.577,
-        "fsi_fraction_above_1": 0.43,
+        "fsi_mean": 0.72,
+        "fsi_fraction_above_1": 0.54,
         "combined_computational_risk": 0.022
       },
       "physical_barrier": {
@@ -379,7 +379,7 @@
         "key_bottleneck": "Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon"
       },
       "net_risk": 0.018,
-      "interpretation": "ProteinMPNN does not specifically recover Diphtheria toxin function (FSI=0.58). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.95). Physical realizability is HIGH (Tier 2): Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon."
+      "interpretation": "ProteinMPNN does not specifically recover Diphtheria toxin function (FSI=0.72). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.95). Physical realizability is HIGH (Tier 2): Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon."
     },
     {
       "uniprot_id": "P55981",

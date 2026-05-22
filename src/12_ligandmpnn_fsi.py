@@ -198,6 +198,10 @@ def main():
     for uniprot_id, info in func_sites.items():
         if uniprot_id.startswith("_"):
             continue
+        if info.get("exclude_from_fsi"):
+            print(f"  Skipping {uniprot_id} ({info.get('name', '?')}): "
+                  f"exclude_from_fsi is set")
+            continue
         pdb_id = info.get("pdb_id")
         if pdb_id:
             pdb_path = STRUCT_DIR / f"{pdb_id}.pdb"

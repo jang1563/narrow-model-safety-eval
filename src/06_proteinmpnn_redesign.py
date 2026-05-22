@@ -23,6 +23,7 @@ Usage:
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -161,9 +162,32 @@ def extract_wildtype_sequence(pdb_path: str, chain_id: str = "A") -> tuple:
     return sequence, sorted_nums
 
 
+_AA3_TO_1 = {
+    "Ala": "A", "Cys": "C", "Asp": "D", "Glu": "E", "Phe": "F", "Gly": "G",
+    "His": "H", "Ile": "I", "Lys": "K", "Leu": "L", "Met": "M", "Asn": "N",
+    "Pro": "P", "Gln": "Q", "Arg": "R", "Ser": "S", "Thr": "T", "Val": "V",
+    "Trp": "W", "Tyr": "Y",
+}
+
+
+def expected_aa_from_annotation(annotation: str):
+    """Parse the expected one-letter amino acid from a residue annotation.
+
+    Annotations conventionally start with a 3-letter+number token, e.g.
+    "His223 — zinc-binding ...". Returns the one-letter code, or None when
+    the annotation does not begin with a residue identity (e.g. region notes).
+    """
+    if not annotation:
+        return None
+    m = re.match(r"\s*([A-Z][a-z]{2})\d", annotation)
+    return _AA3_TO_1.get(m.group(1)) if m else None
+
+
 def map_uniprot_to_pdb_positions(
     uniprot_positions: list,
     pdb_resnums: list,
+    pdb_seq: str = None,
+    expected_aas: list = None,
 ) -> list:
     """Map UniProt 1-indexed positions to 0-indexed sequence positions in PDB.
 
@@ -171,25 +195,51 @@ def map_uniprot_to_pdb_positions(
     UniProt residue numbers to the 0-indexed positions in the extracted
     PDB sequence by matching against PDB residue numbers.
 
+    When ``pdb_seq`` and ``expected_aas`` are supplied, the amino acid found
+    at each mapped position is checked against the annotated catalytic-residue
+    identity. A residue number can be present in a structure yet point to a
+    different amino acid (numbering offset / renumbered construct); such a
+    silent mismap previously produced FSI computed on the wrong residues.
+    Mismatches are now reported loudly.
+
     Args:
-        uniprot_positions: 1-indexed UniProt residue positions
-        pdb_resnums: List of PDB residue numbers (from extract_wildtype_sequence)
+        uniprot_positions: 1-indexed residue positions to map.
+        pdb_resnums: PDB residue numbers (from extract_wildtype_sequence),
+            ordered so pdb_resnums[i] is the number for sequence position i.
+        pdb_seq: optional PDB chain sequence aligned to pdb_resnums.
+        expected_aas: optional list parallel to uniprot_positions; each entry
+            is the expected one-letter AA, or None to skip the check.
 
     Returns:
         List of 0-indexed positions in the PDB-extracted sequence.
-        Positions that cannot be mapped are silently dropped.
+        Positions that cannot be mapped are dropped (with a warning).
     """
     # Build PDB resnum -> 0-indexed position mapping
     pdb_to_idx = {resnum: i for i, resnum in enumerate(pdb_resnums)}
 
     mapped = []
-    for upos in uniprot_positions:
+    n_mismatch = 0
+    for i, upos in enumerate(uniprot_positions):
         # Try direct match (PDB numbering often matches UniProt for well-resolved structures)
         if upos in pdb_to_idx:
-            mapped.append(pdb_to_idx[upos])
+            idx = pdb_to_idx[upos]
+            mapped.append(idx)
+            # Amino-acid identity check — catch silent mismaps
+            if pdb_seq is not None and expected_aas is not None and i < len(expected_aas):
+                exp = expected_aas[i]
+                got = pdb_seq[idx] if idx < len(pdb_seq) else "?"
+                if exp and got != exp:
+                    n_mismatch += 1
+                    print(f"    WARNING: RESIDUE MISMATCH at PDB position {upos} — "
+                          f"structure has {got}, annotation expects {exp}. "
+                          f"FSI for this site is computed on the WRONG residue.")
         else:
             # Log but don't fail — some positions may be outside the resolved structure
             print(f"    WARNING: UniProt position {upos} not found in PDB residue numbers")
+
+    if n_mismatch:
+        print(f"    WARNING: {n_mismatch}/{len(uniprot_positions)} functional "
+              f"residues are mismapped — FSI for this structure is unreliable.")
 
     return mapped
 
@@ -351,18 +401,35 @@ def main():
     for uniprot_id, info in func_sites.items():
         if uniprot_id.startswith("_"):
             continue
+        if info.get("exclude_from_fsi"):
+            print(f"  Skipping {uniprot_id} ({info.get('name', '?')}): "
+                  f"exclude_from_fsi is set")
+            continue
         pdb_id = info.get("pdb_id")
         if pdb_id:
             pdb_path = STRUCT_DIR / f"{pdb_id}.pdb"
             if pdb_path.exists():
                 fs = info["functional_sites"]
+                cat_res = fs["catalytic_residues"]
+                func_res = info.get("pdb_residues", cat_res)
+                ann = fs.get("residue_annotations", {})
+                # Expected amino acids, aligned by index to func_res. Valid only
+                # when catalytic_residues and func_res are parallel (same length);
+                # otherwise the identity check is skipped for this structure.
+                if len(cat_res) == len(func_res):
+                    expected_aas = [
+                        expected_aa_from_annotation(ann.get(str(c))) for c in cat_res
+                    ]
+                else:
+                    expected_aas = None
                 pdb_structures[pdb_id] = {
                     "path": str(pdb_path),
                     "chain": info.get("pdb_chain", "A"),
                     "uniprot": uniprot_id,
                     "description": info["name"],
-                    "functional_residues": info.get("pdb_residues", fs["catalytic_residues"]),
+                    "functional_residues": func_res,
                     "use_pdb_numbering": info.get("use_pdb_numbering", False),
+                    "expected_aas": expected_aas,
                 }
 
     if not pdb_structures:
@@ -391,17 +458,16 @@ def main():
         print(f"  Wild-type length: {len(wt_seq)}")
         print(f"  PDB residue range: {pdb_resnums[0]}-{pdb_resnums[-1]}")
 
-        # Map functional residue positions to 0-indexed PDB sequence positions
+        # Map functional residue positions to 0-indexed PDB sequence positions.
+        # pdb_seq + expected_aas enable the amino-acid identity check.
+        func_positions_0idx = map_uniprot_to_pdb_positions(
+            pdb_info["functional_residues"],
+            pdb_resnums,
+            pdb_seq=wt_seq,
+            expected_aas=pdb_info.get("expected_aas"),
+        )
         if pdb_info.get("use_pdb_numbering", False):
-            # Residues already in PDB numbering — look up directly
-            func_positions_0idx = map_uniprot_to_pdb_positions(
-                pdb_info["functional_residues"], pdb_resnums
-            )
             print(f"  Using PDB numbering: {len(func_positions_0idx)}/{len(pdb_info['functional_residues'])} sites resolved")
-        else:
-            func_positions_0idx = map_uniprot_to_pdb_positions(
-                pdb_info["functional_residues"], pdb_resnums
-            )
         print(f"  Mapped {len(func_positions_0idx)}/{len(pdb_info['functional_residues'])} functional sites to PDB")
         if not func_positions_0idx:
             print(f"  ERROR: No functional sites mapped, skipping")

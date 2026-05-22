@@ -6,7 +6,7 @@ Two analyses (NOT FSI — these are masked-prediction / representation models):
 
 (A) Embedding Separability:
     Repeat AUROC / precision@k from 03_esm2_separability.py with ESM-3
-    embeddings. Hypothesis: ESM-3 > ESM-2 (AUROC=0.994) because joint
+    embeddings. Hypothesis: ESM-3 > ESM-2 (AUROC=0.981) because joint
     sequence+structure conditioning improves functional discrimination.
 
 (B) FSPE — Functional Site Prediction Entropy:

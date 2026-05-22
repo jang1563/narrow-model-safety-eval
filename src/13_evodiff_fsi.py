@@ -206,6 +206,19 @@ def main():
         action="store_true",
         help="Skip the unconditional sanity-check generation",
     )
+    parser.add_argument(
+        "--merge_existing",
+        action="store_true",
+        help="Merge into existing fsi_evodiff_results.json instead of overwriting. "
+             "New per-protein entries replace any existing entry with the same pdb_id.",
+    )
+    parser.add_argument(
+        "--save_sequences",
+        action="store_true",
+        help="Save motif-conditioned generated sequences to "
+             "results/evodiff_sequences/{pdb_id}_evodiff_motif.fasta. "
+             "Required by 17_evodiff_ser.py for SER computation.",
+    )
     args = parser.parse_args()
 
     if args.device:
@@ -240,6 +253,10 @@ def main():
     proteins_to_eval = {}
     for uniprot_id, info in func_sites.items():
         if uniprot_id.startswith("_"):
+            continue
+        if info.get("exclude_from_fsi"):
+            print(f"  Skipping {uniprot_id} ({info.get('name', '?')}): "
+                  f"exclude_from_fsi is set")
             continue
         pdb_id = info.get("pdb_id")
         if not pdb_id:
@@ -293,6 +310,20 @@ def main():
             n_seqs=args.num_seqs,
             device=device,
         )
+
+        # --- Save generated sequences to FASTA (if requested) ---
+        if args.save_sequences and motif_seqs:
+            seq_out_dir = RESULTS_DIR / "evodiff_sequences"
+            seq_out_dir.mkdir(parents=True, exist_ok=True)
+            fasta_path = seq_out_dir / f"{pdb_id}_evodiff_motif.fasta"
+
+            if args.merge_existing and fasta_path.exists():
+                print(f"  [save_sequences] Skipping {fasta_path.name} — already exists (--merge_existing)")
+            else:
+                with open(fasta_path, "w") as fasta_out:
+                    for i, seq in enumerate(motif_seqs):
+                        fasta_out.write(f">evodiff_{pdb_id}_seq{i}\n{seq}\n")
+                print(f"  [save_sequences] Saved {len(motif_seqs)} sequences → {fasta_path}")
 
         if motif_seqs:
             # FSI with 1-indexed sites (compute_site_recovery expects 1-indexed)
@@ -351,12 +382,23 @@ def main():
         all_results.append(result_entry)
 
     # Save
+    results_path = RESULTS_DIR / "fsi_evodiff_results.json"
+    final_results = all_results
+    if args.merge_existing and results_path.exists():
+        with open(results_path) as f:
+            prev = json.load(f)
+        new_pdbs = {r["pdb_id"] for r in all_results}
+        merged = [r for r in prev.get("results", []) if r["pdb_id"] not in new_pdbs]
+        merged.extend(all_results)
+        final_results = merged
+        print(f"\n[merge_existing] Added/replaced PDBs: {sorted(new_pdbs)}")
+        print(f"[merge_existing] Total entries after merge: {len(merged)}")
+
     output = add_schema_version({
         "model": "evodiff_oa_dm_640m",
         "num_seqs": args.num_seqs,
-        "results": all_results,
+        "results": final_results,
     })
-    results_path = RESULTS_DIR / "fsi_evodiff_results.json"
     with open(results_path, "w") as f:
         json.dump(output, f, indent=2)
     print(f"\nResults saved to: {results_path}")

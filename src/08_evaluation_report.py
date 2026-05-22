@@ -697,7 +697,7 @@ def generate_text_report(results: dict, matrix: list) -> str:
     lines.append("")
     lines.append("   c) FSPE is directional (4/5 proteins, mean ratio=0.928) but")
     lines.append("      statistically underpowered at n=3-9 functional sites per protein.")
-    lines.append("      Embedding separability (AUROC=0.994) confirms ESM-2 encodes")
+    lines.append("      Embedding separability (AUROC=0.981) confirms ESM-2 encodes")
     lines.append("      toxin identity; FSPE attempts finer-grained residue localization.")
     lines.append("")
     lines.append("   d) Physical realizability is the critical missing dimension in")
