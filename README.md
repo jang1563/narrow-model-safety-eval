@@ -429,4 +429,4 @@ If you use this framework or the FSPE/FSI metrics in your work, please cite:
 
 ## Ethics
 
-See [DISCLAIMER.md](DISCLAIMER.md). This project evaluates model capabilities for **safety assessment purposes only**. No dangerous sequences, synthesis routes, or design protocols are disclosed. All proteins evaluated are published research subjects with extensive existing literature. Aggregate statistical metrics are reported; individual designed sequences are not released.
+See [DISCLAIMER.md](DISCLAIMER.md). This project evaluates model capabilities for **safety assessment purposes only**. No model-generated dangerous sequences, synthesis routes, or design protocols are disclosed. All proteins evaluated are published research subjects with extensive existing literature. Aggregate statistical metrics are reported; individual designed sequences are not released.

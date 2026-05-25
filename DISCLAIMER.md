@@ -18,8 +18,8 @@ This project evaluates the dual-use potential of narrow scientific AI models
 
 - Does NOT provide synthesis protocols, lab procedures, or instructions for
   producing dangerous materials
-- Does NOT publish individual dangerous sequences — only aggregate statistical
-  metrics are reported
+- Does NOT publish model-generated dangerous sequences — only aggregate
+  statistical metrics are reported
 - Does NOT enhance the capability of any model — it evaluates existing
   capabilities
 

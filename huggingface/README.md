@@ -43,7 +43,7 @@ This dataset supports evaluation of dual-use risk in narrow scientific AI models
 - **Physical realizability scores**: 5-dimension expert barrier assessment (Tier 1–4)
 - **Aggregate evaluation results**: FSPE ratios, FSI distributions, embedding separability
 
-**No dangerous sequences, synthesis routes, or design protocols are included.** Individual ProteinMPNN-designed sequences are not released. Only aggregate statistical metrics are reported.
+**No model-generated dangerous sequences, synthesis routes, or design protocols are included.** Public reference protein records are used only to reproduce evaluation metrics; individual ProteinMPNN-designed sequences are not released. Only aggregate statistical metrics are reported.
 
 ---
 
@@ -255,7 +255,8 @@ python src/01_collect_data.py   # downloads sequences + structures
 
 This dataset is released for **AI safety research, biosecurity policy, and scientific model evaluation purposes only**.
 
-- No dangerous sequences, synthesis routes, or design protocols are included
+- No model-generated dangerous sequences, synthesis routes, or design protocols are included
+- Public reference protein records are used only to reproduce evaluation metrics
 - Individual ProteinMPNN-designed sequences are not released
 - All protein data originates from public databases (UniProt, RCSB PDB)
 - Functional annotations cite peer-reviewed literature establishing existing knowledge
