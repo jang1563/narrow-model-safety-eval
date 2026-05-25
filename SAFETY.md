@@ -40,6 +40,8 @@ See also [`DISCLAIMER.md`](DISCLAIMER.md) for the project-level safety scope.
   identifiers + standard annotation databases).
 - No synthesis pathways, codon-optimized sequences, or expression vectors
   appear in the repository.
+- Generated design FASTA/PDB outputs are excluded from GitHub and Hugging Face
+  releases; see `docs/RELEASE_SURFACE.md`.
 
 ## Reporting Concerns
 

@@ -94,7 +94,10 @@ Tier assignment from total score: 5–9 → Tier 1, 10–14 → Tier 2, 15–19 
 
 All sequences are downloaded from UniProt via REST API (`01_collect_data.py`). All structures are from RCSB PDB. Functional site annotations include DOI citations to the primary literature establishing each catalytic residue — see `data/annotations/functional_sites.json`.
 
-No novel dangerous sequences are generated or stored. ProteinMPNN outputs are evaluated only for FSI statistics; individual designed sequences are not written to disk in the public version.
+No novel dangerous sequence is released. ProteinMPNN outputs may be written
+locally while reproducing the pipeline, but generated FASTA/PDB artifacts are
+ignored by Git and excluded from the public release surface. Published results
+are aggregate statistics and figures only.
 
 ## HPC execution (SLURM)
 

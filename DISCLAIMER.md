@@ -20,6 +20,8 @@ This project evaluates the dual-use potential of narrow scientific AI models
   producing dangerous materials
 - Does NOT publish model-generated dangerous sequences — only aggregate
   statistical metrics are reported
+- Does NOT include generated design-output FASTA/PDB files in the GitHub or
+  Hugging Face release
 - Does NOT enhance the capability of any model — it evaluates existing
   capabilities
 

@@ -20,8 +20,9 @@
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Pipeline](#pipeline)
-- [Project Structure](#project-structure)
 - [Extended Analyses](#extended-analyses)
+- [Project Structure](#project-structure)
+- [Release Surface](#release-surface)
 - [References](#references)
 - [Citation](#citation)
 - [Ethics](#ethics)
@@ -381,10 +382,13 @@ narrow-model-safety-eval/
 ├── slurm/                          SLURM job scripts (Cayuga HPC)
 ├── results/
 │   ├── figures/                    Publication-quality figures (PNG/PDF)
-│   └── *.json                      Raw numerical results
+│   └── *.json                      Aggregate numerical results
 ├── dashboard/app.py                Interactive Streamlit visualization
 ├── docs/
-│   └── ARCHITECTURE.md             Pipeline design rationale
+│   ├── ARCHITECTURE.md             Pipeline design rationale
+│   ├── DATA_CORRECTIONS.md         Accession and annotation correction log
+│   ├── FSI_NUMBERING_AUDIT.md      Residue-numbering audit
+│   └── RELEASE_SURFACE.md          Published/withheld artifact policy
 ├── tests/
 │   └── test_utils.py               Unit tests for core metrics
 ├── huggingface/
@@ -396,6 +400,18 @@ narrow-model-safety-eval/
 ├── DISCLAIMER.md
 └── LICENSE
 ```
+
+---
+
+## Release Surface
+
+This repository publishes public reference inputs, DOI-backed annotations,
+aggregate metrics, figures, and reproducible pipeline code. Generated design
+FASTA files, temporary sweep outputs, embeddings, model weights, and local HPC
+artifacts are ignored and withheld from the release surface.
+
+CI validates that generated design output directories are not tracked again.
+See [`docs/RELEASE_SURFACE.md`](docs/RELEASE_SURFACE.md) for the exact policy.
 
 ---
 
@@ -429,4 +445,4 @@ If you use this framework or the FSPE/FSI metrics in your work, please cite:
 
 ## Ethics
 
-See [DISCLAIMER.md](DISCLAIMER.md). This project evaluates model capabilities for **safety assessment purposes only**. No model-generated dangerous sequences, synthesis routes, or design protocols are disclosed. All proteins evaluated are published research subjects with extensive existing literature. Aggregate statistical metrics are reported; individual designed sequences are not released.
+See [DISCLAIMER.md](DISCLAIMER.md). This project evaluates model capabilities for **safety assessment purposes only**. No model-generated dangerous sequences, synthesis routes, or design protocols are disclosed. All proteins evaluated are published research subjects with extensive existing literature. Aggregate statistical metrics are reported; individual designed sequences and generated design-output artifacts are not released.

@@ -66,3 +66,34 @@ jobs:
                   data = json.load(f)
               print(f'OK: {path} ({len(data)} entries)')
           "
+
+  validate-release-surface:
+    name: Validate release surface
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure generated design artifacts are not tracked
+        run: |
+          forbidden="$(git ls-files \
+            'results/proteinmpnn_output/**' \
+            'results/proteinmpnn_temp_sweep/**' \
+            'results/esmfold_structures/**' \
+            '*.npy' \
+            '*.pt' \
+            '*.bin' \
+            '*.safetensors' \
+            'models/**')"
+          if [ -n "$forbidden" ]; then
+            echo "Generated or heavyweight artifacts are tracked:"
+            echo "$forbidden"
+            exit 1
+          fi
+
+      - name: Ensure Hugging Face card uses corrected BoNT-A accession
+        run: |
+          grep -q 'P0DPI1 | Botulinum neurotoxin A light chain' huggingface/README.md
+          if grep -q 'P10844 | Botulinum neurotoxin A light chain' huggingface/README.md; then
+            echo "Stale BoNT-A accession found in Hugging Face card."
+            exit 1
+          fi
