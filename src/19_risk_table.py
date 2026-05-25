@@ -75,19 +75,34 @@ def load_fsi_evodiff() -> dict:
 
 
 def load_fspe() -> dict:
-    """Load ESM-2 v1 FSPE results. Returns {uniprot_id: fspe_ratio}."""
+    """Load ESM-2 v1 FSPE results. Returns {uniprot_id: fspe_ratio}.
+
+    Bug fix 2026-05-25: fspe_results.json uses 'per_protein' key, not 'results'.
+    The old code used data.get('results', []) which silently returned empty.
+    """
     path = RESULTS_DIR / "fspe_results.json"
     if not path.exists():
         return {}
     with open(path) as f:
         data = json.load(f)
-    results = data if isinstance(data, list) else data.get("results", [])
+    # Handle both legacy format (list or {"results": [...]}) and current
+    # format ({"per_protein": [...]})
+    if isinstance(data, list):
+        results = data
+    else:
+        results = data.get("per_protein", data.get("results", []))
     return {r.get("uniprot_id", r.get("protein_id", "")): r.get("fspe_ratio", None)
             for r in results if r.get("fspe_ratio") is not None}
 
 
 def load_esm3_fspe() -> dict:
-    """Load ESM-3 FSPE results. Returns {uniprot_id: fspe_ratio}."""
+    """Load ESM-3 FSPE results (esm3_sm_open_v1 only). Returns {uniprot_id: fspe_ratio}.
+
+    Bug fix 2026-05-25: Previously iterated all entries without filtering by model,
+    so SaProt entries (listed after ESM-3 in the JSON) silently overwrote ESM-3 values
+    for 5 proteins (P02879, P01555, P01552, P13423, P11140, P04958). Now filters
+    explicitly by model == 'esm3_sm_open_v1'.
+    """
     path = RESULTS_DIR / "esm3_fspe_results.json"
     if not path.exists():
         return {}
@@ -95,6 +110,29 @@ def load_esm3_fspe() -> dict:
         data = json.load(f)
     out = {}
     for r in data.get("results", []):
+        if r.get("model") != "esm3_sm_open_v1":
+            continue
+        ratio = r.get("fspe_ratio")
+        if ratio is not None and ratio != 1.0:
+            out[r["uniprot_id"]] = ratio
+    return out
+
+
+def load_saprot_fspe() -> dict:
+    """Load SaProt FSPE results (saprot_650m_af2 only). Returns {uniprot_id: fspe_ratio}.
+
+    SaProt (Su et al. 2024, ICLR) uses Foldseek 3Di structure tokens combined with
+    amino acid tokens. Results stored in the same esm3_fspe_results.json file.
+    """
+    path = RESULTS_DIR / "esm3_fspe_results.json"
+    if not path.exists():
+        return {}
+    with open(path) as f:
+        data = json.load(f)
+    out = {}
+    for r in data.get("results", []):
+        if r.get("model") != "saprot_650m_af2":
+            continue
         ratio = r.get("fspe_ratio")
         if ratio is not None and ratio != 1.0:
             out[r["uniprot_id"]] = ratio
@@ -140,6 +178,7 @@ def build_risk_table(pdb_ids: list) -> list:
     fsi_evod = load_fsi_evodiff()
     fspe_esm2 = load_fspe()
     fspe_esm3 = load_esm3_fspe()
+    fspe_saprot = load_saprot_fspe()
     ser = load_ser()
     fhs = load_fhs()
     pdb_to_uid = load_functional_sites_index()
@@ -158,6 +197,7 @@ def build_risk_table(pdb_ids: list) -> list:
             "fsi_evod": fsi_evod.get(pdb_id),
             "fspe_esm2": fspe_esm2.get(uid),
             "fspe_esm3": fspe_esm3.get(uid),
+            "fspe_saprot": fspe_saprot.get(uid),
             "fhs": fhs.get(uid),
             "ser_p_pm": ser_pm.get("ser_p"),
             "ser_n_pm": ser_pm.get("ser_n"),

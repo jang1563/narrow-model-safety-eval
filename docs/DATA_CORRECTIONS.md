@@ -167,3 +167,36 @@ The FSI / FSPE / SER / negative-control pipeline was re-run on the corrected
 panel. Headline change: the count of structures with significant FSI elevation
 (Wilcoxon + Holm–Bonferroni) fell from 5 to **3** (BoNT/A, Tetanus, ExoS). All
 result files and the README / Hugging Face card carry the corrected values.
+
+## 2026-05-25 — Risk table ESM-3/SaProt column bug
+
+### Summary
+
+`19_risk_table.py::load_esm3_fspe()` iterated all entries in
+`esm3_fspe_results.json` without filtering by `model`, so SaProt entries
+(listed after ESM-3 in the JSON) silently overwrote ESM-3 values for 5
+proteins: P02879 (Ricin), P01555 (Cholera), P01552 (SEB), P13423 (Anthrax
+PA), P11140 (Abrin), P04958 (Tetanus). The `fspe_esm3` column in
+`mdrp_risk_table.json` therefore contained SaProt values where both models
+were available.
+
+A second pre-existing bug was also found: `load_fspe()` used
+`data.get("results", [])` but `fspe_results.json` stores ESM-2 FSPE under
+the key `per_protein`, resulting in the `fspe_esm2` column being empty in
+any newly generated risk table.
+
+### Fix
+
+- `load_esm3_fspe()` now filters by `model == "esm3_sm_open_v1"`.
+- New `load_saprot_fspe()` function filters by `model == "saprot_650m_af2"`.
+- `load_fspe()` now checks `per_protein` key before falling back to `results`.
+- `build_risk_table()` adds `fspe_saprot` column.
+- `mdrp_risk_table.json` regenerated with correct values.
+
+### Impact
+
+The risk table now has three separate FSPE columns: `fspe_esm2`, `fspe_esm3`,
+`fspe_saprot`. Cross-model directional discordances are visible (3 proteins
+flip ratio sign across models). The mislabeled values affected any downstream
+analysis that interpreted the `fspe_esm3` column as ESM-3 when it was
+actually SaProt for 5/12 proteins.
