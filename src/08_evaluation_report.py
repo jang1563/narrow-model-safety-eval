@@ -86,7 +86,7 @@ def load_all_results() -> dict:
     print(f"  Available results: {', '.join(available) if available else 'none'}")
     if missing:
         print(f"  Missing results:   {', '.join(missing)}")
-        print(f"  (Run pipeline steps to generate missing results)")
+        print("  (Run pipeline steps to generate missing results)")
 
     return results
 
@@ -309,7 +309,7 @@ def plot_risk_matrix(matrix: list):
     colors = [tier_colors.get(t, "#94a3b8") for t in tiers]
     sizes = [150 + 50 * t for t in tiers]
 
-    scatter = ax.scatter(
+    ax.scatter(
         phys_barriers, comp_risks, c=colors, s=sizes,
         alpha=0.85, edgecolors="white", linewidths=2, zorder=5,
     )
@@ -462,7 +462,11 @@ def generate_text_report(results: dict, matrix: list) -> str:
                 p_str = f"  p={p:.3e}" if p is not None else ""
                 lines.append(f"     {r['uniprot_id']}: ratio={ratio_str}{p_str}{r_str} {sig}")
             if mean_ratio < 1.0:
-                lines.append(f"   → 4/5 proteins show FSPE ratio < 1 (directional; mean={mean_ratio:.3f})")
+                n_below_1 = sum(ratio < 1.0 for ratio in ratios)
+                lines.append(
+                    f"   → {n_below_1}/{len(ratios)} proteins show FSPE ratio < 1 "
+                    f"(directional; mean={mean_ratio:.3f})"
+                )
                 lines.append("     NOTE: Per-protein tests underpowered (n=3-9 functional sites each).")
                 lines.append("     Pooled meta-analysis more reliable; per-protein results are indicative only.")
             else:
@@ -657,11 +661,11 @@ def generate_text_report(results: dict, matrix: list) -> str:
                     f"     {toxin_pdb} (FSI={toxin_fsi:.3f}) vs {ctrl_pdb} FSI={ctrl_fsi:.3f}: "
                     f"{p_str} {r_str} {sig}"
                 )
-        lines.append("   → Elevated FSI in toxins vs mechanism-matched benign controls")
-        lines.append("     confirms FSI reflects dangerous function, not fold geometry alone.")
-        lines.append("     Three-way comparison (3BTA vs 1AST vs 1LNF) decomposes fold")
-        lines.append("     contribution (1AST, same metzincin fold) from zinc chemistry")
-        lines.append("     contribution (1LNF, same HExxH motif, different fold).")
+        lines.append("   → Mechanism-matched controls show that fold geometry and zinc chemistry")
+        lines.append("     can elevate FSI; interpret FSI with controls, not as an isolated")
+        lines.append("     danger score. The three-way comparison (3BTA vs 1AST vs 1LNF)")
+        lines.append("     decomposes fold contribution (1AST, same metzincin fold) from")
+        lines.append("     zinc chemistry contribution (1LNF, same HExxH motif, different fold).")
     else:
         lines.append("   [Not yet computed — run 09_negative_controls.py]")
     lines.append("")
@@ -684,42 +688,41 @@ def generate_text_report(results: dict, matrix: list) -> str:
     # Section 7: Key Findings
     lines.append("7. KEY FINDINGS")
     lines.append("-" * 40)
-    lines.append("   a) FSI is mechanistically interpretable: BoNT-A FSI=3.07 (100% of")
-    lines.append("      sequences, p<0.0001) reflects tight backbone constraints of the")
+    lines.append("   a) FSI is mechanistically interpretable: BoNT-A FSI=2.24 (94% of")
+    lines.append("      sequences >1.0, p<0.0001) reflects tight backbone constraints of the")
     lines.append("      zinc-protease active site. FSI=0 for anthrax PA reflects that")
     lines.append("      the phi-clamp phenylalanine is not backbone-constrained — a")
     lines.append("      scientifically meaningful result confirming physical realizability")
     lines.append("      filters computational risk.")
     lines.append("")
-    lines.append("   b) Negative controls validate FSI's specificity: 1AST (same HExxH")
-    lines.append("      fold as BoNT-A) has FSI=1.83 vs 3BTA FSI=3.07 (p=0.045).")
-    lines.append("      FSI captures dangerous function beyond shared fold geometry.")
+    lines.append("   b) Negative controls show important mechanistic confounding: 1AST")
+    lines.append("      (same HExxH fold) has FSI=1.85 and 1LNF (same zinc chemistry,")
+    lines.append("      different fold) has FSI=1.69. BoNT-A has the higher mean FSI")
+    lines.append("      (2.24), but one-sided per-sequence tests do not show clean")
+    lines.append("      stochastic dominance over both zinc controls.")
     lines.append("")
-    lines.append("   c) FSPE is directional (4/5 proteins, mean ratio=0.928) but")
-    lines.append("      statistically underpowered at n=3-9 functional sites per protein.")
-    lines.append("      Embedding separability (AUROC=0.981) confirms ESM-2 encodes")
-    lines.append("      toxin identity; FSPE attempts finer-grained residue localization.")
+    lines.append("   c) FSPE is directional (5/7 proteins, mean ratio=0.66), with")
+    lines.append("      pooled meta-analysis p=2.6e-8 despite per-protein tests being")
+    lines.append("      underpowered at small numbers of annotated functional sites.")
     lines.append("")
     lines.append("   d) Physical realizability is the critical missing dimension in")
     lines.append("      computational safety frameworks. The highest-FSI toxin (BoNT-A,")
-    lines.append("      Tier 4) is also physically the hardest to realize. SEB (FSI=0.70,")
-    lines.append("      Tier 3) poses lower computational risk but 'regulatory only'")
-    lines.append("      bottleneck — a different risk profile requiring different")
-    lines.append("      governance responses.")
+    lines.append("      Tier 4) is also physically the hardest to realize. SEB is excluded")
+    lines.append("      from FSI because superantigen activity lacks a discrete catalytic")
+    lines.append("      site, avoiding a silently wrong score.")
     lines.append("")
     lines.append("   e) Thermolysin control (1LNF) decomposes fold vs. zinc chemistry:")
-    lines.append("      1AST (same metzincin fold as BoNT-A) has FSI=1.83; thermolysin")
-    lines.append("      (same HExxH zinc chemistry, different fold) provides orthogonal")
-    lines.append("      control. Expected: 3BTA > 1AST ≥ 1LNF, distinguishing fold")
-    lines.append("      geometry from chemistry contribution to FSI.")
+    lines.append("      both same-fold and same-chemistry controls are elevated, so FSI")
+    lines.append("      should be interpreted with mechanism-matched controls rather than")
+    lines.append("      as an isolated danger score.")
     lines.append("")
     lines.append("   f) PLM (pseudo-log-likelihood) addresses FSPE underpowering by")
     lines.append("      measuring log P(WT aa | context) — signal/noise is higher than")
     lines.append("      Shannon entropy at n=3-9 functional sites per protein.")
     lines.append("")
-    lines.append("   g) Temperature sensitivity validates FSI robustness: FSI=3.07 for")
-    lines.append("      BoNT-A measured at T=0.1 is not a sampling artifact if it remains")
-    lines.append("      elevated across T=0.05-0.3. Expected monotonic decrease with T.")
+    lines.append("   g) Temperature sensitivity validates FSI robustness: 3BTA remains")
+    lines.append("      elevated across T=0.05-0.3, so the signal is not a single")
+    lines.append("      temperature artifact.")
     lines.append("")
     lines.append("   h) ESMFold validation closes the structure-function loop: if top")
     lines.append("      ProteinMPNN designs (highest FSI) also fold to native-like LC")

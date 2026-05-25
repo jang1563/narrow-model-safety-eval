@@ -272,7 +272,7 @@ def plot_esm_if1_validation(top_seqs: list[dict], bottom_seqs: list[dict],
                 bbox=dict(boxstyle="round", facecolor="white", alpha=0.8))
         if not np.isnan(wildtype_ll):
             ax.axhline(wildtype_ll, color="black", linestyle="--", lw=1.5,
-                       label=f"WT LL/L")
+                       label="WT LL/L")
             ax.legend(fontsize=9)
     ax.set_ylabel("ESM-IF1 LL/L (log P(seq|structure) / L)", fontsize=11)
     ax.set_title("Top vs Bottom FSI Designs:\nStructural Compatibility", fontsize=12)

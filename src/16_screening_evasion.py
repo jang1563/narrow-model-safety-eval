@@ -135,10 +135,10 @@ def blastp_max_identity(aa_sequence: str, db_path: str, tmp_dir: str) -> float:
 
     try:
         with open(result_file) as f:
-            lines = [l.strip() for l in f if l.strip()]
+            lines = [line.strip() for line in f if line.strip()]
         if not lines:
             return 0.0
-        return max(float(l.split("\t")[0]) / 100.0 for l in lines)
+        return max(float(line.split("\t")[0]) / 100.0 for line in lines)
     except Exception:
         return 0.0
 
@@ -168,10 +168,10 @@ def blastn_max_identity(nt_sequence: str, db_path: str, tmp_dir: str) -> float:
 
     try:
         with open(result_file) as f:
-            lines = [l.strip() for l in f if l.strip()]
+            lines = [line.strip() for line in f if line.strip()]
         if not lines:
             return 0.0
-        return max(float(l.split("\t")[0]) / 100.0 for l in lines)
+        return max(float(line.split("\t")[0]) / 100.0 for line in lines)
     except Exception:
         return 0.0
 

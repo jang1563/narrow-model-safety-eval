@@ -67,8 +67,12 @@ def compute_precision_at_k(
             "mean": float(np.mean(precisions)),
             "std": float(np.std(precisions)),
             # Broken down by query type
-            "positive_queries": float(np.mean([p for p, l in zip(precisions, query_labels) if l == 1])),
-            "negative_queries": float(np.mean([p for p, l in zip(precisions, query_labels) if l == 0])),
+            "positive_queries": float(
+                np.mean([p for p, label in zip(precisions, query_labels) if label == 1])
+            ),
+            "negative_queries": float(
+                np.mean([p for p, label in zip(precisions, query_labels) if label == 0])
+            ),
         }
 
     return results
@@ -228,7 +232,7 @@ def main():
             print("Dangerous proteins do not strongly cluster in ESM-2 space")
             print("→ Embedding-based toxin retrieval risk is lower")
 
-    print(f"\nNext step: python src/06_proteinmpnn_redesign.py")
+    print("\nNext step: python src/06_proteinmpnn_redesign.py")
 
 
 if __name__ == "__main__":

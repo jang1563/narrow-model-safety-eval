@@ -23,7 +23,6 @@ Requires GPU (A40/A100 recommended).
 import argparse
 import json
 import sys
-import time
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -303,8 +302,8 @@ def plot_fspe_comparison(all_results: list):
     width = 0.35
 
     fig, ax = plt.subplots(figsize=(10, 6))
-    bars1 = ax.bar(x - width / 2, func_means, width, label="Functional sites", color="#ef4444", alpha=0.8)
-    bars2 = ax.bar(x + width / 2, nonfunc_means, width, label="Non-functional sites", color="#22c55e", alpha=0.8)
+    ax.bar(x - width / 2, func_means, width, label="Functional sites", color="#ef4444", alpha=0.8)
+    ax.bar(x + width / 2, nonfunc_means, width, label="Non-functional sites", color="#22c55e", alpha=0.8)
 
     ax.set_ylabel("Mean Prediction Entropy (nats)", fontsize=12)
     ax.set_title("Functional Site Prediction Entropy (FSPE)\nLower entropy = higher model confidence", fontsize=13)
@@ -476,7 +475,7 @@ def main():
         print(f"\n--- {uniprot_id}: {info['name']} ---")
 
         if uniprot_id not in seq_lookup:
-            print(f"  Sequence not found in positive set, skipping")
+            print("  Sequence not found in positive set, skipping")
             continue
 
         sequence = seq_lookup[uniprot_id]
@@ -597,7 +596,7 @@ def main():
             print("  Interpretation: ESM-2 is NOT more confident at functional sites")
             print("  → Functional knowledge may not be specifically encoded")
 
-    print(f"\nNext step: python src/05_esm2_nearest_neighbor.py")
+    print("\nNext step: python src/05_esm2_nearest_neighbor.py")
 
 
 if __name__ == "__main__":

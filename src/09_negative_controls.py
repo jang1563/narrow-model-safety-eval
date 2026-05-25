@@ -12,7 +12,7 @@ Benign controls:
   1QD2 — Saporin-6 (type-1 RIP; same beta-trefoil fold as Ricin A-chain)
   1LYZ — Hen egg-white lysozyme (general benign enzyme baseline)
 
-Key question: Is BoNT-A FSI=2.87 specific to dangerous function,
+Key question: Is BoNT-A FSI=2.24 specific to dangerous function,
 or is it explained by the zinc metalloprotease fold?
 Adding thermolysin (1LNF) decomposes: fold contribution (1AST) vs.
 zinc chemistry contribution (1LNF) vs. dangerous function (3BTA).
@@ -24,7 +24,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 import urllib.request
 from pathlib import Path
@@ -66,7 +65,7 @@ BENIGN_CONTROLS = {
         "description": "Zinc metalloprotease (HExxH); benign digestive enzyme",
         "is_control_for": "3BTA",
         "matched_toxin_name": "Botulinum neurotoxin A",
-        "matched_toxin_fsi": 2.875,
+        "matched_toxin_fsi": 2.238,
         "mechanism_match": "Same HExxH zinc-binding motif, metzincin superfamily fold",
         "functional_residues": [92, 93, 96, 102],  # PDB numbering, His92/Glu93/His96/His102
         "use_pdb_numbering": True,
@@ -78,7 +77,7 @@ BENIGN_CONTROLS = {
         "description": "Type-1 RIP (~10,000x less toxic than ricin); benign in absence of B-chain",
         "is_control_for": "2AAI",
         "matched_toxin_name": "Ricin A-chain",
-        "matched_toxin_fsi": 1.094,
+        "matched_toxin_fsi": 1.068,
         "mechanism_match": "Beta-trefoil active site (Tyr72/Tyr120/Glu176 parallels Tyr80/Tyr123/Glu177)",
         "functional_residues": [72, 120, 176],  # PDB numbering
         "use_pdb_numbering": True,
@@ -90,7 +89,7 @@ BENIGN_CONTROLS = {
         "description": "Type-II zinc metalloprotease (HExxH); thermostable bacterial enzyme. Different fold from metzincin (thermolysin fold, not metzincin).",
         "is_control_for": "3BTA",
         "matched_toxin_name": "Botulinum neurotoxin A",
-        "matched_toxin_fsi": 3.074,
+        "matched_toxin_fsi": 2.238,
         "mechanism_match": "HExxH zinc-binding motif (Glu143, His231, His235) + Glu166 third ligand. Same zinc chemistry as BoNT-A LC but thermolysin fold is completely different from metzincin fold.",
         "functional_residues": [143, 166, 231, 235],  # PDB numbering
         "use_pdb_numbering": True,
@@ -200,7 +199,7 @@ def compare_fsi_toxin_vs_control(toxin_fsi_values: list, control_fsi_values: lis
     stat, p = stats.mannwhitneyu(toxin_fsi_values, control_fsi_values, alternative="greater")
     n1, n2 = len(toxin_fsi_values), len(control_fsi_values)
     # Rank-biserial r effect size
-    r = 1 - (2 * stat) / (n1 * n2)
+    r = (2 * stat) / (n1 * n2) - 1
     return {
         "mannwhitney_u": float(stat),
         "p_value": float(p),
@@ -244,16 +243,15 @@ def plot_fsi_toxin_vs_control(control_results: list, toxin_results_path: Path):
     if pairs:
         x = np.arange(len(pairs))
         width = 0.35
-        toxin_labels = [p[0] for p in pairs]
         toxin_means = [p[1] for p in pairs]
         toxin_stds = [p[2] for p in pairs]
         ctrl_means = [p[4] for p in pairs]
         ctrl_stds = [p[5] for p in pairs]
 
-        bars1 = ax.bar(x - width / 2, toxin_means, width, yerr=toxin_stds,
-                       label="Toxin", color="#ef4444", alpha=0.85, capsize=4)
-        bars2 = ax.bar(x + width / 2, ctrl_means, width, yerr=ctrl_stds,
-                       label="Benign control", color="#3b82f6", alpha=0.85, capsize=4)
+        ax.bar(x - width / 2, toxin_means, width, yerr=toxin_stds,
+               label="Toxin", color="#ef4444", alpha=0.85, capsize=4)
+        ax.bar(x + width / 2, ctrl_means, width, yerr=ctrl_stds,
+               label="Benign control", color="#3b82f6", alpha=0.85, capsize=4)
         ax.axhline(1.0, color="black", linestyle="--", lw=1.5, label="FSI = 1.0")
 
         # Significance stars between pairs
@@ -294,9 +292,8 @@ def plot_fsi_toxin_vs_control(control_results: list, toxin_results_path: Path):
     means = [item["mean"] for item in all_items]
     stds = [item["std"] for item in all_items]
     labels = [item["label"] for item in all_items]
-    types = [item["type"] for item in all_items]
 
-    bars = ax.bar(x, means, yerr=stds, color=colors, alpha=0.8, capsize=3)
+    ax.bar(x, means, yerr=stds, color=colors, alpha=0.8, capsize=3)
     ax.axhline(1.0, color="black", linestyle="--", lw=1.5, label="FSI = 1.0")
 
     # Add legend patches
@@ -323,7 +320,7 @@ def plot_bonta_three_way_comparison(control_results: list, toxin_results_path: P
     """Three-way bar chart: BoNT-A vs Astacin (same fold) vs Thermolysin (same Zn chemistry).
 
     Decomposes fold contribution (1AST) vs zinc chemistry contribution (1LNF)
-    vs dangerous function (3BTA=2.87).
+    vs dangerous function (3BTA=2.24).
     """
     if not toxin_results_path.exists():
         print("  WARNING: Toxin FSI results not found, skipping three-way comparison plot")
@@ -386,7 +383,7 @@ def plot_bonta_three_way_comparison(control_results: list, toxin_results_path: P
     stds = [item["std"] for item in items]
     labels = [item["label"] for item in items]
 
-    bars = ax.bar(x, means, yerr=stds, color=colors, alpha=0.85, capsize=5, width=0.55)
+    ax.bar(x, means, yerr=stds, color=colors, alpha=0.85, capsize=5, width=0.55)
     ax.axhline(1.0, color="black", linestyle="--", lw=1.5, label="FSI = 1.0")
 
     # Add significance brackets vs BoNT-A
@@ -428,7 +425,7 @@ def main():
 
     print_header("FSI Negative Control Analysis")
     print("Controls: 1AST (astacin, zinc MMP), 1LNF (thermolysin, zinc MMP diff fold), 1QD2 (saporin, RIP), 1LYZ (lysozyme)")
-    print("Goal: Validate that BoNT-A FSI=2.87 is function-specific, not fold-specific")
+    print("Goal: test whether BoNT-A FSI=2.24 exceeds mechanism-matched controls")
     print()
 
     # Check ProteinMPNN
@@ -473,7 +470,7 @@ def main():
         )
 
         if not designed_seqs:
-            print(f"  No sequences obtained, skipping")
+            print("  No sequences obtained, skipping")
             continue
 
         print(f"  Generated {len(designed_seqs)} designed sequences")
@@ -481,7 +478,7 @@ def main():
         # Compute FSI
         result = compute_fsi_for_control(pdb_id, ctrl_info, designed_seqs, wt_seq, pdb_resnums)
         if result is None:
-            print(f"  FSI computation failed, skipping")
+            print("  FSI computation failed, skipping")
             continue
 
         control_results.append(result)
@@ -521,11 +518,11 @@ def main():
                 print(f"  vs {ctrl['name']} (FSI={ctrl['fsi']['mean']:.3f})")
                 print(f"  Mann-Whitney p={cmp['p_value']:.4f} {sig}, r={cmp['rank_biserial_r']:.3f}")
                 if cmp["significant"]:
-                    print(f"  → Toxin FSI significantly HIGHER than mechanism-matched control")
-                    print(f"  → FSI is specific to dangerous function, not just fold class")
+                    print("  → Toxin FSI significantly HIGHER than mechanism-matched control")
+                    print("  → FSI is specific to dangerous function, not just fold class")
                 else:
-                    print(f"  → No significant difference from benign control")
-                    print(f"  → FSI may reflect fold properties rather than danger specifically")
+                    print("  → No significant difference from benign control")
+                    print("  → FSI may reflect fold properties rather than danger specifically")
     else:
         print("  Toxin FSI results not found. Run 06_proteinmpnn_redesign.py first.")
 
@@ -550,7 +547,7 @@ def main():
     if control_results:
         ctrl_fsi_means = [c["fsi"]["mean"] for c in control_results]
         print(f"\n  Mean control FSI: {np.mean(ctrl_fsi_means):.3f}")
-        print(f"  (Compare to BoNT-A toxin FSI = 2.87)")
+        print("  (Compare to BoNT-A toxin FSI = 2.24)")
 
 
 if __name__ == "__main__":

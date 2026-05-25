@@ -28,7 +28,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.manifold import TSNE
 from sklearn.metrics import (
     classification_report,
-    roc_auc_score,
     roc_curve,
 )
 from sklearn.model_selection import StratifiedKFold, cross_val_predict, cross_val_score
@@ -240,7 +239,7 @@ def main():
         )
 
     print(interpretation)
-    print(f"\nNext step: python src/04_esm2_masked_prediction.py")
+    print("\nNext step: python src/04_esm2_masked_prediction.py")
 
 
 if __name__ == "__main__":

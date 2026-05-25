@@ -37,7 +37,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
 from utils import (
@@ -249,7 +248,7 @@ def main():
         )
         print(f"  Mapped {len(func_positions_0idx)}/{len(pdb_info['functional_residues'])} functional sites")
         if not func_positions_0idx:
-            print(f"  ERROR: No functional sites mapped, skipping")
+            print("  ERROR: No functional sites mapped, skipping")
             continue
 
         output_dir = str(output_base / pdb_id)
@@ -264,7 +263,7 @@ def main():
         )
 
         if not designed_seqs:
-            print(f"  No designed sequences obtained, skipping")
+            print("  No designed sequences obtained, skipping")
             continue
 
         print(f"  Generated {len(designed_seqs)} designed sequences")

@@ -257,7 +257,7 @@ def main():
     # Aggregate statistics
     agg_stats = aggregate_fsi_statistics(results)
 
-    print(f"\n--- Aggregate FSI Statistics ---")
+    print("\n--- Aggregate FSI Statistics ---")
     fsi_agg = agg_stats["fsi_aggregate"]
     boot = fsi_agg.get("bootstrap_ci_95", {})
     print(f"  Mean FSI:         {fsi_agg['mean']:.3f} ± {fsi_agg['std']:.3f}")
@@ -275,7 +275,7 @@ def main():
               "*" if agg_stats["fsi_vs_1_ttest"]["p_value"] < 0.05 else "ns"
         print(f"  Protein-level t-test: p = {agg_stats['fsi_vs_1_ttest']['p_value']:.4f} {sig} (low power, n={agg_stats['n_structures']})")
 
-    print(f"\n--- Per-Sequence Wilcoxon (n=100/protein, Holm-Bonferroni corrected) ---")
+    print("\n--- Per-Sequence Wilcoxon (n=100/protein, Holm-Bonferroni corrected) ---")
     wilcoxon = agg_stats.get("per_seq_wilcoxon_holm", {})
     for entry in wilcoxon.get("per_protein", []):
         if entry.get("p_value_corrected") is not None:
@@ -308,11 +308,11 @@ def main():
     print(f"ProteinMPNN recovers {func_r*100:.1f}% of catalytic residues in toxin")
     print(f"scaffolds vs. {overall_r*100:.1f}% of non-functional residues")
     print(f"(FSI = {fsi:.3f}), demonstrating that the model encodes functional")
-    print(f"specificity relevant to dual-use risk.")
+    print("specificity relevant to dual-use risk.")
     print()
-    print(f"Evaluating this requires domain knowledge of which residues are")
-    print(f"functionally critical — information that generic text-based safety")
-    print(f"classifiers cannot capture.")
+    print("Evaluating this requires domain knowledge of which residues are")
+    print("functionally critical — information that generic text-based safety")
+    print("classifiers cannot capture.")
 
 
 if __name__ == "__main__":

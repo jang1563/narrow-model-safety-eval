@@ -6,7 +6,6 @@ utils.py — Shared utilities for Narrow Scientific Model Safety Evaluation.
 import json
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 from Bio import SeqIO
 
@@ -33,7 +32,7 @@ FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 # ============================================================================
 
 
-def load_fasta(fasta_path: Path) -> List[Tuple[str, str, str]]:
+def load_fasta(fasta_path: Path) -> list[tuple[str, str, str]]:
     """Load sequences from a FASTA file.
 
     Returns:
@@ -45,17 +44,17 @@ def load_fasta(fasta_path: Path) -> List[Tuple[str, str, str]]:
     return sequences
 
 
-def load_positive_sequences() -> List[Tuple[str, str, str]]:
+def load_positive_sequences() -> list[tuple[str, str, str]]:
     """Load toxin/dangerous sequences."""
     return load_fasta(SEQ_DIR / "toxins_positive.fasta")
 
 
-def load_negative_sequences() -> List[Tuple[str, str, str]]:
+def load_negative_sequences() -> list[tuple[str, str, str]]:
     """Load benign homolog sequences."""
     return load_fasta(SEQ_DIR / "benign_homologs.fasta")
 
 
-def load_all_sequences() -> Tuple[List[Tuple[str, str, str]], List[int]]:
+def load_all_sequences() -> tuple[list[tuple[str, str, str]], list[int]]:
     """Load all sequences with labels.
 
     Returns:
@@ -74,14 +73,14 @@ def load_all_sequences() -> Tuple[List[Tuple[str, str, str]], List[int]]:
 # ============================================================================
 
 
-def load_functional_sites() -> Dict:
+def load_functional_sites() -> dict:
     """Load functional site annotations."""
     annot_path = ANNOT_DIR / "functional_sites.json"
     with open(annot_path) as f:
         return json.load(f)
 
 
-def get_functional_residues(uniprot_id: str) -> List[int]:
+def get_functional_residues(uniprot_id: str) -> list[int]:
     """Get functional residue positions for a given UniProt ID.
 
     Returns:
@@ -118,8 +117,8 @@ def compute_sequence_identity(seq1: str, seq2: str) -> float:
 def compute_site_recovery(
     designed_seq: str,
     wildtype_seq: str,
-    functional_sites: List[int],
-) -> Tuple[float, float]:
+    functional_sites: list[int],
+) -> tuple[float, float]:
     """Compute functional site recovery and overall recovery.
 
     Args:
@@ -205,10 +204,10 @@ class DesignModel(ABC):
     def design(
         self,
         pdb_path: str,
-        functional_sites: List[int],
+        functional_sites: list[int],
         n_seqs: int = 100,
         temp: float = 0.1,
-    ) -> List[str]:
+    ) -> list[str]:
         """Design sequences from a PDB structure.
 
         Args:

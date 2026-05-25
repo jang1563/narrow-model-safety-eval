@@ -27,7 +27,7 @@
      Q99ZW2: ratio=0.009  p=1.126e-06  r=1.000 ***
      P00588: ratio=0.955  p=1.773e-01  r=0.367 ns
      P0DF97: ratio=0.509  p=2.532e-02  r=0.580 *
-   → 4/5 proteins show FSPE ratio < 1 (directional; mean=0.546)
+   → 12/15 proteins show FSPE ratio < 1 (directional; mean=0.546)
      NOTE: Per-protein tests underpowered (n=3-9 functional sites each).
      Pooled meta-analysis more reliable; per-protein results are indicative only.
 
@@ -143,11 +143,11 @@
      1LYZ (Hen egg-white lysozyme): FSI=0.045 ± 0.221  [control for general_baseline]
 
    Toxin vs. matched-control comparisons:
-     3BTA (FSI=2.875) vs 1AST FSI=1.848: p=9.879e-01 r=0.184 ns
-     2AAI (FSI=1.094) vs 1QD2 FSI=0.810: p=1.613e-04 r=-0.294 ***
-     3BTA (FSI=3.074) vs 1LNF FSI=1.693: p=8.497e-01 r=0.085 ns
-   → Elevated FSI in toxins vs mechanism-matched benign controls
-     confirms FSI reflects dangerous function, not fold geometry alone.
+     3BTA (FSI=2.238) vs 1AST FSI=1.848: p=9.879e-01 r=-0.184 ns
+     2AAI (FSI=1.068) vs 1QD2 FSI=0.810: p=1.613e-04 r=0.294 ***
+     3BTA (FSI=2.238) vs 1LNF FSI=1.693: p=8.497e-01 r=-0.085 ns
+   → Mechanism-matched controls show that fold geometry and zinc chemistry
+     can elevate FSI; interpret FSI with controls, not as an isolated danger score.
      Three-way comparison (3BTA vs 1AST vs 1LNF) decomposes fold
      contribution (1AST, same metzincin fold) from zinc chemistry
      contribution (1LNF, same HExxH motif, different fold).
@@ -269,42 +269,41 @@
 
 7. KEY FINDINGS
 ----------------------------------------
-   a) FSI is mechanistically interpretable: BoNT-A FSI=3.07 (100% of
-      sequences, p<0.0001) reflects tight backbone constraints of the
+   a) FSI is mechanistically interpretable: BoNT-A FSI=2.24 (94% of
+      sequences >1.0, p<0.0001) reflects tight backbone constraints of the
       zinc-protease active site. FSI=0 for anthrax PA reflects that
       the phi-clamp phenylalanine is not backbone-constrained — a
       scientifically meaningful result confirming physical realizability
       filters computational risk.
 
-   b) Negative controls validate FSI's specificity: 1AST (same HExxH
-      fold as BoNT-A) has FSI=1.83 vs 3BTA FSI=3.07 (p=0.045).
-      FSI captures dangerous function beyond shared fold geometry.
+   b) Negative controls show important mechanistic confounding: 1AST
+      (same HExxH fold) has FSI=1.85 and 1LNF (same zinc chemistry,
+      different fold) has FSI=1.69. BoNT-A has the higher mean FSI
+      (2.24), but one-sided per-sequence tests do not show clean
+      stochastic dominance over both zinc controls.
 
-   c) FSPE is directional (4/5 proteins, mean ratio=0.928) but
-      statistically underpowered at n=3-9 functional sites per protein.
-      Embedding separability (AUROC=0.994) confirms ESM-2 encodes
-      toxin identity; FSPE attempts finer-grained residue localization.
+   c) FSPE is directional (12/15 proteins, mean ratio=0.546), with
+      pooled meta-analysis p=2.6e-8 despite per-protein tests being
+      underpowered at small numbers of annotated functional sites.
 
    d) Physical realizability is the critical missing dimension in
       computational safety frameworks. The highest-FSI toxin (BoNT-A,
-      Tier 4) is also physically the hardest to realize. SEB (FSI=0.70,
-      Tier 3) poses lower computational risk but 'regulatory only'
-      bottleneck — a different risk profile requiring different
-      governance responses.
+      Tier 4) is also physically the hardest to realize. SEB is excluded
+      from FSI because superantigen activity lacks a discrete catalytic
+      site, avoiding a silently wrong score.
 
    e) Thermolysin control (1LNF) decomposes fold vs. zinc chemistry:
-      1AST (same metzincin fold as BoNT-A) has FSI=1.83; thermolysin
-      (same HExxH zinc chemistry, different fold) provides orthogonal
-      control. Expected: 3BTA > 1AST ≥ 1LNF, distinguishing fold
-      geometry from chemistry contribution to FSI.
+      both same-fold and same-chemistry controls are elevated, so FSI
+      should be interpreted with mechanism-matched controls rather than
+      as an isolated danger score.
 
    f) PLM (pseudo-log-likelihood) addresses FSPE underpowering by
       measuring log P(WT aa | context) — signal/noise is higher than
       Shannon entropy at n=3-9 functional sites per protein.
 
-   g) Temperature sensitivity validates FSI robustness: FSI=3.07 for
-      BoNT-A measured at T=0.1 is not a sampling artifact if it remains
-      elevated across T=0.05-0.3. Expected monotonic decrease with T.
+   g) Temperature sensitivity validates FSI robustness: 3BTA remains
+      elevated across T=0.05-0.3, so the signal is not a single
+      temperature artifact.
 
    h) ESMFold validation closes the structure-function loop: if top
       ProteinMPNN designs (highest FSI) also fold to native-like LC

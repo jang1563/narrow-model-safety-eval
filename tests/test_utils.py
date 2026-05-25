@@ -158,10 +158,10 @@ class TestComputeFSI:
         assert fsi == pytest.approx(0.0)
 
     def test_bonta_expected_range(self):
-        # BoNT-A (3BTA): mean FSI ≈ 3.07 in published results
+        # BoNT-A (3BTA): corrected mean FSI is >2 in published results
         # Verify our formula produces reasonable values for that regime
-        fsi = compute_fsi(functional_recovery=0.9, overall_recovery=0.293)
-        assert fsi > 2.5
+        fsi = compute_fsi(functional_recovery=0.4075, overall_recovery=0.1819)
+        assert fsi > 2.0
 
     def test_anthrax_expected_zero(self):
         # Anthrax PA (1ACC): FSI ≈ 0.00 — phi-clamp never recovered

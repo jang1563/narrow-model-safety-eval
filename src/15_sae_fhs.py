@@ -373,10 +373,6 @@ def main():
     # ========================================================================
     # Load ESM-2 and compute (or load cached) residual streams
     # ========================================================================
-    emb_pos_path = RESULTS_DIR / "embeddings_positive.npy"
-    emb_neg_path = RESULTS_DIR / "embeddings_negative.npy"
-    emb_ids_path = RESULTS_DIR / "embedding_ids.json"
-
     # Per-protein per-residue residuals: we always need per-position vectors
     # (the cached .npy are mean-pooled; we must re-run for per-residue access).
     # Cached residuals for FHS are stored separately to avoid overwriting pillar 1 cache.
@@ -462,7 +458,6 @@ def main():
     # Benign proteins: use a random sample of positions as pseudo-catalytic baseline
     # (uniform mean across all residues; benign proteins lack specific active sites)
     benign_cat_vecs = []
-    rng = np.random.RandomState(42)
     for i, residuals in enumerate(benign_residuals):
         features = encode_with_sae(residuals, sae, device)  # (L, d_sae)
         # Use all residue features (mean-pool) — benign proteins have no annotated

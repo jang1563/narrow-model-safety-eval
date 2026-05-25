@@ -270,13 +270,13 @@ See [DISCLAIMER.md](https://github.com/jang1563/narrow-model-safety-eval/blob/ma
 ## Citation
 
 ```bibtex
-@misc{jang2025narrowmodelsafety,
+@misc{kim2026narrowmodelsafety,
   title   = {Narrow Scientific Model Safety Evaluation: A Framework for
              Dual-Use Risk Assessment in Protein Language Models},
-  author  = {Jang, Jaewon},
-  year    = {2025},
+  author  = {Kim, JangKeun},
+  year    = {2026},
   url     = {https://github.com/jang1563/narrow-model-safety-eval},
-  note    = {Preprint}
+  note    = {Version 2.0.0}
 }
 ```
 

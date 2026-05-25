@@ -20,8 +20,6 @@ Output:
 """
 
 import json
-import os
-import sys
 import time
 from pathlib import Path
 
@@ -326,7 +324,7 @@ def collect_all_sequences():
         print(f"{'='*60}")
 
         # --- Positive (toxic/dangerous) sequences ---
-        print(f"\n  Fetching positive sequences...")
+        print("\n  Fetching positive sequences...")
         if "positive_accessions" in cat_config:
             positive_fasta = fetch_sequences_by_accessions(
                 cat_config["positive_accessions"]
@@ -343,7 +341,7 @@ def collect_all_sequences():
         all_positive_fasta.append(positive_fasta)
 
         # --- Negative (benign) sequences ---
-        print(f"  Fetching negative (benign) sequences...")
+        print("  Fetching negative (benign) sequences...")
         negative_fasta = query_uniprot(
             cat_config["negative_query"],
             format="fasta",
@@ -538,7 +536,7 @@ def main():
 
     print(f"\nMetadata written to: {metadata_path}")
     print("\nData collection complete.")
-    print(f"Next step: python src/02_esm2_embed.py")
+    print("Next step: python src/02_esm2_embed.py")
 
 
 if __name__ == "__main__":

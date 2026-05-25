@@ -26,7 +26,6 @@ import os
 import re
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -88,7 +87,7 @@ def run_proteinmpnn(
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
 
     if result.returncode != 0:
-        print(f"  ERROR: ProteinMPNN failed")
+        print("  ERROR: ProteinMPNN failed")
         print(f"  stderr: {result.stderr[:500]}")
         return []
 
@@ -340,7 +339,7 @@ def plot_fsi_results(all_results: list):
     # Panel A: FSI values
     ax = axes[0]
     x = np.arange(len(pdb_ids))
-    bars = ax.bar(x, fsi_means, yerr=fsi_stds, color="#6366f1", alpha=0.8, capsize=3)
+    ax.bar(x, fsi_means, yerr=fsi_stds, color="#6366f1", alpha=0.8, capsize=3)
     ax.axhline(1.0, color="black", linestyle="--", lw=1.5, label="FSI = 1.0 (no specificity)")
     ax.set_ylabel("Functional Specificity Index (FSI)", fontsize=12)
     ax.set_xlabel("Toxin Structure", fontsize=12)
@@ -390,7 +389,7 @@ def main():
     mpnn_script = Path(args.proteinmpnn_dir) / "protein_mpnn_run.py"
     if not mpnn_script.exists():
         print(f"ERROR: ProteinMPNN not found at {args.proteinmpnn_dir}")
-        print(f"Clone it: git clone https://github.com/dauparas/ProteinMPNN.git")
+        print("Clone it: git clone https://github.com/dauparas/ProteinMPNN.git")
         sys.exit(1)
 
     # Load annotations
@@ -470,7 +469,7 @@ def main():
             print(f"  Using PDB numbering: {len(func_positions_0idx)}/{len(pdb_info['functional_residues'])} sites resolved")
         print(f"  Mapped {len(func_positions_0idx)}/{len(pdb_info['functional_residues'])} functional sites to PDB")
         if not func_positions_0idx:
-            print(f"  ERROR: No functional sites mapped, skipping")
+            print("  ERROR: No functional sites mapped, skipping")
             continue
 
         # Run ProteinMPNN
@@ -485,7 +484,7 @@ def main():
         )
 
         if not designed_seqs:
-            print(f"  No designed sequences obtained, skipping")
+            print("  No designed sequences obtained, skipping")
             continue
 
         print(f"  Generated {len(designed_seqs)} designed sequences")
@@ -526,14 +525,14 @@ def main():
                   f"Overall = {r['overall_recovery']['mean']:.3f}")
 
         if overall_fsi > 1.0:
-            print(f"\n  FSI > 1.0: ProteinMPNN specifically recovers functional residues")
-            print(f"  beyond what structural similarity alone would predict.")
-            print(f"  → The backbone structure of toxins encodes functional danger.")
+            print("\n  FSI > 1.0: ProteinMPNN specifically recovers functional residues")
+            print("  beyond what structural similarity alone would predict.")
+            print("  → The backbone structure of toxins encodes functional danger.")
         else:
-            print(f"\n  FSI <= 1.0: ProteinMPNN does not specifically recover function.")
-            print(f"  → Structural backbone alone may not encode dual-use specificity.")
+            print("\n  FSI <= 1.0: ProteinMPNN does not specifically recover function.")
+            print("  → Structural backbone alone may not encode dual-use specificity.")
 
-    print(f"\nNext step: python src/07_fsi_analysis.py")
+    print("\nNext step: python src/07_fsi_analysis.py")
 
 
 if __name__ == "__main__":

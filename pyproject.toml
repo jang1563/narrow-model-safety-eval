@@ -8,14 +8,13 @@ version = "2.0.0"
 description = "Safety evaluation framework for narrow scientific AI models (ESM-2, ProteinMPNN)"
 readme = "README.md"
 license = { file = "LICENSE" }
-authors = [{ name = "Jaewon Jang" }]
+authors = [{ name = "JangKeun Kim", email = "jak4013@med.cornell.edu" }]
 keywords = ["ai-safety", "protein-language-model", "biosecurity", "dual-use", "ESM-2", "ProteinMPNN"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "License :: Free To Use But Restricted",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -65,7 +64,7 @@ line-length = 100
 target-version = "py39"
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "UP"]
+select = ["E", "F", "W", "UP"]
 ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]

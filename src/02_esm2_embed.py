@@ -212,11 +212,11 @@ def main():
     with open(ids_path, "w") as f:
         json.dump(ids_data, f, indent=2)
 
-    print(f"\nSaved embeddings:")
+    print("\nSaved embeddings:")
     print(f"  Positive: {pos_path} — shape {pos_embeddings.shape}")
     print(f"  Negative: {neg_path} — shape {neg_embeddings.shape}")
     print(f"  IDs:      {ids_path}")
-    print(f"\nNext step: python src/03_esm2_separability.py")
+    print("\nNext step: python src/03_esm2_separability.py")
 
 
 if __name__ == "__main__":

@@ -447,7 +447,7 @@ def main():
         corr = compute_correlation_vs_manual(auto_results, manual_proteins, SCORE_DIMENSIONS)
         with open(CORRELATION_OUTPUT_PATH, "w") as f:
             json.dump(corr, f, indent=2)
-        print(f"\n=== Correlation vs. Manual ===")
+        print("\n=== Correlation vs. Manual ===")
         for dim, res in corr.get("dimension_correlations", {}).items():
             print(f"  {dim:<40} r={res['spearman_r']:+.3f} p={res['p_value']:.4f}  {res['interpretation']}")
         return
@@ -523,7 +523,7 @@ def main():
         with open(AUTO_OUTPUT_PATH, "w") as f:
             json.dump(auto_results, f, indent=2)
 
-    print(f"\n=== Annotation complete ===")
+    print("\n=== Annotation complete ===")
     completed = [a for a in targets if a in auto_results and "error" not in auto_results.get(a, {})]
     print(f"Annotated: {len(completed)}/{len(targets)}")
     if review_required:

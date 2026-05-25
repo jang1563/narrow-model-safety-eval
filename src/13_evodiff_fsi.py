@@ -347,8 +347,8 @@ def main():
             print(f"  Functional recovery: {np.mean(func_recs):.3f} (expected ~1.0 — catalytic sites are fixed)")
             print(f"  Overall recovery:    {np.mean(overall_recs):.3f}")
             print(f"  FSI:                 {np.mean(fsi_vals):.3f} ± {np.std(fsi_vals):.3f}")
-            print(f"  Note: FSI = func_rec / overall_rec; high because catalytic sites are fixed.")
-            print(f"  Compare to ProteinMPNN FSI (backbone-only) to assess structure-free risk.")
+            print("  Note: FSI = func_rec / overall_rec; high because catalytic sites are fixed.")
+            print("  Compare to ProteinMPNN FSI (backbone-only) to assess structure-free risk.")
         else:
             result_entry["motif_conditioned"] = {"error": "generation failed"}
 

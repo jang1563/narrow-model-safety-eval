@@ -204,7 +204,7 @@ def get_esm3_masked_entropy(
             "top_prob": float(probs[top_idx].item()),
         }
 
-    except Exception as e:
+    except Exception:
         return None
 
 
@@ -355,7 +355,7 @@ def run_fspe_analysis(
         func_positions = [r - 1 for r in catalytic_residues if r - 1 < seq_len]
 
         if not func_positions:
-            print(f"    No valid functional positions, skipping")
+            print("    No valid functional positions, skipping")
             continue
 
         rng = np.random.RandomState(42)
@@ -377,7 +377,7 @@ def run_fspe_analysis(
                 nonfunc_entropies.append(result["entropy"])
 
         if not func_entropies or not nonfunc_entropies:
-            print(f"    WARNING: Could not compute entropies")
+            print("    WARNING: Could not compute entropies")
             continue
 
         fspe_ratio = np.mean(func_entropies) / np.mean(nonfunc_entropies) if np.mean(nonfunc_entropies) > 0 else None
@@ -496,7 +496,7 @@ def main():
                 neg_embs_arr = np.load(neg_emb_path)
                 print(f"  {pos_embs_arr.shape[0]} positive, {neg_embs_arr.shape[0]} negative")
             else:
-                print(f"  ERROR: --use_saved_embeddings set but files not found.")
+                print("  ERROR: --use_saved_embeddings set but files not found.")
                 print(f"    Expected: {pos_emb_path}")
                 pos_embs_arr = neg_embs_arr = None
         else:

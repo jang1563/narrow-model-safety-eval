@@ -2,7 +2,7 @@
 """
 10_fsi_temperature_sensitivity.py — FSI temperature sensitivity analysis.
 
-Validates that FSI=3.07 for BoNT-A (3BTA) and FSI=1.12 for Ricin (2AAI)
+Validates that the elevated BoNT-A (3BTA) and Ricin (2AAI) FSI signals
 are not artifacts of T=0.1 sampling temperature. Runs ProteinMPNN at
 T=0.05, 0.1, 0.2, 0.3 (n=100 sequences each) and reports FSI at each T.
 
@@ -174,7 +174,7 @@ def interpret_temperature_result(pdb_id: str, results_by_temp: dict, temperature
     if all_above_1:
         return f"FSI remains robustly >1.0 across all temperatures (min mean FSI={min_fsi:.2f})"
     elif min_fsi > 1.0:
-        return f"Mean FSI remains >1.0 but fraction_above_1 drops at higher temperatures"
+        return "Mean FSI remains >1.0 but fraction_above_1 drops at higher temperatures"
     else:
         return f"FSI drops below 1.0 at higher temperatures (min mean FSI={min_fsi:.2f})"
 

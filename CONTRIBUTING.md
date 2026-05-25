@@ -30,7 +30,7 @@ All CI checks must pass before a pull request is reviewed.
 
 ## What is out of scope
 
-- Any contribution that discloses specific dangerous sequences, recovery protocols, or synthesis routes
+- Any contribution that discloses model-generated dangerous sequences, recovery protocols, or synthesis routes
 - Changes that weaken the ethical framework or DISCLAIMER.md
 - Dependencies that introduce supply-chain risk (prefer well-audited packages)
 
@@ -53,9 +53,10 @@ All CI checks must pass before a pull request is reviewed.
 - [ ] Tests pass (`pytest tests/`)
 - [ ] Lint passes (`ruff check src/ tests/`)
 - [ ] New annotations include DOI citations
-- [ ] No dangerous sequences or protocols are disclosed
+- [ ] No model-generated design sequences, protocols, or withheld artifacts are disclosed
+- [ ] Generated outputs remain outside the release surface (`docs/RELEASE_SURFACE.md`)
 - [ ] PR description explains the scientific rationale
 
 ## Responsible disclosure
 
-If you discover a significant safety capability gap in a widely-used protein model that goes beyond the scope of this public repository, please open a [private security advisory](https://github.com/jang1563/narrow-model-safety-eval/security/advisories/new) before making anything public. We follow coordinated disclosure best practices.
+If you discover a significant safety capability gap in a widely-used protein model that goes beyond the scope of this public repository, please open a [private security advisory](https://github.com/jang1563/narrow-model-safety-eval/security/advisories/new) before making anything public. See [SECURITY.md](SECURITY.md) for the disclosure policy.

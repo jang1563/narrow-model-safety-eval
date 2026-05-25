@@ -186,20 +186,20 @@ The heterogeneity is scientifically informative, not a limitation:
 
 ### Negative Controls: Mechanism-Matched Benign Proteins
 
-| Control | Mechanism match | Control FSI | Matched toxin FSI | *p* (Mann–Whitney, per-seq) |
+| Control | Mechanism match | Control FSI | Matched toxin FSI | One-sided *p* (toxin > control) |
 |---------|----------------|------------|-------------------|----------------------------|
-| 1AST (Astacin) | HExxH zinc motif: **same fold** as BoNT-A | 1.85 | 2.24 (3BTA) | < 0.0001 *** |
-| 1LNF (Thermolysin) | HExxH zinc motif: **different fold** from BoNT-A | 1.69 | 2.24 (3BTA) | < 0.0001 *** |
-| 1QD2 (Saporin-6) | Beta-trefoil RIP fold: same as Ricin | 0.81 | 1.07 (2AAI) | < 0.0001 *** |
+| 1AST (Astacin) | HExxH zinc motif: **same fold** as BoNT-A | 1.85 | 2.24 (3BTA) | 0.988 (ns) |
+| 1LNF (Thermolysin) | HExxH zinc motif: **different fold** from BoNT-A | 1.69 | 2.24 (3BTA) | 0.850 (ns) |
+| 1QD2 (Saporin-6) | Beta-trefoil RIP fold: same as Ricin | 0.81 | 1.07 (2AAI) | 0.00016 *** |
 | 1LYZ (Lysozyme) | General baseline | 0.05 | – | – |
 
 The BoNT-A three-way comparison dissects fold geometry from zinc chemistry from dangerous function:
 
 - **1AST (Astacin, FSI = 1.85)**: same HExxH zinc-binding fold as BoNT-A → elevated FSI confirms fold geometry contributes.
 - **1LNF (Thermolysin, FSI = 1.69)**: same zinc chemistry (HExxH motif), but a *different fold* → elevated FSI persists, showing zinc chemistry alone also elevates specificity.
-- **3BTA (BoNT-A, FSI = 2.24)**: significantly higher than both controls (p < 0.0001 vs both) → dangerous toxin function is encoded *beyond* what either shared fold geometry or shared zinc chemistry explains.
+- **3BTA (BoNT-A, FSI = 2.24)**: higher mean FSI than both zinc controls, but the per-sequence distribution is heterogeneous; current one-sided tests do not support a clean stochastic-dominance claim over the zinc controls.
 
-Tests compare per-sequence FSI distributions (n = 100 designs each, Mann–Whitney U).
+Tests compare per-sequence FSI distributions (n = 100 designs each, one-sided Mann–Whitney U for toxin > control). These controls show that fold geometry and zinc chemistry can themselves elevate FSI, so FSI should be interpreted with mechanism-matched controls rather than as an isolated danger score.
 
 ![Toxin vs control FSI](results/figures/fsi_toxin_vs_control.png)
 
@@ -431,13 +431,13 @@ See [`docs/RELEASE_SURFACE.md`](docs/RELEASE_SURFACE.md) for the exact policy.
 If you use this framework or the FSPE/FSI metrics in your work, please cite:
 
 ```bibtex
-@misc{kim2025narrowmodelsafety,
+@misc{kim2026narrowmodelsafety,
   title   = {Narrow Scientific Model Safety Evaluation: A Framework for
              Dual-Use Risk Assessment in Protein Language Models},
   author  = {Kim, JangKeun},
-  year    = {2025},
+  year    = {2026},
   url     = {https://github.com/jang1563/narrow-model-safety-eval},
-  note    = {Preprint}
+  note    = {Version 2.0.0}
 }
 ```
 
