@@ -113,12 +113,6 @@ Stated up-front to prevent miscitation. None of the headline numbers in § 5 imp
 | Structures | RCSB PDB | 12 toxin + 4 control PDBs | CC0 1.0 (PDB) |
 | Functional sites | UniProt active-site / metal-binding features, primary literature with DOIs | 74 catalytic residues, 15 catalytic panel proteins | CC BY 4.0 |
 | Physical realizability | Expert annotation, 5 dimensions × 8 toxins | `data/annotations/physical_realizability.json` | CC BY 4.0 (this project) |
-|---|---|---|
-| Toxin sequences | UniProt (reviewed) | 16 panel proteins; 71 positive FASTA records |
-| Benign homologs | UniProt | 62 mechanism-matched records |
-| Structures | RCSB PDB | 12 toxin + 4 control PDBs |
-| Functional sites | UniProt active-site / metal-binding features, primary literature with DOIs | 74 catalytic residues, 15 catalytic panel proteins |
-| Physical realizability | Expert annotation, 5 dimensions × 8 toxins | `data/annotations/physical_realizability.json` |
 
 All inputs are publicly available reference records. No novel dangerous sequence is generated or disclosed.
 
@@ -224,7 +218,7 @@ A safety evaluation is only as trustworthy as the metric behind it. The framewor
 
 ### 6.1 UniProt-accession audit (2026-05-20)
 
-`data/annotations/functional_sites.json` was cross-checked against UniProt and the RCSB PDB. **5 of 16 panel proteins** carried accessions that resolved to unrelated proteins (e.g. ExoU phospholipase keyed to acetyl-CoA carboxylase). Two also carried wrong PDBs. The annotation *text* (catalytic residues, mechanism, citations) was correct for the intended proteins; only the identifiers were wrong. All five were corrected; BoNT-A was re-keyed from `P10844` (which is BoNT type **B**) to the correct `P0DPI1`. Affected ESM-3 separability AUROC moved 0.994 → **0.981** after re-running the corrected panel. Full log: [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
+`data/annotations/functional_sites.json` was cross-checked against UniProt and the RCSB PDB. **5 of 16 panel proteins** carried accessions that resolved to unrelated proteins (e.g. ExoU phospholipase keyed to acetyl-CoA carboxylase). Two also carried wrong PDBs. The annotation *text* (catalytic residues, mechanism, citations) was correct for the intended proteins; only the identifiers were wrong. All five were corrected; BoNT-A was re-keyed from `P10844` (which is BoNT type **B**) to the correct `P0DPI1`. Affected ESM-2 separability AUROC moved 0.994 → **0.981** after re-running the corrected panel. Full log: [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
 
 ### 6.2 FSI residue-numbering audit (2026-05-21)
 
