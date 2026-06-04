@@ -25,7 +25,7 @@ PROJECT_DIR="${SCRATCH}/Narrow_Model_Safety_Eval"
 PROTEINMPNN_DIR="${SCRATCH}/ProteinMPNN"
 mkdir -p ${SCRATCH}/logs
 
-source ~/miniconda3/miniconda3/etc/profile.d/conda.sh
+source "${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate narrow_model_safety
 
 # Clone ProteinMPNN if not present

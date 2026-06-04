@@ -25,7 +25,7 @@ PROJECT_DIR="${SCRATCH}/Narrow_Model_Safety_Eval"
 mkdir -p ${SCRATCH}/logs
 
 # Activate conda environment
-source ~/miniconda3/miniconda3/etc/profile.d/conda.sh
+source "${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate narrow_model_safety  # Create this env first
 
 # Set HuggingFace cache to scratch (avoid filling home)

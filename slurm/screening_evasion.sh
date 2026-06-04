@@ -32,7 +32,7 @@ REF_DIR="${PROJECT_DIR}/data/reference_dbs"
 
 mkdir -p "${REF_DIR}" "${PROJECT_DIR}/logs"
 
-source ~/miniconda3/miniconda3/etc/profile.d/conda.sh
+source "${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate narrow_model_safety
 
 # Verify BLAST is installed

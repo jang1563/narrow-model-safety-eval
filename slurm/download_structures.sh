@@ -19,7 +19,7 @@ SCRATCH="${SCRATCH:-/path/to/scratch/narrow_model_safety_eval}"
 PROJECT_DIR="${SCRATCH}/Narrow_Model_Safety_Eval"
 mkdir -p ${SCRATCH}/logs
 
-source ~/miniconda3/miniconda3/etc/profile.d/conda.sh
+source "${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate narrow_model_safety
 
 cd ${PROJECT_DIR}

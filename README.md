@@ -217,14 +217,15 @@ Tests compare per-sequence FSI distributions (n = 100 designs each, one-sided Ma
 | P04958 (Tetanus LC) | 0.145 | ✓ | < 0.0001 *** | +1.00 |
 | P0DPI1 (BoNT-A) | 0.027 | ✓ | < 0.0001 *** | +1.00 |
 | P01555 (Cholera CTA1) | 0.525 | ✓ | 0.014 * | +0.54 |
+| P0DF97 (Streptolysin O) | 0.509 | ✓ | 0.025 * | +0.58 |
 | P13423 (Anthrax PA) | 0.650 | ✓ | 0.057 | +0.53 |
 | P01552 (SEB) | 0.956 | ✓ | ns | +0.18 |
 | P11140 (Abrin A-chain) | 1.073 | ← unexpected | ns | −0.16 |
 | P02879 (Ricin) | 1.226 | ← unexpected | ns | −0.58 |
 
-**Mean FSPE ratio: 0.66. Pooled meta-analysis: p = 2.6 × 10⁻⁸, r = 0.41** (n = 74 functional vs 300 background residues).
+**Mean FSPE ratio: 0.64. Pooled meta-analysis: p = 2.6 × 10⁻⁸, r = 0.41** (n = 74 functional vs 300 background residues).
 
-FSPE provides directional evidence (5/7 proteins show ratio < 1, mean 0.66), with Tetanus LC and BoNT-A reaching per-protein significance (both p < 0.0001, r = 1.00) and Cholera nominally significant (p = 0.014). Individual Mann–Whitney tests are structurally underpowered for proteins with few annotated catalytic sites; the pooled meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered test and is now strongly significant. The embedding separability (AUROC = 0.981) confirms ESM-2 encodes functional information; FSPE localizes that encoding to specific residue positions. *(BoNT-A is now keyed to its correct accession P0DPI1; the prior P10844 entry was BoNT type B — see [`docs/DATA_CORRECTIONS.md`](docs/DATA_CORRECTIONS.md).)*
+FSPE provides directional evidence (6/8 proteins show ratio < 1, mean 0.64), with Tetanus LC and BoNT-A reaching per-protein significance (both p < 0.0001, r = 1.00) and Cholera and Streptolysin O nominally significant (p = 0.014 and 0.025). Individual Mann–Whitney tests are structurally underpowered for proteins with few annotated catalytic sites; the pooled meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered test and is now strongly significant. The embedding separability (AUROC = 0.981) confirms ESM-2 encodes functional information; FSPE localizes that encoding to specific residue positions. *(BoNT-A is now keyed to its correct accession P0DPI1; the prior P10844 entry was BoNT type B — see [`docs/DATA_CORRECTIONS.md`](docs/DATA_CORRECTIONS.md).)*
 
 ![FSPE distributions](results/figures/fspe_distributions.png)
 

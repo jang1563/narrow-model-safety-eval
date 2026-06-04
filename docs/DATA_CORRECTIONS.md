@@ -200,3 +200,36 @@ The risk table now has three separate FSPE columns: `fspe_esm2`, `fspe_esm3`,
 flip ratio sign across models). The mislabeled values affected any downstream
 analysis that interpreted the `fspe_esm3` column as ESM-3 when it was
 actually SaProt for 5/12 proteins.
+
+## 2026-06-04 — FSPE headline table completed with Streptolysin O
+
+### Summary
+
+The headline FSPE table (README, Hugging Face card, system card §5) listed
+**7 proteins** and omitted Streptolysin O. This was a residue of the
+2026-05-20 accession correction: Streptolysin O originally carried the
+non-existent accession `P0C0I2`, so it had no ESM-2 FSPE value when the table
+was first built. After re-keying to the reviewed accession `P0DF97`, the FSPE
+pipeline produced a valid, nominally significant result for it
+(`fspe_ratio = 0.509`, Mann–Whitney `p = 0.025`, `r = +0.58`, expected
+direction), present in `results/fspe_results.json` but never added to the
+displayed table. The `results/summary_risk_table.csv` preview (the 8-toxin
+panel) did include it, surfacing the gap.
+
+### Fix
+
+- Added the Streptolysin O (`P0DF97`) row to the FSPE table in `README.md`,
+  `huggingface/README.md`, and `docs/SYSTEM_CARD.md`.
+- Updated the descriptive statistic from "mean 0.66, 5/7 below 1.0" to
+  **"mean 0.64, 6/8 below 1.0"** in all three documents.
+- The pooled meta-analysis (74 functional vs 300 background residues,
+  `p = 2.6 × 10⁻⁸`, `r = 0.41`) is unchanged — it was already computed over
+  the full residue set and did not depend on which rows the table displayed.
+
+### Impact
+
+No metric value changed; one already-computed result that had been omitted
+from the headline table is now shown. The displayed FSPE panel (8 proteins)
+and the curated `summary_risk_table.csv` preview are now consistent. The FSI
+panel remains 7 scored structures (SEB excluded as a superantigen), so FSPE
+(8) and FSI (7) panel sizes legitimately differ.

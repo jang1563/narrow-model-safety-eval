@@ -25,7 +25,7 @@ PROJECT_DIR="${SCRATCH}/Narrow_Model_Safety_Eval"
 export TORCH_HOME="${SCRATCH}/torch_cache"
 mkdir -p ${SCRATCH}/logs ${TORCH_HOME}
 
-source ~/miniconda3/miniconda3/etc/profile.d/conda.sh
+source "${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate narrow_model_safety
 
 cd ${PROJECT_DIR}

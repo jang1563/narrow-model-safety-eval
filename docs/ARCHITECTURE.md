@@ -105,6 +105,7 @@ SLURM scripts in `slurm/` are designed for SLURM-managed GPU clusters. Key confi
 
 - GPU jobs: `#SBATCH --partition=gpu --gres=gpu:1`
 - Conda env: `narrow_model_safety`
+- Conda activation: scripts source `${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}`. Set `CONDA_SETUP` to your conda profile path if it differs (e.g. `$HOME/anaconda3/etc/profile.d/conda.sh`).
 - Scratch path: set `$SCRATCH` environment variable before submitting
 - HF cache: `${SCRATCH}/hf_cache`
 

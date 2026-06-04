@@ -26,7 +26,7 @@ LIGANDMPNN_DIR="${SCRATCH}/LigandMPNN"
 mkdir -p ${SCRATCH}/logs
 mkdir -p ${PROJECT_DIR}/logs
 
-source ~/miniconda3/miniconda3/etc/profile.d/conda.sh
+source "${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate narrow_model_safety
 
 # Clone LigandMPNN if not present

@@ -35,7 +35,7 @@ PROTEINMPNN_DIR="${SCRATCH}/ProteinMPNN"
 
 mkdir -p ${PROJECT_DIR}/logs ${PROJECT_DIR}/results/trajectory_fsi
 
-source ~/miniconda3/miniconda3/etc/profile.d/conda.sh
+source "${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate narrow_model_safety
 
 # Ensure accelerate is installed (required for EsmForProteinFolding low_cpu_mem_usage + device_map)

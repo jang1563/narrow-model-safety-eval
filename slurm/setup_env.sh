@@ -11,7 +11,7 @@ SCRATCH="${SCRATCH:-/path/to/scratch/narrow_model_safety_eval}"
 mkdir -p ${SCRATCH}/{logs,hf_cache}
 
 # Source conda
-source ~/miniconda3/miniconda3/etc/profile.d/conda.sh
+source "${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 
 # Create environment
 conda create -n narrow_model_safety python=3.10 -y

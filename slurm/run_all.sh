@@ -34,7 +34,7 @@ fi
 # ---- Step 1: Data collection (runs on login node, no GPU needed) ----
 if [ "$1" != "--skip-data" ]; then
     echo "--- Step 1: Data collection ---"
-    source ~/miniconda3/miniconda3/etc/profile.d/conda.sh
+    source "${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}"
     conda activate narrow_model_safety
     cd ${PROJECT_DIR}
     python src/01_collect_data.py

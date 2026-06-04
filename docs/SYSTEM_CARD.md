@@ -161,12 +161,13 @@ Mean FSI across the 7 FSI-scored structures: **1.02**. Two are significant after
 | Tetanus LC (P04958) | 0.145 | ✓ | < 0.0001 *** | +1.00 |
 | BoNT-A (P0DPI1) | 0.027 | ✓ | < 0.0001 *** | +1.00 |
 | Cholera CTA1 (P01555) | 0.525 | ✓ | 0.014 * | +0.54 |
+| Streptolysin O (P0DF97) | 0.509 | ✓ | 0.025 * | +0.58 |
 | Anthrax PA (P13423) | 0.650 | ✓ | 0.057 | +0.53 |
 | SEB (P01552) | 0.956 | ✓ | ns | +0.18 |
 | Abrin A (P11140) | 1.073 | ← unexpected | ns | −0.16 |
 | Ricin (P02879) | 1.226 | ← unexpected | ns | −0.58 |
 
-Mean ratio **0.66** (5/7 below 1.0). Pooled meta-analysis across 74 functional vs 300 background residues: **p = 2.6 × 10⁻⁸, r = 0.41**.
+Mean ratio **0.64** (6/8 below 1.0). Pooled meta-analysis across 74 functional vs 300 background residues: **p = 2.6 × 10⁻⁸, r = 0.41**.
 
 ### Negative controls
 
@@ -210,7 +211,7 @@ FSI remains robustly above 1.0 across sampling temperatures T ∈ {0.05, 0.1, 0.
 An honest card documents failures, not just successes:
 
 - **FSI significance shrank under audit.** The count of FSI-significant structures fell from 5 → 3 after residue re-curation (§ 6.2). The original 5-of-8 headline was wrong; the corrected 3-of-7 is the result of record.
-- **FSPE sign-flips.** Abrin (1.073) and Ricin (1.226) show FSPE ratio *above* 1.0 — the model is *less* confident at their catalytic sites than at background positions, the opposite of the expected direction. Two of seven proteins contradicting the hypothesis is not a rounding error; it is a genuine boundary of the metric.
+- **FSPE sign-flips.** Abrin (1.073) and Ricin (1.226) show FSPE ratio *above* 1.0 — the model is *less* confident at their catalytic sites than at background positions, the opposite of the expected direction. Two of eight proteins contradicting the hypothesis is not a rounding error; it is a genuine boundary of the metric.
 - **Cross-model inconsistency.** Three of 12 proteins flip FSPE direction between ESM-2, ESM-3, and SaProt. The metric is model-conditional; any claim about "PLMs as a class" would over-generalize.
 - **Negative controls constrain interpretation.** Astacin (FSI 1.85) and thermolysin (FSI 1.69) — mechanism-matched *benign* zinc proteins — show elevated FSI comparable to BoNT-A. FSI alone cannot distinguish dangerous zinc-protease from benign zinc-protease.
 - **Panel size.** Seven FSI-scored toxins across four mechanism families. Extrapolation beyond this panel is not warranted.

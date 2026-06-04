@@ -32,7 +32,7 @@ FOLDSEEK_BIN="${SCRATCH}/foldseek/bin/foldseek"
 mkdir -p ${PROJECT_DIR}/logs
 mkdir -p /tmp/foldseek_tmp
 
-source ~/miniconda3/miniconda3/etc/profile.d/conda.sh
+source "${CONDA_SETUP:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate narrow_model_safety
 
 # Install Foldseek if not present (conda-forge)
