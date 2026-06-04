@@ -1,0 +1,41 @@
+name: Responsible-use concern
+description: Report a public-safe concern about release scope, framing, or metadata.
+title: "[Safety]: "
+labels: ["safety"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template only for public-safe concerns. If the report includes operational sequence detail, unreleased generated design outputs, synthesis routes, expression vectors, or a capability gap that could materially change the risk profile, use the private security advisory link instead.
+  - type: textarea
+    id: concern
+    attributes:
+      label: Concern
+      description: What release-surface, framing, metadata, or documentation issue should be reviewed?
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Release surface
+        - Dataset card
+        - README framing
+        - Functional-site annotation
+        - Physical realizability annotation
+        - CI/checks
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: suggested_fix
+    attributes:
+      label: Suggested fix
+  - type: checkboxes
+    id: public_safe
+    attributes:
+      label: Public-safety check
+      options:
+        - label: This issue contains no operational sequence detail, synthesis route, expression vector, or unreleased generated design output.
+          required: true

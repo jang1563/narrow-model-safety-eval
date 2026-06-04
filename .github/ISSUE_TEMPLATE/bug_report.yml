@@ -1,0 +1,43 @@
+name: Bug report
+description: Report a reproducible software, data, or documentation bug.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the evaluation framework. Do not include operational sequence detail, synthesis routes, expression vectors, or unreleased generated design outputs.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What went wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Minimal commands or steps that reproduce the issue.
+      placeholder: |
+        python src/...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Python version, OS, GPU/CPU context, and package versions if relevant.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Responsible-use check
+      options:
+        - label: I have not pasted operational sequence detail, synthesis routes, expression vectors, or unreleased generated design outputs.
+          required: true

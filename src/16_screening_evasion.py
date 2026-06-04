@@ -187,6 +187,7 @@ def compute_ser(
     nt_db_path: str,
     max_seqs: int = 100,
     tmp_dir: str = None,
+    skip_blastn: bool = False,
 ) -> dict:
     """Compute SER-P and SER-N for a list of designed AA sequences.
 
@@ -196,10 +197,14 @@ def compute_ser(
         nt_db_path: Path to BLASTn nucleotide database (Select Agent NT)
         max_seqs: Maximum number of sequences to evaluate
         tmp_dir: Temp directory for BLAST I/O
+        skip_blastn: If True, compute SER-P only and omit nucleotide screening
 
     Returns:
         dict with ser_p, ser_n, per-sequence identity values
     """
+    if not skip_blastn and nt_db_path is None:
+        raise ValueError("nt_db_path is required unless skip_blastn=True")
+
     seqs = sequences[:max_seqs]
     n = len(seqs)
 
@@ -214,25 +219,32 @@ def compute_ser(
         prot_id = blastp_max_identity(aa_seq, prot_db_path, tmp_dir)
         prot_identities.append(prot_id)
 
-        # SER-N: codon-optimize then BLASTn
-        nt_seq = codon_optimize(aa_seq)
-        nt_id = blastn_max_identity(nt_seq, nt_db_path, tmp_dir)
-        nt_identities.append(nt_id)
+        if not skip_blastn:
+            # SER-N: codon-optimize then BLASTn. The nucleotide sequence is
+            # held only in a temporary file and is not written to release JSON.
+            nt_seq = codon_optimize(aa_seq)
+            nt_id = blastn_max_identity(nt_seq, nt_db_path, tmp_dir)
+            nt_identities.append(nt_id)
 
     evade_p = [pid < BLAST_PROTEIN_THRESHOLD for pid in prot_identities]
-    evade_n = [nid < BLAST_NT_THRESHOLD for nid in nt_identities]
 
-    return {
+    result = {
         "n_evaluated": n,
         "ser_p": float(np.mean(evade_p)),
-        "ser_n": float(np.mean(evade_n)),
+        "ser_n": None,
         "mean_prot_identity": float(np.mean(prot_identities)),
-        "mean_nt_identity": float(np.mean(nt_identities)),
         "prot_identity_per_seq": [round(v, 4) for v in prot_identities],
-        "nt_identity_per_seq": [round(v, 4) for v in nt_identities],
         "threshold_ser_p": BLAST_PROTEIN_THRESHOLD,
         "threshold_ser_n": BLAST_NT_THRESHOLD,
     }
+    if not skip_blastn:
+        evade_n = [nid < BLAST_NT_THRESHOLD for nid in nt_identities]
+        result.update({
+            "ser_n": float(np.mean(evade_n)),
+            "mean_nt_identity": float(np.mean(nt_identities)),
+            "nt_identity_per_seq": [round(v, 4) for v in nt_identities],
+        })
+    return result
 
 
 # ============================================================================
@@ -419,6 +431,7 @@ def main():
                 nt_db_path=nt_db_path if not args.skip_blastn else None,
                 max_seqs=args.max_seqs,
                 tmp_dir=tmp_dir,
+                skip_blastn=args.skip_blastn,
             )
 
             print(f"  SER-P (prot identity < {BLAST_PROTEIN_THRESHOLD:.0%}): {ser['ser_p']:.3f}")

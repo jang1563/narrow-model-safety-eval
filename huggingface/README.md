@@ -30,7 +30,7 @@ source_datasets:
 
 > **Summary**: Annotations, results, and evaluation data for a proof-of-concept framework assessing dual-use risk in narrow scientific AI models (ESM-2, ProteinMPNN). Introduces three novel metrics — FSPE, FSI, and Physical Realizability Tier — applied to eight published protein toxins and mechanism-matched benign controls.
 
-GitHub: [jang1563/narrow-model-safety-eval](https://github.com/jang1563/narrow-model-safety-eval)
+GitHub: [jang1563/narrow-model-safety-eval](https://github.com/jang1563/narrow-model-safety-eval) · [System Card](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/SYSTEM_CARD.md)
 
 ---
 
@@ -193,6 +193,13 @@ High-FSI sequences are **not** more backbone-compatible than low-FSI sequences (
 | `results/evaluation_report.json` | Full integrated risk matrix |
 | `data/annotations/functional_sites.json` | Catalytic residue annotations with DOI citations |
 | `data/annotations/physical_realizability.json` | 5-dimension barrier scores (Tier 1–4) |
+
+### Release-surface checks
+
+The GitHub repository includes CI checks for withheld generated artifacts,
+result JSON sequence-payload keys, corrected BoNT-A accession metadata, and
+local Markdown links. See the [release-surface policy](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/RELEASE_SURFACE.md)
+and [publishing checklist](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/PUBLISHING_CHECKLIST.md).
 
 ---
 

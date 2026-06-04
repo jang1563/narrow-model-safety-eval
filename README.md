@@ -23,6 +23,7 @@
 - [Extended Analyses](#extended-analyses)
 - [Project Structure](#project-structure)
 - [Release Surface](#release-surface)
+- [Publishing Checklist](#publishing-checklist)
 - [References](#references)
 - [Citation](#citation)
 - [Ethics](#ethics)
@@ -30,6 +31,8 @@
 ---
 
 ## Reviewer Framing
+
+For the full evaluator-facing description (metrics, audits, limitations, responsible release), see [`docs/SYSTEM_CARD.md`](docs/SYSTEM_CARD.md).
 
 This is a **proof-of-concept evaluation framework**, not a deployed safety system. Each metric (FSPE, FSI, Physical Realizability Tier) is designed as a *measurement* over public reference proteins, not as an objective that an attack pipeline could target. Numbers should be read as evidence that text-based safety classifiers cannot detect dual-use risk in narrow scientific models, motivating the development of model-specific evaluation frameworks; they should not be read as a global capability claim about any protein language model in isolation. See [`SAFETY.md`](SAFETY.md) and [`DISCLAIMER.md`](DISCLAIMER.md) for the responsible-use scope.
 
@@ -388,6 +391,7 @@ narrow-model-safety-eval/
 │   ├── ARCHITECTURE.md             Pipeline design rationale
 │   ├── DATA_CORRECTIONS.md         Accession and annotation correction log
 │   ├── FSI_NUMBERING_AUDIT.md      Residue-numbering audit
+│   ├── PUBLISHING_CHECKLIST.md     GitHub/Hugging Face release gates
 │   └── RELEASE_SURFACE.md          Published/withheld artifact policy
 ├── tests/
 │   └── test_utils.py               Unit tests for core metrics
@@ -412,6 +416,15 @@ artifacts are ignored and withheld from the release surface.
 
 CI validates that generated design output directories are not tracked again.
 See [`docs/RELEASE_SURFACE.md`](docs/RELEASE_SURFACE.md) for the exact policy.
+
+---
+
+## Publishing Checklist
+
+Before updating the GitHub release, Hugging Face dataset, or paper supplement,
+run the checks in [`docs/PUBLISHING_CHECKLIST.md`](docs/PUBLISHING_CHECKLIST.md).
+The checklist covers CI, citation metadata, dataset-card paths, release-surface
+boundaries, and safety-review gates.
 
 ---
 

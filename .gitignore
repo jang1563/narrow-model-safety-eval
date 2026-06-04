@@ -30,6 +30,12 @@ Thumbs.db
 # HPC deployment (contains local paths)
 DEPLOY.sh
 
+# Local research drafts / rerun snapshots
+# Curate these into docs/ or results/ before publishing.
+research/hpc_rerun_snapshot_*/
+research/recovered_main_tex.tex
+research/paper_review_rounds*.md
+
 # Logs
 logs/
 *.log

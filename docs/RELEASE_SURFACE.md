@@ -28,7 +28,9 @@ The release policy is enforced in two places:
 - `.gitignore` excludes generated outputs such as `results/proteinmpnn_output/`,
   `results/proteinmpnn_temp_sweep/`, `results/esmfold_structures/`, `*.npy`,
   and model-weight files.
-- CI fails if generated design-output directories are accidentally tracked again.
+- CI fails if generated design-output directories are accidentally tracked again,
+  if result JSON files publish generated sequence payload keys, or if local
+  Markdown links drift.
 
 Local reproduction may create withheld artifacts on a user's machine. Those
 files are implementation byproducts, not part of the GitHub or Hugging Face

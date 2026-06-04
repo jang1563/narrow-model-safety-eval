@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security advisory
+    url: https://github.com/jang1563/narrow-model-safety-eval/security/advisories/new
+    about: Report sensitive security or responsible-use issues privately.
+  - name: Hugging Face dataset
+    url: https://huggingface.co/datasets/jang1563/narrow-model-safety-eval
+    about: View the published dataset card and release files.

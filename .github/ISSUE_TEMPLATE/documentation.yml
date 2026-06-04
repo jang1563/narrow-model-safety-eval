@@ -1,0 +1,31 @@
+name: Documentation improvement
+description: Suggest a clearer explanation, citation, setup note, or dataset-card fix.
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: textarea
+    id: location
+    attributes:
+      label: Location
+      description: Which file or section should change?
+      placeholder: README.md, huggingface/README.md, docs/...
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What should be improved?
+      description: Describe the ambiguity, stale detail, missing citation, or broken path.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested wording or fix
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This request does not ask for synthesis protocols, generated dangerous sequences, expression vectors, or operational design outputs.
+          required: true

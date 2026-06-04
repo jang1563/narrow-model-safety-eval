@@ -1,9 +1,10 @@
 """Release-surface and metadata integrity checks."""
 
+import importlib.util
+import json
 import re
 import subprocess
 from pathlib import Path
-import json
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -11,6 +12,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
+
+
+def load_script_module(path: str, module_name: str):
+    spec = importlib.util.spec_from_file_location(module_name, ROOT / path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
 
 
 def test_no_withheld_artifacts_are_tracked():
@@ -100,11 +109,14 @@ def test_release_narrative_has_no_stale_headline_numbers():
 
 def test_release_surface_docs_are_cross_linked():
     readme = read("README.md")
+    dataset_card = read("huggingface/README.md")
     safety = read("SAFETY.md")
     contributing = read("CONTRIBUTING.md")
     release_surface = read("docs/RELEASE_SURFACE.md")
 
     assert "docs/RELEASE_SURFACE.md" in readme
+    assert "docs/PUBLISHING_CHECKLIST.md" in readme
+    assert "docs/PUBLISHING_CHECKLIST.md" in dataset_card
     assert "docs/RELEASE_SURFACE.md" in safety
     assert "docs/RELEASE_SURFACE.md" in contributing
     assert re.search(r"results/proteinmpnn_output/", release_surface)
@@ -123,6 +135,65 @@ def test_tracked_json_files_parse():
     assert paths
     for path in paths:
         json.loads(read(path))
+
+
+def test_result_json_files_do_not_publish_generated_sequences():
+    forbidden_keys = {
+        "sequence",
+        "sequences",
+        "designed_sequence",
+        "designed_sequences",
+        "aa_sequence",
+        "nt_sequence",
+        "dna_sequence",
+        "codon_optimized_sequence",
+    }
+    result = subprocess.run(
+        ["git", "ls-files", "results/*.json"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    paths = [line for line in result.stdout.splitlines() if line]
+    assert paths
+
+    def walk(value, path):
+        if isinstance(value, dict):
+            for key, nested in value.items():
+                assert key not in forbidden_keys, f"{path} publishes generated sequence key: {key}"
+                walk(nested, path)
+        elif isinstance(value, list):
+            for nested in value:
+                walk(nested, path)
+
+    for path in paths:
+        walk(json.loads(read(path)), path)
+
+
+def test_ser_skip_blastn_omits_nucleotide_screening(monkeypatch, tmp_path):
+    ser = load_script_module("src/16_screening_evasion.py", "screening_evasion")
+    monkeypatch.setattr(ser, "blastp_max_identity", lambda aa, db, tmp: 0.40)
+
+    def fail_if_called(*args, **kwargs):
+        raise AssertionError("BLASTn should not run when skip_blastn=True")
+
+    monkeypatch.setattr(ser, "blastn_max_identity", fail_if_called)
+
+    result = ser.compute_ser(
+        sequences=["ACDE", "WXYZ"],
+        prot_db_path="protein_db",
+        nt_db_path=None,
+        max_seqs=2,
+        tmp_dir=str(tmp_path),
+        skip_blastn=True,
+    )
+
+    assert result["ser_p"] == 1.0
+    assert result["ser_n"] is None
+    assert result["mean_prot_identity"] == 0.40
+    assert "mean_nt_identity" not in result
+    assert "nt_identity_per_seq" not in result
 
 
 def test_tracked_markdown_local_links_exist():
