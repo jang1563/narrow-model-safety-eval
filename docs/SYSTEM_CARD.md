@@ -31,7 +31,7 @@ Existing AI safety evaluations ask: *will the model say something dangerous?* PL
 
 The framework targets three structural gaps that text-based safety evaluation cannot close:
 
-1. **Latent functional encoding.** Low-entropy masked-token predictions at the zinc-coordinating residues of BoNT-A encode dangerous knowledge with no natural-language output for a classifier to screen.
+1. **Latent functional encoding.** Low-entropy masked-token predictions at the zinc-coordinating residues (the catalytic atoms that make a toxin lethal) of BoNT-A (botulinum neurotoxin A) encode dangerous knowledge with no natural-language output for a classifier to screen.
 2. **Domain-specific signal.** Whether a position is *catalytic* — and why it matters — cannot be derived from sequence or structure alone; it requires curated functional annotation with primary-literature citations.
 3. **Computational vs. physical risk.** The toxin with the strongest computational signal in our panel (BoNT-A, FSI = 2.24) also carries the highest physical barrier (Tier 4 Select Agent, multi-disulfide 150 kDa). A framework that conflates these would systematically misallocate mitigation effort.
 
@@ -39,7 +39,7 @@ The framework targets three structural gaps that text-based safety evaluation ca
 
 **Out of scope.** Generating novel dangerous sequences; using FSPE/FSI as an objective for an attack pipeline; serving as sole basis for any deployment go/no-go decision. See [`SAFETY.md`](../SAFETY.md).
 
-**Actor-conditional framing.** Frontier-lab safety frameworks (e.g. Anthropic's RSP/ASL tiers, Anthropic Opus 4.7's "CB-2: moderately-resourced expert-backed team" threat model) make capability-threshold determinations conditional on a named adversary tier. This framework does **not** estimate actor-conditional uplift. It measures whether a model's representations *encode* dual-use function; whether a given actor could *act* on that encoding is a separate determination that combines this signal with synthesis access, screening coverage, regulatory barriers, and tacit knowledge. FSPE/FSI/PRT outputs are *inputs* to such a determination, not the determination itself.
+**Actor-conditional framing.** Frontier-lab safety frameworks (e.g. Anthropic's RSP (Responsible Scaling Policy) / ASL (AI Safety Level) tiers, Anthropic Opus 4.7's "CB-2: moderately-resourced expert-backed team" threat model) make capability-threshold determinations conditional on a named adversary tier. This framework does **not** estimate actor-conditional uplift. It measures whether a model's representations *encode* dual-use function; whether a given actor could *act* on that encoding is a separate determination that combines this signal with synthesis access, screening coverage, regulatory barriers, and tacit knowledge. FSPE/FSI/PRT outputs are *inputs* to such a determination, not the determination itself.
 
 ---
 
@@ -122,7 +122,7 @@ Stated up-front to prevent miscitation. None of the headline numbers in § 5 imp
 
 All inputs are publicly available reference records. No novel dangerous sequence is generated or disclosed.
 
-The eight FSI-evaluated toxins and four negative controls span four distinct mechanism families (zinc metalloprotease, N-glycosidase RIP, pore-forming, ADP-ribosyltransferase) plus a superantigen excluded from FSI by construction.
+The eight FSI-evaluated toxins and four negative controls span four distinct mechanism families (zinc metalloprotease, N-glycosidase RIP, pore-forming, ADP-ribosyltransferase) plus a superantigen (activates T-cells by bridging immune receptors, not by enzymatic catalysis) excluded from FSI by construction.
 
 ---
 

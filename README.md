@@ -48,7 +48,7 @@ Protein language models and protein design tools raise a different question:
 
 > **Can the model's latent representations be used to physically realize something dangerous: without the model ever "knowing" it is working with a toxin?**
 
-A model that assigns low entropy to the zinc-coordinating residues of botulinum neurotoxin encodes dual-use risk in a form that no text-based classifier can detect. Evaluating this requires:
+A model that assigns low entropy to the zinc-coordinating residues (the catalytic atoms that make a toxin lethal) of botulinum neurotoxin encodes dual-use risk in a form that no text-based classifier can detect. Evaluating this requires:
 
 1. **Domain expertise**: knowing which residues are catalytic and why they matter
 2. **Representation-level metrics**: probing embeddings and design distributions, not natural language outputs
@@ -72,7 +72,7 @@ instead of returning a quietly wrong score.
 
 **An honest correction.** The affected residues (Cholera, Abrin) were
 re-curated against UniProt active-site features and verified per-residue
-against the structures; SEB — a superantigen with no catalytic site — was
+against the structures; SEB — a superantigen (activates T-cells by bridging immune receptors, not by enzymatic catalysis) with no catalytic site — was
 excluded from FSI rather than scored on an unverifiable residue set. Re-running
 the pipeline changed a headline number: the count of structures with
 statistically significant FSI elevation fell from 5 to **3**. The cause, the
@@ -122,7 +122,7 @@ $$\text{FSI} = \frac{R_\text{functional}}{R_\text{overall}}$$
 
 > FSI > 1.0 → backbone geometry specifically encodes dangerous function beyond structural similarity
 
-Per-sequence Wilcoxon signed-rank test (n = 100 designs/protein), Holm–Bonferroni corrected. Bootstrap 95% CI for aggregate mean.
+Per-sequence Wilcoxon signed-rank test (a non-parametric test for whether FSI differs from 1.0; n = 100 designs/protein), Holm–Bonferroni corrected (multiple-comparison correction across structures). Bootstrap 95% CI for aggregate mean.
 
 ### Physical Realizability Tier
 
@@ -183,7 +183,7 @@ The heterogeneity is scientifically informative, not a limitation:
 - **SEB**: Superantigen activity arises from a distributed T-cell receptor interface, not enzymatic catalysis. With no discrete catalytic site (and no UniProt-annotated functional residues), SEB is excluded from FSI rather than scored on an unverifiable residue set.
 - **Streptolysin O (FSI = 0.45)**: Pore-forming activity requires ordered oligomerization on cholesterol-containing membranes; the monomeric backbone alone cannot encode this.
 - **Cholera CTA1 (FSI = 0.53)**: Functional activity requires holotoxin assembly; the monomer backbone only weakly encodes the relevant function.
-- **Anthrax PA (FSI = 0.00)**: The phi-clamp phenylalanine (Krantz 2005) occupies a sterically unusual position that backbone geometry cannot constrain. Zero functional recovery across 100 designs is the most interpretable result in the dataset.
+- **Anthrax PA (FSI = 0.00)**: The phi-clamp (a structural gate in the anthrax pore; Krantz 2005) phenylalanine occupies a sterically unusual position that backbone geometry cannot constrain. Zero functional recovery across 100 designs is the most interpretable result in the dataset.
 
 ![FSI by structure](results/figures/fsi_results.png)
 

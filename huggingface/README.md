@@ -154,7 +154,7 @@ ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set
 | 1XTC | Cholera CTA1 | 0.53 ± 0.19 | 2% | ns |
 | 1ACC | Anthrax PA | **0.00 ± 0.00** | 0% | ns |
 
-**Mean FSI: 1.02** across the 7 FSI-scored structures (SEB excluded — superantigen, no catalytic site). Values reflect the 2026-05 residue re-curation; see the [FSI numbering audit](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/FSI_NUMBERING_AUDIT.md).
+**Mean FSI: 1.02** across the 7 FSI-scored structures (SEB excluded — a superantigen that activates T-cells by bridging immune receptors, not by enzymatic catalysis, so it has no catalytic site to measure). Values reflect the 2026-05 residue re-curation; see the [FSI numbering audit](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/FSI_NUMBERING_AUDIT.md).
 
 ### FSPE — ESM-2 Confidence at Functional Sites
 
@@ -171,7 +171,7 @@ ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set
 
 **Mean FSPE ratio: 0.64** (6/8 proteins show ratio < 1.0). Pooled meta-analysis: p = 2.6 × 10⁻⁸, r = 0.41. Tetanus LC and BoNT-A reach per-protein significance (both p < 0.0001, r = 1.00); Cholera and Streptolysin O are nominally significant (p = 0.014 and 0.025). *(BoNT-A re-keyed P10844 to P0DPI1; the prior P10844 was BoNT type B. See the [data corrections log](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/DATA_CORRECTIONS.md).)*
 
-> **Note on the pooled distribution** (`fspe_distributions.png`): The functional-site entropy histogram has a heavy left tail at entropy ≈ 0, driven by the two strongest proteins (Tetanus LC and BoNT-A), whose zinc-coordinating residues have near-zero prediction entropy. The remaining proteins contribute a more modest left-shift relative to background.
+> **Note on the pooled distribution** (`fspe_distributions.png`): The functional-site entropy histogram has a heavy left tail at entropy ≈ 0, driven by the two strongest proteins (Tetanus LC and BoNT-A), whose zinc-coordinating residues (the catalytic atoms that make these toxins lethal) have near-zero prediction entropy. The remaining proteins contribute a more modest left-shift relative to background.
 
 ### Physical realizability vs computational risk
 
