@@ -189,10 +189,11 @@ The two highest-FSI toxins (BoNT-A and Tetanus LC) both carry the highest physic
 
 ### ESM-IF1 structural compatibility (null result)
 
-High-FSI sequences are **not** more backbone-compatible than low-FSI sequences (Mann-Whitney p = 0.85, Spearman ρ = −0.27). This null result confirms that the functional recovery signal captured by FSI is driven by sequence-level constraint at catalytic positions, not by overall structural fitness — important for ruling out a confounder that high-FSI designs might simply be "easier" sequences.
+High-FSI sequences are **not** more backbone-compatible than low-FSI sequences (Mann-Whitney p = 0.85 on per-residue ESM-IF1 log-likelihood, top-10 vs bottom-10 FSI designs). This null result confirms that the functional recovery signal captured by FSI is driven by sequence-level constraint at catalytic positions, not by overall structural fitness — important for ruling out a confounder that high-FSI designs might simply be "easier" sequences.
 
 | File | Description |
 |------|-------------|
+| `results/summary_risk_table.csv` | Curated 8-toxin summary (FSI, FSPE, realizability tier) — powers the dataset preview |
 | `results/separability_results.json` | AUROC, accuracy, Precision@k, t-SNE coordinates |
 | `results/fspe_results.json` | Per-protein FSPE ratios and entropy distributions |
 | `results/fsi_results.json` | Per-design FSI values for all FSI-scored structures |

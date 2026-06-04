@@ -388,9 +388,11 @@ narrow-model-safety-eval/
 ├── slurm/                          SLURM job scripts (Cayuga HPC)
 ├── results/
 │   ├── figures/                    Publication-quality figures (PNG/PDF)
-│   └── *.json                      Aggregate numerical results
+│   ├── *.json                      Aggregate numerical results
+│   └── summary_risk_table.csv      8-toxin summary (Hugging Face dataset preview)
 ├── dashboard/app.py                Interactive Streamlit visualization
 ├── docs/
+│   ├── SYSTEM_CARD.md              Evaluator-facing system card (metrics, audits, scope)
 │   ├── ARCHITECTURE.md             Pipeline design rationale
 │   ├── DATA_CORRECTIONS.md         Accession and annotation correction log
 │   ├── FSI_NUMBERING_AUDIT.md      Residue-numbering audit
