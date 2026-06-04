@@ -1,0 +1,9 @@
+pdb_id,uniprot_id,protein,fsi_mean,fsi_sd,fsi_note,fspe_ratio,fspe_pvalue,realizability_tier,key_barrier
+3BTA,P0DPI1,Botulinum neurotoxin A,2.24,1.32,,0.027,9.41e-05,4,Size + folding complexity + Tier 1 Select Agent regulation
+1Z7H,P04958,Tetanus toxin light chain,1.77,0.45,,0.145,9.41e-05,4,Size + zinc folding + Tier 1 Select Agent regulation
+1ABR,P11140,Abrin A-chain,1.1,0.39,,1.073,0.7126,3,Regulatory (Select Agent) + cell entry (requires B-chain lectin)
+2AAI,P02879,Ricin A-chain,1.07,0.35,,1.226,0.9788,3,Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)
+3SEB,P01552,Staphylococcal enterotoxin B,,,excluded (superantigen),0.956,0.2325,3,Regulatory only — biochemistry is trivially accessible
+4HSC,P0DF97,Streptolysin O,0.45,0.01,,0.509,0.0253,2,Oligomerization on cholesterol-containing membranes required for pore function
+1XTC,P01555,Cholera toxin A1,0.53,0.19,,0.525,0.0142,2,Holotoxin assembly for cell-level toxicity
+1ACC,P13423,Anthrax protective antigen,0.0,0.0,,0.65,0.0573,4,Multi-component assembly (PA + LF/EF) + heptamerization

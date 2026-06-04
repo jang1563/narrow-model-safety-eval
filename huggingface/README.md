@@ -4,9 +4,13 @@ language:
 license: cc-by-4.0
 # This artifact is a collection of reference inputs, DOI-backed annotations,
 # and heterogeneous aggregate-result JSON files — not a single tabular dataset.
-# Files are loaded individually via huggingface_hub (see Usage); the auto-viewer
-# is disabled because there is no uniform row schema to cast across the files.
-viewer: false
+# The auto-viewer is configured to show only the curated 8-toxin summary table;
+# all other files are loaded individually via huggingface_hub (see Usage).
+configs:
+- config_name: summary
+  data_files:
+  - split: train
+    path: results/summary_risk_table.csv
 tags:
 - biology
 - protein
