@@ -2,6 +2,11 @@
 language:
 - en
 license: cc-by-4.0
+# This artifact is a collection of reference inputs, DOI-backed annotations,
+# and heterogeneous aggregate-result JSON files — not a single tabular dataset.
+# Files are loaded individually via huggingface_hub (see Usage); the auto-viewer
+# is disabled because there is no uniform row schema to cast across the files.
+viewer: false
 tags:
 - biology
 - protein
