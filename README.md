@@ -1,6 +1,6 @@
 # Narrow Scientific Model Safety Evaluation
 
-**Version 2.0.0** · Released 2026-05-26 · [System Card](docs/SYSTEM_CARD.md) · [Hugging Face Dataset](https://huggingface.co/datasets/jang1563/narrow-model-safety-eval)
+**Version 2.0.0** · Released 2026-05-26 · [Evaluation Report](docs/SYSTEM_CARD.md) · [Hugging Face Dataset](https://huggingface.co/datasets/jang1563/narrow-model-safety-eval)
 
 [![CI](https://github.com/jang1563/narrow-model-safety-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/jang1563/narrow-model-safety-eval/actions/workflows/ci.yml)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
@@ -392,7 +392,7 @@ narrow-model-safety-eval/
 │   └── summary_risk_table.csv      8-toxin summary (Hugging Face dataset preview)
 ├── dashboard/app.py                Interactive Streamlit visualization
 ├── docs/
-│   ├── SYSTEM_CARD.md              Evaluator-facing system card (metrics, audits, scope)
+│   ├── SYSTEM_CARD.md              Evaluator-facing evaluation report (metrics, audits, scope)
 │   ├── ARCHITECTURE.md             Pipeline design rationale
 │   ├── DATA_CORRECTIONS.md         Accession and annotation correction log
 │   ├── FSI_NUMBERING_AUDIT.md      Residue-numbering audit

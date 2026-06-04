@@ -205,7 +205,7 @@ actually SaProt for 5/12 proteins.
 
 ### Summary
 
-The headline FSPE table (README, Hugging Face card, system card §5) listed
+The headline FSPE table (README, Hugging Face card, evaluation report §5) listed
 **7 proteins** and omitted Streptolysin O. This was a residue of the
 2026-05-20 accession correction: Streptolysin O originally carried the
 non-existent accession `P0C0I2`, so it had no ESM-2 FSPE value when the table
