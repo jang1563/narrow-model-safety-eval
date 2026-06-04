@@ -1,7 +1,7 @@
 # System Card — Narrow Scientific Model Safety Evaluation
 
 **Version:** 2.0.0 · **Released:** 2026-05-26 · **License:** CC BY 4.0
-**Author:** JangKeun (Jihoon) Kim, Weill Cornell Medicine ([ORCID 0000-0002-8733-9925](https://orcid.org/0000-0002-8733-9925))
+**Author:** JangKeun Kim, Weill Cornell Medicine ([ORCID 0000-0002-8733-9925](https://orcid.org/0000-0002-8733-9925))
 **Repository:** [`jang1563/narrow-model-safety-eval`](https://github.com/jang1563/narrow-model-safety-eval) · **Dataset:** [🤗 `jang1563/narrow-model-safety-eval`](https://huggingface.co/datasets/jang1563/narrow-model-safety-eval)
 
 This system card describes the **evaluation framework** itself — what it measures, how it measures it, what its outputs mean, and what they do not mean. It complements `README.md` (project overview) and `huggingface/README.md` (dataset card). For the responsible-use scope see [`SAFETY.md`](../SAFETY.md) and [`DISCLAIMER.md`](../DISCLAIMER.md); for what is and is not published see [`docs/RELEASE_SURFACE.md`](RELEASE_SURFACE.md).
