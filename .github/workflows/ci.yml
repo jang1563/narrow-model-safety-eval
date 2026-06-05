@@ -20,7 +20,10 @@ jobs:
           cache: 'pip'
 
       - name: Install ruff
-        run: pip install ruff
+        # Pinned for reproducible lint: a new ruff release must not change the
+        # gate on an unrelated PR. Bump deliberately; keep in sync with the
+        # ruff range in pyproject.toml [project.optional-dependencies].dev.
+        run: pip install "ruff==0.15.16"
 
       - name: Run ruff check
         run: ruff check src/ tests/

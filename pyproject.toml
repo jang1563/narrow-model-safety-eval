@@ -38,7 +38,10 @@ dependencies = [
 dev = [
     "pytest>=7.4",
     "pytest-cov>=4.1",
-    "ruff>=0.3",
+    # Capped below the next ruff minor: new minors can add/stabilize lint rules
+    # and would otherwise break CI on unrelated PRs. Keep in sync with the
+    # pinned ruff in .github/workflows/ci.yml.
+    "ruff>=0.15,<0.16",
 ]
 dashboard = [
     "streamlit>=1.30",
