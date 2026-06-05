@@ -268,6 +268,7 @@ This framework sits in the safeguard stack alongside:
 - **Capability evaluations for general LLMs** (e.g. WMDP, biothreat-eval): measure upper-bound risk in *language-output* models. This work measures the analogous risk in *narrow scientific* models, which produce embeddings or sequences rather than text.
 - **Over-refusal calibration** ([bio-overrefusal-v0.1](https://github.com/jang1563/bio-overrefusal-v0.1)): measures whether text-based safeguards over-block legitimate biology research; this work measures what text-based safeguards *cannot detect at all* in adjacent scientific tools.
 - **Constitutional / classifier safeguards** ([constitutional-bioguard](https://github.com/jang1563/constitutional-bioguard)): operate on text-form queries and responses. The narrow-model gap motivates building model-specific safeguards (e.g. embedding-space anomaly detection, structure-aware filters) that text classifiers cannot provide.
+- **Protein foundation model red-teaming** (Fan et al., 2025, [SafeProtein](https://arxiv.org/abs/2509.03487)): tests whether models *generate* harmful sequences under adversarial prompting (up to 70% jailbreak ASR on ESM3). This work is complementary: FSPE/FSI measure whether models *already encode* dangerous function in their representations, a risk surface that exists even without generation-time adversarial prompts.
 
 A safeguard team using this framework would: (a) run FSPE / FSI / Physical Realizability Tier on their organization's deployed narrow models, (b) treat any high-FSI / low-realizability-tier protein as a candidate input for additional gating, (c) extend the framework to other modalities (small molecule, RNA design) under the same measurement-not-objective discipline.
 
@@ -436,6 +437,7 @@ boundaries, and safety-review gates.
 ## References
 
 - Dauparas et al. (2022) "Robust deep learning–based protein sequence design using ProteinMPNN" *Science* 378, 49–56.
+- Fan et al. (2025) "SafeProtein: Red-Teaming Framework and Benchmark for Protein Foundation Models" *arXiv* 2509.03487.
 - Lin et al. (2023) "Evolutionary-scale prediction of atomic-level protein structure with a language model" *Science* 379, 1123–1130.
 - Meier et al. (2021) "Language models enable zero-shot prediction of the effects of mutations on protein function" *NeurIPS*.
 - Krantz et al. (2005) "A phenylalanine clamp catalyzes protein translocation through the anthrax toxin pore" *Science* 309, 777–781.
