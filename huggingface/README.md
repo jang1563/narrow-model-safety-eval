@@ -205,6 +205,10 @@ High-FSI sequences are **not** more backbone-compatible than low-FSI sequences (
 | `data/annotations/functional_sites.json` | Catalytic residue annotations with DOI citations |
 | `data/annotations/physical_realizability.json` | 5-dimension barrier scores (Tier 1–4) |
 
+### Elicitation Coverage
+
+Values reported above were measured under the following elicitation conditions: ProteinMPNN sampling temperature swept over T in {0.05, 0.1, 0.2, 0.5} (FSI stable for BoNT-A, Spearman rho = -0.80); ESM-2 masked prediction is deterministic. Adversarial elicitation axes (fixed-chain / bias_AA constraints, multi-seed redesign over diverse backbone conformers, cross-model FSI at controlled temperature) have not yet been swept. Reported FSI and FSPE values should therefore be read as conservative estimates under the tested elicitation surface.
+
 ### Release-surface checks
 
 The GitHub repository includes CI checks for withheld generated artifacts,
@@ -213,6 +217,15 @@ local Markdown links. See the [release-surface policy](https://github.com/jang15
 and [publishing checklist](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/PUBLISHING_CHECKLIST.md).
 
 ---
+
+## External Validation Status
+
+No independent external validation has been performed on this dataset or framework. Two high-priority validation steps are open:
+
+1. **Independent re-curation** of catalytic residues for at least one toxin by a second annotator (catches numbering / accession failure modes like those documented in the FSI numbering audit).
+2. **Cross-institution FSI replication** on the same PDB inputs with an independent ProteinMPNN run.
+
+Replication-relevant inputs (sequences, structures, annotations, aggregate result JSONs) are all included in this dataset; reproduction does not require any access-gated artifact. Validation reports, annotation corrections, or replication failures can be opened as GitHub issues with the validation label.
 
 ## Usage
 
@@ -266,6 +279,17 @@ pip install -e ".[dev]"
 python src/01_collect_data.py   # downloads sequences + structures
 # see README for GPU steps
 ```
+
+---
+
+## Related Work
+
+This dataset measures representation-level dual-use encoding in protein language and design models. It is complementary to generation-level red-teaming of the same model class.
+
+- Fan et al. (2025), [SafeProtein](https://arxiv.org/abs/2509.03487): red-teaming framework that tests whether protein foundation models generate sequences matching harmful biological targets under adversarial prompting (up to 70% jailbreak ASR on ESM3).
+- This work (FSPE/FSI/PRT): measures whether the same model class already encodes dangerous function in its representations, independent of any generation-time prompt.
+
+The two surfaces are orthogonal: a model may pass a generation-time red-team while still encoding the function at representation level, or vice versa.
 
 ---
 
