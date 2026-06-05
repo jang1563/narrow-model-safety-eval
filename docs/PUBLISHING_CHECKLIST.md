@@ -30,6 +30,20 @@ update, paper supplement, or public demo.
 ## Hugging Face Dataset Readiness
 
 - Dataset card lives at `huggingface/README.md` and has valid YAML front matter.
+- **Sync the live card after any edit.** Editing `huggingface/README.md` in
+  this repo does **not** update the live dataset card — the Hub does not pull
+  from GitHub. Push it explicitly:
+  ```python
+  from huggingface_hub import upload_file
+  upload_file(path_or_fileobj="huggingface/README.md", path_in_repo="README.md",
+              repo_id="jang1563/narrow-model-safety-eval", repo_type="dataset",
+              commit_message="Update dataset card")
+  ```
+  Before pushing, diff the live card against this repo's pre-edit version to
+  confirm they were in sync (no independent Hub-side drift to clobber):
+  `huggingface_hub.hf_hub_download(..., force_download=True)` then `diff`.
+  After pushing, re-download with `force_download=True` and confirm the new
+  sections are present.
 - The card states that no model-generated dangerous sequences, synthesis routes,
   expression vectors, or design protocols are included.
 - Example downloads use `repo_type="dataset"` and paths that exist in the
