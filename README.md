@@ -3,7 +3,7 @@
 **Version 2.0.0** · Released 2026-05-26 · [Evaluation Report](docs/SYSTEM_CARD.md) · [Hugging Face Dataset](https://huggingface.co/datasets/jang1563/narrow-model-safety-eval)
 
 [![CI](https://github.com/jang1563/narrow-model-safety-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/jang1563/narrow-model-safety-eval/actions/workflows/ci.yml)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![HuggingFace Dataset](https://img.shields.io/badge/🤗%20Dataset-narrow--model--safety-orange)](https://huggingface.co/datasets/jang1563/narrow-model-safety-eval)
 [![Code style: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
@@ -284,7 +284,7 @@ cd narrow-model-safety-eval
 pip install -e ".[dev]"
 ```
 
-**Requirements:** Python 3.9+, CUDA-capable GPU recommended for ESM-2 embedding (steps 02, 04) and ProteinMPNN redesign (step 06).
+**Requirements:** Python 3.10+, CUDA-capable GPU recommended for ESM-2 embedding (steps 02, 04) and ProteinMPNN redesign (step 06).
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for HPC/SLURM setup on Cayuga.
 

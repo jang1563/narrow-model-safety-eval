@@ -41,7 +41,6 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import torch
@@ -143,7 +142,7 @@ def get_esm3_masked_entropy(
     position: int,
     model,
     device: str,
-) -> Optional[dict]:
+) -> dict | None:
     """Mask a single position and compute ESM-3 prediction entropy (FSPE).
 
     Args:

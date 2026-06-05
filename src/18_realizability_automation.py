@@ -31,7 +31,6 @@ import re
 import sys
 import time
 from pathlib import Path
-from typing import Optional
 
 import requests
 from pydantic import BaseModel, Field, field_validator
@@ -258,8 +257,8 @@ def annotate_protein_llm(
     uniprot_data: dict,
     pubmed_context: str,
     model: str = "claude-opus-4-7",
-    api_key: Optional[str] = None,
-) -> Optional[RealizabilityAnnotation]:
+    api_key: str | None = None,
+) -> RealizabilityAnnotation | None:
     """Call Claude API to annotate one protein, parse and validate output."""
     try:
         import anthropic
