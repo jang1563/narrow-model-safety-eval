@@ -296,7 +296,18 @@ All random seeds are deterministic per-protein via UniProt accession and PDB fet
 
 ---
 
-## 11. Documentation Standards Adopted
+## 11. Maintenance and Update Cadence
+
+This framework is maintained as an active research artifact, not a frozen publication snapshot.
+
+- **Versioning.** Major versions (2.0 → 3.0) denote panel changes, metric redefinitions, or model additions that invalidate prior headline numbers. Minor versions (2.0 → 2.1) denote corrections, documentation updates, or extended analyses that do not change the headline panel. The current version is tracked in `pyproject.toml`, `CITATION.cff`, and this document.
+- **Integrity audits.** When an audit changes a headline number, the correction is logged in [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md) with the old value, the new value, and the cause. The evaluation report, README, and dataset card are updated in the same commit.
+- **Deprecation.** If this framework is superseded by a more comprehensive evaluation (e.g., one covering small-molecule or nucleic-acid design models), the README and this document will be updated with a pointer to the successor and a `DEPRECATED` badge. The repository and Hugging Face dataset will remain available for reproducibility.
+- **Contact.** Questions, correction reports, and extension proposals: open a GitHub issue or email `jak4013@med.cornell.edu`.
+
+---
+
+## 12. Documentation Standards Adopted
 
 This card draws on the following external standards for structure and coverage:
 
