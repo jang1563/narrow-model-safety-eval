@@ -1,6 +1,6 @@
 # Narrow Scientific Model Safety Evaluation
 
-**Version 2.0.0** · Released 2026-05-26 · [Evaluation Report](docs/SYSTEM_CARD.md) · [Hugging Face Dataset](https://huggingface.co/datasets/jang1563/narrow-model-safety-eval)
+**Version 2.0.0** · Released 2026-05-26 · [Evaluation Report](docs/EVALUATION_REPORT.md) · [Hugging Face Dataset](https://huggingface.co/datasets/jang1563/narrow-model-safety-eval)
 
 [![CI](https://github.com/jang1563/narrow-model-safety-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/jang1563/narrow-model-safety-eval/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
@@ -34,7 +34,7 @@
 
 ## Reviewer Framing
 
-For the full evaluator-facing description (metrics, audits, limitations, responsible release), see [`docs/SYSTEM_CARD.md`](docs/SYSTEM_CARD.md).
+For the full evaluator-facing description (metrics, audits, limitations, responsible release), see [`docs/EVALUATION_REPORT.md`](docs/EVALUATION_REPORT.md).
 
 This is a **proof-of-concept evaluation framework**, not a deployed safety system. Each metric (FSPE, FSI, Physical Realizability Tier) is designed as a *measurement* over public reference proteins, not as an objective that an attack pipeline could target. Numbers should be read as evidence that text-based safety classifiers cannot detect dual-use risk in narrow scientific models, motivating the development of model-specific evaluation frameworks; they should not be read as a global capability claim about any protein language model in isolation. See [`SAFETY.md`](SAFETY.md) and [`DISCLAIMER.md`](DISCLAIMER.md) for the responsible-use scope.
 
@@ -148,7 +148,7 @@ Five independent dimensions scored 1–5: synthesis feasibility, folding complex
 | Precision@1 (dangerous queries) | **0.917** |
 | Precision@1 (benign queries) | 0.083 |
 
-ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set (60 vs. 60 sequences) using a logistic regression classifier in the full 1280-dimensional embedding space. Dangerous queries retrieve other dangerous proteins with 91.7% precision at rank 1: without any fine-tuning or task-specific supervision.
+ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set (60 vs. 60 sequences) using a supervised logistic regression probe in the full 1280-dimensional embedding space. The protein model remains frozen; the probe is trained on task labels. Dangerous queries retrieve other dangerous proteins with 91.7% precision at rank 1 without fine-tuning ESM-2.
 
 ![t-SNE separability](results/figures/separability_tsne.png)
 
@@ -393,7 +393,7 @@ narrow-model-safety-eval/
 │   └── summary_risk_table.csv      8-toxin summary (Hugging Face dataset preview)
 ├── dashboard/app.py                Interactive Streamlit visualization
 ├── docs/
-│   ├── SYSTEM_CARD.md              Evaluator-facing evaluation report (metrics, audits, scope)
+│   ├── EVALUATION_REPORT.md        Evaluator-facing report (metrics, audits, scope)
 │   ├── ARCHITECTURE.md             Pipeline design rationale
 │   ├── DATA_CORRECTIONS.md         Accession and annotation correction log
 │   ├── FSI_NUMBERING_AUDIT.md      Residue-numbering audit
