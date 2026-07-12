@@ -63,7 +63,7 @@ Thresholds above are pedagogical examples; actual operational thresholds belong 
 
 The framework operates at three successive levels of the dual-use risk pipeline. Definitions, statistical tests, and edge-case handling are formalized in [`docs/ARCHITECTURE.md`](ARCHITECTURE.md).
 
-**Measurement layer.** All metrics here operate **directly on the model's representations, masked-token distributions, or sampled outputs** — none rely on an API-side safety filter, post-hoc classifier, or wrapper guard. Reported numbers therefore reflect the model itself, not a deployment configuration on top of it.
+**Measurement layer.** FSPE and FSI operate directly on masked-token distributions or sampled outputs and do not rely on an API-side safety filter or wrapper guard. The auxiliary embedding-separability result uses a supervised logistic regression probe trained on task labels over frozen ESM-2 representations; it should not be read as zero-shot or unsupervised performance.
 
 ### 3.1 FSPE — Functional Site Prediction Entropy (representation level)
 

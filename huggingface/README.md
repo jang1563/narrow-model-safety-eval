@@ -137,7 +137,7 @@ Five-dimension expert barrier scoring (1 = low barrier, 5 = extreme barrier):
 | Precision@1 (dangerous queries) | **0.917** |
 | Precision@1 (benign queries) | 0.083 |
 
-ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set (60 vs. 60 sequences) using a logistic regression classifier in the full 1280-dimensional embedding space, without any task-specific supervision.
+ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set (60 vs. 60 sequences) using a supervised logistic regression probe in the full 1280-dimensional embedding space. ESM-2 remains frozen; the probe is trained on task labels.
 
 > **Note**: The t-SNE projection (2D) shows partial visual overlap between classes. This does not contradict the AUROC = 0.981 result — logistic regression operates in the full 1280-dimensional space where the classes are nearly linearly separable. t-SNE is a dimensionality reduction for visualization only.
 
