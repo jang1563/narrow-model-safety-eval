@@ -39,7 +39,7 @@ source_datasets:
 
 > **Summary**: Annotations, results, and evaluation data for a proof-of-concept framework assessing dual-use risk in narrow scientific AI models (ESM-2, ProteinMPNN). Introduces three novel metrics — FSPE, FSI, and Physical Realizability Tier — applied to eight published protein toxins and mechanism-matched benign controls.
 
-GitHub: [jang1563/narrow-model-safety-eval](https://github.com/jang1563/narrow-model-safety-eval) · [Evaluation Report](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/SYSTEM_CARD.md)
+GitHub: [jang1563/narrow-model-safety-eval](https://github.com/jang1563/narrow-model-safety-eval) · [Evaluation Report](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/EVALUATION_REPORT.md)
 
 ---
 

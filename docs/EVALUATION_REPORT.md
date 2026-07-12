@@ -19,7 +19,7 @@ This evaluation report describes the **evaluation framework** itself — what it
 | **Models evaluated** | ESM-2 (650M), ESM-3 open-weight (`esm3_sm_open_v1`), SaProt-650M, ProteinMPNN, LigandMPNN, EvoDiff. The framework is model-agnostic; these are the instances reported here. |
 | **Models used internally** | None for inference-time gating. Sparse-autoencoder probes (step 15) are trained locally on ESM-2 hidden states as part of an exploratory FHS metric. |
 | **Code surface** | 20 numbered pipeline scripts (`src/01_*.py` – `src/19_*.py`) + shared `utils.py`; SLURM launchers; pytest-based release-integrity tests. |
-| **Release set** | This evaluation report is one of seven release artifacts: [`README.md`](../README.md), [`docs/SYSTEM_CARD.md`](SYSTEM_CARD.md) (this doc), [`SAFETY.md`](../SAFETY.md), [`DISCLAIMER.md`](../DISCLAIMER.md), [`huggingface/README.md`](../huggingface/README.md) (dataset card), [`CITATION.cff`](../CITATION.cff), and [`tests/test_release_integrity.py`](../tests/test_release_integrity.py). This report alone is not the release; the set is. |
+| **Release set** | This evaluation report is one of seven release artifacts: [`README.md`](../README.md), [`docs/EVALUATION_REPORT.md`](EVALUATION_REPORT.md) (this doc), [`SAFETY.md`](../SAFETY.md), [`DISCLAIMER.md`](../DISCLAIMER.md), [`huggingface/README.md`](../huggingface/README.md) (dataset card), [`CITATION.cff`](../CITATION.cff), and [`tests/test_release_integrity.py`](../tests/test_release_integrity.py). This report alone is not the release; the set is. |
 
 ---
 

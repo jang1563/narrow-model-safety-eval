@@ -219,7 +219,7 @@ panel) did include it, surfacing the gap.
 ### Fix
 
 - Added the Streptolysin O (`P0DF97`) row to the FSPE table in `README.md`,
-  `huggingface/README.md`, and `docs/SYSTEM_CARD.md`.
+  `huggingface/README.md`, and `docs/EVALUATION_REPORT.md`.
 - Updated the descriptive statistic from "mean 0.66, 5/7 below 1.0" to
   **"mean 0.64, 6/8 below 1.0"** in all three documents.
 - The pooled meta-analysis (74 functional vs 300 background residues,
