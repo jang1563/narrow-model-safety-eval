@@ -219,23 +219,23 @@ def main():
     auroc = results["auroc_mean"]
     if auroc > 0.8:
         interpretation = (
-            "ESM-2's representations encode functional danger — a simple "
+            "ESM-2's representations encode functional signal — a simple "
             "classifier on ESM-2 embeddings can identify dual-use proteins "
             f"with AUROC {auroc:.3f}, meaning the model's internal "
             "representation contains safety-relevant information."
         )
     elif auroc > 0.6:
         interpretation = (
-            "ESM-2 shows moderate ability to separate dangerous from benign "
+            "ESM-2 shows moderate ability to separate toxin-like from benign "
             f"proteins (AUROC {auroc:.3f}), suggesting partial encoding of "
-            "functional danger in its representation space."
+            "functional signal in its representation space."
         )
     else:
         interpretation = (
-            "ESM-2 does not inherently separate dangerous from benign "
+            "ESM-2 does not inherently separate toxin-like from benign "
             f"proteins in embedding space (AUROC {auroc:.3f}), suggesting "
-            "that toxicity is an emergent property requiring specialized "
-            "evaluation beyond representation similarity."
+            "that toxicity-relevant signal requires specialized evaluation "
+            "beyond representation similarity."
         )
 
     print(interpretation)

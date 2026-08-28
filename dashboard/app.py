@@ -17,7 +17,6 @@ Run:
 import json
 from pathlib import Path
 
-import numpy as np
 import streamlit as st
 
 RESULTS_DIR = Path(__file__).parent.parent / "results"
@@ -87,7 +86,12 @@ def get_esm3_fspe():
     d = load_json(RESULTS_DIR / "esm3_fspe_results.json")
     if d is None:
         return []
-    return [r for r in d.get("results", []) if r.get("fspe_ratio") is not None and r["fspe_ratio"] != 1.0]
+    return [
+        r for r in d.get("results", [])
+        if r.get("model") == "esm3_sm_open_v1"
+        and r.get("fspe_ratio") is not None
+        and r["fspe_ratio"] != 1.0
+    ]
 
 
 def get_fhs():
@@ -107,6 +111,10 @@ _LABELS = {
     "1XTC": "Cholera",  "3SEB": "SEB",    "1ABR": "Abrin",
     "1Z7H": "TeNT",     "4HSC": "SLO",
 }
+
+
+def _fmt_metric(value, digits: int = 3) -> str:
+    return f"{value:.{digits}f}" if value is not None else "—"
 
 
 # ============================================================================
@@ -175,17 +183,23 @@ if page == "FSI Comparison":
         for p in all_pdbs:
             pm = fsi_pm.get(p, {}).get("fsi", {}).get("mean")
             lm = fsi_lm.get(p, {}).get("fsi", {}).get("mean")
-            st.write(f"**{_LABELS.get(p, p)}** — PM: {pm:.3f}  LM: {lm:.3f}" if pm and lm else p)
+            st.write(
+                f"**{_LABELS.get(p, p)}** — PM: {_fmt_metric(pm)}  LM: {_fmt_metric(lm)}"
+            )
 
     # Summary stats
     st.subheader("Key Finding")
     if "3BTA" in fsi_pm and "3BTA" in fsi_lm:
         bont_pm = fsi_pm["3BTA"]["fsi"]["mean"]
         bont_lm = fsi_lm["3BTA"]["fsi"]["mean"]
+        bont_pm_func = fsi_pm["3BTA"].get("functional_recovery", {}).get("mean")
+        bont_lm_func = fsi_lm["3BTA"].get("functional_recovery", {}).get("mean")
         st.success(
             f"**BoNT-A (3BTA)**: FSI-PM = {bont_pm:.3f}, FSI-LM = {bont_lm:.3f}. "
-            "Both models maintain 100% catalytic residue recovery across all 100 designs. "
-            "The zinc coordination sphere (HEXXH motif) is invariant in backbone-conditioned design."
+            f"Mean functional-site recovery is {_fmt_metric(bont_pm_func)} for ProteinMPNN "
+            f"and {_fmt_metric(bont_lm_func)} for LigandMPNN. "
+            "The zinc-protease active site remains the strongest backbone-conditioned signal, "
+            "but model-specific recovery should be read alongside controls and physical barriers."
         )
     if "1ACC" in fsi_pm:
         pa_pm = fsi_pm["1ACC"]["fsi"]["mean"]
@@ -273,7 +287,7 @@ elif page == "2D Risk Space":
 # ============================================================================
 
 elif page == "Per-Protein Radar":
-    st.header("7-Dimensional MDRP Radar Chart")
+    st.header("MDRP Radar Chart")
 
     selected = st.selectbox("Select protein", options=all_pdbs,
                             format_func=lambda p: f"{_LABELS.get(p, p)} ({p})")
@@ -285,8 +299,8 @@ elif page == "Per-Protein Radar":
         if not r:
             st.warning("No MDRP data for this protein yet.")
         else:
-            dims = ["FSI-PM", "FSI-LM", "SER-P/PM", "SER-N/PM", "SER-P/LM", "SER-N/LM", "FSI-PM"]
-            keys = ["fsi_pm", "fsi_lm", "ser_p_pm", "ser_n_pm", "ser_p_lm", "ser_n_lm", "fsi_pm"]
+            dims = ["FSI-PM", "FSI-LM", "FSPE signal", "SER-P/PM", "SER-N/PM", "SER-P/LM", "SER-N/LM"]
+            keys = ["fsi_pm", "fsi_lm", "fspe_esm2", "ser_p_pm", "ser_n_pm", "ser_p_lm", "ser_n_lm"]
 
             # Normalize FSI to [0,1] relative to max FSI (3.0 = full ring)
             def norm(key, val):
@@ -294,6 +308,8 @@ elif page == "Per-Protein Radar":
                     return 0
                 if "fsi" in key:
                     return min(val / 3.0, 1.0)
+                if key == "fspe_esm2":
+                    return min(max(1.0 - val, 0.0), 1.0)
                 return float(val)
 
             vals = [norm(k, r.get(k)) for k in keys]
@@ -312,15 +328,15 @@ elif page == "Per-Protein Radar":
 
             col1, col2 = st.columns(2)
             with col1:
-                st.metric("FSI-PM", f"{r.get('fsi_pm', '—'):.3f}" if r.get("fsi_pm") else "—")
-                st.metric("FSI-LM", f"{r.get('fsi_lm', '—'):.3f}" if r.get("fsi_lm") else "—")
-                st.metric("SER-P (ProteinMPNN)", f"{r.get('ser_p_pm', '—'):.3f}" if r.get("ser_p_pm") is not None else "—")
-                st.metric("SER-N (ProteinMPNN)", f"{r.get('ser_n_pm', '—'):.3f}" if r.get("ser_n_pm") is not None else "—")
+                st.metric("FSI-PM", _fmt_metric(r.get("fsi_pm")))
+                st.metric("FSI-LM", _fmt_metric(r.get("fsi_lm")))
+                st.metric("SER-P (ProteinMPNN)", _fmt_metric(r.get("ser_p_pm")))
+                st.metric("SER-N (ProteinMPNN)", _fmt_metric(r.get("ser_n_pm")))
             with col2:
-                st.metric("FSI-EvoD", f"{r.get('fsi_evod', '—'):.2f}" if r.get("fsi_evod") else "—")
-                st.metric("FSPE (ESM-2)", f"{r.get('fspe_esm2', '—'):.3f}" if r.get("fspe_esm2") else "—")
-                st.metric("SER-P (LigandMPNN)", f"{r.get('ser_p_lm', '—'):.3f}" if r.get("ser_p_lm") is not None else "—")
-                st.metric("SER-N (LigandMPNN)", f"{r.get('ser_n_lm', '—'):.3f}" if r.get("ser_n_lm") is not None else "—")
+                st.metric("FSI-EvoD", _fmt_metric(r.get("fsi_evod"), digits=2))
+                st.metric("FSPE (ESM-2)", _fmt_metric(r.get("fspe_esm2")))
+                st.metric("SER-P (LigandMPNN)", _fmt_metric(r.get("ser_p_lm")))
+                st.metric("SER-N (LigandMPNN)", _fmt_metric(r.get("ser_n_lm")))
     except ImportError:
         st.warning("Install plotly: `pip install plotly`")
 
@@ -338,7 +354,7 @@ elif page == "FSPE (ESM-3)":
 
     esm3_results = get_esm3_fspe()
     if not esm3_results:
-        st.warning("ESM-3 FSPE results not yet available (job 2808653 pending). Check back after GPU queue clears.")
+        st.warning("ESM-3 FSPE results not available in `results/esm3_fspe_results.json`.")
     else:
         try:
             import plotly.graph_objects as go
@@ -447,5 +463,11 @@ elif page == "Raw Table":
         st.warning("Run `python src/19_risk_table.py` to generate the MDRP table.")
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Jobs pending:** ESM-3 (2808653) · SAE/FHS (2808660) · Trajectory (2808661)")
-st.sidebar.markdown("**Completed:** LigandMPNN FSI · EvoDiff FSI · SER (2808659)")
+completed = ["LigandMPNN FSI", "EvoDiff FSI", "SER"]
+if (RESULTS_DIR / "esm3_fspe_results.json").exists():
+    completed.append("ESM-3/SaProt FSPE")
+if (RESULTS_DIR / "fhs_results.json").exists():
+    completed.append("SAE/FHS")
+if (RESULTS_DIR / "trajectory_fsi").exists():
+    completed.append("Trajectory")
+st.sidebar.markdown("**Available result layers:** " + " · ".join(completed))

@@ -31,7 +31,7 @@ data/sequences/      data/structures/      data/annotations/
           │                                       │
           ▼                                       │
   08_evaluation_report.py                         │
-  (integrated risk matrix)◄───────────────────────┘
+  (integrated prioritization matrix)◄──────────────┘
 ```
 
 ## Metric definitions
@@ -115,7 +115,12 @@ SLURM scripts in `slurm/` are designed for SLURM-managed GPU clusters. Key confi
 
 ## Result schema
 
-All JSON result files include `"schema_version": "2.0"` for forward compatibility. Key fields:
+Newer envelope-format result files include `"schema_version": "2.0"` for
+forward compatibility. A few legacy aggregate files remain top-level lists for
+backward compatibility; before sharing a release or interview artifact, run
+`python src/20_validate_results.py` to check JSON parseability, release-surface
+boundaries, stale narrative text, and cross-model FSPE labels. Typical envelope
+fields:
 
 ```json
 {

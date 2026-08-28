@@ -3,14 +3,23 @@
     {
       "uniprot_id": "P02879",
       "name": "Ricin A-chain",
-      "computational_risk": {
-        "fspe_risk": 0,
+      "computational_signal": {
+        "fspe_signal": 0,
         "fspe_ratio": 1.226,
         "fspe_significant": false,
-        "fsi_risk": 0.068,
+        "fsi_signal": 0.068,
         "fsi_mean": 1.068,
         "fsi_fraction_above_1": 0.59,
-        "combined_computational_risk": 0.034
+        "combined_computational_signal": 0.034
+      },
+      "computational_risk": {
+        "fspe_signal": 0,
+        "fspe_ratio": 1.226,
+        "fspe_significant": false,
+        "fsi_signal": 0.068,
+        "fsi_mean": 1.068,
+        "fsi_fraction_above_1": 0.59,
+        "combined_computational_signal": 0.034
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -29,14 +38,23 @@
     {
       "uniprot_id": "P01555",
       "name": "Cholera toxin A1 subunit",
-      "computational_risk": {
-        "fspe_risk": 0.475,
+      "computational_signal": {
+        "fspe_signal": 0.475,
         "fspe_ratio": 0.525,
         "fspe_significant": true,
-        "fsi_risk": 0,
+        "fsi_signal": 0,
         "fsi_mean": 0.527,
         "fsi_fraction_above_1": 0.02,
-        "combined_computational_risk": 0.238
+        "combined_computational_signal": 0.238
+      },
+      "computational_risk": {
+        "fspe_signal": 0.475,
+        "fspe_ratio": 0.525,
+        "fspe_significant": true,
+        "fsi_signal": 0,
+        "fsi_mean": 0.527,
+        "fsi_fraction_above_1": 0.02,
+        "combined_computational_signal": 0.238
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -55,14 +73,23 @@
     {
       "uniprot_id": "P0DPI1",
       "name": "Botulinum neurotoxin type A",
-      "computational_risk": {
-        "fspe_risk": 0.973,
+      "computational_signal": {
+        "fspe_signal": 0.973,
         "fspe_ratio": 0.027,
         "fspe_significant": true,
-        "fsi_risk": 1.238,
+        "fsi_signal": 1.238,
         "fsi_mean": 2.238,
         "fsi_fraction_above_1": 0.94,
-        "combined_computational_risk": 1.106
+        "combined_computational_signal": 1.106
+      },
+      "computational_risk": {
+        "fspe_signal": 0.973,
+        "fspe_ratio": 0.027,
+        "fspe_significant": true,
+        "fsi_signal": 1.238,
+        "fsi_mean": 2.238,
+        "fsi_fraction_above_1": 0.94,
+        "combined_computational_signal": 1.106
       },
       "physical_barrier": {
         "synthesis_barrier": 0.75,
@@ -81,11 +108,17 @@
     {
       "uniprot_id": "P01552",
       "name": "Staphylococcal enterotoxin B",
-      "computational_risk": {
-        "fspe_risk": 0.044,
+      "computational_signal": {
+        "fspe_signal": 0.044,
         "fspe_ratio": 0.956,
         "fspe_significant": false,
-        "combined_computational_risk": 0.044
+        "combined_computational_signal": 0.044
+      },
+      "computational_risk": {
+        "fspe_signal": 0.044,
+        "fspe_ratio": 0.956,
+        "fspe_significant": false,
+        "combined_computational_signal": 0.044
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -104,14 +137,23 @@
     {
       "uniprot_id": "P11140",
       "name": "Abrin A-chain",
-      "computational_risk": {
-        "fspe_risk": 0,
+      "computational_signal": {
+        "fspe_signal": 0,
         "fspe_ratio": 1.073,
         "fspe_significant": false,
-        "fsi_risk": 0.101,
+        "fsi_signal": 0.101,
         "fsi_mean": 1.101,
         "fsi_fraction_above_1": 0.48,
-        "combined_computational_risk": 0.05
+        "combined_computational_signal": 0.05
+      },
+      "computational_risk": {
+        "fspe_signal": 0,
+        "fspe_ratio": 1.073,
+        "fspe_significant": false,
+        "fsi_signal": 0.101,
+        "fsi_mean": 1.101,
+        "fsi_fraction_above_1": 0.48,
+        "combined_computational_signal": 0.05
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -130,14 +172,23 @@
     {
       "uniprot_id": "P04958",
       "name": "Tetanus toxin light chain",
-      "computational_risk": {
-        "fspe_risk": 0.855,
+      "computational_signal": {
+        "fspe_signal": 0.855,
         "fspe_ratio": 0.145,
         "fspe_significant": true,
-        "fsi_risk": 0.768,
+        "fsi_signal": 0.768,
         "fsi_mean": 1.768,
         "fsi_fraction_above_1": 0.96,
-        "combined_computational_risk": 0.812
+        "combined_computational_signal": 0.812
+      },
+      "computational_risk": {
+        "fspe_signal": 0.855,
+        "fspe_ratio": 0.145,
+        "fspe_significant": true,
+        "fsi_signal": 0.768,
+        "fsi_mean": 1.768,
+        "fsi_fraction_above_1": 0.96,
+        "combined_computational_signal": 0.812
       },
       "physical_barrier": {
         "synthesis_barrier": 0.5,
@@ -156,14 +207,23 @@
     {
       "uniprot_id": "P0DF97",
       "name": "Streptolysin O",
-      "computational_risk": {
-        "fspe_risk": 0.491,
+      "computational_signal": {
+        "fspe_signal": 0.491,
         "fspe_ratio": 0.509,
         "fspe_significant": true,
-        "fsi_risk": 0,
+        "fsi_signal": 0,
         "fsi_mean": 0.451,
         "fsi_fraction_above_1": 0.0,
-        "combined_computational_risk": 0.246
+        "combined_computational_signal": 0.246
+      },
+      "computational_risk": {
+        "fspe_signal": 0.491,
+        "fspe_ratio": 0.509,
+        "fspe_significant": true,
+        "fsi_signal": 0,
+        "fsi_mean": 0.451,
+        "fsi_fraction_above_1": 0.0,
+        "combined_computational_signal": 0.246
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -182,14 +242,23 @@
     {
       "uniprot_id": "P13423",
       "name": "Anthrax protective antigen",
-      "computational_risk": {
-        "fspe_risk": 0.35,
+      "computational_signal": {
+        "fspe_signal": 0.35,
         "fspe_ratio": 0.65,
         "fspe_significant": false,
-        "fsi_risk": 0,
+        "fsi_signal": 0,
         "fsi_mean": 0.0,
         "fsi_fraction_above_1": 0.0,
-        "combined_computational_risk": 0.175
+        "combined_computational_signal": 0.175
+      },
+      "computational_risk": {
+        "fspe_signal": 0.35,
+        "fspe_ratio": 0.65,
+        "fspe_significant": false,
+        "fsi_signal": 0,
+        "fsi_mean": 0.0,
+        "fsi_fraction_above_1": 0.0,
+        "combined_computational_signal": 0.175
       },
       "physical_barrier": {
         "synthesis_barrier": 0.5,
@@ -208,14 +277,23 @@
     {
       "uniprot_id": "O34208",
       "name": "ExoU phospholipase",
-      "computational_risk": {
-        "fspe_risk": 0.998,
+      "computational_signal": {
+        "fspe_signal": 0.998,
         "fspe_ratio": 0.002,
         "fspe_significant": true,
-        "fsi_risk": 0,
+        "fsi_signal": 0,
         "fsi_mean": 0.0,
         "fsi_fraction_above_1": 0.0,
-        "combined_computational_risk": 0.499
+        "combined_computational_signal": 0.499
+      },
+      "computational_risk": {
+        "fspe_signal": 0.998,
+        "fspe_ratio": 0.002,
+        "fspe_significant": true,
+        "fsi_signal": 0,
+        "fsi_mean": 0.0,
+        "fsi_fraction_above_1": 0.0,
+        "combined_computational_signal": 0.499
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -234,14 +312,23 @@
     {
       "uniprot_id": "Q51451",
       "name": "ExoS ADP-ribosyltransferase",
-      "computational_risk": {
-        "fspe_risk": 0.338,
+      "computational_signal": {
+        "fspe_signal": 0.338,
         "fspe_ratio": 0.662,
         "fspe_significant": false,
-        "fsi_risk": 0.72,
+        "fsi_signal": 0.72,
         "fsi_mean": 1.72,
         "fsi_fraction_above_1": 0.93,
-        "combined_computational_risk": 0.529
+        "combined_computational_signal": 0.529
+      },
+      "computational_risk": {
+        "fspe_signal": 0.338,
+        "fspe_ratio": 0.662,
+        "fspe_significant": false,
+        "fsi_signal": 0.72,
+        "fsi_mean": 1.72,
+        "fsi_fraction_above_1": 0.93,
+        "combined_computational_signal": 0.529
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -260,14 +347,23 @@
     {
       "uniprot_id": "P15273",
       "name": "YopH protein tyrosine phosphatase",
-      "computational_risk": {
-        "fspe_risk": 0.976,
+      "computational_signal": {
+        "fspe_signal": 0.976,
         "fspe_ratio": 0.024,
         "fspe_significant": true,
-        "fsi_risk": 0,
+        "fsi_signal": 0,
         "fsi_mean": 0.81,
         "fsi_fraction_above_1": 0.46,
-        "combined_computational_risk": 0.488
+        "combined_computational_signal": 0.488
+      },
+      "computational_risk": {
+        "fspe_signal": 0.976,
+        "fspe_ratio": 0.024,
+        "fspe_significant": true,
+        "fsi_signal": 0,
+        "fsi_mean": 0.81,
+        "fsi_fraction_above_1": 0.46,
+        "combined_computational_signal": 0.488
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -286,14 +382,23 @@
     {
       "uniprot_id": "P00648",
       "name": "Barnase ribonuclease",
-      "computational_risk": {
-        "fspe_risk": 0,
+      "computational_signal": {
+        "fspe_signal": 0,
         "fspe_ratio": 1.283,
         "fspe_significant": false,
-        "fsi_risk": 0,
+        "fsi_signal": 0,
         "fsi_mean": 0.171,
         "fsi_fraction_above_1": 0.0,
-        "combined_computational_risk": 0.0
+        "combined_computational_signal": 0.0
+      },
+      "computational_risk": {
+        "fspe_signal": 0,
+        "fspe_ratio": 1.283,
+        "fspe_significant": false,
+        "fsi_signal": 0,
+        "fsi_mean": 0.171,
+        "fsi_fraction_above_1": 0.0,
+        "combined_computational_signal": 0.0
       },
       "physical_barrier": {
         "synthesis_barrier": 0.0,
@@ -312,11 +417,17 @@
     {
       "uniprot_id": "P04419",
       "name": "Colicin E2 DNase",
-      "computational_risk": {
-        "fspe_risk": 0.862,
+      "computational_signal": {
+        "fspe_signal": 0.862,
         "fspe_ratio": 0.138,
         "fspe_significant": true,
-        "combined_computational_risk": 0.862
+        "combined_computational_signal": 0.862
+      },
+      "computational_risk": {
+        "fspe_signal": 0.862,
+        "fspe_ratio": 0.138,
+        "fspe_significant": true,
+        "combined_computational_signal": 0.862
       },
       "physical_barrier": {
         "synthesis_barrier": 0.25,
@@ -335,11 +446,17 @@
     {
       "uniprot_id": "Q99ZW2",
       "name": "CRISPR-associated protein Cas9",
-      "computational_risk": {
-        "fspe_risk": 0.991,
+      "computational_signal": {
+        "fspe_signal": 0.991,
         "fspe_ratio": 0.009,
         "fspe_significant": true,
-        "combined_computational_risk": 0.991
+        "combined_computational_signal": 0.991
+      },
+      "computational_risk": {
+        "fspe_signal": 0.991,
+        "fspe_ratio": 0.009,
+        "fspe_significant": true,
+        "combined_computational_signal": 0.991
       },
       "physical_barrier": {
         "synthesis_barrier": 0.5,
@@ -358,14 +475,23 @@
     {
       "uniprot_id": "P00588",
       "name": "Diphtheria toxin",
-      "computational_risk": {
-        "fspe_risk": 0.045,
+      "computational_signal": {
+        "fspe_signal": 0.045,
         "fspe_ratio": 0.955,
         "fspe_significant": false,
-        "fsi_risk": 0,
+        "fsi_signal": 0,
         "fsi_mean": 0.72,
         "fsi_fraction_above_1": 0.54,
-        "combined_computational_risk": 0.022
+        "combined_computational_signal": 0.022
+      },
+      "computational_risk": {
+        "fspe_signal": 0.045,
+        "fspe_ratio": 0.955,
+        "fspe_significant": false,
+        "fsi_signal": 0,
+        "fsi_mean": 0.72,
+        "fsi_fraction_above_1": 0.54,
+        "combined_computational_signal": 0.022
       },
       "physical_barrier": {
         "synthesis_barrier": 0.5,
@@ -384,8 +510,11 @@
     {
       "uniprot_id": "P55981",
       "name": "Vacuolating cytotoxin A",
+      "computational_signal": {
+        "combined_computational_signal": null
+      },
       "computational_risk": {
-        "combined_computational_risk": null
+        "combined_computational_signal": null
       },
       "physical_barrier": {
         "synthesis_barrier": 0.75,

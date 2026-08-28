@@ -66,3 +66,7 @@ coverage.xml
 # Type checking
 .mypy_cache/
 .ruff_cache/
+
+# Interview and outreach preparation, not part of the public record
+docs/*RESEARCH_BRIEF.md
+docs/*INTERVIEW*

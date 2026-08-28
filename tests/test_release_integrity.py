@@ -6,6 +6,8 @@ import re
 import subprocess
 from pathlib import Path
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -90,6 +92,7 @@ def test_release_narrative_has_no_stale_headline_numbers():
         "src/08_evaluation_report.py",
         "src/09_negative_controls.py",
         "src/10_fsi_temperature_sensitivity.py",
+        "dashboard/app.py",
         "results/evaluation_report.txt",
     ]
     stale_patterns = [
@@ -98,8 +101,21 @@ def test_release_narrative_has_no_stale_headline_numbers():
         "3BTA FSI=3.07",
         "FSI=0.70",
         "4/5 proteins",
+        "5/7 proteins",
         "mean ratio=0.928",
+        "100% catalytic residue recovery",
+        "TM-score > 0.5",
+        "job 2808653 pending",
+        "7-Dimensional MDRP Radar Chart",
         "author  = {Jang, Jaewon}",
+        "Biohub / Presentation Framing",
+        "Biohub / Interview Framing",
+        "BIOHUB_RESEARCH_BRIEF",
+        "Do not say",
+        "interview brief",
+        "research-talk outline",
+        "Talk outline",
+        "Slide-ready takeaway",
     ]
     for path in narrative_paths:
         text = read(path)
@@ -194,6 +210,66 @@ def test_ser_skip_blastn_omits_nucleotide_screening(monkeypatch, tmp_path):
     assert result["mean_prot_identity"] == 0.40
     assert "mean_nt_identity" not in result
     assert "nt_identity_per_seq" not in result
+
+
+def test_ser_records_blast_failures_without_counting_them_as_no_hits(monkeypatch, tmp_path):
+    ser = load_script_module("src/16_screening_evasion.py", "screening_evasion_failures")
+
+    def fake_blastp(aa, db, tmp):
+        if aa == "FAIL":
+            raise ser.BlastSearchError("simulated BLASTp failure")
+        return 0.40
+
+    monkeypatch.setattr(ser, "blastp_max_identity", fake_blastp)
+    monkeypatch.setattr(ser, "blastn_max_identity", lambda nt, db, tmp: 0.80)
+
+    result = ser.compute_ser(
+        sequences=["ACDE", "FAIL"],
+        prot_db_path="protein_db",
+        nt_db_path="nt_db",
+        max_seqs=2,
+        tmp_dir=str(tmp_path),
+    )
+
+    assert result["n_protein_search_success"] == 1
+    assert result["n_protein_search_failures"] == 1
+    assert result["protein_search_complete"] is False
+    assert result["ser_p"] == 1.0
+    assert result["mean_prot_identity"] == 0.40
+    assert result["prot_identity_per_seq"] == [0.40, None]
+    assert result["n_nt_search_success"] == 2
+    assert result["ser_n"] == 0.0
+    assert "simulated BLASTp failure" in result["protein_search_failure_examples"][0]["error"]
+
+
+def test_blastp_operational_failure_raises(monkeypatch, tmp_path):
+    ser = load_script_module("src/16_screening_evasion.py", "screening_evasion_blastp")
+
+    class FailedBlast:
+        returncode = 2
+        stderr = "database not found"
+
+    monkeypatch.setattr(ser.subprocess, "run", lambda *args, **kwargs: FailedBlast())
+
+    with pytest.raises(ser.BlastSearchError, match="blastp failed"):
+        ser.blastp_max_identity("ACDE", "missing_db", str(tmp_path))
+
+
+def test_dashboard_filters_esm3_fspe_by_model():
+    dashboard = read("dashboard/app.py")
+
+    assert 'r.get("model") == "esm3_sm_open_v1"' in dashboard
+    assert "saprot_650m_af2" not in dashboard.split("def get_esm3_fspe", 1)[1].split("def get_fhs", 1)[0]
+
+
+def test_result_validator_cli_passes():
+    result = subprocess.run(
+        ["python", "src/20_validate_results.py"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
 
 
 def test_tracked_markdown_local_links_exist():

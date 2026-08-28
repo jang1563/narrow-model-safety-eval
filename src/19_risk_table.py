@@ -262,15 +262,26 @@ def plot_fsi_ser_space(rows: list, output_dir: Path):
 
     fig, ax = plt.subplots(figsize=(9, 7))
 
-    # Quadrant shading
-    ax.axhspan(0.70, 1.05, xmin=0, xmax=0.5, alpha=0.06, color="orange")   # high FSI, low SER-N
-    ax.axhspan(0.70, 1.05, xmin=0.5, xmax=1.0, alpha=0.06, color="red")    # high FSI, high SER-N
-    ax.axhspan(-0.05, 0.70, xmin=0, xmax=0.5, alpha=0.06, color="green")   # low FSI, low SER-N
-    ax.axhspan(-0.05, 0.70, xmin=0.5, xmax=1.0, alpha=0.06, color="blue")  # low FSI, high SER-N
-
-    # Quadrant lines
     fsi_mid = 1.0
     ser_mid = 0.70
+    x_min, x_max = -0.1, 3.6
+    y_min, y_max = -0.05, 1.05
+
+    # Quadrant shading in data coordinates so colors align with the threshold lines.
+    for x0, y0, width, height, color in [
+        (x_min, ser_mid, fsi_mid - x_min, y_max - ser_mid, "blue"),
+        (fsi_mid, ser_mid, x_max - fsi_mid, y_max - ser_mid, "red"),
+        (x_min, y_min, fsi_mid - x_min, ser_mid - y_min, "green"),
+        (fsi_mid, y_min, x_max - fsi_mid, ser_mid - y_min, "orange"),
+    ]:
+        ax.add_patch(
+            mpatches.Rectangle(
+                (x0, y0), width, height,
+                facecolor=color, alpha=0.06, edgecolor="none", zorder=0,
+            )
+        )
+
+    # Quadrant lines
     ax.axhline(ser_mid, color="gray", lw=0.8, ls="--", alpha=0.5)
     ax.axvline(fsi_mid, color="gray", lw=0.8, ls="--", alpha=0.5)
 
@@ -328,8 +339,8 @@ def plot_fsi_ser_space(rows: list, output_dir: Path):
     ax.set_xlabel("FSI (Functional Specificity Index)", fontsize=11)
     ax.set_ylabel("SER-N (fraction evading NT screening)", fontsize=11)
     ax.set_title("2D Risk Space: FSI × Screening Evasion Rate (SER-N)", fontsize=12)
-    ax.set_xlim(-0.1, 3.6)
-    ax.set_ylim(-0.05, 1.05)
+    ax.set_xlim(x_min, x_max)
+    ax.set_ylim(y_min, y_max)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / "fsi_ser_risk_space.pdf"

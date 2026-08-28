@@ -7,6 +7,7 @@ update, paper supplement, or public demo.
 
 - Run `pytest tests/ -v --tb=short`.
 - Run `ruff check src/ tests/`.
+- Run `python src/20_validate_results.py`.
 - Confirm `git status --short` contains only intentional release files.
 - Confirm `docs/RELEASE_SURFACE.md`, `SAFETY.md`, `DISCLAIMER.md`, and
   `SECURITY.md` still describe the actual release surface.
@@ -79,4 +80,5 @@ update, paper supplement, or public demo.
 ### Verification
 - `pytest tests/ -v --tb=short`
 - `ruff check src/ tests/`
+- `python src/20_validate_results.py`
 ```

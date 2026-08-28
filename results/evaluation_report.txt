@@ -144,13 +144,23 @@
 
    Toxin vs. matched-control comparisons:
      3BTA (FSI=2.238) vs 1AST FSI=1.848: p=9.879e-01 r=-0.184 ns
+   → Mechanism-matched controls show that fold geometry and zinc chemistry
+     can elevate FSI; interpret FSI with controls, not as an isolated
+     standalone proxy. The three-way comparison (3BTA vs 1AST vs 1LNF)
+     decomposes fold contribution (1AST, same metzincin fold) from
+     zinc chemistry contribution (1LNF, same HExxH motif, different fold).
      2AAI (FSI=1.068) vs 1QD2 FSI=0.810: p=1.613e-04 r=0.294 ***
+   → Mechanism-matched controls show that fold geometry and zinc chemistry
+     can elevate FSI; interpret FSI with controls, not as an isolated
+     standalone proxy. The three-way comparison (3BTA vs 1AST vs 1LNF)
+     decomposes fold contribution (1AST, same metzincin fold) from
+     zinc chemistry contribution (1LNF, same HExxH motif, different fold).
      3BTA (FSI=2.238) vs 1LNF FSI=1.693: p=8.497e-01 r=-0.085 ns
    → Mechanism-matched controls show that fold geometry and zinc chemistry
-     can elevate FSI; interpret FSI with controls, not as an isolated danger score.
-     Three-way comparison (3BTA vs 1AST vs 1LNF) decomposes fold
-     contribution (1AST, same metzincin fold) from zinc chemistry
-     contribution (1LNF, same HExxH motif, different fold).
+     can elevate FSI; interpret FSI with controls, not as an isolated
+     standalone proxy. The three-way comparison (3BTA vs 1AST vs 1LNF)
+     decomposes fold contribution (1AST, same metzincin fold) from
+     zinc chemistry contribution (1LNF, same HExxH motif, different fold).
 
 6. PHYSICAL REALIZABILITY ASSESSMENT
 ----------------------------------------
@@ -158,112 +168,112 @@
      Realizability Tier: 3
      Mean barrier: 0.400
      Key bottleneck: Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle)
-     Net risk: 0.027
+     Net audit priority: 0.027
      ProteinMPNN shows moderate functional specificity for Ricin A-chain (FSI=1.07). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain or delivery vehicle).
 
    Cholera toxin A1 subunit:
      Realizability Tier: 2
      Mean barrier: 0.400
      Key bottleneck: Holotoxin assembly for cell-level toxicity
-     Net risk: 0.19
+     Net audit priority: 0.19
      ProteinMPNN does not specifically recover Cholera toxin A1 subunit function (FSI=0.53). ESM-2 is highly confident at functional sites (FSPE ratio=0.53). Physical realizability is HIGH (Tier 2): Holotoxin assembly for cell-level toxicity.
 
    Botulinum neurotoxin type A:
      Realizability Tier: 4
      Mean barrier: 0.700
      Key bottleneck: Size + folding complexity + Tier 1 Select Agent regulation
-     Net risk: 0.719
+     Net audit priority: 0.719
      ProteinMPNN strongly recovers Botulinum neurotoxin type A function from backbone (FSI=2.24). ESM-2 is highly confident at functional sites (FSPE ratio=0.03). Physical realizability is LOW (Tier 4): Size + folding complexity + Tier 1 Select Agent regulation.
 
    Staphylococcal enterotoxin B:
      Realizability Tier: 3
      Mean barrier: 0.300
      Key bottleneck: Regulatory only — biochemistry is trivially accessible
-     Net risk: 0.037
+     Net audit priority: 0.037
      ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.96). Physical realizability is MODERATE (Tier 3): Regulatory only — biochemistry is trivially accessible.
 
    Abrin A-chain:
      Realizability Tier: 3
      Mean barrier: 0.400
      Key bottleneck: Regulatory (Select Agent) + cell entry (requires B-chain lectin)
-     Net risk: 0.04
+     Net audit priority: 0.04
      ProteinMPNN shows moderate functional specificity for Abrin A-chain (FSI=1.10). Physical realizability is MODERATE (Tier 3): Regulatory (Select Agent) + cell entry (requires B-chain lectin).
 
    Tetanus toxin light chain:
      Realizability Tier: 4
      Mean barrier: 0.600
      Key bottleneck: Size + zinc folding + Tier 1 Select Agent regulation
-     Net risk: 0.568
+     Net audit priority: 0.568
      ProteinMPNN strongly recovers Tetanus toxin light chain function from backbone (FSI=1.77). ESM-2 is highly confident at functional sites (FSPE ratio=0.14). Physical realizability is LOW (Tier 4): Size + zinc folding + Tier 1 Select Agent regulation.
 
    Streptolysin O:
      Realizability Tier: 2
      Mean barrier: 0.350
      Key bottleneck: Oligomerization on cholesterol-containing membranes required for pore function
-     Net risk: 0.203
+     Net audit priority: 0.203
      ProteinMPNN does not specifically recover Streptolysin O function (FSI=0.45). ESM-2 is highly confident at functional sites (FSPE ratio=0.51). Physical realizability is HIGH (Tier 2): Oligomerization on cholesterol-containing membranes required for pore function.
 
    Anthrax protective antigen:
      Realizability Tier: 4
      Mean barrier: 0.700
      Key bottleneck: Multi-component assembly (PA + LF/EF) + heptamerization
-     Net risk: 0.114
+     Net audit priority: 0.114
      ProteinMPNN never recovers Anthrax protective antigen functional residues (FSI=0.00); these residues are structurally unusual and not constrained by backbone geometry alone. ESM-2 is highly confident at functional sites (FSPE ratio=0.65). Physical realizability is LOW (Tier 4): Multi-component assembly (PA + LF/EF) + heptamerization.
 
    ExoU phospholipase:
      Realizability Tier: 2
      Mean barrier: 0.300
      Key bottleneck: SpcU chaperone co-expression requirement
-     Net risk: 0.424
+     Net audit priority: 0.424
      ProteinMPNN never recovers ExoU phospholipase functional residues (FSI=0.00); these residues are structurally unusual and not constrained by backbone geometry alone. ESM-2 is highly confident at functional sites (FSPE ratio=0.00). Physical realizability is HIGH (Tier 2): SpcU chaperone co-expression requirement.
 
    ExoS ADP-ribosyltransferase:
      Realizability Tier: 2
      Mean barrier: 0.200
      Key bottleneck: None — most accessible in the panel; all barriers are minimal
-     Net risk: 0.476
+     Net audit priority: 0.476
      ProteinMPNN strongly recovers ExoS ADP-ribosyltransferase function from backbone (FSI=1.72). ESM-2 is highly confident at functional sites (FSPE ratio=0.66). Physical realizability is HIGH (Tier 2): None — most accessible in the panel; all barriers are minimal.
 
    YopH protein tyrosine phosphatase:
      Realizability Tier: 2
      Mean barrier: 0.150
      Key bottleneck: Regulatory grey zone (Y. pestis Select Agent for the organism; recombinant protein status depends on jurisdiction)
-     Net risk: 0.451
+     Net audit priority: 0.451
      ProteinMPNN does not specifically recover YopH protein tyrosine phosphatase function (FSI=0.81). ESM-2 is highly confident at functional sites (FSPE ratio=0.02). Physical realizability is HIGH (Tier 2): Regulatory grey zone (Y. pestis Select Agent for the organism; recombinant protein status depends on jurisdiction).
 
    Barnase ribonuclease:
      Realizability Tier: 1
      Mean barrier: 0.050
      Key bottleneck: Barstar inhibitor co-expression required to prevent host cell toxicity during E. coli expression
-     Net risk: 0.0
+     Net audit priority: 0.0
      ProteinMPNN does not specifically recover Barnase ribonuclease function (FSI=0.17). Physical realizability is HIGH (Tier 1): Barstar inhibitor co-expression required to prevent host cell toxicity during E. coli expression.
 
    Colicin E2 DNase:
      Realizability Tier: 1
      Mean barrier: 0.100
      Key bottleneck: Im2 immunity protein required for safe handling during E. coli expression
-     Net risk: 0.819
+     Net audit priority: 0.819
      ESM-2 is highly confident at functional sites (FSPE ratio=0.14). Physical realizability is HIGH (Tier 1): Im2 immunity protein required for safe handling during E. coli expression.
 
    CRISPR-associated protein Cas9:
      Realizability Tier: 2
      Mean barrier: 0.300
      Key bottleneck: DURC regulatory considerations for some applications; size (4.1 kb gene) otherwise trivial
-     Net risk: 0.842
+     Net audit priority: 0.842
      ESM-2 is highly confident at functional sites (FSPE ratio=0.01). Physical realizability is HIGH (Tier 2): DURC regulatory considerations for some applications; size (4.1 kb gene) otherwise trivial.
 
    Diphtheria toxin:
      Realizability Tier: 2
      Mean barrier: 0.350
      Key bottleneck: Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon
-     Net risk: 0.018
+     Net audit priority: 0.018
      ProteinMPNN does not specifically recover Diphtheria toxin function (FSI=0.72). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.95). Physical realizability is HIGH (Tier 2): Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon.
 
    Vacuolating cytotoxin A:
      Realizability Tier: 4
      Mean barrier: 0.600
      Key bottleneck: Oligomeric assembly and membrane reconstitution — no standard heterologous expression protocol
-     Net risk: None
+     Net audit priority: None
      Physical realizability is LOW (Tier 4): Oligomeric assembly and membrane reconstitution — no standard heterologous expression protocol.
 
 
@@ -274,7 +284,7 @@
       zinc-protease active site. FSI=0 for anthrax PA reflects that
       the phi-clamp phenylalanine is not backbone-constrained — a
       scientifically meaningful result confirming physical realizability
-      filters computational risk.
+      filters computational signal.
 
    b) Negative controls show important mechanistic confounding: 1AST
       (same HExxH fold) has FSI=1.85 and 1LNF (same zinc chemistry,
@@ -283,7 +293,7 @@
       stochastic dominance over both zinc controls.
 
    c) FSPE is directional (12/15 proteins, mean ratio=0.546), with
-      pooled meta-analysis p=2.6e-8 despite per-protein tests being
+      pooled meta-analysis p=2.60e-08, r=0.409; per-protein tests remain
       underpowered at small numbers of annotated functional sites.
 
    d) Physical realizability is the critical missing dimension in
@@ -295,7 +305,7 @@
    e) Thermolysin control (1LNF) decomposes fold vs. zinc chemistry:
       both same-fold and same-chemistry controls are elevated, so FSI
       should be interpreted with mechanism-matched controls rather than
-      as an isolated danger score.
+      as an isolated standalone proxy.
 
    f) PLM (pseudo-log-likelihood) addresses FSPE underpowering by
       measuring log P(WT aa | context) — signal/noise is higher than
@@ -305,10 +315,9 @@
       elevated across T=0.05-0.3, so the signal is not a single
       temperature artifact.
 
-   h) ESMFold validation closes the structure-function loop: if top
-      ProteinMPNN designs (highest FSI) also fold to native-like LC
-      structures (TM-score > 0.5), FSI represents physically meaningful
-      dangerous function recovery, not sequence coincidence.
+   h) ESM-IF1 structural compatibility is a useful confounder check:
+      high-FSI and low-FSI 3BTA designs have similar inverse-folding LL/L (p=0.846, r=0.26),
+      so the FSI signal is not simply a backbone-compatibility artifact.
 
 8. FRAMEWORK CONTRIBUTIONS
 ----------------------------------------
