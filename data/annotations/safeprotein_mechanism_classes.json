@@ -1,0 +1,277 @@
+{
+  "built": "2026-09-04 17:53:58",
+  "note": "classes assigned from UniProt protein names using 05's CLASS_TERMS, per Amendment 2 rule 4; SafeProtein's own class labels were not recovered",
+  "holdout_eligible_classes": [
+    "phospholipase",
+    "secreted_protease",
+    "superantigen_enterotoxin",
+    "rip_rrna_glycosidase",
+    "pore_forming_cytolysin"
+  ],
+  "proteins": [
+    {
+      "fasta_id": "sp|A0A447RTX7|A0A447RTX7_KLEPN",
+      "mechanism_class": "nuclease_dnase_rnase"
+    },
+    {
+      "fasta_id": "sp|A3UNN4|VIS_VIBS1",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|A4FS04|PA2A_NAJAT",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|J7LCB0|J7LCB0_DEIAC",
+      "mechanism_class": "secreted_protease"
+    },
+    {
+      "fasta_id": "sp|O57413|VM2T3_PROMU",
+      "mechanism_class": "secreted_protease"
+    },
+    {
+      "fasta_id": "sp|P00598|PA2A1_NAJAT",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P00608|PA2B_NOTSC",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P00609|PA2B5_NOTSC",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P00617|PA2B1_BUNMU",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P00624|PA2A_CROAT",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P00626|PA2BA_VIPAA",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P01558|ELTB_CLOPF",
+      "mechanism_class": "superantigen_enterotoxin"
+    },
+    {
+      "fasta_id": "sp|P04084|PA2HA_VIPAE",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P04361|PA2HB_AGKPI",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P09989|RIPT_TRIKI",
+      "mechanism_class": "rip_rrna_glycosidase"
+    },
+    {
+      "fasta_id": "sp|P0A077|HLGB_STAAU",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|P0A0L8|ETXG_STAAU",
+      "mechanism_class": "superantigen_enterotoxin"
+    },
+    {
+      "fasta_id": "sp|P0A0M0|ETXH_STAAU",
+      "mechanism_class": "superantigen_enterotoxin"
+    },
+    {
+      "fasta_id": "sp|P0CG56|PA2BB_CRODU",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P11407|PA2BC_VIPAA",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P14418|PA2A_GLOHA",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P14420|PA2B_VIPAE",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P16094|RIP1_MOMCH",
+      "mechanism_class": "rip_rrna_glycosidase"
+    },
+    {
+      "fasta_id": "sp|P17935|PA2HL_VIPAA",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P19250|HLY2_VIBPA",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|P20474|PA2B3_BOTAS",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P20656|RIP6_SAPOF",
+      "mechanism_class": "rip_rrna_glycosidase"
+    },
+    {
+      "fasta_id": "sp|P21454|SPVB_SALTM",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|P22851|RIPB_LUFAE",
+      "mechanism_class": "rip_rrna_glycosidase"
+    },
+    {
+      "fasta_id": "sp|P24476|RIP0_DIACA",
+      "mechanism_class": "rip_rrna_glycosidase"
+    },
+    {
+      "fasta_id": "sp|P24605|PA2H2_BOTAS",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P45881|PA2B2_BOTJR",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P49121|PA2H1_AGKCL",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P58399|PA2H1_BOTPI",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P58464|PA2H3_BOTPI",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P59071|PA2B8_DABRR",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P60244|VM1A3_DEIAC",
+      "mechanism_class": "secreted_protease"
+    },
+    {
+      "fasta_id": "sp|P81165|PA2H2_CERGO",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P81458|PA2B_DABRR",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P82287|PA2H2_BOTPI",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P82896|PA2A5_TRIST",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P82950|PA2HB_METNM",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P83512|VM1B1_BOTAS",
+      "mechanism_class": "secreted_protease"
+    },
+    {
+      "fasta_id": "sp|P84776|PA2H_PROMB",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P84786|RIP_DRIMA",
+      "mechanism_class": "rip_rrna_glycosidase"
+    },
+    {
+      "fasta_id": "sp|P84854|RIPL2_PHYDI",
+      "mechanism_class": "rip_rrna_glycosidase"
+    },
+    {
+      "fasta_id": "sp|P84907|VM1LA_BOTLC",
+      "mechanism_class": "secreted_protease"
+    },
+    {
+      "fasta_id": "sp|P85314|VM1BI_BOTMO",
+      "mechanism_class": "secreted_protease"
+    },
+    {
+      "fasta_id": "sp|Q06535|Q06535_STAAU",
+      "mechanism_class": "superantigen_enterotoxin"
+    },
+    {
+      "fasta_id": "sp|Q1CQP3|Q1CQP3_STRPC",
+      "mechanism_class": "superantigen_enterotoxin"
+    },
+    {
+      "fasta_id": "sp|Q1RP79|PA2B1_VIPNI",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q2PHL4|Q2PHL4_STRMT",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q6SLM1|PA2B5_BUNCE",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q6SLM2|PA2A1_BUNCE",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q6T179|PA2A4_NAJSG",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q6YCN3|Q6YCN3_STAAU",
+      "mechanism_class": "superantigen_enterotoxin"
+    },
+    {
+      "fasta_id": "sp|Q7SID6|PA2A_DEIAC",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q7T3S7|PA2A1_ECHCA",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q805F6|VM2AB_AGKCO",
+      "mechanism_class": "secreted_protease"
+    },
+    {
+      "fasta_id": "sp|Q8AXY1|PA2A_BOTJR",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q90249|PA2H1_BOTJR",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q9DF52|PA2B_BUNCE",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q9I834|PA2H2_BOTMO",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q9I8X1|VSPP_DEIAC",
+      "mechanism_class": "secreted_protease"
+    },
+    {
+      "fasta_id": "sp|Q9IAT9|PA2H_BOTPA",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q9PW35|VM1AA_DEIAC",
+      "mechanism_class": "secreted_protease"
+    }
+  ]
+}

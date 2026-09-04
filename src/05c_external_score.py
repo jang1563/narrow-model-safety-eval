@@ -87,6 +87,9 @@ def classes_of(manifest_rows, class_map):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--verify-only", action="store_true")
+    # Attempt 2 uses a different panel prefix. The default keeps attempt 1
+    # reproducible byte for byte; the frozen gate below runs either way.
+    ap.add_argument("--prefix", default="external")
     a = ap.parse_args()
     m03k = load("03k_margin_holdout.py")
 
@@ -110,7 +113,8 @@ def main():
 
     # ---- embed the external panel with the frozen settings -------------------
     OUT.mkdir(parents=True, exist_ok=True)
-    pe, ne = OUT / "embeddings_positive_external.npy", OUT / "embeddings_negative_external.npy"
+    pe = OUT / f"embeddings_positive_{a.prefix}.npy"
+    ne = OUT / f"embeddings_negative_{a.prefix}.npy"
     if pe.exists() and ne.exists():
         Pe, Ne = np.load(pe), np.load(ne)
         print(f"reusing cached external embeddings {Pe.shape} / {Ne.shape}")
@@ -124,16 +128,18 @@ def main():
               f"MAX_LEN={m02b.MAX_LEN}, mean pooling")
         tok = AutoTokenizer.from_pretrained(model_name)
         mdl = AutoModel.from_pretrained(model_name).to(dev).eval()
-        pos = m02b.read_fasta(SEQ / "external_positives.fasta")
-        neg = m02b.read_fasta(SEQ / "external_negatives.fasta")
+        pos = m02b.read_fasta(SEQ / f"{a.prefix}_positives.fasta")
+        neg = m02b.read_fasta(SEQ / f"{a.prefix}_negatives.fasta")
         Pe = m02b.embed(pos, mdl, tok, dev, 2)
         Ne = m02b.embed(neg, mdl, tok, dev, 2)
         np.save(pe, Pe)
         np.save(ne, Ne)
 
     m02b = load("02b_esm2_embed_v2.py")
-    pos_ids = [r[0] for r in m02b.read_fasta(SEQ / "external_positives.fasta")]
-    ext_cls_json = json.load(open(ROOT / "data/annotations/external_mechanism_classes.json"))
+    pos_ids = [r[0] for r in m02b.read_fasta(SEQ / f"{a.prefix}_positives.fasta")]
+    cls_file = ("external_mechanism_classes.json" if a.prefix == "external"
+                else f"{a.prefix}_mechanism_classes.json")
+    ext_cls_json = json.load(open(ROOT / "data/annotations" / cls_file))
     ext_map = {p["fasta_id"]: p["mechanism_class"] for p in ext_cls_json["proteins"]}
     ext_cls = np.array([ext_map.get(i, "UNMAPPED") for i in pos_ids])
     assert len(ext_cls) == Pe.shape[0], "external class vector does not match embedding rows"
@@ -158,8 +164,8 @@ def main():
     json.dump({"internal_gate": internal, "external": res, "verdict": verdict,
                "k": K, "seeds": SEEDS, "repeats": REPEATS,
                "model": "facebook/esm2_t33_650M_UR50D"},
-              open(OUT / "external_validation.json", "w"), indent=2)
-    print(f"\nwrote {OUT / 'external_validation.json'}")
+              open(OUT / f"validation_{a.prefix}.json", "w"), indent=2)
+    print(f"\nwrote {OUT / f'validation_{a.prefix}.json'}")
 
 
 if __name__ == "__main__":
