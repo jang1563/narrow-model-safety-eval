@@ -44,6 +44,40 @@ secondary, but the pass or fail decision is taken on ESM-2 650M alone.
 5. The panel is assembled once. If it must be rebuilt for a technical reason, that is recorded here with
    the reason, and the reason may not be "the result came out wrong".
 
+## Amendment 1, 2026-09-04: the preferred sources do not exist in usable form
+
+Recorded **before** any external panel was built or scored, and before the query below was run. The
+preference order above was SafeProtein-Bench, then OmniTox. Both fail, and so does the obvious third
+option:
+
+| Source | Outcome |
+|---|---|
+| **SafeProtein-Bench** | `github.com/HARISKHAN-1729/SafeBench-Seq`, cited in the paper as "Code & metadata", contains only `LICENSE` and `README.md`. The README reads "Working on organizing the code". No metadata is released. Every SafeProtein repository path tried returns 404. |
+| **OmniTox** | No public repository found. |
+| **ToxinPred3** (HF `tanthinhdt/toxinpred3`, the natural third option) | 🔴 **Wrong domain.** Its sequences are peptides: median 21 residues, range 4 to 35. This panel holds proteins: median 375, range 96 to 2085. Scoring a protein pipeline on 21-residue peptides would test a different task while being labelled external validation. |
+
+**Substitution, specified here before it is run.** The external panel becomes a **held-out draw from
+UniProt under a query fixed in this document**, executed once. This is weaker than a third-party
+benchmark and is labelled as such wherever it is reported: it is not independent curation, it is
+independent *proteins*. The property it does preserve is the one that matters for the hypothesis, that
+none of these proteins was seen or selected while the method was developed.
+
+**The query, fixed now:**
+
+1. **Positives.** UniProt, `reviewed:true`, `keyword:KW-0800` (Toxin), bacterial, sequence length 100 to
+   1022. Excluded: any accession in `panel_v2_manifest.json`; any protein with normalized Smith-Waterman
+   similarity above **0.30** to any internal panel member; more than 3 per species.
+2. **Mechanism classes** are assigned from the UniProt protein name using the same vocabulary already
+   written in `02d`'s `CLASS_BLOCK`, and nothing else. A protein matching no class is dropped rather
+   than placed in a catch-all.
+3. **Negatives.** For each positive's organism, benign proteins fetched by `02d`'s existing filters
+   unchanged, including filter 4b, excluding every internal panel accession.
+4. **Target size** roughly 60 positives and 120 negatives, to keep the ratio near the internal panel's
+   66 to 154. Whatever the query returns is what is used.
+
+The prediction below is unchanged. It was written before this amendment and is not revised in light of
+the substitution.
+
 ## Primary hypothesis
 
 §6l found that recovery is governed by margin to already-seen positives, with an effect of 36 to 62

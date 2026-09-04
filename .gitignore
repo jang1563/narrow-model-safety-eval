@@ -80,3 +80,6 @@ results/v2/*_smoke150M.json
 
 # Cached pairwise alignment matrix, regenerable from the FASTAs by 03i.
 results/v2/alignment_scores.npz
+
+# Third-party datasets pulled for the external check; not redistributed.
+.external/
