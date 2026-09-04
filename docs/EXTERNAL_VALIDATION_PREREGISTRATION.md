@@ -150,6 +150,48 @@ These are candidate explanations for **why** the effect did not transfer. They a
 after seeing the result and carry no evidential weight until they are themselves tested on a panel that
 does not yet exist.
 
+## Amendment 2, 2026-09-04: attempt 2, registered before scoring
+
+🔴 **Attempt 1 failed and that failure stands permanently.** It is reported in memo 44 §6m and is not
+retracted, softened or replaced by anything below. Running a second external test after a failed first
+one is exactly the move a preregistration exists to control, so the rule is stated here before the second
+run: **both attempts are reported, in order, with their verdicts, whatever they are.** If attempt 2
+passes, the honest summary is "failed on a self-drawn panel, passed on an externally curated one", never
+"validated externally".
+
+**Why a second attempt is justified rather than opportunistic.** Attempt 1's substitution was forced by
+three sources being unavailable, and its own Amendment 1 recorded the substitute as "independent
+proteins, not independent curation", which is the weaker property. An externally curated panel tests
+something attempt 1 could not.
+
+**The source.** SafeProtein-Bench's own repository is also unavailable: `github.com/jigang-fan/SafeProtein`
+returns 404 and the author account has zero public repositories, so that is now the third paper in this
+niche claiming a public release that does not exist. However, SafeProtein's panel identity is recoverable
+from artifacts that VFUSE and SAEBER published on Hugging Face: the per-protein filenames in
+`michaelwaves/saeber-rfd3-safeprotein-activations` encode UniProt accessions with hazard or benign
+labels. **280 accessions recovered, 166 hazard and 114 benign.** Sequences are then fetched from UniProt
+by accession. The curation is therefore third-party; only the sequence retrieval is ours.
+
+**Rules for attempt 2, fixed here:**
+
+1. Labels come from the recovered filenames and are **not** reviewed, corrected or re-assigned.
+2. **Accessions already present in `panel_v2_manifest.json` are excluded**, and the overlap count is
+   reported.
+3. ⚠️ **No homology screen against the internal panel**, deliberately, and this differs from attempt 1.
+   The scoring for an external panel trains and tests entirely within that panel, so the internal set
+   contributes nothing and cannot leak. Attempt 1's screen existed to make a self-drawn panel genuinely
+   different, a concern that does not apply to a panel curated by someone else. Screening here would mean
+   editing a third-party benchmark to suit us.
+4. Mechanism classes are assigned from UniProt protein names using the same `CLASS_TERMS` mapping as
+   attempt 1, because SafeProtein's own class labels were not recovered. A protein matching no class is
+   dropped.
+5. The pipeline, thresholds and the three confirmatory numbers are **unchanged**: low-margin holdout of
+   10 at ≤ 40%, class-matched random at ≥ 60%, gap ≥ 25 points.
+
+⚠️ Known differences from both previous panels, recorded now rather than discovered later: this set is
+hazard-heavy (166 against 114) where the internal panel is negative-heavy (66 against 154), and its
+hazards include viral proteins where the internal panel is bacterial.
+
 ## Secondary, non-preregistered
 
 Anything else computed on the external panel is exploratory and will be labelled that way. That includes
