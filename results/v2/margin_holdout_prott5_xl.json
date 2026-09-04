@@ -1,0 +1,53 @@
+{
+  "model": "Rostlab/prot_t5_xl_half_uniref50-enc",
+  "tag": "prott5_xl",
+  "k": 10,
+  "seeds": 20,
+  "margin": {
+    "min": -0.37424635887145996,
+    "median": 0.04658329486846924,
+    "max": 0.47353464365005493
+  },
+  "holdout": {
+    "low_margin": [
+      0.35,
+      0.08660254037844388
+    ],
+    "random": [
+      0.8450000000000001,
+      0.12105783741666627
+    ],
+    "random_class_matched": [
+      0.707,
+      0.09276852914647302
+    ],
+    "high_margin": [
+      1.0,
+      0.0
+    ]
+  },
+  "low_minus_random": -0.4950000000000001,
+  "low_minus_class_matched_random": -0.357,
+  "within_class_median_split": {
+    "beta_lactamase": {
+      "n": 14,
+      "low_half": 0.07142857142857142,
+      "high_half": 0.05714285714285714
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "low_half": 0.7,
+      "high_half": 0.9833333333333332
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "low_half": 0.61,
+      "high_half": 1.0
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "low_half": 0.22999999999999998,
+      "high_half": 0.33
+    }
+  }
+}

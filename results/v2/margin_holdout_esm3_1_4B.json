@@ -1,0 +1,53 @@
+{
+  "model": "esm3_sm_open_v1",
+  "tag": "esm3_1_4B",
+  "k": 10,
+  "seeds": 20,
+  "margin": {
+    "min": -0.012566983699798584,
+    "median": 0.007226377725601196,
+    "max": 0.019547998905181885
+  },
+  "holdout": {
+    "low_margin": [
+      0.125,
+      0.16393596310755001
+    ],
+    "random": [
+      0.759,
+      0.11348568191626647
+    ],
+    "random_class_matched": [
+      0.627,
+      0.09263368717696606
+    ],
+    "high_margin": [
+      1.0,
+      0.0
+    ]
+  },
+  "low_minus_random": -0.634,
+  "low_minus_class_matched_random": -0.502,
+  "within_class_median_split": {
+    "beta_lactamase": {
+      "n": 14,
+      "low_half": 0.007142857142857143,
+      "high_half": 0.007142857142857143
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "low_half": 0.7875,
+      "high_half": 1.0
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "low_half": 0.45,
+      "high_half": 1.0
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "low_half": 0.0,
+      "high_half": 0.3600000000000001
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "tag": null,
+  "k": 10,
+  "seeds": 20,
+  "margin": {
+    "min": -0.02075725793838501,
+    "median": 0.0037887394428253174,
+    "max": 0.03481262922286987
+  },
+  "holdout": {
+    "low_margin": [
+      0.22000000000000003,
+      0.12083045973594572
+    ],
+    "random": [
+      0.859,
+      0.11787281281109736
+    ],
+    "random_class_matched": [
+      0.8365,
+      0.06492495668077101
+    ],
+    "high_margin": [
+      1.0,
+      0.0
+    ]
+  },
+  "low_minus_random": -0.639,
+  "low_minus_class_matched_random": -0.6165,
+  "within_class_median_split": {
+    "beta_lactamase": {
+      "n": 14,
+      "low_half": 0.0,
+      "high_half": 0.3785714285714285
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "low_half": 0.35,
+      "high_half": 0.9833333333333332
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "low_half": 0.5999999999999999,
+      "high_half": 1.0
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "low_half": 0.59,
+      "high_half": 0.4200000000000001
+    }
+  }
+}
