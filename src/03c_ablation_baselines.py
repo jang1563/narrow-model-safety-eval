@@ -17,8 +17,8 @@ Three cheap controls that each close an obvious challenge to the ESM probe.
 Run after 02b. Uses cached embeddings; takes seconds.
 """
 
+import argparse
 import json
-import sys
 from pathlib import Path
 import numpy as np
 from sklearn.linear_model import LogisticRegression
@@ -55,7 +55,15 @@ def cv(X, y, seed=0):
 
 
 def main():
-    tag = sys.argv[1] if len(sys.argv) > 1 else ""
+    # This script originally took the tag positionally while every sibling took
+    # --tag, so a sweep loop passing "--tag esmc_600M" silently read the flag
+    # itself as the tag and failed on a nonexistent embeddings_..._--tag.npy.
+    # Accept both: the flag for consistency, the positional for old commands.
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--tag", default=None)
+    ap.add_argument("positional_tag", nargs="?", default=None)
+    a = ap.parse_args()
+    tag = a.tag if a.tag is not None else (a.positional_tag or "")
     suf = f"_{tag}" if tag else ""
     P = np.load(V2 / f"embeddings_positive_v2{suf}.npy")
     N = np.load(V2 / f"embeddings_negative_v2{suf}.npy")
