@@ -1,0 +1,580 @@
+{
+  "panel": "NMSE positives, deduplicated, Cas9 reassigned to negatives",
+  "source_fasta": "data/sequences/toxins_positive_v2.fasta",
+  "source_fasta_records": 71,
+  "after_dedup": 66,
+  "dropped_duplicates": [
+    {
+      "fasta_index": 20,
+      "short_name": "HLA_STAAU"
+    },
+    {
+      "fasta_index": 23,
+      "short_name": "PAG_BACAN"
+    }
+  ],
+  "holdout_eligible_classes": [
+    "adp_ribosyl_ab_toxin",
+    "beta_lactamase",
+    "clostridial_neurotoxin",
+    "contact_dependent_inhibition",
+    "pore_forming_cytolysin",
+    "rip_rrna_glycosidase",
+    "superantigen_enterotoxin",
+    "t3ss_effector_apparatus"
+  ],
+  "class_notes": {
+    "nuclease_dnase_rnase": "NOT holdout-eligible. n=2 after Cas9 was reassigned to the negative set on 2026-09-03. Remaining members are barnase (cytotoxic RNase) and colicin E2 (DNase bacteriocin), which share nuclease chemistry but differ in delivery and intent.",
+    "virulence_associated_non_toxin": "NOT a confound diagnostic. metadata.json shows a predefined category 'virulence_factors' explicitly described as non-toxin, with matched positive and negative counts, so their presence among positives is BY DESIGN. Holding this class out therefore asks a different question: does a probe trained on toxins generalize to non-toxin virulence factors? Run it as a generalization test, not as a contamination check.",
+    "other_toxin_mechanism": "NOT holdout-eligible. Mechanisms differ from each other; this is a remainder set, kept small and explicit rather than hidden in a catch-all.",
+    "secreted_protease": "NOT holdout-eligible. Only one unique protein (SpeB) present twice.",
+    "phospholipase": "NOT holdout-eligible. n=2, and one identity unconfirmed."
+  },
+  "proteins": [
+    {
+      "fasta_index": 0,
+      "fasta_id": "sp|O31506|YEEF_BACSU",
+      "short_name": "YEEF_BACSU",
+      "mechanism_class": "contact_dependent_inhibition",
+      "reason": "B. subtilis polymorphic-toxin / CDI system component",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 1,
+      "fasta_id": "sp|O34344|SDPC_BACSU",
+      "short_name": "SDPC_BACSU",
+      "mechanism_class": "contact_dependent_inhibition",
+      "reason": "SdpC cannibalism toxin, kills sibling cells during sporulation",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 2,
+      "fasta_id": "sp|P77335|HLYE_ECOLI",
+      "short_name": "HLYE_ECOLI",
+      "mechanism_class": "pore_forming_cytolysin",
+      "reason": "HlyE/ClyA pore-forming cytolysin",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 3,
+      "fasta_id": "sp|A0A0H2US87|OSPC3_SHIFL",
+      "short_name": "OSPC3_SHIFL",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "reason": "Shigella OspC3, T3SS effector, caspase-4 inhibition",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 4,
+      "fasta_id": "sp|B3BM80|CDIA4_ECO5C",
+      "short_name": "CDIA4_ECO5C",
+      "mechanism_class": "contact_dependent_inhibition",
+      "reason": "CdiA contact-dependent growth inhibition toxin",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 5,
+      "fasta_id": "sp|B7UI21|NLEB1_ECO27",
+      "short_name": "NLEB1_ECO27",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "reason": "NleB1 T3SS effector, glycosyltransferase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 6,
+      "fasta_id": "sp|B7UI22|NLEE_ECO27",
+      "short_name": "NLEE_ECO27",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "reason": "NleE T3SS effector, methyltransferase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 7,
+      "fasta_id": "sp|P09616|HLA_STAAU",
+      "short_name": "HLA_STAAU",
+      "mechanism_class": "pore_forming_cytolysin",
+      "reason": "Alpha-hemolysin, beta-barrel pore former",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 8,
+      "fasta_id": "sp|P0C0J0|SPEB_STRPY",
+      "short_name": "SPEB_STRPY",
+      "mechanism_class": "secreted_protease",
+      "reason": "SpeB streptococcal cysteine protease",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 9,
+      "fasta_id": "sp|P40136|CYAA_BACAN",
+      "short_name": "CYAA_BACAN",
+      "mechanism_class": "adp_ribosyl_ab_toxin",
+      "reason": "Anthrax edema factor, calmodulin-dependent adenylate cyclase, A subunit of an AB toxin",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 10,
+      "fasta_id": "sp|Q7NWF2|COPC_CHRVO",
+      "short_name": "COPC_CHRVO",
+      "mechanism_class": "other_toxin_mechanism",
+      "reason": "C. violaceum. Mechanism NOT confidently assigned",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 11,
+      "fasta_id": "sp|O05442|CPNT_MYCTU",
+      "short_name": "CPNT_MYCTU",
+      "mechanism_class": "other_toxin_mechanism",
+      "reason": "CpnT, channel protein with C-terminal NAD+ glycohydrolase toxin domain",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 12,
+      "fasta_id": "sp|P0A0L2|ETXA_STAAU",
+      "short_name": "ETXA_STAAU",
+      "mechanism_class": "superantigen_enterotoxin",
+      "reason": "Staphylococcal enterotoxin, TCR/MHC-II superantigen",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 13,
+      "fasta_id": "sp|P13128|TACY_LISMO",
+      "short_name": "TACY_LISMO",
+      "mechanism_class": "pore_forming_cytolysin",
+      "reason": "Listeriolysin O, cholesterol-dependent cytolysin",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 14,
+      "fasta_id": "sp|P13423|PAG_BACAN",
+      "short_name": "PAG_BACAN",
+      "mechanism_class": "pore_forming_cytolysin",
+      "reason": "AMBIGUOUS: anthrax protective antigen. Assigned by MECHANISM (receptor-mediated translocation / heptameric pore). By SYSTEM it belongs with adp_ribosyl_ab_toxin alongside CYAA/EF. Moved out of the former catch-all bin because it is a major toxin-system component. Revisit if the holdout result hinges on it.",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 15,
+      "fasta_id": "sp|P34071|ENTC2_STAAU",
+      "short_name": "ENTC2_STAAU",
+      "mechanism_class": "superantigen_enterotoxin",
+      "reason": "Staphylococcal enterotoxin C2, superantigen",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 17,
+      "fasta_id": "sp|P9WJ63|TLYA_MYCTU",
+      "short_name": "TLYA_MYCTU",
+      "mechanism_class": "other_toxin_mechanism",
+      "reason": "TlyA, dual hemolysin and rRNA 2'-O-methyltransferase",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 18,
+      "fasta_id": "sp|Q8XBX8|NLEB1_ECO57",
+      "short_name": "NLEB1_ECO57",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "reason": "NleB1 T3SS effector, glycosyltransferase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 19,
+      "fasta_id": "sp|Q9FBI2|STXA_SHIDY",
+      "short_name": "STXA_SHIDY",
+      "mechanism_class": "rip_rrna_glycosidase",
+      "reason": "Shiga toxin A subunit, rRNA N-glycosidase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 21,
+      "fasta_id": "sp|P0DPI1|BXA1_CLOBH",
+      "short_name": "BXA1_CLOBH",
+      "mechanism_class": "clostridial_neurotoxin",
+      "reason": "BoNT/A light chain, zinc metalloprotease on SNARE",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 22,
+      "fasta_id": "sp|P11078|MU1_REOVD",
+      "short_name": "MU1_REOVD",
+      "mechanism_class": "pore_forming_cytolysin",
+      "reason": "Reovirus outer-capsid mu1, membrane penetration",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 24,
+      "fasta_id": "sp|P01555|CHTA_VIBCH",
+      "short_name": "CHTA_VIBCH",
+      "mechanism_class": "adp_ribosyl_ab_toxin",
+      "reason": "Cholera toxin A subunit, ADP-ribosyltransferase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 25,
+      "fasta_id": "sp|P02879|RICI_RICCO",
+      "short_name": "RICI_RICCO",
+      "mechanism_class": "rip_rrna_glycosidase",
+      "reason": "Ricin A chain, rRNA N-glycosidase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 26,
+      "fasta_id": "sp|P10844|BXB_CLOBO",
+      "short_name": "BXB_CLOBO",
+      "mechanism_class": "clostridial_neurotoxin",
+      "reason": "BoNT/B, zinc metalloprotease on SNARE",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 27,
+      "fasta_id": "sp|Q45894|BXA2_CLOBJ",
+      "short_name": "BXA2_CLOBJ",
+      "mechanism_class": "clostridial_neurotoxin",
+      "reason": "BoNT/A2, zinc metalloprotease on SNARE",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 28,
+      "fasta_id": "sp|P01552|ETXB_STAAU",
+      "short_name": "ETXB_STAAU",
+      "mechanism_class": "superantigen_enterotoxin",
+      "reason": "Staphylococcal enterotoxin B, superantigen",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 29,
+      "fasta_id": "sp|P01553|ENTC1_STAAU",
+      "short_name": "ENTC1_STAAU",
+      "mechanism_class": "superantigen_enterotoxin",
+      "reason": "Staphylococcal enterotoxin C1, superantigen",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 30,
+      "fasta_id": "sp|A0A0H3JPC6|TARS_STAAM",
+      "short_name": "TARS_STAAM",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "reason": "Wall teichoic acid glycosyltransferase, beta-lactam resistance",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 31,
+      "fasta_id": "sp|A0A3Q0NBH7|PGDA_LISMG",
+      "short_name": "PGDA_LISMG",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "reason": "Peptidoglycan N-deacetylase, immune evasion",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 32,
+      "fasta_id": "sp|A1JUB7|YADA_YERE8",
+      "short_name": "YADA_YERE8",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "reason": "YadA adhesin",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 33,
+      "fasta_id": "sp|A6QIG7|CHIPS_STAAE",
+      "short_name": "CHIPS_STAAE",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "reason": "CHIPS chemotaxis inhibitory protein, immune evasion",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 34,
+      "fasta_id": "sp|B6A876|CHI1_YERET",
+      "short_name": "CHI1_YERET",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "reason": "Chitinase",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 35,
+      "fasta_id": "sp|D0ZKX9|RSEP_SALT1",
+      "short_name": "RSEP_SALT1",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "reason": "RseP site-2 protease, regulatory. Moved from protease_other",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 36,
+      "fasta_id": "sp|D0ZV89|PHOQ_SALT1",
+      "short_name": "PHOQ_SALT1",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "reason": "PhoQ sensor histidine kinase, virulence regulator",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 37,
+      "fasta_id": "sp|G3XDA8|PSTS_PSEAE",
+      "short_name": "PSTS_PSEAE",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "reason": "PstS phosphate ABC transporter binding protein",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 38,
+      "fasta_id": "sp|O52623|SOPE_SALTM",
+      "short_name": "SOPE_SALTM",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "reason": "SopE T3SS effector, Rho-family GEF",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 39,
+      "fasta_id": "sp|O84947|SCTE2_SALTY",
+      "short_name": "SCTE2_SALTY",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "reason": "T3SS translocon component",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 40,
+      "fasta_id": "sp|P06736|HLYC_ECOLX",
+      "short_name": "HLYC_ECOLX",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "reason": "HlyC acyltransferase, ACTIVATES HlyA. Not itself a toxin",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 41,
+      "fasta_id": "sp|P09776|VIRB2_AGRTU",
+      "short_name": "VIRB2_AGRTU",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "reason": "VirB2 T-pilus major subunit, T4SS structural",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 42,
+      "fasta_id": "sp|P0A1B9|SCTN1_SALTY",
+      "short_name": "SCTN1_SALTY",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "reason": "T3SS ATPase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 43,
+      "fasta_id": "sp|P0A1C1|SCTN_SHIFL",
+      "short_name": "SCTN_SHIFL",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "reason": "T3SS ATPase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 44,
+      "fasta_id": "sp|P0A2M9|SPVC_SALTY",
+      "short_name": "SPVC_SALTY",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "reason": "SpvC T3SS effector, phosphothreonine lyase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 45,
+      "fasta_id": "sp|P00811|AMPC_ECOLI",
+      "short_name": "AMPC_ECOLI",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Class C beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 46,
+      "fasta_id": "sp|Q7WYA8|BLAB_PSEAI",
+      "short_name": "BLAB_PSEAI",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 47,
+      "fasta_id": "sp|P9WKD3|BLAC_MYCTU",
+      "short_name": "BLAC_MYCTU",
+      "mechanism_class": "beta_lactamase",
+      "reason": "BlaC beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 48,
+      "fasta_id": "sp|P26918|BLAB_AERHY",
+      "short_name": "BLAB_AERHY",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 50,
+      "fasta_id": "sp|P14488|BLAB_BACCE",
+      "short_name": "BLAB_BACCE",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 51,
+      "fasta_id": "sp|P04190|BLA2_BACCE",
+      "short_name": "BLA2_BACCE",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Beta-lactamase II, metallo",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 52,
+      "fasta_id": "sp|P14489|BLO10_PSEAI",
+      "short_name": "BLO10_PSEAI",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 53,
+      "fasta_id": "sp|C7C422|BLAN1_KLEPN",
+      "short_name": "BLAN1_KLEPN",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 54,
+      "fasta_id": "sp|P05364|AMPC_ENTCL",
+      "short_name": "AMPC_ENTCL",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Class C beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 55,
+      "fasta_id": "sp|P52700|BLA1_STEMA",
+      "short_name": "BLA1_STEMA",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 56,
+      "fasta_id": "sp|O87489|BLAV1_PSEAI",
+      "short_name": "BLAV1_PSEAI",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 57,
+      "fasta_id": "sp|P05193|AMPC_CITFR",
+      "short_name": "AMPC_CITFR",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Class C beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 58,
+      "fasta_id": "sp|P52699|BLBI1_SERMA",
+      "short_name": "BLBI1_SERMA",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 59,
+      "fasta_id": "sp|Q9KJY7|BLAG1_KLEPN",
+      "short_name": "BLAG1_KLEPN",
+      "mechanism_class": "beta_lactamase",
+      "reason": "Beta-lactamase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 60,
+      "fasta_id": "sp|P00588|DTX_CORBE",
+      "short_name": "DTX_CORBE",
+      "mechanism_class": "adp_ribosyl_ab_toxin",
+      "reason": "Diphtheria toxin, ADP-ribosyltransferase on EF-2",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 61,
+      "fasta_id": "sp|P04958|TETX_CLOTE",
+      "short_name": "TETX_CLOTE",
+      "mechanism_class": "clostridial_neurotoxin",
+      "reason": "Tetanus toxin, zinc metalloprotease on SNARE",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 62,
+      "fasta_id": "sp|P11140|ABRA_ABRPR",
+      "short_name": "ABRA_ABRPR",
+      "mechanism_class": "rip_rrna_glycosidase",
+      "reason": "Abrin A chain, rRNA N-glycosidase",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 63,
+      "fasta_id": "sp|P55981|VACA_HELPY",
+      "short_name": "VACA_HELPY",
+      "mechanism_class": "pore_forming_cytolysin",
+      "reason": "VacA vacuolating cytotoxin, anion channel former",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 64,
+      "fasta_id": "sp|P0DF97|TACY_STRPQ",
+      "short_name": "TACY_STRPQ",
+      "mechanism_class": "pore_forming_cytolysin",
+      "reason": "Streptolysin O, cholesterol-dependent cytolysin",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 65,
+      "fasta_id": "sp|P00648|RNBR_BACAM",
+      "short_name": "RNBR_BACAM",
+      "mechanism_class": "nuclease_dnase_rnase",
+      "reason": "Barnase, extracellular RNase. Cytotoxic and requires barstar co-expression, so it is defensible as a positive. JK decision 2026-09-03: POSITIVE only. It had been present in BOTH FASTA files; the negative-set copy was removed.",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 66,
+      "fasta_id": "sp|P04419|CEA2_ECOLX",
+      "short_name": "CEA2_ECOLX",
+      "mechanism_class": "nuclease_dnase_rnase",
+      "reason": "Colicin E2, DNase bacteriocin",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 68,
+      "fasta_id": "sp|P15273|YOPH_YEREN",
+      "short_name": "YOPH_YEREN",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "reason": "YopH, T3SS-injected protein tyrosine phosphatase. Moved here from protease_other: delivery mechanism is T3SS, not secreted protease",
+      "holdout_eligible": true
+    },
+    {
+      "fasta_index": 69,
+      "fasta_id": "tr|O34208|O34208_PSEAI",
+      "short_name": "O34208_PSEAI",
+      "mechanism_class": "phospholipase",
+      "reason": "ExoU patatin-like phospholipase, requires SpcU chaperone",
+      "holdout_eligible": false
+    },
+    {
+      "fasta_index": 70,
+      "fasta_id": "tr|Q51451|Q51451_PSEAI",
+      "short_name": "Q51451_PSEAI",
+      "mechanism_class": "phospholipase",
+      "reason": "P. aeruginosa TrEMBL entry, grouped with ExoU on organism and panel context. Identity NOT independently confirmed",
+      "holdout_eligible": false
+    }
+  ],
+  "label_resolution_2026_09_03": {
+    "cas9_Q99ZW2": "Removed from positives. Present in both FASTA files; not a toxin. JK decision.",
+    "barnase_P00648": "Kept as positive. Present in both FASTA files; negative copy removed. JK decision."
+  },
+  "sequence_level_dedup_2026_09_03": {
+    "note": "Accession-level dedup does not catch identical sequences under different accessions. These pass into the 5-fold CV as train/test leakage.",
+    "removed": [
+      {
+        "dropped": "SPEB_STRP8",
+        "identical_to": "SPEB_STRPY"
+      },
+      {
+        "dropped": "BLAC_MYCTA",
+        "identical_to": "BLAC_MYCTU"
+      }
+    ]
+  }
+}

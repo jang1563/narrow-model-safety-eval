@@ -70,3 +70,10 @@ coverage.xml
 # Interview and outreach preparation, not part of the public record
 docs/*RESEARCH_BRIEF.md
 docs/*INTERVIEW*
+
+# Working files from the v2 panel fetches: they duplicate the FASTA sequences
+# and are staging output, not release artifacts.
+data/sequences/_*_fetch.json
+
+# Superseded: computed on the 91-negative panel, kept locally for provenance only.
+results/v2/*_smoke150M.json

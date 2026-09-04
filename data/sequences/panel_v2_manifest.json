@@ -1,0 +1,2387 @@
+{
+  "built": "2026-09-03",
+  "supersedes": [
+    "toxins_positive.fasta",
+    "benign_homologs.fasta"
+  ],
+  "decisions": {
+    "barnase_P00648": "POSITIVE only. Cytotoxic RNase requiring barstar co-expression. Removed from the negative file. Decided by JK 2026-09-03.",
+    "cas9_Q99ZW2": "NEGATIVE only. Not a toxin. Removed from the positive file. Decided by JK 2026-09-03.",
+    "duplicates": "Deduplicated by accession within each file before label resolution.",
+    "negative_blocks": "Negatives tagged secreted_cellwall vs cytoplasmic_housekeeping. Only the secreted block is condition-matched to the positives; the housekeeping block is not homologous and makes the task easier. Report both the full-negative and secreted-only results."
+  },
+  "counts": {
+    "positive_raw": 71,
+    "positive_dedup": 69,
+    "positive_final": 66,
+    "negative_raw": 62,
+    "negative_dedup": 51,
+    "negative_final": 154,
+    "negative_blocks": {
+      "secreted_cellwall": 20,
+      "cytoplasmic_housekeeping": 80,
+      "secreted_pathogen": 54
+    },
+    "negative_lab_strain": 49,
+    "negative_pathogen_derived": 104,
+    "negative_unflagged_provenance": 1
+  },
+  "positives": [
+    {
+      "acc": "sp|O31506|YEEF_BACSU",
+      "name": "YEEF_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 669,
+      "truncated_1022": false,
+      "sha256": "1163f48cad552df5"
+    },
+    {
+      "acc": "sp|O34344|SDPC_BACSU",
+      "name": "SDPC_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 203,
+      "truncated_1022": false,
+      "sha256": "f5e2748544c7e6d1"
+    },
+    {
+      "acc": "sp|P77335|HLYE_ECOLI",
+      "name": "HLYE_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 303,
+      "truncated_1022": false,
+      "sha256": "1301de0cc0a74833"
+    },
+    {
+      "acc": "sp|A0A0H2US87|OSPC3_SHIFL",
+      "name": "OSPC3_SHIFL",
+      "organism": "Shigella flexneri",
+      "lab_strain": false,
+      "len": 484,
+      "truncated_1022": false,
+      "sha256": "9300d2236456f6dd"
+    },
+    {
+      "acc": "sp|B3BM80|CDIA4_ECO5C",
+      "name": "CDIA4_ECO5C",
+      "organism": "Escherichia coli O157:H7 (strain EC869)",
+      "lab_strain": false,
+      "len": 377,
+      "truncated_1022": false,
+      "sha256": "23ceaca0a375ee58"
+    },
+    {
+      "acc": "sp|B7UI21|NLEB1_ECO27",
+      "name": "NLEB1_ECO27",
+      "organism": "Escherichia coli O127:H6 (strain E2348/69 / EPEC)",
+      "lab_strain": false,
+      "len": 329,
+      "truncated_1022": false,
+      "sha256": "3d938af4d26d21c6"
+    },
+    {
+      "acc": "sp|B7UI22|NLEE_ECO27",
+      "name": "NLEE_ECO27",
+      "organism": "Escherichia coli O127:H6 (strain E2348/69 / EPEC)",
+      "lab_strain": false,
+      "len": 224,
+      "truncated_1022": false,
+      "sha256": "4747f40e48497f88"
+    },
+    {
+      "acc": "sp|P09616|HLA_STAAU",
+      "name": "HLA_STAAU",
+      "organism": "Staphylococcus aureus",
+      "lab_strain": false,
+      "len": 319,
+      "truncated_1022": false,
+      "sha256": "9aa1d65a2c51959a"
+    },
+    {
+      "acc": "sp|P0C0J0|SPEB_STRPY",
+      "name": "SPEB_STRPY",
+      "organism": "Streptococcus pyogenes",
+      "lab_strain": false,
+      "len": 398,
+      "truncated_1022": false,
+      "sha256": "0d9b86a95864ab35"
+    },
+    {
+      "acc": "sp|P40136|CYAA_BACAN",
+      "name": "CYAA_BACAN",
+      "organism": "Bacillus anthracis",
+      "lab_strain": false,
+      "len": 800,
+      "truncated_1022": false,
+      "sha256": "cf17434ebeff8c49"
+    },
+    {
+      "acc": "sp|Q7NWF2|COPC_CHRVO",
+      "name": "COPC_CHRVO",
+      "organism": "Chromobacterium violaceum (strain ATCC 12472 / DSM 30191 / JCM 1249 / CCUG 213 / NBRC 12614 / NCIMB 9131 / NCTC 9757 / MK)",
+      "lab_strain": false,
+      "len": 487,
+      "truncated_1022": false,
+      "sha256": "d84f22937bfa43fb"
+    },
+    {
+      "acc": "sp|O05442|CPNT_MYCTU",
+      "name": "CPNT_MYCTU",
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "lab_strain": false,
+      "len": 846,
+      "truncated_1022": false,
+      "sha256": "a8580bb20b797571"
+    },
+    {
+      "acc": "sp|P0A0L2|ETXA_STAAU",
+      "name": "ETXA_STAAU",
+      "organism": "Staphylococcus aureus",
+      "lab_strain": false,
+      "len": 257,
+      "truncated_1022": false,
+      "sha256": "571b4784dd4d4cb0"
+    },
+    {
+      "acc": "sp|P13128|TACY_LISMO",
+      "name": "TACY_LISMO",
+      "organism": "Listeria monocytogenes serovar 1/2a (strain ATCC BAA-679 / EGD-e)",
+      "lab_strain": false,
+      "len": 529,
+      "truncated_1022": false,
+      "sha256": "8271ca18d8ca8c86"
+    },
+    {
+      "acc": "sp|P13423|PAG_BACAN",
+      "name": "PAG_BACAN",
+      "organism": "Bacillus anthracis",
+      "lab_strain": false,
+      "len": 764,
+      "truncated_1022": false,
+      "sha256": "49b10f8fd57a2ed2"
+    },
+    {
+      "acc": "sp|P34071|ENTC2_STAAU",
+      "name": "ENTC2_STAAU",
+      "organism": "Staphylococcus aureus",
+      "lab_strain": false,
+      "len": 266,
+      "truncated_1022": false,
+      "sha256": "d1784da5bb009268"
+    },
+    {
+      "acc": "sp|P9WJ63|TLYA_MYCTU",
+      "name": "TLYA_MYCTU",
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "lab_strain": false,
+      "len": 268,
+      "truncated_1022": false,
+      "sha256": "ea318e39f2ca90a3"
+    },
+    {
+      "acc": "sp|Q8XBX8|NLEB1_ECO57",
+      "name": "NLEB1_ECO57",
+      "organism": "Escherichia coli O157:H7",
+      "lab_strain": false,
+      "len": 329,
+      "truncated_1022": false,
+      "sha256": "db9476894690ddc3"
+    },
+    {
+      "acc": "sp|Q9FBI2|STXA_SHIDY",
+      "name": "STXA_SHIDY",
+      "organism": "Shigella dysenteriae",
+      "lab_strain": false,
+      "len": 315,
+      "truncated_1022": false,
+      "sha256": "667e206d7b4c83fe"
+    },
+    {
+      "acc": "sp|P0DPI1|BXA1_CLOBH",
+      "name": "BXA1_CLOBH",
+      "organism": "Clostridium botulinum (strain Hall / ATCC 3502 / NCTC 13319 / Type A)",
+      "lab_strain": false,
+      "len": 1296,
+      "truncated_1022": true,
+      "sha256": "554d0e0bf44261d9"
+    },
+    {
+      "acc": "sp|P11078|MU1_REOVD",
+      "name": "MU1_REOVD",
+      "organism": "Reovirus type 3 (strain Dearing)",
+      "lab_strain": false,
+      "len": 708,
+      "truncated_1022": false,
+      "sha256": "35a3639fff7e472b"
+    },
+    {
+      "acc": "sp|P01555|CHTA_VIBCH",
+      "name": "CHTA_VIBCH",
+      "organism": "Vibrio cholerae serotype O1 (strain ATCC 39315 / El Tor Inaba N16961)",
+      "lab_strain": false,
+      "len": 258,
+      "truncated_1022": false,
+      "sha256": "f87a5ec661573ff9"
+    },
+    {
+      "acc": "sp|P02879|RICI_RICCO",
+      "name": "RICI_RICCO",
+      "organism": "Ricinus communis",
+      "lab_strain": false,
+      "len": 576,
+      "truncated_1022": false,
+      "sha256": "b13035f135fd81cf"
+    },
+    {
+      "acc": "sp|P10844|BXB_CLOBO",
+      "name": "BXB_CLOBO",
+      "organism": "Clostridium botulinum",
+      "lab_strain": false,
+      "len": 1291,
+      "truncated_1022": true,
+      "sha256": "da587ec3c70e0557"
+    },
+    {
+      "acc": "sp|Q45894|BXA2_CLOBJ",
+      "name": "BXA2_CLOBJ",
+      "organism": "Clostridium botulinum (strain Kyoto / Type A2)",
+      "lab_strain": false,
+      "len": 1296,
+      "truncated_1022": true,
+      "sha256": "30d520049eae0dcd"
+    },
+    {
+      "acc": "sp|P01552|ETXB_STAAU",
+      "name": "ETXB_STAAU",
+      "organism": "Staphylococcus aureus",
+      "lab_strain": false,
+      "len": 266,
+      "truncated_1022": false,
+      "sha256": "d8bfec6fc942ed69"
+    },
+    {
+      "acc": "sp|P01553|ENTC1_STAAU",
+      "name": "ENTC1_STAAU",
+      "organism": "Staphylococcus aureus",
+      "lab_strain": false,
+      "len": 266,
+      "truncated_1022": false,
+      "sha256": "464b7974f71bd2f6"
+    },
+    {
+      "acc": "sp|A0A0H3JPC6|TARS_STAAM",
+      "name": "TARS_STAAM",
+      "organism": "Staphylococcus aureus (strain Mu50 / ATCC 700699)",
+      "lab_strain": false,
+      "len": 573,
+      "truncated_1022": false,
+      "sha256": "1d6886ad8f026bbf"
+    },
+    {
+      "acc": "sp|A0A3Q0NBH7|PGDA_LISMG",
+      "name": "PGDA_LISMG",
+      "organism": "Listeria monocytogenes serotype 1/2a (strain EGD / Mackaness)",
+      "lab_strain": false,
+      "len": 466,
+      "truncated_1022": false,
+      "sha256": "3644b5b5e96bcb69"
+    },
+    {
+      "acc": "sp|A1JUB7|YADA_YERE8",
+      "name": "YADA_YERE8",
+      "organism": "Yersinia enterocolitica serotype O:8 / biotype 1B (strain NCTC 13174 / 8081)",
+      "lab_strain": false,
+      "len": 422,
+      "truncated_1022": false,
+      "sha256": "a3c9e8919d44cab8"
+    },
+    {
+      "acc": "sp|A6QIG7|CHIPS_STAAE",
+      "name": "CHIPS_STAAE",
+      "organism": "Staphylococcus aureus (strain Newman)",
+      "lab_strain": false,
+      "len": 149,
+      "truncated_1022": false,
+      "sha256": "599d4c6611bc7385"
+    },
+    {
+      "acc": "sp|B6A876|CHI1_YERET",
+      "name": "CHI1_YERET",
+      "organism": "Yersinia entomophaga",
+      "lab_strain": false,
+      "len": 542,
+      "truncated_1022": false,
+      "sha256": "26439a948122a987"
+    },
+    {
+      "acc": "sp|D0ZKX9|RSEP_SALT1",
+      "name": "RSEP_SALT1",
+      "organism": "Salmonella typhimurium (strain 14028s / SGSC 2262)",
+      "lab_strain": false,
+      "len": 450,
+      "truncated_1022": false,
+      "sha256": "f40de367d64fac47"
+    },
+    {
+      "acc": "sp|D0ZV89|PHOQ_SALT1",
+      "name": "PHOQ_SALT1",
+      "organism": "Salmonella typhimurium (strain 14028s / SGSC 2262)",
+      "lab_strain": false,
+      "len": 487,
+      "truncated_1022": false,
+      "sha256": "d1f76a9db7da621e"
+    },
+    {
+      "acc": "sp|G3XDA8|PSTS_PSEAE",
+      "name": "PSTS_PSEAE",
+      "organism": "Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1)",
+      "lab_strain": false,
+      "len": 323,
+      "truncated_1022": false,
+      "sha256": "92ffc1e0a91790ee"
+    },
+    {
+      "acc": "sp|O52623|SOPE_SALTM",
+      "name": "SOPE_SALTM",
+      "organism": "Salmonella typhimurium",
+      "lab_strain": false,
+      "len": 240,
+      "truncated_1022": false,
+      "sha256": "51e1948c0d22a43a"
+    },
+    {
+      "acc": "sp|O84947|SCTE2_SALTY",
+      "name": "SCTE2_SALTY",
+      "organism": "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)",
+      "lab_strain": false,
+      "len": 484,
+      "truncated_1022": false,
+      "sha256": "4447b9e763f7c243"
+    },
+    {
+      "acc": "sp|P06736|HLYC_ECOLX",
+      "name": "HLYC_ECOLX",
+      "organism": "Escherichia coli",
+      "lab_strain": false,
+      "len": 170,
+      "truncated_1022": false,
+      "sha256": "84f4120b497572a3"
+    },
+    {
+      "acc": "sp|P09776|VIRB2_AGRTU",
+      "name": "VIRB2_AGRTU",
+      "organism": "Agrobacterium tumefaciens",
+      "lab_strain": false,
+      "len": 121,
+      "truncated_1022": false,
+      "sha256": "4619a45bbb694243"
+    },
+    {
+      "acc": "sp|P0A1B9|SCTN1_SALTY",
+      "name": "SCTN1_SALTY",
+      "organism": "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)",
+      "lab_strain": false,
+      "len": 431,
+      "truncated_1022": false,
+      "sha256": "2e74f78c6296fc12"
+    },
+    {
+      "acc": "sp|P0A1C1|SCTN_SHIFL",
+      "name": "SCTN_SHIFL",
+      "organism": "Shigella flexneri",
+      "lab_strain": false,
+      "len": 430,
+      "truncated_1022": false,
+      "sha256": "eb04501027c691ae"
+    },
+    {
+      "acc": "sp|P0A2M9|SPVC_SALTY",
+      "name": "SPVC_SALTY",
+      "organism": "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)",
+      "lab_strain": false,
+      "len": 241,
+      "truncated_1022": false,
+      "sha256": "2b9577dc9c561b21"
+    },
+    {
+      "acc": "sp|P00811|AMPC_ECOLI",
+      "name": "AMPC_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 377,
+      "truncated_1022": false,
+      "sha256": "431fc32e05c18762"
+    },
+    {
+      "acc": "sp|Q7WYA8|BLAB_PSEAI",
+      "name": "BLAB_PSEAI",
+      "organism": "Pseudomonas aeruginosa",
+      "lab_strain": false,
+      "len": 246,
+      "truncated_1022": false,
+      "sha256": "be1ec209ddb8688e"
+    },
+    {
+      "acc": "sp|P9WKD3|BLAC_MYCTU",
+      "name": "BLAC_MYCTU",
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "lab_strain": false,
+      "len": 307,
+      "truncated_1022": false,
+      "sha256": "5b8ba5d54921ef1b"
+    },
+    {
+      "acc": "sp|P26918|BLAB_AERHY",
+      "name": "BLAB_AERHY",
+      "organism": "Aeromonas hydrophila",
+      "lab_strain": false,
+      "len": 254,
+      "truncated_1022": false,
+      "sha256": "118c31dd2eb7c79c"
+    },
+    {
+      "acc": "sp|P14488|BLAB_BACCE",
+      "name": "BLAB_BACCE",
+      "organism": "Bacillus cereus",
+      "lab_strain": false,
+      "len": 256,
+      "truncated_1022": false,
+      "sha256": "8b443272bf233157"
+    },
+    {
+      "acc": "sp|P04190|BLA2_BACCE",
+      "name": "BLA2_BACCE",
+      "organism": "Bacillus cereus",
+      "lab_strain": false,
+      "len": 257,
+      "truncated_1022": false,
+      "sha256": "9955276e67350b09"
+    },
+    {
+      "acc": "sp|P14489|BLO10_PSEAI",
+      "name": "BLO10_PSEAI",
+      "organism": "Pseudomonas aeruginosa",
+      "lab_strain": false,
+      "len": 266,
+      "truncated_1022": false,
+      "sha256": "60cfadc4709a869a"
+    },
+    {
+      "acc": "sp|C7C422|BLAN1_KLEPN",
+      "name": "BLAN1_KLEPN",
+      "organism": "Klebsiella pneumoniae",
+      "lab_strain": false,
+      "len": 270,
+      "truncated_1022": false,
+      "sha256": "e789dada59f2ab0f"
+    },
+    {
+      "acc": "sp|P05364|AMPC_ENTCL",
+      "name": "AMPC_ENTCL",
+      "organism": "Enterobacter cloacae",
+      "lab_strain": false,
+      "len": 381,
+      "truncated_1022": false,
+      "sha256": "a885e26892754d74"
+    },
+    {
+      "acc": "sp|P52700|BLA1_STEMA",
+      "name": "BLA1_STEMA",
+      "organism": "Stenotrophomonas maltophilia",
+      "lab_strain": false,
+      "len": 290,
+      "truncated_1022": false,
+      "sha256": "ba8be5f44ec7dc12"
+    },
+    {
+      "acc": "sp|O87489|BLAV1_PSEAI",
+      "name": "BLAV1_PSEAI",
+      "organism": "Pseudomonas aeruginosa",
+      "lab_strain": false,
+      "len": 299,
+      "truncated_1022": false,
+      "sha256": "961e788e15216770"
+    },
+    {
+      "acc": "sp|P05193|AMPC_CITFR",
+      "name": "AMPC_CITFR",
+      "organism": "Citrobacter freundii",
+      "lab_strain": false,
+      "len": 381,
+      "truncated_1022": false,
+      "sha256": "dcf276edcb8aa3d9"
+    },
+    {
+      "acc": "sp|P52699|BLBI1_SERMA",
+      "name": "BLBI1_SERMA",
+      "organism": "Serratia marcescens",
+      "lab_strain": false,
+      "len": 246,
+      "truncated_1022": false,
+      "sha256": "2dd6454f1efde99a"
+    },
+    {
+      "acc": "sp|Q9KJY7|BLAG1_KLEPN",
+      "name": "BLAG1_KLEPN",
+      "organism": "Klebsiella pneumoniae",
+      "lab_strain": false,
+      "len": 287,
+      "truncated_1022": false,
+      "sha256": "44f551a8ea9d5b1f"
+    },
+    {
+      "acc": "sp|P00588|DTX_CORBE",
+      "name": "DTX_CORBE",
+      "organism": "Corynephage beta",
+      "lab_strain": false,
+      "len": 567,
+      "truncated_1022": false,
+      "sha256": "cb61b46316e1267f"
+    },
+    {
+      "acc": "sp|P04958|TETX_CLOTE",
+      "name": "TETX_CLOTE",
+      "organism": "Clostridium tetani (strain Massachusetts / E88)",
+      "lab_strain": false,
+      "len": 1315,
+      "truncated_1022": true,
+      "sha256": "01a93edb09aa5dfd"
+    },
+    {
+      "acc": "sp|P11140|ABRA_ABRPR",
+      "name": "ABRA_ABRPR",
+      "organism": "Abrus precatorius",
+      "lab_strain": false,
+      "len": 528,
+      "truncated_1022": false,
+      "sha256": "af176b7391f60dc8"
+    },
+    {
+      "acc": "sp|P55981|VACA_HELPY",
+      "name": "VACA_HELPY",
+      "organism": "Helicobacter pylori (strain ATCC 700392 / 26695)",
+      "lab_strain": false,
+      "len": 1290,
+      "truncated_1022": true,
+      "sha256": "cfa4313ef6a36a1a"
+    },
+    {
+      "acc": "sp|P0DF97|TACY_STRPQ",
+      "name": "TACY_STRPQ",
+      "organism": "Streptococcus pyogenes serotype M3 (strain SSI-1)",
+      "lab_strain": false,
+      "len": 571,
+      "truncated_1022": false,
+      "sha256": "76698fba9d28f5cf"
+    },
+    {
+      "acc": "sp|P00648|RNBR_BACAM",
+      "name": "RNBR_BACAM",
+      "organism": "Bacillus amyloliquefaciens",
+      "lab_strain": false,
+      "len": 157,
+      "truncated_1022": false,
+      "sha256": "de92bb2c148a1798"
+    },
+    {
+      "acc": "sp|P04419|CEA2_ECOLX",
+      "name": "CEA2_ECOLX",
+      "organism": "Escherichia coli",
+      "lab_strain": false,
+      "len": 581,
+      "truncated_1022": false,
+      "sha256": "62729c48db3bf25b"
+    },
+    {
+      "acc": "sp|P15273|YOPH_YEREN",
+      "name": "YOPH_YEREN",
+      "organism": "Yersinia enterocolitica",
+      "lab_strain": false,
+      "len": 468,
+      "truncated_1022": false,
+      "sha256": "8164bc5aafe84238"
+    },
+    {
+      "acc": "tr|O34208|O34208_PSEAI",
+      "name": "O34208_PSEAI",
+      "organism": "Pseudomonas aeruginosa",
+      "lab_strain": false,
+      "len": 687,
+      "truncated_1022": false,
+      "sha256": "11540ecc804966c0"
+    },
+    {
+      "acc": "tr|Q51451|Q51451_PSEAI",
+      "name": "Q51451_PSEAI",
+      "organism": "Pseudomonas aeruginosa",
+      "lab_strain": false,
+      "len": 453,
+      "truncated_1022": false,
+      "sha256": "4d81ed866c77ca48"
+    }
+  ],
+  "negatives": [
+    {
+      "acc": "sp|O05512|MANB_BACSU",
+      "name": "MANB_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 362,
+      "truncated_1022": false,
+      "sha256": "97707973517765ef",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|O34952|LTAS2_BACSU",
+      "name": "LTAS2_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 649,
+      "truncated_1022": false,
+      "sha256": "0d15a4ec1d686706",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P29141|SUBV_BACSU",
+      "name": "SUBV_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 806,
+      "truncated_1022": false,
+      "sha256": "5bb9c1a50a324691",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P39848|LYTD_BACSU",
+      "name": "LYTD_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 880,
+      "truncated_1022": false,
+      "sha256": "042029e91658b02f",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P42293|EABN2_BACSU",
+      "name": "EABN2_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 469,
+      "truncated_1022": false,
+      "sha256": "2cd0fb0ab2ac2fb3",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|Q06320|CWLC_BACSU",
+      "name": "CWLC_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 255,
+      "truncated_1022": false,
+      "sha256": "080021f26b0b37d2",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|Q797B3|LTAS1_BACSU",
+      "name": "LTAS1_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 639,
+      "truncated_1022": false,
+      "sha256": "8e7e4521c53311ab",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P04189|SUBT_BACSU",
+      "name": "SUBT_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 381,
+      "truncated_1022": false,
+      "sha256": "3d6035ec4c81028b",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P04737|PIL1_ECOLI",
+      "name": "PIL1_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 121,
+      "truncated_1022": false,
+      "sha256": "b13da6a2117cfddc",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P25152|BSAP_BACSU",
+      "name": "BSAP_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 455,
+      "truncated_1022": false,
+      "sha256": "5da3b91747c41105",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P37965|GLPQ_BACSU",
+      "name": "GLPQ_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 293,
+      "truncated_1022": false,
+      "sha256": "89ba14d3490df9d0",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P39597|EFEB_BACSU",
+      "name": "EFEB_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 416,
+      "truncated_1022": false,
+      "sha256": "b49426e230555e17",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P94522|EABN1_BACSU",
+      "name": "EABN1_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 323,
+      "truncated_1022": false,
+      "sha256": "7e0add3236a284b2",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P96740|PGDS_BACSU",
+      "name": "PGDS_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 413,
+      "truncated_1022": false,
+      "sha256": "67a55c4aec17901b",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|Q79F14|ESTB_BACSU",
+      "name": "ESTB_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 210,
+      "truncated_1022": false,
+      "sha256": "e486e7375d3a307e",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|O31527|YESX_BACSU",
+      "name": "YESX_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 612,
+      "truncated_1022": false,
+      "sha256": "e02c20841c2144dd",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P05655|LSC_BACSU",
+      "name": "LSC_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 473,
+      "truncated_1022": false,
+      "sha256": "43bfff21630c7140",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P0A6P9|ENO_ECOLI",
+      "name": "ENO_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 432,
+      "truncated_1022": false,
+      "sha256": "427a9c2476c475dd",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P16396|SUBE_BACSU",
+      "name": "SUBE_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 645,
+      "truncated_1022": false,
+      "sha256": "ac8ae0b803b702dc",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P19582|DHOM_BACSU",
+      "name": "DHOM_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 433,
+      "truncated_1022": false,
+      "sha256": "6a183ec6dd13a692",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|C0SPC1|CCRZ_BACSU",
+      "name": "CCRZ_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 269,
+      "truncated_1022": false,
+      "sha256": "cd3fe68889910b4e",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|O06724|YISK_BACSU",
+      "name": "YISK_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 301,
+      "truncated_1022": false,
+      "sha256": "f75bca8352b461c5",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|O31616|GLYOX_BACSU",
+      "name": "GLYOX_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 369,
+      "truncated_1022": false,
+      "sha256": "32d2b29d31fcbbe6",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|O31775|YMDB_BACSU",
+      "name": "YMDB_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 264,
+      "truncated_1022": false,
+      "sha256": "4b1bcf9aa9fa74f8",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|O34481|RECD2_BACSU",
+      "name": "RECD2_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 798,
+      "truncated_1022": false,
+      "sha256": "7f48515d436742a9",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|O34580|PCRA_BACSU",
+      "name": "PCRA_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 739,
+      "truncated_1022": false,
+      "sha256": "e1698be1d6928554",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|O34714|OXDC_BACSU",
+      "name": "OXDC_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 385,
+      "truncated_1022": false,
+      "sha256": "73c316e05811784e",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|O34942|RECG_BACSU",
+      "name": "RECG_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 682,
+      "truncated_1022": false,
+      "sha256": "f97ad37b124aae68",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P00509|AAT_ECOLI",
+      "name": "AAT_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 396,
+      "truncated_1022": false,
+      "sha256": "ce1f3d587de57cc7",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P00946|MANA_ECOLI",
+      "name": "MANA_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 391,
+      "truncated_1022": false,
+      "sha256": "b2b33eb5d885c406",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P04805|SYE_ECOLI",
+      "name": "SYE_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 471,
+      "truncated_1022": false,
+      "sha256": "5aef15f6bb81341d",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P04982|RBSD_ECOLI",
+      "name": "RBSD_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 139,
+      "truncated_1022": false,
+      "sha256": "68011c45c6c9949f",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P05824|RECN_ECOLI",
+      "name": "RECN_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 553,
+      "truncated_1022": false,
+      "sha256": "6aa83cf6c5f230ef",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P06567|DNAI_BACSU",
+      "name": "DNAI_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 311,
+      "truncated_1022": false,
+      "sha256": "28105d3080b6a8b1",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P06616|ERA_ECOLI",
+      "name": "ERA_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 301,
+      "truncated_1022": false,
+      "sha256": "fd4ee3d5df127e63",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P12041|PURQ_BACSU",
+      "name": "PURQ_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 227,
+      "truncated_1022": false,
+      "sha256": "621444e47ae9fa9f",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P17618|RIBD_BACSU",
+      "name": "RIBD_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 361,
+      "truncated_1022": false,
+      "sha256": "4a5c644ffd865657",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P25052|TENA_BACSU",
+      "name": "TENA_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 236,
+      "truncated_1022": false,
+      "sha256": "dc1788ce2166eb30",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P31658|HCHA_ECOLI",
+      "name": "HCHA_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 283,
+      "truncated_1022": false,
+      "sha256": "8530645b925a9093",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P36548|AMIA_ECOLI",
+      "name": "AMIA_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 289,
+      "truncated_1022": false,
+      "sha256": "f6170859ff6b9b8a",
+      "block": "secreted_cellwall",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P37794|CHBG_ECOLI",
+      "name": "CHBG_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 249,
+      "truncated_1022": false,
+      "sha256": "4c2a0738c9f1be7b",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|Q46806|PHYDA_ECOLI",
+      "name": "PHYDA_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 461,
+      "truncated_1022": false,
+      "sha256": "41c31e7efd3eadc1",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|O35000|NAGB_BACSU",
+      "name": "NAGB_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "lab_strain": true,
+      "len": 242,
+      "truncated_1022": false,
+      "sha256": "516d209b62902962",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P0A6T5|GCH1_ECOLI",
+      "name": "GCH1_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 222,
+      "truncated_1022": false,
+      "sha256": "1d7c01a67f6241f3",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P0A759|NAGB_ECOLI",
+      "name": "NAGB_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 266,
+      "truncated_1022": false,
+      "sha256": "914386341353c57f",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P0A962|ASPG1_ECOLI",
+      "name": "ASPG1_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 338,
+      "truncated_1022": false,
+      "sha256": "2e2ad3ed5e6ae3b2",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P0AC00|FRLB_ECOLI",
+      "name": "FRLB_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 340,
+      "truncated_1022": false,
+      "sha256": "5bbafc9068a9649d",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P0AED7|DAPE_ECOLI",
+      "name": "DAPE_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 375,
+      "truncated_1022": false,
+      "sha256": "48cdee330b5ea8f0",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P77425|ALLC_ECOLI",
+      "name": "ALLC_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "lab_strain": true,
+      "len": 411,
+      "truncated_1022": false,
+      "sha256": "38a07ea7f51550aa",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|Q99ZW2|CAS9_STRP1",
+      "name": "CAS9_STRP1",
+      "organism": "Streptococcus pyogenes serotype M1",
+      "lab_strain": false,
+      "len": 1368,
+      "truncated_1022": true,
+      "sha256": "0b7df5a184af9a60",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": false
+    },
+    {
+      "acc": "sp|P0A0M5|TYSY_STAAU",
+      "name": "TYSY_STAAU",
+      "organism": "Staphylococcus aureus",
+      "lab_strain": false,
+      "len": 318,
+      "truncated_1022": false,
+      "sha256": "e9387cf79d436257",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0A017|DYR_STAAU",
+      "name": "DYR_STAAU",
+      "organism": "Staphylococcus aureus",
+      "lab_strain": false,
+      "len": 159,
+      "truncated_1022": false,
+      "sha256": "5c2a06de001314da",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P9WFV9|SYE_MYCTU",
+      "name": "SYE_MYCTU",
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "lab_strain": false,
+      "len": 490,
+      "truncated_1022": false,
+      "sha256": "59db7aff00068509",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|O69689|ASPAT_MYCTU",
+      "name": "ASPAT_MYCTU",
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "lab_strain": false,
+      "len": 435,
+      "truncated_1022": false,
+      "sha256": "d3c126a3b515d0e3",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P9WN57|GCH1_MYCTU",
+      "name": "GCH1_MYCTU",
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "lab_strain": false,
+      "len": 202,
+      "truncated_1022": false,
+      "sha256": "70aff46c0cbd4bd1",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P9WPH1|RIBD_MYCTU",
+      "name": "RIBD_MYCTU",
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "lab_strain": false,
+      "len": 339,
+      "truncated_1022": false,
+      "sha256": "043732fd6c6ab86e",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0A2K3|SYE_SALTY",
+      "name": "SYE_SALTY",
+      "organism": "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)",
+      "lab_strain": false,
+      "len": 471,
+      "truncated_1022": false,
+      "sha256": "c8c7188576dc52ee",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P58661|AAT_SALTY",
+      "name": "AAT_SALTY",
+      "organism": "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)",
+      "lab_strain": false,
+      "len": 396,
+      "truncated_1022": false,
+      "sha256": "c5c2cefdb67cbeb7",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P64209|GCH1_SALTY",
+      "name": "GCH1_SALTY",
+      "organism": "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)",
+      "lab_strain": false,
+      "len": 222,
+      "truncated_1022": false,
+      "sha256": "ed4ae96b5eed915b",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q8ZQX7|NAGB_SALTY",
+      "name": "NAGB_SALTY",
+      "organism": "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)",
+      "lab_strain": false,
+      "len": 266,
+      "truncated_1022": false,
+      "sha256": "bd052cb06c9cc97d",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q83K84|SYE_SHIFL",
+      "name": "SYE_SHIFL",
+      "organism": "Shigella flexneri",
+      "lab_strain": false,
+      "len": 471,
+      "truncated_1022": false,
+      "sha256": "b82dc8b2f1deee8a",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P59688|NAGB_SHIFL",
+      "name": "NAGB_SHIFL",
+      "organism": "Shigella flexneri",
+      "lab_strain": false,
+      "len": 266,
+      "truncated_1022": false,
+      "sha256": "2f9aa72d8d0adee4",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q83KZ1|MANA_SHIFL",
+      "name": "MANA_SHIFL",
+      "organism": "Shigella flexneri",
+      "lab_strain": false,
+      "len": 391,
+      "truncated_1022": false,
+      "sha256": "e859e735acb68769",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q81VV3|SYE_BACAN",
+      "name": "SYE_BACAN",
+      "organism": "Bacillus anthracis",
+      "lab_strain": false,
+      "len": 485,
+      "truncated_1022": false,
+      "sha256": "4f2a1900274bcd4c",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q81SW2|GCH1_BACAN",
+      "name": "GCH1_BACAN",
+      "organism": "Bacillus anthracis",
+      "lab_strain": false,
+      "len": 189,
+      "truncated_1022": false,
+      "sha256": "67656f811a62b26c",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q81MH5|NAGB_BACAN",
+      "name": "NAGB_BACAN",
+      "organism": "Bacillus anthracis",
+      "lab_strain": false,
+      "len": 262,
+      "truncated_1022": false,
+      "sha256": "c95395d54389e02b",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q81R23|TYSY_BACAN",
+      "name": "TYSY_BACAN",
+      "organism": "Bacillus anthracis",
+      "lab_strain": false,
+      "len": 318,
+      "truncated_1022": false,
+      "sha256": "cfff378432513ffa",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|O85746|TYRB_KLEPN",
+      "name": "TYRB_KLEPN",
+      "organism": "Klebsiella pneumoniae",
+      "lab_strain": false,
+      "len": 397,
+      "truncated_1022": false,
+      "sha256": "9c66c8bd7a9d9627",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0C0C1|GCH1_STRPY",
+      "name": "GCH1_STRPY",
+      "organism": "Streptococcus pyogenes",
+      "lab_strain": false,
+      "len": 194,
+      "truncated_1022": false,
+      "sha256": "906ea6b4ac03e8d5",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0A0K8|GYRB_STAAU",
+      "name": "GYRB_STAAU",
+      "organism": "Staphylococcus aureus",
+      "lab_strain": false,
+      "len": 644,
+      "truncated_1022": false,
+      "sha256": "c698c97e872abc25",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P68845|RECA_STAAU",
+      "name": "RECA_STAAU",
+      "organism": "Staphylococcus aureus",
+      "lab_strain": false,
+      "len": 347,
+      "truncated_1022": false,
+      "sha256": "f874c67e16485c88",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P24497|AROA_KLEPN",
+      "name": "AROA_KLEPN",
+      "organism": "Klebsiella pneumoniae",
+      "lab_strain": false,
+      "len": 427,
+      "truncated_1022": false,
+      "sha256": "99ec7d74c282ae80",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0C0H6|IMDH_STRPY",
+      "name": "IMDH_STRPY",
+      "organism": "Streptococcus pyogenes",
+      "lab_strain": false,
+      "len": 493,
+      "truncated_1022": false,
+      "sha256": "484f7e75cb5bcfe8",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0C0G0|DHPS_STRPY",
+      "name": "DHPS_STRPY",
+      "organism": "Streptococcus pyogenes",
+      "lab_strain": false,
+      "len": 266,
+      "truncated_1022": false,
+      "sha256": "6bcecd94e8702726",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0DJP0|RECA_LISMO",
+      "name": "RECA_LISMO",
+      "organism": "Listeria monocytogenes serovar 1/2a (strain ATCC BAA-679 / EGD-e)",
+      "lab_strain": false,
+      "len": 348,
+      "truncated_1022": false,
+      "sha256": "2e00903b6bd06749",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q9RLT9|RPOB_LISMO",
+      "name": "RPOB_LISMO",
+      "organism": "Listeria monocytogenes serovar 1/2a (strain ATCC BAA-679 / EGD-e)",
+      "lab_strain": false,
+      "len": 1184,
+      "truncated_1022": true,
+      "sha256": "c15aaae7592e88fc",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q8Y5N8|SYI_LISMO",
+      "name": "SYI_LISMO",
+      "organism": "Listeria monocytogenes serovar 1/2a (strain ATCC BAA-679 / EGD-e)",
+      "lab_strain": false,
+      "len": 921,
+      "truncated_1022": false,
+      "sha256": "8dfc6a255c963385",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q9KVX3|GYRB_VIBCH",
+      "name": "GYRB_VIBCH",
+      "organism": "Vibrio cholerae serotype O1 (strain ATCC 39315 / El Tor Inaba N16961)",
+      "lab_strain": false,
+      "len": 805,
+      "truncated_1022": false,
+      "sha256": "96894c2a8f02fdd0",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P45383|RECA_VIBCH",
+      "name": "RECA_VIBCH",
+      "organism": "Vibrio cholerae serotype O1 (strain ATCC 39315 / El Tor Inaba N16961)",
+      "lab_strain": false,
+      "len": 354,
+      "truncated_1022": false,
+      "sha256": "a442bae8eead3572",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q9KV30|RPOB_VIBCH",
+      "name": "RPOB_VIBCH",
+      "organism": "Vibrio cholerae serotype O1 (strain ATCC 39315 / El Tor Inaba N16961)",
+      "lab_strain": false,
+      "len": 1341,
+      "truncated_1022": true,
+      "sha256": "11ef48e6027e21eb",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q9I7C2|GYRB_PSEAE",
+      "name": "GYRB_PSEAE",
+      "organism": "Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1)",
+      "lab_strain": false,
+      "len": 806,
+      "truncated_1022": false,
+      "sha256": "8c418e9e87bbe508",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P08280|RECA_PSEAE",
+      "name": "RECA_PSEAE",
+      "organism": "Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1)",
+      "lab_strain": false,
+      "len": 346,
+      "truncated_1022": false,
+      "sha256": "f379dfe9a13a36e5",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q51561|RPOB_PSEAE",
+      "name": "RPOB_PSEAE",
+      "organism": "Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1)",
+      "lab_strain": false,
+      "len": 1357,
+      "truncated_1022": true,
+      "sha256": "4e58cb4dac28d3de",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q9HVM4|SYI_PSEAE",
+      "name": "SYI_PSEAE",
+      "organism": "Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1)",
+      "lab_strain": false,
+      "len": 943,
+      "truncated_1022": false,
+      "sha256": "f363e494e5ae1515",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q9HXZ4|PYRG_PSEAE",
+      "name": "PYRG_PSEAE",
+      "organism": "Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1)",
+      "lab_strain": false,
+      "len": 542,
+      "truncated_1022": false,
+      "sha256": "ed4750682e5fc141",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q81A16|RECA_BACCR",
+      "name": "RECA_BACCR",
+      "organism": "Bacillus cereus (strain ATCC 14579 / DSM 31 / CCUG 7414 / JCM 2152 / NBRC 15305 / NCIMB 9373 / NCTC 2599 / NRRL B-3711)",
+      "lab_strain": false,
+      "len": 343,
+      "truncated_1022": false,
+      "sha256": "b99e71691029bf92",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q81J48|RPOB_BACCR",
+      "name": "RPOB_BACCR",
+      "organism": "Bacillus cereus (strain ATCC 14579 / DSM 31 / CCUG 7414 / JCM 2152 / NBRC 15305 / NCIMB 9373 / NCTC 2599 / NRRL B-3711)",
+      "lab_strain": false,
+      "len": 1177,
+      "truncated_1022": true,
+      "sha256": "0f9383e0f6cfbbd6",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q814T2|PYRG_BACCR",
+      "name": "PYRG_BACCR",
+      "organism": "Bacillus cereus (strain ATCC 14579 / DSM 31 / CCUG 7414 / JCM 2152 / NBRC 15305 / NCIMB 9373 / NCTC 2599 / NRRL B-3711)",
+      "lab_strain": false,
+      "len": 535,
+      "truncated_1022": false,
+      "sha256": "acb1acc3ba5454eb",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|A5I7L4|RPOB_CLOBH",
+      "name": "RPOB_CLOBH",
+      "organism": "Clostridium botulinum (strain Hall / ATCC 3502 / NCTC 13319 / Type A)",
+      "lab_strain": false,
+      "len": 1232,
+      "truncated_1022": true,
+      "sha256": "d2bbf0202bad6e4e",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|A5I526|GLYA_CLOBH",
+      "name": "GLYA_CLOBH",
+      "organism": "Clostridium botulinum (strain Hall / ATCC 3502 / NCTC 13319 / Type A)",
+      "lab_strain": false,
+      "len": 413,
+      "truncated_1022": false,
+      "sha256": "5b6041a8902dcad9",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|A5I7Y9|PURA_CLOBH",
+      "name": "PURA_CLOBH",
+      "organism": "Clostridium botulinum (strain Hall / ATCC 3502 / NCTC 13319 / Type A)",
+      "lab_strain": false,
+      "len": 428,
+      "truncated_1022": false,
+      "sha256": "5b2c216c8ad7ee00",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0AES8|GYRB_SHIFL",
+      "name": "GYRB_SHIFL",
+      "organism": "Shigella flexneri",
+      "lab_strain": false,
+      "len": 804,
+      "truncated_1022": false,
+      "sha256": "82e2ca9794b9e1dd",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P17479|RECA_SERMA",
+      "name": "RECA_SERMA",
+      "organism": "Serratia marcescens",
+      "lab_strain": false,
+      "len": 354,
+      "truncated_1022": false,
+      "sha256": "cbb703f4aaa6cd1c",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|A1JK01|RECA_YERE8",
+      "name": "RECA_YERE8",
+      "organism": "Yersinia enterocolitica serotype O:8 / biotype 1B (strain NCTC 13174 / 8081)",
+      "lab_strain": false,
+      "len": 354,
+      "truncated_1022": false,
+      "sha256": "fe623840288dd51a",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q7NXL9|RECA_CHRVO",
+      "name": "RECA_CHRVO",
+      "organism": "Chromobacterium violaceum (strain ATCC 12472 / DSM 30191 / JCM 1249 / CCUG 213 / NBRC 12614 / NCIMB 9131 / NCTC 9757 / MK)",
+      "lab_strain": false,
+      "len": 350,
+      "truncated_1022": false,
+      "sha256": "769bf5b307ef6fe2",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|A0KPG3|RECA_AERHH",
+      "name": "RECA_AERHH",
+      "organism": "Aeromonas hydrophila subsp. hydrophila (strain ATCC 7966 / DSM 30187 / BCRC 13018 / CCUG 14551 / JCM 1027 / KCTC 2358 / NCIMB 9240 / NCTC 8049)",
+      "lab_strain": false,
+      "len": 354,
+      "truncated_1022": false,
+      "sha256": "1e6a297d10c8651a",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P33038|MURA_ENTCC",
+      "name": "MURA_ENTCC",
+      "organism": "Enterobacter cloacae subsp. cloacae (strain ATCC 13047 / DSM 30054 / NBRC 13535 / NCTC 10005 / WDCM 00083 / NCDC 279-56)",
+      "lab_strain": false,
+      "len": 419,
+      "truncated_1022": false,
+      "sha256": "279d83f5ab5eb3cf",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|B2FL31|RECA_STRMK",
+      "name": "RECA_STRMK",
+      "organism": "Stenotrophomonas maltophilia (strain K279a)",
+      "lab_strain": false,
+      "len": 345,
+      "truncated_1022": false,
+      "sha256": "afd7dd9b102a4bd6",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q895I5|RECA_CLOTE",
+      "name": "RECA_CLOTE",
+      "organism": "Clostridium tetani (strain Massachusetts / E88)",
+      "lab_strain": false,
+      "len": 350,
+      "truncated_1022": false,
+      "sha256": "6255de717e0038b4",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P55992|GYRB_HELPY",
+      "name": "GYRB_HELPY",
+      "organism": "Helicobacter pylori (strain ATCC 700392 / 26695)",
+      "lab_strain": false,
+      "len": 773,
+      "truncated_1022": false,
+      "sha256": "ec3118e2e4231a33",
+      "block": "cytoplasmic_housekeeping",
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P40600|LIPE_AERHY",
+      "name": "LIPE_AERHY",
+      "organism": "Aeromonas hydrophila",
+      "len": 684,
+      "sha256": "d9e684d4b6b0353025cbbbd44bbe31586c9e366709d6eb1d12d79642ca75fcd4",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|A0KLG5|BSR_AERHH",
+      "name": "BSR_AERHH",
+      "organism": "Aeromonas hydrophila subsp. hydrophila (strain ATCC 7966 / DSM 30187 / BCRC 13018 / CCUG 14551 / JCM 1027 / KCTC 2358 / NCIMB 9240 / NCTC 8049)",
+      "len": 408,
+      "sha256": "4b9e834de75a7c45ea6441f1d8a7f0b308bf2ca8013cc75393a60804aeea09a9",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P94217|SLAP2_BACAN",
+      "name": "SLAP2_BACAN",
+      "organism": "Bacillus anthracis",
+      "len": 862,
+      "sha256": "35ef1009e40ff3487a195ee0be6a8c80d34ffa9e0b6232ca422dd9b985283575",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q81JH1|YIDC2_BACAN",
+      "name": "YIDC2_BACAN",
+      "organism": "Bacillus anthracis",
+      "len": 255,
+      "sha256": "0432d148986fb9c60ce2ac06e1acf89c5072d3daf6b48b8a891721281fe8c2a0",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0A3V1|SLEB_BACCE",
+      "name": "SLEB_BACCE",
+      "organism": "Bacillus cereus",
+      "len": 259,
+      "sha256": "cae9f3b68b5dc19d59324900bf36df2c6e19045ae578689d607285a39a65b1da",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P36924|AMYB_BACCE",
+      "name": "AMYB_BACCE",
+      "organism": "Bacillus cereus",
+      "len": 546,
+      "sha256": "1b9e62a8c5d29f5d0169fd516b73d0405a9a7c7b0797306166fae5f9f8aa6cb9",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q7NZY0|MSRP_CHRVO",
+      "name": "MSRP_CHRVO",
+      "organism": "Chromobacterium violaceum (strain ATCC 12472 / DSM 30191 / JCM 1249 / CCUG 213 / NBRC 12614 / NCIMB 9131 / NCTC 9757 / MK)",
+      "len": 305,
+      "sha256": "c0ef1e56239813833e511a99f404ade6735ec89c3389f584864654ed7aaeadf5",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q7NQB0|SURA_CHRVO",
+      "name": "SURA_CHRVO",
+      "organism": "Chromobacterium violaceum (strain ATCC 12472 / DSM 30191 / JCM 1249 / CCUG 213 / NBRC 12614 / NCIMB 9131 / NCTC 9757 / MK)",
+      "len": 429,
+      "sha256": "b4bac5d3dddac812b7aa9b60f51890b090e17625a11908a0b3ad625eceef008c",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|C3KW94|PRSA_CLOB6",
+      "name": "PRSA_CLOB6",
+      "organism": "Clostridium botulinum (strain 657 / Type Ba4)",
+      "len": 336,
+      "sha256": "9eda3225cb64de7cb3bab8e3e965b349b551450fcdb0bf7fb8ffab322c809ea0",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|B1IGZ5|PRSA_CLOBK",
+      "name": "PRSA_CLOBK",
+      "organism": "Clostridium botulinum (strain Okra / Type B1)",
+      "len": 336,
+      "sha256": "0df040f58974600b303753306f99d882de546d5207c2dd85d3db906f72d83049",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q899I2|PRSA_CLOTE",
+      "name": "PRSA_CLOTE",
+      "organism": "Clostridium tetani (strain Massachusetts / E88)",
+      "len": 339,
+      "sha256": "de35020a26854846d67d11ea7fdedc707798f79feb3015fc85fd75361577f0b2",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q897L1|CBIM_CLOTE",
+      "name": "CBIM_CLOTE",
+      "organism": "Clostridium tetani (strain Massachusetts / E88)",
+      "len": 241,
+      "sha256": "c0fc13ba5433ee5297c2fda3a68553f7af711ee89f1fbf2f64bf2cf775ab690f",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|D6DRS2|PAGP_ENTCL",
+      "name": "PAGP_ENTCL",
+      "organism": "Enterobacter cloacae",
+      "len": 191,
+      "sha256": "24b93bb21c8274e203d72785e753b5e0585dd391040beff976eddaa971adf82f",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q47490|PHOE_ENTCL",
+      "name": "PHOE_ENTCL",
+      "organism": "Enterobacter cloacae",
+      "len": 350,
+      "sha256": "a8cf2270a605cff8abc640d8dbae44ab0e00ce60f64d154449a1292091295ad0",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|O25825|CY553_HELPY",
+      "name": "CY553_HELPY",
+      "organism": "Helicobacter pylori (strain ATCC 700392 / 26695)",
+      "len": 96,
+      "sha256": "ed1a36b564ba85e00b3402d2009a35226427ce3ff2fdc2b316a22b7e1672385e",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|O26091|RLPA_HELPY",
+      "name": "RLPA_HELPY",
+      "organism": "Helicobacter pylori (strain ATCC 700392 / 26695)",
+      "len": 315,
+      "sha256": "863fa83d4f95a872076f8ff9a6de0bfe9693d33c0eeeb7bdd66bdd563ccd32ed",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P15644|GSPD_KLEPN",
+      "name": "GSPD_KLEPN",
+      "organism": "Klebsiella pneumoniae",
+      "len": 660,
+      "sha256": "0096a910374ae0226e45471538228225b6d049c890356cb186e201dbfd840b69",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P24017|OMPA_KLEPN",
+      "name": "OMPA_KLEPN",
+      "organism": "Klebsiella pneumoniae",
+      "len": 344,
+      "sha256": "6348bac5e7759ef084f5c977ca8306fd44ac9995abbcf2e563df7886cd2f4a15",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q8Y585|HBP1_LISMO",
+      "name": "HBP1_LISMO",
+      "organism": "Listeria monocytogenes serovar 1/2a (strain ATCC BAA-679 / EGD-e)",
+      "len": 207,
+      "sha256": "10eb4088a4a615b6d9727af7192b27f05cf65409bdf42e86dcd4fa76648d9fd2",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q9RR44|GBUC_LISM4",
+      "name": "GBUC_LISM4",
+      "organism": "Listeria monocytogenes serotype 1/2a (strain 10403S)",
+      "len": 300,
+      "sha256": "c6523cfa97ebe5fcffd200cdecfd65568f90be8a8f909d1438ccec9e8a3a5706",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|A0A089QRB9|MSL3_MYCTU",
+      "name": "MSL3_MYCTU",
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "len": 2085,
+      "sha256": "9c79913a597ae9f4c6f4d013e4b67606aba3391dd5868c8f022e98da2c424ac8",
+      "truncated_1022": true,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|I6Y4D2|PEPAM_MYCTU",
+      "name": "PEPAM_MYCTU",
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "len": 241,
+      "sha256": "aaddeed71eb17e991e1311075fd6304fe881f3222d762b1db02d1af23060d78e",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q8RNT4|LOX_PSEAI",
+      "name": "LOX_PSEAI",
+      "organism": "Pseudomonas aeruginosa",
+      "len": 685,
+      "sha256": "a068f77b85310583363241a1249a7be038b5569ee0ad8133edf60dfddee25fa2",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|S0HPF7|PILY1_PSEAW",
+      "name": "PILY1_PSEAW",
+      "organism": "Pseudomonas aeruginosa (strain PAK)",
+      "len": 1163,
+      "sha256": "fb938b91ec6efc844cc7faf0b4d7da6705d1c842e645699a351871c4134966cb",
+      "truncated_1022": true,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q540U1|APHA_SALTM",
+      "name": "APHA_SALTM",
+      "organism": "Salmonella typhimurium",
+      "len": 237,
+      "sha256": "f18ae274da79b9da5fefcbdf5aeac0e468ee970fa85e9cdbc1b0f6608abb40a0",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P06202|OPPA_SALTY",
+      "name": "OPPA_SALTY",
+      "organism": "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)",
+      "len": 543,
+      "sha256": "e2350390ade54e31af94d4f92e6c8612e957aa549603b1f8b64a8388bf637a96",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q54468|CHB_SERMA",
+      "name": "CHB_SERMA",
+      "organism": "Serratia marcescens",
+      "len": 885,
+      "sha256": "a68d917d4b7b599177fdbc0b9b10402fd2a722651a96107cd116a92a7075375c",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P9WEM3|LP10_SERMA",
+      "name": "LP10_SERMA",
+      "organism": "Serratia marcescens",
+      "len": 197,
+      "sha256": "03f370bdd280e14a8a46e3e3cce666282f5d23d3bb4fc0923807e46534929428",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|A0A2S4N3N0|OMPA_SHIFL",
+      "name": "OMPA_SHIFL",
+      "organism": "Shigella flexneri",
+      "len": 348,
+      "sha256": "d5190ce81e16ffb9b94ab64650b4dbafe677c46818aab9a70b182a87fcfd01f6",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q83QV0|NAPA_SHIFL",
+      "name": "NAPA_SHIFL",
+      "organism": "Shigella flexneri",
+      "len": 828,
+      "sha256": "498232f55e8232007da97e54fbec800b1bcbb6861558aa437bc72dc9baee42b8",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0C5Z8|ATL_STAAU",
+      "name": "ATL_STAAU",
+      "organism": "Staphylococcus aureus",
+      "len": 1255,
+      "sha256": "0df0544af1b886f48089f939db08eb75fadca2bc722dcc2921acf7bcac8402df",
+      "truncated_1022": true,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q2FZE6|ISDE_STAA8",
+      "name": "ISDE_STAA8",
+      "organism": "Staphylococcus aureus (strain NCTC 8325 / PS 47)",
+      "len": 292,
+      "sha256": "10a1c72c5f0512a78ccd634f7f031393749499e55ebb975b6ab92f27f4a1c6a9",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|B2FHL8|PL_STRMK",
+      "name": "PL_STRMK",
+      "organism": "Stenotrophomonas maltophilia (strain K279a)",
+      "len": 331,
+      "sha256": "25a9d8907571558aab0af90ac99862f7a57faa447c2dda7b8e75493886bf9df0",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|B2FSW8|EALGL_STRMK",
+      "name": "EALGL_STRMK",
+      "organism": "Stenotrophomonas maltophilia (strain K279a)",
+      "len": 742,
+      "sha256": "1fce3a018acf7e32a90ddff52d26695c4f107628a9ac4a8c1f4e0d0e741c6134",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q9A1S2|PILIN_STRP1",
+      "name": "PILIN_STRP1",
+      "organism": "Streptococcus pyogenes serotype M1",
+      "len": 340,
+      "sha256": "8279e2fcdae00baa6aac0c357efc99c05b2b435393d87047397c1216cb93344e",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P49054|PAM_STRPY",
+      "name": "PAM_STRPY",
+      "organism": "Streptococcus pyogenes",
+      "len": 388,
+      "sha256": "84388864dbd4c29260bd66f334181e6e6ce28ef5a73a1689551e7104ba5d9f4f",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P45779|GSPD_VIBCH",
+      "name": "GSPD_VIBCH",
+      "organism": "Vibrio cholerae serotype O1 (strain ATCC 39315 / El Tor Inaba N16961)",
+      "len": 674,
+      "sha256": "024ef7dd24bdbe436374a70e6354f2e51252100b77242df55fa3a23214c94a2c",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q9KSE5|BSR_VIBCH",
+      "name": "BSR_VIBCH",
+      "organism": "Vibrio cholerae serotype O1 (strain ATCC 39315 / El Tor Inaba N16961)",
+      "len": 407,
+      "sha256": "f68d187c35b4bc03af0694ab6fa482dcbb3169898c035d831c7074abc6bf1650",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|A1JL26|NAPA_YERE8",
+      "name": "NAPA_YERE8",
+      "organism": "Yersinia enterocolitica serotype O:8 / biotype 1B (strain NCTC 13174 / 8081)",
+      "len": 831,
+      "sha256": "77864e5c00ae74282e954011897254b74c00ab61d901424383d824e0734dbe63",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P31499|HEMR_YEREN",
+      "name": "HEMR_YEREN",
+      "organism": "Yersinia enterocolitica",
+      "len": 687,
+      "sha256": "9313b0694af1a446670dd49ede82fb2bc33eb9511ad2cd38263b9d7007e8cf7b",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P0A4F8|OCCT_AGRTU",
+      "name": "OCCT_AGRTU",
+      "organism": "Agrobacterium tumefaciens",
+      "len": 276,
+      "sha256": "3ea6866fb3fb5236b1d8dec35eb3ef79e47acb8a9fb4a03493dc7f79e0fc1a42",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P54910|TRBE_AGRTU",
+      "name": "TRBE_AGRTU",
+      "organism": "Agrobacterium tumefaciens",
+      "len": 820,
+      "sha256": "35e863793fd3f42ac6c1214062bdd13f2707256377b8096cca085178a953da64",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P00782|SUBT_BACAM",
+      "name": "SUBT_BACAM",
+      "organism": "Bacillus amyloliquefaciens",
+      "len": 382,
+      "sha256": "92e1e61975526bcf28604ded5d205478f67550e94bdc5d56f39aae606bf14f9d",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P00692|AMY_BACAM",
+      "name": "AMY_BACAM",
+      "organism": "Bacillus amyloliquefaciens",
+      "len": 514,
+      "sha256": "c0c3d6fb8c8564bef5ba6b4a00e5cef311f34c68430f68c9def0345f7aa62f1e",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P16450|GERD_BACSU",
+      "name": "GERD_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "len": 185,
+      "sha256": "1fb752973772805e872e339cae465dece92005403406688abf1578f3c42071ca",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P24327|PRSA_BACSU",
+      "name": "PRSA_BACSU",
+      "organism": "Bacillus subtilis (strain 168)",
+      "len": 292,
+      "sha256": "ed467e0b64f412891a2d887b25600ab82179131018b569069bd94eab95262d12",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q46045|MBHS_CITFR",
+      "name": "MBHS_CITFR",
+      "organism": "Citrobacter freundii",
+      "len": 375,
+      "sha256": "d431c3712441d677a51d539368926fc3524ee783af07f6ba88ffa91bc62c6207",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q01605|PHOE_CITFR",
+      "name": "PHOE_CITFR",
+      "organism": "Citrobacter freundii",
+      "len": 351,
+      "sha256": "9920665b282fa0f84b7238c770b61bef389614b1ed70ce611261340d038b0564",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P02925|RBSB_ECOLI",
+      "name": "RBSB_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "len": 296,
+      "sha256": "8fcfb407403e3c0703fcee5260c8179556933b8c0865f593e5dd35a68994aa88",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P05825|FEPA_ECOLI",
+      "name": "FEPA_ECOLI",
+      "organism": "Escherichia coli (strain K12)",
+      "len": 746,
+      "sha256": "b7c8f6e7b493a36a4e74dc781091a627eba28ea9ba27dbb0d148f9d0fbd8c468",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|O65039|CYSEP_RICCO",
+      "name": "CYSEP_RICCO",
+      "organism": "Ricinus communis",
+      "len": 360,
+      "sha256": "bc2bc93eec66b5e0717ac9f9f91ec674157e0a8f7247f8528ab213e193c9aab3",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P01089|2SS_RICCO",
+      "name": "2SS_RICCO",
+      "organism": "Ricinus communis",
+      "len": 258,
+      "sha256": "2f9693b8374a93819962199d3c7c497ec00693277ec86d4a97630d8f40061768",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|Q32I06|NAPA_SHIDS",
+      "name": "NAPA_SHIDS",
+      "organism": "Shigella dysenteriae serotype 1 (strain Sd197)",
+      "len": 828,
+      "sha256": "ed66c3e29cc757e82e254125874f3a694333c8a72f5bed20a045c328ebcbe64e",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    },
+    {
+      "acc": "sp|P02935|OMPA_SHIDY",
+      "name": "OMPA_SHIDY",
+      "organism": "Shigella dysenteriae",
+      "len": 351,
+      "sha256": "98e1bdec3afd9cf8bc9970321d490923cc639d7f57d6d7f44e3f168cf2ba0ee5",
+      "truncated_1022": false,
+      "block": "secreted_pathogen",
+      "lab_strain": false,
+      "pathogen_derived_control": true
+    }
+  ],
+  "sequence_level_dedup": {
+    "positive_removed": [
+      "SPEB_STRP8 (identical to SPEB_STRPY)",
+      "BLAC_MYCTA (identical to BLAC_MYCTU)"
+    ],
+    "negative_removed": []
+  },
+  "pathogen_derived_negatives": {
+    "n": 50,
+    "added": "2026-09-03",
+    "why": "Original negatives came from only 2 lab strains while positives spanned 45 organisms, so organism and hazard labels were ~96% correlated and the baseline AUROC could not be attributed to hazard. These are benign cytoplasmic metabolic and DNA-repair proteins from the SAME pathogens that supply the positives, which breaks that correlation.",
+    "selection": "Function held fixed, organism varied. Reviewed UniProt entries only. Fragments excluded. Deliberately EXCLUDED: enolase and GAPDH (moonlighting adhesins in pathogens), GroEL and DnaK (same concern), proteases, pilins and cell-wall synthases, any of which can be virulence-associated.",
+    "organisms": {
+      "Staphylococcus aureus": 4,
+      "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)": 4,
+      "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)": 4,
+      "Shigella flexneri": 3,
+      "Bacillus anthracis": 4,
+      "Klebsiella pneumoniae": 2,
+      "Streptococcus pyogenes": 3,
+      "Listeria monocytogenes serovar 1/2a (strain ATCC BAA-679 / EGD-e)": 3,
+      "Vibrio cholerae serotype O1 (strain ATCC 39315 / El Tor Inaba N16961)": 3,
+      "Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1)": 5,
+      "Bacillus cereus (strain ATCC 14579 / DSM 31 / CCUG 7414 / JCM 2152 / NBRC 15305 / NCIMB 9373 / NCTC 2599 / NRRL B-3711)": 3,
+      "Clostridium botulinum (strain Hall / ATCC 3502 / NCTC 13319 / Type A)": 3
+    },
+    "second_batch_2026_09_03": {
+      "added": 0,
+      "orphan_species_targeted": 17,
+      "not_fetchable_by_method": [
+        "Reovirus (virus)",
+        "Ricinus communis (plant)",
+        "Abrus precatorius (plant)",
+        "Corynephage beta (phage, not host bacterium)"
+      ],
+      "fetched_first_pass": [
+        "Serratia marcescens"
+      ],
+      "fetched_retry_organism_name": [
+        "Yersinia enterocolitica",
+        "Chromobacterium violaceum",
+        "Aeromonas hydrophila",
+        "Enterobacter cloacae",
+        "Stenotrophomonas maltophilia",
+        "Clostridium tetani",
+        "Helicobacter pylori"
+      ],
+      "query_fix": "organism_id matches exactly and does NOT include strain descendants; most reviewed entries are tagged at strain-level taxid. Switching to organism_name free text recovered 7 of 11 failures. Same root cause as the earlier Pseudomonas aeruginosa 287 vs PAO1 208964 case.",
+      "rejected_taxonomic_drift": {
+        "Agrobacterium tumefaciens": "only reviewed hits are Agrobacterium fabrum (strain C58 reclassified). JK decision: leave orphan.",
+        "Bacillus amyloliquefaciens": "only reviewed hits are Bacillus velezensis (strain FZB42 reclassified). JK decision: leave orphan."
+      },
+      "no_hit_under_reviewed_only": [
+        "Yersinia entomophaga",
+        "Citrobacter freundii"
+      ],
+      "label_corrections": {
+        "sp|P0AES8|GYRB_SHIFL": "requested as Shigella dysenteriae (organism_id:623) but 623 is S. flexneri; entry is a genuine S. flexneri protein, relabelled. S. dysenteriae remains uncovered."
+      },
+      "retroactive_verification": "All 51 fetched entries were re-checked against the rule 'the requested species name must appear in the returned OS= field'. 50/51 passed. The first pass had no such filter; it was added only for the retry and is now applied retroactively."
+    }
+  },
+  "maintenance_notes": [
+    "2026-09-04: counts.negative_blocks was stale (still described the 50-negative panel) and is recomputed here from the entries themselves. Added lab-strain / pathogen-derived / unflagged tallies because the localization control now has to filter on lab_strain to stay organism-controlled.",
+    "2026-09-04: added 54 secreted benign proteins from pathogen organisms (block secreted_pathogen) so the exported half of the doubly controlled localization test is no longer empty. Species verification applied on the FIRST pass this time. Rejections: {'collides_with_positive_class': 33, 'blocked_protein_name': 2, 'species_mismatch': 9, 'duplicate_accession': 1}."
+  ]
+}
