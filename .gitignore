@@ -77,3 +77,6 @@ data/sequences/_*_fetch.json
 
 # Superseded: computed on the 91-negative panel, kept locally for provenance only.
 results/v2/*_smoke150M.json
+
+# Cached pairwise alignment matrix, regenerable from the FASTAs by 03i.
+results/v2/alignment_scores.npz

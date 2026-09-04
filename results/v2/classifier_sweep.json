@@ -1,0 +1,67 @@
+{
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "tag": null,
+  "seeds": 20,
+  "classes": {
+    "adp_ribosyl_ab_toxin": {
+      "logistic": 1.0,
+      "svm_rbf": 1.0,
+      "random_forest": 1.0,
+      "knn_5": 0.8666666666666668
+    },
+    "beta_lactamase": {
+      "logistic": 0.18928571428571425,
+      "svm_rbf": 0.23571428571428568,
+      "random_forest": 0.15714285714285717,
+      "knn_5": 0.24999999999999994
+    },
+    "clostridial_neurotoxin": {
+      "logistic": 1.0,
+      "svm_rbf": 1.0,
+      "random_forest": 1.0,
+      "knn_5": 1.0
+    },
+    "contact_dependent_inhibition": {
+      "logistic": 0.4833333333333334,
+      "svm_rbf": 0.6833333333333332,
+      "random_forest": 0.6666666666666665,
+      "knn_5": 0.6833333333333332
+    },
+    "pore_forming_cytolysin": {
+      "logistic": 0.6214285714285713,
+      "svm_rbf": 0.9071428571428571,
+      "random_forest": 0.6857142857142856,
+      "knn_5": 0.9285714285714286
+    },
+    "rip_rrna_glycosidase": {
+      "logistic": 0.9833333333333332,
+      "svm_rbf": 0.9833333333333332,
+      "random_forest": 1.0,
+      "knn_5": 1.0
+    },
+    "superantigen_enterotoxin": {
+      "logistic": 1.0,
+      "svm_rbf": 1.0,
+      "random_forest": 1.0,
+      "knn_5": 1.0
+    },
+    "t3ss_effector_apparatus": {
+      "logistic": 0.8000000000000002,
+      "svm_rbf": 0.8000000000000002,
+      "random_forest": 0.8000000000000002,
+      "knn_5": 0.7550000000000001
+    },
+    "virulence_associated_non_toxin": {
+      "logistic": 0.505,
+      "svm_rbf": 0.6099999999999999,
+      "random_forest": 0.5599999999999999,
+      "knn_5": 0.4750000000000001
+    }
+  },
+  "mean_by_head": {
+    "logistic": 0.7313756613756613,
+    "svm_rbf": 0.8021693121693121,
+    "random_forest": 0.7632804232804232,
+    "knn_5": 0.7731746031746032
+  }
+}
