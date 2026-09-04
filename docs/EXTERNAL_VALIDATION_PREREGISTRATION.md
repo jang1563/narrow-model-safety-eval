@@ -192,6 +192,38 @@ by accession. The curation is therefore third-party; only the sequence retrieval
 hazard-heavy (166 against 114) where the internal panel is negative-heavy (66 against 154), and its
 hazards include viral proteins where the internal panel is bacterial.
 
+## OUTCOME, attempt 2, 2026-09-04: NOT SUPPORTED
+
+Frozen gate passed at 22 / 84 / 100 immediately before the run. Panel: 66 positives, 114 negatives.
+
+| | predicted | internal | attempt 1 | **attempt 2** |
+|---|---|---|---|---|
+| low-margin holdout of 10 | ≤ 40% | 22% | 82% 🔴 | **100%** 🔴 |
+| class-matched random | ≥ 60% | 84% | 94% 🟢 | **100%** 🟢 |
+| gap | ≥ 25 pts | +62 | +13 🔴 | **+0** 🔴 |
+| high-margin holdout | not registered | 100% | 100% | 100% |
+| mean margin of the low group | | −0.015 | −0.012 | −0.023 |
+
+🔴 **NOT SUPPORTED, and the honest summary registered in Amendment 2 now reads: failed on a self-drawn
+panel, failed again on an externally curated one.** §6l's effect does not transfer. The low-margin group
+is at the same or lower absolute margin in both external panels than internally, so neither failure is
+explained by the external low groups being insufficiently extreme.
+
+### 🔴 A flaw in this preregistration, recorded rather than quietly fixed
+
+Attempt 2 returned **100% on every arm**. A panel where nothing can go down has no power to confirm or
+refute anything, and my falsification criteria did not cover that case: they specified a floor
+(class-matched below 60% is inconclusive) but no ceiling. So the registered verdict machinery calls this
+NOT SUPPORTED when the more accurate description is **uninformative**. Both are bad for the hypothesis,
+and I am not claiming the ceiling rescues it, but the criteria should have caught it and did not. Any
+future version of this document needs a power check on the panel before the panel is scored.
+
+The likely cause is visible in the panel: **the attempt 2 low-margin holdout is 10 phospholipases out of
+38 in the panel**, so 28 close relatives stay in training. Margin is defined against out-of-class
+positives, but the classifier trains on the within-class ones too, and on a panel where one class is 58%
+of the positives those two things come apart. That is a real weakness in the margin metric, exposed by a
+class-dominated panel, and it is exploratory reasoning generated after the fact.
+
 ## Secondary, non-preregistered
 
 Anything else computed on the external panel is exploratory and will be labelled that way. That includes

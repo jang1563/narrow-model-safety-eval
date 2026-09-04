@@ -1,0 +1,31 @@
+{
+  "internal_gate": {
+    "low": 0.22000000000000003,
+    "matched": 0.8365,
+    "high": 1.0,
+    "gap": 0.6165,
+    "low_class_counts": {
+      "beta_lactamase": 6,
+      "virulence_associated_non_toxin": 2,
+      "t3ss_effector_apparatus": 2
+    },
+    "margin_low_mean": -0.015369409695267677,
+    "margin_high_mean": 0.028738845139741898
+  },
+  "external": {
+    "low": 1.0,
+    "matched": 1.0,
+    "high": 1.0,
+    "gap": 0.0,
+    "low_class_counts": {
+      "phospholipase": 10
+    },
+    "margin_low_mean": -0.0231236033141613,
+    "margin_high_mean": 0.012671721167862415
+  },
+  "verdict": "NOT SUPPORTED",
+  "k": 10,
+  "seeds": 30,
+  "repeats": 15,
+  "model": "facebook/esm2_t33_650M_UR50D"
+}
