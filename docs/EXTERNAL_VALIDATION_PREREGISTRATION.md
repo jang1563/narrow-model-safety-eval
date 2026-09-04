@@ -111,6 +111,45 @@ be false precision.
 - If the result is negative, §6l's claim is downgraded from a property of the method to a property of
   the internal panel, and the log says so in §0.
 
+## OUTCOME, 2026-09-04: NOT SUPPORTED
+
+Run once, on the panel built by the query above, with the pipeline frozen at `f1a5860`. The scorer
+refused to touch the external panel until its copy of the margin reproduced the published internal
+numbers; that gate passed at 22 / 84 / 100.
+
+| | predicted | internal | **external** | |
+|---|---|---|---|---|
+| low-margin holdout of 10 | ≤ 40% | 22% | **82%** | 🔴 FAIL |
+| class-matched random | ≥ 60% | 84% | 94% | 🟢 PASS |
+| gap | ≥ 25 pts | +62 | **+13** | 🔴 FAIL |
+| high-margin holdout | not preregistered | 100% | 100% | |
+
+**The prediction failed.** Two of the three confirmatory criteria were missed.
+
+**The failure is not explained by the low-margin group being less extreme.** Its mean margin is
+**−0.012 externally against −0.015 internally**, essentially the same absolute position. At the same
+margin, the internal panel recovers at 22% and the external at 82%. **Margin is therefore not the
+governing variable it appeared to be.**
+
+**Consequence, applied as written above:** §6l is downgraded from a property of the method to a property
+of the internal panel, and memo 44 §0 says so.
+
+### Exploratory observations, not a rescue
+
+Labelled per the rules below, and none of them change the verdict:
+
+- The external panel is easier overall: class-matched random is 94% against 84%, so the usable range
+  above the low group is compressed.
+- Its class structure is very different: 27 of 51 positives are pore-forming, and it has 4
+  holdout-eligible classes against the internal panel's 9. Holding out 10 of 51 removes a fifth of the
+  positives from a much more homogeneous pool.
+- The external margin range is narrower at the top, +0.007 against +0.029, so "high margin" means
+  something weaker there, yet it still recovers at 100%.
+
+These are candidate explanations for **why** the effect did not transfer. They are hypotheses generated
+after seeing the result and carry no evidential weight until they are themselves tested on a panel that
+does not yet exist.
+
 ## Secondary, non-preregistered
 
 Anything else computed on the external panel is exploratory and will be labelled that way. That includes
