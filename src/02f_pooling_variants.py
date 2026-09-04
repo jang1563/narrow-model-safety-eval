@@ -99,8 +99,10 @@ def main():
 
     tok = AutoTokenizer.from_pretrained(a.model)
     model = AutoModel.from_pretrained(a.model).to(dev).eval()
-    print("--- positives ---", flush=True); Pp = embed(pos, model, tok, dev, a.batch_size)
-    print("--- negatives ---", flush=True); Nn = embed(neg, model, tok, dev, a.batch_size)
+    print("--- positives ---", flush=True)
+    Pp = embed(pos, model, tok, dev, a.batch_size)
+    print("--- negatives ---", flush=True)
+    Nn = embed(neg, model, tok, dev, a.batch_size)
 
     for pool in ("mean", "max", "cls"):
         tag = f"{a.tag_prefix}_{pool}"
