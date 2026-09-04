@@ -1,0 +1,216 @@
+{
+  "built": "2026-09-04 17:29:02",
+  "note": "classes assigned only from the UniProt protein name, per the preregistration; no model output was consulted",
+  "holdout_eligible_classes": [
+    "pore_forming_cytolysin",
+    "adp_ribosyl_ab_toxin",
+    "phospholipase",
+    "superantigen_enterotoxin"
+  ],
+  "proteins": [
+    {
+      "fasta_id": "sp|P09545|HLYA_VIBCH",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|P21454|SPVB_SALTM",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|Q0TV31|PHLC_CLOP1",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q1ID47|APRA_PSEE4",
+      "mechanism_class": "secreted_protease"
+    },
+    {
+      "fasta_id": "sp|P01556|CHTB_VIBCH",
+      "mechanism_class": "superantigen_enterotoxin"
+    },
+    {
+      "fasta_id": "sp|P0A0M0|ETXH_STAAU",
+      "mechanism_class": "superantigen_enterotoxin"
+    },
+    {
+      "fasta_id": "sp|P0C216|PHLC1_CLOPE",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|A1YKW7|RTXA_KINKI",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|P09167|AERA_AERHY",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|P75409|CARDS_MYCPN",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|A8GG78|TRE1_SERP5",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|P06200|PHLC_PSEAE",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P32890|ELBP_ECOLX",
+      "mechanism_class": "superantigen_enterotoxin"
+    },
+    {
+      "fasta_id": "sp|P24419|SPVB_SALDU",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|P09166|AERA_AEREN",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|P20419|PHLC_PARBF",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P28029|HLY3_VIBPH",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q54316|HLYB_BRAHO",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q838U8|EFV_ENTFA",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|P17450|SPVB_SALCH",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|P80172|HBLA_BACCE",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q06305|AER3_AERHY",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q46150|PHLC_CLONO",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q8VUZ6|PHLC_PARSO",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|P19249|HLY1_VIBPA",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q06303|AER4_AERHY",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q08676|AERA_AERSA",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|B0KTG9|TRE1_PSEPG",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|P14711|HLYT_GRIHO",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|P59026|PHLC_CLOHA",
+      "mechanism_class": "phospholipase"
+    },
+    {
+      "fasta_id": "sp|Q00951|HLYA_ACTSU",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q06304|AERA_AERSO",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q4MV79|CRAX_BACCE",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|Q99289|HLT_VIBPA",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|A3UNN4|VIS_VIBS1",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|D0ZHS9|SPVB_SALT1",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|P0DW66|TAE2_SALTI",
+      "mechanism_class": "t3ss_effector_apparatus"
+    },
+    {
+      "fasta_id": "sp|P55220|SPVB_SALEN",
+      "mechanism_class": "adp_ribosyl_ab_toxin"
+    },
+    {
+      "fasta_id": "sp|Q92GI2|HLYC_RICCN",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q99Q01|OSPD3_SHIFL",
+      "mechanism_class": "secreted_protease"
+    },
+    {
+      "fasta_id": "sp|P19247|VVHA_VIBVU",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|P28030|HLY_VIBMI",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q54318|HLYC_BRAHO",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|O05961|HLYC_RICPR",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|O06695|VLLY_VIBVU",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|P54176|HLY3_BACCE",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q06803|HLYA_BRAHO",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q68W10|HLYC_RICTY",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|P28031|HLY1_GRIHO",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q08677|HLY4_AERSA",
+      "mechanism_class": "pore_forming_cytolysin"
+    },
+    {
+      "fasta_id": "sp|Q4UK99|HLYC_RICFE",
+      "mechanism_class": "pore_forming_cytolysin"
+    }
+  ]
+}
