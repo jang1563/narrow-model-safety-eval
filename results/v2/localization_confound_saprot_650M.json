@@ -1,0 +1,104 @@
+{
+  "model": "westlake-repl/SaProt_650M_AF2",
+  "tag": "saprot_650M",
+  "n_positive": 66,
+  "n_negative": 154,
+  "exported_agreement_with_hazard": 0.6090909090909091,
+  "exported_crosstab": {
+    "pos_yes": 51,
+    "pos_no": 15,
+    "neg_yes": 71,
+    "neg_no": 83
+  },
+  "signal_peptide_agreement_with_hazard": 0.55,
+  "signal_peptide_crosstab": {
+    "pos_yes": 35,
+    "pos_no": 31,
+    "neg_yes": 68,
+    "neg_no": 86
+  },
+  "localization_axis_auroc": [
+    0.8829605263157895,
+    0.0315538216320554,
+    122,
+    98
+  ],
+  "signal_axis_auroc": [
+    0.9609497929606625,
+    0.024872930305398347,
+    103,
+    117
+  ],
+  "stratified_baseline": {
+    "exported": [
+      0.9179220779220778,
+      0.03056393557005999,
+      51,
+      71
+    ],
+    "not_exported": [
+      0.9713235294117647,
+      0.024773095624496616,
+      15,
+      83
+    ],
+    "signal_peptide": [
+      0.9353218210361067,
+      0.029809132688019924,
+      35,
+      68
+    ],
+    "no_signal_peptide": [
+      0.9509803921568627,
+      0.044712761768593665,
+      31,
+      86
+    ]
+  },
+  "doubly_controlled": {
+    "exported": [
+      0.893818181818182,
+      0.04752172187102208,
+      51,
+      49
+    ],
+    "not_exported": [
+      0.9575757575757576,
+      0.03090314856722902,
+      15,
+      55
+    ],
+    "signal_peptide": [
+      0.9293506493506494,
+      0.035742373842638106,
+      35,
+      54
+    ],
+    "no_signal_peptide": [
+      0.9933333333333334,
+      0.008164965809277232,
+      31,
+      50
+    ]
+  },
+  "sensitivity_known_localization_only": {
+    "baseline_exported": [
+      0.9179220779220778,
+      0.03056393557005999,
+      51,
+      71
+    ],
+    "baseline_not_exported": null,
+    "pathogen_matched_exported": [
+      0.893818181818182,
+      0.04752172187102208,
+      51,
+      49
+    ],
+    "pathogen_matched_not_exported": null
+  },
+  "n_unknown_localization": {
+    "positive": 11,
+    "negative": 32
+  }
+}

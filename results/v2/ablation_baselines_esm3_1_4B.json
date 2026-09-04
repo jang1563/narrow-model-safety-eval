@@ -1,0 +1,27 @@
+{
+  "model": "esm3_sm_open_v1",
+  "tag": "esm3_1_4B",
+  "results": {
+    "ESM embedding": {
+      "d": 1536,
+      "auroc": 0.9287486706841547,
+      "sd": 0.04312078771092078
+    },
+    "composition (AA freq)": {
+      "d": 20,
+      "auroc": 0.7249249675056127,
+      "sd": 0.05815423006311412
+    },
+    "length only": {
+      "d": 1,
+      "auroc": 0.531243648824294,
+      "sd": 0.07883667134640687
+    },
+    "composition + length": {
+      "d": 21,
+      "auroc": 0.7322887864823349,
+      "sd": 0.059264188482560674
+    }
+  },
+  "shuffled_labels_auroc_mean": 0.4844910788136595
+}

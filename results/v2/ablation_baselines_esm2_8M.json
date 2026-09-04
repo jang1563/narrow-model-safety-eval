@@ -1,0 +1,27 @@
+{
+  "model": "facebook/esm2_t6_8M_UR50D",
+  "tag": "esm2_8M",
+  "results": {
+    "ESM embedding": {
+      "d": 320,
+      "auroc": 0.9395604395604396,
+      "sd": 0.017729882113016245
+    },
+    "composition (AA freq)": {
+      "d": 20,
+      "auroc": 0.7249249675056127,
+      "sd": 0.05815423006311412
+    },
+    "length only": {
+      "d": 1,
+      "auroc": 0.531243648824294,
+      "sd": 0.07883667134640687
+    },
+    "composition + length": {
+      "d": 21,
+      "auroc": 0.7322887864823349,
+      "sd": 0.059264188482560674
+    }
+  },
+  "shuffled_labels_auroc_mean": 0.48233486943164366
+}

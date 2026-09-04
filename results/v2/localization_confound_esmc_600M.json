@@ -1,0 +1,104 @@
+{
+  "model": "esmc_600m",
+  "tag": "esmc_600M",
+  "n_positive": 66,
+  "n_negative": 154,
+  "exported_agreement_with_hazard": 0.6090909090909091,
+  "exported_crosstab": {
+    "pos_yes": 51,
+    "pos_no": 15,
+    "neg_yes": 71,
+    "neg_no": 83
+  },
+  "signal_peptide_agreement_with_hazard": 0.55,
+  "signal_peptide_crosstab": {
+    "pos_yes": 35,
+    "pos_no": 31,
+    "neg_yes": 68,
+    "neg_no": 86
+  },
+  "localization_axis_auroc": [
+    0.9201666666666665,
+    0.03468461040776148,
+    122,
+    98
+  ],
+  "signal_axis_auroc": [
+    0.9630771221532092,
+    0.015312907966577126,
+    103,
+    117
+  ],
+  "stratified_baseline": {
+    "exported": [
+      0.9448398268398268,
+      0.0282517389572537,
+      51,
+      71
+    ],
+    "not_exported": [
+      0.9794117647058824,
+      0.01864034641356032,
+      15,
+      83
+    ],
+    "signal_peptide": [
+      0.9400313971742543,
+      0.036228040087879956,
+      35,
+      68
+    ],
+    "no_signal_peptide": [
+      0.9593837535014005,
+      0.04516671007450167,
+      31,
+      86
+    ]
+  },
+  "doubly_controlled": {
+    "exported": [
+      0.9258989898989899,
+      0.0449354239694424,
+      51,
+      49
+    ],
+    "not_exported": [
+      0.9636363636363636,
+      0.029690784761008233,
+      15,
+      55
+    ],
+    "signal_peptide": [
+      0.9135064935064936,
+      0.06231384826515765,
+      35,
+      54
+    ],
+    "no_signal_peptide": [
+      0.9933333333333334,
+      0.013333333333333286,
+      31,
+      50
+    ]
+  },
+  "sensitivity_known_localization_only": {
+    "baseline_exported": [
+      0.9448398268398268,
+      0.0282517389572537,
+      51,
+      71
+    ],
+    "baseline_not_exported": null,
+    "pathogen_matched_exported": [
+      0.9258989898989899,
+      0.0449354239694424,
+      51,
+      49
+    ],
+    "pathogen_matched_not_exported": null
+  },
+  "n_unknown_localization": {
+    "positive": 11,
+    "negative": 32
+  }
+}

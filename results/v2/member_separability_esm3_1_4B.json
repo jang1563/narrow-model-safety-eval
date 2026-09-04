@@ -1,0 +1,56 @@
+{
+  "model": "esm3_sm_open_v1",
+  "tag": "esm3_1_4B",
+  "n_rows": 50,
+  "n_caught": 26,
+  "pooled": {
+    "margin": {
+      "auroc": 1.0,
+      "perm_p": 0.0
+    },
+    "nn_pos": {
+      "auroc": 1.0,
+      "perm_p": 0.0
+    },
+    "kmer_pos": {
+      "auroc": 0.3717948717948718,
+      "perm_p": 0.115
+    },
+    "nn_neg": {
+      "auroc": 0.4791666666666667,
+      "perm_p": 0.82
+    },
+    "length": {
+      "auroc": 0.5641025641025641,
+      "perm_p": 0.465
+    },
+    "exported": {
+      "auroc": 0.48878205128205127,
+      "perm_p": 1.0
+    },
+    "signal_peptide": {
+      "auroc": 0.3766025641025641,
+      "perm_p": 0.09
+    }
+  },
+  "within": {
+    "t3ss_effector_apparatus": {
+      "margin": 1.0,
+      "nn_pos": 1.0,
+      "kmer_pos": 0.9285714285714286,
+      "nn_neg": 0.8571428571428571,
+      "length": 0.2857142857142857,
+      "exported": 1.0,
+      "signal_peptide": 0.5
+    },
+    "virulence_associated_non_toxin": {
+      "margin": 1.0,
+      "nn_pos": 1.0,
+      "kmer_pos": 0.25,
+      "nn_neg": 0.375,
+      "length": 0.125,
+      "exported": 0.5625,
+      "signal_peptide": 0.8125
+    }
+  }
+}

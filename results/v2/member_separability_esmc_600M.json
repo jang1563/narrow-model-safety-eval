@@ -1,0 +1,65 @@
+{
+  "model": "esmc_600m",
+  "tag": "esmc_600M",
+  "n_rows": 47,
+  "n_caught": 34,
+  "pooled": {
+    "margin": {
+      "auroc": 0.9796380090497737,
+      "perm_p": 0.0
+    },
+    "nn_pos": {
+      "auroc": 0.9106334841628959,
+      "perm_p": 0.0
+    },
+    "kmer_pos": {
+      "auroc": 0.4343891402714932,
+      "perm_p": 0.445
+    },
+    "nn_neg": {
+      "auroc": 0.2171945701357466,
+      "perm_p": 0.005
+    },
+    "length": {
+      "auroc": 0.4841628959276018,
+      "perm_p": 0.83
+    },
+    "exported": {
+      "auroc": 0.5656108597285068,
+      "perm_p": 0.465
+    },
+    "signal_peptide": {
+      "auroc": 0.4423076923076923,
+      "perm_p": 0.5
+    }
+  },
+  "within": {
+    "beta_lactamase": {
+      "margin": 1.0,
+      "nn_pos": 1.0,
+      "kmer_pos": 0.42857142857142855,
+      "nn_neg": 0.32142857142857145,
+      "length": 0.07142857142857142,
+      "exported": 0.44642857142857145,
+      "signal_peptide": 0.5
+    },
+    "t3ss_effector_apparatus": {
+      "margin": 1.0,
+      "nn_pos": 0.875,
+      "kmer_pos": 0.9375,
+      "nn_neg": 0.125,
+      "length": 0.375,
+      "exported": 1.0,
+      "signal_peptide": 0.5
+    },
+    "virulence_associated_non_toxin": {
+      "margin": 0.8,
+      "nn_pos": 0.6,
+      "kmer_pos": 0.3,
+      "nn_neg": 0.25,
+      "length": 0.25,
+      "exported": 0.625,
+      "signal_peptide": 0.675
+    }
+  }
+}

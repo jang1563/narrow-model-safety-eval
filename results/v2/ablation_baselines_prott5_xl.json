@@ -1,0 +1,27 @@
+{
+  "model": "Rostlab/prot_t5_xl_half_uniref50-enc",
+  "tag": "prott5_xl",
+  "results": {
+    "ESM embedding": {
+      "d": 1024,
+      "auroc": 0.9351400212690535,
+      "sd": 0.045229191732343584
+    },
+    "composition (AA freq)": {
+      "d": 20,
+      "auroc": 0.7249249675056127,
+      "sd": 0.05815423006311412
+    },
+    "length only": {
+      "d": 1,
+      "auroc": 0.531243648824294,
+      "sd": 0.07883667134640687
+    },
+    "composition + length": {
+      "d": 21,
+      "auroc": 0.7322887864823349,
+      "sd": 0.059264188482560674
+    }
+  },
+  "shuffled_labels_auroc_mean": 0.4938388278388278
+}

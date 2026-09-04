@@ -1,0 +1,27 @@
+{
+  "model": "westlake-repl/SaProt_650M_AF2",
+  "tag": "saprot_650M",
+  "results": {
+    "ESM embedding": {
+      "d": 1280,
+      "auroc": 0.9170790499822757,
+      "sd": 0.05556660440691274
+    },
+    "composition (AA freq)": {
+      "d": 20,
+      "auroc": 0.7249249675056127,
+      "sd": 0.05815423006311412
+    },
+    "length only": {
+      "d": 1,
+      "auroc": 0.531243648824294,
+      "sd": 0.07883667134640687
+    },
+    "composition + length": {
+      "d": 21,
+      "auroc": 0.7322887864823349,
+      "sd": 0.059264188482560674
+    }
+  },
+  "shuffled_labels_auroc_mean": 0.48070944109653785
+}

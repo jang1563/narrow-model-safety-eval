@@ -1,0 +1,65 @@
+{
+  "model": "esmc_300m",
+  "tag": "esmc_300M",
+  "n_rows": 46,
+  "n_caught": 28,
+  "pooled": {
+    "margin": {
+      "auroc": 0.9742063492063492,
+      "perm_p": 0.0
+    },
+    "nn_pos": {
+      "auroc": 0.9484126984126984,
+      "perm_p": 0.0
+    },
+    "kmer_pos": {
+      "auroc": 0.3412698412698413,
+      "perm_p": 0.085
+    },
+    "nn_neg": {
+      "auroc": 0.36507936507936506,
+      "perm_p": 0.155
+    },
+    "length": {
+      "auroc": 0.5932539682539683,
+      "perm_p": 0.28
+    },
+    "exported": {
+      "auroc": 0.5674603174603174,
+      "perm_p": 0.47
+    },
+    "signal_peptide": {
+      "auroc": 0.45436507936507936,
+      "perm_p": 0.765
+    }
+  },
+  "within": {
+    "contact_dependent_inhibition": {
+      "margin": 1.0,
+      "nn_pos": 1.0,
+      "kmer_pos": 1.0,
+      "nn_neg": 0.0,
+      "length": 0.0,
+      "exported": 0.0,
+      "signal_peptide": 0.5
+    },
+    "t3ss_effector_apparatus": {
+      "margin": 0.9523809523809523,
+      "nn_pos": 0.9047619047619048,
+      "kmer_pos": 0.7142857142857143,
+      "nn_neg": 0.47619047619047616,
+      "length": 0.2857142857142857,
+      "exported": 0.8333333333333334,
+      "signal_peptide": 0.5
+    },
+    "virulence_associated_non_toxin": {
+      "margin": 0.9333333333333333,
+      "nn_pos": 0.6,
+      "kmer_pos": 0.3333333333333333,
+      "nn_neg": 0.0,
+      "length": 0.3333333333333333,
+      "exported": 0.7,
+      "signal_peptide": 0.7333333333333333
+    }
+  }
+}
