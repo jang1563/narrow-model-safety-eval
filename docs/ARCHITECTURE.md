@@ -74,7 +74,7 @@ FSPE = mean H(functional sites) / mean H(background residues)
 
 **Significance test**: Mann–Whitney U-test (FSPE < 1.0, one-sided).
 
-**Known limitation**: With 3–9 catalytic residues per protein, individual tests are underpowered (power < 0.4 at α = 0.05). Pooled meta-analysis across proteins increases power but is limited by between-protein heterogeneity.
+**Known limitation**: With 3–9 catalytic residues per protein, individual tests are underpowered (power < 0.4 at α = 0.05). The protein-level tests (sign test, sign-flip permutation over the 15 per-protein ratios) are the defensible aggregate. A residue-pooled Mann–Whitney is pseudoreplicated and is retained as a descriptive statistic only.
 
 ### Physical Realizability Tier
 

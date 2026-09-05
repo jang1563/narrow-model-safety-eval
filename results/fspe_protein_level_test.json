@@ -1,0 +1,16 @@
+{
+  "unit_of_analysis": "protein",
+  "n_proteins": 15,
+  "n_ratio_below_1": 12,
+  "sign_test_one_sided_p": 0.017578125,
+  "mean_log_ratio": -1.5996122179714722,
+  "permutation_p": 0.00105,
+  "n_permutations": 20000,
+  "residue_pooled_for_comparison": {
+    "p_value": 2.6030656889255418e-08,
+    "n_functional": 74,
+    "n_nonfunctional": 300,
+    "caveat": "treats residues within a protein as independent; pseudoreplicated, retain only as a descriptive statistic"
+  },
+  "reading": "the direction holds at the protein level; the residue-pooled p-value overstates significance by about five orders of magnitude"
+}

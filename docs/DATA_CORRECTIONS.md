@@ -233,3 +233,55 @@ from the headline table is now shown. The displayed FSPE panel (8 proteins)
 and the curated `summary_risk_table.csv` preview are now consistent. The FSI
 panel remains 7 scored structures (SEB excluded as a superantigen), so FSPE
 (8) and FSI (7) panel sizes legitimately differ.
+
+## 2026-09-04 — The headline FSPE p-value was pseudoreplicated
+
+### Summary
+
+Every public surface led with a "pooled meta-analysis" of the FSPE result,
+`p = 2.6 × 10⁻⁸` over 74 functional against 300 background residues. That test
+runs a Mann–Whitney across residues pooled from all proteins, treating each
+residue as an independent observation. **Residues within one protein are not
+independent** — they share a sequence, a fold, and a single model forward pass —
+so the test is pseudoreplicated and its p-value is inflated. It is also not a
+meta-analysis, which would combine per-protein effect sizes rather than raw
+residues.
+
+**The direction of the finding is unchanged. The confidence attached to it was
+overstated by roughly five orders of magnitude.**
+
+### How it was found
+
+A claim-by-claim audit of how this work is cited externally traced the figure to
+its source and asked what the independent unit of analysis is. It is the protein,
+n = 15, not the residue, n = 374.
+
+### Corrections
+
+Re-run at the protein level in `src/21_fspe_protein_level_test.py`
+(`results/fspe_protein_level_test.json`):
+
+| Test | Result |
+|---|---|
+| Proteins with FSPE ratio < 1.0 | **12 of 15** |
+| Exact one-sided sign test | **p = 0.018** |
+| Sign-flip permutation on the mean log ratio, 20,000 draws | **p = 0.0010** |
+| Residue-pooled Mann–Whitney, for contrast | p = 2.6 × 10⁻⁸ (pseudoreplicated) |
+
+### Fix
+
+- `README.md`, `huggingface/README.md`, `docs/EVALUATION_REPORT.md` and
+  `docs/ARCHITECTURE.md` now lead with the protein-level tests.
+- The residue-pooled figure is retained everywhere it appeared, but explicitly
+  labelled as descriptive and as treating residues within a protein as
+  independent.
+- `docs/EVALUATION_REPORT.md` limitations section carries a dated note naming the
+  error rather than silently replacing the number.
+
+### Impact
+
+No measurement was recomputed and no conclusion reversed: ESM-2 is still more
+confident at annotated functional sites than at background positions. What
+changes is the strength of the claim, from `10⁻⁸` to roughly `10⁻³`. Any prior
+citation of the `2.6 × 10⁻⁸` figure as the headline result should be read as
+overstated.

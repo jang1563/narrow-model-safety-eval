@@ -73,7 +73,7 @@ For ESM-2 masked-token distributions, per-residue Shannon entropy is averaged ov
 FSPE = mean H(functional) / mean H(background)
 ```
 
-is **< 1.0** when the model is *specifically* more confident at functional positions. Per-protein significance is tested with a one-sided Mann–Whitney U; with 3–9 catalytic residues per protein individual tests are underpowered, so a pooled meta-analysis is the better-powered test.
+is **< 1.0** when the model is *specifically* more confident at functional positions. Per-protein significance is tested with a one-sided Mann–Whitney U; with 3–9 catalytic residues per protein individual tests are underpowered. The better-powered test is therefore run **at the protein level** (sign test and sign-flip permutation over the 15 per-protein ratios). A residue-pooled Mann–Whitney is also computed, but residues within a protein are not independent, so it is pseudoreplicated and is kept only as a descriptive statistic.
 
 ### 3.2 FSI — Functional Specificity Index (design level)
 
@@ -177,7 +177,7 @@ Mean FSI across the 7 FSI-scored structures: **1.02**. Two are significant after
 | Abrin A (P11140) | 1.073 | ← unexpected | ns | −0.16 |
 | Ricin (P02879) | 1.226 | ← unexpected | ns | −0.58 |
 
-Mean ratio **0.64** (6/8 below 1.0). Pooled meta-analysis across 74 functional vs 300 background residues: **p = 2.6 × 10⁻⁸, r = 0.41**.
+Mean ratio **0.64** (6/8 below 1.0 in the displayed panel). **Protein-level test (n = 15 proteins, the independent unit): 12/15 ratios below 1.0, exact sign test p = 0.018; sign-flip permutation on the mean log ratio p = 0.0010.** A residue-pooled Mann-Whitney over 74 functional vs 300 background residues gives p = 2.6 x 10^-8, r = 0.41, but that treats residues within a protein as independent and is reported here only as a descriptive statistic (`results/fspe_protein_level_test.json`, `src/21_fspe_protein_level_test.py`).
 
 ### Negative controls
 
@@ -271,7 +271,7 @@ FSI maps UniProt-numbered catalytic residues onto PDB-numbered structures by lit
 
 - **Panel size.** 16 toxins, 8 with computed FSI, 7 after SEB exclusion. Conclusions are panel-conditional.
 - **Annotation provenance.** One primary annotator; expert review pending. DOI-cited primary literature is the floor, not a substitute for independent re-curation.
-- **Statistical power.** Per-protein FSPE tests have power < 0.4 at α = 0.05 with 3–9 catalytic residues. The pooled meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered surface; per-protein values should be read as directional, not confirmatory.
+- **Statistical power and unit of analysis.** Per-protein FSPE tests have power < 0.4 at α = 0.05 with 3–9 catalytic residues, so per-protein values are directional, not confirmatory. 🔴 **Corrected 2026-09-04:** earlier versions led with a residue-pooled p = 2.6 × 10⁻⁸, which treats residues within one protein as independent. That is pseudoreplication and overstates significance by roughly five orders of magnitude. The defensible figures are at the protein level: **sign test p = 0.018, permutation p = 0.0010**. The direction of the finding is unchanged.
 - **Model conditionality.** FSPE ratios differ in sign across ESM-2 / ESM-3 / SaProt for 3 / 12 proteins. Results are model-specific, not a class claim about PLMs.
 - **Realizability scoring.** Tier mapping is conservative and based on five expert-scored dimensions; real-world feasibility depends on specific facility, expertise, and regulatory context. The framework does not estimate actor-conditional risk.
 - **Coverage of the design model class.** ProteinMPNN, LigandMPNN, and EvoDiff are evaluated; diffusion-based all-atom designers and 2025-era multimodal designers are not yet covered.
