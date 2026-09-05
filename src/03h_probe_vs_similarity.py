@@ -17,8 +17,8 @@ rule out. They are listed in order of how much damage they would do.
    project should be read as a nearest-neighbour result.
 
 2. Is poor recovery just "we deleted more training data"?
-   Holding out beta-lactamase removes 14 of 66 positives, 21% of the training
-   positives; holding out a 3-member class removes 4.5%. Class size and recovery
+   Holding out beta-lactamase removes 14 of 80 positives, 17.5% of the training
+   positives; holding out a 4-member class removes 5%. Class size and recovery
    are therefore confounded by construction. This repeats the experiment with the
    training positives subsampled to a FIXED count for every class, so each class
    is trained against the same amount of data.

@@ -460,9 +460,12 @@ it pins that ESM-C 600M exceeds the alignment baseline, that ESM-2 650M does not
 the **only** arm above alignment. A future arm that changes any of those three facts fails CI instead of
 being summarized around.
 
-The same entry checks a reproducibility property that came free with the re-run: the untagged 650M arm and
-the `esm2_650M_mean` pooling arm are the same configuration embedded by two different scripts, and they
-agree to **0.0 points on all nine classes**.
+The same entry checks a robustness property that came free with the re-run. The untagged 650M arm and the
+`esm2_650M_mean` pooling arm are the same model and pooling embedded by two different scripts at different
+batch sizes (8 and 4). The arrays are **not** byte-identical — they differ numerically — yet per-class
+recovery agrees to **0.0 points on all nine classes** at five seeds, and the 30-seed classifier sweep
+agrees to within **0.2 points** on every head. That is the stronger statement: the conclusions are stable
+under a numerical perturbation of the embeddings, not merely reproducible bit-for-bit.
 
 ### Also corrected: a mislabelled model pair
 
@@ -471,3 +474,50 @@ implying ESM-2 8M against 3B. It is the ordering between **8M and 650M**; 8M aga
 old panel. On the 80-protein panel the two are **−0.13** and **−0.17** respectively, so the claim that
 scaling redistributes negative-set fragility rather than removing it is unaffected — only the model pair
 was named wrongly.
+
+---
+
+## 2026-09-05 (third entry) — A permutation test drew 200 shuffles while advertising 20,000
+
+### Summary
+
+`perm_p()` in `src/03g_member_separability.py` had the signature `perm_p(x, y, a, n=20000, seed=0)` and
+drew `range(n // 100)` — **200 permutations, not 20,000**. Every p-value in
+`results/v2/member_separability*.json` therefore had a resolution floor of 0.005 while carrying a parameter
+that said 0.00005. The two significant features both reported `perm_p = 0.0`, which meant "0 of 200".
+
+### How it was found
+
+While writing the feature table into `docs/MECHANISM_GENERALIZATION.md` the reported `0.0` was about to be
+rendered as "p < 0.001". Checking what number of draws actually backed it showed 200, which supports
+"p < 0.005" and nothing stronger.
+
+### Fix
+
+The loop now runs the full `n`, and the p-value is `(hits + 1) / (n + 1)` so that a null never exceeded in
+a finite sample is not reported as exactly zero. Re-run across all 13 model arms.
+
+| feature | AUROC | p at 200 draws | p at 20,000 draws |
+|---|---|---|---|
+| margin | 0.960 | 0.0000 | **0.00005** |
+| nearest training positive (cosine) | 0.949 | 0.0000 | **0.00005** |
+| 5-mer similarity | 0.373 | 0.135 | 0.104 |
+| nearest training negative | 0.420 | 0.325 | 0.317 |
+| signal peptide | 0.425 | 0.330 | 0.288 |
+| exported | 0.455 | 0.530 | 0.565 |
+| length | 0.516 | 0.915 | 0.844 |
+
+**No conclusion changes.** The two significant features remain significant and are now at the floor of a
+20,000-draw test, and the five null features stay null. What changes is that the reported precision is now
+the precision that was actually computed.
+
+### Also corrected
+
+- `src/03h_probe_vs_similarity.py` carried a docstring stating that holding out beta-lactamase removes
+  "14 of 66 positives, 21%". On the expanded panel it is 14 of 80, 17.5%.
+- `docs/MECHANISM_GENERALIZATION.md` §4 reported that six of nine classes are perfectly binary, measured at
+  five seeds. At thirty seeds the count is still six but **not the same six**: virulence leaves the set and
+  contact-dependent inhibition enters it, and four of nine classes change their always/intermediate/never
+  breakdown. Only five classes are binary under both. The document now reports the seed dependence and
+  states the robust version of the claim: recovery is concentrated at the extremes, with 8 genuinely
+  intermediate members out of 72 at thirty seeds.

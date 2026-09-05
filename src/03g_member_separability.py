@@ -73,12 +73,21 @@ def auroc(x, y):
 
 
 def perm_p(x, y, a, n=20000, seed=0):
+    """Two-sided permutation p-value for a single-feature AUROC.
+
+    The draw count used to be `n // 100`, so a signature advertising 20,000
+    permutations delivered 200 and every p-value here had a floor of 0.005 while
+    being read as though it had a floor of 0.00005. The reported p is now over the
+    full n, and the (n + 1) denominator keeps a p-value of exactly zero from being
+    reported for a null that was merely never exceeded in a finite sample.
+    """
     if np.isnan(a):
         return float("nan")
     rng = np.random.default_rng(seed)
     y = np.asarray(y)
-    null = np.array([auroc(x, rng.permutation(y)) for _ in range(n // 100)])
-    return float((np.abs(null - 0.5) >= abs(a - 0.5) - 1e-12).mean())
+    null = np.array([auroc(x, rng.permutation(y)) for _ in range(n)])
+    hits = int((np.abs(null - 0.5) >= abs(a - 0.5) - 1e-12).sum())
+    return float((hits + 1) / (n + 1))
 
 
 def main():

@@ -287,6 +287,46 @@ def _duplicate_arm_max_diff():
     return max(abs(a[c]["flagged_95_mean"] - b[c]["flagged_95_mean"]) for c in a if c in b)
 
 
+
+def member_separability_features():
+    """What predicts whether a held-out member is caught. Pinned because this
+    artifact carried a defect: perm_p drew n // 100 shuffles, so a test advertising
+    20,000 permutations ran 200 and its p-values had a floor of 0.005. The floor is
+    now 1 / (n + 1), so a p of exactly that value means the null was never exceeded.
+    The claim rests on the contrast -- embedding proximity separates, surface
+    sequence similarity does not -- so both halves are pinned."""
+    d = j("v2/member_separability.json")
+    pool = d["pooled"]
+    return {"rows": d["n_rows"], "caught": d["n_caught"],
+            "margin_auroc": round(pool["margin"]["auroc"], 3),
+            "margin_p": round(pool["margin"]["perm_p"], 6),
+            "nn_pos_auroc": round(pool["nn_pos"]["auroc"], 3),
+            "kmer_auroc": round(pool["kmer_pos"]["auroc"], 3),
+            "kmer_p": round(pool["kmer_pos"]["perm_p"], 3),
+            "length_auroc": round(pool["length"]["auroc"], 3)}
+
+
+def classifier_heads():
+    """Every recovery figure in the documents uses logistic regression, which is the
+    weakest of four heads. That is a limitation the documents state, so it is pinned:
+    if a future change makes logistic the best head, the statement must be revised."""
+    d = j("v2/classifier_sweep.json")["mean_by_head"]
+    small = j("v2/classifier_sweep_esm2_8M.json")["mean_by_head"]
+    import glob
+    worst = best = arms = 0
+    for f in glob.glob(str(R / "v2/classifier_sweep*.json")):
+        m = json.load(open(f))["mean_by_head"]
+        arms += 1
+        if m["logistic"] == min(m.values()):
+            worst += 1
+        if m["logistic"] == max(m.values()):
+            best += 1
+    return {"logistic": round(d["logistic"], 4), "best": max(d, key=d.get),
+            "gap_650M_pts": round((max(d.values()) - d["logistic"]) * 100, 1),
+            "gap_8M_pts": round((max(small.values()) - small["logistic"]) * 100, 1),
+            "arms": arms, "logistic_worst_on": worst, "logistic_best_on": best}
+
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -354,6 +394,18 @@ CLAIMS = [
                 and v["arms_above_alignment"] == ["esmc_600M"]),
      {"docs/MECHANISM_GENERALIZATION.md": "ESM-C 600M recovers **51%**"},
      ["resists every configuration tested and that plain alignment beats every embedding method on it.\n**Both statements are correct**"]),
+    ("member separability: embedding proximity separates, sequence similarity does not",
+     member_separability_features,
+     lambda v: (v["rows"] == 64 and v["caught"] == 44
+                and v["margin_auroc"] > 0.9 and abs(v["margin_p"] - 1 / 20001) < 1e-6
+                and v["nn_pos_auroc"] > 0.9
+                and v["kmer_auroc"] < 0.5 and v["kmer_p"] > 0.05
+                and 0.45 < v["length_auroc"] < 0.55),
+     {"docs/MECHANISM_GENERALIZATION.md": "20,000 label shuffles"}, []),
+    ("headline figures use the weakest of four classifier heads", classifier_heads,
+     lambda v: (v["arms"] == 13 and v["logistic_worst_on"] == 6 and v["logistic_best_on"] == 2
+                and v["gap_650M_pts"] >= 4 and v["gap_8M_pts"] >= 10),
+     {"docs/MECHANISM_GENERALIZATION.md": "on **11 of 13 arms some other head does"}, []),
     ("every annotation file covers every panel member", annotation_coverage,
      lambda v: not v["gaps"], {}, []),
     ("v2 class eligibility is curated, not a size rule", v2_class_eligibility,

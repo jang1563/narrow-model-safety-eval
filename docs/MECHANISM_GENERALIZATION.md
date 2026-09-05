@@ -56,6 +56,24 @@ The provenance row is the important one. **A probe that ignores the hazard label
 (AUROC 0.974 ± 0.014) therefore cannot be attributed to hazard alone, and no number in this document
 should be read as one.
 
+### 2.2 The confounds, stratified and doubly controlled
+
+`src/03d_localization_confound.py`. The three controls in the table above are marginal. The stronger test
+asks whether hazard separation survives **inside** a localization stratum, with organism held constant as
+well. It does:
+
+| stratum | positives / negatives | stratified AUROC | doubly controlled |
+|---|---|---|---|
+| exported | 57 / 71 | 0.944 ± 0.035 | 0.937 ± 0.021 |
+| not exported | 23 / 83 | 0.968 ± 0.058 | 0.967 ± 0.040 |
+| signal peptide | 44 / 68 | 0.969 ± 0.032 | 0.956 ± 0.032 |
+| no signal peptide | 36 / 86 | 0.986 ± 0.022 | 0.991 ± 0.011 |
+
+Being exported agrees with the hazard label on only 60% of the panel and having a signal peptide on 56%,
+yet each axis is separately separable (localization alone AUROC 0.914, signal peptide alone 0.967). **The
+hazard signal is not reducible to either axis**: separation holds in all four strata, including the two
+where the confounding feature is absent.
+
 ### 2.1 Effective n, not n
 
 Raw class size overstates independence. Clustering each class by single linkage at normalized
@@ -106,6 +124,24 @@ negatives.
 fully recovered without ever being trained on. Beta-lactamase — the largest class, effective n = 10, a
 family defined by a conserved fold and active site — is almost entirely missed.
 
+### 3.1 The representation is doing the work
+
+`src/03c_ablation_baselines.py`. Before reading anything into the class differences, the embedding has to
+beat trivial sequence features:
+
+| feature | dim | AUROC |
+|---|---|---|
+| ESM-2 650M embedding | 1280 | **0.974 ± 0.014** |
+| amino-acid composition | 20 | 0.754 ± 0.083 |
+| composition + length | 21 | 0.753 ± 0.087 |
+| length only | 1 | 0.453 ± 0.048 |
+| **shuffled labels** | 1280 | **0.506** |
+
+The shuffled-label row is the null: with the hazard labels permuted the same pipeline returns chance, so
+the AUROC is not an artifact of the cross-validation. Composition alone is a strong baseline at 0.754 —
+worth stating rather than hiding — and the embedding adds about 22 points over it. Composition + length
+sits at 0.753 for every arm, since it does not depend on the model.
+
 ## 4. Recovery is binary per protein, not graded
 
 Averaging hides the structure. Counting, per member, the fraction of seeds in which it is flagged:
@@ -127,6 +163,29 @@ Averaging hides the structure. Counting, per member, the fraction of seeds in wh
 never does. A screen tuned to a coverage target is not trading off uniformly — it is choosing how many
 proteins fall on the wrong side of a hard split.
 
+### 4.1 🔴 How binary a class looks depends on how many seeds you run
+
+The table above is five seeds. `src/03f_coverage_strictness.py` runs the same measurement at the same
+threshold with **thirty**, and four of nine classes change:
+
+| class | 5 seeds | 30 seeds |
+|---|---|---|
+| beta_lactamase | 0 / 5 / 9 | 0 / 4 / 10 |
+| contact_dependent_inhibition | 1 / **2** / 1 | 1 / **0** / 3 |
+| pore_forming_cytolysin | 4 / 2 / 1 | 3 / 3 / 1 |
+| virulence_associated_non_toxin | 5 / **0** / 5 | 5 / **1** / 4 |
+
+The count of perfectly binary classes is six either way, **but it is not the same six**: virulence leaves
+the set and contact-dependent inhibition enters it. Only **five classes are binary under both** —
+adp_ribosyl, clostridial, RIP, superantigen, and T3SS.
+
+**So "perfectly binary" is a property of the measurement as much as of the class.** A member flagged on
+5 of 5 seeds is indistinguishable from one flagged on 28 of 30 until you run the extra seeds. The claim
+that survives is the weaker and more useful one: **recovery is concentrated at the extremes, and the
+number of genuinely intermediate members is small — at thirty seeds, 8 members out of 72 across all nine
+classes.** The five-seed table above is kept because §5 is measured on the same basis; it should not be
+read as saying those six classes are binary in general.
+
 ## 5. Recovery is not a property of the class
 
 The 2026-09-05 expansion added members to five classes and left four untouched. **Two of the untouched
@@ -144,10 +203,14 @@ visible per member: adding positives shifts the fitted probe, which shifts the c
 (pore-forming t95 0.707 → 0.666; beta-lactamase 0.436 → 0.470), and **only members already near that
 threshold can cross it**. Anthrax protective antigen went 0.779 → 0.864 and from 2 of 5 seeds to 5 of 5.
 
-**§4 predicts exactly which classes can move, and the prediction is 4 for 4.** Of the four classes whose
-membership did not change, the two with in-between members (beta-lactamase 5, pore-forming 2) both moved;
-the two that are perfectly binary (T3SS, virulence) moved by exactly zero — not approximately zero, zero.
-A class with nothing near the threshold has nothing to give.
+**§4 predicts which classes can move, and it is right on all four.** Of the four classes whose membership
+did not change, the two with the most in-between members moved (beta-lactamase 5 at five seeds and 4 at
+thirty, pore-forming 2 and 3) and the two with the fewest did not (T3SS 0 and 0, virulence 0 and 1). Both
+moved by exactly zero — not approximately zero, zero. A class with nothing near the threshold has nothing
+to give.
+
+Stated on intermediate-member **count** rather than on the binary/not-binary split, because §4.1 shows that
+split is seed-dependent: virulence has one intermediate member at thirty seeds and still does not move.
 
 > **A per-class recovery number is a joint property of the class, the rest of the positive set, and the
 > operating point.** Reporting one without fixing the other two produces a figure that will not reproduce.
@@ -279,11 +342,106 @@ recovers half of it, and the jump is within a lineage rather than across scale �
 ESM-C 600M gets 51%. Why that architecture and that size succeed where a 3B ESM-2 does not is not
 explained by anything measured here.
 
+### 9.1 🔴 Every recovery number here uses the worst of four classifier heads
+
+`src/03j_classifier_sweep.py`, 30 seeds. The probe throughout this document is **logistic regression**. It
+is the *worst* of four heads on 6 of 13 arms and the best on 2, and on **11 of 13 arms some other head does
+better** — by a median of 5.0 points:
+
+| arm | logistic | SVM-RBF | random forest | k-NN (5) |
+|---|---|---|---|---|
+| ESM-2 650M | **72.5%** | 77.5% | 72.1% | 77.0% |
+| ESM-2 8M | **54.8%** | 68.9% | 63.7% | 62.3% |
+| ESM-2 3B | 74.8% | 78.6% | 74.8% | **82.7%** |
+| ESM-C 600M | 80.6% | 82.2% | 80.8% | **84.1%** |
+| ESM-3 1.4B | 70.7% | 74.7% | 75.8% | **76.1%** |
+| ProtT5-XL | 72.1% | **74.0%** | 72.6% | 71.2% |
+| SaProt-650M | 71.4% | 74.9% | **77.2%** | 73.4% |
+
+The gap is 5.0 points at 650M — where logistic is second-worst, random forest is worst — and **14.1 points
+at 8M**, where logistic is worst outright. The two arms where logistic wins are ESM-2 35M and CLS pooling,
+both by 0.0 points, i.e. ties. Every recovery figure in this document is therefore close to a lower bound on
+what the representation supports, and should be read that way.
+
+**But the head does not change the conclusions**, and the reason is §4. Per class at 650M, the head only
+moves the classes that have intermediate members:
+
+| class | logistic | best head | delta |
+|---|---|---|---|
+| pore_forming_cytolysin | 68.6% | 92.9% (k-NN) | **+24.3** |
+| contact_dependent_inhibition | 37.5% | 50.8% (k-NN) | +13.3 |
+| virulence_associated_non_toxin | 51.3% | 60.7% (SVM) | +9.3 |
+| beta_lactamase | 15.7% | **21.0%** (k-NN) | +5.2 |
+| clostridial / RIP / superantigen / T3SS | 100 / 100 / 100 / 80% | identical | **+0.0** |
+
+The four saturated classes and T3SS are unmoved to the decimal. **This is the same structure as §4 and §5,
+arriving from a third direction: the head, the panel, and the negative set all move only the members near
+the threshold.** And beta-lactamase reaches 21% with the best of four heads, so the head is not what
+rescues it either — §9 shows what does.
+
+### 9.2 Strictness: where each class stops being recoverable
+
+`src/03f_coverage_strictness.py` sweeps the false-positive budget and reports **s90**, the strictest
+specificity at which a class still reaches 90% recovery. The sweep stops at the **estimable ceiling**
+(0.987 with 77 held-out negatives) rather than extrapolating past what the panel can measure.
+
+| class | s90 |
+|---|---|
+| adp_ribosyl, clostridial, RIP, superantigen | **0.985** (at the ceiling) |
+| pore_forming_cytolysin | 0.885 |
+| contact_dependent_inhibition | 0.670 |
+| t3ss_effector_apparatus | 0.665 |
+| *virulence_associated_non_toxin* | *0.560* |
+| **beta_lactamase** | **never** — does not reach 90% at any specificity |
+
 ## 10. The one claim that looked like a competence boundary, and failed
 
-`src/03k_margin_holdout.py` found that recovery was governed by embedding-space margin to an already-seen
-toxin, an effect of 36 to 62 points consistent across five models. That is the shape of a **competence
-boundary**: a statement, computable in advance, of which molecules the system will miss.
+### 10.1 What predicts whether a member is caught
+
+`src/03g_member_separability.py` asks which measurable property separates the members that are caught from
+those that are not. It uses only members whose behaviour is unambiguous — the **8 intermediate members from
+§4.1 are excluded by construction**, leaving 64 of 72, split 44 caught against 20 not. Two-sided
+permutation p-values over 20,000 label shuffles:
+
+| feature | AUROC | perm p |
+|---|---|---|
+| **margin** (embedding distance to the nearest training positive, minus to the nearest negative) | **0.960** | **0.00005** |
+| **nearest training positive, cosine** | **0.949** | **0.00005** |
+| 5-mer similarity to training positives | 0.373 | 0.104 |
+| nearest training negative, cosine | 0.420 | 0.317 |
+| has a signal peptide | 0.425 | 0.288 |
+| is exported | 0.455 | 0.565 |
+| sequence length | 0.516 | 0.844 |
+
+The two significant rows are at the resolution floor: 0 of 20,000 shuffles reached the observed AUROC, and
+0.00005 is `1 / (20000 + 1)`. An earlier version of `perm_p` drew `n // 100` permutations, so a function
+advertising 20,000 delivered 200 and its p-values had a floor of 0.005 while being read as far smaller;
+see [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
+
+**Embedding-space proximity predicts it at AUROC 0.96; sequence similarity does not** — the 5-mer feature
+is at 0.373, which is worse than chance in the same direction, and localization and length are null. So
+whatever decides recovery is a property of the representation, not of surface sequence identity, and not
+of the confounds in §2.
+
+A pooled effect can be class identity in disguise, so the same test is run **within** class. Margin holds
+at AUROC 1.000 within pore-forming and within T3SS, and weakens to 0.667 within contact-dependent and
+0.600 within virulence — the two classes with the least internal structure.
+
+### 10.2 The claim, and its failure
+
+`src/03k_margin_holdout.py` turns that into a holdout: rank positives by margin, hold out the lowest, and
+compare against random holdouts of the same size.
+
+| holdout | recovery@95 |
+|---|---|
+| lowest margin | **14.7% ± 10.2** |
+| random, class-matched | 80.0% ± 14.6 |
+| random | 91.4% ± 10.0 |
+| highest margin | 100.0% ± 0.0 |
+
+That is **−65.4 points** against a class-matched random holdout and −76.7 against an unmatched one, on
+this panel, consistent across five models. That is the shape of a **competence boundary**: a statement,
+computable in advance, of which molecules the system will miss.
 
 It was preregistered with falsification criteria, the pipeline was frozen at a tagged commit before any
 external data was fetched, and it was tested on two external panels. **It failed both times**, and was
