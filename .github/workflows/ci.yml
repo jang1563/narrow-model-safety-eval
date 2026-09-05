@@ -104,3 +104,15 @@ jobs:
             echo "Stale BoNT-A accession found in Hugging Face card."
             exit 1
           fi
+
+      # Four separate number-drift defects were found by hand in this project, each
+      # because someone happened to look: a figure repeated through three rewrites
+      # without recomputation, an artifact silently overwritten leaving a quoted
+      # number with no source, numbers cited as the basis for a decision that were
+      # never saved, and a pseudoreplicated p-value propagated to four public
+      # surfaces. This step recomputes every headline claim from its artifact and
+      # checks the public documents still agree, so the next one fails CI instead.
+      - name: Audit headline claims against their artifacts
+        run: |
+          pip install numpy
+          python src/22_claims_audit.py
