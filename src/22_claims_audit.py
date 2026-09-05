@@ -85,21 +85,28 @@ def flip_count():
 
 
 # ---- the registry --------------------------------------------------------------
-# (label, recompute -> dict, assertion on that dict, strings every public doc that
-#  mentions the topic must contain, strings no public doc may contain any more)
+# (label, recompute -> dict, assertion on that dict, {document: string it must
+#  contain}, strings no public document may contain any more)
+#
+# `must` names the document explicitly. An earlier version only required the string
+# to appear in SOME public document, which meant one document could drift while the
+# others still carried the phrase and the audit would pass. Verified by breaking
+# README.md on purpose: the audit returned success. It now names each surface.
 
 CLAIMS = [
     ("FSPE protein-level sign test", fspe_protein_level,
      lambda v: abs(v["sign_p"] - 0.018) < 0.002 and v["below_1"] == 12 and v["n"] == 15,
-     ["sign test p = 0.018"], []),
+     {"README.md": "sign test p = 0.018",
+      "huggingface/README.md": "sign test p = 0.018",
+      "docs/EVALUATION_REPORT.md": "sign test p = 0.018"}, []),
     ("FSPE pseudoreplicated figure is labelled, not led with", fspe_protein_level,
-     lambda v: True, [], ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
+     lambda v: True, {}, ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
     ("Embedding separability AUROC", separability,
-     lambda v: v is None or abs(v["auroc"] - 0.981) < 0.002, [], []),
+     lambda v: v is None or abs(v["auroc"] - 0.981) < 0.002, {}, []),
     ("FSI aggregate CI spans 1.0", fsi_aggregate,
-     lambda v: v["ci_low"] < 1.0 < v["ci_high"], [], []),
+     lambda v: v["ci_low"] < 1.0 < v["ci_high"], {}, []),
     ("Cross-model FSPE flips", flip_count,
-     lambda v: v["flips"] == 3 and v["n_rows"] == 12, [], []),
+     lambda v: v["flips"] == 3 and v["n_rows"] == 12, {}, []),
 ]
 
 
@@ -120,11 +127,13 @@ def main():
         print(f"  {'OK' if good else 'XX'} {label:<48} {detail}")
         if not good:
             failures.append(label)
-        for s in must:
-            hit = [d for d, t in docs.items() if s in t]
-            if not hit:
-                print(f"     XX no public document contains: {s!r}")
-                failures.append(f"{label}: missing {s}")
+        for doc, s in must.items():
+            if doc not in docs:
+                print(f"     XX document not found: {doc}")
+                failures.append(f"{label}: absent {doc}")
+            elif s not in docs[doc]:
+                print(f"     XX {doc} does not contain: {s!r}")
+                failures.append(f"{label}: missing in {doc}")
         for s in forbid:
             hit = [d for d, t in docs.items() if s in t]
             if hit:
