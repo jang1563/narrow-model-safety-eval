@@ -327,6 +327,25 @@ def classifier_heads():
             "arms": arms, "logistic_worst_on": worst, "logistic_best_on": best}
 
 
+
+def margin_effect_across_arms():
+    """The internal margin effect, over every arm rather than the five it was first
+    described on. The phrase "consistent across five models" was carried from an
+    earlier panel; on 13 arms it holds for 11, and the two exceptions are both
+    non-mean poolings of the same model, so the effect belongs to mean-pooled
+    representations rather than to representations in general."""
+    import glob
+    gaps = {}
+    for f in glob.glob(str(R / "v2/margin_holdout*.json")):
+        name = Path(f).stem.replace("margin_holdout", "").lstrip("_") or "esm2_650M"
+        gaps[name] = abs(json.load(open(f))["low_minus_class_matched_random"])
+    over = sorted(k for k, v in gaps.items() if v > 0.25)
+    under = sorted(k for k, v in gaps.items() if v <= 0.25)
+    return {"arms": len(gaps), "over_25pts": len(over), "under_25pts": under,
+            "min_pts": round(min(gaps.values()) * 100, 1),
+            "max_pts": round(max(gaps.values()) * 100, 1)}
+
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -406,6 +425,10 @@ CLAIMS = [
      lambda v: (v["arms"] == 13 and v["logistic_worst_on"] == 6 and v["logistic_best_on"] == 2
                 and v["gap_650M_pts"] >= 4 and v["gap_8M_pts"] >= 10),
      {"docs/MECHANISM_GENERALIZATION.md": "on **11 of 13 arms some other head does"}, []),
+    ("internal margin effect holds on mean-pooled arms, not on CLS or max", margin_effect_across_arms,
+     lambda v: (v["arms"] == 13 and v["over_25pts"] == 11
+                and v["under_25pts"] == ["esm2_650M_cls", "esm2_650M_max"]),
+     {"docs/MECHANISM_GENERALIZATION.md": "**11 of 13 exceed the 25-point threshold**"}, []),
     ("every annotation file covers every panel member", annotation_coverage,
      lambda v: not v["gaps"], {}, []),
     ("v2 class eligibility is curated, not a size rule", v2_class_eligibility,

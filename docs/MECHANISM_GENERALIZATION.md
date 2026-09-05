@@ -439,9 +439,14 @@ compare against random holdouts of the same size.
 | random | 91.4% ± 10.0 |
 | highest margin | 100.0% ± 0.0 |
 
-That is **−65.4 points** against a class-matched random holdout and −76.7 against an unmatched one, on
-this panel, consistent across five models. That is the shape of a **competence boundary**: a statement,
-computable in advance, of which molecules the system will miss.
+That is **−65.4 points** against a class-matched random holdout and −76.7 against an unmatched one. Across
+all 13 arms the gap runs 8.1 to 69.6 points, median 45.1, and **11 of 13 exceed the 25-point threshold** the
+preregistration later used. The two that do not are both non-mean poolings of the same model — CLS at
++17.4 and max at +8.1 — so the effect is a property of mean-pooled representations rather than of every
+representation.
+
+That is the shape of a **competence boundary**: a statement, computable in advance, of which molecules the
+system will miss.
 
 It was preregistered with falsification criteria, the pipeline was frozen at a tagged commit before any
 external data was fetched, and it was tested on two external panels. **It failed both times**, and was
