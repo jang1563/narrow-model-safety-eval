@@ -229,3 +229,18 @@ class-dominated panel, and it is exploratory reasoning generated after the fact.
 Anything else computed on the external panel is exploratory and will be labelled that way. That includes
 per-class recovery, the alignment baseline, and any other model. Only the three numbers in the
 prediction above are confirmatory.
+
+## Note, 2026-09-05: the internal panel has changed since these outcomes were recorded
+
+This document is a frozen record and is **not** being revised. It is left exactly as written so the
+preregistered prediction, the falsification criteria, and both NOT SUPPORTED outcomes stand as they were
+at the time of the runs.
+
+One fact a later reader needs: where the text above describes the internal panel as "66 against 154", that
+was true when attempts 1 and 2 were run. On 2026-09-05 the internal panel was expanded to **80 positives
+against the same 154 negatives**, adding 14 non-homologous members to the classes that had only three or
+four. See `docs/DATA_CORRECTIONS.md`.
+
+This does not touch the recorded outcomes. Both external tests were run and reported against the frozen
+pipeline at the tagged commit, and the panel change came afterwards. It does mean the internal comparison
+figures quoted here should not be re-derived from a current run and expected to match.

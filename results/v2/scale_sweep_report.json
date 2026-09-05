@@ -4,24 +4,14 @@
     "35M",
     "150M",
     "650M",
-    "3B",
-    "C300M",
-    "C600M",
-    "ESM3",
-    "ProtT5",
-    "SaProt"
+    "3B"
   ],
   "n_negative_per_run": {
     "8M": 154,
     "35M": 154,
     "150M": 154,
     "650M": 154,
-    "3B": 154,
-    "C300M": 154,
-    "C600M": 154,
-    "ESM3": 154,
-    "ProtT5": 154,
-    "SaProt": 154
+    "3B": 154
   },
   "flagged95_by_scale": {
     "adp_ribosyl_ab_toxin": [
@@ -29,31 +19,16 @@
       1.0,
       0.7333333333333332,
       1.0,
-      1.0,
-      0.8666666666666666,
-      1.0,
-      1.0,
-      1.0,
-      0.8666666666666666
+      1.0
     ],
     "beta_lactamase": [
       0.014285714285714285,
       0.12857142857142856,
       0.08571428571428572,
       0.21428571428571427,
-      0.15714285714285714,
-      0.17142857142857143,
-      0.48571428571428577,
-      0.0,
-      0.02857142857142857,
-      0.12857142857142856
+      0.15714285714285714
     ],
     "clostridial_neurotoxin": [
-      1.0,
-      1.0,
-      1.0,
-      1.0,
-      1.0,
       1.0,
       1.0,
       1.0,
@@ -65,44 +40,24 @@
       0.5333333333333334,
       0.39999999999999997,
       0.4666666666666666,
-      0.5999999999999999,
-      0.4666666666666666,
-      0.4,
-      0.6666666666666667,
-      0.5333333333333333,
-      0.6666666666666666
+      0.5999999999999999
     ],
     "pore_forming_cytolysin": [
       0.5714285714285714,
       0.6857142857142857,
       0.8,
       0.5714285714285714,
-      0.7428571428571429,
-      0.9142857142857143,
-      0.8571428571428571,
-      0.9142857142857143,
-      0.8571428571428571,
-      0.6857142857142857
+      0.7428571428571429
     ],
     "rip_rrna_glycosidase": [
       0.39999999999999997,
       0.8666666666666666,
       1.0,
       1.0,
-      0.8666666666666666,
-      0.9333333333333332,
-      1.0,
-      1.0,
-      0.8666666666666666,
-      1.0
+      0.8666666666666666
     ],
     "superantigen_enterotoxin": [
       0.85,
-      1.0,
-      1.0,
-      1.0,
-      1.0,
-      1.0,
       1.0,
       1.0,
       1.0,
@@ -113,50 +68,39 @@
       0.6799999999999999,
       0.52,
       0.8,
-      0.8,
-      0.7,
-      0.78,
-      0.7200000000000001,
-      0.8,
-      0.7
+      0.8
     ],
     "virulence_associated_non_toxin": [
       0.26,
       0.42000000000000004,
       0.38,
       0.5,
-      0.4,
-      0.45999999999999996,
-      0.5800000000000001,
-      0.18,
-      0.26000000000000006,
-      0.3
+      0.4
     ]
   },
   "scale_sensitivity": {
     "adp_ribosyl_ab_toxin": 0.26666666666666683,
-    "beta_lactamase": 0.48571428571428577,
+    "beta_lactamase": 0.19999999999999998,
     "clostridial_neurotoxin": 0.0,
-    "contact_dependent_inhibition": 0.2666666666666668,
-    "pore_forming_cytolysin": 0.34285714285714286,
+    "contact_dependent_inhibition": 0.1999999999999999,
+    "pore_forming_cytolysin": 0.22857142857142865,
     "rip_rrna_glycosidase": 0.6000000000000001,
     "superantigen_enterotoxin": 0.15000000000000002,
     "t3ss_effector_apparatus": 0.38,
-    "virulence_associated_non_toxin": 0.4000000000000001
+    "virulence_associated_non_toxin": 0.24
   },
   "scale_monotonicity": {
     "adp_ribosyl_ab_toxin": {
       "range": 0.26666666666666683,
-      "pooled_seed_sd": 0.04599319657044238,
+      "pooled_seed_sd": 0.026666666666666672,
       "real_dip_at": [
-        "150M",
-        "C300M"
+        "150M"
       ],
-      "drops_at_largest": true
+      "drops_at_largest": false
     },
     "beta_lactamase": {
-      "range": 0.48571428571428577,
-      "pooled_seed_sd": 0.09477927623658963,
+      "range": 0.19999999999999998,
+      "pooled_seed_sd": 0.0981379770270213,
       "real_dip_at": [],
       "drops_at_largest": false
     },
@@ -167,40 +111,38 @@
       "drops_at_largest": false
     },
     "contact_dependent_inhibition": {
-      "range": 0.2666666666666668,
-      "pooled_seed_sd": 0.20220901381244688,
+      "range": 0.1999999999999999,
+      "pooled_seed_sd": 0.21063945294843617,
       "real_dip_at": [],
       "drops_at_largest": false
     },
     "pore_forming_cytolysin": {
-      "range": 0.34285714285714286,
-      "pooled_seed_sd": 0.16853524663338212,
+      "range": 0.22857142857142865,
+      "pooled_seed_sd": 0.19058812975151876,
       "real_dip_at": [],
       "drops_at_largest": false
     },
     "rip_rrna_glycosidase": {
       "range": 0.6000000000000001,
-      "pooled_seed_sd": 0.07565646152233023,
+      "pooled_seed_sd": 0.09198639314088476,
       "real_dip_at": [],
       "drops_at_largest": false
     },
     "superantigen_enterotoxin": {
       "range": 0.15000000000000002,
-      "pooled_seed_sd": 0.01224744871391589,
+      "pooled_seed_sd": 0.02449489742783178,
       "real_dip_at": [],
       "drops_at_largest": false
     },
     "t3ss_effector_apparatus": {
       "range": 0.38,
-      "pooled_seed_sd": 0.07788844233261837,
-      "real_dip_at": [
-        "150M"
-      ],
+      "pooled_seed_sd": 0.11447866338388968,
+      "real_dip_at": [],
       "drops_at_largest": false
     },
     "virulence_associated_non_toxin": {
-      "range": 0.4000000000000001,
-      "pooled_seed_sd": 0.06762175812547985,
+      "range": 0.24,
+      "pooled_seed_sd": 0.06943373903768658,
       "real_dip_at": [],
       "drops_at_largest": false
     }
@@ -260,87 +202,39 @@
       "superantigen_enterotoxin": 0.0,
       "t3ss_effector_apparatus": 0.023333333333333327,
       "virulence_associated_non_toxin": 0.22333333333333336
-    },
-    "C300M": {
-      "adp_ribosyl_ab_toxin": 0.08888888888888889,
-      "beta_lactamase": 0.44285714285714295,
-      "clostridial_neurotoxin": 0.0,
-      "contact_dependent_inhibition": 0.23333333333333334,
-      "pore_forming_cytolysin": 0.09047619047619047,
-      "rip_rrna_glycosidase": 0.08888888888888889,
-      "superantigen_enterotoxin": 0.008333333333333333,
-      "t3ss_effector_apparatus": 0.17333333333333342,
-      "virulence_associated_non_toxin": 0.26999999999999996
-    },
-    "C600M": {
-      "adp_ribosyl_ab_toxin": 0.0,
-      "beta_lactamase": 0.2952380952380952,
-      "clostridial_neurotoxin": 0.0,
-      "contact_dependent_inhibition": 0.0666666666666667,
-      "pore_forming_cytolysin": 0.14761904761904765,
-      "rip_rrna_glycosidase": 0.03333333333333333,
-      "superantigen_enterotoxin": 0.0,
-      "t3ss_effector_apparatus": 0.08666666666666667,
-      "virulence_associated_non_toxin": 0.12333333333333336
-    },
-    "ESM3": {
-      "adp_ribosyl_ab_toxin": 0.0,
-      "beta_lactamase": 0.033333333333333326,
-      "clostridial_neurotoxin": 0.0,
-      "contact_dependent_inhibition": 0.05555555555555555,
-      "pore_forming_cytolysin": 0.10476190476190475,
-      "rip_rrna_glycosidase": 0.0,
-      "superantigen_enterotoxin": 0.0,
-      "t3ss_effector_apparatus": 0.026666666666666696,
-      "virulence_associated_non_toxin": 0.029999999999999995
     }
   },
   "orthogonality_per_model": {
     "8M": {
-      "spearman_rho": 0.35,
-      "permutation_p": 0.35325
+      "spearman_rho": 0.5833333333333334,
+      "permutation_p": 0.1061
     },
     "35M": {
-      "spearman_rho": 0.3096261412396175,
-      "permutation_p": 0.42045
+      "spearman_rho": 0.30125786715206027,
+      "permutation_p": 0.4274
     },
     "150M": {
-      "spearman_rho": 0.15,
-      "permutation_p": 0.7057
+      "spearman_rho": 0.18333333333333332,
+      "permutation_p": 0.6463
     },
     "650M": {
-      "spearman_rho": 0.4937281711658766,
-      "permutation_p": 0.17765
+      "spearman_rho": 0.15899720766358738,
+      "permutation_p": 0.68545
     },
     "3B": {
-      "spearman_rho": 0.7289182663923712,
-      "permutation_p": 0.0326
-    },
-    "C300M": {
-      "spearman_rho": 0.5941474602165634,
-      "permutation_p": 0.0963
-    },
-    "C600M": {
-      "spearman_rho": 0.6272087408492496,
-      "permutation_p": 0.08205
-    },
-    "ESM3": {
-      "spearman_rho": 0.2088931871468374,
-      "permutation_p": 0.5882
+      "spearman_rho": 0.23732222626728364,
+      "permutation_p": 0.54385
     }
   },
   "orthogonality": {
-    "mean_spearman_rho": 0.4328152458763145,
-    "min_permutation_p": 0.0326,
+    "mean_spearman_rho": 0.29284879354991955,
+    "min_permutation_p": 0.1061,
     "models_tested": [
       "8M",
       "35M",
       "150M",
       "650M",
-      "3B",
-      "C300M",
-      "C600M",
-      "ESM3"
+      "3B"
     ]
   }
 }

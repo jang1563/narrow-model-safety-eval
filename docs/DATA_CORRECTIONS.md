@@ -346,3 +346,78 @@ errors it exists to catch:
 
 Both are fixed, and every entry now has a negative control: breaking the
 corresponding document, or reintroducing a retired string, makes the audit exit 1.
+
+---
+
+## 2026-09-05 — Class expansion clobbered a curated eligibility list, and a stale results file
+
+### Summary
+
+The v2 leave-one-mechanism-out panel was expanded from **66 to 80 positives** (154 negatives
+unchanged) to raise the classes that had only three or four members. 14 proteins were added,
+none removed, none reclassified, each screened at normalized Smith-Waterman ≤ 0.30 against
+existing class members and against already-accepted candidates. Two defects were introduced
+by the integration step and are corrected here.
+
+### Defect 1: a curated list overwritten with a size rule
+
+`data/annotations/mechanism_classes_v2.json` carries `holdout_eligible_classes`, a **curated**
+list of which mechanism classes are treated as holdout targets. `src/23_expand_small_classes.py`
+recomputed it as `n >= 3`. Two consequences, neither of which was intended by the expansion:
+
+- **`other_toxin_mechanism`** — a grab-bag of unrelated mechanisms kept deliberately out of the
+  holdout set — was promoted into the results table as though it were a mechanism class.
+- **`virulence_associated_non_toxin`** flipped from `holdout_eligible: false` to `true`.
+  `src/03b_leave_one_mechanism_out.py` runs this class on purpose, as
+  `targets = eligible | {virulence_associated_non_toxin}`, and reports it with the flag set
+  false precisely to mark it a **non-mechanism control**. The recompute destroyed the flag whose
+  only job was to say "this row is not a mechanism."
+
+No class actually crossed a curation boundary in the expansion, so the correct list is identical
+to the one before it. `holdout_eligible_classes` is restored to its 8 curated entries, per-member
+flags are re-derived from it, and `src/23` now **asserts** that eligibility is unchanged rather
+than deriving it from membership counts. Eligibility is a curation decision and must be edited
+deliberately.
+
+### Defect 2: a stale results file that looked current
+
+The appended annotation entries initially omitted `short_name` and `fasta_index`. Every
+downstream script tolerated this except `03b`, which raised `KeyError: 'short_name'`. The result
+was a stale `lomo_results.json` describing the 66-protein panel sitting beside freshly
+regenerated companions, with nothing in the repository indicating the two had come apart. This
+is the same failure mode as the four drift defects that motivated `src/22_claims_audit.py`.
+
+### Fix
+
+`src/22_claims_audit.py` gained two entries, taking it from 10 claims to 12:
+
+- **`v2 panel and LOMO results describe the same panel`** — compares the annotation, the panel
+  manifest and the results file, checking per-class membership **name by name** rather than by
+  count, so a same-size substitution cannot pass.
+- **`v2 class eligibility is curated, not a size rule`** — pins that no member's
+  `holdout_eligible` flag disagrees with the class list, that the virulence control is present in
+  the results and flagged as **not** eligible, and that the `other_toxin_mechanism` grab-bag is
+  not eligible despite having n ≥ 3.
+
+Verified against three negative controls: restoring the stale 66-protein results file, re-applying
+the `n >= 3` recompute, and flipping a single member's flag each cause the audit to exit 1. CI runs
+this audit, so the v2 panel is no longer outside the audited surface.
+
+### Effect on results
+
+Recovery numbers for the expanded classes are reported in the research log. Two classes whose own
+membership did **not** change nonetheless moved — pore-forming cytolysin +11.4 points at the 95th
+percentile threshold, beta-lactamase −2.9 at the 99th — because adding positives shifts the fitted
+probe and therefore the calibrated threshold. Only members already near that threshold can cross
+it; t3ss and virulence, whose members are all saturated or floored, did not move at all. **A
+per-class recovery figure is a joint property of the class, the rest of the positive set, and the
+operating point, and should not be quoted without them.**
+
+### Also corrected
+
+Within-class redundancy was reported during integration as "superantigen 0.813, clostridial 0.494"
+under an unrecorded normalization. Recomputed with the definition stated (local Smith-Waterman,
+BLOSUM62, gap −11/−1, normalized by the smaller self-score), the maxima are **0.974** and
+**0.911**. The claim those figures supported — that the expansion added no redundancy — holds: no
+class's maximum within-class similarity rose except `adp_ribosyl_ab_toxin`, 0.027 → 0.250, still
+inside the screen.

@@ -13,7 +13,7 @@
   "counts": {
     "positive_raw": 71,
     "positive_dedup": 69,
-    "positive_final": 66,
+    "positive_final": 80,
     "negative_raw": 62,
     "negative_dedup": 51,
     "negative_final": 154,
@@ -24,7 +24,8 @@
     },
     "negative_lab_strain": 49,
     "negative_pathogen_derived": 104,
-    "negative_unflagged_provenance": 1
+    "negative_unflagged_provenance": 1,
+    "positive_expansion_2026_09_05": 14
   },
   "positives": [
     {
@@ -620,6 +621,132 @@
       "len": 453,
       "truncated_1022": false,
       "sha256": "4d81ed866c77ca48"
+    },
+    {
+      "acc": "sp|Q5EK40|CHXA_VIBCL",
+      "name": "CHXA_VIBCL",
+      "organism": "Vibrio cholerae",
+      "len": 666,
+      "sha256": "c8a010ac613d788c48e24b475380a7d397ae79633e02e798d382e6fa6402a2bd",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|P11439|TOXA_PSEAE",
+      "name": "TOXA_PSEAE",
+      "organism": "Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1)",
+      "len": 638,
+      "sha256": "9c10ac2f259c8e3fe59444147edc94aab42579b8e9713c009915b86e4dc9f8ac",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|P75409|CARDS_MYCPN",
+      "name": "CARDS_MYCPN",
+      "organism": "Mycoplasmoides pneumoniae (strain ATCC 29342 / M129 / Subtype 1)",
+      "len": 591,
+      "sha256": "b6f1dac928de9c35034e7b5eb9eb4fb7992860965b3bcc7c14ae2125c2efe563",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|P04977|TOX1_BORPE",
+      "name": "TOX1_BORPE",
+      "organism": "Bordetella pertussis (strain Tohama I / ATCC BAA-589 / NCTC 13251)",
+      "len": 269,
+      "sha256": "826d22dce41a83131e5ca990eb02517f3b274d393bf358dcfdfca6019bb7fa5a",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|H9T8G6|CDIA9_BURPE",
+      "name": "CDIA9_BURPE",
+      "organism": "Burkholderia pseudomallei",
+      "len": 1307,
+      "sha256": "4be3012f10a01d5cb3f5efd009432bbaac60cb4158048d96cb80689b6045b0e0",
+      "truncated_1022": true,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|Q6EH50|RIP4_PHYHE",
+      "name": "RIP4_PHYHE",
+      "organism": "Phytolacca heterotepala",
+      "len": 312,
+      "sha256": "e5b54d6e4ae901459f048d73c80aa0e3e2d7606d3807c4992a06a0f8e3430291",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|P33186|RIPG_SURMU",
+      "name": "RIPG_SURMU",
+      "organism": "Suregada multiflora",
+      "len": 316,
+      "sha256": "372d8de800bdd9d68513ef76b449b338f25bd7ead9614c305b7978f4fc239e81",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|Q9M653|RIPT_POLML",
+      "name": "RIPT_POLML",
+      "organism": "Polygonatum multiflorum",
+      "len": 603,
+      "sha256": "d51b1d8b4f5d08122fba966be3866d9d51b9f82ddaa91a81460b61b7f0488e79",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|P85101|RIPLY_SILCH",
+      "name": "RIPLY_SILCH",
+      "organism": "Silene chalcedonica",
+      "len": 234,
+      "sha256": "6be285703bdd83dff2f2ba305d7b60f549a9a3200f6fbca90f8010ab6f46188b",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|P18640|BXC_CBCP",
+      "name": "BXC_CBCP",
+      "organism": "Clostridium botulinum C phage",
+      "len": 1291,
+      "sha256": "c3d871371ab716203a5654dc2f96d4c34276d4a17bf3ac66f9876aac6f1b6351",
+      "truncated_1022": true,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|P0DPK1|BXX_CLOBO",
+      "name": "BXX_CLOBO",
+      "organism": "Clostridium botulinum",
+      "len": 1306,
+      "sha256": "7cf5ea1496a2ad1df763c45f3ed6cd40752e5b4aad3df32eaf2873b966679349",
+      "truncated_1022": true,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|P0DG09|SPEG_STRPQ",
+      "name": "SPEG_STRPQ",
+      "organism": "Streptococcus pyogenes serotype M3 (strain SSI-1)",
+      "len": 234,
+      "sha256": "113a2299ccaea4d2801f77b28b8c0b6dd220bdcfad0d46789c22d7c2b703664e",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|P06886|TSST_STAAU",
+      "name": "TSST_STAAU",
+      "organism": "Staphylococcus aureus",
+      "len": 234,
+      "sha256": "4f9c9fe6fa826ce4b2d6f9cf80de1410c0230d171860a713e6285731a5f2f621",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
+    },
+    {
+      "acc": "sp|P0A0M0|ETXH_STAAU",
+      "name": "ETXH_STAAU",
+      "organism": "Staphylococcus aureus",
+      "len": 241,
+      "sha256": "670841b0f5cd08bb647eee7b9cac62f8f26d1ea6639a80f752685e89b9c9851a",
+      "truncated_1022": false,
+      "expansion_2026_09_05": true
     }
   ],
   "negatives": [
@@ -2382,6 +2509,7 @@
   },
   "maintenance_notes": [
     "2026-09-04: counts.negative_blocks was stale (still described the 50-negative panel) and is recomputed here from the entries themselves. Added lab-strain / pathogen-derived / unflagged tallies because the localization control now has to filter on lab_strain to stay organism-controlled.",
-    "2026-09-04: added 54 secreted benign proteins from pathogen organisms (block secreted_pathogen) so the exported half of the doubly controlled localization test is no longer empty. Species verification applied on the FIRST pass this time. Rejections: {'collides_with_positive_class': 33, 'blocked_protein_name': 2, 'species_mismatch': 9, 'duplicate_accession': 1}."
+    "2026-09-04: added 54 secreted benign proteins from pathogen organisms (block secreted_pathogen) so the exported half of the doubly controlled localization test is no longer empty. Species verification applied on the FIRST pass this time. Rejections: {'collides_with_positive_class': 33, 'blocked_protein_name': 2, 'species_mismatch': 9, 'duplicate_accession': 1}.",
+    "2026-09-05: added 14 non-homologous members to classes with n < 7 (adp_ribosyl 3->7, rip 3->7, superantigen 4->7, clostridial 4->6, contact_dependent 3->4) so small-n classes carry enough members to distinguish class recovery from single-member accidents. Every candidate was screened at Smith-Waterman <= 0.30 against existing members AND against already-accepted candidates. counts.positive_final moves 66 -> 80; positive_raw/positive_dedup still describe the original FASTA build. Class eligibility is UNCHANGED: an earlier version of src/23 recomputed holdout_eligible_classes as n >= 3, which promoted the other_toxin_mechanism grab-bag into the results table and flipped virulence_associated_non_toxin from its deliberate non-mechanism-control flag; both are reverted here. Screened 39 candidates; rejections: {\"duplicate_sequence\": 1, \"homologous_to_a_candidate_already_accepted\": 4, \"homologous_to_existing_member\": 11, \"name_lacks_own_class_vocabulary\": 9}."
   ]
 }

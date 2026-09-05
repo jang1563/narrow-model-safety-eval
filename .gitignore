@@ -74,6 +74,11 @@ docs/*INTERVIEW*
 # Working files from the v2 panel fetches: they duplicate the FASTA sequences
 # and are staging output, not release artifacts.
 data/sequences/_*_fetch.json
+# Same class of record for the 2026-09-05 class expansion: the candidate list
+# with per-candidate rejection reasons. The tallies are kept in the panel
+# manifest's maintenance_notes, which is tracked. Named explicitly rather than
+# widening the glob, so a future artifact cannot be ignored by accident.
+data/sequences/_small_class_expansion.json
 
 # Superseded: computed on the 91-negative panel, kept locally for provenance only.
 results/v2/*_smoke150M.json

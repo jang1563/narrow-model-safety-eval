@@ -133,6 +133,62 @@ def esmif1():
             "bottom_ll": round(s["bottom_sequences_mean_ll"], 3)}
 
 
+
+def v2_panel_consistency():
+    """The v2 leave-one-mechanism-out panel and its results must describe the same
+    panel. This is the check that was missing when the 2026-09-05 class expansion
+    grew the panel 66 -> 80: a schema crash left a stale lomo_results.json sitting
+    beside freshly regenerated companions, and nothing in the repository noticed
+    that the results and the panel had come apart. Counts alone are not enough, so
+    per-class membership is compared name by name."""
+    mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v2.json"))
+    panel = json.load(open(ROOT / "data/sequences/panel_v2_manifest.json"))
+    res = json.load(open(R / "v2/lomo_results.json"))
+    ann_n = {}
+    for e in mech["proteins"]:
+        ann_n.setdefault(e["mechanism_class"], []).append(e["short_name"])
+    mismatched = sorted(
+        c for c, r in res["leave_one_mechanism_out"].items()
+        if sorted(r["members"]) != sorted(ann_n.get(c, []))
+    )
+    return {"members": len(mech["proteins"]),
+            "manifest_positives": len(panel["positives"]),
+            "results_n_positive": res["n_positive"],
+            "manifest_negatives": len(panel["negatives"]),
+            "results_n_negative": res["n_negative"],
+            "after_dedup": mech["after_dedup"],
+            "classes_with_mismatched_membership": mismatched}
+
+
+def v2_class_eligibility():
+    """holdout_eligible_classes is a CURATED list, not a size threshold. The first
+    version of src/23 recomputed it as `n >= 3`, which promoted the
+    other_toxin_mechanism grab-bag into the results table as though it were a
+    mechanism, and flipped virulence_associated_non_toxin to True. 03b runs that
+    class deliberately (targets = eligible | {virulence_associated_non_toxin}) and
+    reports it with holdout_eligible False to mark it a non-mechanism control, so
+    the recompute destroyed the flag whose only job was to say "this row is not a
+    mechanism". These pins are curation decisions: changing one should require
+    editing this file and saying why."""
+    mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v2.json"))
+    res = json.load(open(R / "v2/lomo_results.json"))["leave_one_mechanism_out"]
+    eligible = set(mech["holdout_eligible_classes"])
+    counts = {}
+    for e in mech["proteins"]:
+        counts[e["mechanism_class"]] = counts.get(e["mechanism_class"], 0) + 1
+    disagree = [e["short_name"] for e in mech["proteins"]
+                if bool(e.get("holdout_eligible")) != (e["mechanism_class"] in eligible)]
+    CONTROL = "virulence_associated_non_toxin"
+    unexpected = sorted(c for c in res if c not in eligible and c != CONTROL)
+    return {"n_eligible": len(eligible),
+            "flag_disagreements": len(disagree),
+            "control_in_results": CONTROL in res,
+            "control_flagged_eligible": bool(res.get(CONTROL, {}).get("holdout_eligible")),
+            "grab_bag_eligible": "other_toxin_mechanism" in eligible,
+            "grab_bag_n": counts.get("other_toxin_mechanism", 0),
+            "unexpected_classes_in_table": unexpected}
+
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -174,6 +230,16 @@ CLAIMS = [
      {"docs/EVALUATION_REPORT.md": "Mann–Whitney p = 0.85"}, []),
     ("Cross-model FSPE flips", flip_count,
      lambda v: v["flips"] == 3 and v["n_rows"] == 12, {}, []),
+    ("v2 panel and LOMO results describe the same panel", v2_panel_consistency,
+     lambda v: (v["members"] == v["manifest_positives"] == v["results_n_positive"]
+                == v["after_dedup"]
+                and v["manifest_negatives"] == v["results_n_negative"]
+                and not v["classes_with_mismatched_membership"]), {}, []),
+    ("v2 class eligibility is curated, not a size rule", v2_class_eligibility,
+     lambda v: (v["flag_disagreements"] == 0
+                and v["control_in_results"] and not v["control_flagged_eligible"]
+                and not v["grab_bag_eligible"] and v["grab_bag_n"] >= 3
+                and not v["unexpected_classes_in_table"]), {}, []),
 ]
 
 
