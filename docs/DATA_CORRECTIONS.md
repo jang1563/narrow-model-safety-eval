@@ -285,3 +285,64 @@ confident at annotated functional sites than at background positions. What
 changes is the strength of the claim, from `10⁻⁸` to roughly `10⁻³`. Any prior
 citation of the `2.6 × 10⁻⁸` figure as the headline result should be read as
 overstated.
+
+## 2026-09-05 — The temperature-sensitivity claim overstated its range and its scope
+
+### Summary
+
+Two errors in the same sentence, on two public surfaces.
+
+1. **Range.** The documents reported the ProteinMPNN sampling-temperature sweep as
+   `T ∈ {0.05, 0.1, 0.2, 0.5}`. The artifact
+   (`results/fsi_temperature_sensitivity.json`) sweeps `{0.05, 0.1, 0.2, 0.3}`.
+   The highest temperature actually tested is **0.3, not 0.5**.
+2. **Scope.** The sentence read "FSI remains robustly above 1.0 across sampling
+   temperatures", stated generally. The sweep covers **two structures**, 3BTA and
+   2AAI, and the claim is true of only one of them. **2AAI has a minimum mean FSI
+   of 0.99 and only 48% of its designs above 1.0 at T = 0.1**, so it crosses the
+   threshold inside the swept range. The artifact's own `interpretation` field for
+   2AAI says "FSI drops below 1.0 at higher temperatures", which the documents
+   contradicted.
+
+### How it was found
+
+Expanding `src/22_claims_audit.py` from 5 registered claims to 10. The audit
+recomputes each headline number from its artifact, so the temperature entry failed
+on first run.
+
+### Corrections
+
+| | Reported | Artifact |
+|---|---|---|
+| Sweep range | {0.05, 0.1, 0.2, **0.5**} | {0.05, 0.1, 0.2, **0.3**} |
+| Structures swept | implied panel-wide | **2** (3BTA, 2AAI) |
+| 3BTA min mean FSI | 2.56 | 2.5566 ✅ |
+| 3BTA Spearman ρ | −0.80 | −0.7999 ✅ |
+| 2AAI min mean FSI | not reported | **0.9907**, crosses 1.0 |
+
+### Fix
+
+`docs/EVALUATION_REPORT.md` and `huggingface/README.md` now state the real range,
+name both structures, and say explicitly that the stability result holds for
+BoNT-A and **does not generalize to the panel**. The audit guards all of it,
+including a forbidden-string check on the old `0.05, 0.1, 0.2, 0.5`.
+
+### Impact
+
+The BoNT-A robustness result is unaffected and its two numbers were already
+correct. What changes is that a single-structure result is no longer presented as
+a panel-wide property, and the swept range is no longer overstated.
+
+### Also corrected in this pass
+
+`src/22_claims_audit.py` itself had two defects, both of the same family as the
+errors it exists to catch:
+
+- Its FSI entry verified the 12-row file aggregate (0.881), a quantity **no
+  document reports**, while the documents report the 7-toxin subset (1.02). It
+  passed while checking the wrong thing.
+- Its ESM-IF1 entry read a key that does not exist, received `None`, and passed
+  because the assertion tolerated `None`.
+
+Both are fixed, and every entry now has a negative control: breaking the
+corresponding document, or reintroducing a retired string, makes the audit exit 1.

@@ -214,7 +214,7 @@ For 3BTA, ESM-IF1 log-likelihood per residue: WT **−1.572**, top-FSI designs *
 
 ### FSI temperature sensitivity (3BTA)
 
-FSI remains robustly above 1.0 across sampling temperatures T ∈ {0.05, 0.1, 0.2, 0.5}; min mean FSI = 2.56; Spearman ρ(T, FSI) = −0.80. The signal is not an artifact of a single sampling temperature.
+The sweep covers **two structures**, 3BTA and 2AAI, at T ∈ {0.05, 0.1, 0.2, **0.3**}, 100 designs each. **For 3BTA** FSI stays above 1.0 at every temperature, min mean **2.56**, Spearman ρ(T, FSI) = **−0.80**, so that signal is not an artifact of a single sampling temperature. 🔴 **For 2AAI it is not stable:** min mean **0.99**, and at T = 0.1 only 48% of designs exceed 1.0, so its FSI crosses the threshold within the swept range. The stability claim holds for BoNT-A and **does not generalize to the panel**.
 
 ### Elicitation Coverage
 

@@ -207,7 +207,7 @@ High-FSI sequences are **not** more backbone-compatible than low-FSI sequences (
 
 ### Elicitation Coverage
 
-Values reported above were measured under the following elicitation conditions: ProteinMPNN sampling temperature swept over T in {0.05, 0.1, 0.2, 0.5} (FSI stable for BoNT-A, Spearman rho = -0.80); ESM-2 masked prediction is deterministic. Adversarial elicitation axes (fixed-chain / bias_AA constraints, multi-seed redesign over diverse backbone conformers, cross-model FSI at controlled temperature) have not yet been swept. Reported FSI and FSPE values should therefore be read as conservative estimates under the tested elicitation surface.
+Values reported above were measured under the following elicitation conditions: ProteinMPNN sampling temperature swept over T in {0.05, 0.1, 0.2, 0.3} for two structures, 3BTA and 2AAI (FSI stable for BoNT-A, min mean 2.56, Spearman rho = -0.80; **not** stable for Ricin, min mean 0.99, crossing 1.0 within the swept range); ESM-2 masked prediction is deterministic. Adversarial elicitation axes (fixed-chain / bias_AA constraints, multi-seed redesign over diverse backbone conformers, cross-model FSI at controlled temperature) have not yet been swept. Reported FSI and FSPE values should therefore be read as conservative estimates under the tested elicitation surface.
 
 ### Release-surface checks
 
