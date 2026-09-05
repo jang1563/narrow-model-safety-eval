@@ -421,3 +421,53 @@ BLOSUM62, gap −11/−1, normalized by the smaller self-score), the maxima are 
 **0.911**. The claim those figures supported — that the expansion added no redundancy — holds: no
 class's maximum within-class similarity rose except `adp_ribosyl_ab_toxin`, 0.027 → 0.250, still
 inside the screen.
+
+---
+
+## 2026-09-05 (second entry) — "Beta-lactamase resists every configuration" was wrong when written
+
+### Summary
+
+Earlier write-ups of the mechanism-generalization work stated that beta-lactamase **resists every model
+configuration tested** and that **plain alignment beats every embedding method on it**. Both statements
+are wrong. **ESM-C 600M recovers 51% of the class**, against alignment's 30% and ESM-2 650M's 21%.
+
+### How it was found
+
+Every model arm was re-run on the expanded 80-protein panel so that cross-model comparisons would not mix
+two panels. Reading the resulting table row by row surfaced the ESM-C 600M value, which did not match the
+claim the documents were making.
+
+### It was not caused by the panel change
+
+On the previous 66-protein panel ESM-C 600M already scored **48.6%** on beta-lactamase, with per-seed
+values `[50, 71, 43, 43, 36]`. The claim was therefore incorrect at the time it was written. It survived
+because the class was summarized from the ESM-2 arms — where it is genuinely hard at every scale and every
+pooling — and the ESM-C row was never checked against the summary.
+
+### Corrected statement
+
+Beta-lactamase is the hardest class for **11 of 12** configurations, and the only class where alignment
+beats the canonical ESM-2 probe (30% against 21%). **It is not unreachable.** One representation recovers
+about half of it, and the jump is within a lineage rather than across scale: ESM-C 300M reaches 16% and
+ESM-C 600M reaches 51%. Nothing measured here explains why that architecture at that size succeeds where a
+3B ESM-2 does not.
+
+### Fix
+
+`src/22_claims_audit.py` gained an entry (16 claims total) that reads **every** arm rather than a summary:
+it pins that ESM-C 600M exceeds the alignment baseline, that ESM-2 650M does not, and that ESM-C 600M is
+the **only** arm above alignment. A future arm that changes any of those three facts fails CI instead of
+being summarized around.
+
+The same entry checks a reproducibility property that came free with the re-run: the untagged 650M arm and
+the `esm2_650M_mean` pooling arm are the same configuration embedded by two different scripts, and they
+agree to **0.0 points on all nine classes**.
+
+### Also corrected: a mislabelled model pair
+
+The scale-sensitivity figure "Spearman −0.10" was described as the class ordering "between the extremes",
+implying ESM-2 8M against 3B. It is the ordering between **8M and 650M**; 8M against 3B was +0.12 on the
+old panel. On the 80-protein panel the two are **−0.13** and **−0.17** respectively, so the claim that
+scaling redistributes negative-set fragility rather than removing it is unaffected — only the model pair
+was named wrongly.

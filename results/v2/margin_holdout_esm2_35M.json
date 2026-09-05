@@ -1,0 +1,73 @@
+{
+  "model": "facebook/esm2_t12_35M_UR50D",
+  "tag": "esm2_35M",
+  "k": 10,
+  "seeds": 30,
+  "margin": {
+    "min": -0.043538570404052734,
+    "median": 0.004299372434616089,
+    "max": 0.030998826026916504
+  },
+  "holdout": {
+    "low_margin": [
+      0.31,
+      0.1398809017223819
+    ],
+    "random": [
+      0.8548888888888888,
+      0.10663795909987984
+    ],
+    "random_class_matched": [
+      0.7271111111111112,
+      0.11666264543334418
+    ],
+    "high_margin": [
+      0.98,
+      0.03999999999999999
+    ]
+  },
+  "low_minus_random": -0.5448888888888888,
+  "low_minus_class_matched_random": -0.41711111111111115,
+  "within_class_median_split": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "low_half": 1.0,
+      "high_half": 0.9555555555555556
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "low_half": 0.09047619047619046,
+      "high_half": 0.23333333333333334
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "low_half": 1.0,
+      "high_half": 1.0
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "low_half": 0.9166666666666666,
+      "high_half": 0.8000000000000002
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "low_half": 0.9416666666666667,
+      "high_half": 1.0
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "low_half": 1.0,
+      "high_half": 1.0
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "low_half": 0.5733333333333334,
+      "high_half": 0.92
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "low_half": 0.18666666666666665,
+      "high_half": 0.6599999999999999
+    }
+  }
+}

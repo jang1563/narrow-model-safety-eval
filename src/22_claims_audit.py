@@ -39,7 +39,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 R = ROOT / "results"
 PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
-          "docs/ARCHITECTURE.md"]
+          "docs/ARCHITECTURE.md", "docs/MECHANISM_GENERALIZATION.md"]
 
 
 def j(p):
@@ -189,6 +189,104 @@ def v2_class_eligibility():
             "unexpected_classes_in_table": unexpected}
 
 
+
+def lomo_class_recovery():
+    """The published per-class recovery figures for the canonical 650M arm. These
+    are the numbers docs/MECHANISM_GENERALIZATION.md leads with, so they are pinned
+    to the artifact rather than to whatever was true when the table was typed."""
+    d = json.load(open(R / "v2/lomo_results.json"))
+    c = d["leave_one_mechanism_out"]
+    def g(k):
+        return round(c[k]["flagged_95_mean"], 4), round(c[k]["flagged_99_mean"], 4)
+
+    return {"baseline_auroc": round(d["baseline_auroc"][0], 4),
+            "n_pos": d["n_positive"], "n_neg": d["n_negative"],
+            "beta_lactamase": g("beta_lactamase"),
+            "beta_lactamase_auroc": round(c["beta_lactamase"]["auroc_mean"], 3),
+            "superantigen": g("superantigen_enterotoxin"),
+            "clostridial": g("clostridial_neurotoxin"),
+            "t3ss": g("t3ss_effector_apparatus"),
+            "pore_forming": g("pore_forming_cytolysin"),
+            "provenance_auroc": round(d["provenance_auroc"][0], 3),
+            "organism_agreement": round(d["organism_label_agreement_with_hazard"], 2)}
+
+
+
+def annotation_coverage():
+    """Every annotation file must carry an entry for every panel member. The
+    2026-09-05 expansion updated the mechanism-class file and the FASTA but not
+    localization_v2.json, and 03d and 03g both index it by fasta_id: they raised
+    KeyError on the first new member for every model arm, in a sweep that had
+    already spent GPU hours. The expansion had been running for a day before this
+    surfaced. Coverage is the cheap check that catches it before the compute does.
+
+    Entries, not values: structure_3di_v2.json deliberately carries the SaProt mask
+    for proteins with no AlphaFold entry, so a masked record is coverage."""
+    panel = json.load(open(ROOT / "data/sequences/panel_v2_manifest.json"))
+    mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v2.json"))
+    members = {p["acc"] for p in panel["positives"]} | {n["acc"] for n in panel["negatives"]}
+    pos_ids = {e["fasta_id"] for e in mech["proteins"]}
+    out = {"panel": len(members), "mechanism_classes": len(pos_ids)}
+    gaps = {}
+    for name, path, key in (("localization", "localization_v2.json", "proteins"),
+                            ("structure_3di", "structure_3di_v2.json", "proteins")):
+        f = ROOT / "data/annotations" / path
+        if not f.exists():
+            gaps[name] = "file missing"
+            continue
+        have = set(json.load(open(f))[key])
+        missing = sorted(members - have)
+        out[name] = len(have)
+        if missing:
+            gaps[name] = f"{len(missing)} missing, first {missing[0]}"
+    # the positives must also all be in the mechanism-class annotation
+    pos_acc = {p["acc"] for p in panel["positives"]}
+    if pos_acc - pos_ids:
+        gaps["mechanism_classes"] = f"{len(pos_acc - pos_ids)} positives unassigned"
+    out["gaps"] = gaps
+    return out
+
+
+
+def beta_lactamase_across_arms():
+    """The corrected beta-lactamase claim. Earlier write-ups said the class resists
+    every configuration and that alignment beats every embedding method on it. Both
+    were wrong: ESM-C 600M recovers about half of it, above alignment. The claim was
+    summarized from the ESM-2 arms without checking the ESM-C row, so this entry
+    reads EVERY arm and pins the two facts the corrected statement rests on -- that
+    ESM-C 600M is well above alignment, and that it is the only arm that is."""
+    import glob
+    arms = {}
+    for f in glob.glob(str(R / "v2/lomo_results*.json")):
+        name = Path(f).stem.replace("lomo_results", "").lstrip("_") or "esm2_650M"
+        if "smoke" in name:
+            continue
+        d = json.load(open(f))
+        if d.get("n_positive") != 80:
+            continue
+        r = d["leave_one_mechanism_out"].get("beta_lactamase")
+        if r:
+            arms[name] = round(r["flagged_95_mean"], 4)
+    align = json.load(open(R / "v2/alignment_baseline.json"))
+    a = round(align["classes"]["beta_lactamase"]["alignment_recovery"], 4)
+    above = sorted(k for k, v in arms.items() if v > a)
+    return {"n_arms": len(arms), "alignment": a, "esmc_600M": arms.get("esmc_600M"),
+            "esm2_650M": arms.get("esm2_650M"), "arms_above_alignment": above,
+            "max_arm": max(arms, key=arms.get), "max_value": max(arms.values()),
+            # the untagged 650M run and the esm2_650M_mean pooling arm are the same
+            # configuration embedded twice by different scripts; they must agree
+            "duplicate_arm_max_diff": _duplicate_arm_max_diff()}
+
+
+def _duplicate_arm_max_diff():
+    a = json.load(open(R / "v2/lomo_results.json"))["leave_one_mechanism_out"]
+    f = R / "v2/lomo_results_esm2_650M_mean.json"
+    if not f.exists():
+        return None
+    b = json.load(open(f))["leave_one_mechanism_out"]
+    return max(abs(a[c]["flagged_95_mean"] - b[c]["flagged_95_mean"]) for c in a if c in b)
+
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -235,6 +333,29 @@ CLAIMS = [
                 == v["after_dedup"]
                 and v["manifest_negatives"] == v["results_n_negative"]
                 and not v["classes_with_mismatched_membership"]), {}, []),
+    ("LOMO per-class recovery, canonical 650M arm", lomo_class_recovery,
+     lambda v: (v["n_pos"] == 80 and v["n_neg"] == 154
+                and abs(v["baseline_auroc"] - 0.974) < 0.002
+                and v["beta_lactamase"] == (0.2143, 0.0143)
+                and abs(v["beta_lactamase_auroc"] - 0.751) < 0.002
+                and v["superantigen"] == (1.0, 1.0) and v["clostridial"] == (1.0, 1.0)
+                and v["t3ss"] == (0.8, 0.8)
+                and abs(v["provenance_auroc"] - 0.818) < 0.002),
+     {"docs/MECHANISM_GENERALIZATION.md": "**80 hazardous proteins**"}, []),
+    ("LOMO figures quoted in the document match the artifact", lomo_class_recovery,
+     lambda v: True,
+     {"docs/MECHANISM_GENERALIZATION.md": "| **beta_lactamase** | 14 | **21%** | **1%** | 0.751 |"},
+     []),
+    ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
+     lambda v: (v["n_arms"] == 13 and abs(v["alignment"] - 0.30) < 0.02
+                and v["duplicate_arm_max_diff"] == 0
+                and v["esmc_600M"] is not None and v["esmc_600M"] > v["alignment"]
+                and v["esm2_650M"] < v["alignment"]
+                and v["arms_above_alignment"] == ["esmc_600M"]),
+     {"docs/MECHANISM_GENERALIZATION.md": "ESM-C 600M recovers **51%**"},
+     ["resists every configuration tested and that plain alignment beats every embedding method on it.\n**Both statements are correct**"]),
+    ("every annotation file covers every panel member", annotation_coverage,
+     lambda v: not v["gaps"], {}, []),
     ("v2 class eligibility is curated, not a size rule", v2_class_eligibility,
      lambda v: (v["flag_disagreements"] == 0
                 and v["control_in_results"] and not v["control_flagged_eligible"]

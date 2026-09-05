@@ -1,5 +1,5 @@
 {
-  "built": "2026-09-04 00:31:16",
+  "built": "2026-09-05 12:04:00",
   "source": "UniProtKB cc_subcellular_location + ft_signal",
   "rule_order": [
     "secreted",
@@ -631,6 +631,130 @@
         "Secreted"
       ],
       "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|Q5EK40|CHXA_VIBCL": {
+      "acc": "Q5EK40",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P11439|TOXA_PSEAE": {
+      "acc": "P11439",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P75409|CARDS_MYCPN": {
+      "acc": "P75409",
+      "side": "positives",
+      "locations": [
+        "Cell membrane",
+        "Cytoplasm",
+        "Cell surface",
+        "Cell projection, attachment organelle",
+        "Host cytoplasm, host cytosol",
+        "Host endoplasmic reticulum"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cell_surface"
+    },
+    "sp|P04977|TOX1_BORPE": {
+      "acc": "P04977",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|H9T8G6|CDIA9_BURPE": {
+      "acc": "H9T8G6",
+      "side": "positives",
+      "locations": [
+        "Target cell, target cell cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6EH50|RIP4_PHYHE": {
+      "acc": "Q6EH50",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P33186|RIPG_SURMU": {
+      "acc": "P33186",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|Q9M653|RIPT_POLML": {
+      "acc": "Q9M653",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P85101|RIPLY_SILCH": {
+      "acc": "P85101",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P18640|BXC_CBCP": {
+      "acc": "P18640",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Secreted",
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P0DPK1|BXX_CLOBO": {
+      "acc": "P0DPK1",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Secreted",
+        "Host cytoplasm, host cytosol",
+        "Secreted",
+        "Host synapse, host presynaptic cell membrane",
+        "Host cytoplasmic vesicle, host secretory vesicle, host synaptic vesicle membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P0DG09|SPEG_STRPQ": {
+      "acc": "P0DG09",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P06886|TSST_STAAU": {
+      "acc": "P06886",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P0A0M0|ETXH_STAAU": {
+      "acc": "P0A0M0",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
       "localization": "secreted"
     },
     "sp|O05512|MANB_BACSU": {

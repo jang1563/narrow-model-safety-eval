@@ -1,0 +1,27 @@
+{
+  "model": "facebook/esm2_t12_35M_UR50D",
+  "tag": "esm2_35M",
+  "results": {
+    "ESM embedding": {
+      "d": 480,
+      "auroc": 0.94744623655914,
+      "sd": 0.024384698873217082
+    },
+    "composition (AA freq)": {
+      "d": 20,
+      "auroc": 0.7542204301075269,
+      "sd": 0.08325046174211392
+    },
+    "length only": {
+      "d": 1,
+      "auroc": 0.45345430107526885,
+      "sd": 0.04793655237428114
+    },
+    "composition + length": {
+      "d": 21,
+      "auroc": 0.7534408602150537,
+      "sd": 0.08707680144020959
+    }
+  },
+  "shuffled_labels_auroc_mean": 0.496758064516129
+}

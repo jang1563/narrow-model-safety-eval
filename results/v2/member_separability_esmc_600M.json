@@ -1,65 +1,65 @@
 {
   "model": "esmc_600m",
   "tag": "esmc_600M",
-  "n_rows": 47,
-  "n_caught": 34,
+  "n_rows": 58,
+  "n_caught": 48,
   "pooled": {
     "margin": {
-      "auroc": 0.9796380090497737,
+      "auroc": 0.9875,
       "perm_p": 0.0
     },
     "nn_pos": {
-      "auroc": 0.9106334841628959,
+      "auroc": 0.9322916666666666,
       "perm_p": 0.0
     },
     "kmer_pos": {
-      "auroc": 0.4343891402714932,
-      "perm_p": 0.445
+      "auroc": 0.321875,
+      "perm_p": 0.06
     },
     "nn_neg": {
-      "auroc": 0.2171945701357466,
-      "perm_p": 0.005
+      "auroc": 0.29583333333333334,
+      "perm_p": 0.045
     },
     "length": {
-      "auroc": 0.4841628959276018,
-      "perm_p": 0.83
+      "auroc": 0.50625,
+      "perm_p": 0.93
     },
     "exported": {
-      "auroc": 0.5656108597285068,
-      "perm_p": 0.465
+      "auroc": 0.49375,
+      "perm_p": 1.0
     },
     "signal_peptide": {
-      "auroc": 0.4423076923076923,
-      "perm_p": 0.5
+      "auroc": 0.48125,
+      "perm_p": 1.0
     }
   },
   "within": {
     "beta_lactamase": {
       "margin": 1.0,
       "nn_pos": 1.0,
-      "kmer_pos": 0.42857142857142855,
-      "nn_neg": 0.32142857142857145,
-      "length": 0.07142857142857142,
-      "exported": 0.44642857142857145,
+      "kmer_pos": 0.25,
+      "nn_neg": 0.35,
+      "length": 0.1,
+      "exported": 0.475,
       "signal_peptide": 0.5
     },
     "t3ss_effector_apparatus": {
       "margin": 1.0,
       "nn_pos": 0.875,
-      "kmer_pos": 0.9375,
+      "kmer_pos": 0.875,
       "nn_neg": 0.125,
       "length": 0.375,
       "exported": 1.0,
       "signal_peptide": 0.5
     },
     "virulence_associated_non_toxin": {
-      "margin": 0.8,
-      "nn_pos": 0.6,
-      "kmer_pos": 0.3,
-      "nn_neg": 0.25,
-      "length": 0.25,
+      "margin": 0.8125,
+      "nn_pos": 0.5,
+      "kmer_pos": 0.375,
+      "nn_neg": 0.0625,
+      "length": 0.1875,
       "exported": 0.625,
-      "signal_peptide": 0.675
+      "signal_peptide": 0.75
     }
   }
 }

@@ -1,19 +1,19 @@
 {
   "model": "facebook/esm2_t33_650M_UR50D",
   "tag": "esm2_650M_max",
-  "seeds": 20,
+  "seeds": 30,
   "classes": {
     "adp_ribosyl_ab_toxin": {
       "logistic": 1.0,
       "svm_rbf": 1.0,
-      "random_forest": 1.0,
+      "random_forest": 0.9952380952380953,
       "knn_5": 1.0
     },
     "beta_lactamase": {
-      "logistic": 0.021428571428571425,
+      "logistic": 0.019047619047619046,
       "svm_rbf": 0.0,
-      "random_forest": 0.0035714285714285713,
-      "knn_5": 0.010714285714285714
+      "random_forest": 0.0,
+      "knn_5": 0.009523809523809523
     },
     "clostridial_neurotoxin": {
       "logistic": 1.0,
@@ -22,22 +22,22 @@
       "knn_5": 1.0
     },
     "contact_dependent_inhibition": {
-      "logistic": 0.41666666666666663,
-      "svm_rbf": 0.41666666666666663,
-      "random_forest": 0.3666666666666666,
-      "knn_5": 0.45
+      "logistic": 0.2916666666666667,
+      "svm_rbf": 0.3,
+      "random_forest": 0.25833333333333336,
+      "knn_5": 0.325
     },
     "pore_forming_cytolysin": {
-      "logistic": 0.6857142857142857,
-      "svm_rbf": 0.6071428571428571,
-      "random_forest": 0.6142857142857142,
-      "knn_5": 0.7499999999999998
+      "logistic": 0.7095238095238098,
+      "svm_rbf": 0.6047619047619048,
+      "random_forest": 0.6142857142857144,
+      "knn_5": 0.8
     },
     "rip_rrna_glycosidase": {
-      "logistic": 0.7999999999999999,
-      "svm_rbf": 0.5333333333333334,
-      "random_forest": 0.4333333333333333,
-      "knn_5": 0.9666666666666666
+      "logistic": 0.8904761904761906,
+      "svm_rbf": 0.7666666666666669,
+      "random_forest": 0.6714285714285716,
+      "knn_5": 0.9761904761904763
     },
     "superantigen_enterotoxin": {
       "logistic": 1.0,
@@ -46,22 +46,22 @@
       "knn_5": 1.0
     },
     "t3ss_effector_apparatus": {
-      "logistic": 0.7149999999999999,
-      "svm_rbf": 0.7049999999999998,
-      "random_forest": 0.6999999999999998,
-      "knn_5": 0.7
+      "logistic": 0.7266666666666665,
+      "svm_rbf": 0.7033333333333331,
+      "random_forest": 0.6999999999999997,
+      "knn_5": 0.7300000000000001
     },
     "virulence_associated_non_toxin": {
-      "logistic": 0.4250000000000001,
-      "svm_rbf": 0.30499999999999994,
-      "random_forest": 0.29999999999999993,
-      "knn_5": 0.225
+      "logistic": 0.3966666666666666,
+      "svm_rbf": 0.3033333333333334,
+      "random_forest": 0.30000000000000004,
+      "knn_5": 0.21666666666666667
     }
   },
   "mean_by_head": {
-    "logistic": 0.6737566137566138,
-    "svm_rbf": 0.6185714285714285,
-    "random_forest": 0.6019841269841268,
-    "knn_5": 0.6780423280423279
+    "logistic": 0.6704497354497355,
+    "svm_rbf": 0.630899470899471,
+    "random_forest": 0.6154761904761904,
+    "knn_5": 0.6730423280423281
   }
 }

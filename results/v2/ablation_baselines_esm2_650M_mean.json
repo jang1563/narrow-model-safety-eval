@@ -1,0 +1,27 @@
+{
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "tag": "esm2_650M_mean",
+  "results": {
+    "ESM embedding": {
+      "d": 1280,
+      "auroc": 0.9737634408602152,
+      "sd": 0.014041781879081205
+    },
+    "composition (AA freq)": {
+      "d": 20,
+      "auroc": 0.7542204301075269,
+      "sd": 0.08325046174211392
+    },
+    "length only": {
+      "d": 1,
+      "auroc": 0.45345430107526885,
+      "sd": 0.04793655237428114
+    },
+    "composition + length": {
+      "d": 21,
+      "auroc": 0.7534408602150537,
+      "sd": 0.08707680144020959
+    }
+  },
+  "shuffled_labels_auroc_mean": 0.5062580645161291
+}

@@ -2,52 +2,72 @@
   "model": "Rostlab/prot_t5_xl_half_uniref50-enc",
   "tag": "prott5_xl",
   "k": 10,
-  "seeds": 20,
+  "seeds": 30,
   "margin": {
-    "min": -0.37424635887145996,
-    "median": 0.04658329486846924,
-    "max": 0.47353464365005493
+    "min": -0.37424594163894653,
+    "median": 0.14511266350746155,
+    "max": 0.47353339195251465
   },
   "holdout": {
     "low_margin": [
-      0.35,
-      0.08660254037844388
+      0.2566666666666667,
+      0.07608474807008883
     ],
     "random": [
-      0.8450000000000001,
-      0.12105783741666627
+      0.8708888888888887,
+      0.10621757312001703
     ],
     "random_class_matched": [
-      0.707,
-      0.09276852914647302
+      0.7073333333333335,
+      0.08793263414767093
     ],
     "high_margin": [
       1.0,
       0.0
     ]
   },
-  "low_minus_random": -0.4950000000000001,
-  "low_minus_class_matched_random": -0.357,
+  "low_minus_random": -0.614222222222222,
+  "low_minus_class_matched_random": -0.45066666666666677,
   "within_class_median_split": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "low_half": 1.0,
+      "high_half": 1.0
+    },
     "beta_lactamase": {
       "n": 14,
-      "low_half": 0.07142857142857142,
-      "high_half": 0.05714285714285714
+      "low_half": 0.06666666666666667,
+      "high_half": 0.038095238095238085
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "low_half": 1.0,
+      "high_half": 1.0
     },
     "pore_forming_cytolysin": {
       "n": 7,
-      "low_half": 0.7,
-      "high_half": 0.9833333333333332
+      "low_half": 0.7833333333333333,
+      "high_half": 0.9666666666666667
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "low_half": 0.95,
+      "high_half": 1.0
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "low_half": 1.0,
+      "high_half": 1.0
     },
     "t3ss_effector_apparatus": {
       "n": 10,
-      "low_half": 0.61,
+      "low_half": 0.6400000000000002,
       "high_half": 1.0
     },
     "virulence_associated_non_toxin": {
       "n": 10,
-      "low_half": 0.22999999999999998,
-      "high_half": 0.33
+      "low_half": 0.21333333333333337,
+      "high_half": 0.3133333333333333
     }
   }
 }

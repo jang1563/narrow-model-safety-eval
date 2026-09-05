@@ -1,0 +1,56 @@
+{
+  "model": "westlake-repl/SaProt_650M_AF2",
+  "tag": "saprot_650M",
+  "n_rows": 58,
+  "n_caught": 39,
+  "pooled": {
+    "margin": {
+      "auroc": 1.0,
+      "perm_p": 0.0
+    },
+    "nn_pos": {
+      "auroc": 0.7219973009446694,
+      "perm_p": 0.005
+    },
+    "kmer_pos": {
+      "auroc": 0.3090418353576248,
+      "perm_p": 0.005
+    },
+    "nn_neg": {
+      "auroc": 0.0310391363022942,
+      "perm_p": 0.0
+    },
+    "length": {
+      "auroc": 0.5755735492577598,
+      "perm_p": 0.35
+    },
+    "exported": {
+      "auroc": 0.4777327935222672,
+      "perm_p": 0.775
+    },
+    "signal_peptide": {
+      "auroc": 0.4406207827260459,
+      "perm_p": 0.44
+    }
+  },
+  "within": {
+    "t3ss_effector_apparatus": {
+      "margin": 1.0,
+      "nn_pos": 0.875,
+      "kmer_pos": 0.9375,
+      "nn_neg": 0.0,
+      "length": 0.375,
+      "exported": 1.0,
+      "signal_peptide": 0.5
+    },
+    "virulence_associated_non_toxin": {
+      "margin": 1.0,
+      "nn_pos": 0.5,
+      "kmer_pos": 0.16666666666666666,
+      "nn_neg": 0.0,
+      "length": 0.16666666666666666,
+      "exported": 0.5833333333333334,
+      "signal_peptide": 0.8333333333333334
+    }
+  }
+}

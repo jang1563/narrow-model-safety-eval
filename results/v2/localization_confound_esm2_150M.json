@@ -1,0 +1,104 @@
+{
+  "model": "facebook/esm2_t30_150M_UR50D",
+  "tag": "esm2_150M",
+  "n_positive": 80,
+  "n_negative": 154,
+  "exported_agreement_with_hazard": 0.5982905982905983,
+  "exported_crosstab": {
+    "pos_yes": 57,
+    "pos_no": 23,
+    "neg_yes": 71,
+    "neg_no": 83
+  },
+  "signal_peptide_agreement_with_hazard": 0.5555555555555556,
+  "signal_peptide_crosstab": {
+    "pos_yes": 44,
+    "pos_no": 36,
+    "neg_yes": 68,
+    "neg_no": 86
+  },
+  "localization_axis_auroc": [
+    0.9192194472194473,
+    0.024508000101960872,
+    128,
+    106
+  ],
+  "signal_axis_auroc": [
+    0.9709743083003953,
+    0.018559655350432303,
+    112,
+    122
+  ],
+  "stratified_baseline": {
+    "exported": [
+      0.9141558441558442,
+      0.05290768578814405,
+      57,
+      71
+    ],
+    "not_exported": [
+      0.9391176470588235,
+      0.0742062961915205,
+      23,
+      83
+    ],
+    "signal_peptide": [
+      0.9618437118437118,
+      0.009832661501972255,
+      44,
+      68
+    ],
+    "no_signal_peptide": [
+      0.9387021475256769,
+      0.04577249472019234,
+      36,
+      86
+    ]
+  },
+  "doubly_controlled": {
+    "exported": [
+      0.857104377104377,
+      0.04931084199196404,
+      57,
+      49
+    ],
+    "not_exported": [
+      0.9018181818181817,
+      0.099195107850577,
+      23,
+      55
+    ],
+    "signal_peptide": [
+      0.9370202020202021,
+      0.01992461048680017,
+      44,
+      54
+    ],
+    "no_signal_peptide": [
+      0.9685714285714286,
+      0.03428571428571427,
+      36,
+      50
+    ]
+  },
+  "sensitivity_known_localization_only": {
+    "baseline_exported": [
+      0.9141558441558442,
+      0.05290768578814405,
+      57,
+      71
+    ],
+    "baseline_not_exported": null,
+    "pathogen_matched_exported": [
+      0.857104377104377,
+      0.04931084199196404,
+      57,
+      49
+    ],
+    "pathogen_matched_not_exported": null
+  },
+  "n_unknown_localization": {
+    "positive": 18,
+    "negative": 32
+  }
+}

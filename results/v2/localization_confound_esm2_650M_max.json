@@ -1,0 +1,104 @@
+{
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "tag": "esm2_650M_max",
+  "n_positive": 80,
+  "n_negative": 154,
+  "exported_agreement_with_hazard": 0.5982905982905983,
+  "exported_crosstab": {
+    "pos_yes": 57,
+    "pos_no": 23,
+    "neg_yes": 71,
+    "neg_no": 83
+  },
+  "signal_peptide_agreement_with_hazard": 0.5555555555555556,
+  "signal_peptide_crosstab": {
+    "pos_yes": 44,
+    "pos_no": 36,
+    "neg_yes": 68,
+    "neg_no": 86
+  },
+  "localization_axis_auroc": [
+    0.9282930402930404,
+    0.036432033345815795,
+    128,
+    106
+  ],
+  "signal_axis_auroc": [
+    0.9560368906455864,
+    0.02090707036038372,
+    112,
+    122
+  ],
+  "stratified_baseline": {
+    "exported": [
+      0.9193290043290043,
+      0.050977660921305804,
+      57,
+      71
+    ],
+    "not_exported": [
+      0.9580882352941178,
+      0.05070864602813724,
+      23,
+      83
+    ],
+    "signal_peptide": [
+      0.9627747252747252,
+      0.02492796299127108,
+      44,
+      68
+    ],
+    "no_signal_peptide": [
+      0.9673202614379086,
+      0.04005156039127398,
+      36,
+      86
+    ]
+  },
+  "doubly_controlled": {
+    "exported": [
+      0.9338888888888889,
+      0.046293712814356874,
+      57,
+      49
+    ],
+    "not_exported": [
+      0.9609090909090909,
+      0.0513937964549184,
+      23,
+      55
+    ],
+    "signal_peptide": [
+      0.9669191919191918,
+      0.02954005821391872,
+      44,
+      54
+    ],
+    "no_signal_peptide": [
+      0.9914285714285714,
+      0.011428571428571427,
+      36,
+      50
+    ]
+  },
+  "sensitivity_known_localization_only": {
+    "baseline_exported": [
+      0.9193290043290043,
+      0.050977660921305804,
+      57,
+      71
+    ],
+    "baseline_not_exported": null,
+    "pathogen_matched_exported": [
+      0.9338888888888889,
+      0.046293712814356874,
+      57,
+      49
+    ],
+    "pathogen_matched_not_exported": null
+  },
+  "n_unknown_localization": {
+    "positive": 18,
+    "negative": 32
+  }
+}

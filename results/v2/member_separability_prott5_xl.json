@@ -1,0 +1,56 @@
+{
+  "model": "Rostlab/prot_t5_xl_half_uniref50-enc",
+  "tag": "prott5_xl",
+  "n_rows": 58,
+  "n_caught": 39,
+  "pooled": {
+    "margin": {
+      "auroc": 0.9973009446693657,
+      "perm_p": 0.0
+    },
+    "nn_pos": {
+      "auroc": 0.8839406207827261,
+      "perm_p": 0.0
+    },
+    "kmer_pos": {
+      "auroc": 0.3434547908232119,
+      "perm_p": 0.055
+    },
+    "nn_neg": {
+      "auroc": 0.016194331983805668,
+      "perm_p": 0.0
+    },
+    "length": {
+      "auroc": 0.5762483130904184,
+      "perm_p": 0.37
+    },
+    "exported": {
+      "auroc": 0.43859649122807015,
+      "perm_p": 0.385
+    },
+    "signal_peptide": {
+      "auroc": 0.4143049932523617,
+      "perm_p": 0.245
+    }
+  },
+  "within": {
+    "t3ss_effector_apparatus": {
+      "margin": 1.0,
+      "nn_pos": 1.0,
+      "kmer_pos": 0.9375,
+      "nn_neg": 0.0,
+      "length": 0.375,
+      "exported": 1.0,
+      "signal_peptide": 0.5
+    },
+    "virulence_associated_non_toxin": {
+      "margin": 1.0,
+      "nn_pos": 1.0,
+      "kmer_pos": 0.2,
+      "nn_neg": 0.0,
+      "length": 0.0,
+      "exported": 0.6,
+      "signal_peptide": 0.9
+    }
+  }
+}

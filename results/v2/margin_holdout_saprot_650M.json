@@ -2,52 +2,72 @@
   "model": "westlake-repl/SaProt_650M_AF2",
   "tag": "saprot_650M",
   "k": 10,
-  "seeds": 20,
+  "seeds": 30,
   "margin": {
-    "min": -0.18539613485336304,
-    "median": 0.023331433534622192,
-    "max": 0.5951005220413208
+    "min": -0.1853964924812317,
+    "median": 0.035051703453063965,
+    "max": 0.6183725595474243
   },
   "holdout": {
     "low_margin": [
-      0.16500000000000004,
-      0.11521718621802912
+      0.12000000000000002,
+      0.12220201853215575
     ],
     "random": [
-      0.7629999999999999,
-      0.10658799181896624
+      0.7991111111111111,
+      0.09822473601609777
     ],
     "random_class_matched": [
-      0.6014999999999999,
-      0.08625688378326678
+      0.6102222222222223,
+      0.11563971294445757
     ],
     "high_margin": [
-      0.975,
-      0.043301270189221926
+      0.99,
+      0.029999999999999992
     ]
   },
-  "low_minus_random": -0.5979999999999999,
-  "low_minus_class_matched_random": -0.4364999999999999,
+  "low_minus_random": -0.6791111111111111,
+  "low_minus_class_matched_random": -0.49022222222222234,
   "within_class_median_split": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "low_half": 0.9583333333333334,
+      "high_half": 1.0
+    },
     "beta_lactamase": {
       "n": 14,
-      "low_half": 0.09285714285714285,
-      "high_half": 0.17142857142857143
+      "low_half": 0.06666666666666667,
+      "high_half": 0.14285714285714285
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "low_half": 1.0,
+      "high_half": 1.0
     },
     "pore_forming_cytolysin": {
       "n": 7,
-      "low_half": 0.6125,
-      "high_half": 0.9166666666666666
+      "low_half": 0.8,
+      "high_half": 0.9444444444444444
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "low_half": 0.9833333333333333,
+      "high_half": 1.0
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "low_half": 1.0,
+      "high_half": 1.0
     },
     "t3ss_effector_apparatus": {
       "n": 10,
-      "low_half": 0.5899999999999999,
-      "high_half": 0.9199999999999999
+      "low_half": 0.5866666666666667,
+      "high_half": 0.9666666666666667
     },
     "virulence_associated_non_toxin": {
       "n": 10,
-      "low_half": 0.01,
-      "high_half": 0.5800000000000001
+      "low_half": 0.013333333333333334,
+      "high_half": 0.4933333333333333
     }
   }
 }

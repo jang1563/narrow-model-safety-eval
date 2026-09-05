@@ -36,6 +36,8 @@
 
 For the full evaluator-facing description (metrics, audits, limitations, responsible release), see [`docs/EVALUATION_REPORT.md`](docs/EVALUATION_REPORT.md).
 
+A second line of work asks a different question — **what the probe does when the hazardous molecule is not on the list at all** — by holding out entire toxin mechanism classes. That panel, its controls, and its negative results are documented separately in [`docs/MECHANISM_GENERALIZATION.md`](docs/MECHANISM_GENERALIZATION.md); the preregistered claim that failed twice is in [`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md`](docs/EXTERNAL_VALIDATION_PREREGISTRATION.md).
+
 This is a **proof-of-concept evaluation framework**, not a deployed safety system. Each metric (FSPE, FSI, Physical Realizability Tier) is designed as a *measurement* over public reference proteins, not as an objective that an attack pipeline could target. Numbers should be read as evidence that text-based safety classifiers cannot detect dual-use risk in narrow scientific models, motivating the development of model-specific evaluation frameworks; they should not be read as a global capability claim about any protein language model in isolation. See [`SAFETY.md`](SAFETY.md) and [`DISCLAIMER.md`](DISCLAIMER.md) for the responsible-use scope.
 
 ---
@@ -398,8 +400,10 @@ narrow-model-safety-eval/
 ├── dashboard/app.py                Interactive Streamlit visualization
 ├── docs/
 │   ├── EVALUATION_REPORT.md        Evaluator-facing report (metrics, audits, scope)
+│   ├── MECHANISM_GENERALIZATION.md Leave-one-mechanism-out: the unseen-mechanism panel
 │   ├── ARCHITECTURE.md             Pipeline design rationale
 │   ├── DATA_CORRECTIONS.md         Accession and annotation correction log
+│   ├── EXTERNAL_VALIDATION_PREREGISTRATION.md  Frozen prediction + two failed outcomes
 │   ├── FSI_NUMBERING_AUDIT.md      Residue-numbering audit
 │   ├── PUBLISHING_CHECKLIST.md     GitHub/Hugging Face release gates
 │   └── RELEASE_SURFACE.md          Published/withheld artifact policy

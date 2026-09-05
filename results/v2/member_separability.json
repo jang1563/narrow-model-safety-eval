@@ -1,52 +1,52 @@
 {
   "model": "facebook/esm2_t33_650M_UR50D",
   "tag": null,
-  "n_rows": 50,
-  "n_caught": 31,
+  "n_rows": 64,
+  "n_caught": 44,
   "pooled": {
     "margin": {
-      "auroc": 0.9422750424448217,
+      "auroc": 0.9602272727272727,
       "perm_p": 0.0
     },
     "nn_pos": {
-      "auroc": 0.9151103565365025,
+      "auroc": 0.9488636363636364,
       "perm_p": 0.0
     },
     "kmer_pos": {
-      "auroc": 0.48217317487266553,
-      "perm_p": 0.86
+      "auroc": 0.37272727272727274,
+      "perm_p": 0.135
     },
     "nn_neg": {
-      "auroc": 0.4074702886247878,
-      "perm_p": 0.26
+      "auroc": 0.42045454545454547,
+      "perm_p": 0.325
     },
     "length": {
-      "auroc": 0.49151103565365023,
-      "perm_p": 0.9
+      "auroc": 0.5159090909090909,
+      "perm_p": 0.915
     },
     "exported": {
-      "auroc": 0.4762308998302207,
-      "perm_p": 0.715
+      "auroc": 0.45454545454545453,
+      "perm_p": 0.53
     },
     "signal_peptide": {
-      "auroc": 0.3938879456706282,
-      "perm_p": 0.31
+      "auroc": 0.425,
+      "perm_p": 0.33
     }
   },
   "within": {
     "contact_dependent_inhibition": {
-      "margin": 1.0,
-      "nn_pos": 1.0,
+      "margin": 0.6666666666666666,
+      "nn_pos": 0.6666666666666666,
       "kmer_pos": 1.0,
-      "nn_neg": 1.0,
-      "length": 0.0,
-      "exported": 0.0,
-      "signal_peptide": 0.5
+      "nn_neg": 0.6666666666666666,
+      "length": 0.3333333333333333,
+      "exported": 0.16666666666666666,
+      "signal_peptide": 0.3333333333333333
     },
     "pore_forming_cytolysin": {
       "margin": 1.0,
       "nn_pos": 0.6666666666666666,
-      "kmer_pos": 0.5,
+      "kmer_pos": 0.6666666666666666,
       "nn_neg": 0.0,
       "length": 0.6666666666666666,
       "exported": 0.5,
@@ -62,13 +62,13 @@
       "signal_peptide": 0.5
     },
     "virulence_associated_non_toxin": {
-      "margin": 0.56,
-      "nn_pos": 0.44,
-      "kmer_pos": 0.6,
-      "nn_neg": 0.36,
-      "length": 0.16,
-      "exported": 0.5,
-      "signal_peptide": 0.7
+      "margin": 0.6,
+      "nn_pos": 0.5,
+      "kmer_pos": 0.5,
+      "nn_neg": 0.35,
+      "length": 0.15,
+      "exported": 0.525,
+      "signal_peptide": 0.675
     }
   }
 }

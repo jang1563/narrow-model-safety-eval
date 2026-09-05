@@ -1,0 +1,91 @@
+{
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "tag": "esm2_650M_max",
+  "seeds": 30,
+  "fixed_train_positives": 66,
+  "classes": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "probe": 1.0,
+      "similarity_only": 0.9857142857142858,
+      "size_fixed_probe": 1.0,
+      "within_cosine": 0.9745627925509498,
+      "within_kmer_mean": 0.0004251879390737422,
+      "within_kmer_max": 0.006998444790046656
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "probe": 0.019047619047619046,
+      "similarity_only": 0.0,
+      "size_fixed_probe": 0.019047619047619046,
+      "within_cosine": 0.9721460080408788,
+      "within_kmer_mean": 0.014504596248306495,
+      "within_kmer_max": 0.5210843373493976
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "probe": 1.0,
+      "similarity_only": 0.9666666666666667,
+      "size_fixed_probe": 1.0,
+      "within_cosine": 0.9896132151285807,
+      "within_kmer_mean": 0.041437710199156166,
+      "within_kmer_max": 0.4936416184971098
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "probe": 0.2916666666666667,
+      "similarity_only": 0.2833333333333333,
+      "size_fixed_probe": 0.2833333333333333,
+      "within_cosine": 0.9170047342777252,
+      "within_kmer_mean": 0.0002459715176163124,
+      "within_kmer_max": 0.0009643201542912247
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "probe": 0.7095238095238098,
+      "similarity_only": 0.5904761904761905,
+      "size_fixed_probe": 0.7285714285714288,
+      "within_cosine": 0.9465727181661696,
+      "within_kmer_mean": 0.0007375112271712739,
+      "within_kmer_max": 0.009250693802035153
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "probe": 0.8904761904761906,
+      "similarity_only": 0.5714285714285714,
+      "size_fixed_probe": 0.8857142857142859,
+      "within_cosine": 0.9195797301474071,
+      "within_kmer_mean": 0.005268885656656424,
+      "within_kmer_max": 0.04380952380952381
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "probe": 1.0,
+      "similarity_only": 1.0,
+      "size_fixed_probe": 1.0,
+      "within_cosine": 0.9787654791559491,
+      "within_kmer_mean": 0.05275277704833052,
+      "within_kmer_max": 0.8131487889273357
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "probe": 0.7266666666666665,
+      "similarity_only": 0.7133333333333332,
+      "size_fixed_probe": 0.7199999999999999,
+      "within_cosine": 0.9268534421920777,
+      "within_kmer_mean": 0.019908144147406326,
+      "within_kmer_max": 0.8105849582172702
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "probe": 0.3966666666666666,
+      "similarity_only": 0.17333333333333334,
+      "size_fixed_probe": 0.3933333333333333,
+      "within_cosine": 0.9326217426194086,
+      "within_kmer_mean": 9.089427420440023e-05,
+      "within_kmer_max": 0.0011185682326621924
+    }
+  },
+  "probe_minus_similarity_mean": 0.08330687830687834,
+  "probe_minus_sizefixed_mean": 0.0004497354497354469
+}

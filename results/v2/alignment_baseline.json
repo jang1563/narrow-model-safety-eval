@@ -4,89 +4,89 @@
   "seeds": 30,
   "aligner": "Bio.Align.PairwiseAligner local BLOSUM62 gap -11/-1, normalized by self-score",
   "homology_all_max": 0.2788150298669548,
-  "homology_all_median": 0.03307982293901248,
+  "homology_all_median": 0.03348927598035473,
   "homology_n_above_0.30": 0,
   "positive_vs_negative_max": 0.055800567264162076,
-  "probe_minus_alignment_mean": 0.532283950617284,
+  "probe_minus_alignment_mean": 0.5588095238095239,
   "classes": {
     "adp_ribosyl_ab_toxin": {
       "align_max": 0.042442979846201254,
-      "align_median": 0.030336360560499327,
+      "align_median": 0.030301448782324724,
       "n_above_0.30": 0,
-      "n": 3,
-      "alignment_recovery": 0.28888888888888886,
+      "n": 7,
+      "alignment_recovery": 0.18571428571428575,
       "probe_recovery": 1.0,
-      "embedding_recovery": 0.7777777777777779
+      "embedding_recovery": 0.8761904761904763
     },
     "beta_lactamase": {
       "align_max": 0.042717520508698516,
-      "align_median": 0.03498717928174713,
+      "align_median": 0.03502465198758946,
       "n_above_0.30": 0,
       "n": 14,
-      "alignment_recovery": 0.30952380952380953,
+      "alignment_recovery": 0.2952380952380952,
       "probe_recovery": 0.21428571428571427,
       "embedding_recovery": 0.009523809523809523
     },
     "clostridial_neurotoxin": {
       "align_max": 0.02608720510878062,
-      "align_median": 0.02263899392878569,
+      "align_median": 0.02281757973402196,
       "n_above_0.30": 0,
-      "n": 4,
-      "alignment_recovery": 0.30833333333333335,
+      "n": 6,
+      "alignment_recovery": 0.2,
       "probe_recovery": 1.0,
       "embedding_recovery": 1.0
     },
     "contact_dependent_inhibition": {
       "align_max": 0.04055855605261651,
-      "align_median": 0.040327143591818194,
-      "n_above_0.30": 0,
-      "n": 3,
-      "alignment_recovery": 0.27777777777777773,
-      "probe_recovery": 0.4666666666666666,
-      "embedding_recovery": 0.16666666666666663
-    },
-    "pore_forming_cytolysin": {
-      "align_max": 0.030612697106400195,
-      "align_median": 0.02890882641714934,
-      "n_above_0.30": 0,
-      "n": 7,
-      "alignment_recovery": 0.009523809523809523,
-      "probe_recovery": 0.5714285714285714,
-      "embedding_recovery": 0.5619047619047618
-    },
-    "rip_rrna_glycosidase": {
-      "align_max": 0.035262268744188204,
-      "align_median": 0.0296050373197102,
-      "n_above_0.30": 0,
-      "n": 3,
-      "alignment_recovery": 0.34444444444444444,
-      "probe_recovery": 1.0,
-      "embedding_recovery": 0.9888888888888888
-    },
-    "superantigen_enterotoxin": {
-      "align_max": 0.03827175425649412,
-      "align_median": 0.03685100780993935,
+      "align_median": 0.03632918466700132,
       "n_above_0.30": 0,
       "n": 4,
-      "alignment_recovery": 0.05,
+      "alignment_recovery": 0.20833333333333334,
+      "probe_recovery": 0.35,
+      "embedding_recovery": 0.125
+    },
+    "pore_forming_cytolysin": {
+      "align_max": 0.03364725904811278,
+      "align_median": 0.030508216621385715,
+      "n_above_0.30": 0,
+      "n": 7,
+      "alignment_recovery": 0.12380952380952379,
+      "probe_recovery": 0.6857142857142857,
+      "embedding_recovery": 0.5952380952380951
+    },
+    "rip_rrna_glycosidase": {
+      "align_max": 0.04114842428009134,
+      "align_median": 0.0296050373197102,
+      "n_above_0.30": 0,
+      "n": 7,
+      "alignment_recovery": 0.28571428571428575,
+      "probe_recovery": 1.0,
+      "embedding_recovery": 1.0
+    },
+    "superantigen_enterotoxin": {
+      "align_max": 0.04105785153807093,
+      "align_median": 0.03827175425649412,
+      "n_above_0.30": 0,
+      "n": 7,
+      "alignment_recovery": 0.06190476190476189,
       "probe_recovery": 1.0,
       "embedding_recovery": 1.0
     },
     "t3ss_effector_apparatus": {
       "align_max": 0.2788150298669548,
-      "align_median": 0.03452020768895973,
+      "align_median": 0.035447126579528795,
       "n_above_0.30": 0,
       "n": 10,
-      "alignment_recovery": 0.14333333333333328,
+      "alignment_recovery": 0.14,
       "probe_recovery": 0.8,
       "embedding_recovery": 0.6666666666666666
     },
     "virulence_associated_non_toxin": {
-      "align_max": 0.04055855605261651,
+      "align_max": 0.04114842428009134,
       "align_median": 0.029032381339068748,
       "n_above_0.30": 0,
       "n": 10,
-      "alignment_recovery": 0.030000000000000002,
+      "alignment_recovery": 0.020000000000000004,
       "probe_recovery": 0.5,
       "embedding_recovery": 0.21666666666666667
     }

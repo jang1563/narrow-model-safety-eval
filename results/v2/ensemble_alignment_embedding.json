@@ -5,77 +5,77 @@
   "split": 0.975,
   "per_class": {
     "adp_ribosyl_ab_toxin": {
-      "embedding": 1.0,
-      "alignment": 0.29999999999999993,
-      "max": 0.9,
-      "or_split": 0.9666666666666666,
-      "learned": 1.0
+      "embedding": 0.9928571428571429,
+      "alignment": 0.19999999999999998,
+      "max": 0.8642857142857142,
+      "or_split": 0.9714285714285715,
+      "learned": 0.9928571428571429
     },
     "beta_lactamase": {
-      "embedding": 0.18928571428571425,
-      "alignment": 0.33214285714285713,
-      "max": 0.23928571428571432,
-      "or_split": 0.28214285714285714,
-      "learned": 0.18928571428571425
+      "embedding": 0.15714285714285717,
+      "alignment": 0.3214285714285714,
+      "max": 0.18571428571428572,
+      "or_split": 0.24285714285714288,
+      "learned": 0.16071428571428573
     },
     "clostridial_neurotoxin": {
       "embedding": 1.0,
-      "alignment": 0.325,
-      "max": 1.0,
+      "alignment": 0.20833333333333331,
+      "max": 0.8666666666666668,
       "or_split": 1.0,
       "learned": 1.0
     },
     "contact_dependent_inhibition": {
-      "embedding": 0.4833333333333334,
-      "alignment": 0.3166666666666666,
-      "max": 0.4833333333333333,
-      "or_split": 0.4666666666666666,
-      "learned": 0.4833333333333334
+      "embedding": 0.4,
+      "alignment": 0.2375,
+      "max": 0.3375,
+      "or_split": 0.325,
+      "learned": 0.4
     },
     "pore_forming_cytolysin": {
-      "embedding": 0.6214285714285713,
-      "alignment": 0.014285714285714285,
-      "max": 0.42857142857142855,
-      "or_split": 0.5642857142857143,
-      "learned": 0.6214285714285713
+      "embedding": 0.7071428571428571,
+      "alignment": 0.14285714285714285,
+      "max": 0.5857142857142856,
+      "or_split": 0.6499999999999999,
+      "learned": 0.7071428571428571
     },
     "rip_rrna_glycosidase": {
-      "embedding": 0.9833333333333332,
-      "alignment": 0.33333333333333326,
-      "max": 0.8333333333333333,
-      "or_split": 0.9666666666666666,
-      "learned": 0.9833333333333332
+      "embedding": 1.0,
+      "alignment": 0.2857142857142857,
+      "max": 0.8285714285714285,
+      "or_split": 0.9857142857142858,
+      "learned": 1.0
     },
     "superantigen_enterotoxin": {
       "embedding": 1.0,
-      "alignment": 0.0375,
-      "max": 1.0,
+      "alignment": 0.05714285714285714,
+      "max": 0.6357142857142856,
       "or_split": 1.0,
       "learned": 1.0
     },
     "t3ss_effector_apparatus": {
       "embedding": 0.8000000000000002,
       "alignment": 0.155,
-      "max": 0.5599999999999999,
+      "max": 0.57,
       "or_split": 0.805,
       "learned": 0.8000000000000002
     },
     "virulence_associated_non_toxin": {
-      "embedding": 0.505,
-      "alignment": 0.030000000000000006,
-      "max": 0.3350000000000001,
-      "or_split": 0.51,
-      "learned": 0.505
+      "embedding": 0.52,
+      "alignment": 0.025,
+      "max": 0.33000000000000007,
+      "or_split": 0.48500000000000004,
+      "learned": 0.52
     }
   },
   "means": {
-    "embedding": 0.7313756613756613,
-    "alignment": 0.20488095238095239,
-    "max": 0.6421693121693122,
-    "or_split": 0.729047619047619,
-    "learned": 0.7313756613756613
+    "embedding": 0.7307936507936508,
+    "alignment": 0.1814417989417989,
+    "max": 0.5782407407407406,
+    "or_split": 0.7183333333333334,
+    "learned": 0.7311904761904763
   },
-  "or_split_achieved_fpr": 0.06557377049180327,
-  "embedding_alignment_class_correlation": 0.016461276350841964,
+  "or_split_achieved_fpr": 0.06484517304189436,
+  "embedding_alignment_class_correlation": -0.2463597680427641,
   "verdict": "no combination beats the embedding probe alone under a fixed false-positive budget"
 }

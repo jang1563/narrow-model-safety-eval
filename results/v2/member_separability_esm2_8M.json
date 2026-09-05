@@ -1,0 +1,65 @@
+{
+  "model": "facebook/esm2_t6_8M_UR50D",
+  "tag": "esm2_8M",
+  "n_rows": 44,
+  "n_caught": 18,
+  "pooled": {
+    "margin": {
+      "auroc": 0.9252136752136753,
+      "perm_p": 0.0
+    },
+    "nn_pos": {
+      "auroc": 0.9743589743589743,
+      "perm_p": 0.0
+    },
+    "kmer_pos": {
+      "auroc": 0.34935897435897434,
+      "perm_p": 0.095
+    },
+    "nn_neg": {
+      "auroc": 0.7970085470085471,
+      "perm_p": 0.0
+    },
+    "length": {
+      "auroc": 0.6036324786324786,
+      "perm_p": 0.29
+    },
+    "exported": {
+      "auroc": 0.46794871794871795,
+      "perm_p": 0.71
+    },
+    "signal_peptide": {
+      "auroc": 0.45085470085470086,
+      "perm_p": 0.51
+    }
+  },
+  "within": {
+    "adp_ribosyl_ab_toxin": {
+      "margin": 1.0,
+      "nn_pos": 0.75,
+      "kmer_pos": 0.75,
+      "nn_neg": 0.0,
+      "length": 0.25,
+      "exported": 0.75,
+      "signal_peptide": 0.5
+    },
+    "pore_forming_cytolysin": {
+      "margin": 1.0,
+      "nn_pos": 1.0,
+      "kmer_pos": 0.0,
+      "nn_neg": 1.0,
+      "length": 0.0,
+      "exported": 0.5,
+      "signal_peptide": 0.5
+    },
+    "t3ss_effector_apparatus": {
+      "margin": 1.0,
+      "nn_pos": 1.0,
+      "kmer_pos": 1.0,
+      "nn_neg": 0.0,
+      "length": 1.0,
+      "exported": 0.8333333333333334,
+      "signal_peptide": 0.5
+    }
+  }
+}

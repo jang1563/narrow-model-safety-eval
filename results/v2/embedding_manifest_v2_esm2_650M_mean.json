@@ -3,7 +3,7 @@
   "device": "cuda",
   "dry_run_tag": "esm2_650M_mean",
   "pooling": "mean",
-  "built": "2026-09-04 15:27:51",
+  "built": "2026-09-05 11:45:44",
   "embedding_dim": 1280,
   "max_len": 1022,
   "note": "all three poolings come from one forward pass over the same panel",
@@ -469,6 +469,104 @@
       "name": "Q51451_PSEAI",
       "len": 453,
       "sha256": "4d81ed866c77ca48"
+    },
+    {
+      "row": 66,
+      "acc": "sp|Q5EK40|CHXA_VIBCL",
+      "name": "CHXA_VIBCL",
+      "len": 666,
+      "sha256": "c8a010ac613d788c"
+    },
+    {
+      "row": 67,
+      "acc": "sp|P11439|TOXA_PSEAE",
+      "name": "TOXA_PSEAE",
+      "len": 638,
+      "sha256": "9c10ac2f259c8e3f"
+    },
+    {
+      "row": 68,
+      "acc": "sp|P75409|CARDS_MYCPN",
+      "name": "CARDS_MYCPN",
+      "len": 591,
+      "sha256": "b6f1dac928de9c35"
+    },
+    {
+      "row": 69,
+      "acc": "sp|P04977|TOX1_BORPE",
+      "name": "TOX1_BORPE",
+      "len": 269,
+      "sha256": "826d22dce41a8313"
+    },
+    {
+      "row": 70,
+      "acc": "sp|H9T8G6|CDIA9_BURPE",
+      "name": "CDIA9_BURPE",
+      "len": 1307,
+      "sha256": "4be3012f10a01d5c"
+    },
+    {
+      "row": 71,
+      "acc": "sp|Q6EH50|RIP4_PHYHE",
+      "name": "RIP4_PHYHE",
+      "len": 312,
+      "sha256": "e5b54d6e4ae90145"
+    },
+    {
+      "row": 72,
+      "acc": "sp|P33186|RIPG_SURMU",
+      "name": "RIPG_SURMU",
+      "len": 316,
+      "sha256": "372d8de800bdd9d6"
+    },
+    {
+      "row": 73,
+      "acc": "sp|Q9M653|RIPT_POLML",
+      "name": "RIPT_POLML",
+      "len": 603,
+      "sha256": "d51b1d8b4f5d0812"
+    },
+    {
+      "row": 74,
+      "acc": "sp|P85101|RIPLY_SILCH",
+      "name": "RIPLY_SILCH",
+      "len": 234,
+      "sha256": "6be285703bdd83df"
+    },
+    {
+      "row": 75,
+      "acc": "sp|P18640|BXC_CBCP",
+      "name": "BXC_CBCP",
+      "len": 1291,
+      "sha256": "c3d871371ab71620"
+    },
+    {
+      "row": 76,
+      "acc": "sp|P0DPK1|BXX_CLOBO",
+      "name": "BXX_CLOBO",
+      "len": 1306,
+      "sha256": "7cf5ea1496a2ad1d"
+    },
+    {
+      "row": 77,
+      "acc": "sp|P0DG09|SPEG_STRPQ",
+      "name": "SPEG_STRPQ",
+      "len": 234,
+      "sha256": "113a2299ccaea4d2"
+    },
+    {
+      "row": 78,
+      "acc": "sp|P06886|TSST_STAAU",
+      "name": "TSST_STAAU",
+      "len": 234,
+      "sha256": "4f9c9fe6fa826ce4"
+    },
+    {
+      "row": 79,
+      "acc": "sp|P0A0M0|ETXH_STAAU",
+      "name": "ETXH_STAAU",
+      "len": 241,
+      "sha256": "670841b0f5cd08bb"
     }
   ],
   "negative_rows": [
