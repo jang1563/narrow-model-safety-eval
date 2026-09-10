@@ -361,8 +361,8 @@ Scaling redistributes which classes a representation handles; it does not lift t
 ### 9.1 🔴 Every recovery number here uses the worst of four classifier heads
 
 `src/03j_classifier_sweep.py`, 30 seeds. The probe throughout this document is **logistic regression**. It
-is the *worst* of four heads on 6 of 13 arms and the best on 2, and on **11 of 13 arms some other head does
-better** — by a median of 5.0 points:
+is the *worst* of four heads on 7 of 14 arms and the best on 2, and on **12 of 14 arms some other head
+does better** — by a median of 5.1 points:
 
 | arm | logistic | SVM-RBF | random forest | k-NN (5) |
 |---|---|---|---|---|
@@ -370,6 +370,7 @@ better** — by a median of 5.0 points:
 | ESM-2 8M | **54.8%** | 68.9% | 63.7% | 62.3% |
 | ESM-2 3B | 74.8% | 78.6% | 74.8% | **82.7%** |
 | ESM-C 600M | 80.6% | 82.2% | 80.8% | **84.1%** |
+| **ESM-C 6B** | 71.9% | 73.7% | **79.0%** | 75.7% |
 | ESM-3 1.4B | 70.7% | 74.7% | 75.8% | **76.1%** |
 | ProtT5-XL | 72.1% | **74.0%** | 72.6% | 71.2% |
 | SaProt-650M | 71.4% | 74.9% | **77.2%** | 73.4% |
@@ -483,7 +484,51 @@ A pooled effect can be class identity in disguise, so the same test is run **wit
 at AUROC 1.000 within pore-forming and within T3SS, and weakens to 0.667 within contact-dependent and
 0.600 within virulence — the two classes with the least internal structure.
 
-### 10.2 The claim, and its failure
+### 10.2 Does fitting a probe help at all?
+
+`src/03h_probe_vs_similarity.py`, 30 seeds. If margin is what decides recovery, a fair question is whether
+the trained probe earns its place. Two controls answer it. The first replaces the probe with **plain
+nearest-neighbour cosine similarity to the training positives**. The second keeps the probe but subsamples
+the training positives to a **fixed count for every class**, so a class cannot look easy merely because
+holding it out removed less training data.
+
+| arm | probe − similarity-only (pts) | probe − size-fixed probe (pts) |
+|---|---|---|
+| ESM-2 35M | +47.9 | -0.4 |
+| ESM-2 150M | +34.2 | +0.4 |
+| ESM-2 8M | +32.7 | +0.3 |
+| 650M CLS | +14.7 | -0.3 |
+| ESM-2 650M | +11.5 | -0.4 |
+| 650M mean | +11.4 | -0.3 |
+| ESM-C 600M | +10.2 | -0.1 |
+| 650M max | +8.3 | +0.0 |
+| ESM-2 3B | +6.6 | -0.4 |
+| SaProt-650M | +6.2 | +0.5 |
+| ESM-C 300M | +2.6 | -1.1 |
+| ProtT5-XL | -1.6 | -0.1 |
+| ESM-3 1.4B | -4.3 | +0.3 |
+| ESM-C 6B | -5.4 | -0.3 |
+
+**The size control is null everywhere**, within about a point on every arm. Class size was never driving
+the differences between classes, which is worth having ruled out.
+
+**The first control is not null, and it does not point one way.** The benefit of fitting a probe runs from
+**+47.9 points down to −5.4**, and on **3 of 14 arms it is negative**: ProtT5-XL, ESM-3 1.4B, ESM-C 6B. On those,
+a trained linear probe is *worse* than simply asking which training positive a held-out protein sits
+closest to.
+
+🟢 **The pattern within ESM-2 is the interesting part.** The benefit shrinks as the model grows: +32.7 at
+8M, +47.9 at 35M, +34.2 at 150M, +11.5 at 650M, +6.6 at 3B. Read alongside §10.1, that is what you would
+expect if larger models place hazardous proteins in a geometry that already separates them — the more the
+representation encodes, the less a supervised layer adds, until it adds nothing and then costs something.
+
+⚠️ It is a pattern across arms, not a controlled experiment. The arms differ in corpus and precision as
+well as scale (§9.3), five ESM-2 points are not a trend line, and the three negative arms come from three
+different lineages. What can be said is narrow and still useful: **on nearly half the representations
+tested the probe adds less than ten points over nearest-neighbour distance, and on three it adds nothing at
+all.** Any claim that a learned classifier is doing the work has to survive this control first.
+
+### 10.3 The claim, and its failure
 
 `src/03k_margin_holdout.py` turns that into a holdout: rank positives by margin, hold out the lowest, and
 compare against random holdouts of the same size.

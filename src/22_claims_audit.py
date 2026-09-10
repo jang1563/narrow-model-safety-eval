@@ -346,6 +346,26 @@ def margin_effect_across_arms():
             "max_pts": round(max(gaps.values()) * 100, 1)}
 
 
+
+def probe_vs_similarity():
+    """Does fitting a probe beat plain nearest-neighbour distance? On three arms it
+    does not, and that is a load-bearing caveat on every recovery number here, so it
+    is pinned rather than left to a table nobody rechecks. The size-fixed control is
+    pinned too: it is null everywhere, which is what rules out class size as the
+    driver of between-class differences."""
+    import glob
+    d = {}
+    for f in glob.glob(str(R / "v2/probe_vs_similarity*.json")):
+        n = Path(f).stem.replace("probe_vs_similarity", "").lstrip("_") or "esm2_650M"
+        j = json.load(open(f))
+        d[n] = (j["probe_minus_similarity_mean"], j["probe_minus_sizefixed_mean"])
+    neg = sorted(k for k, v in d.items() if v[0] < 0)
+    return {"arms": len(d), "negative_arms": neg,
+            "max_benefit_pts": round(max(v[0] for v in d.values()) * 100, 1),
+            "min_benefit_pts": round(min(v[0] for v in d.values()) * 100, 1),
+            "size_control_max_abs_pts": round(max(abs(v[1]) for v in d.values()) * 100, 1)}
+
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -422,13 +442,18 @@ CLAIMS = [
                 and 0.45 < v["length_auroc"] < 0.55),
      {"docs/MECHANISM_GENERALIZATION.md": "20,000 label shuffles"}, []),
     ("headline figures use the weakest of four classifier heads", classifier_heads,
-     lambda v: (v["arms"] == 13 and v["logistic_worst_on"] == 6 and v["logistic_best_on"] == 2
+     lambda v: (v["arms"] == 14 and v["logistic_worst_on"] == 7 and v["logistic_best_on"] == 2
                 and v["gap_650M_pts"] >= 4 and v["gap_8M_pts"] >= 10),
-     {"docs/MECHANISM_GENERALIZATION.md": "on **11 of 13 arms some other head does"}, []),
+     {"docs/MECHANISM_GENERALIZATION.md": "on **12 of 14 arms some other head"}, []),
     ("internal margin effect holds on mean-pooled arms, not on CLS or max", margin_effect_across_arms,
      lambda v: (v["arms"] == 14 and v["over_25pts"] == 12
                 and v["under_25pts"] == ["esm2_650M_cls", "esm2_650M_max"]),
      {"docs/MECHANISM_GENERALIZATION.md": "**12 of 14 exceed the 25-point threshold**"}, []),
+    ("fitting a probe does not always beat nearest-neighbour distance", probe_vs_similarity,
+     lambda v: (v["arms"] == 14
+                and v["negative_arms"] == ["esm3_1_4B", "esmc_6B", "prott5_xl"]
+                and v["size_control_max_abs_pts"] < 5),
+     {"docs/MECHANISM_GENERALIZATION.md": "on **3 of 14 arms it is negative**"}, []),
     ("every annotation file covers every panel member", annotation_coverage,
      lambda v: not v["gaps"], {}, []),
     ("v2 class eligibility is curated, not a size rule", v2_class_eligibility,
