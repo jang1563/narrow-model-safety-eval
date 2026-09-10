@@ -394,6 +394,38 @@ specificity at which a class still reaches 90% recovery. The sweep stops at the 
 | *virulence_associated_non_toxin* | *0.560* |
 | **beta_lactamase** | **never** — does not reach 90% at any specificity |
 
+### 9.3 🔴 The class is held out of the probe, not out of the pretraining
+
+Every arm in the table above is a supervised probe on top of a pretrained representation, and
+**leave-one-mechanism-out removes the class from the probe's training set, not from the foundation model's.**
+Every model here has seen ricin, Shiga toxin, botulinum neurotoxin and thousands of beta-lactamases during
+pretraining, because they are in the public sequence databases these models were trained on.
+
+So what this document measures is: **can a probe trained without class X locate class X inside a
+representation that has already seen it.** That is a real and useful question — it is the question a
+screening operator faces, since they will be building on a public foundation model — but it is not the same
+as asking whether the system generalises to a function no model has ever encountered. Nothing here speaks
+to that stronger case.
+
+🔴 **This also confounds the cross-model comparison in §9, and the confound is not uniform.** The arms were
+pretrained on very different corpora:
+
+| lineage | pretraining corpus |
+|---|---|
+| ESM-2 (8M – 3B) | UniRef, curated sequences only |
+| **ESM-C (300M, 600M)** | UniRef 83M clusters **plus MGnify 372M plus JGI 2B**, metagenomic data 37.5% of the final training mix |
+| ESM-3, ProtT5, SaProt | differ again, and are not compared on this axis here |
+
+Beta-lactamases are among the most abundant and diverse families in environmental metagenomes, so an
+ESM-C model has plausibly seen far more beta-lactamase diversity in pretraining than any ESM-2 model.
+**That is a candidate explanation for the one anomaly in §9** — ESM-C 600M recovering 51% where every
+UniRef-only arm sits between 0% and 21% — and it is not currently distinguishable from an architectural
+explanation.
+
+⚠️ It is only a candidate. ESM-C 300M shares that corpus and reaches 15.7%, the same as ESM-2 3B, so corpus
+alone does not account for it; any explanation has to involve corpus and capacity together. Corpus
+composition was not a controlled variable in this study and cannot be made one after the fact.
+
 ## 10. The one claim that looked like a competence boundary, and failed
 
 ### 10.1 What predicts whether a member is caught
@@ -466,6 +498,11 @@ Full record: [`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md`](EXTERNAL_VALIDATION
 - **Not deployment-ready.** This is a 234-protein research panel. Common Mechanism and SecureDNA are
   running in production; this is not in that category.
 - **Not evidence that hazard is what is being detected.** See the provenance control in §2.
+- **Not a test of generalisation to functions no model has seen.** The held-out class is removed from the
+  probe's training, not from the foundation model's pretraining, and every class here is in the public
+  databases these models were trained on. See §9.3.
+- **Not a controlled comparison of pretraining corpora.** The arms differ in what they were pretrained on
+  as well as in architecture and scale, and this study cannot separate those. See §9.3.
 
 ## 12. Reproducing
 
