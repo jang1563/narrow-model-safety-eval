@@ -298,7 +298,7 @@ The general reason is worth stating: **OR-ing two detectors raises the negatives
 the calibrated threshold up, so a union is not free under a fixed false-positive budget.** Tuning further
 until something looked better is the failure mode this project documents, so it was stopped and recorded.
 
-## 9. Not the pooling, the head, the scale, or the structure — but partly the lineage
+## 9. Not the pooling, the head, the scale, the structure, or the lineage
 
 Each of these was run as a candidate explanation for the beta-lactamase failure. All were run on the same
 80-protein panel with the same downstream analyses, so an arm cannot look different merely because it was
@@ -315,6 +315,7 @@ measured differently.
 | ESM-2 650M (CLS) | 1280 | 0.946 | 13% | 84% | 43% | 100% | 90% | 100% | 97% | 50% |
 | ESM-C 300M | 960 | 0.947 | 16% | 72% | 94% | 100% | 100% | 94% | 89% | 35% |
 | **ESM-C 600M** | 1152 | 0.963 | **51%** | 80% | 94% | 100% | 100% | 100% | 100% | 50% |
+| **ESM-C 6B** | 2560 | 0.957 | 4% | 84% | 60% | 100% | 100% | 100% | 100% | 45% |
 | ESM-3 1.4B | 1536 | 0.938 | 1% | 72% | 97% | 100% | 100% | 100% | 100% | 50% |
 | ProtT5-XL | 1024 | 0.949 | 3% | 80% | 86% | 100% | 100% | 94% | 100% | 40% |
 | SaProt-650M | 1280 | 0.949 | 10% | 80% | 86% | 100% | 100% | 97% | 94% | 55% |
@@ -329,18 +330,33 @@ against 3B). Scaling redistributes which classes carry the fragility rather than
 **Structure is not the fix.** SaProt with real AlphaFold structures for 231 of 234 panel proteins reaches
 10%, below plain ESM-2.
 
-🔴 **The lineage is, partly, and this corrects an earlier claim.** Earlier write-ups of this work said
+**And not the lineage either, which took a second correction to establish.** Earlier write-ups said
 beta-lactamase resists every configuration tested and that plain alignment beats every embedding method on
-it. **Both statements are wrong.** ESM-C 600M recovers **51%** of beta-lactamase — above alignment's 30%
-and more than double ESM-2 650M. The error was not introduced by the panel expansion: on the previous
-66-protein panel ESM-C 600M already scored 48.6%, so the claim was wrong when it was written. It was
-carried because the class was summarized from the ESM-2 arms and the ESM-C row was not checked against it.
+it. **Both were wrong:** ESM-C 600M recovers **51%**, above alignment's 30% and more than double ESM-2
+650M. That error predated the panel expansion — ESM-C 600M already scored 48.6% on the 66-protein panel —
+and survived because the class was summarized from the ESM-2 arms without checking the ESM-C row.
 
-The corrected statement: **beta-lactamase is the hardest class for 11 of 12 configurations and the only
-class where alignment beats the canonical ESM-2 probe, but it is not unreachable.** One representation
-recovers half of it, and the jump is within a lineage rather than across scale — ESM-C 300M gets 16% and
-ESM-C 600M gets 51%. Why that architecture and that size succeed where a 3B ESM-2 does not is not
-explained by anything measured here.
+The obvious reading of that exception was that ESM-C's pretraining corpus explains it. ESM-C saw UniRef
+83M clusters plus MGnify 372M plus JGI 2B, with metagenomic data at 37.5% of the final training mix, and
+beta-lactamases are among the most diverse families in environmental metagenomes. That reading predicts
+the effect should strengthen with capacity on the same corpus. **It was tested and it is wrong.**
+
+| ESM-C, identical corpus, identical bf16, identical pipeline | β-lactamase@95 | @99 |
+|---|---|---|
+| 300M | 15.7% | 4.3% |
+| **600M** | **51.4%** | **21.4%** |
+| **6B** | **4.3%** | **0.0%** |
+
+Twenty times the parameters on the same data recovers **less than a twelfth** of what 600M does, and less
+than 300M does. So neither corpus nor capacity accounts for it, and the exception narrows rather than
+resolves: **ESM-C 600M is a single anomalous configuration whose cause is not identified by anything
+measured here.**
+
+🟢 **This makes the scale conclusion stronger, not weaker.** The ESM-2 ladder already showed no trend from
+8M to 3B, but it held architecture generation fixed while varying scale. The ESM-C family holds the
+*corpus* fixed across a twentyfold range and the result is **non-monotonic in three of nine classes and
+monotonically decreasing in a fourth**: pore-forming cytolysin loses 34 points going from 600M to 6B.
+Scaling redistributes which classes a representation handles; it does not lift them together.
 
 ### 9.1 🔴 Every recovery number here uses the worst of four classifier heads
 
@@ -417,14 +433,22 @@ pretrained on very different corpora:
 | ESM-3, ProtT5, SaProt | differ again, and are not compared on this axis here |
 
 Beta-lactamases are among the most abundant and diverse families in environmental metagenomes, so an
-ESM-C model has plausibly seen far more beta-lactamase diversity in pretraining than any ESM-2 model.
-**That is a candidate explanation for the one anomaly in §9** — ESM-C 600M recovering 51% where every
-UniRef-only arm sits between 0% and 21% — and it is not currently distinguishable from an architectural
-explanation.
+ESM-C model has plausibly seen far more beta-lactamase diversity in pretraining than any ESM-2 model. That
+was the obvious candidate explanation for the anomaly in §9, and it was tested rather than assumed.
 
-⚠️ It is only a candidate. ESM-C 300M shares that corpus and reaches 15.7%, the same as ESM-2 3B, so corpus
-alone does not account for it; any explanation has to involve corpus and capacity together. Corpus
-composition was not a controlled variable in this study and cannot be made one after the fact.
+🔴 **It does not survive.** ESM-C 6B shares the corpus and the loading precision with 300M and 600M and
+recovers **4.3%** of beta-lactamase, below both. Corpus cannot explain an effect that reverses across a
+twentyfold capacity range on that same corpus, and capacity cannot explain a non-monotonic curve. The
+anomaly is narrower than it was: not a lineage, not a corpus, not a scale, but **one configuration**.
+
+⚠️ **Two variables remain uncontrolled across lineages, and neither can be fixed after the fact.**
+Pretraining corpus is one, as above. The other is numerical: the `esm` package loads ESM-C in **bfloat16**
+on GPU, while the ESM-2 arms run in fp32, and the installed stack has neither Transformer Engine nor a
+fused attention kernel so both fall back to pure PyTorch. The package's own warning states that residual
+stream differences shrink to a few ULP after the final LayerNorm and perplexity stays within rounding
+noise, and the mean embeddings used here are post-LayerNorm, so this is unlikely to move recovery numbers.
+It is recorded because it is an uncontrolled difference between lineages, not because there is evidence it
+mattered. Comparisons **within** ESM-C are unaffected: all three sizes share corpus and precision.
 
 ## 10. The one claim that looked like a competence boundary, and failed
 
@@ -472,7 +496,7 @@ compare against random holdouts of the same size.
 | highest margin | 100.0% ± 0.0 |
 
 That is **−65.4 points** against a class-matched random holdout and −76.7 against an unmatched one. Across
-all 13 arms the gap runs 8.1 to 69.6 points, median 45.1, and **11 of 13 exceed the 25-point threshold** the
+all 14 arms the gap runs 8.1 to 69.6 points, median 45.1, and **12 of 14 exceed the 25-point threshold** the
 preregistration later used. The two that do not are both non-mean poolings of the same model — CLS at
 +17.4 and max at +8.1 — so the effect is a property of mean-pooled representations rather than of every
 representation.

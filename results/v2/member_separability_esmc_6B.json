@@ -1,0 +1,65 @@
+{
+  "model": "esmc_6b",
+  "tag": "esmc_6B",
+  "n_rows": 53,
+  "n_caught": 38,
+  "pooled": {
+    "margin": {
+      "auroc": 0.9964912280701754,
+      "perm_p": 4.999750012499375e-05
+    },
+    "nn_pos": {
+      "auroc": 0.9263157894736842,
+      "perm_p": 4.999750012499375e-05
+    },
+    "kmer_pos": {
+      "auroc": 0.2771929824561403,
+      "perm_p": 0.012699365031748412
+    },
+    "nn_neg": {
+      "auroc": 0.02280701754385965,
+      "perm_p": 4.999750012499375e-05
+    },
+    "length": {
+      "auroc": 0.5184210526315789,
+      "perm_p": 0.8414579271036449
+    },
+    "exported": {
+      "auroc": 0.3824561403508772,
+      "perm_p": 0.11089445527723614
+    },
+    "signal_peptide": {
+      "auroc": 0.38333333333333336,
+      "perm_p": 0.14019299035048247
+    }
+  },
+  "within": {
+    "contact_dependent_inhibition": {
+      "margin": 1.0,
+      "nn_pos": 1.0,
+      "kmer_pos": 0.0,
+      "nn_neg": 1.0,
+      "length": 0.0,
+      "exported": 0.5,
+      "signal_peptide": 1.0
+    },
+    "pore_forming_cytolysin": {
+      "margin": 1.0,
+      "nn_pos": 1.0,
+      "kmer_pos": 1.0,
+      "nn_neg": 0.0,
+      "length": 1.0,
+      "exported": 0.5,
+      "signal_peptide": 0.0
+    },
+    "virulence_associated_non_toxin": {
+      "margin": 1.0,
+      "nn_pos": 0.625,
+      "kmer_pos": 0.5625,
+      "nn_neg": 0.0625,
+      "length": 0.0625,
+      "exported": 0.5,
+      "signal_peptide": 0.75
+    }
+  }
+}

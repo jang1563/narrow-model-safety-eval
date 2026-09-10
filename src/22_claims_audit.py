@@ -406,7 +406,7 @@ CLAIMS = [
      {"docs/MECHANISM_GENERALIZATION.md": "| **beta_lactamase** | 14 | **21%** | **1%** | 0.751 |"},
      []),
     ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
-     lambda v: (v["n_arms"] == 13 and abs(v["alignment"] - 0.30) < 0.02
+     lambda v: (v["n_arms"] == 14 and abs(v["alignment"] - 0.30) < 0.02
                 and v["duplicate_arm_max_diff"] == 0
                 and v["esmc_600M"] is not None and v["esmc_600M"] > v["alignment"]
                 and v["esm2_650M"] < v["alignment"]
@@ -426,9 +426,9 @@ CLAIMS = [
                 and v["gap_650M_pts"] >= 4 and v["gap_8M_pts"] >= 10),
      {"docs/MECHANISM_GENERALIZATION.md": "on **11 of 13 arms some other head does"}, []),
     ("internal margin effect holds on mean-pooled arms, not on CLS or max", margin_effect_across_arms,
-     lambda v: (v["arms"] == 13 and v["over_25pts"] == 11
+     lambda v: (v["arms"] == 14 and v["over_25pts"] == 12
                 and v["under_25pts"] == ["esm2_650M_cls", "esm2_650M_max"]),
-     {"docs/MECHANISM_GENERALIZATION.md": "**11 of 13 exceed the 25-point threshold**"}, []),
+     {"docs/MECHANISM_GENERALIZATION.md": "**12 of 14 exceed the 25-point threshold**"}, []),
     ("every annotation file covers every panel member", annotation_coverage,
      lambda v: not v["gaps"], {}, []),
     ("v2 class eligibility is curated, not a size rule", v2_class_eligibility,
