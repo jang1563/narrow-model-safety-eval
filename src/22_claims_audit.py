@@ -248,6 +248,21 @@ def annotation_coverage():
 
 
 
+def beta_lactamase_provenance():
+    """Beta-lactamase is the only mechanism class in the panel with a written reason
+    that never mentions the panel's own hazard keywords. Every other class's members
+    trace to KW-0800 (Toxin) or KW-0843 (Virulence); beta-lactamase entered through a
+    separate protein_name match for an antimicrobial-resistance query
+    (src/01_collect_data.py), and carries neither hazard keyword on UniProt --
+    KW-0046 "Antibiotic resistance" instead. This does not affect any recovery
+    number, but it was undocumented until 2026-09-11 and is the kind of drift this
+    audit exists to catch. Pins that the disclosure stays in the documents rather
+    than getting edited away as a later pass "cleans up" the prose."""
+    mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v2.json"))
+    n = sum(1 for e in mech["proteins"] if e["mechanism_class"] == "beta_lactamase")
+    return {"beta_lactamase_members": n}
+
+
 def beta_lactamase_across_arms():
     """The corrected beta-lactamase claim. Earlier write-ups said the class resists
     every configuration and that alignment beats every embedding method on it. Both
@@ -425,6 +440,10 @@ CLAIMS = [
      lambda v: True,
      {"docs/MECHANISM_GENERALIZATION.md": "| **beta_lactamase** | 14 | **21%** | **1%** | 0.751 |"},
      []),
+    ("beta-lactamase provenance differs from the panel's hazard definition, documented",
+     beta_lactamase_provenance,
+     lambda v: v["beta_lactamase_members"] == 14,
+     {"docs/MECHANISM_GENERALIZATION.md": "KW-0046"}, []),
     ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
      lambda v: (v["n_arms"] == 14 and abs(v["alignment"] - 0.30) < 0.02
                 and v["duplicate_arm_max_diff"] == 0

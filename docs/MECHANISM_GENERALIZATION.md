@@ -41,6 +41,12 @@ and measure how much of the unseen class is recovered at a fixed false-positive 
 - `virulence_associated_non_toxin` is run as a **labelled control**, not as a mechanism: it collects
   virulence-associated proteins that are not themselves toxins, and it is reported with
   `holdout_eligible: false` so the contrast against real mechanism classes stays visible.
+- 🔴 **`beta_lactamase` entered the panel through a different query than the other eight mechanism
+  classes, and this was not documented until now.** The panel's stated hazard definition is UniProt
+  keywords KW-0800 (Toxin) or KW-0843 (Virulence). Beta-lactamase carries neither — it carries **KW-0046,
+  "Antibiotic resistance"** — and was added through a separate `protein_name:"beta-lactamase"` query
+  written for an explicit `antimicrobial_resistance` block in `src/01_collect_data.py`, bypassing the
+  hazard-keyword definition entirely. See §9.3 for why this matters beyond bookkeeping.
 
 Three confounds are measured rather than assumed away, because a hazard probe that is really an organism
 detector or a secretion detector would look identical on a naive split:
@@ -450,6 +456,36 @@ stream differences shrink to a few ULP after the final LayerNorm and perplexity 
 noise, and the mean embeddings used here are post-LayerNorm, so this is unlikely to move recovery numbers.
 It is recorded because it is an uncontrolled difference between lineages, not because there is evidence it
 mattered. Comparisons **within** ESM-C are unaffected: all three sizes share corpus and precision.
+
+### 9.4 🔴 A third candidate, verified rather than assumed: beta-lactamase may not be the same kind of hazard
+
+Two explanations for the beta-lactamase anomaly have now been tested and refused. Not the classifier head
+(§9.1, still the hardest class with the best of four heads). Not corpus, not capacity, not lineage (§9.3,
+refuted directly on ESM-C 6B). A third candidate does not require any of those to be wrong, because it
+questions whether beta-lactamase belongs in the same comparison at all.
+
+**Verified 2026-09-11.** Beta-lactamase entered this panel through a different route than the other eight
+mechanism classes (§2). Checked directly against UniProt: the class carries **KW-0046, "Antibiotic
+resistance"**, not KW-0800 (Toxin) or KW-0843 (Virulence), which is the hazard definition used everywhere
+else in this panel. And the field's own controlled vocabulary treats this as a real, separate category
+rather than a subtype of the other two: [FunSoCs](https://pmc.ncbi.nlm.nih.gov/articles/PMC9119117/)
+states plainly that it "encompass\[es] sequences involved in the mechanisms of **microbial pathogenesis**,
+**antibiotic resistance**, and **eukaryotic toxins**" — three categories, not one folded into another.
+
+The mechanistic difference is not subtle. All eight other classes in this panel are defined by an
+interaction with a host: a ribosome to inactivate, a membrane to perforate, a T-cell receptor to bridge, a
+secretion apparatus to inject through. Beta-lactamase requires none of that. It sits in the periplasm and
+hydrolyzes a small molecule diffusing in from outside — a perfectly harmless, non-pathogenic soil bacterium
+can carry one with no relationship to virulence at all. If whatever the embedding is keying on for the
+other eight classes is a signature of *host interaction*, beta-lactamase has no reason to carry it, by
+construction, independent of scale, corpus, or head.
+
+⚠️ **This is a candidate, verified against a real provenance gap and a real field vocabulary, not a proof.**
+It has not been tested against an alternative panel of purely host-interacting AMR mechanisms (efflux
+pumps, target-modification enzymes) versus purely small-molecule-hydrolyzing ones, which would be the
+direct test. It is reported here because it is the first candidate with an actual mechanism behind it
+rather than a correlation, and because the panel's own provenance record should have surfaced it earlier
+than this. Logged in [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
 
 ## 10. The one claim that looked like a competence boundary, and failed
 

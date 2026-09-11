@@ -521,3 +521,49 @@ the precision that was actually computed.
   breakdown. Only five classes are binary under both. The document now reports the seed dependence and
   states the robust version of the claim: recovery is concentrated at the extremes, with 8 genuinely
   intermediate members out of 72 at thirty seeds.
+
+---
+
+## 2026-09-11 — Beta-lactamase entered the panel through an undocumented, different route
+
+### Summary
+
+`beta_lactamase` (14 of 80 positives, the largest class in the panel) does not carry either UniProt keyword
+this panel's stated hazard definition uses. Checked directly against UniProt: it carries **KW-0046,
+"Antibiotic resistance"**, not KW-0800 (Toxin) or KW-0843 (Virulence). `src/01_collect_data.py` shows why —
+an explicit `antimicrobial_resistance` query block, `protein_name:"beta-lactamase"`, added the class by
+name match, bypassing the hazard-keyword query entirely. This was never stated in any document describing
+the panel's construction.
+
+### Why this is more than a bookkeeping gap
+
+The field's own controlled vocabulary for this kind of screening, [FunSoCs](https://pmc.ncbi.nlm.nih.gov/articles/PMC9119117/),
+treats antibiotic resistance as a category distinct from toxin and pathogenesis mechanisms, not a subtype
+of either: it "encompass[es] sequences involved in the mechanisms of microbial pathogenesis, antibiotic
+resistance, and eukaryotic toxins." All eight other mechanism classes in this panel are defined by direct
+interaction with a host — a ribosome inactivated, a membrane perforated, a receptor bridged, a secretion
+apparatus injected through. Beta-lactamase requires none of that; it hydrolyzes a diffusing small molecule
+in the periplasm and can exist in a fully non-pathogenic organism with no relationship to virulence.
+
+### Effect on existing claims
+
+**No numeric claim changes.** All reported beta-lactamase figures (21% recovery, ESM-C 600M at 51.4%, the
+6B refutation at 4.3%, alignment at 30%, s90 undefined) are computed the same way regardless of why the
+class was included, and none of the fixes applied to other panel defects this session apply here — the
+class itself was never mislabeled, only its provenance was undocumented.
+
+**One new candidate explanation, alongside two refuted ones.** The corpus/capacity hypothesis for the
+ESM-C anomaly was tested on ESM-C 6B and refuted (2026-09-10 entry). This is a third, independent
+candidate: beta-lactamase may resist generalization not because of any property of the models tested, but
+because it was never the same *kind* of hazard as the other eight classes, and an embedding trained to
+recognize host-interacting toxins has no principled reason to key on it. This is stated as a candidate,
+not a finding — it has not been tested against a panel that separates host-interacting AMR mechanisms
+(efflux pumps, target modification) from purely enzymatic ones (beta-lactamases), which would be the direct
+test.
+
+### Fix
+
+Documented in `docs/MECHANISM_GENERALIZATION.md` §2 (provenance) and new §9.4 (the candidate explanation).
+No code or panel membership change: the class is real, its members are correctly identified UniProt
+entries, and removing it would discard a legitimate hard case rather than correct an error. The error was
+in never having written down that its inclusion criterion differed from the other eight classes.
