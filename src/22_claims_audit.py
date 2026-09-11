@@ -263,6 +263,20 @@ def beta_lactamase_provenance():
     return {"beta_lactamase_members": n}
 
 
+def amr_category_test():
+    """The preregistered test of whether beta-lactamase's difficulty is a property
+    of antibiotic resistance as a category (no host interaction, per FunSoCs)
+    rather than of the model. A second AMR family, screened independently and
+    embedded externally (not part of the internal panel), was predicted to recover
+    <=40% if the hypothesis holds and to refute it at >=70%. Pinned so the result
+    -- refuted at 87.5% -- cannot be reframed as inconclusive later."""
+    d = json.load(open(R / "v2/amr_category_test.json"))
+    return {"n_members": len(d["members"]), "recovery": round(d["recovery_at_95pct"], 4),
+            "predicted_supported_leq": d["predicted_supported_if_recovery_leq"],
+            "predicted_refuted_geq": d["predicted_refuted_if_recovery_geq"],
+            "n_flagged": sum(d["flagged"].values())}
+
+
 def beta_lactamase_across_arms():
     """The corrected beta-lactamase claim. Earlier write-ups said the class resists
     every configuration and that alignment beats every embedding method on it. Both
@@ -440,6 +454,11 @@ CLAIMS = [
      lambda v: True,
      {"docs/MECHANISM_GENERALIZATION.md": "| **beta_lactamase** | 14 | **21%** | **1%** | 0.751 |"},
      []),
+    ("AMR-category hypothesis for beta-lactamase, preregistered and refuted", amr_category_test,
+     lambda v: (v["n_members"] == 8 and v["n_flagged"] == 7
+                and abs(v["recovery"] - 0.875) < 1e-6
+                and v["recovery"] >= v["predicted_refuted_geq"]),
+     {"docs/MECHANISM_GENERALIZATION.md": "Recovery is 87.5% (7 of 8)"}, []),
     ("beta-lactamase provenance differs from the panel's hazard definition, documented",
      beta_lactamase_provenance,
      lambda v: v["beta_lactamase_members"] == 14,

@@ -567,3 +567,91 @@ Documented in `docs/MECHANISM_GENERALIZATION.md` §2 (provenance) and new §9.4 
 No code or panel membership change: the class is real, its members are correctly identified UniProt
 entries, and removing it would discard a legitimate hard case rather than correct an error. The error was
 in never having written down that its inclusion criterion differed from the other eight classes.
+
+---
+
+## 2026-09-11 (second entry) — Systematic keyword audit of all 80 positives, prompted by the beta-lactamase finding
+
+### What was checked
+
+The beta-lactamase finding (previous entry) raised an obvious follow-up: is beta-lactamase the *only*
+class where members lack the panel's stated hazard keywords (KW-0800 Toxin, KW-0843 Virulence), or was
+this found only because someone happened to ask about that one class? All 80 positives were batch-queried
+against the live UniProt REST API and checked for KW-0800/KW-0843.
+
+### Result
+
+| class | n | missing both keywords |
+|---|---|---|
+| **beta_lactamase** | 14 | **14 (100%)** |
+| nuclease_dnase_rnase | 2 | 2 |
+| phospholipase | 2 | 1 |
+| pore_forming_cytolysin | 7 | 1 |
+| all other classes (9) | 55 | 0 |
+
+Five members outside beta-lactamase also lack both keywords. Each was checked individually rather than
+assumed to be the same issue:
+
+- **RNBR_BACAM (Barnase)** — already adjudicated. The `reason` field records a dated 2026-09-03 decision
+  to keep it as a positive (cytotoxic, requires barstar co-expression for safe handling, mechanistically
+  close to the RIP toxins already in the panel). Not a new finding.
+- **MU1_REOVD (reovirus outer-capsid mu-1)** — confirmed via UniProt function text: "involved in host cell
+  membrane penetration." Genuinely host-interacting; UniProt simply uses viral structural-protein keywords
+  rather than KW-0800/0843 for this functional class of protein.
+- **O34208_PSEAI (ExoU)** — a well-characterized *Pseudomonas aeruginosa* T3SS-injected phospholipase; its
+  own `reason` field notes it requires the SpcU secretion chaperone, confirming a host-injected mechanism.
+  UniProt tags it by biochemical activity (lipid metabolism) rather than by toxin role.
+- **CEA2_ECOLX (colicin E2 DNase domain)** — carries KW-0044 "Antibacterial" (UniProt's own definition:
+  "protein with antibacterial activity"), not KW-0800/0843. This is a real, partial parallel to
+  beta-lactamase: colicin E2 kills competing bacteria, not a eukaryotic host. It differs from
+  beta-lactamase in one respect worth keeping straight — it still requires active, receptor-mediated
+  targeting and translocation into a competitor cell, which beta-lactamase never does at all. n=1 in a
+  class of 2 that is not LOMO-eligible, so this does not touch any reported number.
+
+### Conclusion
+
+**Beta-lactamase remains the only class-wide categorical mismatch.** The other four cases are individual
+proteins where UniProt's keyword tagging is narrower than, or oriented differently from, the protein's
+real functional category (viral structural keywords, biochemical-activity keywords, or the
+antibacterial-specific keyword), not panel-construction errors — colicin E2 is the partial exception, and
+it is too small a class to affect anything reported. No panel membership changed as a result of this
+check.
+
+---
+
+## 2026-09-11 (third entry) — The AMR-category hypothesis for beta-lactamase, preregistered and refuted
+
+### The test
+
+§9.4's candidate explanation for the beta-lactamase anomaly — that it fails to generalize because
+antibiotic resistance requires no host interaction, unlike the other eight mechanism classes — was written
+as a hypothesis with a stated, falsifiable prediction before any new data was touched
+(`src/24_amr_category_test.py`). A second, independently screened antibiotic-resistance family
+(aminoglycoside-modifying enzymes: AAC, ANT, APH, and one AAC/APH fusion; 8 members across three fold
+families; ≤0.30 normalized Smith-Waterman against each other and against all 234 existing panel members;
+none carrying KW-0800 or KW-0843) was embedded with the same frozen ESM-2 650M pipeline and scored against
+a probe trained on the full internal panel, at the same 95th-percentile threshold used throughout.
+
+Predicted: recovery ≤40% would support the hypothesis; ≥70% would refute it.
+
+### Result
+
+**Recovery: 87.5% (7 of 8). Refuted.** A second antibiotic-resistance family, spanning more fold diversity
+than beta-lactamase's own members, generalizes about as well as the classes that require host interaction.
+The one member not recovered (AAC6_SALEN, a GNAT-fold acetyltransferase) does not track fold family — its
+GNAT-fold sibling in the bifunctional fusion protein (AACA_ENTFA) was recovered.
+
+### Standing
+
+Three candidate explanations for the beta-lactamase anomaly have now been tested and refused: the
+classifier head (§9.1), pretraining corpus and model capacity (§9.3, ESM-C 6B), and the toxin/AMR
+categorical distinction (this entry). The anomaly is unexplained, exactly as it was after the ESM-C 6B
+result — this closes off one more plausible story rather than finding the real one. No panel membership
+changed; the test class was embedded and scored externally and does not appear in
+`data/annotations/mechanism_classes_v2.json` or any internal panel file.
+
+### Fix
+
+Result recorded in `results/v2/amr_category_test.json`, documented in `docs/MECHANISM_GENERALIZATION.md`
+§9.4, and pinned in the audit so the refutation cannot be silently reframed as inconclusive or supportive
+in later editing.

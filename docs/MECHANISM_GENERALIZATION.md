@@ -457,35 +457,54 @@ noise, and the mean embeddings used here are post-LayerNorm, so this is unlikely
 It is recorded because it is an uncontrolled difference between lineages, not because there is evidence it
 mattered. Comparisons **within** ESM-C are unaffected: all three sizes share corpus and precision.
 
-### 9.4 🔴 A third candidate, verified rather than assumed: beta-lactamase may not be the same kind of hazard
+### 9.4 🔴 A third candidate, preregistered and tested: also refused
 
-Two explanations for the beta-lactamase anomaly have now been tested and refused. Not the classifier head
-(§9.1, still the hardest class with the best of four heads). Not corpus, not capacity, not lineage (§9.3,
-refuted directly on ESM-C 6B). A third candidate does not require any of those to be wrong, because it
-questions whether beta-lactamase belongs in the same comparison at all.
+Two explanations for the beta-lactamase anomaly had already been tested and refused. Not the classifier
+head (§9.1, still the hardest class with the best of four heads). Not corpus, not capacity, not lineage
+(§9.3, refuted directly on ESM-C 6B). A third candidate did not require any of those to be wrong, because
+it questioned whether beta-lactamase belonged in the same comparison at all — and it has now been tested
+too.
 
-**Verified 2026-09-11.** Beta-lactamase entered this panel through a different route than the other eight
-mechanism classes (§2). Checked directly against UniProt: the class carries **KW-0046, "Antibiotic
-resistance"**, not KW-0800 (Toxin) or KW-0843 (Virulence), which is the hazard definition used everywhere
-else in this panel. And the field's own controlled vocabulary treats this as a real, separate category
-rather than a subtype of the other two: [FunSoCs](https://pmc.ncbi.nlm.nih.gov/articles/PMC9119117/)
-states plainly that it "encompass\[es] sequences involved in the mechanisms of **microbial pathogenesis**,
-**antibiotic resistance**, and **eukaryotic toxins**" — three categories, not one folded into another.
+**The candidate.** Beta-lactamase entered this panel through a different route than the other eight
+mechanism classes (§2): it carries UniProt **KW-0046, "Antibiotic resistance,"** not KW-0800 (Toxin) or
+KW-0843 (Virulence), and [FunSoCs](https://pmc.ncbi.nlm.nih.gov/articles/PMC9119117/) treats antibiotic
+resistance as a category distinct from toxin and pathogenesis mechanisms. All eight other classes here
+require interacting with a host — a ribosome inactivated, a membrane perforated, a receptor bridged.
+Beta-lactamase requires none of that; it hydrolyzes a diffusing small molecule in the periplasm. The
+hypothesis: if the representation is keying on a *host-interaction* signature, any class that lacks one
+should generalize poorly, not just this specific enzyme family.
 
-The mechanistic difference is not subtle. All eight other classes in this panel are defined by an
-interaction with a host: a ribosome to inactivate, a membrane to perforate, a T-cell receptor to bridge, a
-secretion apparatus to inject through. Beta-lactamase requires none of that. It sits in the periplasm and
-hydrolyzes a small molecule diffusing in from outside — a perfectly harmless, non-pathogenic soil bacterium
-can carry one with no relationship to virulence at all. If whatever the embedding is keying on for the
-other eight classes is a signature of *host interaction*, beta-lactamase has no reason to carry it, by
-construction, independent of scale, corpus, or head.
+**Preregistered prediction** (`src/24_amr_category_test.py`, written before embedding): a second,
+sequence- and fold-distinct antibiotic-resistance family — aminoglycoside-modifying enzymes, 8 members
+spanning three fold families (GNAT acetyltransferase, nucleotidyltransferase, protein-kinase-like) plus a
+bifunctional fusion, screened at ≤0.30 normalized Smith-Waterman against each other and against all 234
+existing panel members, none carrying KW-0800/KW-0843 — should recover at **≤40%** if the hypothesis holds,
+and be **refuted at ≥70%**. Trained on the full internal panel (external test, not an internal holdout),
+scored at the same 95th-percentile-of-negatives threshold used throughout.
 
-⚠️ **This is a candidate, verified against a real provenance gap and a real field vocabulary, not a proof.**
-It has not been tested against an alternative panel of purely host-interacting AMR mechanisms (efflux
-pumps, target-modification enzymes) versus purely small-molecule-hydrolyzing ones, which would be the
-direct test. It is reported here because it is the first candidate with an actual mechanism behind it
-rather than a correlation, and because the panel's own provenance record should have surfaced it earlier
-than this. Logged in [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
+🔴 **Refuted. Recovery is 87.5% (7 of 8), squarely in the refuted range and close to the host-interacting
+classes' own ceiling, not to beta-lactamase's 21%.** A second antibiotic-resistance family — one that spans
+*more* fold diversity than beta-lactamase's own class A/C/D serine-hydrolase members, and requires no host
+interaction at all — generalizes about as well as the classes that do. "No host interaction" does not
+predict poor recovery. Whatever makes beta-lactamase hard, it is not a property of antibiotic resistance as
+a category.
+
+| member | fold family | score | flagged @95 |
+|---|---|---|---|
+| KKA2_KLEPN | kinase-like (APH) | 0.099 | yes |
+| KKA7_CAMJU | kinase-like (APH) | 0.592 | yes |
+| KANU_STAAU | nucleotidyltransferase (ANT) | 0.076 | yes |
+| S3AD_ECOLX | nucleotidyltransferase (ANT) | 0.985 | yes |
+| AAC6_SALEN | GNAT (AAC) | 0.004 | **no** |
+| AACC3_PSEAI | GNAT (AAC) | 0.076 | yes |
+| EIS_MYCTU | divergent GNAT (Eis) | 0.186 | yes |
+| AACA_ENTFA | bifunctional AAC/APH fusion | 0.128 | yes |
+
+The one miss does not track fold family either — its GNAT sibling in the fusion protein was caught. Three
+candidates now tested for the beta-lactamase anomaly, three refused: not the head, not corpus or capacity,
+not the toxin/AMR category distinction. The anomaly is exactly as unexplained as it was after §9.3, and
+this rules out one more tempting story rather than finding the real one. Logged in
+[`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
 
 ## 10. The one claim that looked like a competence boundary, and failed
 

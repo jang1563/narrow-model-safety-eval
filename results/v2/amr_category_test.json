@@ -1,0 +1,44 @@
+{
+  "built": "2026-09-11 17:11:50",
+  "test": "amr_category_host_interaction_hypothesis",
+  "preregistration": "src/24_amr_category_test.py docstring, written before embedding",
+  "predicted_supported_if_recovery_leq": 0.4,
+  "predicted_refuted_if_recovery_geq": 0.7,
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "n_internal_positive": 80,
+  "n_internal_negative": 154,
+  "threshold_95pct_of_negatives": 0.007506587076932192,
+  "test_class": "aminoglycoside_modifying_enzymes",
+  "members": [
+    "KKA2_KLEPN",
+    "KKA7_CAMJU",
+    "KANU_STAAU",
+    "S3AD_ECOLX",
+    "AAC6_SALEN",
+    "AACC3_PSEAI",
+    "EIS_MYCTU",
+    "AACA_ENTFA"
+  ],
+  "scores": {
+    "KKA2_KLEPN": 0.09864544868469238,
+    "KKA7_CAMJU": 0.5916505455970764,
+    "KANU_STAAU": 0.07572896033525467,
+    "S3AD_ECOLX": 0.9846504330635071,
+    "AAC6_SALEN": 0.00367230293340981,
+    "AACC3_PSEAI": 0.0756678581237793,
+    "EIS_MYCTU": 0.1862058937549591,
+    "AACA_ENTFA": 0.12816835939884186
+  },
+  "flagged": {
+    "KKA2_KLEPN": true,
+    "KKA7_CAMJU": true,
+    "KANU_STAAU": true,
+    "S3AD_ECOLX": true,
+    "AAC6_SALEN": false,
+    "AACC3_PSEAI": true,
+    "EIS_MYCTU": true,
+    "AACA_ENTFA": true
+  },
+  "recovery_at_95pct": 0.875,
+  "verdict": "REFUTED range (>=70%): hypothesis NOT SUPPORTED"
+}
