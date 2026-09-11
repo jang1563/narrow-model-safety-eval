@@ -655,3 +655,82 @@ changed; the test class was embedded and scored externally and does not appear i
 Result recorded in `results/v2/amr_category_test.json`, documented in `docs/MECHANISM_GENERALIZATION.md`
 §9.4, and pinned in the audit so the refutation cannot be silently reframed as inconclusive or supportive
 in later editing.
+
+🔴 **Superseded the same day by the fourth entry below.** The test behind this result had two defects, and
+the corrected verdict is inconclusive rather than refuted. This entry stays as written because it is the
+dated record of what was believed when it was published.
+
+---
+
+## 2026-09-11 (fourth entry) — The AMR-category test above was run wrong, and its refutation was overstated
+
+### How it surfaced
+
+A question about whether beta-lactamase is a hazard class at all, given that it confers antibiotic
+resistance and carries no human toxicity, sent me back to `src/24_amr_category_test.py` to re-read what the
+test had actually compared. Two defects are visible in the source, and both make the refutation look
+stronger than the data supports.
+
+### Defect one: the test class's own category was in the training set
+
+`24` fits on `X = np.vstack([P, N])`, the full internal positive set. **14 of those 80 positives are
+beta-lactamases**, 17.5% of the positives and the largest class in the panel. The probe had already seen
+antibiotic-resistance enzymes when it was asked to reach a new antibiotic-resistance family, so the result
+measures generalization inside a category the probe already knew. The hypothesis was about whether a
+representation trained on host-interacting toxins reaches antibiotic resistance at all.
+
+`src/03b_leave_one_mechanism_out.py` does the opposite for every internal class: line 226,
+`tri = [i for i in range(len(P)) if i not in set(hi.tolist())]`, drops the held-out class from training.
+The two numbers that were compared came from opposite training rules.
+
+### Defect two: the comparison figure came from a different protocol
+
+The 87.5% was set against beta-lactamase's **21%** from the LOMO table. LOMO holds out 40% of the negatives
+and calibrates the threshold on the held-out ones. `24` trains on every negative and calibrates in sample.
+Holding the protocol fixed at `24`'s own and removing each class from training in turn, beta-lactamase
+recovers **50.0%**, and it stays the lowest class in that column. The preregistered bounds in `24`
+("≤40%, in the same range as beta-lactamase's 21%") were anchored to a figure from the other protocol.
+
+### The corrected test
+
+`src/25_amr_category_test_v2.py`, preregistered before re-embedding, runs the 2×2 under one protocol:
+
+| | test: beta-lactamase | test: aminoglycoside |
+|---|---|---|
+| train with AMR | 100.0% (in sample) | 87.5% |
+| train without AMR | 50.0% | **75.0%** |
+
+Re-embedding reproduced the original 87.5% (7 of 8) exactly, so the four cells are comparable.
+
+**Decisive cell: 75.0% (6 of 8). Inconclusive** by the corrected bounds, where ≤62.5% would have meant
+contamination drove the original result and ≥87.5% would have meant it stood. One member moved:
+AACC3_PSEAI, 0.076 to 0.0053.
+
+### What changes and what does not
+
+**No number in the earlier entry was wrong.** 87.5%, 7 of 8, and the per-member scores all reproduce
+exactly. The error was the inference drawn from them.
+
+**The strong hypothesis stays unsupported**, now for a better reason: under an identical training mask,
+aminoglycosides recover 75.0% where beta-lactamases recover 50.0%, so lacking host interaction does not by
+itself produce beta-lactamase's failure.
+
+**A weaker version is live and unproven.** 75.0% sits below the 90 to 100% that host-interacting classes
+reach under the same protocol.
+
+**The standing tally changes.** "Three candidates tested, three refused" becomes two refused and one
+inconclusive. The anomaly is still unexplained.
+
+### The meta-defect
+
+This is the **second preregistration in this project whose falsification criteria failed to cover the
+outcome it got**. The first is in `docs/EXTERNAL_VALIDATION_PREREGISTRATION.md`, under "A flaw in this
+preregistration, recorded rather than quietly fixed", where attempt 2 returned 100% on every arm against
+criteria that set a floor and no ceiling. Both failures share a cause: bounds written without checking
+that the figure they are anchored to comes from the same machinery as the test.
+
+### Fix
+
+Corrected test in `src/25_amr_category_test_v2.py`, result in `results/v2/amr_category_test_v2.json`,
+§9.4 rewritten, and a new audit claim pins the corrected verdict together with the protocol-24 column so
+the stronger reading cannot return. The original script, artifact, and entry stay in place as the record.

@@ -1,0 +1,143 @@
+{
+  "built": "2026-09-11 18:04:09",
+  "test": "amr_category_hypothesis_v2_corrected",
+  "corrects": "src/24_amr_category_test.py",
+  "defects_corrected": [
+    "24 trained on all 80 positives, which include the 14 beta-lactamases, so the test class's own category was in the training set",
+    "24 compared its 87.5% against the LOMO protocol's 21%; under 24's own protocol beta-lactamase recovers 50.0%"
+  ],
+  "preregistration": "src/25_amr_category_test_v2.py docstring, written before re-embedding",
+  "contamination_drove_it_if_leq": 0.625,
+  "refutation_stands_if_geq": 0.875,
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "protocol": "train on selected positives + all negatives; threshold = 95th pct of those negatives",
+  "protocol24_column_internal_classes": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "recovery_at_95pct": 1.0
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "recovery_at_95pct": 0.5
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "recovery_at_95pct": 1.0
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "recovery_at_95pct": 1.0
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "recovery_at_95pct": 1.0
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "recovery_at_95pct": 1.0
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "recovery_at_95pct": 1.0
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "recovery_at_95pct": 0.9
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "recovery_at_95pct": 0.7
+    }
+  },
+  "cells": {
+    "train_with_amr__test_aminoglycoside": {
+      "n_train_positive": 80,
+      "threshold_95pct": 0.007507249076440801,
+      "n_test": 8,
+      "n_flagged": 7,
+      "recovery_at_95pct": 0.875,
+      "in_sample": false
+    },
+    "train_with_amr__test_beta_lactamase": {
+      "n_train_positive": 80,
+      "threshold_95pct": 0.007507249076440801,
+      "n_test": 14,
+      "n_flagged": 14,
+      "recovery_at_95pct": 1.0,
+      "in_sample": true
+    },
+    "train_without_amr__test_aminoglycoside": {
+      "n_train_positive": 66,
+      "threshold_95pct": 0.006454358586701834,
+      "n_test": 8,
+      "n_flagged": 6,
+      "recovery_at_95pct": 0.75,
+      "in_sample": false
+    },
+    "train_without_amr__test_beta_lactamase": {
+      "n_train_positive": 66,
+      "threshold_95pct": 0.006454358586701834,
+      "n_test": 14,
+      "n_flagged": 7,
+      "recovery_at_95pct": 0.5,
+      "in_sample": false
+    }
+  },
+  "scores": {
+    "train_with_amr__test_aminoglycoside": {
+      "KKA2_KLEPN": 0.0987,
+      "KKA7_CAMJU": 0.5917,
+      "KANU_STAAU": 0.0757,
+      "S3AD_ECOLX": 0.9847,
+      "AAC6_SALEN": 0.0037,
+      "AACC3_PSEAI": 0.0757,
+      "EIS_MYCTU": 0.1862,
+      "AACA_ENTFA": 0.1282
+    },
+    "train_with_amr__test_beta_lactamase": {
+      "AMPC_ECOLI": 0.9936,
+      "BLAB_PSEAI": 0.9999,
+      "BLAC_MYCTU": 0.995,
+      "BLAB_AERHY": 0.9926,
+      "BLAB_BACCE": 0.9961,
+      "BLA2_BACCE": 0.9982,
+      "BLO10_PSEAI": 0.9966,
+      "BLAN1_KLEPN": 0.9956,
+      "AMPC_ENTCL": 0.9927,
+      "BLA1_STEMA": 0.9891,
+      "BLAV1_PSEAI": 0.996,
+      "AMPC_CITFR": 0.9978,
+      "BLBI1_SERMA": 0.9998,
+      "BLAG1_KLEPN": 1.0
+    },
+    "train_without_amr__test_aminoglycoside": {
+      "KKA2_KLEPN": 0.0116,
+      "KKA7_CAMJU": 0.2522,
+      "KANU_STAAU": 0.0671,
+      "S3AD_ECOLX": 0.8656,
+      "AAC6_SALEN": 0.0022,
+      "AACC3_PSEAI": 0.0053,
+      "EIS_MYCTU": 0.089,
+      "AACA_ENTFA": 0.0717
+    },
+    "train_without_amr__test_beta_lactamase": {
+      "AMPC_ECOLI": 0.0,
+      "BLAB_PSEAI": 0.1854,
+      "BLAC_MYCTU": 0.012,
+      "BLAB_AERHY": 0.0057,
+      "BLAB_BACCE": 0.0084,
+      "BLA2_BACCE": 0.0349,
+      "BLO10_PSEAI": 0.0439,
+      "BLAN1_KLEPN": 0.0031,
+      "AMPC_ENTCL": 0.0,
+      "BLA1_STEMA": 0.0018,
+      "BLAV1_PSEAI": 0.003,
+      "AMPC_CITFR": 0.0001,
+      "BLBI1_SERMA": 0.1153,
+      "BLAG1_KLEPN": 0.255
+    }
+  },
+  "decisive_cell": "train_without_amr__test_aminoglycoside",
+  "decisive_recovery": 0.75,
+  "verdict": "INCONCLUSIVE by the preregistered bounds (75%, one member between them)"
+}

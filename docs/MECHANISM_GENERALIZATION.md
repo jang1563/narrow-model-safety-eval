@@ -457,7 +457,7 @@ noise, and the mean embeddings used here are post-LayerNorm, so this is unlikely
 It is recorded because it is an uncontrolled difference between lineages, not because there is evidence it
 mattered. Comparisons **within** ESM-C are unaffected: all three sizes share corpus and precision.
 
-### 9.4 🔴 A third candidate, preregistered and tested: also refused
+### 9.4 🔴 A third candidate, preregistered, tested, and then found to have been tested wrong
 
 Two explanations for the beta-lactamase anomaly had already been tested and refused. Not the classifier
 head (§9.1, still the hardest class with the best of four heads). Not corpus, not capacity, not lineage
@@ -482,12 +482,10 @@ existing panel members, none carrying KW-0800/KW-0843 — should recover at **�
 and be **refuted at ≥70%**. Trained on the full internal panel (external test, not an internal holdout),
 scored at the same 95th-percentile-of-negatives threshold used throughout.
 
-🔴 **Refuted. Recovery is 87.5% (7 of 8), squarely in the refuted range and close to the host-interacting
-classes' own ceiling, not to beta-lactamase's 21%.** A second antibiotic-resistance family — one that spans
-*more* fold diversity than beta-lactamase's own class A/C/D serine-hydrolase members, and requires no host
-interaction at all — generalizes about as well as the classes that do. "No host interaction" does not
-predict poor recovery. Whatever makes beta-lactamase hard, it is not a property of antibiotic resistance as
-a category.
+**First result: 87.5% (7 of 8), published here on 2026-09-11 as a refutation.** A second
+antibiotic-resistance family, one that spans *more* fold diversity than beta-lactamase's own class A/C/D
+serine-hydrolase members and requires no host interaction at all, appeared to generalize about as well as
+the classes that do. Scores in that first run:
 
 | member | fold family | score | flagged @95 |
 |---|---|---|---|
@@ -500,10 +498,77 @@ a category.
 | EIS_MYCTU | divergent GNAT (Eis) | 0.186 | yes |
 | AACA_ENTFA | bifunctional AAC/APH fusion | 0.128 | yes |
 
-The one miss does not track fold family either — its GNAT sibling in the fusion protein was caught. Three
-candidates now tested for the beta-lactamase anomaly, three refused: not the head, not corpus or capacity,
-not the toxin/AMR category distinction. The anomaly is exactly as unexplained as it was after §9.3, and
-this rules out one more tempting story rather than finding the real one. Logged in
+The one miss does not track fold family: the GNAT sibling inside the bifunctional fusion was caught.
+
+🔴 **That refutation was overstated, and the defect was in the test rather than in the number.** It
+surfaced on 2026-09-11, from the question of whether beta-lactamase belongs in this panel at all. Two
+things were wrong.
+
+**Defect one, training-set contamination.** `24` fits on `vstack([P, N])`, the full internal positive set.
+14 of those 80 positives are beta-lactamases, 17.5% of the positives and the largest class here. The probe
+had already seen antibiotic-resistance enzymes when it was asked to reach a new antibiotic-resistance
+family, so the 87.5% measures generalization inside a category the probe already knew. The hypothesis was
+about something else: whether a representation trained on host-interacting toxins reaches antibiotic
+resistance at all. `src/03b_leave_one_mechanism_out.py` does the opposite for every internal class, at
+line 226, where the held-out class is dropped from training. The two numbers being compared came from
+opposite training rules.
+
+**Defect two, protocol mismatch.** The 87.5% was set against beta-lactamase's 21% from the LOMO table.
+LOMO holds out 40% of the negatives and calibrates on the held-out ones, while `24` trains on every
+negative and calibrates in sample. Holding the protocol fixed at `24`'s own, with each class removed from
+training in turn, gives a column the 87.5% can actually be read against:
+
+| class | protocol-24 recovery | LOMO recovery |
+|---|---|---|
+| adp_ribosyl_ab_toxin | 100.0% | 100.0% |
+| clostridial_neurotoxin | 100.0% | 100.0% |
+| contact_dependent_inhibition | 100.0% | 35.0% |
+| pore_forming_cytolysin | 100.0% | 68.6% |
+| rip_rrna_glycosidase | 100.0% | 100.0% |
+| superantigen_enterotoxin | 100.0% | 100.0% |
+| t3ss_effector_apparatus | 90.0% | 80.0% |
+| *virulence_associated_non_toxin* | *70.0%* | *50.0%* |
+| **beta_lactamase** | **50.0%** | **21.4%** |
+
+Under its own protocol beta-lactamase recovers 50.0%, where the comparison had been quoting 21%. The
+preregistered bounds in `24` were anchored to a figure from the other protocol.
+
+**The corrected test** (`src/25_amr_category_test_v2.py`, preregistered before re-embedding) runs the 2×2
+that `24` should have run, one protocol throughout:
+
+| | test: beta-lactamase | test: aminoglycoside |
+|---|---|---|
+| train **with** AMR | 100.0% (in sample, ceiling) | 87.5% |
+| train **without** AMR | **50.0%** | **75.0%** |
+
+Re-embedding reproduced the original 87.5% (7 of 8) exactly, which is what makes the other three cells
+comparable to it.
+
+🔴 **Corrected verdict: inconclusive.** The decisive cell is **75.0% (6 of 8)**, between the corrected
+preregistration's bounds of ≤62.5% and ≥87.5%. One member moved, AACC3_PSEAI, from 0.076 to 0.0053.
+
+What the corrected numbers support:
+
+- **The strong form of the hypothesis fails.** Under an identical training mask and protocol,
+  aminoglycosides recover 75.0% where beta-lactamases recover 50.0%. Lacking host interaction does not by
+  itself produce beta-lactamase's failure.
+- **Contamination contributed without accounting for the result.** Removing AMR from training cost one
+  member, moving 87.5% to 75.0%.
+- **A weaker AMR cost stays live and unproven.** 75.0% sits below the 90 to 100% that host-interacting
+  classes reach under the same protocol, on 8 members with one of them at the threshold.
+- **Beta-lactamase is still the outlier** in every matched comparison, and still the lowest class in the
+  protocol-24 column.
+
+🔴 **This is the second preregistration in this project whose falsification criteria failed to cover the
+outcome it got.** The first is recorded in
+[`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md`](EXTERNAL_VALIDATION_PREREGISTRATION.md), where attempt 2
+returned 100% on every arm against criteria that set a floor and no ceiling. Here the criteria were
+anchored to a figure computed under different machinery than the test itself used. Both are the same class
+of mistake.
+
+Standing after three candidates: the classifier head is refused (§9.1), corpus and capacity are refused
+(§9.3), and the toxin/AMR category distinction is inconclusive in its weak form and unsupported in its
+strong form, where this document previously read it as refuted. The anomaly is unexplained. Logged in
 [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
 
 ## 10. The one claim that looked like a competence boundary, and failed
