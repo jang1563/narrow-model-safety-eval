@@ -229,6 +229,26 @@ entirely missed, and it is the only class where plain Smith-Waterman alignment b
 said the class resisted every configuration tested; that was wrong when written. See
 [`docs/DATA_CORRECTIONS.md`](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/DATA_CORRECTIONS.md).
 
+🔑 **And beta-lactamase is not alone, which changes what the anomaly means. Added 2026-09-18.**
+A second panel, **v3**, adds three non-animal-target mechanism classes (bacteriocin,
+phage peptidoglycan hydrolase, *B. thuringiensis* Cry toxins) with organism-matched negatives,
+taking the panel to **149 positives / 296 negatives** and eligible classes from 8 to 11. It
+produced a **second** unreachable class: **phage peptidoglycan hydrolase, 10% at 95%
+specificity on n=32**, worse than beta-lactamase.
+
+The pair is not explained by target host, since the other two new classes recover at 84% and
+87%, nor by "hydrolyses a molecular substrate", which ribosome-inactivating proteins refute at
+94%. What does locate both is **margin**, the embedding proximity measure already established
+at the member level: nearest other-class positive minus nearest negative. Its two lowest
+classes out of eleven are exactly the two failures (chance 1/66), it tracks recovery at
+Spearman **+0.894, permutation p 0.0001**, and it beats each of its own parts while class size
+runs the other way at −0.564. **Both failing classes have a negative margin: their members sit
+closer to a benign protein than to any hazard class the probe trained on.**
+
+So the seven refused explanations in `docs/MECHANISM_GENERALIZATION.md` §9 were never about
+beta-lactamase. v2 stays frozen and fully reproducible; v3 is a parallel file set. See §2.5 and
+§10.4 of [`docs/MECHANISM_GENERALIZATION.md`](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/MECHANISM_GENERALIZATION.md).
+
 🟢 *This one holds up under the seed check above. At 30 seeds ESM-C 600M gives **48.3%, 95% CI
 [43.9, 52.7]**, and across all 14 model arms it is still the **only** one whose interval clears
 alignment's 29.5%, with no other arm's interval reaching it. Three other arm-to-arm comparisons in
