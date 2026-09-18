@@ -323,6 +323,20 @@ def profile_hmm_baseline():
     return out
 
 
+def swissprot_profile_pilot():
+    """The power check that stopped the external-database profile run before it was
+    made. Pins the two halves that matter together: profile construction SUCCEEDED
+    (every profile found all of its held-out siblings) while the LOMO margin was
+    still negative. Keeping both in one claim prevents the result being retold as
+    "HMMER was set up wrong" later, and prevents the negative margin being quietly
+    dropped as a failed run. It was neither: a family profile cannot answer a
+    question about a different family."""
+    d = json.load(open(R / "v2/swissprot_profile_pilot.json"))
+    return {"n": d["n_members"], "margin_mean": round(d["margin_mean"], 2),
+            "n_negative": d["n_margin_negative"],
+            "all_siblings": d["all_siblings_found"]}
+
+
 def beta_lactamase_across_arms():
     """The corrected beta-lactamase claim. Earlier write-ups said the class resists
     every configuration and that alignment beats every embedding method on it. Both
@@ -529,6 +543,11 @@ CLAIMS = [
                 and v["jackhmmer"]["beta_lactamase"] < 0.05
                 and min(v[m]["density"] for m in v) > 0.03),
      {"docs/MECHANISM_GENERALIZATION.md": "+59.8 points"}, []),
+    ("Swiss-Prot profile pilot: every profile finds its siblings, the margin is still negative",
+     swissprot_profile_pilot,
+     lambda v: (v["n"] == 7 and v["all_siblings"] is True
+                and v["n_negative"] == 6 and v["margin_mean"] < 0),
+     {"docs/MECHANISM_GENERALIZATION.md": "six of seven members"}, []),
     ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
      lambda v: (v["n_arms"] == 14 and abs(v["alignment"] - 0.30) < 0.02
                 and v["duplicate_arm_max_diff"] == 0

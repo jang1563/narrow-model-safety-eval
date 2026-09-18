@@ -1,0 +1,85 @@
+{
+  "built": "2026-09-18",
+  "class": "rip_rrna_glycosidase",
+  "db": "uniprot_sprot.fasta",
+  "iterations": 3,
+  "margin_mean": -4.2,
+  "margin_min": -6.3,
+  "margin_max": 0.2999999999999998,
+  "n_margin_negative": 6,
+  "n_members": 7,
+  "all_siblings_found": true,
+  "verdict": "uninformative under the LOMO margin: profile construction succeeds (all siblings found) while the margin is noise and mostly negative, because training positives are other mechanism classes",
+  "members": [
+    {
+      "member": "STXA_SHIDY",
+      "msa_seqs": 225,
+      "self_score": 226.0,
+      "best_training_positive": 2.8,
+      "best_negative": 7.7,
+      "margin": -4.9,
+      "siblings_found": 6,
+      "siblings_total": 6
+    },
+    {
+      "member": "RICI_RICCO",
+      "msa_seqs": 915,
+      "self_score": 737.3,
+      "best_training_positive": 0.2,
+      "best_negative": 6.5,
+      "margin": -6.3,
+      "siblings_found": 6,
+      "siblings_total": 6
+    },
+    {
+      "member": "ABRA_ABRPR",
+      "msa_seqs": 915,
+      "self_score": 726.1,
+      "best_training_positive": 1.6,
+      "best_negative": 7.6,
+      "margin": -6.0,
+      "siblings_found": 6,
+      "siblings_total": 6
+    },
+    {
+      "member": "RIP4_PHYHE",
+      "msa_seqs": 225,
+      "self_score": 305.2,
+      "best_training_positive": 4.4,
+      "best_negative": 10.0,
+      "margin": -5.6,
+      "siblings_found": 6,
+      "siblings_total": 6
+    },
+    {
+      "member": "RIPG_SURMU",
+      "msa_seqs": 219,
+      "self_score": 293.3,
+      "best_training_positive": 2.7,
+      "best_negative": 7.3,
+      "margin": -4.6,
+      "siblings_found": 6,
+      "siblings_total": 6
+    },
+    {
+      "member": "RIPT_POLML",
+      "msa_seqs": 865,
+      "self_score": 726.8,
+      "best_training_positive": 0.6,
+      "best_negative": 2.9,
+      "margin": -2.3,
+      "siblings_found": 6,
+      "siblings_total": 6
+    },
+    {
+      "member": "RIPLY_SILCH",
+      "msa_seqs": 142,
+      "self_score": 202.2,
+      "best_training_positive": 5.1,
+      "best_negative": 4.8,
+      "margin": 0.2999999999999998,
+      "siblings_found": 6,
+      "siblings_total": 6
+    }
+  ]
+}

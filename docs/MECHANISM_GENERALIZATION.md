@@ -310,12 +310,30 @@ profile-based homology search on that class by 17 to 21 points. The alignment re
 specific to Smith-Waterman, which returns a graded score for every pair, rather than a general property
 of homology search.
 
-⚠️ **What this does not test.** Every number above is scored inside the 234-sequence panel, and the panel
-is homology-screened, so a held-out class has no homologue present for a profile to recruit. Profile
-methods earn their sensitivity by recruiting homologues from a large database, so this measures them in
-the regime where that advantage is unavailable. The comparison that would test it builds the profile from
-an external database instead, which also bears on §9.3: the foundation model saw these families in
-pretraining, and a homology baseline restricted to the panel did not.
+⚠️ **The external-database variant was piloted, and it cannot work under this margin.** The obvious
+objection to everything above is that the panel is homology-screened, so a held-out class has no
+homologue present for a profile to recruit, and profile methods earn their sensitivity by recruiting.
+`src/03m_swissprot_profile_pilot.py` builds the profile from Swiss-Prot instead: for each held-out
+ribosome-inactivating protein it runs jackhmmer against 575,748 sequences, builds an HMM from the
+recruited alignment, and scores the panel with that.
+
+**Profile construction succeeds and the margin still fails.** All seven profiles found all six of their
+held-out siblings, so these are strong family models. Their best score against a *training positive* was
+0.2 to 5.1, against a *negative* 2.9 to 10.0, and the margin came out negative on **six of seven members,
+mean −4.2**.
+
+The reason is structural. The decision rule asks whether a query resembles a known hazard more than a
+benign protein, and under leave-one-mechanism-out the known hazards are the *other* mechanism classes.
+Enriching a query's profile makes it a sharper model of the query's own family, which is exactly the thing
+held out of the comparison. A better profile is not a better hazard detector here.
+
+🔑 **This is the cleanest statement of why homology search cannot do this task.** It recognizes what it
+has already seen. The probe reaches unseen mechanisms because the representation places them near seen
+ones in one shared space, and a profile has no shared space to place anything in.
+
+It also settles the §9.3 parity idea rather than leaving it open. Giving the homology baseline a larger
+database does not hand it the foundation model's advantage, because the two use a database differently:
+one matches against it as a labelled reference, the other was shaped by it as a pretraining corpus.
 
 🔴 **One run was discarded, and the reason is recorded rather than dropped.** jackhmmer without `--max`
 returned a matrix 1.3% dense against phmmer's 6.4%. Most margins were then exactly 0, the calibrated
