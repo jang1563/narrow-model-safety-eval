@@ -1,0 +1,101 @@
+{
+  "proxy": "UniRef50 cluster size (ESM-2 pretrained on UniRef50 2021_04)",
+  "n_members": 72,
+  "pooled": {
+    "rho": -0.3989755975497439,
+    "p": 0.0005175243575259216
+  },
+  "caught_median_cluster": 58,
+  "missed_median_cluster": 236,
+  "mannwhitney_p": 0.0038174166257049533,
+  "within_class": {
+    "beta_lactamase": {
+      "n": 14,
+      "rho": -0.5104414954809497,
+      "p": 0.062178213983878836
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "rho": 0.632455532033676,
+      "p": 0.36754446796632406
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "rho": -0.43346072343150543,
+      "p": 0.3312699853604959
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "rho": -0.35028472205202943,
+      "p": 0.3210509363705846
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "rho": -0.03481553119113957,
+      "p": 0.9239332723098314
+    }
+  },
+  "mean_within_rho": -0.13930938802438964,
+  "residual": {
+    "rho": -0.13578645655011587,
+    "p": 0.25541367448645413
+  },
+  "excluding_beta_lactamase": {
+    "rho": -0.1994426981077763,
+    "p": 0.13336318039256606
+  },
+  "class_level": {
+    "rho": -0.33074754631582587,
+    "p": 0.384646792359794,
+    "n": 9
+  },
+  "classes": {
+    "adp_ribosyl_ab_toxin": {
+      "recovery": 1.0,
+      "median_cluster": 25.0,
+      "n": 7
+    },
+    "beta_lactamase": {
+      "recovery": 0.21428571428571427,
+      "median_cluster": 224.5,
+      "n": 14
+    },
+    "clostridial_neurotoxin": {
+      "recovery": 1.0,
+      "median_cluster": 30.5,
+      "n": 6
+    },
+    "contact_dependent_inhibition": {
+      "recovery": 0.35,
+      "median_cluster": 13.0,
+      "n": 4
+    },
+    "pore_forming_cytolysin": {
+      "recovery": 0.6857142857142857,
+      "median_cluster": 88.0,
+      "n": 7
+    },
+    "rip_rrna_glycosidase": {
+      "recovery": 1.0,
+      "median_cluster": 17.0,
+      "n": 7
+    },
+    "superantigen_enterotoxin": {
+      "recovery": 1.0,
+      "median_cluster": 60.0,
+      "n": 7
+    },
+    "t3ss_effector_apparatus": {
+      "recovery": 0.8,
+      "median_cluster": 317.5,
+      "n": 10
+    },
+    "virulence_associated_non_toxin": {
+      "recovery": 0.5,
+      "median_cluster": 87.5,
+      "n": 10
+    }
+  },
+  "survives_controls": false,
+  "verdict": "NO measurable relationship: the pooled correlation is pseudoreplicated, carried by between-class differences; effective n is 9 classes"
+}

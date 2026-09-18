@@ -1,0 +1,482 @@
+{
+ "sp|O31506|YEEF_BACSU": {
+  "name": "YEEF_BACSU",
+  "cluster": "UniRef50_O31506",
+  "cluster_name": "Cluster: Toxin YeeF",
+  "size": 117
+ },
+ "sp|O34344|SDPC_BACSU": {
+  "name": "SDPC_BACSU",
+  "cluster": "UniRef50_O34344",
+  "cluster_name": "Cluster: Sporulation delaying protein C",
+  "size": 4
+ },
+ "sp|P77335|HLYE_ECOLI": {
+  "name": "HLYE_ECOLI",
+  "cluster": "UniRef50_P77335",
+  "cluster_name": "Cluster: Hemolysin E, chromosomal",
+  "size": 291
+ },
+ "sp|A0A0H2US87|OSPC3_SHIFL": {
+  "name": "OSPC3_SHIFL",
+  "cluster": "UniRef50_A0A0H2US87",
+  "cluster_name": "Cluster: Arginine ADP-riboxanase OspC3",
+  "size": 251
+ },
+ "sp|B3BM80|CDIA4_ECO5C": {
+  "name": "CDIA4_ECO5C",
+  "cluster": "UniRef50_B3BM80",
+  "cluster_name": "Cluster: Deoxyribonuclease CdiA-o11",
+  "size": 22
+ },
+ "sp|B7UI21|NLEB1_ECO27": {
+  "name": "NLEB1_ECO27",
+  "cluster": "UniRef50_B7UI21",
+  "cluster_name": "Cluster: Protein-arginine N-acetylglucosaminyltransferase NleB1",
+  "size": 455
+ },
+ "sp|B7UI22|NLEE_ECO27": {
+  "name": "NLEE_ECO27",
+  "cluster": "UniRef50_B7UI22",
+  "cluster_name": "Cluster: Cysteine S-methyltransferase NleE",
+  "size": 103
+ },
+ "sp|P09616|HLA_STAAU": {
+  "name": "HLA_STAAU",
+  "cluster": "UniRef50_P09616",
+  "cluster_name": "Cluster: Alpha-hemolysin",
+  "size": 83
+ },
+ "sp|P0C0J0|SPEB_STRPY": {
+  "name": "SPEB_STRPY",
+  "cluster": "UniRef50_P0C0J1",
+  "cluster_name": "Cluster: Streptopain",
+  "size": 30
+ },
+ "sp|P40136|CYAA_BACAN": {
+  "name": "CYAA_BACAN",
+  "cluster": "UniRef50_P40136",
+  "cluster_name": "Cluster: Calmodulin-sensitive adenylate cyclase",
+  "size": 15
+ },
+ "sp|Q7NWF2|COPC_CHRVO": {
+  "name": "COPC_CHRVO",
+  "cluster": "UniRef50_Q7NWF2",
+  "cluster_name": "Cluster: Arginine ADP-riboxanase CopC",
+  "size": 20
+ },
+ "sp|O05442|CPNT_MYCTU": {
+  "name": "CPNT_MYCTU",
+  "cluster": "UniRef50_O05442",
+  "cluster_name": "Cluster: Outer membrane channel protein CpnT",
+  "size": 161
+ },
+ "sp|P0A0L2|ETXA_STAAU": {
+  "name": "ETXA_STAAU",
+  "cluster": "UniRef50_P0A0L2",
+  "cluster_name": "Cluster: Enterotoxin type A",
+  "size": 60
+ },
+ "sp|P13128|TACY_LISMO": {
+  "name": "TACY_LISMO",
+  "cluster": "UniRef50_P13128",
+  "cluster_name": "Cluster: Listeriolysin O",
+  "size": 88
+ },
+ "sp|P13423|PAG_BACAN": {
+  "name": "PAG_BACAN",
+  "cluster": "UniRef50_P13423",
+  "cluster_name": "Cluster: Protective antigen",
+  "size": 30
+ },
+ "sp|P34071|ENTC2_STAAU": {
+  "name": "ENTC2_STAAU",
+  "cluster": "UniRef50_P34071",
+  "cluster_name": "Cluster: Enterotoxin type C-2",
+  "size": 170
+ },
+ "sp|P9WJ63|TLYA_MYCTU": {
+  "name": "TLYA_MYCTU",
+  "cluster": "UniRef50_P9WJ63",
+  "cluster_name": "Cluster: 16S/23S rRNA (cytidine-2'-O)-methyltransferase TlyA",
+  "size": 298
+ },
+ "sp|Q8XBX8|NLEB1_ECO57": {
+  "name": "NLEB1_ECO57",
+  "cluster": "UniRef50_B7UI21",
+  "cluster_name": "Cluster: Protein-arginine N-acetylglucosaminyltransferase NleB1",
+  "size": 455
+ },
+ "sp|Q9FBI2|STXA_SHIDY": {
+  "name": "STXA_SHIDY",
+  "cluster": "UniRef50_P09385",
+  "cluster_name": "Cluster: Shiga-like toxin 2 subunit A",
+  "size": 432
+ },
+ "sp|P0DPI1|BXA1_CLOBH": {
+  "name": "BXA1_CLOBH",
+  "cluster": "UniRef50_P0DPI0",
+  "cluster_name": "Cluster: Botulinum neurotoxin type A",
+  "size": 40
+ },
+ "sp|P11078|MU1_REOVD": {
+  "name": "MU1_REOVD",
+  "cluster": "UniRef50_P11078",
+  "cluster_name": "Cluster: Outer capsid protein mu-1",
+  "size": 38
+ },
+ "sp|P01555|CHTA_VIBCH": {
+  "name": "CHTA_VIBCH",
+  "cluster": "UniRef50_P06717",
+  "cluster_name": "Cluster: Heat-labile enterotoxin A chain",
+  "size": 92
+ },
+ "sp|P02879|RICI_RICCO": {
+  "name": "RICI_RICCO",
+  "cluster": "UniRef50_P81446",
+  "cluster_name": "Cluster: Beta-galactoside-specific lectin 1",
+  "size": 124
+ },
+ "sp|P10844|BXB_CLOBO": {
+  "name": "BXB_CLOBO",
+  "cluster": "UniRef50_Q60393",
+  "cluster_name": "Cluster: Botulinum neurotoxin type G",
+  "size": 53
+ },
+ "sp|Q45894|BXA2_CLOBJ": {
+  "name": "BXA2_CLOBJ",
+  "cluster": "UniRef50_P0DPI0",
+  "cluster_name": "Cluster: Botulinum neurotoxin type A",
+  "size": 40
+ },
+ "sp|P01552|ETXB_STAAU": {
+  "name": "ETXB_STAAU",
+  "cluster": "UniRef50_P34071",
+  "cluster_name": "Cluster: Enterotoxin type C-2",
+  "size": 170
+ },
+ "sp|P01553|ENTC1_STAAU": {
+  "name": "ENTC1_STAAU",
+  "cluster": "UniRef50_P34071",
+  "cluster_name": "Cluster: Enterotoxin type C-2",
+  "size": 170
+ },
+ "sp|A0A0H3JPC6|TARS_STAAM": {
+  "name": "TARS_STAAM",
+  "cluster": "UniRef50_A0A0H3JPC6",
+  "cluster_name": "Cluster: Poly(ribitol-phosphate) beta-N-acetylglucosaminyltransferase TarS",
+  "size": 99
+ },
+ "sp|A0A3Q0NBH7|PGDA_LISMG": {
+  "name": "PGDA_LISMG",
+  "cluster": "UniRef50_Q8Y9V5",
+  "cluster_name": "Cluster: Peptidoglycan-N-acetylglucosamine deacetylase PgdA",
+  "size": 37
+ },
+ "sp|A1JUB7|YADA_YERE8": {
+  "name": "YADA_YERE8",
+  "cluster": "UniRef50_P31489",
+  "cluster_name": "Cluster: Adhesin YadA",
+  "size": 44
+ },
+ "sp|A6QIG7|CHIPS_STAAE": {
+  "name": "CHIPS_STAAE",
+  "cluster": "UniRef50_Q2FWV5",
+  "cluster_name": "Cluster: Chemotaxis inhibitory protein",
+  "size": 58
+ },
+ "sp|B6A876|CHI1_YERET": {
+  "name": "CHI1_YERET",
+  "cluster": "UniRef50_B6A876",
+  "cluster_name": "Cluster: Chitinase 1",
+  "size": 38
+ },
+ "sp|D0ZKX9|RSEP_SALT1": {
+  "name": "RSEP_SALT1",
+  "cluster": "UniRef50_P0AEH1",
+  "cluster_name": "Cluster: Regulator of sigma-E protease RseP",
+  "size": 1040
+ },
+ "sp|D0ZV89|PHOQ_SALT1": {
+  "name": "PHOQ_SALT1",
+  "cluster": "UniRef50_P23837",
+  "cluster_name": "Cluster: Sensor protein PhoQ",
+  "size": 907
+ },
+ "sp|G3XDA8|PSTS_PSEAE": {
+  "name": "PSTS_PSEAE",
+  "cluster": "UniRef50_G3XDA8",
+  "cluster_name": "Cluster: Phosphate-binding protein PstS",
+  "size": 2342
+ },
+ "sp|O52623|SOPE_SALTM": {
+  "name": "SOPE_SALTM",
+  "cluster": "UniRef50_O52623",
+  "cluster_name": "Cluster: Guanine nucleotide exchange factor SopE",
+  "size": 347
+ },
+ "sp|O84947|SCTE2_SALTY": {
+  "name": "SCTE2_SALTY",
+  "cluster": "UniRef50_O84947",
+  "cluster_name": "Cluster: SPI-2 type 3 secretion system translocon protein SctE",
+  "size": 288
+ },
+ "sp|P06736|HLYC_ECOLX": {
+  "name": "HLYC_ECOLX",
+  "cluster": "UniRef50_P06736",
+  "cluster_name": "Cluster: Protein-lysine myristoyltransferase HlyC",
+  "size": 230
+ },
+ "sp|P09776|VIRB2_AGRTU": {
+  "name": "VIRB2_AGRTU",
+  "cluster": "UniRef50_P17792",
+  "cluster_name": "Cluster: Type IV secretion system pilin protein VirB2",
+  "size": 76
+ },
+ "sp|P0A1B9|SCTN1_SALTY": {
+  "name": "SCTN1_SALTY",
+  "cluster": "UniRef50_P0A1C1",
+  "cluster_name": "Cluster: Type 3 secretion system ATPase",
+  "size": 364
+ },
+ "sp|P0A1C1|SCTN_SHIFL": {
+  "name": "SCTN_SHIFL",
+  "cluster": "UniRef50_P0A1C1",
+  "cluster_name": "Cluster: Type 3 secretion system ATPase",
+  "size": 364
+ },
+ "sp|P0A2M9|SPVC_SALTY": {
+  "name": "SPVC_SALTY",
+  "cluster": "UniRef50_P0A2M9",
+  "cluster_name": "Cluster: MAPK phosphothreonine lyase",
+  "size": 98
+ },
+ "sp|P00811|AMPC_ECOLI": {
+  "name": "AMPC_ECOLI",
+  "cluster": "UniRef50_P00811",
+  "cluster_name": "Cluster: Beta-lactamase",
+  "size": 2535
+ },
+ "sp|Q7WYA8|BLAB_PSEAI": {
+  "name": "BLAB_PSEAI",
+  "cluster": "UniRef50_P52699",
+  "cluster_name": "Cluster: Metallo-beta-lactamase IMP-1",
+  "size": 213
+ },
+ "sp|P9WKD3|BLAC_MYCTU": {
+  "name": "BLAC_MYCTU",
+  "cluster": "UniRef50_P9WKD3",
+  "cluster_name": "Cluster: Beta-lactamase",
+  "size": 360
+ },
+ "sp|P26918|BLAB_AERHY": {
+  "name": "BLAB_AERHY",
+  "cluster": "UniRef50_P26918",
+  "cluster_name": "Cluster: Metallo-beta-lactamase type 2",
+  "size": 442
+ },
+ "sp|P14488|BLAB_BACCE": {
+  "name": "BLAB_BACCE",
+  "cluster": "UniRef50_P14488",
+  "cluster_name": "Cluster: Metallo-beta-lactamase type 2",
+  "size": 65
+ },
+ "sp|P04190|BLA2_BACCE": {
+  "name": "BLA2_BACCE",
+  "cluster": "UniRef50_P04190",
+  "cluster_name": "Cluster: Metallo-beta-lactamase type 2",
+  "size": 104
+ },
+ "sp|P14489|BLO10_PSEAI": {
+  "name": "BLO10_PSEAI",
+  "cluster": "UniRef50_P14489",
+  "cluster_name": "Cluster: Beta-lactamase OXA-10",
+  "size": 123
+ },
+ "sp|C7C422|BLAN1_KLEPN": {
+  "name": "BLAN1_KLEPN",
+  "cluster": "UniRef50_C7C422",
+  "cluster_name": "Cluster: Metallo-beta-lactamase type 2",
+  "size": 273
+ },
+ "sp|P05364|AMPC_ENTCL": {
+  "name": "AMPC_ENTCL",
+  "cluster": "UniRef50_P00811",
+  "cluster_name": "Cluster: Beta-lactamase",
+  "size": 2535
+ },
+ "sp|P52700|BLA1_STEMA": {
+  "name": "BLA1_STEMA",
+  "cluster": "UniRef50_P52700",
+  "cluster_name": "Cluster: Metallo-beta-lactamase L1 type 3",
+  "size": 236
+ },
+ "sp|O87489|BLAV1_PSEAI": {
+  "name": "BLAV1_PSEAI",
+  "cluster": "UniRef50_O87489",
+  "cluster_name": "Cluster: Beta-lactamase VEB-1",
+  "size": 168
+ },
+ "sp|P05193|AMPC_CITFR": {
+  "name": "AMPC_CITFR",
+  "cluster": "UniRef50_P00811",
+  "cluster_name": "Cluster: Beta-lactamase",
+  "size": 2535
+ },
+ "sp|P52699|BLBI1_SERMA": {
+  "name": "BLBI1_SERMA",
+  "cluster": "UniRef50_P52699",
+  "cluster_name": "Cluster: Metallo-beta-lactamase IMP-1",
+  "size": 213
+ },
+ "sp|Q9KJY7|BLAG1_KLEPN": {
+  "name": "BLAG1_KLEPN",
+  "cluster": "UniRef50_Q9KJY7",
+  "cluster_name": "Cluster: Beta-lactamase GES-1",
+  "size": 131
+ },
+ "sp|P00588|DTX_CORBE": {
+  "name": "DTX_CORBE",
+  "cluster": "UniRef50_P00588",
+  "cluster_name": "Cluster: Diphtheria toxin",
+  "size": 25
+ },
+ "sp|P04958|TETX_CLOTE": {
+  "name": "TETX_CLOTE",
+  "cluster": "UniRef50_P04958",
+  "cluster_name": "Cluster: Tetanus toxin",
+  "size": 10
+ },
+ "sp|P11140|ABRA_ABRPR": {
+  "name": "ABRA_ABRPR",
+  "cluster": "UniRef50_P11140",
+  "cluster_name": "Cluster: Abrin-a",
+  "size": 20
+ },
+ "sp|P55981|VACA_HELPY": {
+  "name": "VACA_HELPY",
+  "cluster": "UniRef50_Q48245",
+  "cluster_name": "Cluster: Vacuolating cytotoxin autotransporter",
+  "size": 311
+ },
+ "sp|P0DF97|TACY_STRPQ": {
+  "name": "TACY_STRPQ",
+  "cluster": "UniRef50_P0C2E9",
+  "cluster_name": "Cluster: Perfringolysin O",
+  "size": 1196
+ },
+ "sp|P00648|RNBR_BACAM": {
+  "name": "RNBR_BACAM",
+  "cluster": "UniRef50_P00648",
+  "cluster_name": "Cluster: Ribonuclease",
+  "size": 124
+ },
+ "sp|P04419|CEA2_ECOLX": {
+  "name": "CEA2_ECOLX",
+  "cluster": "UniRef50_P09883",
+  "cluster_name": "Cluster: Colicin-E9",
+  "size": 618
+ },
+ "sp|P15273|YOPH_YEREN": {
+  "name": "YOPH_YEREN",
+  "cluster": "UniRef50_P15273",
+  "cluster_name": "Cluster: Tyrosine-protein phosphatase YopH",
+  "size": 49
+ },
+ "tr|O34208|O34208_PSEAI": {
+  "name": "O34208_PSEAI",
+  "cluster": "UniRef50_O34208",
+  "cluster_name": "Cluster: ExoU",
+  "size": 39
+ },
+ "tr|Q51451|Q51451_PSEAI": {
+  "name": "Q51451_PSEAI",
+  "cluster": "UniRef50_G3XDA1",
+  "cluster_name": "Cluster: Secreted exoenzyme S",
+  "size": 33
+ },
+ "sp|Q5EK40|CHXA_VIBCL": {
+  "name": "CHXA_VIBCL",
+  "cluster": "UniRef50_Q5EK40",
+  "cluster_name": "Cluster: Cholix toxin",
+  "size": 48
+ },
+ "sp|P11439|TOXA_PSEAE": {
+  "name": "TOXA_PSEAE",
+  "cluster": "UniRef50_P11439",
+  "cluster_name": "Cluster: Exotoxin A",
+  "size": 145
+ },
+ "sp|P75409|CARDS_MYCPN": {
+  "name": "CARDS_MYCPN",
+  "cluster": "UniRef50_P75409",
+  "cluster_name": "Cluster: ADP-ribosylating toxin CARDS",
+  "size": 5
+ },
+ "sp|P04977|TOX1_BORPE": {
+  "name": "TOX1_BORPE",
+  "cluster": "UniRef50_P04977",
+  "cluster_name": "Cluster: Pertussis toxin subunit 1",
+  "size": 18
+ },
+ "sp|H9T8G6|CDIA9_BURPE": {
+  "name": "CDIA9_BURPE",
+  "cluster": "UniRef50_H9T8G6",
+  "cluster_name": "Cluster: tRNA nuclease CdiA (Fragment)",
+  "size": 3
+ },
+ "sp|Q6EH50|RIP4_PHYHE": {
+  "name": "RIP4_PHYHE",
+  "cluster": "UniRef50_P10297",
+  "cluster_name": "Cluster: Antiviral protein I",
+  "size": 12
+ },
+ "sp|P33186|RIPG_SURMU": {
+  "name": "RIPG_SURMU",
+  "cluster": "UniRef50_P33186",
+  "cluster_name": "Cluster: Ribosome-inactivating protein gelonin",
+  "size": 4
+ },
+ "sp|Q9M653|RIPT_POLML": {
+  "name": "RIPT_POLML",
+  "cluster": "UniRef50_Q41358",
+  "cluster_name": "Cluster: Ribosome-inactivating protein SNAI",
+  "size": 17
+ },
+ "sp|P85101|RIPLY_SILCH": {
+  "name": "RIPLY_SILCH",
+  "cluster": "UniRef50_P85101",
+  "cluster_name": "Cluster: Ribosome-inactivating protein lychnin",
+  "size": 14
+ },
+ "sp|P18640|BXC_CBCP": {
+  "name": "BXC_CBCP",
+  "cluster": "UniRef50_P19321",
+  "cluster_name": "Cluster: Botulinum neurotoxin type D",
+  "size": 21
+ },
+ "sp|P0DPK1|BXX_CLOBO": {
+  "name": "BXX_CLOBO",
+  "cluster": "UniRef50_P0DPK1",
+  "cluster_name": "Cluster: Botulinum neurotoxin type X",
+  "size": 3
+ },
+ "sp|P0DG09|SPEG_STRPQ": {
+  "name": "SPEG_STRPQ",
+  "cluster": "UniRef50_Q9X5C7",
+  "cluster_name": "Cluster: Exotoxin type G",
+  "size": 21
+ },
+ "sp|P06886|TSST_STAAU": {
+  "name": "TSST_STAAU",
+  "cluster": "UniRef50_P06886",
+  "cluster_name": "Cluster: Toxic shock syndrome toxin-1",
+  "size": 26
+ },
+ "sp|P0A0M0|ETXH_STAAU": {
+  "name": "ETXH_STAAU",
+  "cluster": "UniRef50_P0A0M0",
+  "cluster_name": "Cluster: Enterotoxin type H",
+  "size": 16
+ }
+}

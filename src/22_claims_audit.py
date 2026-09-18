@@ -337,6 +337,33 @@ def swissprot_profile_pilot():
             "all_siblings": d["all_siblings_found"]}
 
 
+def pretraining_caveat_tests():
+    """§9.3.1's two attempts and their verdicts, pinned together so neither can be
+    retold as a success. The external holdout must stay INVALID: both runs produced
+    high-looking recovery (85%, 89%) off an AUROC whose confidence interval contains
+    0.5, which is a blanket false-positive rate rather than detection. The exposure
+    correlation must stay NOT surviving its controls: pooled over members it reads
+    rho -0.399 at p 0.0005, and that is pseudoreplication, since recovery is a
+    class-level property and the real n is nine."""
+    h = json.load(open(R / "v2/pretraining_holdout.json"))
+    e = json.load(open(R / "v2/pretraining_exposure.json"))
+    return {"holdout_valid": h["valid"], "holdout_auroc": round(h["auroc_post_snapshot"], 3),
+            "holdout_ci_low": round(h["auroc_ci95"][0], 3),
+            "exposure_pooled_p": round(e["pooled"]["p"], 5),
+            "exposure_class_p": round(e["class_level"]["p"], 4),
+            "exposure_survives": e["survives_controls"]}
+
+
+def plm_fusion():
+    """VF-Fuse fuses ESM-2 with ProtT5; here that costs 0.4 points. Pinned because
+    the two models ARE complementary per class, so the tempting summary is that
+    fusion should help, and the artifact says it does not."""
+    d = json.load(open(R / "v2/plm_fusion_baseline.json"))
+    return {"best": d["best"], "delta": round(d["concat_minus_esm2"], 4),
+            "esm2": round(d["means"]["esm2_650M"], 4),
+            "concat": round(d["means"]["concat"], 4)}
+
+
 def beta_lactamase_across_arms():
     """The corrected beta-lactamase claim. Earlier write-ups said the class resists
     every configuration and that alignment beats every embedding method on it. Both
@@ -548,6 +575,15 @@ CLAIMS = [
      lambda v: (v["n"] == 7 and v["all_siblings"] is True
                 and v["n_negative"] == 6 and v["margin_mean"] < 0),
      {"docs/MECHANISM_GENERALIZATION.md": "six of seven members"}, []),
+    ("pretraining-caveat tests: external holdout INVALID, exposure correlation does not survive controls",
+     pretraining_caveat_tests,
+     lambda v: (v["holdout_valid"] is False and v["holdout_ci_low"] <= 0.5
+                and v["exposure_survives"] is False
+                and v["exposure_pooled_p"] < 0.01 and v["exposure_class_p"] > 0.05),
+     {"docs/MECHANISM_GENERALIZATION.md": "pseudoreplicated"}, []),
+    ("fusing ESM-2 with ProtT5 does not beat ESM-2 alone", plm_fusion,
+     lambda v: v["best"] == "esm2_650M" and v["delta"] < 0,
+     {"docs/MECHANISM_GENERALIZATION.md": "Fusion costs **0.4 points**"}, []),
     ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
      lambda v: (v["n_arms"] == 14 and abs(v["alignment"] - 0.30) < 0.02
                 and v["duplicate_arm_max_diff"] == 0

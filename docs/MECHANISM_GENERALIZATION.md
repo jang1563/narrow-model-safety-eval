@@ -368,6 +368,28 @@ The general reason is worth stating: **OR-ing two detectors raises the negatives
 the calibrated threshold up, so a union is not free under a fixed false-positive budget.** Tuning further
 until something looked better is the failure mode this project documents, so it was stopped and recorded.
 
+### 8.1 Nor does fusing two protein language models
+
+`src/03o_plm_fusion_baseline.py`. VF-Fuse ([Briefings in Bioinformatics 2025,
+bbaf481](https://academic.oup.com/bib/article/26/5/bbaf481/8260786)) predicts virulence factors by fusing
+ESM-2 with ProtT5 along two paths. This project runs both models, but only ever as separate arms, so the
+fusion question was open. The two are genuinely complementary per class, which is what made it worth
+running: ProtT5 leads ESM-2 by 17.6 points on pore-forming cytolysin and 14.2 on contact-dependent
+inhibition, and trails it by 25.0 on the virulence control and 10.5 on beta-lactamase.
+
+| arm | mean recovery |
+|---|---|
+| ESM-2 650M | **72.5%** |
+| ProtT5-XL | 72.1% |
+| concatenated, z-scored | 72.1% |
+
+Fusion costs **0.4 points**. Per class it tracks the mean of its two inputs rather than the better of
+them: it keeps neither ProtT5's advantage on pore-forming cytolysin nor ESM-2's on the virulence control.
+So §8's result holds for a second kind of combination. Two complementary detectors do not make a better
+one under a fixed false-positive budget, whether the second is an alignment score or another language
+model.
+
+
 ## 9. Not the pooling, the head, the scale, the structure, or the lineage
 
 Each of these was run as a candidate explanation for the beta-lactamase failure. All were run on the same
@@ -520,6 +542,64 @@ stream differences shrink to a few ULP after the final LayerNorm and perplexity 
 noise, and the mean embeddings used here are post-LayerNorm, so this is unlikely to move recovery numbers.
 It is recorded because it is an uncontrolled difference between lineages, not because there is evidence it
 mattered. Comparisons **within** ESM-C are unaffected: all three sizes share corpus and precision.
+
+#### 9.3.1 Two attempts to put a number on that caveat, and why both failed
+
+The paragraph above is a limitation with no measurement attached. Two designs were tried on 2026-09-18.
+Both failed, for reasons worth recording, because together they say what it would actually take.
+
+**Attempt one, an external set of sequences ESM-2 provably never saw** (`src/03n_pretraining_holdout.py`).
+ESM-2 was pretrained on UniRef50 release 2021_04, so a sequence whose own first version postdates that
+release cannot have been in it.
+
+⚠️ The obvious filter is wrong, and the error is easy to repeat. UniProt's `date_created` is the date an
+entry entered **Swiss-Prot**, not the date its sequence appeared. `Q9JXM7` has `date_created` 2022-12-14
+and a sequence last updated **2000-10-01**: it sat in TrEMBL for two decades and is certainly inside
+UniRef50 2021_04. Filtering on `date_created` selects recently *reviewed* proteins, not recently
+*discovered* ones, and it inflated the bacterial pool from 13 to 119. The correct filter is
+`date_sequence_modified` with sequence version 1. Homology screening is still needed on top: the *E. coli*
+OspC3 ortholog scores 0.955 normalized Smith-Waterman against the panel's *Shigella* OspC3.
+
+🔴 **Both runs came back invalid, and the script now says so itself.** Length-matched negatives gave AUROC
+**0.424**, below chance. Genus-matched negatives, following §2's pathogen-matched logic, gave AUROC
+**0.556 with a bootstrap 95% CI of [0.345, 0.762]**, which contains 0.5. Recovery read 85% and 89% in the
+two runs, and both figures are a blanket false-positive rate rather than detection: at an operating point
+calibrated on the new negatives, recovery falls to 2% and 11%.
+
+The reason is structural. **Changing the era changes the population.** Sequences new since 2021 cluster
+into anti-phage defence systems and animal venom, because that is where recent sequencing effort went, and
+venomous organisms are in Swiss-Prot almost exclusively for their toxins, so a taxon-matched benign
+control for them cannot be built from the database at all. Novelty cannot be separated from everything
+else that moved with it.
+
+**Attempt two, correlating recovery with how much of each family was in pretraining**
+(`src/03p_pretraining_exposure.py`), using UniRef50 cluster size as the proxy and needing no new
+sequences. Pooling all 72 members gives Spearman **rho −0.399, p 0.0005**, in the direction opposite to
+the caveat, and it does not survive:
+
+| test | rho | p |
+|---|---|---|
+| pooled over 72 members | −0.399 | **0.0005** |
+| within class, 5 recovery-varying classes | −0.139 mean | none below 0.05 |
+| residuals after removing class means | −0.136 | 0.2554 |
+| excluding beta-lactamase | −0.199 | 0.1334 |
+| **class level, which is the real n = 9** | −0.331 | **0.3846** |
+
+🔴 **The pooled result is pseudoreplicated.** Recovery is dominated by class structure, so the effective
+sample size is the nine classes rather than the 72 members. This repository has already published one
+pseudoreplicated p-value across four public surfaces, which is why the controls were run before the number
+was written down rather than after.
+
+What survives is descriptive and is one class rather than a trend: beta-lactamase is the most heavily
+represented family here (median UniRef50 cluster 224, largest member 2,535) and the worst recovered at
+21%. The counterexample sits in the same table, since T3SS effectors have the largest median cluster of
+all at 317 and are recovered at 80%.
+
+**So the caveat stands as written, unquantified.** What would settle it is pretraining a protein language
+model with one family withheld and comparing, which is a training run rather than an analysis and is
+outside what this study can do. Saying that is more useful than a number from a design that cannot carry
+it.
+
 
 ### 9.4 🔴 A third candidate, preregistered, tested, and then found to have been tested wrong
 

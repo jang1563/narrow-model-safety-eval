@@ -1,0 +1,46 @@
+{
+  "protocol": "identical to src/03b_leave_one_mechanism_out.py, 30 seeds",
+  "reference": "VF-Fuse, Briefings in Bioinformatics 2025 bbaf481",
+  "means": {
+    "esm2_650M": 0.7251587301587302,
+    "prott5_xl": 0.7206349206349206,
+    "concat": 0.7211111111111111
+  },
+  "concat_minus_esm2": -0.004047619047619078,
+  "best": "esm2_650M",
+  "classes": {
+    "esm2_650M": {
+      "adp_ribosyl_ab_toxin": 0.9952380952380953,
+      "beta_lactamase": 0.1571428571428571,
+      "clostridial_neurotoxin": 1.0,
+      "contact_dependent_inhibition": 0.375,
+      "pore_forming_cytolysin": 0.6857142857142858,
+      "rip_rrna_glycosidase": 1.0,
+      "superantigen_enterotoxin": 1.0,
+      "t3ss_effector_apparatus": 0.8000000000000003,
+      "virulence_associated_non_toxin": 0.5133333333333333
+    },
+    "prott5_xl": {
+      "adp_ribosyl_ab_toxin": 1.0,
+      "beta_lactamase": 0.052380952380952375,
+      "clostridial_neurotoxin": 1.0,
+      "contact_dependent_inhibition": 0.5166666666666667,
+      "pore_forming_cytolysin": 0.861904761904762,
+      "rip_rrna_glycosidase": 0.9714285714285714,
+      "superantigen_enterotoxin": 1.0,
+      "t3ss_effector_apparatus": 0.8200000000000002,
+      "virulence_associated_non_toxin": 0.26333333333333336
+    },
+    "concat": {
+      "adp_ribosyl_ab_toxin": 1.0,
+      "beta_lactamase": 0.12380952380952381,
+      "clostridial_neurotoxin": 1.0,
+      "contact_dependent_inhibition": 0.36666666666666664,
+      "pore_forming_cytolysin": 0.719047619047619,
+      "rip_rrna_glycosidase": 0.9904761904761905,
+      "superantigen_enterotoxin": 1.0,
+      "t3ss_effector_apparatus": 0.8033333333333336,
+      "virulence_associated_non_toxin": 0.4866666666666667
+    }
+  }
+}

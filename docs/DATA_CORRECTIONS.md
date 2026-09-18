@@ -734,3 +734,59 @@ that the figure they are anchored to comes from the same machinery as the test.
 Corrected test in `src/25_amr_category_test_v2.py`, result in `results/v2/amr_category_test_v2.json`,
 §9.4 rewritten, and a new audit claim pins the corrected verdict together with the protocol-24 column so
 the stronger reading cannot return. The original script, artifact, and entry stay in place as the record.
+
+---
+
+## 2026-09-18 — Two traps in testing the pretraining caveat, and two guards that fired one step too late
+
+### The date trap
+
+Testing §9.3 means finding sequences ESM-2 never saw. ESM-2 was pretrained on UniRef50 2021_04, so the
+filter looks obvious: take UniProt entries created after that release. **It is the wrong field.**
+`date_created` is the date an entry entered *Swiss-Prot*, not the date its sequence appeared. `Q9JXM7`
+carries `date_created` 2022-12-14 and a sequence last updated **2000-10-01**; it sat in TrEMBL for two
+decades and is certainly inside UniRef50 2021_04, which is built from UniProtKB including TrEMBL.
+
+Filtering on `date_created` selects recently **reviewed** proteins rather than recently **discovered**
+ones. It inflated the bacterial virulence pool from 13 to 119, and had it gone unchecked the published
+claim would have been that a set of sequences ESM-2 had entirely memorised was a set it had never seen.
+The correct filter is `date_sequence_modified` together with sequence version 1, and homology screening is
+still required on top: the *E. coli* OspC3 ortholog scores 0.955 normalized Smith-Waterman against the
+panel's *Shigella* OspC3, and two *Bacillus* alveolysins score 0.567 against streptolysin O.
+
+### The pseudoreplication trap
+
+The second design correlates per-member recovery against UniRef50 cluster size, needing no new sequences.
+Pooled over 72 members it gives Spearman **rho −0.399, p 0.0005**, opposite in sign to what the caveat
+predicts and entirely presentable as a finding.
+
+It is an artifact of pooling. Within class the mean rho is −0.139 with no class below p 0.05; after
+removing class means rho is −0.136, p 0.2554; excluding beta-lactamase rho is −0.199, p 0.1334; and at the
+class level, which is the real n of 9, rho is −0.331, p 0.3846. Recovery is dominated by class structure,
+so members are not independent observations. **This repository has already propagated one pseudoreplicated
+p-value across four public surfaces.** The controls were run before the number was written down, which is
+the only reason this entry records a near miss rather than a correction.
+
+### Two guards that fired one step too late
+
+Both this session's validity guards were written as fixed thresholds, and both were set just past the
+value that actually occurred.
+
+| guard | threshold written | value measured | caught? |
+|---|---|---|---|
+| `03k` degeneracy: calibration margins at zero | > 0.50 | **0.49** | no |
+| `03n` validity: AUROC on the external set | ≤ 0.55 | **0.556** | no |
+
+Each needed a second pass to catch its own motivating case. `03n` now bootstraps the AUROC and refuses any
+result whose 95% interval contains 0.5, which rejects the genus-matched run at 0.556 [0.345, 0.762] on the
+statistic's own uncertainty rather than on a number chosen by hand. A fixed cutoff on a noisy statistic
+encodes an assumption about sample size that small panels violate.
+
+### Standing
+
+Both pretraining-holdout runs are recorded as INVALID in
+`results/v2/pretraining_holdout.json` rather than deleted, and the exposure analysis records
+`survives_controls: false`. §9.3's caveat remains true and unquantified, and
+`docs/MECHANISM_GENERALIZATION.md` §9.3.1 now states what would settle it: pretraining a model with a
+family withheld, which is a training run rather than an analysis.
+
