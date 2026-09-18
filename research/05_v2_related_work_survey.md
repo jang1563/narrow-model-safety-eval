@@ -38,7 +38,23 @@
 
 **Key difference from v2:** SafeProtein attacks INPUT-LEVEL prompts to model (adversarial jailbreak). v2 measures LATENT ENCODING of function in model representations and design outputs (FSI/FSPE/FHS). Complementary, not redundant: SafeProtein tests "can you attack the model", v2 tests "is the function encoded even without attack."
 
-**Relevant v2 cross-reference:** SafeProtein-Bench's 429 protein dataset could extend v2's panel in Pillar 5. Their Foldseek similarity strategy maps to v2's SaProt Foldseek prerequisite.
+**Relevant v2 cross-reference, corrected 2026-09-18:** this section previously said the 429-protein
+dataset "could extend v2's panel in Pillar 5." **The dataset is not published.** 429 is the count reported
+in the paper, not a count of anything downloadable. `github.com/jigang-fan/SafeProtein` returns 404, and
+`github.com/HARISKHAN-1729/SafeBench-Seq`, cited as "Code & metadata", is 4 KB holding a LICENSE and a
+README that reads "Working on organizing the code" — unchanged since its last push on 2026-01-24, and
+re-checked on 2026-09-18. `docs/EXTERNAL_VALIDATION_PREREGISTRATION.md` recorded exactly this on
+2026-09-04, so the claim above was contradicted inside this repository before it was written.
+
+What the repository actually has is `data/annotations/safeprotein_mechanism_classes.json`: 66 proteins
+whose identities were recovered from the paper, with mechanism classes assigned from UniProt protein names
+because **SafeProtein's own class labels were not recoverable either**. That panel is 38/66 phospholipase,
+and the resulting class imbalance is the diagnosed cause of the attempt-2 failure recorded in the
+preregistration (every arm returned 100%, so the panel had no power). Treat SafeProtein as a citation,
+not as a source of positives.
+
+Their Foldseek similarity strategy is still a useful methodological reference and maps to v2's SaProt
+Foldseek prerequisite.
 
 ---
 
