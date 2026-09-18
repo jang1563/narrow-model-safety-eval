@@ -135,6 +135,67 @@ deployment readiness among the things this work does not claim, and this is the 
 line.
 
 
+### 2.4 🔴 The confound those three do not cover: what the protein acts on
+
+All three controls above hold the protein's **origin** constant. None holds constant what it **acts on**,
+and the panel is not uniform on that axis. `data/annotations/target_host_v2.json`,
+`src/03s_target_host_control.py`.
+
+Of the 80 positives: **51** act on an animal host; **15** act on a diffusing small molecule with no host
+at all (14 beta-lactamases plus a teichoic-acid transferase whose annotated role is beta-lactam
+resistance); **5** act on another bacterium (four contact-dependent inhibition systems plus colicin E2, a
+bacteriocin); **1** acts on plant cells (the *Agrobacterium* T-pilus subunit); 4 act on the producing
+organism itself; 4 are mixed or unassigned.
+
+**This document never says which of those "hazardous" means.** That is the same kind of gap as the
+beta-lactamase provenance entry in [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md): not a wrong number,
+an undocumented definition. Target and producer also come apart, so both are recorded: six of the seven
+ribosome-inactivating proteins are **plant-produced** and act on **animal** ribosomes.
+
+| measurement | result |
+|---|---|
+| **target-host legibility**, positives only, hazard held constant | **AUROC 0.929 ± 0.065** |
+| the provenance control above, for comparison | 0.818 |
+
+🔑 **Target host is more legible in this representation than provenance is**, and §2 already treats
+0.818 as reason enough not to attribute separation to hazard alone.
+
+| hazard separation, against the same 154 negatives | n | AUROC |
+|---|---|---|
+| all positives | 80 | 0.973 ± 0.020 |
+| **animal-target only** | 51 | **0.994 ± 0.009** |
+| **non-animal-target only** | 22 | **0.898 ± 0.094** |
+
+Not a sample-size artifact. Subsampling the animal set to n = 22, thirty draws give 0.979 ± 0.013 spanning
+[0.947, 0.999], and the non-animal 0.898 sits **below that entire range**.
+
+**So the headline is a blend**: the probe separates animal-directed hazards from benign proteins almost
+perfectly, non-animal-directed ones considerably less well, and 0.973 averages the two.
+
+**It also reorganizes §3's class dependence.** Ranking the eight mechanism classes by recovery, the two
+whose target is not an animal are exactly the bottom two:
+
+| class | recovery@95 | target |
+|---|---|---|
+| **beta_lactamase** | **21%** | non-animal |
+| **contact_dependent_inhibition** | **35%** | non-animal |
+| pore_forming_cytolysin | 69% | animal |
+| t3ss_effector_apparatus | 80% | animal |
+| adp_ribosyl / clostridial / rip / superantigen | 100% | animal |
+
+The exact chance probability of that split is 1/C(8,2) = **0.036**, and class size does not explain it:
+clostridial neurotoxin has the **smallest** effective n of any class, 3, and is recovered at 100%.
+
+⚠️ **Post hoc, on eight classes that are not independent draws, and reported at that strength.** It was
+noticed while asking what "hazard" means here, not predicted in advance.
+
+🔴 **It bears directly on §9.4.** That section tested "no host interaction" with an external AMR family
+and could not settle it. The reason is visible now: even its without-AMR condition removed only the 14
+beta-lactamases, leaving contact-dependent inhibition and colicin E2 in training, so the probe still had
+non-animal-target positives to learn from. A clean version removes **every** non-animal-target positive
+from training before testing a non-animal class. That is registered here as the next test rather than run.
+
+
 ## 3. Result: recovery is class-dependent and spans the full range
 
 ESM-2 650M, mean pooling, 5 seeds. `results/v2/lomo_results.json`, `src/03b_leave_one_mechanism_out.py`.

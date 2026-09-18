@@ -1,0 +1,93 @@
+{
+  "built": "2026-09-18",
+  "counts": {
+    "animal": 51,
+    "bacteria": 5,
+    "mixed": 1,
+    "none_regulatory": 4,
+    "none_small_molecule": 15,
+    "other_nonanimal": 1,
+    "plant": 1,
+    "unassigned": 2
+  },
+  "target_host_legibility": {
+    "auroc": 0.9294,
+    "sd": 0.0649724951342254,
+    "n": 73,
+    "provenance_control_for_comparison": 0.818
+  },
+  "hazard_separation_by_target": {
+    "all 80 positives": {
+      "n_positive": 80,
+      "auroc": 0.9734771505376344,
+      "sd": 0.0198809161157434
+    },
+    "animal-target only": {
+      "n_positive": 51,
+      "auroc": 0.9940391006842618,
+      "sd": 0.009046201042041268
+    },
+    "non-animal-target only": {
+      "n_positive": 22,
+      "auroc": 0.897890322580645,
+      "sd": 0.09382547491658609
+    }
+  },
+  "size_matched": {
+    "animal_subsample_mean": 0.9791594982078853,
+    "animal_subsample_sd": 0.01332928680743558,
+    "animal_subsample_min": 0.9465139784946237,
+    "animal_subsample_max": 0.9992258064516129,
+    "nonanimal": 0.897890322580645,
+    "n": 22,
+    "nonanimal_below_animal_range": true
+  },
+  "rank_pattern": {
+    "ranked": [
+      [
+        "beta_lactamase",
+        0.21428571428571427,
+        "non-animal"
+      ],
+      [
+        "contact_dependent_inhibition",
+        0.35,
+        "non-animal"
+      ],
+      [
+        "pore_forming_cytolysin",
+        0.6857142857142857,
+        "animal"
+      ],
+      [
+        "t3ss_effector_apparatus",
+        0.8,
+        "animal"
+      ],
+      [
+        "adp_ribosyl_ab_toxin",
+        1.0,
+        "animal"
+      ],
+      [
+        "clostridial_neurotoxin",
+        1.0,
+        "animal"
+      ],
+      [
+        "rip_rrna_glycosidase",
+        1.0,
+        "animal"
+      ],
+      [
+        "superantigen_enterotoxin",
+        1.0,
+        "animal"
+      ]
+    ],
+    "n_nonanimal": 2,
+    "nonanimal_in_bottom": 2,
+    "exact_p": 0.03571428571428571,
+    "post_hoc": true
+  }
+}

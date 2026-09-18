@@ -394,6 +394,25 @@ def layer_depth():
             "final_mean": round(d["means"]["final (33)"], 4)}
 
 
+def target_host_control():
+    """§2.4. The fourth confound, and the one §2 never had: all three published
+    controls hold the protein's ORIGIN constant and none holds constant what it
+    ACTS ON. Pins that target host is more legible than provenance (0.929 against
+    0.818), that the headline 0.973 is a blend of 0.994 animal-target and 0.898
+    non-animal-target, that the gap survives size matching, and that the rank
+    pattern is flagged post hoc. The last field matters: a post-hoc rank test on
+    eight non-independent classes must not harden into a preregistered result."""
+    d = json.load(open(R / "v2/target_host_control.json"))
+    h = d["hazard_separation_by_target"]
+    return {"legibility": round(d["target_host_legibility"]["auroc"], 3),
+            "animal": round(h["animal-target only"]["auroc"], 3),
+            "nonanimal": round(h["non-animal-target only"]["auroc"], 3),
+            "size_matched_ok": d["size_matched"]["nonanimal_below_animal_range"],
+            "n_animal": d["counts"].get("animal"),
+            "rank_p": round(d["rank_pattern"]["exact_p"], 4),
+            "post_hoc": d["rank_pattern"]["post_hoc"]}
+
+
 def beta_lactamase_across_arms():
     """The corrected beta-lactamase claim. Earlier write-ups said the class resists
     every configuration and that alignment beats every embedding method on it. Both
@@ -625,6 +644,12 @@ CLAIMS = [
                 and v["platform_valid"] is True and v["platform_rel"] < 1e-5
                 and v["bl_L12"] == 0.0 and abs(v["final_mean"] - 0.725) < 0.01),
      {"docs/MECHANISM_GENERALIZATION.md": "Layer 12 beats the final layer by 4.8 points"}, []),
+    ("target host is a stronger confound than provenance, and it was never controlled",
+     target_host_control,
+     lambda v: (v["legibility"] > 0.90 and v["animal"] > 0.99 and v["nonanimal"] < 0.92
+                and v["size_matched_ok"] is True and v["n_animal"] == 51
+                and abs(v["rank_p"] - 0.0357) < 0.001 and v["post_hoc"] is True),
+     {"docs/MECHANISM_GENERALIZATION.md": "below that entire range"}, []),
     ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
      lambda v: (v["n_arms"] == 14 and abs(v["alignment"] - 0.30) < 0.02
                 and v["duplicate_arm_max_diff"] == 0
