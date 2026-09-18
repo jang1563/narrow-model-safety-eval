@@ -1,0 +1,427 @@
+{
+  "class": "beta_lactamase",
+  "seeds": 30,
+  "specs": [
+    0.95,
+    0.99
+  ],
+  "protocol": "03b fold logic at C=1.0, 40% negative holdout",
+  "alignment_recovery": 0.2952380952380952,
+  "arms": {
+    "canonical": {
+      "0.95": {
+        "published_5seed": 0.21428571428571427,
+        "mean_30seed": 0.1571428571428571,
+        "sd": 0.12499120306835884,
+        "ci95": [
+          0.11241532955482772,
+          0.2018703847308865
+        ],
+        "zero_seeds": 7,
+        "published_inside_ci": false
+      },
+      "0.99": {
+        "published_5seed": 0.014285714285714285,
+        "mean_30seed": 0.021428571428571425,
+        "sd": 0.05015808927555761,
+        "ci95": [
+          0.0034797296960185978,
+          0.03937741316112425
+        ],
+        "zero_seeds": 24,
+        "published_inside_ci": true
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_esm2_8M": {
+      "0.95": {
+        "published_5seed": 0.014285714285714285,
+        "mean_30seed": 0.016666666666666666,
+        "sd": 0.04059434122542396,
+        "ci95": [
+          0.0021401682211319457,
+          0.03119316511220139
+        ],
+        "zero_seeds": 25,
+        "published_inside_ci": true
+      },
+      "0.99": {
+        "published_5seed": 0.0,
+        "mean_30seed": 0.0023809523809523807,
+        "sd": 0.01304101327393252,
+        "ci95": [
+          -0.0022857142857142837,
+          0.007047619047619046
+        ],
+        "zero_seeds": 29,
+        "published_inside_ci": true
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_esm2_35M": {
+      "0.95": {
+        "published_5seed": 0.12857142857142856,
+        "mean_30seed": 0.1619047619047619,
+        "sd": 0.19306532581704236,
+        "ci95": [
+          0.09281722234367054,
+          0.23099230146585328
+        ],
+        "zero_seeds": 9,
+        "published_inside_ci": true
+      },
+      "0.99": {
+        "published_5seed": 0.05714285714285714,
+        "mean_30seed": 0.04523809523809523,
+        "sd": 0.09281608287598116,
+        "ci95": [
+          0.01202428654167191,
+          0.07845190393451855
+        ],
+        "zero_seeds": 23,
+        "published_inside_ci": true
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_esm2_150M": {
+      "0.95": {
+        "published_5seed": 0.11428571428571428,
+        "mean_30seed": 0.09523809523809525,
+        "sd": 0.09625889712451256,
+        "ci95": [
+          0.06079229128519431,
+          0.12968389919099618
+        ],
+        "zero_seeds": 9,
+        "published_inside_ci": true
+      },
+      "0.99": {
+        "published_5seed": 0.04285714285714286,
+        "mean_30seed": 0.009523809523809523,
+        "sd": 0.04081046169452614,
+        "ci95": [
+          -0.005080026638354891,
+          0.024127645685973937
+        ],
+        "zero_seeds": 28,
+        "published_inside_ci": false
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_esm2_3B": {
+      "0.95": {
+        "published_5seed": 0.15714285714285714,
+        "mean_30seed": 0.19047619047619044,
+        "sd": 0.12768348739488303,
+        "ci95": [
+          0.14478524131501586,
+          0.23616713963736502
+        ],
+        "zero_seeds": 4,
+        "published_inside_ci": true
+      },
+      "0.99": {
+        "published_5seed": 0.0,
+        "mean_30seed": 0.021428571428571425,
+        "sd": 0.04651848058449694,
+        "ci95": [
+          0.004782146939334642,
+          0.038074995917808205
+        ],
+        "zero_seeds": 23,
+        "published_inside_ci": false
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_esm2_650M_max": {
+      "0.95": {
+        "published_5seed": 0.0,
+        "mean_30seed": 0.019047619047619046,
+        "sd": 0.037202175697299125,
+        "ci95": [
+          0.005734991446733987,
+          0.03236024664850411
+        ],
+        "zero_seeds": 23,
+        "published_inside_ci": false
+      },
+      "0.99": {
+        "published_5seed": 0.0,
+        "mean_30seed": 0.0,
+        "sd": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "zero_seeds": 30,
+        "published_inside_ci": true
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_esm2_650M_cls": {
+      "0.95": {
+        "published_5seed": 0.12857142857142856,
+        "mean_30seed": 0.1642857142857143,
+        "sd": 0.16261194920400782,
+        "ci95": [
+          0.10609577558908703,
+          0.2224756529823416
+        ],
+        "zero_seeds": 9,
+        "published_inside_ci": true
+      },
+      "0.99": {
+        "published_5seed": 0.05714285714285714,
+        "mean_30seed": 0.023809523809523805,
+        "sd": 0.047206753732233334,
+        "ci95": [
+          0.006916803937510017,
+          0.04070224368153759
+        ],
+        "zero_seeds": 23,
+        "published_inside_ci": false
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_esmc_300M": {
+      "0.95": {
+        "published_5seed": 0.1571428571428571,
+        "mean_30seed": 0.16428571428571428,
+        "sd": 0.1604335259730884,
+        "ci95": [
+          0.10687531433075398,
+          0.2216961142406746
+        ],
+        "zero_seeds": 11,
+        "published_inside_ci": true
+      },
+      "0.99": {
+        "published_5seed": 0.04285714285714286,
+        "mean_30seed": 0.014285714285714285,
+        "sd": 0.05436602822195624,
+        "ci95": [
+          -0.00516891906011595,
+          0.03374034763154452
+        ],
+        "zero_seeds": 28,
+        "published_inside_ci": false
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_esmc_600M": {
+      "0.95": {
+        "published_5seed": 0.5142857142857142,
+        "mean_30seed": 0.48333333333333334,
+        "sd": 0.12255107558540851,
+        "ci95": [
+          0.4394789941508294,
+          0.5271876725158373
+        ],
+        "zero_seeds": 0,
+        "published_inside_ci": true
+      },
+      "0.99": {
+        "published_5seed": 0.21428571428571427,
+        "mean_30seed": 0.22142857142857145,
+        "sd": 0.12770644998609376,
+        "ci95": [
+          0.17572940520966274,
+          0.26712773764748016
+        ],
+        "zero_seeds": 1,
+        "published_inside_ci": true
+      },
+      "beats_alignment_at_95": "yes"
+    },
+    "_esmc_6B": {
+      "0.95": {
+        "published_5seed": 0.04285714285714286,
+        "mean_30seed": 0.12380952380952381,
+        "sd": 0.14028890133795796,
+        "ci95": [
+          0.07360778520031852,
+          0.1740112624187291
+        ],
+        "zero_seeds": 10,
+        "published_inside_ci": false
+      },
+      "0.99": {
+        "published_5seed": 0.0,
+        "mean_30seed": 0.016666666666666666,
+        "sd": 0.04471873682709233,
+        "ci95": [
+          0.0006642722098208279,
+          0.032669061123512505
+        ],
+        "zero_seeds": 25,
+        "published_inside_ci": false
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_esm3_1_4B": {
+      "0.95": {
+        "published_5seed": 0.014285714285714285,
+        "mean_30seed": 0.0047619047619047615,
+        "sd": 0.018122009407318746,
+        "ci95": [
+          -0.0017229730200386496,
+          0.011246782543848172
+        ],
+        "zero_seeds": 28,
+        "published_inside_ci": false
+      },
+      "0.99": {
+        "published_5seed": 0.0,
+        "mean_30seed": 0.0,
+        "sd": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "zero_seeds": 30,
+        "published_inside_ci": true
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_prott5_xl": {
+      "0.95": {
+        "published_5seed": 0.02857142857142857,
+        "mean_30seed": 0.052380952380952375,
+        "sd": 0.06745951253584632,
+        "ci95": [
+          0.028240875847951142,
+          0.07652102891395361
+        ],
+        "zero_seeds": 17,
+        "published_inside_ci": true
+      },
+      "0.99": {
+        "published_5seed": 0.0,
+        "mean_30seed": 0.0,
+        "sd": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "zero_seeds": 30,
+        "published_inside_ci": true
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_saprot_650M": {
+      "0.95": {
+        "published_5seed": 0.1,
+        "mean_30seed": 0.10476190476190476,
+        "sd": 0.1268540658512312,
+        "ci95": [
+          0.05936776028830089,
+          0.15015604923550863
+        ],
+        "zero_seeds": 13,
+        "published_inside_ci": true
+      },
+      "0.99": {
+        "published_5seed": 0.0,
+        "mean_30seed": 0.007142857142857143,
+        "sd": 0.02179489833066891,
+        "ci95": [
+          -0.0006563470605790373,
+          0.014942061346293323
+        ],
+        "zero_seeds": 27,
+        "published_inside_ci": true
+      },
+      "beats_alignment_at_95": "no"
+    },
+    "_esm2_650M_mean": {
+      "0.95": {
+        "published_5seed": 0.21428571428571427,
+        "mean_30seed": 0.15476190476190474,
+        "sd": 0.1245446785879627,
+        "ci95": [
+          0.1101941639070643,
+          0.19932964561674518
+        ],
+        "zero_seeds": 7,
+        "published_inside_ci": false
+      },
+      "0.99": {
+        "published_5seed": 0.014285714285714285,
+        "mean_30seed": 0.019047619047619046,
+        "sd": 0.049392271948822904,
+        "ci95": [
+          0.0013728215259230757,
+          0.03672241656931502
+        ],
+        "zero_seeds": 25,
+        "published_inside_ci": true
+      },
+      "beats_alignment_at_95": "no"
+    }
+  },
+  "arms_clearing_alignment": [
+    "_esmc_600M"
+  ],
+  "arms_overlapping": [],
+  "published_outside_own_ci": [
+    "canonical",
+    "_esm2_650M_max",
+    "_esmc_6B",
+    "_esm3_1_4B",
+    "_esm2_650M_mean"
+  ],
+  "skipped": [],
+  "sentence_checks": {
+    "esm2_ladder": {
+      "arms": [
+        "_esm2_8M",
+        "_esm2_35M",
+        "_esm2_150M",
+        "canonical",
+        "_esm2_3B"
+      ],
+      "params_M": [
+        8,
+        35,
+        150,
+        650,
+        3000
+      ],
+      "published_5seed": [
+        0.014285714285714285,
+        0.12857142857142856,
+        0.11428571428571428,
+        0.21428571428571427,
+        0.15714285714285714
+      ],
+      "mean_30seed": [
+        0.016666666666666666,
+        0.1619047619047619,
+        0.09523809523809525,
+        0.1571428571428571,
+        0.19047619047619044
+      ],
+      "spearman_rho_vs_params": 0.7,
+      "note": "a rank correlation on five points is not a trend test, it is reported so the ladder's shape is visible at 30 seeds"
+    },
+    "esmc_trio": {
+      "300M": 0.16428571428571428,
+      "600M": 0.48333333333333334,
+      "6B": 0.12380952380952381,
+      "6B_below_300M_point": true,
+      "6B_vs_300M_intervals_overlap": true,
+      "6B_vs_600M_intervals_overlap": false,
+      "600M_over_6B_ratio": 3.9038461538461537
+    },
+    "pooling": {
+      "mean": 0.1571428571428571,
+      "cls": 0.1642857142857143,
+      "max": 0.019047619047619046,
+      "cls_above_mean_point": true,
+      "cls_vs_mean_intervals_overlap": true,
+      "max_vs_mean_intervals_overlap": false
+    }
+  },
+  "ci_note": "intervals are normal-approximation on a bounded quantity, so a lower bound can print below zero; read those as truncated at zero",
+  "verdict": "HOLDS: ESM-C 600M stays above alignment at 30 seeds and is still the only arm whose interval clears it (48.3%, CI [43.9, 52.7])"
+}

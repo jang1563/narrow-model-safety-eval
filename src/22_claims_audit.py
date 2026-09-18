@@ -781,6 +781,29 @@ def target_host_class_holdout():
             "n_nonanimal_classes": d["n_nonanimal_single_target_classes"],
             "producer_dominant": max(d["producer_kingdoms"].values())}
 
+
+def seed_stability_all_arms():
+    """§9: beta-lactamase at 30 seeds on every arm. ESM-C 600M is still the only arm whose
+    interval clears alignment, and three comparisons made on 5-seed points do not hold."""
+    d = j("v2/seed_stability_all_arms.json")
+    a = d["arms"]
+    ck = d["sentence_checks"]
+    e6, e3, eb = (a["_esmc_600M"]["0.95"], a["_esmc_300M"]["0.95"],
+                  a["_esmc_6B"]["0.95"])
+    return {"arms_checked": len(a),
+            "clears_alignment": d["arms_clearing_alignment"],
+            "overlapping": d["arms_overlapping"],
+            "n_published_outside_ci": len(d["published_outside_own_ci"]),
+            "esmc600_30seed": e6["mean_30seed"], "esmc600_ci_lo": e6["ci95"][0],
+            "alignment": d["alignment_recovery"],
+            "esmc6B_vs_300M_overlap": ck["esmc_trio"]["6B_vs_300M_intervals_overlap"],
+            "esmc600_vs_6B_overlap": ck["esmc_trio"]["6B_vs_600M_intervals_overlap"],
+            "ratio_600M_over_6B": ck["esmc_trio"]["600M_over_6B_ratio"],
+            "cls_vs_mean_overlap": ck["pooling"]["cls_vs_mean_intervals_overlap"],
+            "ladder_rho": ck["esm2_ladder"]["spearman_rho_vs_params"],
+            "esm2_3B_ci_hi": a["_esm2_3B"]["0.95"]["ci95"][1],
+            "esmc300_30seed": e3["mean_30seed"], "esmc6B_30seed": eb["mean_30seed"]}
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -1012,6 +1035,18 @@ CLAIMS = [
      {"docs/MECHANISM_GENERALIZATION.md":
       "| leave-one-mechanism-class-out | does target host reach an unseen class | "
       "**balanced class accuracy 0.500** |"}, []),
+    ("at 30 seeds ESM-C 600M alone clears alignment, and three 5-seed comparisons do not",
+     seed_stability_all_arms,
+     lambda v: (v["arms_checked"] == 14
+                and v["clears_alignment"] == ["_esmc_600M"] and not v["overlapping"]
+                and v["esmc600_ci_lo"] > v["alignment"]
+                and v["esm2_3B_ci_hi"] < v["alignment"]
+                and v["esmc6B_vs_300M_overlap"] and not v["esmc600_vs_6B_overlap"]
+                and 3.5 < v["ratio_600M_over_6B"] < 4.5
+                and v["cls_vs_mean_overlap"] and v["ladder_rho"] > 0.5
+                and v["n_published_outside_ci"] == 5),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| **6B** | **4.3%** | **0.0%** | **12.4% [7.4, 17.4]** |"}, []),
 ]
 
 

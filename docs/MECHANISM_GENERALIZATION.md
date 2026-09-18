@@ -215,9 +215,11 @@ have a single target** across every member with an assigned one, leaving only `o
 virulence control carrying more than one. So a probe scored by per-protein cross-validation can reach 0.929
 by recognising the class and reading the target off it:
 
-| classes carrying animal target | classes carrying non-animal target | classes carrying both |
-|---|---|---|
-| adp-ribosyl 7/7, clostridial 6/6, phospholipase 2/2, pore-forming 7/7, RIP 7/7, superantigen 7/7, T3SS 10/10 | **beta-lactamase 14/14** (small molecule), **CDI 4/4** (bacteria) | the labelled virulence control, 3 against 3 |
+| target | classes carrying it |
+|---|---|
+| animal | adp-ribosyl 7/7, clostridial 6/6, phospholipase 2/2, pore-forming 7/7, RIP 7/7, superantigen 7/7, T3SS 10/10 |
+| **non-animal** | **beta-lactamase 14/14** (a small molecule), **CDI 4/4** (another bacterium) |
+| both | the labelled virulence control, 3 animal against 3 non-animal |
 
 **Producer taxonomy is not the confound, and that was checked before anything else was run.** The scope
 question is whether the probe reads the producing organism rather than the target, since six of seven RIPs
@@ -634,11 +636,20 @@ measured differently.
 | SaProt-650M | 1280 | 0.949 | 10% | 80% | 86% | 100% | 100% | 97% | 94% | 55% |
 
 **Scale is not the fix.** Beta-lactamase runs 1%, 13%, 11%, 21%, 16% across the ESM-2 ladder from 8M to
-3B — no trend. Nor is scale a general fix for negative-set fragility: the class ordering of that fragility
+3B. 🔴 **"No trend" was how this read before the seeds were checked, and it is too strong.** At 30 seeds
+(`src/03x_seed_stability_all_arms.py`) the ladder reads **1.7%, 16.2%, 9.5%, 15.7%, 19.0%**, a rank
+correlation against parameter count of **+0.70** on five points. What carries the conclusion is not the
+absence of a slope: it is that **3B's entire 95% interval, [14.5, 23.6], sits below alignment's 29.5%**, and
+8M at 1.7% [0.2, 3.1] is the only arm clearly apart from the rest. Scale moves the class a little and does
+not reach the baseline it has to beat. Nor is scale a general fix for negative-set fragility: the class ordering of that fragility
 is uncorrelated between the smallest and largest ESM-2 (Spearman −0.13 for 8M against 650M, −0.17 for 8M
 against 3B). Scaling redistributes which classes carry the fragility rather than removing it.
 
 **Pooling is not the fix.** Max pooling drives beta-lactamase to 0% and CLS to 13%, against mean at 21%.
+🔴 **The mean-beats-CLS part of that does not survive 30 seeds.** The three come out at **mean 15.7%
+[11.2, 20.2], CLS 16.4% [10.6, 22.2], max 1.9% [0.6, 3.2]**, so mean and CLS are indistinguishable and the
+published ordering between them was seed noise. Max stays far below both, and no pooling choice comes near
+alignment, which is what the heading claims.
 
 **Structure is not the fix.** SaProt with real AlphaFold structures for 231 of 234 panel proteins reaches
 10%, below plain ESM-2.
@@ -646,7 +657,11 @@ against 3B). Scaling redistributes which classes carry the fragility rather than
 **And not the lineage either, which took a second correction to establish.** Earlier write-ups said
 beta-lactamase resists every configuration tested and that plain alignment beats every embedding method on
 it. **Both were wrong:** ESM-C 600M recovers **51%**, above alignment's 30% and more than double ESM-2
-650M. That error predated the panel expansion — ESM-C 600M already scored 48.6% on the 66-protein panel —
+650M. 🟢 **This is the one arm-level claim in §9 that gets stronger under seed checking.** At 30 seeds it is
+**48.3%, 95% CI [43.9, 52.7]**, and it is still the **only** one of the fourteen arms whose interval lies
+entirely above alignment's 29.5%, with no other arm's interval even reaching it.
+
+That error predated the panel expansion — ESM-C 600M already scored 48.6% on the 66-protein panel —
 and survived because the class was summarized from the ESM-2 arms without checking the ESM-C row.
 
 The obvious reading of that exception was that ESM-C's pretraining corpus explains it. ESM-C saw UniRef
@@ -654,14 +669,18 @@ The obvious reading of that exception was that ESM-C's pretraining corpus explai
 beta-lactamases are among the most diverse families in environmental metagenomes. That reading predicts
 the effect should strengthen with capacity on the same corpus. **It was tested and it is wrong.**
 
-| ESM-C, identical corpus, identical bf16, identical pipeline | β-lactamase@95 | @99 |
-|---|---|---|
-| 300M | 15.7% | 4.3% |
-| **600M** | **51.4%** | **21.4%** |
-| **6B** | **4.3%** | **0.0%** |
+| ESM-C, identical corpus, identical bf16, identical pipeline | β-lactamase@95, 5 seeds | @99 | **@95 at 30 seeds, 95% CI** |
+|---|---|---|---|
+| 300M | 15.7% | 4.3% | **16.4% [10.7, 22.2]** |
+| **600M** | **51.4%** | **21.4%** | **48.3% [43.9, 52.7]** |
+| **6B** | **4.3%** | **0.0%** | **12.4% [7.4, 17.4]** |
 
-Twenty times the parameters on the same data recovers **less than a twelfth** of what 600M does, and less
-than 300M does. So neither corpus nor capacity accounts for it, and the exception narrows rather than
+🔴 **Two thirds of the original sentence here was seed noise, and the third that matters is now on firmer
+ground.** It said twenty times the parameters recovers less than a twelfth of what 600M does, and less than
+300M does. At 30 seeds the ratio is **3.9x, about a quarter rather than a twelfth**, and 6B's interval
+**overlaps 300M's**, so 6B being worse than 300M is unsupported. What does survive is the part the argument
+needs: **600M at [43.9, 52.7] and 6B at [7.4, 17.4] do not overlap**, across a twentyfold capacity range on
+the same corpus. So neither corpus nor capacity accounts for it, and the exception narrows rather than
 resolves: **ESM-C 600M is a single anomalous configuration whose cause is not identified by anything
 measured here.**
 

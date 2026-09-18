@@ -967,3 +967,78 @@ reader should assume the same ±10-point seed noise applies to the low-recovery 
 `src/03v_lomo_seed_stability.py` is committed with its artifact `results/v2/lomo_seed_stability.json`,
 §9.7 carries the interval, and `src/22_claims_audit.py` pins the 30-seed mean, the interval and the
 9-of-9 reproduction check so none of the three can drift from the text.
+
+---
+
+## 2026-09-18 (sixth entry) — Three §9 sentences compared arms by their 5-seed points, and the comparisons do not hold
+
+### What was being checked
+
+The fifth entry left the fourteen model arms as a standing caveat: they are 5-seed means and
+had not been re-run. That caveat covered a headline, so it was not left standing.
+`src/03x_seed_stability_all_arms.py` re-runs the beta-lactamase hold-out on **every cached
+arm at 30 seeds**, at both operating points, with an interval from the seed distribution.
+
+🟢 **The headline survives and improves.** §9 states that ESM-C 600M is the only arm that
+beats plain alignment on beta-lactamase. At 30 seeds it is **48.3%, 95% CI [43.9, 52.7]**,
+against alignment's fixed 29.5%, and it is **still the only arm whose interval clears
+alignment**. No other arm's interval even reaches it. The claim now rests on an interval
+rather than on five draws.
+
+### What does not survive
+
+Five arms' published @95 values fall outside their own 30-seed intervals: the canonical
+ESM-2 650M run and its named duplicate, `esm2_650M_max`, `esmc_6B`, and `esm3_1_4B`. Three
+sentences built on those points are wrong as written.
+
+**One. "Twenty times the parameters recovers less than a twelfth of what 600M does, and less
+than 300M does."**
+
+| ESM-C | 5 seeds | 30 seeds, 95% CI |
+|---|---|---|
+| 300M | 15.7% | 16.4% [10.7, 22.2] |
+| 600M | 51.4% | 48.3% [43.9, 52.7] |
+| 6B | 4.3% | **12.4% [7.4, 17.4]** |
+
+The ratio is **3.9x, about a quarter rather than a twelfth**, and 6B's interval **overlaps
+300M's**, so 6B being worse than 300M is unsupported. The load-bearing part holds: 600M and
+6B do not overlap across a twentyfold capacity range on one corpus.
+
+**Two. "Max pooling drives beta-lactamase to 0% and CLS to 13%, against mean at 21%."** At 30
+seeds: mean 15.7% [11.2, 20.2], CLS 16.4% [10.6, 22.2], max 1.9% [0.6, 3.2]. **Mean and CLS
+are indistinguishable** and the published ordering between them was noise. Max stays far
+below both.
+
+**Three. "Beta-lactamase runs 1%, 13%, 11%, 21%, 16% across the ESM-2 ladder, no trend."** At
+30 seeds: 1.7%, 16.2%, 9.5%, 15.7%, 19.0%, a rank correlation against parameter count of
+**+0.70** on five points. "No trend" is too strong. What carries the conclusion instead is
+that **3B's whole interval, [14.5, 23.6], lies below alignment's 29.5%**.
+
+### Why the conclusions stand while the sentences change
+
+Each of the three headings claims that some axis **fails to fix** beta-lactamase, and each
+still does: no scale, no pooling choice, and no ESM-C capacity setting other than 600M brings
+the class near the baseline it has to beat. What was wrong was the precision of the
+comparisons underneath, which asserted orderings between arms that five seeds cannot
+resolve. The corrected wording compares intervals.
+
+🔴 **The recurring error, stated once so it is not repeated.** A 5-seed mean of a quantity
+whose seed sd runs 12 to 19 points supports a statement about whether an arm clears a
+baseline by 20 points. It does not support a statement about which of two arms is higher when
+they differ by 4. Three of §9's sentences did the second thing.
+
+### Standing
+
+⚠️ Still not re-run at 30 seeds: the other eight classes on the thirteen non-canonical arms,
+and the "non-monotonic in three of nine classes" count in §9's closing block, which is a
+5-seed claim about classes this entry did not touch. Nothing in the document's conclusions
+rests on those counts, and a reader quoting one should assume the same 10-to-20-point seed
+noise.
+
+### Fix
+
+`src/03x_seed_stability_all_arms.py` and `results/v2/seed_stability_all_arms.json` are
+committed, §9's three sentences are rewritten with intervals, the surviving ESM-C 600M claim
+now carries its interval, and `src/22_claims_audit.py` pins all of it: the single arm that
+clears alignment, the 6B-against-300M overlap, the CLS-against-mean overlap, the ladder
+correlation, and the count of five arms whose published value left its own interval.

@@ -229,6 +229,12 @@ entirely missed, and it is the only class where plain Smith-Waterman alignment b
 said the class resisted every configuration tested; that was wrong when written. See
 [`docs/DATA_CORRECTIONS.md`](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/DATA_CORRECTIONS.md).
 
+🟢 *This one holds up under the seed check above. At 30 seeds ESM-C 600M gives **48.3%, 95% CI
+[43.9, 52.7]**, and across all 14 model arms it is still the **only** one whose interval clears
+alignment's 29.5%, with no other arm's interval reaching it. Three other arm-to-arm comparisons in
+`docs/MECHANISM_GENERALIZATION.md` §9 did not survive the same check and were rewritten; the sixth
+2026-09-18 entry in `docs/DATA_CORRECTIONS.md` lists them.*
+
 **Three cautions that belong with any number above:**
 
 - A probe trained on **lab-strain provenance with the hazard label ignored** still reaches AUROC
