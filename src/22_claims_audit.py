@@ -430,6 +430,43 @@ def amr_test_input_present():
             "sha256": hashlib.sha256(b).hexdigest()}
 
 
+def interplm_feature_overlap():
+    """§9.6, the sixth refused candidate for the beta-lactamase anomaly. Pins the size
+    control, because the unconditioned version of this looked like a finding: 279
+    significant features for beta-lactamase with 95% of them unique to it. Matching every
+    class to n=6 drops that to 31 features, and clostridial neurotoxin -- 78% unique,
+    nearly as high, recovered at 100% -- kills the correlation (rho -0.217, p 0.641).
+    Also pins the positive half, that features separating beta-lactamase from benign DO
+    exist, so nobody restates this as "the representation does not encode the class"."""
+    d = json.load(open(R / "v2/interplm_feature_overlap.json"))
+    pc = d["per_class"]
+    sp = d["spearman_unique_vs_recovery"]
+    return {"K": d["K"], "n_classes": sp["n"],
+            "rho": round(sp["rho"], 3), "p": round(sp["p"], 3),
+            "bl_sig": round(pc["beta_lactamase"]["sig_mean"], 1),
+            "bl_unique": round(pc["beta_lactamase"]["unique_frac"], 3),
+            "clost_unique": round(pc["clostridial_neurotoxin"]["unique_frac"], 3),
+            "clost_recovery": round(pc["clostridial_neurotoxin"]["recovery"], 3),
+            "bl_recovery": round(pc["beta_lactamase"]["recovery"], 3)}
+
+
+def interplm_power_check():
+    """§9.6's precondition. If InterPLM's SAE features could not separate hazard, no
+    feature-level claim about beta-lactamase would mean anything. Layer 18 reaches 0.910
+    against the raw embedding's 0.973. Layer 1 is pinned too as the reason it cannot serve
+    as a reconstruction-fidelity control: near-perfect reconstruction but only 214 of
+    10240 features ever fire, and AUROC 0.753."""
+    d = json.load(open(R / "v2/interplm_power_check.json"))
+    layers = {str(k): v for k, v in d["layers"].items()}
+    l18, l1 = layers["18"], layers["1"]
+    return {"auroc_18": round(l18["auroc"], 3),
+            "auroc_1": round(l1["auroc"], 3),
+            "alive_18": l18["features_alive"],
+            "alive_1": l1["features_alive"],
+            "active_per_protein_18": round(l18["active_per_protein"], 0),
+            "raw_for_comparison": d["raw_embedding_auroc_for_comparison"]}
+
+
 def fhs_fsi_correlation_current():
     """results/fhs_results.json stores fhs_fsi_spearman_r = 0.7005 (p 0.0112), computed
     2026-05-21 (commit e2522d2) against the fsi_results.json that existed then. FSI was
@@ -743,6 +780,21 @@ CLAIMS = [
      lambda v: (v["exists"] and v["n_sequences"] == 8 and v["bytes"] == 2511
                 and v["sha256"] == "4df8a5c65ad684e31bebfb6a101cea7c6dca9bfd6307fa4f38a1a2a68edcc5d2"),
      {"docs/MECHANISM_GENERALIZATION.md": "4df8a5c65ad684e3"}, []),
+    ("SAE feature uniqueness does not explain the beta-lactamase anomaly, once n is matched",
+     interplm_feature_overlap,
+     lambda v: (v["K"] == 6 and v["n_classes"] == 7
+                and v["p"] > 0.05
+                and v["bl_sig"] < 40
+                and v["clost_unique"] > 0.70
+                and v["clost_recovery"] == 1.0
+                and v["bl_recovery"] < 0.25),
+     {"docs/MECHANISM_GENERALIZATION.md": "Feature uniqueness does not predict recovery failure"}, []),
+    ("InterPLM SAE features do separate hazard, so §9.6's premise holds",
+     interplm_power_check,
+     lambda v: (v["auroc_18"] > 0.85 and v["auroc_18"] < v["raw_for_comparison"]
+                and v["alive_18"] > 10000
+                and v["auroc_1"] < 0.80 and v["alive_1"] < 500),
+     {"docs/MECHANISM_GENERALIZATION.md": "AUROC 0.910"}, []),
     ("the stored FHS-FSI correlation is stale; the current pairing is weaker and fragile",
      fhs_fsi_correlation_current,
      lambda v: (v["n"] == 12

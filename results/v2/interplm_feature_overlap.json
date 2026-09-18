@@ -1,0 +1,50 @@
+{
+  "K": 6,
+  "draws": 20,
+  "per_class": {
+    "beta_lactamase": {
+      "sig_mean": 31.35,
+      "unique_frac": 0.8480215108175766,
+      "recovery": 0.21428571428571427
+    },
+    "adp_ribosyl_ab_toxin": {
+      "sig_mean": 130.75,
+      "unique_frac": 0.4795467147536866,
+      "recovery": 1.0
+    },
+    "clostridial_neurotoxin": {
+      "sig_mean": 472.0,
+      "unique_frac": 0.7826271186440679,
+      "recovery": 1.0
+    },
+    "rip_rrna_glycosidase": {
+      "sig_mean": 64.15,
+      "unique_frac": 0.24695419560598914,
+      "recovery": 1.0
+    },
+    "superantigen_enterotoxin": {
+      "sig_mean": 58.65,
+      "unique_frac": 0.4107357970220947,
+      "recovery": 1.0
+    },
+    "pore_forming_cytolysin": {
+      "sig_mean": 50.2,
+      "unique_frac": 0.2189753633019887,
+      "recovery": 0.6857142857142857
+    },
+    "t3ss_effector_apparatus": {
+      "sig_mean": 12.5,
+      "unique_frac": 0.4954197148276095,
+      "recovery": 0.8
+    }
+  },
+  "spearman_unique_vs_recovery": {
+    "rho": -0.21673036171575272,
+    "p": 0.6406471615204583,
+    "n": 7
+  },
+  "verdict": "REFUSED: feature uniqueness does not predict recovery failure",
+  "excluded_too_small": [
+    "contact_dependent_inhibition"
+  ]
+}

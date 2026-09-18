@@ -916,6 +916,57 @@ and for the same reason: **these numbers are closer to a lower bound than to a c
 ⚠️ Five depths on a coarse grid, on one model. Layer 12 is the best of those tested rather than an
 optimum, and nothing here says the same depth would be best for another family.
 
+### 9.6 🔴 A sixth candidate, inside the representation this time, also refused
+
+`src/15b_interplm_sae.py`, `src/15c_interplm_power_check.py`, `src/15d_interplm_feature_overlap.py`.
+Five explanations for beta-lactamase's 21% have now been refused: the classifier head (§9.1), corpus and
+capacity (§9.3), the toxin/AMR category (§9.4), layer depth (§9.5), and training-set composition (§5.1).
+Every one of those looked at the probe or the panel. This one looks at the **features**, using InterPLM's
+pre-trained sparse autoencoder for ESM-2 650M — which `research/05` had claimed all along was Pillar 2's
+input and which `src/15_sae_fhs.py` never actually loaded (see `docs/DATA_CORRECTIONS.md`, 2026-09-18).
+
+**The hypothesis.** If the features that separate beta-lactamase from benign proteins are not *shared*
+with the other hazard classes, a probe trained on those classes has no feature path to reach it, and the
+recovery failure is explained.
+
+**Power check first** (`15c`), because a feature-level story is worthless if the feature space cannot
+separate hazard at all. At layer 18 the SAE's 10,240 features give **AUROC 0.910 ± 0.044** against the raw
+embedding's 0.973, so the premise holds.
+
+🔴 **And the hypothesis fails on a size control.** Unconditioned, it looks conclusive: beta-lactamase has
+279 features significant against benign (Mann-Whitney, Bonferroni over 10,240), **264 of them — 95% —
+appearing in no other class**, and no feature shared by all seven other classes. But beta-lactamase is the
+largest class at n=14, and power scales with n. Subsampling every class to n=6 over 20 draws:
+
+| class | sig. features | unique % | recovery@95 |
+|---|---|---|---|
+| **beta_lactamase** | **31** | **85%** | **21%** |
+| **clostridial_neurotoxin** | **472** | **78%** | **100%** |
+| t3ss_effector_apparatus | 12 | 50% | 80% |
+| adp_ribosyl_ab_toxin | 131 | 48% | 100% |
+| superantigen_enterotoxin | 59 | 41% | 100% |
+| rip_rrna_glycosidase | 64 | 25% | 100% |
+| pore_forming_cytolysin | 50 | 22% | 69% |
+
+**Unique fraction against recovery: Spearman rho −0.217, p 0.641, n=7.** Beta-lactamase's significant
+feature count collapses from 279 to **31** once n is matched, a ninefold drop, so most of the original
+signal was power rather than biology. And clostridial neurotoxin settles it: **78% unique, nearly
+beta-lactamase's 85%, and recovered at 100%.** Feature uniqueness does not predict recovery failure.
+
+🔑 **What survives is the opposite of what was being looked for, and it is more useful.** Thirty-one
+features separate beta-lactamase from benign proteins at n=6 under Bonferroni correction. **The
+information is in the representation.** The probe's failure to recover beta-lactamase is therefore not the
+representation lacking the class — it is the probe failing to reach information that is demonstrably
+there. Six candidates in, that is the sharpest statement available about what the anomaly is not.
+
+⚠️ Two caveats on the method. The SAE reconstructs only 87% of layer-18 activation (relative error 0.133,
+rising monotonically with depth: 0.006 at layer 1 to 0.256 at layer 30), so a *negative* feature result at
+this layer cannot be fully separated from what the SAE misses — which is why the positive result above is
+the load-bearing one. And mean-pooling SAE features over a protein destroys the sparsity that makes them
+interpretable: 146 features active per residue becomes 4,351 per protein, 42% of the dictionary, though
+only 44 exceed the 99th percentile of activation values. Per-protein means are adequate for a classifier
+and poor for naming individual features.
+
 
 ## 10. The one claim that looked like a competence boundary, and failed
 

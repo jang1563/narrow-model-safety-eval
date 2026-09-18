@@ -1,0 +1,27 @@
+{
+  "raw_embedding_auroc_for_comparison": 0.973,
+  "layers": {
+    "1": {
+      "auroc": 0.7525698924731183,
+      "sd": 0.06305663010214019,
+      "features_alive": 214,
+      "n_features": 10240,
+      "active_per_protein": 127.05128205128206,
+      "shape": [
+        234,
+        10240
+      ]
+    },
+    "18": {
+      "auroc": 0.90977688172043,
+      "sd": 0.043701960725541736,
+      "features_alive": 10225,
+      "n_features": 10240,
+      "active_per_protein": 4351.051282051282,
+      "shape": [
+        234,
+        10240
+      ]
+    }
+  }
+}
