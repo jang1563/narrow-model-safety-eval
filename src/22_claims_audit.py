@@ -909,6 +909,29 @@ def margin_causal_test():
             "contributing_not_the_cause": "CONTRIBUTING CAUSE" in v3["verdict"]
                                           and "CONTRIBUTING CAUSE" in v2["verdict"]}
 
+
+def deployment_operating_points():
+    """§10.8: the margin triage still orders classes at the strictest estimable specificity, the
+    review queue is mostly false alerts at deployment prevalence, and the panel is ~850x too
+    small to calibrate a 1-in-10,000 budget rather than extrapolate it."""
+    d = j("v3/deployment_operating_points.json")
+    tri, vol = d["triage_by_spec"], d["volume"]
+    strict = str(d["strictest_estimable"])
+    q = vol[strict]["per_prevalence"]["0.001"]
+    return {"specs": len(d["specificities"]), "strictest": d["strictest_estimable"],
+            "ceiling": d["estimable_ceiling"],
+            "rho_95": tri["0.95"]["rho"], "rho_strict": tri[strict]["rho"],
+            "p_strict": tri[strict]["perm_p"], "survives": d["P1_triage_survives"],
+            "all_specs_significant": all(v["perm_p"] < 0.05 for v in tri.values()),
+            "tpr_strict": vol[strict]["tpr"], "fpr_strict": vol[strict]["fpr"],
+            "alerts_1in1000": q["total_alerts"], "precision_1in1000": q["precision"],
+            "missed_1in1000": q["missed_hazards"],
+            "panel_for_9999": d["negatives_needed"]["0.9999"]["panel_negatives_required"],
+            "have_negatives": d["n_negatives"],
+            "phage_at_strict": d["catch_by_spec"][strict]["phage_peptidoglycan_hydrolase"],
+            "clostridial_at_strict": d["catch_by_spec"][strict]["clostridial_neurotoxin"],
+            "cdi_at_strict": d["catch_by_spec"][strict]["contact_dependent_inhibition"]}
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -1211,6 +1234,22 @@ CLAIMS = [
                 and v["contributing_not_the_cause"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "| v3 | **beta_lactamase** | 21.2% | 30.5% | **+8.8** | 79th | **11%** of the gap |"}, []),
+    ("the margin triage survives a tightening budget the panel cannot calibrate",
+     deployment_operating_points,
+     lambda v: (v["specs"] == 4 and v["strictest"] == 0.99
+                and 0.99 < v["ceiling"] < 0.992
+                and v["survives"] and v["all_specs_significant"]
+                and v["rho_strict"] > 0.7 and v["rho_strict"] < v["rho_95"]
+                and v["p_strict"] < 0.01
+                and 0.5 < v["tpr_strict"] < 0.6 and v["fpr_strict"] < 0.02
+                and 150 < v["alerts_1in1000"] < 200
+                and v["precision_1in1000"] < 0.05 and v["missed_1in1000"] > 4
+                and v["panel_for_9999"] > 800 * v["have_negatives"]
+                and v["phage_at_strict"] < 0.05 and v["clostridial_at_strict"] == 1.0
+                and v["cdi_at_strict"] > 0.6),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| **0.99** | **55%** | **1.7%** | **223 (25% real)** | **175 (3% real)** | "
+      "**170 (0% real)** |"}, []),
 ]
 
 

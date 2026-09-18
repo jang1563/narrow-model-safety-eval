@@ -1554,6 +1554,74 @@ the mechanism. Failures are now defined by **recovery below 25%**, which is the 
 meant to explain. Both fixes are defensible without reference to their outcome, and both outcomes moved in
 the author's favour, so the sequence is stated here rather than only the final numbers.
 
+### 10.8 🔑 The triage survives a tightening budget, and the panel cannot validate a deployable one
+
+`src/32_deployment_operating_points.py`, panel v3. §10.4 to §10.7 measured margin at **95% specificity**,
+which is a laboratory setting. Two questions follow, and the second one the panel answers by refusing to.
+
+**Does the ordering hold as the false-positive budget tightens?** If margin only orders classes at a
+threshold nobody would deploy at, the triage is not an operational instrument.
+
+| specificity | rho, margin against catch rate | perm p |
+|---|---|---|
+| 0.90 | +0.885 | 0.0001 |
+| 0.95 | +0.880 | 0.0003 |
+| 0.98 | +0.874 | 0.0002 |
+| **0.99** (strictest estimable) | **+0.734** | **0.0044** |
+
+🔑 **It holds.** The ordering weakens at the tightest budget the panel can calibrate and stays significant.
+So the triage is not an artifact of a lax threshold.
+
+**Per class, as the budget tightens, the spread widens rather than shifting:**
+
+| class | margin | @90 | @95 | @98 | @99 |
+|---|---|---|---|---|---|
+| **phage_peptidoglycan_hydrolase** | −0.0055 | 27% | 12% | 3% | **1%** |
+| **beta_lactamase** | −0.0082 | 40% | 21% | 10% | **4%** |
+| *virulence control* | *−0.0027* | *51%* | *31%* | *17%* | *13%* |
+| contact_dependent_inhibition | −0.0052 | 78% | 72% | 72% | **69%** |
+| cry_insecticidal | 0.0045 | 95% | 79% | 58% | 40% |
+| bacteriocin | 0.0061 | 92% | 86% | 84% | 82% |
+| clostridial_neurotoxin | 0.0079 | 100% | 100% | 100% | **100%** |
+
+⚠️ **Contact-dependent inhibition is the exception at every operating point**, and it is the same class
+§10.7 found does not respond to removing its nearest negatives. It has a negative margin and holds 69% at
+99% specificity, flatter than classes with much better margins. Margin's ordering is a rank statistic over
+twelve classes, not a per-class guarantee, and CDI is where that distinction bites.
+
+🔴 **What the screen would actually put in a review queue, per 10,000 sequences:**
+
+| specificity | TPR | FPR | alerts at 1-in-100 | at 1-in-1,000 | at 1-in-10,000 |
+|---|---|---|---|---|---|
+| 0.95 | 73% | 5.1% | 576 (13% real) | 515 (1% real) | 509 (0% real) |
+| 0.98 | 63% | 2.5% | 315 (20% real) | 260 (2% real) | 255 (0% real) |
+| **0.99** | **55%** | **1.7%** | **223 (25% real)** | **175 (3% real)** | **170 (0% real)** |
+
+At the strictest calibrated point, screening ten thousand sequences against a one-in-a-thousand hazard rate
+produces **175 alerts of which about 5 are real, while about 4 hazards go through**. §2.3 reported the
+precision collapse; this is the same fact as a staffing number, and it is the form in which it decides
+whether a screen is deployable.
+
+🔴 **And the panel cannot calibrate a deployment budget at all.** The threshold is a quantile of the
+held-out negatives, and 40% of 296 is 118, so the finest resolution available is one negative in 118, an
+FPR of 0.85%. Every specificity above **0.9915** is extrapolation, which is why `03r`'s `spec_0.999` row
+returns an FPR of 0.0065 rather than 0.001: it silently hit the ceiling. To calibrate a threshold with ten
+negatives above it:
+
+| target specificity | held-out negatives needed | panel size needed |
+|---|---|---|
+| 0.99 | 1,000 | 2,500 |
+| 0.999 | 10,000 | 25,000 |
+| **0.9999** | **100,001** | **250,003** |
+
+This panel has **296**. A screen operating at one false positive in ten thousand needs a negative set
+roughly **850 times** larger than this one to have its threshold calibrated rather than extrapolated. That
+is a statement about what validating a biosecurity screen costs, and it is not a problem more modelling
+solves.
+
+⚠️ Volume figures are arithmetic on the measured TPR and FPR and assume the queue is drawn like the panel's
+negatives, which no real order queue is. They are a scale check rather than a forecast.
+
 ## 11. What this does not claim
 
 - **Not a better classifier.** DTVF (ProtT5 + LSTM/CNN) reports AUROC 0.92 on the standard 576/576
