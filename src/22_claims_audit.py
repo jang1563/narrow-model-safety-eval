@@ -846,6 +846,25 @@ def v3_panel_and_target_host():
             "v2_balanced": v2["balanced_class_accuracy"], "v2_usable": v2["perm_usable"],
             "verdict_supported": th["verdict"].startswith("SUPPORTED")}
 
+
+def margin_predicts_new_classes():
+    """§10.5: margin ranks an unseen mechanism correctly out of sample and mis-states its
+    miss rate by 34 points. Both halves are pinned, because the ordering result without the
+    calibration failure would read as a competence boundary this does not have."""
+    d = j("v3/margin_predicts_new_classes.json")
+    p1, cal = d["P1"], d["calibration"]
+    phage = p1["per_class"]["phage_peptidoglycan_hydrolase"]
+    return {"p1_hit": p1["hit"], "lowest": p1["order_low_to_high"][0],
+            "phage_predicted": phage["predicted"], "phage_measured": phage["measured"],
+            "phage_error_pts": (phage["predicted"] - phage["measured"]) * 100,
+            "loocv_mae": d["P2"]["loocv_mae"], "baseline_mae": d["P2"]["baseline_mae"],
+            "beats_baseline": d["P2"]["beats_baseline"],
+            "loocv_rho": d["P3"]["loocv_spearman"], "loocv_p": d["P3"]["perm_p"],
+            "all_errors_optimistic": cal["all_same_sign"],
+            "worst_calibrated": cal["worst_calibrated_new_class"],
+            "rho_pre_expansion": d["rho_pre_expansion_classes"],
+            "not_calibrated": "NOT CALIBRATED" in d["verdict"]}
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -1112,6 +1131,17 @@ CLAIMS = [
                 and v["v2_balanced"] == 0.5 and not v["v2_usable"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "**v3 is 149 positives against 296 negatives**"}, []),
+    ("margin ranks an unseen mechanism right and mis-states its miss rate",
+     margin_predicts_new_classes,
+     lambda v: (v["p1_hit"] and v["lowest"] == "phage_peptidoglycan_hydrolase"
+                and v["phage_error_pts"] > 30
+                and v["beats_baseline"] and v["loocv_mae"] < 0.5 * v["baseline_mae"]
+                and v["loocv_rho"] > 0.8 and v["loocv_p"] < 0.01
+                and v["all_errors_optimistic"]
+                and v["worst_calibrated"] == "phage_peptidoglycan_hydrolase"
+                and v["rho_pre_expansion"] > 0.85 and v["not_calibrated"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| **phage_peptidoglycan_hydrolase** | **−0.0055** | **44%** | **10%** | **+34** |"}, []),
 ]
 
 

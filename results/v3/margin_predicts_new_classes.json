@@ -1,0 +1,61 @@
+{
+  "design": "fit on the 9 pre-expansion classes, test on the 3 added by v3; margins and recoveries both from panel v3 so only class identity is out of sample",
+  "disclosure": "a retrodiction with a model whose parameters exclude the test classes, not a sealed prediction; the author knew the answers",
+  "external_panels_cannot_test_this": "every class in external_mechanism_classes.json and safeprotein_mechanism_classes.json is already in v2, so they hold new members of known mechanisms rather than new mechanisms",
+  "rho_pre_expansion_classes": 0.8984341422975738,
+  "rho_on_panel_v2": 0.9400193421607684,
+  "linear_fit": {
+    "intercept": 0.6863350716196979,
+    "slope": 43.893209636670406
+  },
+  "P1": {
+    "order_low_to_high": [
+      "phage_peptidoglycan_hydrolase",
+      "cry_insecticidal",
+      "bacteriocin"
+    ],
+    "predicted_lowest": "phage_peptidoglycan_hydrolase",
+    "hit": true,
+    "chance": 0.3333333333333333,
+    "per_class": {
+      "bacteriocin": {
+        "margin": 0.006128962617367506,
+        "predicted": 0.955354912639126,
+        "measured": 0.8399999999999999
+      },
+      "cry_insecticidal": {
+        "margin": 0.004513269290328026,
+        "predicted": 0.8844369467268126,
+        "measured": 0.8727272727272727
+      },
+      "phage_peptidoglycan_hydrolase": {
+        "margin": -0.005539553239941597,
+        "predicted": 0.44318629996544456,
+        "measured": 0.1
+      }
+    }
+  },
+  "P2": {
+    "loocv_mae": 0.13371553338102773,
+    "baseline_mae": 0.2837603305785124,
+    "beats_baseline": true
+  },
+  "P3": {
+    "loocv_spearman": 0.8324631514932076,
+    "perm_p": 0.0006,
+    "perms": 20000
+  },
+  "largest_loocv_error": "contact_dependent_inhibition",
+  "calibration": {
+    "signed_errors_new_classes": {
+      "bacteriocin": 0.11535491263912612,
+      "cry_insecticidal": 0.011709673999539927,
+      "phage_peptidoglycan_hydrolase": 0.3431862999654446
+    },
+    "mean_signed_error": 0.15675029553470354,
+    "all_same_sign": true,
+    "worst_calibrated_new_class": "phage_peptidoglycan_hydrolase",
+    "note": "ordering transfers, magnitude does not. All three out-of-sample errors are optimistic, and the class the boundary exists to flag is the worst calibrated of the three. With n=3 a uniform sign is p=0.125 on a sign test, so the bias is a caution rather than a measured effect"
+  },
+  "verdict": "SUPPORTED FOR ORDERING, NOT CALIBRATED: margin ranked the unseen phage class lowest of the three new mechanisms, beats the mean baseline out of sample (13.4 against 28.4 points) and its LOOCV predictions track recovery (rho +0.832, p 0.0006). But it over-predicted that class by 34 points, 44% against 10% measured, and all three new-class errors are optimistic. Usable to rank which mechanisms to distrust, not to state a miss rate"
+}

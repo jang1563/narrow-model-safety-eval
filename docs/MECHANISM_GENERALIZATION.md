@@ -1401,6 +1401,53 @@ feature space or feature selection changes that geometry. The remaining §9.7 st
 sharper: the discriminative features exist, and nothing in the other classes points at where they are,
 because the other classes are further away than the benign set is.
 
+### 10.5 🔑 Margin ranks an unseen mechanism correctly and gets its miss rate badly wrong
+
+`src/29_margin_predicts_new_classes.py`. §10.4 is a within-panel fit, and §10.3 is the standing warning
+about exactly that: the member-level version of this claim was preregistered, frozen at a tagged commit,
+tested externally and **failed twice**. So the class-level version has to be stated before the answer is
+known, about classes that were not used to state it.
+
+⚠️ **The external panels cannot supply that test, which is worth saying because it looks like they should.**
+`external_mechanism_classes.json` holds 51 proteins in six classes and `safeprotein_mechanism_classes.json`
+66 in seven, and **every one of those classes is already in v2**. They are new members of known mechanisms.
+They test whether margin predicts for unseen *proteins*, which is what §10.3 already did and lost.
+
+What can test it is the v3 expansion, because the relationship was measured on v2's nine classes and the
+three new ones did not exist in the panel then. The model is fit on the **nine pre-expansion classes** and
+asked about the **three new ones**, with margins and recoveries both taken from v3 so that only class
+identity is out of sample.
+
+| new mechanism class | margin | predicted | measured | error |
+|---|---|---|---|---|
+| **phage_peptidoglycan_hydrolase** | **−0.0055** | **44%** | **10%** | **+34** |
+| cry_insecticidal | 0.0045 | 88% | 87% | +1 |
+| bacteriocin | 0.0061 | 96% | 84% | +12 |
+
+**The ordering is right.** Margin ranks the phage class lowest of the three, which is the whole claim in one
+line: a mechanism nobody had tested, flagged as the one to distrust from its geometry alone, chance 1/3. The
+relationship holds on the nine fitting classes at rho +0.898 and on panel v2 itself at +0.940.
+
+**Out of sample it beats guessing.** Leave-one-class-out over all eleven classes gives mean absolute error
+**13.4 points against a mean-recovery baseline of 28.4**, and the held-out predictions track measured
+recovery at Spearman **+0.832, permutation p 0.0006**.
+
+🔴 **And the calibration fails on the one class the boundary exists for.** Predicted 44%, measured 10%, a
+**34-point** over-prediction. All three out-of-sample errors are optimistic, mean +15.7 points, and with
+n=3 a uniform sign is p=0.125 on a sign test, so that bias is a caution rather than a measured effect. The
+largest leave-one-out error anywhere is contact-dependent inhibition, predicted 28% against 75% measured,
+which is the non-monotonicity §10.4 already flagged showing up as error.
+
+🔑 **So the honest statement is narrower than "competence boundary" and still useful.** Margin says **which
+mechanism class to distrust**, before any probe is trained on it, and it was right about a class nobody had
+tested. It does **not** say how badly that class will be missed, and it errs optimistic on new mechanisms in
+all three cases available. As an operational instrument that makes it a triage signal for deciding which
+mechanism families need their own validation, and not a number to put in a specification.
+
+⚠️ Eleven classes, three of them out of sample. §10.3's failure was a claim at this confidence level that
+did not survive external data, and the corresponding external test for this one does not exist yet: it needs
+a panel containing a mechanism class that v3 does not have.
+
 ## 11. What this does not claim
 
 - **Not a better classifier.** DTVF (ProtT5 + LSTM/CNN) reports AUROC 0.92 on the standard 576/576
