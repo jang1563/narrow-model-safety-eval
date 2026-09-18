@@ -1,0 +1,157 @@
+{
+  "rule": "normalized Smith-Waterman score/sqrt(self_i*self_j) <= 0.30, BLOSUM62, gaps -11/-1, local, reviewed only",
+  "homology_max": 0.3,
+  "fetch_cap": 100,
+  "length_window_default": [
+    100,
+    1400
+  ],
+  "panel_positives_screened_against": 80,
+  "candidates": {
+    "cry_insecticidal": {
+      "target_host": "insect",
+      "query": "(family:\"delta endotoxin family\")",
+      "length_window": [
+        100,
+        1400
+      ],
+      "reviewed_total": 87,
+      "fetched": 87,
+      "independent_at_0.30": 22,
+      "novel_vs_panel": 22,
+      "collapse_ratio": 0.253
+    },
+    "bacteriocin_incl_colicin": {
+      "target_host": "bacteria",
+      "query": "(keyword:KW-0078) OR (protein_name:colicin)",
+      "length_window": [
+        100,
+        1400
+      ],
+      "reviewed_total": 49,
+      "fetched": 49,
+      "independent_at_0.30": 32,
+      "novel_vs_panel": 29,
+      "collapse_ratio": 0.653
+    },
+    "endolysin": {
+      "target_host": "bacteria",
+      "query": "(protein_name:endolysin)",
+      "length_window": [
+        100,
+        1400
+      ],
+      "reviewed_total": 52,
+      "fetched": 52,
+      "independent_at_0.30": 23,
+      "novel_vs_panel": 23,
+      "collapse_ratio": 0.442
+    },
+    "plant_target_avirulence": {
+      "target_host": "plant",
+      "query": "(protein_name:avirulence)",
+      "length_window": [
+        100,
+        1400
+      ],
+      "reviewed_total": 58,
+      "fetched": 58,
+      "independent_at_0.30": 32,
+      "novel_vs_panel": 32,
+      "collapse_ratio": 0.552
+    },
+    "chitinase_antifungal": {
+      "target_host": "other_nonanimal",
+      "query": "(ec:3.2.1.14)",
+      "length_window": [
+        100,
+        1400
+      ],
+      "reviewed_total": 177,
+      "fetched": 100,
+      "independent_at_0.30": 29,
+      "novel_vs_panel": 28,
+      "collapse_ratio": 0.29
+    },
+    "conotoxin": {
+      "target_host": "animal",
+      "query": "(taxonomy_name:Conus) AND (keyword:KW-0800)",
+      "length_window": [
+        100,
+        1400
+      ],
+      "reviewed_total": 62,
+      "fetched": 62,
+      "independent_at_0.30": 19,
+      "novel_vs_panel": 19,
+      "collapse_ratio": 0.306
+    },
+    "scorpion_channel_toxin": {
+      "target_host": "animal",
+      "query": "(family:\"long (4 C-C) scorpion toxin superfamily\")",
+      "length_window": [
+        100,
+        1400
+      ],
+      "reviewed_total": 3,
+      "fetched": 3,
+      "independent_at_0.30": 2,
+      "novel_vs_panel": 2,
+      "collapse_ratio": 0.667
+    },
+    "venom_phospholipase_a2": {
+      "target_host": "animal",
+      "query": "(family:\"phospholipase A2 family\") AND (keyword:KW-0800)",
+      "length_window": [
+        100,
+        1400
+      ],
+      "reviewed_total": 328,
+      "fetched": 100,
+      "independent_at_0.30": 5,
+      "novel_vs_panel": 5,
+      "collapse_ratio": 0.05
+    },
+    "fungal_toxin": {
+      "target_host": "animal",
+      "query": "(taxonomy_name:Fungi) AND (keyword:KW-0800)",
+      "length_window": [
+        100,
+        1400
+      ],
+      "reviewed_total": 33,
+      "fetched": 33,
+      "independent_at_0.30": 15,
+      "novel_vs_panel": 15,
+      "collapse_ratio": 0.455
+    },
+    "conotoxin_short": {
+      "target_host": "animal",
+      "query": "(taxonomy_name:Conus) AND (keyword:KW-0800)",
+      "length_window": [
+        10,
+        99
+      ],
+      "reviewed_total": 1275,
+      "fetched": 100,
+      "independent_at_0.30": 21,
+      "novel_vs_panel": 21,
+      "collapse_ratio": 0.21
+    }
+  },
+  "nonanimal_reaching_4": [
+    "cry_insecticidal",
+    "bacteriocin_incl_colicin",
+    "endolysin",
+    "plant_target_avirulence",
+    "chitinase_antifungal"
+  ],
+  "animal_reaching_4": [
+    "conotoxin",
+    "venom_phospholipase_a2",
+    "fungal_toxin",
+    "conotoxin_short"
+  ],
+  "nonanimal_classes_today": 2,
+  "note": "greedy acceptance in UniProt result order, so counts are realistic rather than maximal; nothing here is admitted to the panel"
+}
