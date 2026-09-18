@@ -1,0 +1,202 @@
+{
+  "task": "target host from positives only, animal vs non-animal",
+  "n": 73,
+  "n_animal": 51,
+  "n_nonanimal": 22,
+  "producer_kingdoms": {
+    "bacteria_or_virus": 74,
+    "plant": 6
+  },
+  "per_class": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "animal": 7,
+      "nonanimal": 0
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "animal": 0,
+      "nonanimal": 14
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "animal": 6,
+      "nonanimal": 0
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "animal": 0,
+      "nonanimal": 4
+    },
+    "nuclease_dnase_rnase": {
+      "n": 1,
+      "animal": 0,
+      "nonanimal": 1
+    },
+    "other_toxin_mechanism": {
+      "n": 1,
+      "animal": 1,
+      "nonanimal": 0
+    },
+    "phospholipase": {
+      "n": 2,
+      "animal": 2,
+      "nonanimal": 0
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "animal": 7,
+      "nonanimal": 0
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "animal": 7,
+      "nonanimal": 0
+    },
+    "secreted_protease": {
+      "n": 1,
+      "animal": 1,
+      "nonanimal": 0
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "animal": 7,
+      "nonanimal": 0
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "animal": 10,
+      "nonanimal": 0
+    },
+    "virulence_associated_non_toxin": {
+      "n": 6,
+      "animal": 3,
+      "nonanimal": 3
+    }
+  },
+  "single_target_classes": {
+    "adp_ribosyl_ab_toxin": "animal",
+    "beta_lactamase": "non-animal",
+    "clostridial_neurotoxin": "animal",
+    "contact_dependent_inhibition": "non-animal",
+    "phospholipase": "animal",
+    "pore_forming_cytolysin": "animal",
+    "rip_rrna_glycosidase": "animal",
+    "superantigen_enterotoxin": "animal",
+    "t3ss_effector_apparatus": "animal"
+  },
+  "mixed_classes": [
+    "virulence_associated_non_toxin"
+  ],
+  "n_nonanimal_single_target_classes": 2,
+  "pooled_cv": {
+    "auroc": 0.9304000000000001,
+    "sd": 0.06214197553962171,
+    "published_03s": 0.9294
+  },
+  "class_holdout": {
+    "per_class": {
+      "adp_ribosyl_ab_toxin": {
+        "target": "animal",
+        "n": 7,
+        "frac_correct": 1.0,
+        "mean_p_animal": 0.9438824515081399
+      },
+      "beta_lactamase": {
+        "target": "non-animal",
+        "n": 14,
+        "frac_correct": 0.07142857142857142,
+        "mean_p_animal": 0.8210225095429434
+      },
+      "clostridial_neurotoxin": {
+        "target": "animal",
+        "n": 6,
+        "frac_correct": 1.0,
+        "mean_p_animal": 0.9995123820090682
+      },
+      "contact_dependent_inhibition": {
+        "target": "non-animal",
+        "n": 4,
+        "frac_correct": 0.25,
+        "mean_p_animal": 0.7000387607402345
+      },
+      "phospholipase": {
+        "target": "animal",
+        "n": 2,
+        "frac_correct": 1.0,
+        "mean_p_animal": 0.9910576566969213
+      },
+      "pore_forming_cytolysin": {
+        "target": "animal",
+        "n": 7,
+        "frac_correct": 0.7142857142857143,
+        "mean_p_animal": 0.6909852102491241
+      },
+      "rip_rrna_glycosidase": {
+        "target": "animal",
+        "n": 7,
+        "frac_correct": 1.0,
+        "mean_p_animal": 0.9998787509236982
+      },
+      "superantigen_enterotoxin": {
+        "target": "animal",
+        "n": 7,
+        "frac_correct": 1.0,
+        "mean_p_animal": 0.9992560278958355
+      },
+      "t3ss_effector_apparatus": {
+        "target": "animal",
+        "n": 10,
+        "frac_correct": 0.8,
+        "mean_p_animal": 0.7443959457704528
+      }
+    },
+    "balanced_class_accuracy": 0.5,
+    "by_group": {
+      "animal": 1.0,
+      "non-animal": 0.0
+    },
+    "perm_draws": 200,
+    "perm_median": 0.42857142857142855,
+    "perm_p95": 1.0,
+    "perm_p": 0.21,
+    "perm_frac_at_1.000": 0.075,
+    "perm_usable": false
+  },
+  "post_hoc_class_level_ordering": {
+    "disclosure": "added after seeing the permutation null was uninformative; not preregistered, does not set the verdict",
+    "auroc": 0.7857142857142857,
+    "exact_one_tailed_p": 0.16666666666666666,
+    "n_orderings": 36,
+    "nonanimal_mean_p": [
+      0.8210225095429434,
+      0.7000387607402345
+    ],
+    "animal_mean_p": [
+      0.9438824515081399,
+      0.9995123820090682,
+      0.9910576566969213,
+      0.6909852102491241,
+      0.9998787509236982,
+      0.9992560278958355,
+      0.7443959457704528
+    ],
+    "animal_classes_below_highest_nonanimal": [
+      "pore_forming_cytolysin",
+      "t3ss_effector_apparatus"
+    ]
+  },
+  "within_class": {
+    "virulence_associated_non_toxin": {
+      "n": 6,
+      "n_animal": 3,
+      "n_nonanimal": 3,
+      "auroc": 0.0,
+      "frac_correct": 0.16666666666666666,
+      "exact_p_predicted_direction": 1.0,
+      "exact_p_inverted_direction": 0.05,
+      "n_orderings": 20
+    }
+  },
+  "verdict": "INCONCLUSIVE: balanced class accuracy 0.500, permutation p 0.2100, between the preregistered bounds"
+}

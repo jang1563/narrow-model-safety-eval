@@ -762,6 +762,25 @@ def lomo_seed_stability():
             "others_max_shift_pts": max(abs(z[c]["mean_30seed"] - z[c]["published_5seed"])
                                         for c in others) * 100}
 
+
+def target_host_class_holdout():
+    """§2.4.1: the 0.929 target-host figure is within-class. Leave-one-mechanism-class-out
+    scores exactly the majority baseline, with every held-out class called animal."""
+    d = j("v2/target_host_class_holdout.json")
+    ch, ph = d["class_holdout"], d["post_hoc_class_level_ordering"]
+    wc = d["within_class"]["virulence_associated_non_toxin"]
+    return {"pooled_auroc": d["pooled_cv"]["auroc"],
+            "published_03s": d["pooled_cv"]["published_03s"],
+            "balanced_class_acc": ch["balanced_class_accuracy"],
+            "animal_group": ch["by_group"]["animal"],
+            "nonanimal_group": ch["by_group"]["non-animal"],
+            "perm_usable": ch["perm_usable"], "perm_p95": ch["perm_p95"],
+            "posthoc_class_auroc": ph["auroc"], "posthoc_p": ph["exact_one_tailed_p"],
+            "animal_below_top_nonanimal": len(ph["animal_classes_below_highest_nonanimal"]),
+            "within_class_auroc": wc["auroc"],
+            "n_nonanimal_classes": d["n_nonanimal_single_target_classes"],
+            "producer_dominant": max(d["producer_kingdoms"].values())}
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -980,6 +999,19 @@ CLAIMS = [
                 and v["bl_ci"][1] < v["bl_published"]
                 and v["others_max_shift_pts"] <= 1.4),
      {"docs/MECHANISM_GENERALIZATION.md": "**[11.2, 20.2]**"}, []),
+    ("target host is legible within class and not across classes",
+     target_host_class_holdout,
+     lambda v: (abs(v["pooled_auroc"] - v["published_03s"]) < 0.01
+                and v["balanced_class_acc"] == 0.5
+                and v["animal_group"] == 1.0 and v["nonanimal_group"] == 0.0
+                and not v["perm_usable"] and v["perm_p95"] == 1.0
+                and 0.7 < v["posthoc_class_auroc"] < 0.85 and v["posthoc_p"] > 0.05
+                and v["animal_below_top_nonanimal"] == 2
+                and v["within_class_auroc"] == 0.0
+                and v["n_nonanimal_classes"] == 2 and v["producer_dominant"] == 74),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| leave-one-mechanism-class-out | does target host reach an unseen class | "
+      "**balanced class accuracy 0.500** |"}, []),
 ]
 
 

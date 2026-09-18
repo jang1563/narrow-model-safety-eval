@@ -160,6 +160,11 @@ ribosome-inactivating proteins are **plant-produced** and act on **animal** ribo
 🔑 **Target host is more legible in this representation than provenance is**, and §2 already treats
 0.818 as reason enough not to attribute separation to hazard alone.
 
+🔴 **Read 0.929 with §2.4.1 next to it.** That figure is a per-protein cross-validation, and target host is
+nearly determined by mechanism class here, so it does not survive holding a class out. It is enough to
+establish target host as a **confound**, which is all this section uses it for, and not enough to call target
+host a generalizable axis.
+
 | hazard separation, against the same 154 negatives | n | AUROC |
 |---|---|---|
 | all positives | 80 | 0.973 ± 0.020 |
@@ -193,8 +198,84 @@ noticed while asking what "hazard" means here, not predicted in advance.
 and could not settle it. The reason is visible now: even its without-AMR condition removed only the 14
 beta-lactamases, leaving contact-dependent inhibition and colicin E2 in training, so the probe still had
 non-animal-target positives to learn from. A clean version removes **every** non-animal-target positive
-from training before testing a non-animal class. That is registered here as the next test rather than run.
+from training before testing a non-animal class. `src/03t_animal_only_training.py` ran exactly that and
+**refuted it**: the interaction was −0.0 points, 95% CI [−3.4, +3.7], so having other non-animal positives
+in training does not help a held-out non-animal class. §5.1 attributes the two classes that moved.
 
+
+### 2.4.1 🔴 That target-host number is mostly within-class, and does not survive class holdout
+
+`src/03w_target_host_class_holdout.py`. §2.4's **AUROC 0.929** for target-host legibility is the figure a
+species-stratified follow-up would rest on: it says a frozen representation already encodes what a protein
+acts on. `src/03s_target_host_control.py` computed it with `StratifiedKFold(5)`, which shuffles **proteins**.
+That matters here more than usual.
+
+**Target host is very nearly a function of mechanism class in this panel.** **Eleven of the thirteen classes
+have a single target** across every member with an assigned one, leaving only `other_toxin_mechanism` and the
+virulence control carrying more than one. So a probe scored by per-protein cross-validation can reach 0.929
+by recognising the class and reading the target off it:
+
+| classes carrying animal target | classes carrying non-animal target | classes carrying both |
+|---|---|---|
+| adp-ribosyl 7/7, clostridial 6/6, phospholipase 2/2, pore-forming 7/7, RIP 7/7, superantigen 7/7, T3SS 10/10 | **beta-lactamase 14/14** (small molecule), **CDI 4/4** (bacteria) | the labelled virulence control, 3 against 3 |
+
+**Producer taxonomy is not the confound, and that was checked before anything else was run.** The scope
+question is whether the probe reads the producing organism rather than the target, since six of seven RIPs
+are plant-produced and act on animal ribosomes. But `producer_kingdom` in `data/annotations/target_host_v2.json`
+is `bacteria_or_virus` for **74 of 80** positives, the other six being exactly those RIPs. There is almost no
+producer variance to exploit at kingdom level. Finer producer structure is a separate question, and §2.3's
+provenance probe reaching 0.818 on hazard says it is not nothing.
+
+Three arms, one probe, positives only so hazard is held constant:
+
+| arm | what it asks | result |
+|---|---|---|
+| pooled per-protein CV | replicate §2.4 | **AUROC 0.930 ± 0.062** against the published 0.929 ± 0.065 |
+| leave-one-mechanism-class-out | does target host reach an unseen class | **balanced class accuracy 0.500** |
+| within the one mixed class | class identity held constant | **AUROC 0.000** on 3 against 3 |
+
+🔴 **The middle arm is the answer, and 0.500 is exactly what always saying "animal" scores.** Seven of seven
+animal classes are called correctly and **zero of two non-animal classes are**. Every held-out class comes
+back animal, including the two whose target is not:
+
+| held-out class | target | members called right | mean p(animal) |
+|---|---|---|---|
+| clostridial / RIP / superantigen / adp-ribosyl / phospholipase | animal | 100% | 0.94 to 1.00 |
+| t3ss_effector_apparatus | animal | 80% | 0.744 |
+| pore_forming_cytolysin | animal | 71% | 0.691 |
+| **beta_lactamase** | **non-animal** | **7%** | **0.821** |
+| **contact_dependent_inhibition** | **non-animal** | **25%** | **0.700** |
+
+⚠️ **The preregistered test for this was the wrong instrument, which is worth stating plainly.** The plan
+was a class-level permutation null, permuting which classes carry which target, on the grounds that effective
+n is the number of classes. At nine classes split seven to two, **8% of the 200 draws reach a balanced
+accuracy of 1.000** and the null's 95th percentile is exactly 1.000. So its p of 0.21 carries no information
+and the preregistered verdict is **INCONCLUSIVE** by its own rule. Recording that the statistic was
+underpowered is the honest report, rather than reading 0.21 as an absence of effect.
+
+**Post hoc, and labelled as such since it was added after seeing the null behave that way:** ranking the nine
+held-out classes by mean p(animal) gives a class-level AUROC of **0.786**, exact one-tailed p **0.167** over
+all 36 orderings. So the direction is right and the separation is not usable. Two animal classes,
+pore-forming at 0.691 and T3SS at 0.744, score **below** beta-lactamase at 0.821, which means no threshold
+assigns the held-out classes correctly.
+
+**The third arm is the cleanest and the smallest.** The virulence control is the only class carrying both
+target kinds, so class identity is constant inside it. A probe trained on every other class separates its
+three animal members from its three non-animal members at **AUROC 0.000**, perfectly inverted: exact
+one-tailed p is 1.000 in the predicted direction and 0.050 inverted, over the 20 orderings that exist at 3
+against 3. **One class and six proteins is a curiosity rather than a result.** Its direction agrees with the
+middle arm, which is the only weight it carries.
+
+🔑 **What this changes.** §2.4's finding stands as written: target host **is** an uncontrolled confound in
+the hazard numbers, and the animal/non-animal split of hazard separability is real. What does not stand is
+reading 0.929 as evidence that target host is a *generalizable* axis. It is a within-class number. Whether a
+representation can tell what a protein acts on when the mechanism is new is **untested here**.
+
+🔴 **And this panel cannot test it.** Non-animal target is carried by **two** mechanism classes. Hold one out
+and the training set contains a single example of the category, which is the same structural poverty that
+made §9.4 unsettleable. A design that both trains and tests on non-animal hazard needs non-animal-target
+positives from **four or five additional mechanism classes**, which is panel construction rather than
+analysis.
 
 ## 3. Result: recovery is class-dependent and spans the full range
 
