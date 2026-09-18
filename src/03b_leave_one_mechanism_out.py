@@ -96,14 +96,18 @@ def threshold_at_specificity(scores_neg, spec):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", default="")
-    tag = ap.parse_args().tag
+    ap.add_argument("--panel", default="v2", choices=["v2", "v3"],
+                    help="panel version. v2 is the frozen 80/154 panel that every published number in docs/ is computed on; v3 is 149/296, v2 plus three non-animal-target classes. --panel switches the results directory AND the annotation files together, so the two can never be mixed.")
+    args = ap.parse_args()
+    tag, pv = args.tag, args.panel
     suf = f"_{tag}" if tag else ""
+    RES = ROOT / "results" / pv
 
-    P = np.load(V2 / f"embeddings_positive_v2{suf}.npy")
-    N = np.load(V2 / f"embeddings_negative_v2{suf}.npy")
-    man = json.load(open(V2 / f"embedding_manifest_v2{suf}.json"))
-    mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v2.json"))
-    panel = json.load(open(ROOT / "data/sequences/panel_v2_manifest.json"))
+    P = np.load(RES / f"embeddings_positive_{pv}{suf}.npy")
+    N = np.load(RES / f"embeddings_negative_{pv}{suf}.npy")
+    man = json.load(open(RES / f"embedding_manifest_{pv}{suf}.json"))
+    mech = json.load(open(ROOT / f"data/annotations/mechanism_classes_{pv}.json"))
+    panel = json.load(open(ROOT / f"data/sequences/panel_{pv}_manifest.json"))
 
     pos_acc = [r["acc"] for r in man["positive_rows"]]
     neg_acc = [r["acc"] for r in man["negative_rows"]]
@@ -266,7 +270,7 @@ def main():
     out["leave_one_mechanism_out"] = res
 
     V2.mkdir(parents=True, exist_ok=True)
-    p = V2 / f"lomo_results{suf}.json"
+    p = RES / f"lomo_results{suf}.json"
     json.dump(out, open(p, "w"), indent=2)
     print(f"\nwrote {p}")
     print(

@@ -1,0 +1,3786 @@
+{
+  "built": "2026-09-05 12:04:00",
+  "source": "UniProtKB cc_subcellular_location + ft_signal",
+  "rule_order": [
+    "secreted",
+    "cell_surface",
+    "membrane",
+    "periplasm",
+    "cytoplasmic"
+  ],
+  "note": "localization is fetched independently of the panel's hazard label; the two are crossed only in analysis",
+  "proteins": {
+    "sp|O31506|YEEF_BACSU": {
+      "acc": "O31506",
+      "side": "positives",
+      "locations": [
+        "Cell membrane",
+        "Membrane raft"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|O34344|SDPC_BACSU": {
+      "acc": "O34344",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P77335|HLYE_ECOLI": {
+      "acc": "P77335",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Periplasm",
+        "Host cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|A0A0H2US87|OSPC3_SHIFL": {
+      "acc": "A0A0H2US87",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|B3BM80|CDIA4_ECO5C": {
+      "acc": "B3BM80",
+      "side": "positives",
+      "locations": [
+        "Target cell, target cell cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|B7UI21|NLEB1_ECO27": {
+      "acc": "B7UI21",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|B7UI22|NLEE_ECO27": {
+      "acc": "B7UI22",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host nucleus"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P09616|HLA_STAAU": {
+      "acc": "P09616",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P0C0J0|SPEB_STRPY": {
+      "acc": "P0C0J0",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host extracellular space",
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P40136|CYAA_BACAN": {
+      "acc": "P40136",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host cytoplasm, host cytosol"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|Q7NWF2|COPC_CHRVO": {
+      "acc": "Q7NWF2",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|O05442|CPNT_MYCTU": {
+      "acc": "O05442",
+      "side": "positives",
+      "locations": [
+        "Cell outer membrane",
+        "Secreted",
+        "Cell surface",
+        "Host cytoplasm, host cytosol"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P0A0L2|ETXA_STAAU": {
+      "acc": "P0A0L2",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P13128|TACY_LISMO": {
+      "acc": "P13128",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host membrane",
+        "Host cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P13423|PAG_BACAN": {
+      "acc": "P13423",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host cell membrane",
+        "Host cell membrane",
+        "Host endosome membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P34071|ENTC2_STAAU": {
+      "acc": "P34071",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P9WJ63|TLYA_MYCTU": {
+      "acc": "P9WJ63",
+      "side": "positives",
+      "locations": [
+        "Cytoplasm",
+        "Secreted, cell wall",
+        "Host cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|Q8XBX8|NLEB1_ECO57": {
+      "acc": "Q8XBX8",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|Q9FBI2|STXA_SHIDY": {
+      "acc": "Q9FBI2",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P0DPI1|BXA1_CLOBH": {
+      "acc": "P0DPI1",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host cytoplasm, host cytosol",
+        "Secreted",
+        "Host synapse, host presynaptic cell membrane",
+        "Host cytoplasmic vesicle, host secretory vesicle, host synaptic vesicle membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P11078|MU1_REOVD": {
+      "acc": "P11078",
+      "side": "positives",
+      "locations": [
+        "Virion",
+        "Host cell membrane",
+        "Host endoplasmic reticulum",
+        "Host mitochondrion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P01555|CHTA_VIBCH": {
+      "acc": "P01555",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P02879|RICI_RICCO": {
+      "acc": "P02879",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P10844|BXB_CLOBO": {
+      "acc": "P10844",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host synapse, host presynaptic cell membrane",
+        "Secreted",
+        "Host cytoplasm, host cytosol",
+        "Secreted",
+        "Host synapse, host presynaptic cell membrane",
+        "Host cytoplasmic vesicle, host secretory vesicle, host synaptic vesicle membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|Q45894|BXA2_CLOBJ": {
+      "acc": "Q45894",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host cytoplasm, host cytosol",
+        "Secreted",
+        "Host synapse, host presynaptic cell membrane",
+        "Host cytoplasmic vesicle, host secretory vesicle, host synaptic vesicle membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P01552|ETXB_STAAU": {
+      "acc": "P01552",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P01553|ENTC1_STAAU": {
+      "acc": "P01553",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|A0A0H3JPC6|TARS_STAAM": {
+      "acc": "A0A0H3JPC6",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A0A3Q0NBH7|PGDA_LISMG": {
+      "acc": "A0A3Q0NBH7",
+      "side": "positives",
+      "locations": [
+        "Cell membrane",
+        "Secreted, cell wall"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|A1JUB7|YADA_YERE8": {
+      "acc": "A1JUB7",
+      "side": "positives",
+      "locations": [
+        "Cell surface",
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "cell_surface"
+    },
+    "sp|A6QIG7|CHIPS_STAAE": {
+      "acc": "A6QIG7",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|B6A876|CHI1_YERET": {
+      "acc": "B6A876",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|D0ZKX9|RSEP_SALT1": {
+      "acc": "D0ZKX9",
+      "side": "positives",
+      "locations": [
+        "Cell inner membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|D0ZV89|PHOQ_SALT1": {
+      "acc": "D0ZV89",
+      "side": "positives",
+      "locations": [
+        "Cell inner membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|G3XDA8|PSTS_PSEAE": {
+      "acc": "G3XDA8",
+      "side": "positives",
+      "locations": [
+        "Periplasm",
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|O52623|SOPE_SALTM": {
+      "acc": "O52623",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|O84947|SCTE2_SALTY": {
+      "acc": "O84947",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Cell surface",
+        "Host membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P06736|HLYC_ECOLX": {
+      "acc": "P06736",
+      "side": "positives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P09776|VIRB2_AGRTU": {
+      "acc": "P09776",
+      "side": "positives",
+      "locations": [
+        "Cell inner membrane",
+        "Secreted",
+        "Fimbrium"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P0A1B9|SCTN1_SALTY": {
+      "acc": "P0A1B9",
+      "side": "positives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P0A1C1|SCTN_SHIFL": {
+      "acc": "P0A1C1",
+      "side": "positives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P0A2M9|SPVC_SALTY": {
+      "acc": "P0A2M9",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P00811|AMPC_ECOLI": {
+      "acc": "P00811",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|Q7WYA8|BLAB_PSEAI": {
+      "acc": "Q7WYA8",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P9WKD3|BLAC_MYCTU": {
+      "acc": "P9WKD3",
+      "side": "positives",
+      "locations": [
+        "Cell inner membrane",
+        "Periplasm",
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P26918|BLAB_AERHY": {
+      "acc": "P26918",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P14488|BLAB_BACCE": {
+      "acc": "P14488",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P04190|BLA2_BACCE": {
+      "acc": "P04190",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P14489|BLO10_PSEAI": {
+      "acc": "P14489",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|C7C422|BLAN1_KLEPN": {
+      "acc": "C7C422",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P05364|AMPC_ENTCL": {
+      "acc": "P05364",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P52700|BLA1_STEMA": {
+      "acc": "P52700",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|O87489|BLAV1_PSEAI": {
+      "acc": "O87489",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P05193|AMPC_CITFR": {
+      "acc": "P05193",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P52699|BLBI1_SERMA": {
+      "acc": "P52699",
+      "side": "positives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|Q9KJY7|BLAG1_KLEPN": {
+      "acc": "Q9KJY7",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P00588|DTX_CORBE": {
+      "acc": "P00588",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P04958|TETX_CLOTE": {
+      "acc": "P04958",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P11140|ABRA_ABRPR": {
+      "acc": "P11140",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P55981|VACA_HELPY": {
+      "acc": "P55981",
+      "side": "positives",
+      "locations": [
+        "Periplasm",
+        "Secreted",
+        "Cell surface",
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P0DF97|TACY_STRPQ": {
+      "acc": "P0DF97",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Host cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P00648|RNBR_BACAM": {
+      "acc": "P00648",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P04419|CEA2_ECOLX": {
+      "acc": "P04419",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P15273|YOPH_YEREN": {
+      "acc": "P15273",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "tr|O34208|O34208_PSEAI": {
+      "acc": "O34208",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "tr|Q51451|Q51451_PSEAI": {
+      "acc": "Q51451",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|Q5EK40|CHXA_VIBCL": {
+      "acc": "Q5EK40",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P11439|TOXA_PSEAE": {
+      "acc": "P11439",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P75409|CARDS_MYCPN": {
+      "acc": "P75409",
+      "side": "positives",
+      "locations": [
+        "Cell membrane",
+        "Cytoplasm",
+        "Cell surface",
+        "Cell projection, attachment organelle",
+        "Host cytoplasm, host cytosol",
+        "Host endoplasmic reticulum"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cell_surface"
+    },
+    "sp|P04977|TOX1_BORPE": {
+      "acc": "P04977",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|H9T8G6|CDIA9_BURPE": {
+      "acc": "H9T8G6",
+      "side": "positives",
+      "locations": [
+        "Target cell, target cell cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6EH50|RIP4_PHYHE": {
+      "acc": "Q6EH50",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P33186|RIPG_SURMU": {
+      "acc": "P33186",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|Q9M653|RIPT_POLML": {
+      "acc": "Q9M653",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P85101|RIPLY_SILCH": {
+      "acc": "P85101",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P18640|BXC_CBCP": {
+      "acc": "P18640",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Secreted",
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P0DPK1|BXX_CLOBO": {
+      "acc": "P0DPK1",
+      "side": "positives",
+      "locations": [
+        "Secreted",
+        "Secreted",
+        "Host cytoplasm, host cytosol",
+        "Secreted",
+        "Host synapse, host presynaptic cell membrane",
+        "Host cytoplasmic vesicle, host secretory vesicle, host synaptic vesicle membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P0DG09|SPEG_STRPQ": {
+      "acc": "P0DG09",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P06886|TSST_STAAU": {
+      "acc": "P06886",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P0A0M0|ETXH_STAAU": {
+      "acc": "P0A0M0",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|O05512|MANB_BACSU": {
+      "acc": "O05512",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|O34952|LTAS2_BACSU": {
+      "acc": "O34952",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane",
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P29141|SUBV_BACSU": {
+      "acc": "P29141",
+      "side": "negatives",
+      "locations": [
+        "Secreted",
+        "Secreted, cell wall"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P39848|LYTD_BACSU": {
+      "acc": "P39848",
+      "side": "negatives",
+      "locations": [
+        "Secreted",
+        "Secreted, cell wall"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P42293|EABN2_BACSU": {
+      "acc": "P42293",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|Q06320|CWLC_BACSU": {
+      "acc": "Q06320",
+      "side": "negatives",
+      "locations": [
+        "Secreted, cell wall"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|Q797B3|LTAS1_BACSU": {
+      "acc": "Q797B3",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane",
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P04189|SUBT_BACSU": {
+      "acc": "P04189",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P04737|PIL1_ECOLI": {
+      "acc": "P04737",
+      "side": "negatives",
+      "locations": [
+        "Cell inner membrane",
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P25152|BSAP_BACSU": {
+      "acc": "P25152",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P37965|GLPQ_BACSU": {
+      "acc": "P37965",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P39597|EFEB_BACSU": {
+      "acc": "P39597",
+      "side": "negatives",
+      "locations": [
+        "Secreted",
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P94522|EABN1_BACSU": {
+      "acc": "P94522",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P96740|PGDS_BACSU": {
+      "acc": "P96740",
+      "side": "negatives",
+      "locations": [
+        "Secreted",
+        "Secreted, cell wall"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|Q79F14|ESTB_BACSU": {
+      "acc": "Q79F14",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|O31527|YESX_BACSU": {
+      "acc": "O31527",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P05655|LSC_BACSU": {
+      "acc": "P05655",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P0A6P9|ENO_ECOLI": {
+      "acc": "P0A6P9",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm",
+        "Cytoplasm, cytoskeleton",
+        "Secreted",
+        "Cell surface"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P16396|SUBE_BACSU": {
+      "acc": "P16396",
+      "side": "negatives",
+      "locations": [
+        "Secreted",
+        "Secreted, cell wall"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P19582|DHOM_BACSU": {
+      "acc": "P19582",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm",
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|C0SPC1|CCRZ_BACSU": {
+      "acc": "C0SPC1",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O06724|YISK_BACSU": {
+      "acc": "O06724",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O31616|GLYOX_BACSU": {
+      "acc": "O31616",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O31775|YMDB_BACSU": {
+      "acc": "O31775",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O34481|RECD2_BACSU": {
+      "acc": "O34481",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm, nucleoid"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O34580|PCRA_BACSU": {
+      "acc": "O34580",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm, nucleoid"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O34714|OXDC_BACSU": {
+      "acc": "O34714",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O34942|RECG_BACSU": {
+      "acc": "O34942",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm, nucleoid"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P00509|AAT_ECOLI": {
+      "acc": "P00509",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P00946|MANA_ECOLI": {
+      "acc": "P00946",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P04805|SYE_ECOLI": {
+      "acc": "P04805",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P04982|RBSD_ECOLI": {
+      "acc": "P04982",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P05824|RECN_ECOLI": {
+      "acc": "P05824",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P06567|DNAI_BACSU": {
+      "acc": "P06567",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P06616|ERA_ECOLI": {
+      "acc": "P06616",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm",
+        "Cell inner membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P12041|PURQ_BACSU": {
+      "acc": "P12041",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P17618|RIBD_BACSU": {
+      "acc": "P17618",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P25052|TENA_BACSU": {
+      "acc": "P25052",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P31658|HCHA_ECOLI": {
+      "acc": "P31658",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P36548|AMIA_ECOLI": {
+      "acc": "P36548",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P37794|CHBG_ECOLI": {
+      "acc": "P37794",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q46806|PHYDA_ECOLI": {
+      "acc": "Q46806",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|O35000|NAGB_BACSU": {
+      "acc": "O35000",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0A6T5|GCH1_ECOLI": {
+      "acc": "P0A6T5",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0A759|NAGB_ECOLI": {
+      "acc": "P0A759",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0A962|ASPG1_ECOLI": {
+      "acc": "P0A962",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P0AC00|FRLB_ECOLI": {
+      "acc": "P0AC00",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0AED7|DAPE_ECOLI": {
+      "acc": "P0AED7",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P77425|ALLC_ECOLI": {
+      "acc": "P77425",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q99ZW2|CAS9_STRP1": {
+      "acc": "Q99ZW2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0A0M5|TYSY_STAAU": {
+      "acc": "P0A0M5",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P0A017|DYR_STAAU": {
+      "acc": "P0A017",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P9WFV9|SYE_MYCTU": {
+      "acc": "P9WFV9",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O69689|ASPAT_MYCTU": {
+      "acc": "O69689",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P9WN57|GCH1_MYCTU": {
+      "acc": "P9WN57",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P9WPH1|RIBD_MYCTU": {
+      "acc": "P9WPH1",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0A2K3|SYE_SALTY": {
+      "acc": "P0A2K3",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P58661|AAT_SALTY": {
+      "acc": "P58661",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P64209|GCH1_SALTY": {
+      "acc": "P64209",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q8ZQX7|NAGB_SALTY": {
+      "acc": "Q8ZQX7",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q83K84|SYE_SHIFL": {
+      "acc": "Q83K84",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P59688|NAGB_SHIFL": {
+      "acc": "P59688",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q83KZ1|MANA_SHIFL": {
+      "acc": "Q83KZ1",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q81VV3|SYE_BACAN": {
+      "acc": "Q81VV3",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q81SW2|GCH1_BACAN": {
+      "acc": "Q81SW2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q81MH5|NAGB_BACAN": {
+      "acc": "Q81MH5",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q81R23|TYSY_BACAN": {
+      "acc": "Q81R23",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O85746|TYRB_KLEPN": {
+      "acc": "O85746",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0C0C1|GCH1_STRPY": {
+      "acc": "P0C0C1",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0A0K8|GYRB_STAAU": {
+      "acc": "P0A0K8",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P68845|RECA_STAAU": {
+      "acc": "P68845",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P24497|AROA_KLEPN": {
+      "acc": "P24497",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P0C0H6|IMDH_STRPY": {
+      "acc": "P0C0H6",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0C0G0|DHPS_STRPY": {
+      "acc": "P0C0G0",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0DJP0|RECA_LISMO": {
+      "acc": "P0DJP0",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q9RLT9|RPOB_LISMO": {
+      "acc": "Q9RLT9",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q8Y5N8|SYI_LISMO": {
+      "acc": "Q8Y5N8",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q9KVX3|GYRB_VIBCH": {
+      "acc": "Q9KVX3",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P45383|RECA_VIBCH": {
+      "acc": "P45383",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q9KV30|RPOB_VIBCH": {
+      "acc": "Q9KV30",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9I7C2|GYRB_PSEAE": {
+      "acc": "Q9I7C2",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P08280|RECA_PSEAE": {
+      "acc": "P08280",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q51561|RPOB_PSEAE": {
+      "acc": "Q51561",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9HVM4|SYI_PSEAE": {
+      "acc": "Q9HVM4",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q9HXZ4|PYRG_PSEAE": {
+      "acc": "Q9HXZ4",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q81A16|RECA_BACCR": {
+      "acc": "Q81A16",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q81J48|RPOB_BACCR": {
+      "acc": "Q81J48",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q814T2|PYRG_BACCR": {
+      "acc": "Q814T2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A5I7L4|RPOB_CLOBH": {
+      "acc": "A5I7L4",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A5I526|GLYA_CLOBH": {
+      "acc": "A5I526",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|A5I7Y9|PURA_CLOBH": {
+      "acc": "A5I7Y9",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P0AES8|GYRB_SHIFL": {
+      "acc": "P0AES8",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P17479|RECA_SERMA": {
+      "acc": "P17479",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|A1JK01|RECA_YERE8": {
+      "acc": "A1JK01",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q7NXL9|RECA_CHRVO": {
+      "acc": "Q7NXL9",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|A0KPG3|RECA_AERHH": {
+      "acc": "A0KPG3",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P33038|MURA_ENTCC": {
+      "acc": "P33038",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|B2FL31|RECA_STRMK": {
+      "acc": "B2FL31",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q895I5|RECA_CLOTE": {
+      "acc": "Q895I5",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P55992|GYRB_HELPY": {
+      "acc": "P55992",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P40600|LIPE_AERHY": {
+      "acc": "P40600",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|A0KLG5|BSR_AERHH": {
+      "acc": "A0KLG5",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P94217|SLAP2_BACAN": {
+      "acc": "P94217",
+      "side": "negatives",
+      "locations": [
+        "Secreted, cell wall, S-layer"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|Q81JH1|YIDC2_BACAN": {
+      "acc": "Q81JH1",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|P0A3V1|SLEB_BACCE": {
+      "acc": "P0A3V1",
+      "side": "negatives",
+      "locations": [
+        "Forespore"
+      ],
+      "has_signal_peptide": true,
+      "localization": "other"
+    },
+    "sp|P36924|AMYB_BACCE": {
+      "acc": "P36924",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|Q7NZY0|MSRP_CHRVO": {
+      "acc": "Q7NZY0",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|Q7NQB0|SURA_CHRVO": {
+      "acc": "Q7NQB0",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|C3KW94|PRSA_CLOB6": {
+      "acc": "C3KW94",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|B1IGZ5|PRSA_CLOBK": {
+      "acc": "B1IGZ5",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|Q899I2|PRSA_CLOTE": {
+      "acc": "Q899I2",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|Q897L1|CBIM_CLOTE": {
+      "acc": "Q897L1",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|D6DRS2|PAGP_ENTCL": {
+      "acc": "D6DRS2",
+      "side": "negatives",
+      "locations": [
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|Q47490|PHOE_ENTCL": {
+      "acc": "Q47490",
+      "side": "negatives",
+      "locations": [
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|O25825|CY553_HELPY": {
+      "acc": "O25825",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|O26091|RLPA_HELPY": {
+      "acc": "O26091",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|P15644|GSPD_KLEPN": {
+      "acc": "P15644",
+      "side": "negatives",
+      "locations": [
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|P24017|OMPA_KLEPN": {
+      "acc": "P24017",
+      "side": "negatives",
+      "locations": [
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|Q8Y585|HBP1_LISMO": {
+      "acc": "Q8Y585",
+      "side": "negatives",
+      "locations": [
+        "Secreted, cell wall",
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|Q9RR44|GBUC_LISM4": {
+      "acc": "Q9RR44",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|A0A089QRB9|MSL3_MYCTU": {
+      "acc": "A0A089QRB9",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|I6Y4D2|PEPAM_MYCTU": {
+      "acc": "I6Y4D2",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|Q8RNT4|LOX_PSEAI": {
+      "acc": "Q8RNT4",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|S0HPF7|PILY1_PSEAW": {
+      "acc": "S0HPF7",
+      "side": "negatives",
+      "locations": [
+        "Fimbrium",
+        "Membrane",
+        "Cytoplasm, cytosol"
+      ],
+      "has_signal_peptide": true,
+      "localization": "cell_surface"
+    },
+    "sp|Q540U1|APHA_SALTM": {
+      "acc": "Q540U1",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P06202|OPPA_SALTY": {
+      "acc": "P06202",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|Q54468|CHB_SERMA": {
+      "acc": "Q54468",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P9WEM3|LP10_SERMA": {
+      "acc": "P9WEM3",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|A0A2S4N3N0|OMPA_SHIFL": {
+      "acc": "A0A2S4N3N0",
+      "side": "negatives",
+      "locations": [
+        "Extracellular vesicle",
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|Q83QV0|NAPA_SHIFL": {
+      "acc": "Q83QV0",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P0C5Z8|ATL_STAAU": {
+      "acc": "P0C5Z8",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|Q2FZE6|ISDE_STAA8": {
+      "acc": "Q2FZE6",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|B2FHL8|PL_STRMK": {
+      "acc": "B2FHL8",
+      "side": "negatives",
+      "locations": [
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|B2FSW8|EALGL_STRMK": {
+      "acc": "B2FSW8",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|Q9A1S2|PILIN_STRP1": {
+      "acc": "Q9A1S2",
+      "side": "negatives",
+      "locations": [
+        "Secreted, cell wall",
+        "Fimbrium"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P49054|PAM_STRPY": {
+      "acc": "P49054",
+      "side": "negatives",
+      "locations": [
+        "Secreted, cell wall"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P45779|GSPD_VIBCH": {
+      "acc": "P45779",
+      "side": "negatives",
+      "locations": [
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|Q9KSE5|BSR_VIBCH": {
+      "acc": "Q9KSE5",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|A1JL26|NAPA_YERE8": {
+      "acc": "A1JL26",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P31499|HEMR_YEREN": {
+      "acc": "P31499",
+      "side": "negatives",
+      "locations": [
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|P0A4F8|OCCT_AGRTU": {
+      "acc": "P0A4F8",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P54910|TRBE_AGRTU": {
+      "acc": "P54910",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|P00782|SUBT_BACAM": {
+      "acc": "P00782",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P00692|AMY_BACAM": {
+      "acc": "P00692",
+      "side": "negatives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P16450|GERD_BACSU": {
+      "acc": "P16450",
+      "side": "negatives",
+      "locations": [
+        "Spore membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|P24327|PRSA_BACSU": {
+      "acc": "P24327",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane",
+        "Membrane raft"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|Q46045|MBHS_CITFR": {
+      "acc": "Q46045",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|Q01605|PHOE_CITFR": {
+      "acc": "Q01605",
+      "side": "negatives",
+      "locations": [
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|P02925|RBSB_ECOLI": {
+      "acc": "P02925",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P05825|FEPA_ECOLI": {
+      "acc": "P05825",
+      "side": "negatives",
+      "locations": [
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|O65039|CYSEP_RICCO": {
+      "acc": "O65039",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasmic vesicle"
+      ],
+      "has_signal_peptide": true,
+      "localization": "cytoplasmic"
+    },
+    "sp|P01089|2SS_RICCO": {
+      "acc": "P01089",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": true,
+      "localization": "unknown"
+    },
+    "sp|Q32I06|NAPA_SHIDS": {
+      "acc": "Q32I06",
+      "side": "negatives",
+      "locations": [
+        "Periplasm"
+      ],
+      "has_signal_peptide": true,
+      "localization": "periplasm"
+    },
+    "sp|P02935|OMPA_SHIDY": {
+      "acc": "P02935",
+      "side": "negatives",
+      "locations": [
+        "Cell outer membrane"
+      ],
+      "has_signal_peptide": true,
+      "localization": "membrane"
+    },
+    "sp|P08083|CEAN_ECOLX": {
+      "acc": "P08083",
+      "side": "positives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|Q06584|PYS2_PSEAE": {
+      "acc": "Q06584",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6E3K9|PRONF_PROFF": {
+      "acc": "Q6E3K9",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P04479|CEIB_ECOLX": {
+      "acc": "P04479",
+      "side": "positives",
+      "locations": [
+        "Host membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P08696|BCN5_CLOPF": {
+      "acc": "P08696",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P02978|CEA1_ECOLX": {
+      "acc": "P02978",
+      "side": "positives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P05819|CEAB_ECOLX": {
+      "acc": "P05819",
+      "side": "positives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P22522|CEAV_ECOLX": {
+      "acc": "P22522",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P0DTW2|AS48L_BACIA": {
+      "acc": "P0DTW2",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|Q47502|CEAK_ECOLX": {
+      "acc": "Q47502",
+      "side": "positives",
+      "locations": [
+        "Host membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P04480|CEA_CITFR": {
+      "acc": "P04480",
+      "side": "positives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P05820|CEAM_ECOLX": {
+      "acc": "P05820",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P15935|BCNA_CLOPF": {
+      "acc": "P15935",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P18000|CEA5_ECOLX": {
+      "acc": "P18000",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P22294|HVTJ_LACHE": {
+      "acc": "P22294",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|B8QIR1|ENLYS_BPSH5": {
+      "acc": "B8QIR1",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q8HA43|LYS_BPB30": {
+      "acc": "Q8HA43",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P16009|NEEDL_BPT4": {
+      "acc": "P16009",
+      "side": "positives",
+      "locations": [
+        "Virion",
+        "Virion",
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|P00720|ENLYS_BPT4": {
+      "acc": "P00720",
+      "side": "positives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P03706|ENLYS_LAMBD": {
+      "acc": "P03706",
+      "side": "positives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q8SD18|ENLYS_BPDPK": {
+      "acc": "Q8SD18",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q37875|ENLYS_BPP1": {
+      "acc": "Q37875",
+      "side": "positives",
+      "locations": [
+        "Host cell inner membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P03726|EXLYS_BPT7": {
+      "acc": "P03726",
+      "side": "positives",
+      "locations": [
+        "Virion",
+        "Host cell inner membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P00806|ENLYS_BPT7": {
+      "acc": "P00806",
+      "side": "positives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P15057|LYS_BPCP1": {
+      "acc": "P15057",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6QGE7|TMP_BPT5": {
+      "acc": "Q6QGE7",
+      "side": "positives",
+      "locations": [
+        "Virion",
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|P27380|EXLYS_BPPRD": {
+      "acc": "P27380",
+      "side": "positives",
+      "locations": [
+        "Virion membrane",
+        "Virion membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|O03979|ALYS_BPDP1": {
+      "acc": "O03979",
+      "side": "positives",
+      "locations": [
+        "Host cell wall"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cell_surface"
+    },
+    "sp|Q4ZD58|ENLYS_BP263": {
+      "acc": "Q4ZD58",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9T1X2|ENLYS_BPMU": {
+      "acc": "Q9T1X2",
+      "side": "positives",
+      "locations": [
+        "Host cell inner membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P15132|GP13_BPPH2": {
+      "acc": "P15132",
+      "side": "positives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|P13559|ENLYS_BPPRD": {
+      "acc": "P13559",
+      "side": "positives",
+      "locations": [
+        "Virion membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P33486|LYS_BPMV1": {
+      "acc": "P33486",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P62692|ENLYS_BPLC2": {
+      "acc": "P62692",
+      "side": "positives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O64203|ENLYS_BPMD2": {
+      "acc": "O64203",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P09963|ENLYS_BPP22": {
+      "acc": "P09963",
+      "side": "positives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q7Y2C0|ENLYS_BPKMV": {
+      "acc": "Q7Y2C0",
+      "side": "positives",
+      "locations": [
+        "Host cell inner membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|O64205|LYSB_BPMD2": {
+      "acc": "O64205",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q7Y2C9|EXLYS_BPKMV": {
+      "acc": "Q7Y2C9",
+      "side": "positives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|Q9ZXB7|ENLYS_BPH19": {
+      "acc": "Q9ZXB7",
+      "side": "positives",
+      "locations": [
+        "Host cell inner membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|Q7Y5N4|EXLYS_BPSP6": {
+      "acc": "Q7Y5N4",
+      "side": "positives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|Q37896|ENLYS_BPB03": {
+      "acc": "Q37896",
+      "side": "positives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6XQ98|ENLYS_BPT1": {
+      "acc": "Q6XQ98",
+      "side": "positives",
+      "locations": [
+        "Host cell inner membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|O48471|ENLYS_BPSPP": {
+      "acc": "O48471",
+      "side": "positives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6QGP7|ENLYS_BPT5": {
+      "acc": "Q6QGP7",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q38135|ALYS_BPR1T": {
+      "acc": "Q38135",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|Q38653|ENLYS_BPA51": {
+      "acc": "Q38653",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P05519|CR4BA_BACTI": {
+      "acc": "P05519",
+      "side": "positives",
+      "locations": [
+        "Spore"
+      ],
+      "has_signal_peptide": true,
+      "localization": "other"
+    },
+    "sp|Q06117|CR3BB_BACTU": {
+      "acc": "Q06117",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|O87906|C25AA_BACTJ": {
+      "acc": "O87906",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0A375|CR1CA_BACTE": {
+      "acc": "P0A375",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q45743|CR2AC_BACTU": {
+      "acc": "Q45743",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q45755|C13AA_BACTU": {
+      "acc": "Q45755",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P09662|C10AA_BACTI": {
+      "acc": "P09662",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q45753|CR5AB_BACUD": {
+      "acc": "Q45753",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9X597|C26AA_BACTF": {
+      "acc": "Q9X597",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|O32321|C20AA_BACUF": {
+      "acc": "O32321",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q45882|C16AA_PARBF": {
+      "acc": "Q45882",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|Q99031|CR9AA_BACTG": {
+      "acc": "Q99031",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|O05102|C17AA_PARBF": {
+      "acc": "O05102",
+      "side": "positives",
+      "locations": [
+        "Secreted"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|P21256|C11AA_BACTI": {
+      "acc": "P21256",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P56956|C21AA_BACTU": {
+      "acc": "P56956",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9S597|C27AA_BACUH": {
+      "acc": "Q9S597",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|O87905|C24AA_BACTJ": {
+      "acc": "O87905",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|O32307|C19AA_BACTJ": {
+      "acc": "O32307",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q45358|C18AA_PAEPP": {
+      "acc": "Q45358",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|O87404|CR1IC_BACTU": {
+      "acc": "O87404",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P84613|CR4AA_BACTK": {
+      "acc": "P84613",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q45710|C14AA_BACTS": {
+      "acc": "Q45710",
+      "side": "positives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|D5TM67|CDAS_BACT1": {
+      "acc": "D5TM67",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0DTQ0|DRDA_BACT7": {
+      "acc": "P0DTQ0",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0DTQ1|DRDI_BACT7": {
+      "acc": "P0DTQ1",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q8KNP2|TUBR_BACTI": {
+      "acc": "Q8KNP2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q8KNP3|TUBZ_BACTI": {
+      "acc": "Q8KNP3",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P0CJ63|AHLLA_BACTK": {
+      "acc": "P0CJ63",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HAU5|PYRG_BACHK": {
+      "acc": "Q6HAU5",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HE54|RIBBA_BACHK": {
+      "acc": "Q6HE54",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HES8|CARB_BACHK": {
+      "acc": "Q6HES8",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HCT3|PFKA_BACHK": {
+      "acc": "Q6HCT3",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6HES7|CARA_BACHK": {
+      "acc": "Q6HES7",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HPW8|GLMU_BACHK": {
+      "acc": "Q6HPW8",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6HP80|GATB_BACHK": {
+      "acc": "Q6HP80",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HEV1|RLMN_BACHK": {
+      "acc": "Q6HEV1",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6HFT0|SELO_BACHK": {
+      "acc": "Q6HFT0",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HLA6|HMP_BACHK": {
+      "acc": "Q6HLA6",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P0DTQ2|DRDK_BACT7": {
+      "acc": "P0DTQ2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A0RHN7|RLMN_BACAH": {
+      "acc": "A0RHN7",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|A0R922|GATB_BACAH": {
+      "acc": "A0R922",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A0RGR8|SELO_BACAH": {
+      "acc": "A0RGR8",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A0R8C1|GLMU_BACAH": {
+      "acc": "A0R8C1",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|A0RBG1|QUEC_BACAH": {
+      "acc": "A0RBG1",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A0RHQ8|CARB_BACAH": {
+      "acc": "A0RHQ8",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6X3W5|TERM_BP35C": {
+      "acc": "Q6X3W5",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|Q6HAU9|MURA2_BACHK": {
+      "acc": "Q6HAU9",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6HAX7|ATPA_BACHK": {
+      "acc": "Q6HAX7",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|Q6HAY0|ATPB_BACHK": {
+      "acc": "Q6HAY0",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|Q6HAY5|NUOA_BACHK": {
+      "acc": "Q6HAY5",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|Q6HBF2|GPMI_BACHK": {
+      "acc": "Q6HBF2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HBJ0|SYY2_BACHK": {
+      "acc": "Q6HBJ0",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6HBM0|SYM1_BACHK": {
+      "acc": "Q6HBM0",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6HCU5|FPG_BACHK": {
+      "acc": "Q6HCU5",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HCU7|COAE_BACHK": {
+      "acc": "Q6HCU7",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6HCY5|HDOX_BACHK": {
+      "acc": "Q6HCY5",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6HD62|HEM3_BACHK": {
+      "acc": "Q6HD62",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HDC0|DTD_BACHK": {
+      "acc": "Q6HDC0",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6HDD0|MNMA_BACHK": {
+      "acc": "Q6HDD0",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q6HDT8|GCSPB_BACHK": {
+      "acc": "Q6HDT8",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HE48|BIOF_BACHK": {
+      "acc": "Q6HE48",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HEC6|MTND_BACHK": {
+      "acc": "Q6HEC6",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HED3|MTNA_BACHK": {
+      "acc": "Q6HED3",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6HEN5|COAD_BACHK": {
+      "acc": "Q6HEN5",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|M5AAG8|POL_BPNNR": {
+      "acc": "M5AAG8",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A4ZFB2|SCAF_BP80A": {
+      "acc": "A4ZFB2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P26747|CAPSD_BPP22": {
+      "acc": "P26747",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|P12528|FIBER_BPP22": {
+      "acc": "P12528",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|P03015|GIN_BPMU": {
+      "acc": "P03015",
+      "side": "negatives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P06022|ACTC_BPMU": {
+      "acc": "P06022",
+      "side": "negatives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P08764|T3RE_BPP1": {
+      "acc": "P08764",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P49861|CAPSD_BPHK7": {
+      "acc": "P49861",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|Q9MCT1|TERL_BPHK7": {
+      "acc": "Q9MCT1",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A0A1L4BKS3|TERL_BPG20": {
+      "acc": "A0A1L4BKS3",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9XJP3|FIBER_BPSFV": {
+      "acc": "Q9XJP3",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|P54308|TERL_BPSPP": {
+      "acc": "P54308",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P03685|NP_BPPH2": {
+      "acc": "P03685",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P11014|PKG16_BPPH2": {
+      "acc": "P11014",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P13390|FIBL1_BPT5": {
+      "acc": "P13390",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|Q6QGP4|DNMK_BPT5": {
+      "acc": "Q6QGP4",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|B3FK34|PHUZ_BP201": {
+      "acc": "B3FK34",
+      "side": "negatives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P04392|DMA_BPT4": {
+      "acc": "P04392",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P04531|DNMK_BPT4": {
+      "acc": "P04531",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q58MU6|PEBS_BPPRM": {
+      "acc": "Q58MU6",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P49714|FIBER_BPK1E": {
+      "acc": "P49714",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|P03707|TERS_LAMBD": {
+      "acc": "P03707",
+      "side": "negatives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P03708|TERL_LAMBD": {
+      "acc": "P03708",
+      "side": "negatives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O09496|FIBER_BPK5": {
+      "acc": "O09496",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|P00573|RPOL_BPT7": {
+      "acc": "P00573",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P03781|NUCK_BPT7": {
+      "acc": "P03781",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P10310|TERL_BPT3": {
+      "acc": "P10310",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q04830|FIBER_BPK1F": {
+      "acc": "Q04830",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|Q38087|DPOL_BPR69": {
+      "acc": "Q38087",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|D1L2X1|DPOL2_BPK32": {
+      "acc": "D1L2X1",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|A0A068Q5Q5|DEPOL_BPKNT": {
+      "acc": "A0A068Q5Q5",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|P10277|PRIM_BPP4": {
+      "acc": "P10277",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A4ZFB3|CAPSD_BP80A": {
+      "acc": "A4ZFB3",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|Q6UAV6|PTELO_BPKO2": {
+      "acc": "Q6UAV6",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A0A7U3TCA2|DATPH_BPS2L": {
+      "acc": "A0A7U3TCA2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|G3FFN6|PURZ_BPVC8": {
+      "acc": "G3FFN6",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P22884|VINT_BPML5": {
+      "acc": "P22884",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q8SDC3|PHUZ_BPDPK": {
+      "acc": "Q8SDC3",
+      "side": "negatives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q331T7|TUBZ_CBCP": {
+      "acc": "Q331T7",
+      "side": "negatives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|A0A345MJY6|APYC1_BPBSP": {
+      "acc": "A0A345MJY6",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P13771|TARGB_BPD10": {
+      "acc": "P13771",
+      "side": "negatives",
+      "locations": [
+        "Host cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q77WP1|PTELO_BPN15": {
+      "acc": "Q77WP1",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9AYZ3|NEEDL_BPHK6": {
+      "acc": "Q9AYZ3",
+      "side": "negatives",
+      "locations": [
+        "Virion"
+      ],
+      "has_signal_peptide": false,
+      "localization": "other"
+    },
+    "sp|Q71TL0|DAM_BPP1": {
+      "acc": "Q71TL0",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9CIV7|DHAL_LACLA": {
+      "acc": "Q9CIV7",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P71447|PGMB_LACLA": {
+      "acc": "P71447",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q02138|ILVC_LACLA": {
+      "acc": "Q02138",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A2RJT9|PYRDA_LACLM": {
+      "acc": "A2RJT9",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|O87761|PYRG_LACLM": {
+      "acc": "O87761",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P54322|PYRDB_LACLM": {
+      "acc": "P54322",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P0DOB6|PFKA1_LACLL": {
+      "acc": "P0DOB6",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P15244|CEO2_LACLL": {
+      "acc": "P15244",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|O32765|LDH_LACHE": {
+      "acc": "O32765",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P42371|FPG_LACLC": {
+      "acc": "P42371",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P00862|DCHS_LACS3": {
+      "acc": "P00862",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P80019|PFKA_LACDE": {
+      "acc": "P80019",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q74K42|INUS_LACJO": {
+      "acc": "Q74K42",
+      "side": "negatives",
+      "locations": [
+        "Secreted, cell wall"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|Q59490|RTPR_LACLE": {
+      "acc": "Q59490",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A5HKP3|CBH_LACAI": {
+      "acc": "A5HKP3",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|O34153|GLPK_ENTCA": {
+      "acc": "O34153",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q47720|VANC2_ENTCA": {
+      "acc": "Q47720",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P0DTQ4|TYRDC_ENTF3": {
+      "acc": "P0DTQ4",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q820A8|IREK_ENTFA": {
+      "acc": "Q820A8",
+      "side": "negatives",
+      "locations": [
+        "Membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|Q82YZ0|CROS_ENTFA": {
+      "acc": "Q82YZ0",
+      "side": "negatives",
+      "locations": [
+        "Membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|Q831B2|AZOR_ENTFA": {
+      "acc": "Q831B2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q837U7|PTC_ENTFA": {
+      "acc": "Q837U7",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q3Y316|DMDH_ENTFD": {
+      "acc": "Q3Y316",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9X3P3|VANTC_ENTGA": {
+      "acc": "Q9X3P3",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|A0A481NV25|TYRDC_ENTFC": {
+      "acc": "A0A481NV25",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P25051|VANA_ENTFC": {
+      "acc": "P25051",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|A0A1S8KJG1|DAPE_ENTFC": {
+      "acc": "A0A1S8KJG1",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q05709|VANH_ENTFC": {
+      "acc": "Q05709",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q8KQL2|ARPD_ENTAV": {
+      "acc": "Q8KQL2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9FD71|HMGCS_ENTFL": {
+      "acc": "Q9FD71",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P32113|COPA_ENTHA": {
+      "acc": "P32113",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P05425|COPB_ENTHA": {
+      "acc": "P05425",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|G9MAP1|CLAHY_LACPN": {
+      "acc": "G9MAP1",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane",
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|P17584|DHD2_LACPA": {
+      "acc": "P17584",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P56511|LDH_LACPE": {
+      "acc": "P56511",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|J7GQ11|TYRDC_LEVBR": {
+      "acc": "J7GQ11",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9EY50|FEMX_WEIVI": {
+      "acc": "Q9EY50",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P00381|DYR_LACCA": {
+      "acc": "P00381",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q6WVP7|RADH_LENKE": {
+      "acc": "Q6WVP7",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q70XJ9|LSC_FRUSA": {
+      "acc": "Q70XJ9",
+      "side": "negatives",
+      "locations": [
+        "Secreted, cell wall"
+      ],
+      "has_signal_peptide": true,
+      "localization": "secreted"
+    },
+    "sp|P00343|LDH_LACCA": {
+      "acc": "P00343",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P15925|FPGS_LACCA": {
+      "acc": "P15925",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q9RE09|HPRK_LACCA": {
+      "acc": "Q9RE09",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|F9USS9|LARA_LACPL": {
+      "acc": "F9USS9",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|F9UST4|LARE_LACPL": {
+      "acc": "F9UST4",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P37063|POXB_LACPL": {
+      "acc": "P37063",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q88YH3|ENO1_LACPL": {
+      "acc": "Q88YH3",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm",
+        "Secreted",
+        "Cell surface"
+      ],
+      "has_signal_peptide": false,
+      "localization": "secreted"
+    },
+    "sp|Q03C44|PAGL1_LACP3": {
+      "acc": "Q03C44",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|P36497|PEDD_PEDAC": {
+      "acc": "P36497",
+      "side": "negatives",
+      "locations": [
+        "Cell membrane"
+      ],
+      "has_signal_peptide": false,
+      "localization": "membrane"
+    },
+    "sp|Q03EG6|GATB_PEDPA": {
+      "acc": "Q03EG6",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q03HB0|CARB_PEDPA": {
+      "acc": "Q03HB0",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|Q03HD2|GLMU_PEDPA": {
+      "acc": "Q03HD2",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q03GC2|FPG_PEDPA": {
+      "acc": "Q03GC2",
+      "side": "negatives",
+      "locations": [],
+      "has_signal_peptide": false,
+      "localization": "unknown"
+    },
+    "sp|A2RIX0|HPF_LACLM": {
+      "acc": "A2RIX0",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|P50918|TPIS_LACLA": {
+      "acc": "P50918",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    },
+    "sp|Q02YK5|PFKA_LACLS": {
+      "acc": "Q02YK5",
+      "side": "negatives",
+      "locations": [
+        "Cytoplasm"
+      ],
+      "has_signal_peptide": false,
+      "localization": "cytoplasmic"
+    }
+  },
+  "not_found_in_uniprot": []
+}

@@ -38,6 +38,7 @@ Usage:
     python src/03s_target_host_control.py
 """
 
+import argparse
 import json
 from pathlib import Path
 
@@ -49,7 +50,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 ROOT = Path(__file__).resolve().parent.parent
-V2 = ROOT / "results" / "v2"
+RES_ROOT = ROOT / "results"
 SEEDS, FRAC, SPEC = range(30), 0.40, 0.95
 NONANIMAL = {"bacteria", "none_small_molecule", "plant", "other_nonanimal"}
 
@@ -65,11 +66,16 @@ def cv_auroc(X, y, reps=10):
 
 
 def main():
-    P = np.load(V2 / "embeddings_positive_v2.npy")
-    N = np.load(V2 / "embeddings_negative_v2.npy")
-    man = json.load(open(V2 / "embedding_manifest_v2.json"))
-    th = json.load(open(ROOT / "data/annotations/target_host_v2.json"))
-    mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v2.json"))
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--panel", default="v2", choices=["v2", "v3"],
+                    help="panel version. v2 is the frozen 80/154 panel every published number in docs/ rests on; v3 is 149/296, v2 plus bacteriocin, phage_peptidoglycan_hydrolase and cry_insecticidal. Switches the results directory and the annotation files together.")
+    pv = ap.parse_args().panel
+    V2 = RES_ROOT / pv
+    P = np.load(V2 / f"embeddings_positive_{pv}.npy")
+    N = np.load(V2 / f"embeddings_negative_{pv}.npy")
+    man = json.load(open(V2 / f"embedding_manifest_{pv}.json"))
+    th = json.load(open(ROOT / f"data/annotations/target_host_{pv}.json"))
+    mech = json.load(open(ROOT / f"data/annotations/mechanism_classes_{pv}.json"))
     tgt = {e["fasta_id"]: e["target_host"] for e in th["proteins"]}
     cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
     accs = [r["acc"] for r in man["positive_rows"]]

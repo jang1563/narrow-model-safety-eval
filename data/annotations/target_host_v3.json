@@ -1,0 +1,1212 @@
+{
+  "built": "2026-09-18",
+  "purpose": "target host is the axis \u00a72's three confound controls do not cover. They hold the protein's ORIGIN constant (pathogen-matched, localization, provenance); none holds constant what the protein ACTS ON. Producer kingdom is recorded separately because the two come apart: six of seven ribosome-inactivating proteins are plant-produced and act on animal ribosomes.",
+  "categories": {
+    "animal": "vertebrate or general animal host",
+    "bacteria": "another bacterium",
+    "plant": "plant cells",
+    "none_small_molecule": "a diffusing small molecule, no host",
+    "none_regulatory": "the producing organism itself; regulatory or structural",
+    "other_nonanimal": "a non-animal substrate such as chitin",
+    "mixed": "two targets of different kind",
+    "unassigned": "not established in the panel",
+    "insect": "insect host, no vertebrate target"
+  },
+  "proteins": [
+    {
+      "fasta_id": "sp|O31506|YEEF_BACSU",
+      "short_name": "YEEF_BACSU",
+      "mechanism_class": "contact_dependent_inhibition",
+      "target_host": "bacteria",
+      "reason": "delivered into a neighbouring or sibling BACTERIUM",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O34344|SDPC_BACSU",
+      "short_name": "SDPC_BACSU",
+      "mechanism_class": "contact_dependent_inhibition",
+      "target_host": "bacteria",
+      "reason": "delivered into a neighbouring or sibling BACTERIUM",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P77335|HLYE_ECOLI",
+      "short_name": "HLYE_ECOLI",
+      "mechanism_class": "pore_forming_cytolysin",
+      "target_host": "animal",
+      "reason": "perforates animal cell membranes",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|A0A0H2US87|OSPC3_SHIFL",
+      "short_name": "OSPC3_SHIFL",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "target_host": "animal",
+      "reason": "injected into, or injects into, animal host cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|B3BM80|CDIA4_ECO5C",
+      "short_name": "CDIA4_ECO5C",
+      "mechanism_class": "contact_dependent_inhibition",
+      "target_host": "bacteria",
+      "reason": "delivered into a neighbouring or sibling BACTERIUM",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|B7UI21|NLEB1_ECO27",
+      "short_name": "NLEB1_ECO27",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "target_host": "animal",
+      "reason": "injected into, or injects into, animal host cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|B7UI22|NLEE_ECO27",
+      "short_name": "NLEE_ECO27",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "target_host": "animal",
+      "reason": "injected into, or injects into, animal host cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P09616|HLA_STAAU",
+      "short_name": "HLA_STAAU",
+      "mechanism_class": "pore_forming_cytolysin",
+      "target_host": "animal",
+      "reason": "perforates animal cell membranes",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0C0J0|SPEB_STRPY",
+      "short_name": "SPEB_STRPY",
+      "mechanism_class": "secreted_protease",
+      "target_host": "animal",
+      "reason": "cleaves host proteins",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P40136|CYAA_BACAN",
+      "short_name": "CYAA_BACAN",
+      "mechanism_class": "adp_ribosyl_ab_toxin",
+      "target_host": "animal",
+      "reason": "ADP-ribosylates or cyclises host EF-2, G-protein or calmodulin targets",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q7NWF2|COPC_CHRVO",
+      "short_name": "COPC_CHRVO",
+      "mechanism_class": "other_toxin_mechanism",
+      "target_host": "unassigned",
+      "reason": "mechanism not confidently assigned in the panel itself",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O05442|CPNT_MYCTU",
+      "short_name": "CPNT_MYCTU",
+      "mechanism_class": "other_toxin_mechanism",
+      "target_host": "animal",
+      "reason": "NAD+ glycohydrolase depleting NAD+ in host macrophages",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0A0L2|ETXA_STAAU",
+      "short_name": "ETXA_STAAU",
+      "mechanism_class": "superantigen_enterotoxin",
+      "target_host": "animal",
+      "reason": "cross-links host TCR with MHC class II",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P13128|TACY_LISMO",
+      "short_name": "TACY_LISMO",
+      "mechanism_class": "pore_forming_cytolysin",
+      "target_host": "animal",
+      "reason": "perforates animal cell membranes",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P13423|PAG_BACAN",
+      "short_name": "PAG_BACAN",
+      "mechanism_class": "pore_forming_cytolysin",
+      "target_host": "animal",
+      "reason": "perforates animal cell membranes",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P34071|ENTC2_STAAU",
+      "short_name": "ENTC2_STAAU",
+      "mechanism_class": "superantigen_enterotoxin",
+      "target_host": "animal",
+      "reason": "cross-links host TCR with MHC class II",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P9WJ63|TLYA_MYCTU",
+      "short_name": "TLYA_MYCTU",
+      "mechanism_class": "other_toxin_mechanism",
+      "target_host": "mixed",
+      "reason": "dual: haemolysin against animal cells AND rRNA methyltransferase conferring capreomycin resistance",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q8XBX8|NLEB1_ECO57",
+      "short_name": "NLEB1_ECO57",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "target_host": "animal",
+      "reason": "injected into, or injects into, animal host cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q9FBI2|STXA_SHIDY",
+      "short_name": "STXA_SHIDY",
+      "mechanism_class": "rip_rrna_glycosidase",
+      "target_host": "animal",
+      "reason": "depurinates the eukaryotic 28S rRNA sarcin-ricin loop",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0DPI1|BXA1_CLOBH",
+      "short_name": "BXA1_CLOBH",
+      "mechanism_class": "clostridial_neurotoxin",
+      "target_host": "animal",
+      "reason": "zinc metalloprotease on neuronal SNARE proteins",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P11078|MU1_REOVD",
+      "short_name": "MU1_REOVD",
+      "mechanism_class": "pore_forming_cytolysin",
+      "target_host": "animal",
+      "reason": "perforates animal cell membranes",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P01555|CHTA_VIBCH",
+      "short_name": "CHTA_VIBCH",
+      "mechanism_class": "adp_ribosyl_ab_toxin",
+      "target_host": "animal",
+      "reason": "ADP-ribosylates or cyclises host EF-2, G-protein or calmodulin targets",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P02879|RICI_RICCO",
+      "short_name": "RICI_RICCO",
+      "mechanism_class": "rip_rrna_glycosidase",
+      "target_host": "animal",
+      "reason": "depurinates the eukaryotic 28S rRNA sarcin-ricin loop",
+      "producer_kingdom": "plant"
+    },
+    {
+      "fasta_id": "sp|P10844|BXB_CLOBO",
+      "short_name": "BXB_CLOBO",
+      "mechanism_class": "clostridial_neurotoxin",
+      "target_host": "animal",
+      "reason": "zinc metalloprotease on neuronal SNARE proteins",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q45894|BXA2_CLOBJ",
+      "short_name": "BXA2_CLOBJ",
+      "mechanism_class": "clostridial_neurotoxin",
+      "target_host": "animal",
+      "reason": "zinc metalloprotease on neuronal SNARE proteins",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P01552|ETXB_STAAU",
+      "short_name": "ETXB_STAAU",
+      "mechanism_class": "superantigen_enterotoxin",
+      "target_host": "animal",
+      "reason": "cross-links host TCR with MHC class II",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P01553|ENTC1_STAAU",
+      "short_name": "ENTC1_STAAU",
+      "mechanism_class": "superantigen_enterotoxin",
+      "target_host": "animal",
+      "reason": "cross-links host TCR with MHC class II",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|A0A0H3JPC6|TARS_STAAM",
+      "short_name": "TARS_STAAM",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "target_host": "none_small_molecule",
+      "reason": "wall teichoic acid glycosyltransferase; the annotated role is beta-lactam resistance",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|A0A3Q0NBH7|PGDA_LISMG",
+      "short_name": "PGDA_LISMG",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "target_host": "animal",
+      "reason": "peptidoglycan deacetylation whose function is evading host immune detection",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|A1JUB7|YADA_YERE8",
+      "short_name": "YADA_YERE8",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "target_host": "animal",
+      "reason": "adhesin binding host extracellular matrix",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|A6QIG7|CHIPS_STAAE",
+      "short_name": "CHIPS_STAAE",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "target_host": "animal",
+      "reason": "inhibits human neutrophil chemotaxis",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|B6A876|CHI1_YERET",
+      "short_name": "CHI1_YERET",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "target_host": "other_nonanimal",
+      "reason": "chitinase; chitin is fungal and arthropod, not vertebrate",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|D0ZKX9|RSEP_SALT1",
+      "short_name": "RSEP_SALT1",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "target_host": "none_regulatory",
+      "reason": "site-2 protease acting on the bacterium's own regulators",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|D0ZV89|PHOQ_SALT1",
+      "short_name": "PHOQ_SALT1",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "target_host": "none_regulatory",
+      "reason": "sensor histidine kinase; senses, does not attack",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|G3XDA8|PSTS_PSEAE",
+      "short_name": "PSTS_PSEAE",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "target_host": "none_regulatory",
+      "reason": "phosphate transporter binding protein; nutrient uptake",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O52623|SOPE_SALTM",
+      "short_name": "SOPE_SALTM",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "target_host": "animal",
+      "reason": "injected into, or injects into, animal host cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O84947|SCTE2_SALTY",
+      "short_name": "SCTE2_SALTY",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "target_host": "animal",
+      "reason": "injected into, or injects into, animal host cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P06736|HLYC_ECOLX",
+      "short_name": "HLYC_ECOLX",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "target_host": "none_regulatory",
+      "reason": "acyltransferase that activates HlyA; acts on its own operon product",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P09776|VIRB2_AGRTU",
+      "short_name": "VIRB2_AGRTU",
+      "mechanism_class": "virulence_associated_non_toxin",
+      "target_host": "plant",
+      "reason": "Agrobacterium T-pilus subunit; the T4SS delivers T-DNA into PLANT cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0A1B9|SCTN1_SALTY",
+      "short_name": "SCTN1_SALTY",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "target_host": "animal",
+      "reason": "injected into, or injects into, animal host cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0A1C1|SCTN_SHIFL",
+      "short_name": "SCTN_SHIFL",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "target_host": "animal",
+      "reason": "injected into, or injects into, animal host cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0A2M9|SPVC_SALTY",
+      "short_name": "SPVC_SALTY",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "target_host": "animal",
+      "reason": "injected into, or injects into, animal host cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P00811|AMPC_ECOLI",
+      "short_name": "AMPC_ECOLI",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q7WYA8|BLAB_PSEAI",
+      "short_name": "BLAB_PSEAI",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P9WKD3|BLAC_MYCTU",
+      "short_name": "BLAC_MYCTU",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P26918|BLAB_AERHY",
+      "short_name": "BLAB_AERHY",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P14488|BLAB_BACCE",
+      "short_name": "BLAB_BACCE",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P04190|BLA2_BACCE",
+      "short_name": "BLA2_BACCE",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P14489|BLO10_PSEAI",
+      "short_name": "BLO10_PSEAI",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|C7C422|BLAN1_KLEPN",
+      "short_name": "BLAN1_KLEPN",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P05364|AMPC_ENTCL",
+      "short_name": "AMPC_ENTCL",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P52700|BLA1_STEMA",
+      "short_name": "BLA1_STEMA",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O87489|BLAV1_PSEAI",
+      "short_name": "BLAV1_PSEAI",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P05193|AMPC_CITFR",
+      "short_name": "AMPC_CITFR",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P52699|BLBI1_SERMA",
+      "short_name": "BLBI1_SERMA",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q9KJY7|BLAG1_KLEPN",
+      "short_name": "BLAG1_KLEPN",
+      "mechanism_class": "beta_lactamase",
+      "target_host": "none_small_molecule",
+      "reason": "hydrolyses a diffusing beta-lactam antibiotic; no host is engaged",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P00588|DTX_CORBE",
+      "short_name": "DTX_CORBE",
+      "mechanism_class": "adp_ribosyl_ab_toxin",
+      "target_host": "animal",
+      "reason": "ADP-ribosylates or cyclises host EF-2, G-protein or calmodulin targets",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P04958|TETX_CLOTE",
+      "short_name": "TETX_CLOTE",
+      "mechanism_class": "clostridial_neurotoxin",
+      "target_host": "animal",
+      "reason": "zinc metalloprotease on neuronal SNARE proteins",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P11140|ABRA_ABRPR",
+      "short_name": "ABRA_ABRPR",
+      "mechanism_class": "rip_rrna_glycosidase",
+      "target_host": "animal",
+      "reason": "depurinates the eukaryotic 28S rRNA sarcin-ricin loop",
+      "producer_kingdom": "plant"
+    },
+    {
+      "fasta_id": "sp|P55981|VACA_HELPY",
+      "short_name": "VACA_HELPY",
+      "mechanism_class": "pore_forming_cytolysin",
+      "target_host": "animal",
+      "reason": "perforates animal cell membranes",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0DF97|TACY_STRPQ",
+      "short_name": "TACY_STRPQ",
+      "mechanism_class": "pore_forming_cytolysin",
+      "target_host": "animal",
+      "reason": "perforates animal cell membranes",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P00648|RNBR_BACAM",
+      "short_name": "RNBR_BACAM",
+      "mechanism_class": "nuclease_dnase_rnase",
+      "target_host": "unassigned",
+      "reason": "barnase is broadly cytotoxic; no specific host is established here",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P04419|CEA2_ECOLX",
+      "short_name": "CEA2_ECOLX",
+      "mechanism_class": "nuclease_dnase_rnase",
+      "target_host": "bacteria",
+      "reason": "colicin E2 is a bacteriocin: DNase delivered into competing E. coli",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P15273|YOPH_YEREN",
+      "short_name": "YOPH_YEREN",
+      "mechanism_class": "t3ss_effector_apparatus",
+      "target_host": "animal",
+      "reason": "injected into, or injects into, animal host cells",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "tr|O34208|O34208_PSEAI",
+      "short_name": "O34208_PSEAI",
+      "mechanism_class": "phospholipase",
+      "target_host": "animal",
+      "reason": "hydrolyses animal host membrane phospholipid",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "tr|Q51451|Q51451_PSEAI",
+      "short_name": "Q51451_PSEAI",
+      "mechanism_class": "phospholipase",
+      "target_host": "animal",
+      "reason": "hydrolyses animal host membrane phospholipid",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q5EK40|CHXA_VIBCL",
+      "short_name": "CHXA_VIBCL",
+      "mechanism_class": "adp_ribosyl_ab_toxin",
+      "target_host": "animal",
+      "reason": "ADP-ribosylates or cyclises host EF-2, G-protein or calmodulin targets",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P11439|TOXA_PSEAE",
+      "short_name": "TOXA_PSEAE",
+      "mechanism_class": "adp_ribosyl_ab_toxin",
+      "target_host": "animal",
+      "reason": "ADP-ribosylates or cyclises host EF-2, G-protein or calmodulin targets",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P75409|CARDS_MYCPN",
+      "short_name": "CARDS_MYCPN",
+      "mechanism_class": "adp_ribosyl_ab_toxin",
+      "target_host": "animal",
+      "reason": "ADP-ribosylates or cyclises host EF-2, G-protein or calmodulin targets",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P04977|TOX1_BORPE",
+      "short_name": "TOX1_BORPE",
+      "mechanism_class": "adp_ribosyl_ab_toxin",
+      "target_host": "animal",
+      "reason": "ADP-ribosylates or cyclises host EF-2, G-protein or calmodulin targets",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|H9T8G6|CDIA9_BURPE",
+      "short_name": "CDIA9_BURPE",
+      "mechanism_class": "contact_dependent_inhibition",
+      "target_host": "bacteria",
+      "reason": "delivered into a neighbouring or sibling BACTERIUM",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q6EH50|RIP4_PHYHE",
+      "short_name": "RIP4_PHYHE",
+      "mechanism_class": "rip_rrna_glycosidase",
+      "target_host": "animal",
+      "reason": "depurinates the eukaryotic 28S rRNA sarcin-ricin loop",
+      "producer_kingdom": "plant"
+    },
+    {
+      "fasta_id": "sp|P33186|RIPG_SURMU",
+      "short_name": "RIPG_SURMU",
+      "mechanism_class": "rip_rrna_glycosidase",
+      "target_host": "animal",
+      "reason": "depurinates the eukaryotic 28S rRNA sarcin-ricin loop",
+      "producer_kingdom": "plant"
+    },
+    {
+      "fasta_id": "sp|Q9M653|RIPT_POLML",
+      "short_name": "RIPT_POLML",
+      "mechanism_class": "rip_rrna_glycosidase",
+      "target_host": "animal",
+      "reason": "depurinates the eukaryotic 28S rRNA sarcin-ricin loop",
+      "producer_kingdom": "plant"
+    },
+    {
+      "fasta_id": "sp|P85101|RIPLY_SILCH",
+      "short_name": "RIPLY_SILCH",
+      "mechanism_class": "rip_rrna_glycosidase",
+      "target_host": "animal",
+      "reason": "depurinates the eukaryotic 28S rRNA sarcin-ricin loop",
+      "producer_kingdom": "plant"
+    },
+    {
+      "fasta_id": "sp|P18640|BXC_CBCP",
+      "short_name": "BXC_CBCP",
+      "mechanism_class": "clostridial_neurotoxin",
+      "target_host": "animal",
+      "reason": "zinc metalloprotease on neuronal SNARE proteins",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0DPK1|BXX_CLOBO",
+      "short_name": "BXX_CLOBO",
+      "mechanism_class": "clostridial_neurotoxin",
+      "target_host": "animal",
+      "reason": "zinc metalloprotease on neuronal SNARE proteins",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0DG09|SPEG_STRPQ",
+      "short_name": "SPEG_STRPQ",
+      "mechanism_class": "superantigen_enterotoxin",
+      "target_host": "animal",
+      "reason": "cross-links host TCR with MHC class II",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P06886|TSST_STAAU",
+      "short_name": "TSST_STAAU",
+      "mechanism_class": "superantigen_enterotoxin",
+      "target_host": "animal",
+      "reason": "cross-links host TCR with MHC class II",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0A0M0|ETXH_STAAU",
+      "short_name": "ETXH_STAAU",
+      "mechanism_class": "superantigen_enterotoxin",
+      "target_host": "animal",
+      "reason": "cross-links host TCR with MHC class II",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P08083|CEAN_ECOLX",
+      "short_name": "CEAN_ECOLX",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q06584|PYS2_PSEAE",
+      "short_name": "PYS2_PSEAE",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q6E3K9|PRONF_PROFF",
+      "short_name": "PRONF_PROFF",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P04479|CEIB_ECOLX",
+      "short_name": "CEIB_ECOLX",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P08696|BCN5_CLOPF",
+      "short_name": "BCN5_CLOPF",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P02978|CEA1_ECOLX",
+      "short_name": "CEA1_ECOLX",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P05819|CEAB_ECOLX",
+      "short_name": "CEAB_ECOLX",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P22522|CEAV_ECOLX",
+      "short_name": "CEAV_ECOLX",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0DTW2|AS48L_BACIA",
+      "short_name": "AS48L_BACIA",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q47502|CEAK_ECOLX",
+      "short_name": "CEAK_ECOLX",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P04480|CEA_CITFR",
+      "short_name": "CEA_CITFR",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P05820|CEAM_ECOLX",
+      "short_name": "CEAM_ECOLX",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P15935|BCNA_CLOPF",
+      "short_name": "BCNA_CLOPF",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P18000|CEA5_ECOLX",
+      "short_name": "CEA5_ECOLX",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P22294|HVTJ_LACHE",
+      "short_name": "HVTJ_LACHE",
+      "mechanism_class": "bacteriocin",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|B8QIR1|ENLYS_BPSH5",
+      "short_name": "ENLYS_BPSH5",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q8HA43|LYS_BPB30",
+      "short_name": "LYS_BPB30",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P16009|NEEDL_BPT4",
+      "short_name": "NEEDL_BPT4",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P00720|ENLYS_BPT4",
+      "short_name": "ENLYS_BPT4",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P03706|ENLYS_LAMBD",
+      "short_name": "ENLYS_LAMBD",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q8SD18|ENLYS_BPDPK",
+      "short_name": "ENLYS_BPDPK",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q37875|ENLYS_BPP1",
+      "short_name": "ENLYS_BPP1",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P03726|EXLYS_BPT7",
+      "short_name": "EXLYS_BPT7",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P00806|ENLYS_BPT7",
+      "short_name": "ENLYS_BPT7",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P15057|LYS_BPCP1",
+      "short_name": "LYS_BPCP1",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q6QGE7|TMP_BPT5",
+      "short_name": "TMP_BPT5",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P27380|EXLYS_BPPRD",
+      "short_name": "EXLYS_BPPRD",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O03979|ALYS_BPDP1",
+      "short_name": "ALYS_BPDP1",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q4ZD58|ENLYS_BP263",
+      "short_name": "ENLYS_BP263",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q9T1X2|ENLYS_BPMU",
+      "short_name": "ENLYS_BPMU",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P15132|GP13_BPPH2",
+      "short_name": "GP13_BPPH2",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P13559|ENLYS_BPPRD",
+      "short_name": "ENLYS_BPPRD",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P33486|LYS_BPMV1",
+      "short_name": "LYS_BPMV1",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P62692|ENLYS_BPLC2",
+      "short_name": "ENLYS_BPLC2",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O64203|ENLYS_BPMD2",
+      "short_name": "ENLYS_BPMD2",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P09963|ENLYS_BPP22",
+      "short_name": "ENLYS_BPP22",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q7Y2C0|ENLYS_BPKMV",
+      "short_name": "ENLYS_BPKMV",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O64205|LYSB_BPMD2",
+      "short_name": "LYSB_BPMD2",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q7Y2C9|EXLYS_BPKMV",
+      "short_name": "EXLYS_BPKMV",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q9ZXB7|ENLYS_BPH19",
+      "short_name": "ENLYS_BPH19",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q7Y5N4|EXLYS_BPSP6",
+      "short_name": "EXLYS_BPSP6",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q37896|ENLYS_BPB03",
+      "short_name": "ENLYS_BPB03",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q6XQ98|ENLYS_BPT1",
+      "short_name": "ENLYS_BPT1",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O48471|ENLYS_BPSPP",
+      "short_name": "ENLYS_BPSPP",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q6QGP7|ENLYS_BPT5",
+      "short_name": "ENLYS_BPT5",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q38135|ALYS_BPR1T",
+      "short_name": "ALYS_BPR1T",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q38653|ENLYS_BPA51",
+      "short_name": "ENLYS_BPA51",
+      "mechanism_class": "phage_peptidoglycan_hydrolase",
+      "target_host": "bacteria",
+      "reason": "kills or lyses another BACTERIUM; no animal host is involved",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P05519|CR4BA_BACTI",
+      "short_name": "CR4BA_BACTI",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q06117|CR3BB_BACTU",
+      "short_name": "CR3BB_BACTU",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O87906|C25AA_BACTJ",
+      "short_name": "C25AA_BACTJ",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P0A375|CR1CA_BACTE",
+      "short_name": "CR1CA_BACTE",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q45743|CR2AC_BACTU",
+      "short_name": "CR2AC_BACTU",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q45755|C13AA_BACTU",
+      "short_name": "C13AA_BACTU",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P09662|C10AA_BACTI",
+      "short_name": "C10AA_BACTI",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q45753|CR5AB_BACUD",
+      "short_name": "CR5AB_BACUD",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q9X597|C26AA_BACTF",
+      "short_name": "C26AA_BACTF",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O32321|C20AA_BACUF",
+      "short_name": "C20AA_BACUF",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q45882|C16AA_PARBF",
+      "short_name": "C16AA_PARBF",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q99031|CR9AA_BACTG",
+      "short_name": "CR9AA_BACTG",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O05102|C17AA_PARBF",
+      "short_name": "C17AA_PARBF",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P21256|C11AA_BACTI",
+      "short_name": "C11AA_BACTI",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P56956|C21AA_BACTU",
+      "short_name": "C21AA_BACTU",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q9S597|C27AA_BACUH",
+      "short_name": "C27AA_BACUH",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O87905|C24AA_BACTJ",
+      "short_name": "C24AA_BACTJ",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O32307|C19AA_BACTJ",
+      "short_name": "C19AA_BACTJ",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q45358|C18AA_PAEPP",
+      "short_name": "C18AA_PAEPP",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|O87404|CR1IC_BACTU",
+      "short_name": "CR1IC_BACTU",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|P84613|CR4AA_BACTK",
+      "short_name": "CR4AA_BACTK",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    },
+    {
+      "fasta_id": "sp|Q45710|C14AA_BACTS",
+      "short_name": "C14AA_BACTS",
+      "mechanism_class": "cry_insecticidal",
+      "target_host": "insect",
+      "reason": "acts on INSECT midgut epithelium; no vertebrate target",
+      "producer_kingdom": "bacteria_or_virus"
+    }
+  ],
+  "maintenance_notes": [
+    "2026-09-18: +69 positives from src/27. Producer kingdom stays bacteria_or_virus for all of them, deliberately: \u00a72.4.1's finding that producer taxonomy does not explain target-host legibility rests on the panel's producer balance, and three archaeal halocins were rejected rather than miscoded."
+  ]
+}

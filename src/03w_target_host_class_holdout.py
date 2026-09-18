@@ -92,6 +92,7 @@ Usage:
     python src/03w_target_host_class_holdout.py
 """
 
+import argparse
 import json
 from collections import Counter
 from pathlib import Path
@@ -104,7 +105,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 ROOT = Path(__file__).resolve().parent.parent
-V2 = ROOT / "results" / "v2"
+RES_ROOT = ROOT / "results"
 NONANIMAL = {"bacteria", "none_small_molecule", "plant", "other_nonanimal"}
 # 200 rather than 2000: each draw refits the probe once per eligible class, so 2000 is
 # hours of compute for a resolution the class-level n cannot use anyway.
@@ -164,9 +165,14 @@ def exact_rank_test(low_group, high_group):
 
 
 def main():
-    man = json.load(open(V2 / "embedding_manifest_v2.json"))
-    th = json.load(open(ROOT / "data/annotations/target_host_v2.json"))["proteins"]
-    P = np.load(V2 / "embeddings_positive_v2.npy")
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--panel", default="v2", choices=["v2", "v3"],
+                    help="panel version. v2 is the frozen 80/154 panel every published number in docs/ rests on; v3 is 149/296, v2 plus bacteriocin, phage_peptidoglycan_hydrolase and cry_insecticidal. Switches the results directory and the annotation files together.")
+    pv = ap.parse_args().panel
+    V2 = RES_ROOT / pv
+    man = json.load(open(V2 / f"embedding_manifest_{pv}.json"))
+    th = json.load(open(ROOT / f"data/annotations/target_host_{pv}.json"))["proteins"]
+    P = np.load(V2 / f"embeddings_positive_{pv}.npy")
 
     tgt = {e["fasta_id"]: e["target_host"] for e in th}
     mech = {e["fasta_id"]: e["mechanism_class"] for e in th}
@@ -254,8 +260,13 @@ def main():
     frac_perfect = float((null >= 0.999).mean())
     print(f"  class-level permutation null: {len(null)} draws, median "
           f"{np.median(null):.3f}, 95th pct {np.percentile(null, 95):.3f}, p {p:.4f}")
-    print(f"  null reaches 1.000 on {frac_perfect * 100:.0f}% of draws, so the "
-          f"preregistered test has almost no power at {len(eligible)} classes")
+    # Say what the number means rather than asserting a fixed conclusion. On v2 this
+    # printed "almost no power" from 8% of draws reaching a perfect score, which was true;
+    # printing the same sentence at 0% would have been false, and it did once.
+    verdict_power = ("has almost no power" if frac_perfect >= 0.05 else "is usable")
+    print(f"  null reaches 1.000 on {frac_perfect * 100:.0f}% of draws and its 95th "
+          f"percentile is {np.percentile(null, 95):.3f}, so the preregistered test "
+          f"{verdict_power} at {len(eligible)} classes")
 
     # POST HOC, and labelled as such: added after seeing that the permutation null above
     # is uninformative. Not part of the preregistration and it does not set the verdict.
