@@ -1,0 +1,134 @@
+{
+  "exploratory": true,
+  "found_while": "running src/03t_animal_only_training.py, which refuted a different hypothesis",
+  "control_note": "a single random removal is not a control; two draws spanned 9.5 points on this class, so the distribution is used",
+  "protocol": "03b: 40% negative holdout, threshold at the 95th percentile of held-out negatives",
+  "n_removed": 14,
+  "seeds": 60,
+  "draws": 25,
+  "survey_seeds": 20,
+  "survey_draws": 10,
+  "survey": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "standard": 0.9928571428571429,
+      "minus_BL": 1.0,
+      "random_mean": 0.9771428571428572,
+      "random_sd": 0.03238795442501324,
+      "random_min": 0.9071428571428571,
+      "random_max": 1.0,
+      "minus_BL_percentile": 0.6
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "standard": 1.0,
+      "minus_BL": 1.0,
+      "random_mean": 1.0,
+      "random_sd": 0.0,
+      "random_min": 1.0,
+      "random_max": 1.0,
+      "minus_BL_percentile": 0.0
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "standard": 0.4,
+      "minus_BL": 0.4625,
+      "random_mean": 0.39625000000000005,
+      "random_sd": 0.08661156100660006,
+      "random_min": 0.2625,
+      "random_max": 0.5875,
+      "minus_BL_percentile": 0.8
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "standard": 0.7071428571428571,
+      "minus_BL": 0.9142857142857143,
+      "random_mean": 0.7092857142857142,
+      "random_sd": 0.09438576942202548,
+      "random_min": 0.5785714285714285,
+      "random_max": 0.8428571428571429,
+      "minus_BL_percentile": 1.0
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "standard": 1.0,
+      "minus_BL": 1.0,
+      "random_mean": 0.9992857142857143,
+      "random_sd": 0.0021428571428571356,
+      "random_min": 0.9928571428571429,
+      "random_max": 1.0,
+      "minus_BL_percentile": 0.1
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "standard": 1.0,
+      "minus_BL": 1.0,
+      "random_mean": 1.0,
+      "random_sd": 0.0,
+      "random_min": 1.0,
+      "random_max": 1.0,
+      "minus_BL_percentile": 0.0
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "standard": 0.8000000000000002,
+      "minus_BL": 0.8200000000000001,
+      "random_mean": 0.8000000000000002,
+      "random_sd": 0.0,
+      "random_min": 0.8000000000000002,
+      "random_max": 0.8000000000000002,
+      "minus_BL_percentile": 1.0
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "standard": 0.52,
+      "minus_BL": 0.5799999999999998,
+      "random_mean": 0.5369999999999998,
+      "random_sd": 0.023043437243605802,
+      "random_min": 0.5149999999999999,
+      "random_max": 0.575,
+      "minus_BL_percentile": 1.0
+    }
+  },
+  "focus_class": "pore_forming_cytolysin",
+  "focus": {
+    "standard": 0.7261904761904762,
+    "standard_sd": 0.14354990757126534,
+    "minus_BL": 0.8904761904761905,
+    "minus_BL_sd": 0.1260781170940355,
+    "paired_delta": 0.16428571428571426,
+    "paired_ci95": [
+      0.1357142857142857,
+      0.19285714285714287
+    ],
+    "paired_wins": 47,
+    "random_mean": 0.7121904761904763,
+    "random_sd": 0.07899975602017494,
+    "random_min": 0.5857142857142857,
+    "random_max": 0.8547619047619048,
+    "minus_BL_percentile": 1.0,
+    "attributable_beyond_random": 0.17828571428571427,
+    "per_member_standard": {
+      "HLYE_ECOLI": 1.0,
+      "HLA_STAAU": 0.7833333333333333,
+      "TACY_LISMO": 0.3,
+      "PAG_BACAN": 0.9166666666666666,
+      "MU1_REOVD": 1.0,
+      "VACA_HELPY": 1.0,
+      "TACY_STRPQ": 0.08333333333333333
+    },
+    "per_member_minus_BL": {
+      "HLYE_ECOLI": 1.0,
+      "HLA_STAAU": 0.9833333333333333,
+      "TACY_LISMO": 0.7333333333333333,
+      "PAG_BACAN": 1.0,
+      "MU1_REOVD": 1.0,
+      "VACA_HELPY": 1.0,
+      "TACY_STRPQ": 0.5166666666666667
+    }
+  },
+  "members_gaining_over_25pts": [
+    "TACY_LISMO",
+    "TACY_STRPQ"
+  ]
+}

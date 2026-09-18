@@ -430,6 +430,42 @@ def amr_test_input_present():
             "sha256": hashlib.sha256(b).hexdigest()}
 
 
+def training_set_contamination():
+    """§5.1. Removing the 14 beta-lactamases from TRAINING raises pore-forming
+    cytolysin by 16.4 points, above all 25 random removals of the same size. The
+    distribution control is what is pinned hardest: a SINGLE random draw was tried
+    first and two draws spanned 9.5 points, which made the attributable effect read
+    as +25.7 on one and +8.4 on the other. Also pinned, that the effect is two named
+    members rather than a class-wide shift, and that contact-dependent inhibition is
+    NOT a second case, since its +6.2 sits inside a random spread of 8.7 and it
+    would otherwise have been written up as one."""
+    d = json.load(open(R / "v2/training_set_contamination.json"))
+    f = d["focus"]
+    cdi = d["survey"]["contact_dependent_inhibition"]
+    return {"delta": round(f["paired_delta"], 4),
+            "ci_low": round(f["paired_ci95"][0], 4),
+            "percentile": f["minus_BL_percentile"],
+            "attributable": round(f["attributable_beyond_random"], 4),
+            "movers": sorted(d["members_gaining_over_25pts"]),
+            "cdi_effect": round(cdi["minus_BL"] - cdi["standard"], 4),
+            "cdi_random_sd": round(cdi["random_sd"], 4),
+            "exploratory": d["exploratory"]}
+
+
+def nonanimal_category_refuted():
+    """§5.1's companion: the preregistered test that came first and failed. If
+    non-animal hazard were a category the probe learns from non-animal examples,
+    removing every non-animal-target positive would cost non-animal test classes
+    more than it costs animal ones. The interaction is -0.0 with an interval
+    spanning zero. Pinned so the refutation is not quietly dropped now that the
+    exploratory follow-up found something."""
+    d = json.load(open(R / "v2/animal_only_training.json"))
+    return {"interaction": round(d["interaction"], 4),
+            "ci": [round(x, 4) for x in d["interaction_ci95"]],
+            "includes_zero": d["ci_includes_zero"],
+            "refuted": "REFUTED" in d["verdict"]}
+
+
 def beta_lactamase_across_arms():
     """The corrected beta-lactamase claim. Earlier write-ups said the class resists
     every configuration and that alignment beats every embedding method on it. Both
@@ -672,6 +708,20 @@ CLAIMS = [
      lambda v: (v["exists"] and v["n_sequences"] == 8 and v["bytes"] == 2511
                 and v["sha256"] == "4df8a5c65ad684e31bebfb6a101cea7c6dca9bfd6307fa4f38a1a2a68edcc5d2"),
      {"docs/MECHANISM_GENERALIZATION.md": "4df8a5c65ad684e3"}, []),
+    ("one class in the training set costs another 16 points, above every random removal",
+     training_set_contamination,
+     lambda v: (v["delta"] > 0.13 and v["ci_low"] > 0 and v["percentile"] == 1.0
+                and v["attributable"] > 0.15
+                and v["movers"] == ["TACY_LISMO", "TACY_STRPQ"]
+                and v["cdi_effect"] < v["cdi_random_sd"]
+                and v["exploratory"] is True),
+     {"docs/MECHANISM_GENERALIZATION.md": "the 100th percentile"}, []),
+    ("non-animal hazard is not a category the probe learns from non-animal examples",
+     nonanimal_category_refuted,
+     lambda v: (v["refuted"] and v["includes_zero"]
+                and abs(v["interaction"]) < 0.05
+                and v["ci"][0] < 0 < v["ci"][1]),
+     {"docs/MECHANISM_GENERALIZATION.md": "refuted it**: the interaction was"}, []),
     ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
      lambda v: (v["n_arms"] == 14 and abs(v["alignment"] - 0.30) < 0.02
                 and v["duplicate_arm_max_diff"] == 0

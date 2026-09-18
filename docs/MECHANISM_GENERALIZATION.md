@@ -309,6 +309,58 @@ split is seed-dependent: virulence has one intermediate member at thirty seeds a
 > **A per-class recovery number is a joint property of the class, the rest of the positive set, and the
 > operating point.** Reporting one without fixing the other two produces a figure that will not reproduce.
 
+### 5.1 🔴 One class in the training set costs another 16 points
+
+`src/03u_training_set_contamination.py`. §5 shows recovery is a joint property by changing the panel's
+**size**. This is the same claim with a named cause: hold pore-forming cytolysin out as usual, then remove
+the 14 beta-lactamases from what the probe trains on.
+
+⚠️ **Exploratory, not preregistered.** It surfaced while running
+`src/03t_animal_only_training.py`, which asked whether non-animal-target hazard is a category the probe
+learns from non-animal examples and **refuted it**: the interaction was −0.0 points with a 95% CI of
+[−3.4, +3.7]. That zero was two classes moving 20 points in opposite directions, and this attributes the
+movement.
+
+| pore_forming_cytolysin, 60 seeds | recovery |
+|---|---|
+| standard, every positive except the held-out class | 72.6% ± 14.4 |
+| **minus the 14 beta-lactamases** | **89.0% ± 12.6** |
+| 25 random removals of 14 | 71.2% ± 7.9, range [58.6, 85.5] |
+
+Paired on the same splits the difference is **+16.4 points, 95% CI [+13.6, +19.3]**, winning on 47 of 60
+seeds, and removing beta-lactamase lands **above all 25 random removals**, the 100th percentile, for an
+effect attributable to that class of **+17.8 points**.
+
+🔴 **A single random removal is not a control, and treating one as a control nearly produced a wrong
+number here.** Two individual draws of 14 put pore-forming at 71.4% and 80.9%, a 9.5-point spread, which
+made the attributable effect read as +25.7 on one draw and +8.4 on the other. Only the distribution settles
+it.
+
+The effect is two proteins rather than a class-wide shift:
+
+| member | standard | minus beta-lactamase |
+|---|---|---|
+| **TACY_LISMO**, listeriolysin O | **30%** | **73%** |
+| **TACY_STRPQ**, streptolysin O | **8%** | **52%** |
+| HLA_STAAU, alpha-hemolysin | 78% | 98% |
+| PAG_BACAN, anthrax protective antigen | 92% | 100% |
+| HLYE_ECOLI / MU1_REOVD / VACA_HELPY | 100% | 100% |
+
+Both movers are cholesterol-dependent cytolysins; the others sit at or near the ceiling in both conditions.
+That is §4's binary structure and §5's joint property in one picture: **the training set decides which side
+of a hard split two specific proteins fall on.**
+
+**It does not generalise past this class.** The same test on the other seven: contact-dependent inhibition
+moves +6.2 points against a random spread of ±8.7, so it is noise; T3SS and the labelled control move
++2.0 and +6.0; the four saturated classes do not move. Without the random-draw distribution,
+contact-dependent inhibition would have been written up as a second case.
+
+**What it changes above.** §3's table is the standard condition and is unaffected. The reading changes: a
+per-class recovery figure is conditional on the rest of the positive set by more than 16 points, and
+beta-lactamase, already the hardest class and the one whose provenance differs from the others (§2), is
+also the one whose presence costs a neighbour most.
+
+
 ## 6. The negative set moves the answer, and mostly through the operating point
 
 `src/03e_negative_difficulty_curve.py`. The negative set is varied 2×2 over **sample size** and

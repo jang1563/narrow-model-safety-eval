@@ -1,0 +1,92 @@
+{
+  "seeds": 30,
+  "protocol": "03b throughout: 40% negative holdout, threshold at the 95th percentile of held-out negatives",
+  "n_animal_positives": 51,
+  "classes": {
+    "adp_ribosyl_ab_toxin": {
+      "target": "animal",
+      "standard": 0.9952380952380953,
+      "animal_only": 1.0,
+      "size_matched": 0.980952380952381,
+      "drop": -0.004761904761904745,
+      "drop_size_matched": 0.014285714285714235
+    },
+    "beta_lactamase": {
+      "target": "non-animal",
+      "standard": 0.1571428571428571,
+      "animal_only": 0.08333333333333333,
+      "size_matched": 0.13809523809523808,
+      "drop": 0.07380952380952378,
+      "drop_size_matched": 0.019047619047619035
+    },
+    "clostridial_neurotoxin": {
+      "target": "animal",
+      "standard": 1.0,
+      "animal_only": 1.0,
+      "size_matched": 1.0,
+      "drop": 0.0,
+      "drop_size_matched": 0.0
+    },
+    "contact_dependent_inhibition": {
+      "target": "non-animal",
+      "standard": 0.375,
+      "animal_only": 0.6166666666666667,
+      "size_matched": 0.4166666666666667,
+      "drop": -0.2416666666666667,
+      "drop_size_matched": -0.041666666666666685
+    },
+    "pore_forming_cytolysin": {
+      "target": "animal",
+      "standard": 0.6857142857142858,
+      "animal_only": 0.8904761904761905,
+      "size_matched": 0.6333333333333333,
+      "drop": -0.2047619047619047,
+      "drop_size_matched": 0.05238095238095253
+    },
+    "rip_rrna_glycosidase": {
+      "target": "animal",
+      "standard": 1.0,
+      "animal_only": 1.0,
+      "size_matched": 1.0,
+      "drop": 0.0,
+      "drop_size_matched": 0.0
+    },
+    "superantigen_enterotoxin": {
+      "target": "animal",
+      "standard": 1.0,
+      "animal_only": 1.0,
+      "size_matched": 1.0,
+      "drop": 0.0,
+      "drop_size_matched": 0.0
+    },
+    "t3ss_effector_apparatus": {
+      "target": "animal",
+      "standard": 0.8000000000000003,
+      "animal_only": 0.8000000000000003,
+      "size_matched": 0.7966666666666669,
+      "drop": 0.0,
+      "drop_size_matched": 0.0033333333333334103
+    },
+    "aminoglycoside_external": {
+      "target": "non-animal",
+      "standard": 0.30833333333333335,
+      "animal_only": 0.24583333333333332,
+      "size_matched": 0.3,
+      "drop": 0.06250000000000003,
+      "drop_size_matched": 0.00833333333333336
+    }
+  },
+  "drop_nonanimal": -0.03511904761904763,
+  "drop_animal": -0.03492063492063491,
+  "interaction": -0.00019841269841272546,
+  "interaction_ci95": [
+    -0.03353174603174603,
+    0.037499999999999985
+  ],
+  "interaction_size_matched": -0.01642857142857146,
+  "interaction_attributable": 0.016230158730158734,
+  "preregistered_supported_geq": 0.15,
+  "preregistered_refuted_leq": 0.05,
+  "ci_includes_zero": true,
+  "verdict": "REFUTED: removing non-animal training positives does not cost non-animal test classes more than it costs animal ones; \u26a0\ufe0f the interaction's 95% interval includes 0"
+}
