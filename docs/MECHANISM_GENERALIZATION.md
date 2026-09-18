@@ -1378,8 +1378,14 @@ already says and which does not locate the failures.
 
 🔑 **Both failing classes have a negative margin.** beta-lactamase −0.0082 and phage hydrolase −0.0055,
 meaning **their members sit closer to a benign protein than to any other hazard class**. Every recovered
-class is positive except the two controls. That is a mechanism rather than a correlation, and it is the same
-one §10.1 measured on individual proteins, now holding one level up.
+class is positive except the two controls. It is the same quantity §10.1 measured on individual proteins,
+now holding one level up.
+
+🔴 **An earlier version of this paragraph called that "a mechanism rather than a correlation". That was
+overstated and §10.7 is the test that shows it.** Removing the nearest benign neighbours from training does
+lift both failing classes beyond what removing the same number at random does, so the proximity is causal.
+It closes **11% and 8%** of the distance to a fully recovered class. Margin predicts the failure far better
+than removing the proximity repairs it.
 
 **It replicates on v2**, where there is one failure instead of two: margin rho **+0.940**, permutation p
 0.0003, and beta-lactamase is the single lowest-margin class of nine (chance 1/9). Notably nearest-negative
@@ -1494,6 +1500,59 @@ same quantity and should not be quoted as one.
 has one failure class rather than v3's two, because only the canonical arm is embedded for v3. Whether
 `phage_peptidoglycan_hydrolase` is also lowest-margin in other representations is untested and needs
 thirteen more embedding runs.
+
+### 10.7 🔴 Benign proximity is a contributing cause and closes a tenth of the gap
+
+`src/31_margin_causal_test.py`. §10.4 to §10.6 are correlational: margin ranks the failures lowest, tracks
+recovery at rho +0.894, holds in fourteen representations and orders an unseen mechanism correctly. None of
+that shows the geometry does the work, and an earlier draft of §10.4 called it "a mechanism rather than a
+correlation" anyway. This is the test of that sentence.
+
+The design is §5.1's, moved to the negative side. §5.1 held pore-forming cytolysin out and removed the 14
+beta-lactamases from **training**, gaining +16.4 points against a distribution of 25 random removals. Here
+the removal is of the **K=10 training negatives closest to the held-out class**, against random removals of
+the same size:
+
+🔴 **Removal happens only inside the training split.** 03b calibrates its threshold on the 40% of negatives
+held out of training. Removing the nearest negatives from that calibration set would lower the threshold and
+raise recovery for a reason unrelated to the decision boundary. The calibration split is identical across
+all three arms on a given seed.
+
+| panel | class | recovery | nearest 10 removed | attributable | in-seed percentile | closes |
+|---|---|---|---|---|---|---|
+| v3 | **beta_lactamase** | 21.2% | 30.5% | **+8.8** | 79th | **11%** of the gap |
+| v3 | **phage_peptidoglycan_hydrolase** | 12.2% | 19.2% | **+7.1** | 90th | **8%** of the gap |
+| v3 | rip_rrna_glycosidase (comparison) | 94.8% | 98.6% | +3.6 | 62nd | 68% of its 5-point gap |
+| v2 | **beta_lactamase** | 15.7% | 22.9% | **+6.7** | 73rd | **8%** of the gap |
+| v2 | t3ss_effector_apparatus (comparison) | 80.0% | 80.3% | +0.3 | 52nd | 2% of its gap |
+
+**Attributable** is the targeted removal minus that seed's own mean over 25 random removals, paired within
+seed, and its 95% interval excludes zero for every failing class on both panels. So **benign proximity is
+causal.** Removing exactly the benign proteins a class sits nearest to helps it more than removing the same
+number of negatives at random.
+
+🔴 **And it closes 8 to 11% of the distance to a recovered class.** Beta-lactamase goes from 21% to 30%
+while the recovered classes sit at 94 to 100%. The targeted removal also lands at the 79th and 90th
+percentile of the random draws rather than beyond the 95th, and it beats a given seed's own 95th percentile
+in only 12 and 17 of 30 seeds. The effect is real, consistent, replicated across two panels, and **small**.
+
+🔑 **Prediction and repair come apart, which is the useful part.** Margin predicts the failure strongly:
+rho +0.894 across classes, correct out-of-sample ordering on three unseen mechanisms, negative in 14 of 14
+representations. Removing the proximity repairs a tenth of it. So benign proximity is where the failure
+**shows up** rather than all of what the failure **is**, and §10.4's earlier "mechanism rather than
+correlation" has been corrected accordingly. An operator can use margin to decide which mechanism families
+to distrust. An engineer cannot fix those families by curating the negative set.
+
+⚠️ **Two analysis changes were made after seeing a result, and both improved it. Recording that is not
+optional.** The first run pooled 30 seeds × 25 draws into one null and compared the 30-value targeted mean
+against its 95th percentile, which returned REFUTED. That pooled null carries fold-to-fold variance the
+targeted mean has averaged out, so it is simply the wrong comparison, and §5.1 in this same document already
+used per-seed pairing. The second run defined the failing classes as the two lowest-**margin** ones, which
+selects the test set with the predictor under test; on v2 that admitted contact-dependent inhibition, which
+has a negative margin and recovers at 37.5%, and its −8.5-point result was briefly read as evidence against
+the mechanism. Failures are now defined by **recovery below 25%**, which is the property the mechanism is
+meant to explain. Both fixes are defensible without reference to their outcome, and both outcomes moved in
+the author's favour, so the sequence is stated here rather than only the final numbers.
 
 ## 11. What this does not claim
 

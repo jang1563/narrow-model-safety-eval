@@ -1,0 +1,90 @@
+{
+  "panel": "v3",
+  "K": 10,
+  "seeds": 30,
+  "draws_per_seed": 25,
+  "protocol": "03b folds; removal applied to the TRAINING negatives only so the 95th-percentile threshold is calibrated on an untouched split",
+  "failing_classes": [
+    "phage_peptidoglycan_hydrolase",
+    "beta_lactamase"
+  ],
+  "comparison_class": "rip_rrna_glycosidase",
+  "classes": {
+    "phage_peptidoglycan_hydrolase": {
+      "margin": -0.005539553239941597,
+      "is_failure": true,
+      "standard": 0.121875,
+      "nearest_removed": 0.19166666666666668,
+      "random_mean": 0.12104166666666667,
+      "random_p95_pooled": 0.25,
+      "mean_within_seed_percentile": 0.9026666666666667,
+      "seeds_beating_own_p95": 17,
+      "seeds": 30,
+      "delta_pts": 6.979166666666668,
+      "delta_ci95": [
+        5.106028862159393,
+        8.852304471173941
+      ],
+      "attributable_pts": 7.062499999999998,
+      "attributable_ci95": [
+        5.427038383735079,
+        8.697961616264918
+      ],
+      "above_random_p95": true,
+      "gap_to_best_class_pts": 87.8125,
+      "fraction_of_gap_closed": 0.08042704626334518
+    },
+    "beta_lactamase": {
+      "margin": -0.008177275769412518,
+      "is_failure": true,
+      "standard": 0.2119047619047619,
+      "nearest_removed": 0.30476190476190473,
+      "random_mean": 0.21695238095238092,
+      "random_p95_pooled": 0.42857142857142855,
+      "mean_within_seed_percentile": 0.7906666666666666,
+      "seeds_beating_own_p95": 12,
+      "seeds": 30,
+      "delta_pts": 9.285714285714283,
+      "delta_ci95": [
+        5.194400245615109,
+        13.37702832581346
+      ],
+      "attributable_pts": 8.780952380952382,
+      "attributable_ci95": [
+        4.989408039866357,
+        12.572496722038407
+      ],
+      "above_random_p95": true,
+      "gap_to_best_class_pts": 78.80952380952381,
+      "fraction_of_gap_closed": 0.11141993957703929
+    },
+    "rip_rrna_glycosidase": {
+      "margin": 0.007911426946520805,
+      "is_failure": false,
+      "standard": 0.9476190476190477,
+      "nearest_removed": 0.9857142857142858,
+      "random_mean": 0.9500952380952381,
+      "random_p95_pooled": 1.0,
+      "mean_within_seed_percentile": 0.6240000000000002,
+      "seeds_beating_own_p95": 1,
+      "seeds": 30,
+      "delta_pts": 3.809523809523807,
+      "delta_ci95": [
+        1.146998289346797,
+        6.472049329700824
+      ],
+      "attributable_pts": 3.561904761904759,
+      "attributable_ci95": [
+        1.4067499293021404,
+        5.717059594507378
+      ],
+      "above_random_p95": true,
+      "gap_to_best_class_pts": 5.23809523809523,
+      "fraction_of_gap_closed": 0.6800000000000005
+    }
+  },
+  "P1_all_failures_above_null": true,
+  "P2_comparison_moves_less": true,
+  "comparison_above_own_null": true,
+  "verdict": "CONTRIBUTING CAUSE, NOT THE CAUSE: the targeted removal beats random removal of the same size on every failing class, paired within seed, but closes at most 11% of the distance to the best-recovered class. Benign proximity is causal and small. Margin PREDICTS the failure far better than removing the proximity REPAIRS it, and \u00a710.4 has to say so"
+}

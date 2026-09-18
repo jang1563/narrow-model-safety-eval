@@ -1042,3 +1042,60 @@ committed, §9's three sentences are rewritten with intervals, the surviving ESM
 now carries its interval, and `src/22_claims_audit.py` pins all of it: the single arm that
 clears alignment, the 6B-against-300M overlap, the CLS-against-mean overlap, the ladder
 correlation, and the count of five arms whose published value left its own interval.
+
+---
+
+## 2026-09-18 (seventh entry) — §10.4 called a correlation a mechanism, and the test of that sentence needed two of its own corrections
+
+### The published overstatement
+
+§10.4 was written this same day and said of the two failing classes sitting closer to benign proteins than
+to any hazard class: *"That is a mechanism rather than a correlation."* Nothing at that point had
+manipulated the geometry. Margin ranked the failures, tracked recovery, held across fourteen
+representations and ordered three unseen mechanisms correctly, all of which is association.
+
+`src/31_margin_causal_test.py` tested it by removing the ten training negatives nearest each held-out
+class and comparing against random removals of the same size, paired within seed. The effect is real and
+**small**: attributable +8.8 points for beta-lactamase and +7.1 for the phage class on v3, +6.7 for
+beta-lactamase on v2, every interval excluding zero, and **8 to 11% of the distance to a recovered
+class**. The sentence is corrected in place to say contributing cause, with §10.7 carrying the numbers.
+
+🔑 The useful form of the finding is that prediction and repair dissociate. Margin says which mechanism
+family to distrust; curating the negative set does not fix that family.
+
+### 🔴 Two analysis changes in the test itself, both of which improved the result
+
+Recording this is the point of the entry. A verdict that moves twice in the author's favour after the
+analysis is edited has the shape of a result being fitted, whatever the merits of each edit.
+
+**One. A pooled null returned REFUTED.** The first run pooled 30 seeds × 25 random draws into a single
+distribution and compared the 30-value targeted mean against its 95th percentile. That null carries
+fold-to-fold variance which the targeted mean has already averaged out, so it is wider than the targeted
+arm's own sampling distribution and the comparison is not like for like. Per-seed pairing is what §5.1 in
+the same document already used, reporting "winning on 47 of 60 seeds". With the pairing fixed the
+attributable effect is positive and its interval excludes zero.
+
+**Two. The failing classes were selected by margin.** `failures = the two lowest-margin classes` selects
+the test set using the predictor under test. On v2 that admitted contact-dependent inhibition, which has a
+negative margin and recovers at 37.5%, so it is not a failure; its −8.5-point result was briefly read as
+evidence against the mechanism. Failures are now defined as **recovery below 25%**, the property the
+mechanism exists to explain, which gives beta-lactamase and the phage class on v3 and beta-lactamase alone
+on v2.
+
+Both fixes are defensible without reference to their outcomes: a pooled null mixing two variance sources
+is wrong whichever way it comes out, and selecting a test set with the predictor is circular whichever way
+it comes out. Both are nonetheless changes made after seeing a result, and the sequence is published with
+the numbers rather than behind them.
+
+### Standing
+
+⚠️ K is fixed at 10. Whether the effect scales with how many benign neighbours are removed is untested,
+and a dose-response curve is the obvious next check: an effect that saturates at 10 and one that grows to
+50 imply different things about how much of the failure is proximity.
+
+### Fix
+
+§10.4's sentence is replaced, §10.7 carries the design, the numbers and this disclosure,
+`results/{v2,v3}/margin_causal_test.json` are committed, and `src/22_claims_audit.py` pins both the
+positive attributable effects and the fraction of the gap they close, so neither half can be quoted
+without the other.

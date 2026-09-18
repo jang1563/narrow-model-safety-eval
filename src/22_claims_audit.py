@@ -885,6 +885,30 @@ def margin_across_arms():
                                     - a["esm2_650M_mean"]["rho"]) < 1e-12,
             "supported": d["verdict"].startswith("SUPPORTED")}
 
+
+def margin_causal_test():
+    """§10.7: removing the nearest benign negatives from training lifts the failing classes
+    beyond random removal, and closes only 8 to 11% of the gap. Both halves are pinned so the
+    causal claim cannot be quoted without its size."""
+    v3 = j("v3/margin_causal_test.json")
+    v2 = j("v2/margin_causal_test.json")
+    b3 = v3["classes"]["beta_lactamase"]
+    ph = v3["classes"]["phage_peptidoglycan_hydrolase"]
+    b2 = v2["classes"]["beta_lactamase"]
+    comp3 = v3["classes"][v3["comparison_class"]]
+    return {"v3_failures": v3["failing_classes"], "v2_failures": v2["failing_classes"],
+            "beta_attr_v3": b3["attributable_pts"], "beta_ci_lo_v3": b3["attributable_ci95"][0],
+            "phage_attr_v3": ph["attributable_pts"], "phage_ci_lo_v3": ph["attributable_ci95"][0],
+            "beta_attr_v2": b2["attributable_pts"], "beta_ci_lo_v2": b2["attributable_ci95"][0],
+            "beta_frac_v3": b3["fraction_of_gap_closed"],
+            "phage_frac_v3": ph["fraction_of_gap_closed"],
+            "beta_frac_v2": b2["fraction_of_gap_closed"],
+            "comparison_attr": comp3["attributable_pts"],
+            "beta_pctile_v3": b3["mean_within_seed_percentile"],
+            "beta_seeds_beating_p95": b3["seeds_beating_own_p95"],
+            "contributing_not_the_cause": "CONTRIBUTING CAUSE" in v3["verdict"]
+                                          and "CONTRIBUTING CAUSE" in v2["verdict"]}
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -1172,6 +1196,21 @@ CLAIMS = [
                 and v["duplicate_agrees"] and v["supported"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **esm2_650M mean** (canonical) | 1280 | **+0.940** | 0.0004 | beta_lactamase |"}, []),
+    ("benign proximity is causal and closes only a tenth of the gap", margin_causal_test,
+     lambda v: (sorted(v["v3_failures"]) == ["beta_lactamase",
+                                             "phage_peptidoglycan_hydrolase"]
+                and v["v2_failures"] == ["beta_lactamase"]
+                and v["beta_ci_lo_v3"] > 0 and v["phage_ci_lo_v3"] > 0
+                and v["beta_ci_lo_v2"] > 0
+                and 0.05 < v["beta_frac_v3"] < 0.15
+                and 0.05 < v["phage_frac_v3"] < 0.15
+                and 0.05 < v["beta_frac_v2"] < 0.15
+                and v["comparison_attr"] < min(v["beta_attr_v3"], v["phage_attr_v3"])
+                and 0.7 < v["beta_pctile_v3"] < 0.95
+                and v["beta_seeds_beating_p95"] < 15
+                and v["contributing_not_the_cause"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| v3 | **beta_lactamase** | 21.2% | 30.5% | **+8.8** | 79th | **11%** of the gap |"}, []),
 ]
 
 
