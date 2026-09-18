@@ -1,0 +1,116 @@
+{
+  "method": "jackhmmer",
+  "seeds": 30,
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "matrix_density": 0.06291547958214624,
+  "tie_diagnostics_seed0": {
+    "adp_ribosyl_ab_toxin": {
+      "threshold": 5.0,
+      "heldout_margin_zero": 0.0,
+      "calib_margin_zero": 0.0
+    },
+    "beta_lactamase": {
+      "threshold": 5.0,
+      "heldout_margin_zero": 0.14285714285714285,
+      "calib_margin_zero": 0.0
+    },
+    "clostridial_neurotoxin": {
+      "threshold": 5.0,
+      "heldout_margin_zero": 0.0,
+      "calib_margin_zero": 0.0
+    },
+    "contact_dependent_inhibition": {
+      "threshold": 5.0,
+      "heldout_margin_zero": 0.0,
+      "calib_margin_zero": 0.0
+    },
+    "pore_forming_cytolysin": {
+      "threshold": 3.1999999999999997,
+      "heldout_margin_zero": 0.0,
+      "calib_margin_zero": 0.0
+    },
+    "rip_rrna_glycosidase": {
+      "threshold": 5.0,
+      "heldout_margin_zero": 0.0,
+      "calib_margin_zero": 0.0
+    },
+    "superantigen_enterotoxin": {
+      "threshold": 3.1999999999999997,
+      "heldout_margin_zero": 0.0,
+      "calib_margin_zero": 0.0
+    },
+    "t3ss_effector_apparatus": {
+      "threshold": 5.0,
+      "heldout_margin_zero": 0.0,
+      "calib_margin_zero": 0.0
+    },
+    "virulence_associated_non_toxin": {
+      "threshold": 5.0,
+      "heldout_margin_zero": 0.0,
+      "calib_margin_zero": 0.0
+    }
+  },
+  "degenerate_classes": [],
+  "usable": true,
+  "scorer": "HMMER 3.4 jackhmmer, --max, E<=1000, full-sequence bitscore",
+  "protocol": "identical to src/03i_alignment_baseline.py; only the score matrix differs",
+  "profile_minus_alignment_mean": -0.09208112874779545,
+  "probe_minus_profile_mean": 0.6508906525573193,
+  "classes_profile_beats_probe": [],
+  "classes": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "profile_recovery": 0.16666666666666669,
+      "alignment_recovery": 0.18571428571428575,
+      "probe_recovery": 1.0
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "profile_recovery": 0.0047619047619047615,
+      "alignment_recovery": 0.2952380952380952,
+      "probe_recovery": 0.21428571428571427
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "profile_recovery": 0.02222222222222222,
+      "alignment_recovery": 0.2,
+      "probe_recovery": 1.0
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "profile_recovery": 0.025,
+      "alignment_recovery": 0.20833333333333334,
+      "probe_recovery": 0.35
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "profile_recovery": 0.11428571428571428,
+      "alignment_recovery": 0.12380952380952379,
+      "probe_recovery": 0.6857142857142857
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "profile_recovery": 0.07619047619047617,
+      "alignment_recovery": 0.28571428571428575,
+      "probe_recovery": 1.0
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "profile_recovery": 0.009523809523809523,
+      "alignment_recovery": 0.06190476190476189,
+      "probe_recovery": 1.0
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "profile_recovery": 0.21666666666666662,
+      "alignment_recovery": 0.14,
+      "probe_recovery": 0.8
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "profile_recovery": 0.05666666666666667,
+      "alignment_recovery": 0.020000000000000004,
+      "probe_recovery": 0.5
+    }
+  }
+}

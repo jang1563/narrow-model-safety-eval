@@ -300,6 +300,29 @@ def amr_category_test_v2():
     }
 
 
+def profile_hmm_baseline():
+    """§7.1's profile baseline. 03i supplied the alignment half of "alignment- or
+    profile-based"; 03k supplies the profile half with HMMER, written as a strict
+    swap-in that changes only the score matrix. Pins three things: that the probe
+    leads both HMMER modes on every class, that beta-lactamase stops being
+    alignment's one win once scoring is profile-based, and that neither run is
+    degenerate. The last one matters because the first jackhmmer run returned 100%
+    on every class INCLUDING the labelled control, purely from margins tied at
+    zero; a calibrated threshold of 0 is the tell, and it must never be reported
+    as a result."""
+    out = {}
+    for m in ("phmmer", "jackhmmer"):
+        d = json.load(open(R / f"v2/profile_hmm_baseline_{m}.json"))
+        out[m] = {
+            "probe_minus_profile": round(d["probe_minus_profile_mean"], 4),
+            "beats_probe": d["classes_profile_beats_probe"],
+            "degenerate": d["degenerate_classes"],
+            "beta_lactamase": round(d["classes"]["beta_lactamase"]["profile_recovery"], 4),
+            "density": round(d["matrix_density"], 4),
+        }
+    return out
+
+
 def beta_lactamase_across_arms():
     """The corrected beta-lactamase claim. Earlier write-ups said the class resists
     every configuration and that alignment beats every embedding method on it. Both
@@ -497,6 +520,15 @@ CLAIMS = [
      beta_lactamase_provenance,
      lambda v: v["beta_lactamase_members"] == 14,
      {"docs/MECHANISM_GENERALIZATION.md": "KW-0046"}, []),
+    ("profile-HMM baseline: the probe leads both HMMER modes on every class, neither run degenerate",
+     profile_hmm_baseline,
+     lambda v: (all(not v[m]["beats_probe"] and not v[m]["degenerate"] for m in v)
+                and v["phmmer"]["probe_minus_profile"] > 0.55
+                and v["jackhmmer"]["probe_minus_profile"] > 0.60
+                and v["phmmer"]["beta_lactamase"] < 0.10
+                and v["jackhmmer"]["beta_lactamase"] < 0.05
+                and min(v[m]["density"] for m in v) > 0.03),
+     {"docs/MECHANISM_GENERALIZATION.md": "+59.8 points"}, []),
     ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
      lambda v: (v["n_arms"] == 14 and abs(v["alignment"] - 0.30) < 0.02
                 and v["duplicate_arm_max_diff"] == 0

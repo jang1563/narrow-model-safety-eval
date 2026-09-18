@@ -281,6 +281,52 @@ ESM-2 probe. That is a statement about ESM-2, not about embeddings in general �
 does better than alignment on it (§9). The two approaches fail on **disjoint** classes, which is what
 motivated §8.
 
+### 7.1 The profile half of that sentence, run
+
+§7 opens by saying deployed screens are alignment- **or profile**-based, and only the alignment half was
+supplied above. `src/03k_profile_hmm_baseline.py` supplies the other half with HMMER 3.4, written as a
+strict swap-in for `03i`: the same leave-one-mechanism-out protocol, the same margin rule, the same
+95th-percentile operating point on held-out negatives, the same 30 seeds, with the Smith-Waterman matrix
+replaced by HMMER bitscores. Two modes, `phmmer` and `jackhmmer -N 3`, both run with `--max`.
+
+| class | n | probe | SW alignment | phmmer | jackhmmer |
+|---|---|---|---|---|---|
+| adp_ribosyl_ab_toxin | 7 | 100% | 19% | 24% | 17% |
+| **beta_lactamase** | 14 | **21%** | **30%** | **5%** | **0%** |
+| clostridial_neurotoxin | 6 | 100% | 20% | 17% | 2% |
+| contact_dependent_inhibition | 4 | 35% | 21% | 1% | 2% |
+| pore_forming_cytolysin | 7 | 69% | 12% | 8% | 11% |
+| rip_rrna_glycosidase | 7 | 100% | 29% | 21% | 8% |
+| superantigen_enterotoxin | 7 | 100% | 6% | 15% | 1% |
+| t3ss_effector_apparatus | 10 | 80% | 14% | 21% | 22% |
+| *virulence_associated_non_toxin* | *10* | *50%* | *2%* | *5%* | *6%* |
+
+The probe leads phmmer by **+59.8 points** and jackhmmer by **+65.1** on average, and **neither profile
+method beats it on any of the nine classes**.
+
+**Beta-lactamase does not stay an exception under profile methods.** §7 reports it as the one class where
+alignment beats the probe, 30% against 21%. phmmer reaches 5% there and jackhmmer 0%, so the probe leads
+profile-based homology search on that class by 17 to 21 points. The alignment result on beta-lactamase is
+specific to Smith-Waterman, which returns a graded score for every pair, rather than a general property
+of homology search.
+
+⚠️ **What this does not test.** Every number above is scored inside the 234-sequence panel, and the panel
+is homology-screened, so a held-out class has no homologue present for a profile to recruit. Profile
+methods earn their sensitivity by recruiting homologues from a large database, so this measures them in
+the regime where that advantage is unavailable. The comparison that would test it builds the profile from
+an external database instead, which also bears on §9.3: the foundation model saw these families in
+pretraining, and a homology baseline restricted to the panel did not.
+
+🔴 **One run was discarded, and the reason is recorded rather than dropped.** jackhmmer without `--max`
+returned a matrix 1.3% dense against phmmer's 6.4%. Most margins were then exactly 0, the calibrated
+threshold became 0, and `margin >= 0` passed nearly everything, so every class read **100%, including the
+labelled control**. That is absence of power, not sensitivity, and it repeats the signature of the
+attempt-2 failure in [`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md`](EXTERNAL_VALIDATION_PREREGISTRATION.md).
+Matching the filters fixed it. The script now refuses to report any class whose calibrated threshold is 0,
+and the first version of that guard also required more than half the calibration margins to be 0, which
+would have missed this case at 49%.
+
+
 ## 8. The obvious ensemble is worse
 
 `src/03l_ensemble_alignment_embedding.py`. Alignment and embeddings fail on **disjoint** classes, so
