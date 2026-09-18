@@ -719,6 +719,49 @@ def probe_vs_similarity():
             "size_control_max_abs_pts": round(max(abs(v[1]) for v in d.values()) * 100, 1)}
 
 
+
+def sae_feature_space_lomo():
+    """§9.7: LOMO in InterPLM's feature space. The dimension-matched SAE space beats the
+    raw embedding on the 9-class mean and takes beta-lactamase to zero at every C."""
+    d = j("v2/sae_feature_space_lomo.json")
+    s = d["summary"]
+    bl_all_C = [d["all"]["sae_matched"][c]["beta_lactamase"] for c in d["all"]["sae_matched"]]
+    return {"raw_mean": s["raw"]["mean"], "matched_mean": s["sae_matched"]["mean"],
+            "full_mean": s["sae_full"]["mean"],
+            "raw_bl": s["raw"]["beta_lactamase"],
+            "matched_bl": s["sae_matched"]["beta_lactamase"],
+            "matched_bl_zero_at_all_C": all(v == 0.0 for v in bl_all_C),
+            "n_C": len(bl_all_C),
+            "control_drop_pts": (s["raw"]["per_class"]["virulence_associated_non_toxin"]
+                                 - s["sae_matched"]["per_class"]["virulence_associated_non_toxin"]) * 100}
+
+
+def feature_selection_control():
+    """§9.7: selecting features for discriminative power instead of variance does not
+    recover a single beta-lactamase member, so the zero is not a selection artifact."""
+    r = j("v2/feature_selection_control.json")["results"]
+    return {"variance_mean": r["variance"]["mean"], "variance_bl": r["variance"]["beta_lactamase"],
+            "discrim_mean": r["discriminative"]["mean"],
+            "discrim_bl": r["discriminative"]["beta_lactamase"]}
+
+
+def lomo_seed_stability():
+    """§9.7 and DATA_CORRECTIONS 2026-09-18 (fifth): the published 5-seed table reproduces
+    exactly, and beta-lactamase alone falls outside its own 30-seed interval."""
+    d = j("v2/lomo_seed_stability.json")
+    z = d["per_class"]
+    bl = z["beta_lactamase"]
+    others = [c for c in z if c not in ("beta_lactamase", "contact_dependent_inhibition")]
+    return {"reproduced_exactly": sum(abs(z[c]["mean_5seed"] - z[c]["published_5seed"]) < 1e-9
+                                      for c in z),
+            "n_classes": len(z),
+            "bl_published": bl["published_5seed"], "bl_30seed": bl["mean_30seed"],
+            "bl_sd": bl["sd_30seed"], "bl_zero_seeds": bl["zero_seeds"],
+            "bl_ci": bl["ci95_30seed"], "bl_inside_ci": bl["published_inside_ci"],
+            "outside_ci": d["published_outside_own_ci"],
+            "others_max_shift_pts": max(abs(z[c]["mean_30seed"] - z[c]["published_5seed"])
+                                        for c in others) * 100}
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -917,6 +960,26 @@ CLAIMS = [
                 and v["control_in_results"] and not v["control_flagged_eligible"]
                 and not v["grab_bag_eligible"] and v["grab_bag_n"] >= 3
                 and not v["unexpected_classes_in_table"]), {}, []),
+    ("SAE feature space lifts the panel and drops beta-lactamase to zero",
+     sae_feature_space_lomo,
+     lambda v: (v["matched_mean"] > v["raw_mean"] and v["matched_bl"] == 0.0
+                and v["raw_bl"] > 0.1 and v["matched_bl_zero_at_all_C"] and v["n_C"] == 4
+                and v["full_mean"] < v["raw_mean"] and v["control_drop_pts"] > 25),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| **sae_matched** (top-variance to 1280) | 1280 | 1 | **78.1%** | **0.0%** |"}, []),
+    ("selecting for discriminative power does not rescue beta-lactamase either",
+     feature_selection_control,
+     lambda v: (v["variance_bl"] == 0.0 and v["discrim_bl"] == 0.0
+                and v["discrim_mean"] < v["variance_mean"]),
+     {"docs/MECHANISM_GENERALIZATION.md": "| top discriminative | 68.4% | **0.0%** |"}, []),
+    ("published LOMO reproduces at 5 seeds, and beta-lactamase alone is seed-fragile",
+     lomo_seed_stability,
+     lambda v: (v["reproduced_exactly"] == v["n_classes"] == 9
+                and not v["bl_inside_ci"] and v["outside_ci"] == ["beta_lactamase"]
+                and v["bl_30seed"] < v["bl_published"] and v["bl_zero_seeds"] == 7
+                and v["bl_ci"][1] < v["bl_published"]
+                and v["others_max_shift_pts"] <= 1.4),
+     {"docs/MECHANISM_GENERALIZATION.md": "**[11.2, 20.2]**"}, []),
 ]
 
 

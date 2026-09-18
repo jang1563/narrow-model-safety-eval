@@ -1,0 +1,39 @@
+{
+  "protocol": "03b: 40% negative holdout, 95th pct of held-out negatives",
+  "seeds": 30,
+  "dim": 1280,
+  "note": "top-variance selection keeps only 40 of the 279 beta-lactamase-discriminative features on average (14%), which is why the discriminative rule was tested",
+  "results": {
+    "variance": {
+      "per_class": {
+        "adp_ribosyl_ab_toxin": 1.0,
+        "beta_lactamase": 0.0,
+        "clostridial_neurotoxin": 1.0,
+        "contact_dependent_inhibition": 1.0,
+        "pore_forming_cytolysin": 1.0,
+        "rip_rrna_glycosidase": 1.0,
+        "superantigen_enterotoxin": 1.0,
+        "t3ss_effector_apparatus": 0.78,
+        "virulence_associated_non_toxin": 0.25333333333333335
+      },
+      "mean": 0.7814814814814814,
+      "beta_lactamase": 0.0
+    },
+    "discriminative": {
+      "per_class": {
+        "adp_ribosyl_ab_toxin": 0.9285714285714287,
+        "beta_lactamase": 0.0,
+        "clostridial_neurotoxin": 0.9833333333333332,
+        "contact_dependent_inhibition": 0.7916666666666666,
+        "pore_forming_cytolysin": 0.9666666666666668,
+        "rip_rrna_glycosidase": 0.961904761904762,
+        "superantigen_enterotoxin": 0.8142857142857143,
+        "t3ss_effector_apparatus": 0.5366666666666667,
+        "virulence_associated_non_toxin": 0.17333333333333334
+      },
+      "mean": 0.6840476190476191,
+      "beta_lactamase": 0.0
+    }
+  },
+  "verdict": "NOT a selection artifact: beta-lactamase is 0.0% under both rules"
+}

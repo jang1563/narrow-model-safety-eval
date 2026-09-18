@@ -210,6 +210,14 @@ Baseline separability on this panel is AUROC 0.974 ± 0.014.
 *virulence associated non toxin is a labelled **control**, not a mechanism: proteins associated with
 virulence that are not themselves toxins.*
 
+🔴 *Every percentage above is a mean over the protocol's five negative-holdout seeds. Eight of the nine
+classes are stable at 30 seeds, six of them with zero seed variance. **beta lactamase is not:** 30 seeds
+give 15.7%, sd 12.5, 95% CI [11.2, 20.2], and 7 of the 30 splits recover it at exactly 0%. Read its 21% as
+the optimistic end of a wide distribution. The figure is kept because five seeds is the preregistered
+protocol and reproduces exactly;
+[`docs/DATA_CORRECTIONS.md`](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/DATA_CORRECTIONS.md)
+carries the entry and `src/03v_lomo_seed_stability.py` the check.*
+
 **Recovery spans the full range.** Four classes are fully recovered without ever being trained on;
 beta-lactamase — the largest class, and a family defined by a conserved fold and active site — is almost
 entirely missed, and it is the only class where plain Smith-Waterman alignment beats this probe

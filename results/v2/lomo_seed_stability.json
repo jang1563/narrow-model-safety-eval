@@ -1,0 +1,123 @@
+{
+  "protocol": "03b fold logic, C=1.0, 95% specificity on held-out negatives",
+  "seeds_compared": [
+    5,
+    30
+  ],
+  "reimplementation_check": "9/9 classes reproduced exactly",
+  "per_class": {
+    "adp_ribosyl_ab_toxin": {
+      "published_5seed": 1.0,
+      "mean_5seed": 1.0,
+      "mean_30seed": 0.9952380952380953,
+      "sd_30seed": 0.02608202654786506,
+      "zero_seeds": 0,
+      "ci95_30seed": [
+        0.985904761904762,
+        1.0045714285714287
+      ],
+      "published_inside_ci": true
+    },
+    "beta_lactamase": {
+      "published_5seed": 0.21428571428571427,
+      "mean_5seed": 0.21428571428571427,
+      "mean_30seed": 0.1571428571428571,
+      "sd_30seed": 0.12499120306835884,
+      "zero_seeds": 7,
+      "ci95_30seed": [
+        0.11241532955482772,
+        0.2018703847308865
+      ],
+      "published_inside_ci": false
+    },
+    "clostridial_neurotoxin": {
+      "published_5seed": 1.0,
+      "mean_5seed": 1.0,
+      "mean_30seed": 1.0,
+      "sd_30seed": 0.0,
+      "zero_seeds": 0,
+      "ci95_30seed": [
+        1.0,
+        1.0
+      ],
+      "published_inside_ci": true
+    },
+    "contact_dependent_inhibition": {
+      "published_5seed": 0.35,
+      "mean_5seed": 0.35,
+      "mean_30seed": 0.375,
+      "sd_30seed": 0.22504788762425193,
+      "zero_seeds": 1,
+      "ci95_30seed": [
+        0.2944676476804822,
+        0.4555323523195178
+      ],
+      "published_inside_ci": true
+    },
+    "pore_forming_cytolysin": {
+      "published_5seed": 0.6857142857142857,
+      "mean_5seed": 0.6857142857142857,
+      "mean_30seed": 0.6857142857142858,
+      "sd_30seed": 0.13210790377822057,
+      "zero_seeds": 0,
+      "ci95_30seed": [
+        0.6384400794839044,
+        0.7329884919446673
+      ],
+      "published_inside_ci": true
+    },
+    "rip_rrna_glycosidase": {
+      "published_5seed": 1.0,
+      "mean_5seed": 1.0,
+      "mean_30seed": 1.0,
+      "sd_30seed": 0.0,
+      "zero_seeds": 0,
+      "ci95_30seed": [
+        1.0,
+        1.0
+      ],
+      "published_inside_ci": true
+    },
+    "superantigen_enterotoxin": {
+      "published_5seed": 1.0,
+      "mean_5seed": 1.0,
+      "mean_30seed": 1.0,
+      "sd_30seed": 0.0,
+      "zero_seeds": 0,
+      "ci95_30seed": [
+        1.0,
+        1.0
+      ],
+      "published_inside_ci": true
+    },
+    "t3ss_effector_apparatus": {
+      "published_5seed": 0.8,
+      "mean_5seed": 0.8,
+      "mean_30seed": 0.8000000000000003,
+      "sd_30seed": 2.2584051416334807e-16,
+      "zero_seeds": 0,
+      "ci95_30seed": [
+        0.8000000000000002,
+        0.8000000000000004
+      ],
+      "published_inside_ci": true
+    },
+    "virulence_associated_non_toxin": {
+      "published_5seed": 0.5,
+      "mean_5seed": 0.5,
+      "mean_30seed": 0.5133333333333333,
+      "sd_30seed": 0.05713464637233657,
+      "zero_seeds": 0,
+      "ci95_30seed": [
+        0.49288796270630314,
+        0.5337787039603634
+      ],
+      "published_inside_ci": true
+    }
+  },
+  "mean_5seed": 0.7277777777777777,
+  "mean_30seed": 0.7251587301587302,
+  "published_outside_own_ci": [
+    "beta_lactamase"
+  ]
+}

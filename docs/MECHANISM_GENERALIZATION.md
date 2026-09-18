@@ -957,7 +957,8 @@ beta-lactamase's 85%, and recovered at 100%.** Feature uniqueness does not predi
 features separate beta-lactamase from benign proteins at n=6 under Bonferroni correction. **The
 information is in the representation.** The probe's failure to recover beta-lactamase is therefore not the
 representation lacking the class — it is the probe failing to reach information that is demonstrably
-there. Six candidates in, that is the sharpest statement available about what the anomaly is not.
+there. Six candidates in, that was the sharpest statement available about what the anomaly is not, and §9.7
+sharpens it once more by testing whether a probe can find those features without being shown the class.
 
 ⚠️ Two caveats on the method. The SAE reconstructs only 87% of layer-18 activation (relative error 0.133,
 rising monotonically with depth: 0.006 at layer 1 to 0.256 at layer 30), so a *negative* feature result at
@@ -967,6 +968,87 @@ interpretable: 146 features active per residue becomes 4,351 per protein, 42% of
 only 44 exceed the 99th percentile of activation values. Per-protein means are adequate for a classifier
 and poor for naming individual features.
 
+
+### 9.7 🔴 A seventh candidate: the probe cannot reach it in the feature space either
+
+`src/15e_sae_feature_space_lomo.py`, `src/15f_feature_selection_control.py`,
+`src/03v_lomo_seed_stability.py`.
+§9.6 left one question open by construction. It proved 31 InterPLM features separate beta-lactamase from
+benign proteins at matched size, so the information is present. But it found those features **while looking
+at beta-lactamase**. Leave-one-mechanism-out has to find them without it. And §9.1's head comparison, which
+showed no head rescues the class, was run on the **raw embedding**, not on the space where the discriminative
+features were actually located. So: run LOMO in the SAE feature space.
+
+**A dimension control is required, not optional.** The SAE matrix is 234 × 10,240, which is 43.8 dimensions
+per positive against the raw embedding's 5.5. A logistic probe there is governed by regularisation, so "SAE
+features do better" would be uninterpretable on its own. Three conditions, one protocol, C swept over
+0.01/0.1/1/10, 30 seeds:
+
+| condition | dims | best C | 9-class mean | β-lactamase |
+|---|---|---|---|---|
+| **raw** (the §3 baseline) | 1280 | 10 | 73.7% | **16.0%** |
+| sae_full | 10240 | 10 | 63.0% | 0.5% |
+| **sae_matched** (top-variance to 1280) | 1280 | 1 | **78.1%** | **0.0%** |
+
+Feature selection for `sae_matched` is fit on **training rows only inside each fold**, so the held-out class
+cannot influence which features survive.
+
+🔴 **The feature space is better overall and worse than useless here.** It beats the raw embedding by 4.4
+points on the nine-class mean and takes beta-lactamase to **exactly 0.0% at every value of C**. The mean
+conceals a large rearrangement rather than a uniform lift:
+
+| class | raw | sae_matched | Δ |
+|---|---|---|---|
+| contact_dependent_inhibition | 40.8% | 100.0% | **+59.2** |
+| pore_forming_cytolysin | 72.9% | 100.0% | **+27.1** |
+| adp_ribosyl_ab_toxin | 99.0% | 100.0% | +1.0 |
+| t3ss_effector_apparatus | 80.3% | 78.0% | −2.3 |
+| **beta_lactamase** | **16.0%** | **0.0%** | **−16.0** |
+| *virulence_associated_non_toxin* (control) | *54.7%* | *25.3%* | *−29.3* |
+
+The labelled control moving down 29 points is the useful part of that table: a space that lifted hazard
+uniformly would raise the control too, and this one separates hazard classes from the control more sharply
+while losing one hazard class entirely.
+
+**The obvious confound was checked and is not the answer.** Top-variance selection keeps only **40 of the
+279** beta-lactamase-discriminative features from §9.6, 14% of them, so 0.0% could be selection throwing away
+exactly the features that matter. `15f` re-runs the whole comparison selecting on **discriminative power**
+instead, |mean difference| / pooled sd against benign, again fit on training rows only:
+
+| selection rule | 9-class mean | β-lactamase |
+|---|---|---|
+| top variance | 78.1% | **0.0%** |
+| top discriminative | 68.4% | **0.0%** |
+
+Selecting for exactly the property that is missing does not recover a single member. **Seventh candidate
+refused.**
+
+🔑 **What seven refusals have established.** Beta-lactamase's discriminative features demonstrably exist:
+279 on the full panel, 31 at matched size under Bonferroni correction. They are not reachable from the other
+eight classes by a linear probe on the raw embedding (§9.1), at any scale or pooling or architecture in
+fourteen arms (§9), at any layer (§9.5), in the SAE feature space, or under feature selection that targets
+discriminative power directly. The gap is not the information being absent and not the head being too weak.
+It is that **nothing in the other eight classes points at where the information is.** That is a statement
+about what generalisation across mechanism classes can and cannot be expected to do, and it is the useful
+form of this result for anyone building a hazard screen on held-out mechanisms.
+
+🔴 **One published number needs re-reading, found while validating the above.** `15e`'s fold logic is a
+second implementation of 03b, so it was checked against the published table first: at 5 seeds it reproduces
+**all nine class numbers exactly**. But 03b fixes 5 seeds, and 30 seeds moves exactly one class:
+
+| class | published (5 seeds) | 30 seeds | sd | seeds at 0% | 30-seed 95% CI |
+|---|---|---|---|---|---|
+| **beta_lactamase** | **21.4%** | **15.7%** | 12.5 | **7 of 30** | **[11.2, 20.2]** |
+| contact_dependent_inhibition | 35.0% | 37.5% | 22.5 | 1 of 30 | [29.4, 45.6] |
+| the other seven classes | (unchanged) | within 1.4 pt | ≤13.2 | 0 | contains published |
+
+**The published 21.4% falls outside its own 30-seed confidence interval**, and 7 of 30 negative-holdout
+splits recover the class at exactly 0%. The figure is left in place because 5 seeds is what the preregistered
+protocol specifies and it reproduces exactly; what changes is how to read it. **Treat 21% as the optimistic
+end of a wide distribution whose centre is nearer 16%.** This does not soften anything in §9, since the
+true recovery being lower than published makes the anomaly sharper. It is recorded in
+`docs/DATA_CORRECTIONS.md` (2026-09-18) and the class-level conclusions elsewhere in this document are
+unaffected, since no other class moves.
 
 ## 10. The one claim that looked like a competence boundary, and failed
 

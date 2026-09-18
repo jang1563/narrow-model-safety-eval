@@ -905,3 +905,65 @@ weights (available at layers 1, 9, 18, 24, 30, 33 for ESM-2 650M, and loadable d
 their `.pt` state dicts without the `interplm` package, which is not installed here), is
 tracked as the next step rather than folded into this entry.
 
+
+---
+
+## 2026-09-18 (fifth entry) — The published beta-lactamase recovery is a 5-seed mean that falls outside its own 30-seed confidence interval
+
+### What was being checked
+
+`src/15e_sae_feature_space_lomo.py` needed its own copy of the 03b fold logic in order to run
+leave-one-mechanism-out in the SAE feature space (§9.7). A second implementation of a published
+protocol is a chance to check the first, so before comparing anything it was run on the raw
+embedding and matched against `results/v2/lomo_results.json`.
+
+🟢 **It reproduces all nine published class numbers exactly** at 5 seeds, to machine precision.
+The re-implementation is faithful and §9.7's comparisons rest on it.
+
+### The defect
+
+`src/03b_leave_one_mechanism_out.py` line 69 fixes `SEEDS = [0, 1, 2, 3, 4]`. Every recovery
+percentage in §3 is therefore a mean over five negative-holdout splits. `src/03v_lomo_seed_stability.py`
+re-runs the identical fold logic at 30:
+
+| class | published (5 seeds) | 30 seeds | sd | seeds at exactly 0% | 30-seed 95% CI |
+|---|---|---|---|---|---|
+| **beta_lactamase** | **21.4%** | **15.7%** | 12.5 | **7 of 30** | **[11.2, 20.2]** |
+| contact_dependent_inhibition | 35.0% | 37.5% | 22.5 | 1 of 30 | [29.4, 45.6] |
+| the other seven | (unchanged) | within 1.4 pt | ≤13.2 | 0 | contains the published value |
+
+**21.4% is outside [11.2, 20.2].** Eight of nine classes are fine, six of them having zero seed
+variance. The single class whose number is seed-sensitive is the anomalous class the whole of §9 is
+about, which is the worst possible place for it.
+
+### Why it is not a fabrication and not silently rewritten
+
+Five seeds is what the preregistered protocol specifies, the number reproduces exactly from the
+committed script, and no result elsewhere in the document depends on it beyond the class ordering,
+which does not change. Rewriting 21.4% to 15.7% would replace a reproducible protocol number with a
+different-protocol number and break the audit pins that tie the text to `lomo_results.json`.
+
+So the figure stays and the reading changes: **21% is the optimistic end of a wide distribution whose
+centre is nearer 16%**, stated in §9.7 with the interval and the seven zero-recovery splits. Anyone
+quoting the class should quote the interval.
+
+### Direction of the error
+
+🔴 Worth being explicit, because the direction is the opposite of the usual worry: this correction makes
+the paper's central anomaly **stronger**. The true recovery is lower than published, so beta-lactamase is
+harder to reach than §3 says, and the seven refused explanations in §9 are refusing something larger.
+A correction that happens to favour the author's thesis gets the same treatment as one that does not,
+which is why the interval and the per-seed zeros are published rather than the single corrected mean.
+
+### Standing
+
+⚠️ **Five seeds is too few for any class whose sd exceeds a few points, and two classes here exceed 12.**
+The @99 operating point and the fourteen model arms in §9 are still 5-seed means and have not been
+re-run at 30. They are not corrected because nothing in the document turns on their exact values, but a
+reader should assume the same ±10-point seed noise applies to the low-recovery cells in those tables.
+
+### Fix
+
+`src/03v_lomo_seed_stability.py` is committed with its artifact `results/v2/lomo_seed_stability.json`,
+§9.7 carries the interval, and `src/22_claims_audit.py` pins the 30-seed mean, the interval and the
+9-of-9 reproduction check so none of the three can drift from the text.
