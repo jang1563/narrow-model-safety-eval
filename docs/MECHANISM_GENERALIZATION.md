@@ -706,6 +706,14 @@ Beta-lactamase requires none of that; it hydrolyzes a diffusing small molecule i
 hypothesis: if the representation is keying on a *host-interaction* signature, any class that lacks one
 should generalize poorly, not just this specific enzyme family.
 
+⚠️ **The input to this test lived only in `/tmp` when the result was first published, and was gone
+the next day, so for about a day nobody could reproduce it.** The eight sequences were recovered from
+UniProt by the accessions in `results/v2/amr_category_test.json` and the recovery is byte-identical to the
+lost file: 2511 bytes, sha256 `4df8a5c65ad684e31bebfb6a101cea7c6dca9bfd6307fa4f38a1a2a68edcc5d2`. It is
+committed at `data/sequences/amr_category_test.fasta`, both scripts default to that path, and the audit
+pins the bytes. Re-running reproduces 87.5% and 75.0% exactly. Logged in
+[`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
+
 **Preregistered prediction** (`src/24_amr_category_test.py`, written before embedding): a second,
 sequence- and fold-distinct antibiotic-resistance family — aminoglycoside-modifying enzymes, 8 members
 spanning three fold families (GNAT acetyltransferase, nucleotidyltransferase, protein-kinase-like) plus a

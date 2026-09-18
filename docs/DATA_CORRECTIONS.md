@@ -790,3 +790,44 @@ Both pretraining-holdout runs are recorded as INVALID in
 `docs/MECHANISM_GENERALIZATION.md` §9.3.1 now states what would settle it: pretraining a model with a
 family withheld, which is a training run rather than an analysis.
 
+---
+
+## 2026-09-18 (second entry) — The §9.4 test input existed only in /tmp, and was published that way
+
+### What happened
+
+`src/24_amr_category_test.py` and `src/25_amr_category_test_v2.py` were run against a
+candidate FASTA at `/tmp/aminoglycoside_final.fasta`, and both scripts were committed and
+mirrored to Hugging Face still pointing at that path. The file was gone the next day. For
+about a day, the published 87.5% and 75.0% in §9.4 **could not be reproduced by anyone,
+including their author.**
+
+This file's own header lists four founding defects, one of which is "numbers cited in a
+document as the reason for a decision that had been computed once in a shell and never
+saved." That is exactly this, re-created by the person who wrote the header.
+
+### Recovery, and it is exact
+
+The eight accessions were recorded in `results/v2/amr_category_test.json`, so the sequences
+were recoverable from UniProt. Three candidate formats were reconstructed and compared
+against the size and hash recorded in the session log:
+
+| reconstruction | bytes | matches |
+|---|---|---|
+| UniProt FASTA with descriptions, wrapped at 60 | 3304 | no |
+| headers cut to the first token, wrapped at 60 | 2546 | no |
+| **headers cut to the first token, sequence unwrapped** | **2511** | **yes** |
+
+The third is byte-identical to the lost original:
+**sha256 4df8a5c65ad684e31bebfb6a101cea7c6dca9bfd6307fa4f38a1a2a68edcc5d2**.
+Re-running `25` against it reproduces 87.5% (7/8) and 75.0% (6/8) exactly, and the
+protocol-24 column reproduces too, so the recovery is confirmed functionally as well as
+by hash.
+
+### Fix
+
+The file is committed at `data/sequences/amr_category_test.fasta`, both scripts now default
+to that path instead of naming `/tmp`, and a new audit entry pins the byte count and hash so
+the input cannot vanish or drift again. The lesson generalises past this instance: an input
+that lives outside the repository is not an input, it is a memory of one.
+

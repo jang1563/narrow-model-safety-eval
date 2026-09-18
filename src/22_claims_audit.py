@@ -413,6 +413,23 @@ def target_host_control():
             "post_hoc": d["rank_pattern"]["post_hoc"]}
 
 
+def amr_test_input_present():
+    """The §9.4 candidate FASTA existed only in /tmp when 24 and 25 were run and
+    published, and it was gone the next day. That is the fourth founding defect in
+    this file's header -- a number whose input was computed once outside the
+    repository -- re-created by the same author who wrote the header. The eight
+    sequences were recovered from UniProt by the accessions in
+    results/v2/amr_category_test.json and the recovery is byte-identical to the lost
+    file. This entry pins the bytes so the input cannot silently drift or vanish
+    again, and re-running 25 against it reproduces 87.5% and 75.0% exactly."""
+    import hashlib
+    p = ROOT / "data/sequences/amr_category_test.fasta"
+    b = p.read_bytes()
+    n = sum(1 for ln in b.decode().splitlines() if ln.startswith(">"))
+    return {"exists": p.exists(), "n_sequences": n, "bytes": len(b),
+            "sha256": hashlib.sha256(b).hexdigest()}
+
+
 def beta_lactamase_across_arms():
     """The corrected beta-lactamase claim. Earlier write-ups said the class resists
     every configuration and that alignment beats every embedding method on it. Both
@@ -650,6 +667,11 @@ CLAIMS = [
                 and v["size_matched_ok"] is True and v["n_animal"] == 51
                 and abs(v["rank_p"] - 0.0357) < 0.001 and v["post_hoc"] is True),
      {"docs/MECHANISM_GENERALIZATION.md": "below that entire range"}, []),
+    ("the \u00a79.4 test input is in the repository, byte-identical to the lost original",
+     amr_test_input_present,
+     lambda v: (v["exists"] and v["n_sequences"] == 8 and v["bytes"] == 2511
+                and v["sha256"] == "4df8a5c65ad684e31bebfb6a101cea7c6dca9bfd6307fa4f38a1a2a68edcc5d2"),
+     {"docs/MECHANISM_GENERALIZATION.md": "4df8a5c65ad684e3"}, []),
     ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
      lambda v: (v["n_arms"] == 14 and abs(v["alignment"] - 0.30) < 0.02
                 and v["duplicate_arm_max_diff"] == 0

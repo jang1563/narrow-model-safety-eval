@@ -36,12 +36,23 @@ fusion), 8 members spanning three distinct fold families (GNAT acetyltransferase
 nucleotidyltransferase, protein-kinase-like) plus a divergent Eis-family GNAT and
 a bifunctional fusion, from eight different organisms. Screened at normalized
 Smith-Waterman <= 0.30 against each other and against all 234 existing panel
-members (see /tmp/aminoglycoside_final.fasta build log). All carry UniProt
+members (see data/sequences/amr_category_test.fasta). All carry UniProt
 KW-0046 (Antibiotic resistance); none carry KW-0800 (Toxin) or KW-0843
 (Virulence), the same keyword profile as beta-lactamase.
 
+Reproducibility note added 2026-09-18
+-------------------------------------
+This script was first run against a candidate FASTA that lived only in /tmp, and
+that file was gone by the next day, so the published numbers could not be
+reproduced by anyone including their author. That is one of the four founding
+defects listed in src/22_claims_audit.py, re-created. The eight sequences were
+recovered from UniProt by the accessions recorded in
+results/v2/amr_category_test.json and are now committed at
+data/sequences/amr_category_test.fasta. The recovery is byte-identical to the lost
+file: 2511 bytes, sha256 4df8a5c65ad684e31bebfb6a101cea7c6dca9bfd6307fa4f38a1a2a68edcc5d2.
+
 Usage:
-    python src/24_amr_category_test.py --candidates /path/to/aminoglycoside_final.fasta
+    python src/24_amr_category_test.py
 """
 
 import argparse
@@ -100,7 +111,7 @@ def embed_esm2(seqs, model_name="facebook/esm2_t33_650M_UR50D", max_len=1022):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--candidates", required=True,
+    ap.add_argument("--candidates", default="data/sequences/amr_category_test.fasta",
                     help="FASTA of the screened, homology-checked candidate class")
     a = ap.parse_args()
 

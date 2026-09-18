@@ -67,8 +67,19 @@ aminoglycoside}. Three cells are known. This script computes the fourth.
 Nothing about the internal panel changes: same frozen embeddings, same members,
 same annotations. Only the training mask and the reporting differ.
 
+Reproducibility note added 2026-09-18
+-------------------------------------
+This script was first run against a candidate FASTA that lived only in /tmp, and
+that file was gone by the next day, so the published numbers could not be
+reproduced by anyone including their author. That is one of the four founding
+defects listed in src/22_claims_audit.py, re-created. The eight sequences were
+recovered from UniProt by the accessions recorded in
+results/v2/amr_category_test.json and are now committed at
+data/sequences/amr_category_test.fasta. The recovery is byte-identical to the lost
+file: 2511 bytes, sha256 4df8a5c65ad684e31bebfb6a101cea7c6dca9bfd6307fa4f38a1a2a68edcc5d2.
+
 Usage:
-    python src/25_amr_category_test_v2.py --candidates /path/to/aminoglycoside_final.fasta
+    python src/25_amr_category_test_v2.py
 """
 
 import argparse
@@ -130,7 +141,7 @@ def fit_probe(P, N, train_mask):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--candidates", required=True)
+    ap.add_argument("--candidates", default="data/sequences/amr_category_test.fasta")
     a = ap.parse_args()
 
     manifest = json.load(open(V2 / "embedding_manifest_v2.json"))
