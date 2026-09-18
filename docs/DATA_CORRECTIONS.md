@@ -831,3 +831,77 @@ to that path instead of naming `/tmp`, and a new audit entry pins the byte count
 the input cannot vanish or drift again. The lesson generalises past this instance: an input
 that lives outside the repository is not an input, it is a memory of one.
 
+## 2026-09-18 (third entry) — Three defects in the FHS metric, found while checking whether it could help with the beta-lactamase anomaly
+
+### What was being checked
+
+Five candidate explanations for beta-lactamase's LOMO failure had been tested and refused
+(classifier head, corpus/capacity, AMR-as-a-category, layer depth, training-set composition).
+The next candidate needed a way to look inside the representation rather than around it, and
+`src/15_sae_fhs.py`'s Feature Hazard Score (FHS) — a sparse-autoencoder decomposition of the
+ESM-2 residual stream — was the tool already in the repository for exactly that. Checking
+whether it was usable surfaced three separate problems before it could be applied.
+
+### Defect one: `research/05_v2_related_work_survey.md` describes a metric that was not built
+
+That survey states, in the present tense, that SAE weights from `Elana/InterPLM-esm2-650m`
+are "the primary input for Pillar 2 FHS computation. No training required," and that the
+feature catalog was "used to build `data/annotations/motif_reference_set.json`."
+
+Neither is true of what is in the repository. `results/fhs_results.json` records
+`"sae_source": "trained_fallback"` — a 4096-dimensional linear SAE trained from scratch on
+the 78-protein panel, not InterPLM's pre-trained decomposition. `data/annotations/
+motif_reference_set.json` does not exist. `docs/EVALUATION_REPORT.md` already describes this
+accurately elsewhere in the repository ("Sparse-autoencoder probes … trained locally … as
+part of an exploratory FHS metric"), so the survey is the one document out of step, written
+in April as a plan and never reconciled with what shipped.
+
+### Defect two: the published FHS–FSI correlation is stale, and the file that produced it can be named
+
+`fhs_results.json` stores `"fhs_fsi_spearman_r": 0.7005, "fhs_fsi_pvalue": 0.0112`, n=12.
+Re-running `15`'s own pairing code — join on `uniprot`, read `fsi.mean` from
+`results/fsi_results.json` — against the files currently in the repository gives
+**rho 0.6585, p 0.0199**, not the stored figure.
+
+The cause is dateable. `fhs_results.json` was last written 2026-05-21
+(`e2522d2`, "Fix Colicin E2 FASTA placement; re-run FSPE/FHS/separability"), and its stored
+correlation is consistent with the `fsi_results.json` that existed at that commit.
+`fsi_results.json` was then rewritten the next day by the 2026-05-22 FSI re-curation entry
+above, which re-keyed Anthrax's (`P13423`) `catalytic_residues` and changed its FSI to 0.
+That entry's own text says "The FSI / FSPE / SER … pipeline was re-run on the corrected
+panel" — SAE/FHS is not in that list, and it was not re-run. The correlation sitting in
+`fhs_results.json` is therefore a real number, computed correctly, paired against a version
+of `fsi_results.json` that no longer exists.
+
+**The correlation is also fragile at this n.** Dropping `P13423` alone from the current
+12-point pairing moves it to rho 0.582, p 0.0604 — the single most FSI-corrected protein in
+the panel is also the one most responsible for the correlation clearing p<0.05.
+
+### Defect three: the fallback SAE has no seed, so its own output cannot be reproduced
+
+`train_fallback_sae()` in `15_sae_fhs.py` initializes `SimpleSAE` and shuffles training
+batches with no `torch.manual_seed` anywhere in the script. Re-running `15` end to end — not
+just recomputing a downstream correlation, but retraining the SAE itself — produces a
+different set of FHS values each time, because the encoder that produces them was never
+pinned. A metric with this property cannot be checked by anyone re-running the pipeline,
+including its author.
+
+### Standing
+
+None of the sixteen individual FHS values in `results/fhs_results.json` are alleged to be
+computed wrong — the numbers there are what that run of that fallback SAE produced. What is
+wrong is: a public document describing a different, undelivered metric; a correlation figure
+paired against a since-superseded artifact; and a metric whose defining computation is not
+reproducible even in principle until it is seeded. `docs/EVALUATION_REPORT.md`'s own framing
+of FHS as **exploratory** turns out to have been the load-bearing caveat.
+
+### Fix
+
+`research/05_v2_related_work_survey.md`'s InterPLM claim is corrected to describe the
+fallback that actually ran. The stale correlation is superseded by a recomputation against
+the current `fsi_results.json`, reported with the single-point sensitivity above rather than
+as a clean p<0.05. Seeding the fallback SAE, or replacing it with InterPLM's pre-trained
+weights (available at layers 1, 9, 18, 24, 30, 33 for ESM-2 650M, and loadable directly from
+their `.pt` state dicts without the `interplm` package, which is not installed here), is
+tracked as the next step rather than folded into this entry.
+

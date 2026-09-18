@@ -430,6 +430,41 @@ def amr_test_input_present():
             "sha256": hashlib.sha256(b).hexdigest()}
 
 
+def fhs_fsi_correlation_current():
+    """results/fhs_results.json stores fhs_fsi_spearman_r = 0.7005 (p 0.0112), computed
+    2026-05-21 (commit e2522d2) against the fsi_results.json that existed then. FSI was
+    re-curated the next day (2026-05-22, Anthrax P13423's catalytic_residues re-keyed,
+    its FSI changed to 0) and that entry's own text says the FSI/FSPE/SER pipeline was
+    re-run -- FHS was not, so the stored correlation is paired against an artifact that
+    no longer exists. Re-running 15's own pairing logic (join on uniprot, read fsi.mean
+    from the CURRENT fsi_results.json) against the FHS values already on disk gives a
+    different number. This entry pins that current, honestly-paired figure, plus how
+    much of it rests on the single most FSI-corrected protein, so neither number can be
+    quoted without the other."""
+    from scipy import stats
+    fhs_d = json.load(open(R / "fhs_results.json"))
+    results = fhs_d["results"]
+    fsi_data = json.load(open(R / "fsi_results.json"))
+    fsi_lookup = {e["uniprot"]: e["fsi"]["mean"] for e in fsi_data
+                  if e.get("uniprot") and e.get("fsi", {}).get("mean") is not None}
+    pairs = [(r["fhs"], fsi_lookup[r["uniprot_id"]], r["uniprot_id"])
+             for r in results if r["uniprot_id"] in fsi_lookup]
+    fhs_v = [p[0] for p in pairs]
+    fsi_v = [p[1] for p in pairs]
+    sp = stats.spearmanr(fhs_v, fsi_v)
+    i = [p[2] for p in pairs].index("P13423") if "P13423" in [p[2] for p in pairs] else None
+    fhs_wo = fhs_v[:i] + fhs_v[i + 1:]
+    fsi_wo = fsi_v[:i] + fsi_v[i + 1:]
+    sp_wo = stats.spearmanr(fhs_wo, fsi_wo)
+    return {"n": len(pairs), "rho": round(float(sp.correlation), 4),
+            "p": round(float(sp.pvalue), 4),
+            "stale_stored_rho": round(fhs_d["fhs_fsi_spearman_r"], 4),
+            "rho_excluding_P13423": round(float(sp_wo.correlation), 4),
+            "p_excluding_P13423": round(float(sp_wo.pvalue), 4),
+            "stale_and_current_differ": bool(
+                abs(sp.correlation - fhs_d["fhs_fsi_spearman_r"]) > 0.01)}
+
+
 def training_set_contamination():
     """§5.1. Removing the 14 beta-lactamases from TRAINING raises pore-forming
     cytolysin by 16.4 points, above all 25 random removals of the same size. The
@@ -708,6 +743,15 @@ CLAIMS = [
      lambda v: (v["exists"] and v["n_sequences"] == 8 and v["bytes"] == 2511
                 and v["sha256"] == "4df8a5c65ad684e31bebfb6a101cea7c6dca9bfd6307fa4f38a1a2a68edcc5d2"),
      {"docs/MECHANISM_GENERALIZATION.md": "4df8a5c65ad684e3"}, []),
+    ("the stored FHS-FSI correlation is stale; the current pairing is weaker and fragile",
+     fhs_fsi_correlation_current,
+     lambda v: (v["n"] == 12
+                and v["stale_and_current_differ"] is True
+                and abs(v["stale_stored_rho"] - 0.7005) < 0.001
+                and abs(v["rho"] - 0.6585) < 0.001
+                and v["p"] < 0.05
+                and v["p_excluding_P13423"] > 0.05),
+     {"docs/EVALUATION_REPORT.md": "rho 0.582, p 0.0604"}, []),
     ("one class in the training set costs another 16 points, above every random removal",
      training_set_contamination,
      lambda v: (v["delta"] > 0.13 and v["ci_low"] > 0 and v["percentile"] == 1.0

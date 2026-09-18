@@ -80,7 +80,7 @@
 
 ## 2. Mechanistic Interpretability of Protein LMs
 
-### 2.1 InterPLM (Nature Methods 2025) — DIRECTLY USED IN V2 PILLAR 2
+### 2.1 InterPLM (Nature Methods 2025) — PLANNED FOR V2 PILLAR 2, NOT WHAT SHIPPED
 
 | Field | Detail |
 |---|---|
@@ -98,7 +98,14 @@
 - Interactive feature catalog at interplm.ai (searchable by UniProt annotation)
 - Every ESM-2 layer explored (layers 6, 18, 30, 33 primarily)
 
-**v2 integration:** SAE weights from `Elana/InterPLM-esm2-650m` are the **primary input for Pillar 2 FHS computation**. No training required. Feature catalog used to build `data/annotations/motif_reference_set.json`.
+**v2 integration — corrected 2026-09-18, see `docs/DATA_CORRECTIONS.md`:** this section originally
+described InterPLM weights as the primary input to Pillar 2's FHS computation, requiring no training.
+That was the plan when this survey was written (2026-04-16); it is not what `src/15_sae_fhs.py` does.
+`results/fhs_results.json` records `"sae_source": "trained_fallback"` — a 4096-dim linear SAE trained
+from scratch on the panel, because `interplm` is not installed and the loader falls back silently.
+`data/annotations/motif_reference_set.json`, described here as already built from the feature catalog,
+does not exist in the repository. `docs/EVALUATION_REPORT.md` states the actual, more modest status
+correctly elsewhere: FHS is an **exploratory** metric using a **locally trained** probe.
 
 **Key difference from v2:** InterPLM does not connect interpretability to biosecurity risk. v2 is the first to apply SAE feature analysis to dual-use risk quantification (FHS metric).
 
@@ -428,7 +435,7 @@ Curated list of public biosecurity datasets and resources for building biosecuri
 | **SafeProtein** | Input-level adversarial jailbreak of protein models | Model input/output | Competitive but orthogonal; attacks inputs, v2 measures latent encoding |
 | **SafeBench-Seq** | Sequence-level binary hazard classification | Sequence features | Downstream screening; v2 is upstream representation |
 | **NIST TEVV** | Wet-lab TEVV with safe proxies | Experimental | Ground truth for physical realizability dimension |
-| **InterPLM** | SAE interpretability of ESM-2 | Representations | v2 USES InterPLM weights directly (Pillar 2) |
+| **InterPLM** | SAE interpretability of ESM-2 | Representations | Pillar 2 (FHS) planned to use InterPLM weights; ships with a locally trained fallback instead, see §2.1 |
 | **ProtoMech** | Circuit tracing in ESM-2 | Representations | Stronger Pillar 2 tool; track for code release |
 | **FoldMark/StrucTrace** | Structure provenance watermarking | Output | Defensive infrastructure orthogonal to v2 |
 | **ABC-Bench/ABLE** | Agentic bio-capability benchmarks | LLM+Tool agents | Motivates Pillar 4; LLM-level vs v2's model-mechanics level |
@@ -440,7 +447,7 @@ Curated list of public biosecurity datasets and resources for building biosecuri
 ### v2's Unique Position
 
 **No existing project:**
-1. Applies SAE interpretability (InterPLM-style) to biosecurity risk quantification (FHS — Pillar 2)
+1. Applies SAE interpretability (InterPLM-style, currently a locally trained fallback SAE — see §2.1) to biosecurity risk quantification (FHS — Pillar 2)
 2. Defines FSI as a systematic metric across multiple design model families (Pillar 1)
 3. Connects model-latent functional encoding directly to DNA synthesis evasion (SER, Pillar 3)
 4. Measures iterative/agentic exploitation depth quantitatively (Stepping Stone N*, Pillar 4)

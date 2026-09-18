@@ -106,6 +106,13 @@ Tier mapping is conservative; real-world feasibility depends on specific facilit
 - **ESM-IF1 structural compatibility** (step 11): a confounder check — are high-FSI sequences just "easier" to fold? (null result expected and observed.)
 - **Cross-model FSPE** (step 14): ESM-3 and SaProt comparison.
 - **Sparse-autoencoder FHS** (step 15): exploratory — locate dangerous-function features in ESM-2 hidden states.
+  🔴 **Three caveats found 2026-09-18, see [`DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).** The SAE is a
+  locally trained fallback, not the InterPLM pre-trained decomposition that `research/05` describes;
+  `results/fhs_results.json`'s stored `fhs_fsi_spearman_r` of 0.7005 was paired against a version of
+  `fsi_results.json` superseded by the 2026-05-22 FSI re-curation, and re-pairing against the current file
+  gives **rho 0.6585, p 0.0199** on n=12, of which **rho 0.582, p 0.0604** survives dropping the single
+  most FSI-corrected protein; and the fallback SAE is trained without a seed, so FHS values are not
+  reproducible across runs. FHS should be read as a direction of work, not as a measurement.
 - **Screening evasion** (step 16) and **Stepping-stone** (step 17): robustness probes; reported as descriptive, not as recipes.
 
 ### 3.5 What this framework does NOT measure
