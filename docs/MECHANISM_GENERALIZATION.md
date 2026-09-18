@@ -1,13 +1,16 @@
 # Mechanism generalization: what a protein-embedding hazard probe does when the molecule is not on the list
 
-**Written:** 2026-09-05 · **Panel:** v2, 80 positives / 154 negatives · **Author:** JangKeun Kim, Weill Cornell Medicine ([ORCID 0000-0002-8733-9925](https://orcid.org/0000-0002-8733-9925))
+**Written:** 2026-09-05 · **Updated:** 2026-09-18 · **Author:** JangKeun Kim, Weill Cornell Medicine ([ORCID 0000-0002-8733-9925](https://orcid.org/0000-0002-8733-9925))
+
+**Panel:** unless a section says otherwise, every number is on **v2, 80 positives / 154 negatives**, which is frozen. **v3, 149 / 296**, adds three non-animal-target mechanism classes and appears in §2.5, §10.4 and the §2.4.1 comparison; it lives in a parallel file set so that nothing here becomes unreproducible. Scripts take `--panel`.
 
 This document records the **leave-one-mechanism-out (LOMO)** line of work. It is separate from
 [`docs/EVALUATION_REPORT.md`](EVALUATION_REPORT.md), which describes the structure-level metrics (FSPE,
 FSI, Physical Realizability Tier) on a per-residue panel. The two lines ask different questions and should
 not be read as one result.
 
-Every number here is produced by a script in `src/` and stored in `results/v2/`. The project's headline
+Every number here is produced by a script in `src/` and stored in `results/v2/` (or `results/v3/` for the
+v3 sections). The project's headline
 claims are recomputed from their artifacts by [`src/22_claims_audit.py`](../src/22_claims_audit.py), which
 runs in CI and covers this panel explicitly: the recovery table in §3, the panel/results agreement, and the
 class-eligibility curation each have an entry, and **this document is one of the surfaces the audit checks**,
@@ -34,7 +37,8 @@ and measure how much of the unseen class is recovered at a fixed false-positive 
 `data/sequences/panel_v2_manifest.json`, `data/annotations/mechanism_classes_v2.json`.
 
 - **80 hazardous proteins** in 13 mechanism classes, **154 benign proteins** in three blocks
-  (secreted cell-wall, cytoplasmic housekeeping, secreted-from-pathogen).
+  (secreted cell-wall, cytoplasmic housekeeping, secreted-from-pathogen). §2.5 describes **v3**, which
+  adds 69 positives in three classes and 142 organism-matched negatives in a fourth block.
 - Class membership is curated, with a written reason per protein. `holdout_eligible_classes` is a
   **curation decision, not a size threshold** — see [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md) for
   what happened when a script recomputed it as `n >= 3`.
@@ -278,6 +282,74 @@ and the training set contains a single example of the category, which is the sam
 made §9.4 unsettleable. A design that both trains and tests on non-animal hazard needs non-animal-target
 positives from **four or five additional mechanism classes**, which is panel construction rather than
 analysis.
+
+### 2.5 Panel v3, and why v2 stays frozen
+
+`src/27_expand_nonanimal_classes.py`. §2.4.1 ended with a prerequisite: non-animal target was carried by
+**two** mechanism classes, so leave-one-class-out could not both train and test on non-animal hazard, and
+the class-level test had no usable null. `src/26_panel_growth_yield.py` measured which candidate families
+could supply new classes under the panel's own admission rule, and three were admitted:
+
+| class added | n | target | organism-matched negatives |
+|---|---|---|---|
+| `phage_peptidoglycan_hydrolase` | 32 | bacteria | 44 benign phage proteins, 34 phage species |
+| `cry_insecticidal` | 22 | insect | 42 benign *Bacillus thuringiensis* proteins |
+| `bacteriocin` | 15 | bacteria | 56 benign lactic-acid-bacteria proteins |
+
+**v3 is 149 positives against 296 negatives**, prevalence 33.5%, eligible classes **8 to 11**, non-animal
+target classes **2 to 5**.
+
+🔴 **v2 is frozen and v3 is a parallel file set, which is not a stylistic choice.** Every number in this
+document, all fourteen arms in §9, §2.4.1, §9.7 and every pin in `src/22_claims_audit.py` is computed on
+v2's 80 and 154. Growing those files in place would make this document unreproducible from its own
+committed inputs. v3 is v2 plus the new members in that order, so v2's rows are a prefix of v3's: the v2
+embedding matches the first 80 rows of the v3 one to 5e-06, and re-running `03b` on v2 reproduces every
+class number exactly. `03b`, `03s` and `03w` take `--panel`, which switches the results directory and the
+annotation files together so the two can never be mixed.
+
+**The negatives are the reason this is not a one-afternoon job.** The panel held no phage proteins and no
+*B. thuringiensis* before v3, so adding cry toxins and phage enzymes without matched negatives would have
+made the producing organism the signal. That failure is measured twice in
+`docs/DATA_CORRECTIONS.md`: length-matched-only negatives gave AUROC **0.424**, below chance, and
+genus-matched gave 0.556 with an interval containing 0.5. Max similarity from a new negative to a new
+positive is **0.062**, and none of the 142 new negatives carries a hazard keyword.
+
+⚠️ Four label defects were caught during harvesting and are recorded because each would have put a wrong
+label into a hazard panel. `protein_name:colicin` admitted eight entries that are not bacteriocins: the
+colicin I receptor, which is a protein on the *target* cell, the colicin V secretion ATPase, and **six
+immunity proteins, which are what a producer uses to survive its own colicin**. Selection moved to the
+UniProt keyword, checked case by case: Colicin E1, N, B and A carry `KW-0078` and Colicin-M immunity
+protein does not. One sequence, `O03979`, was admitted as a positive **and** as a negative in the same run,
+because the deduplication sets were seeded from the old panel only. The phage class could not be called
+`endolysin`, since `KW-0081` on viral producers also returns virion-associated hydrolases (T4 Gp5, T5 pb2,
+phi29 morphogenesis protein 1, T7 gp16) that share the catalytic mechanism but are not endolysins, so the
+class is named for what its members do. Three archaeal halocins were dropped because `producer_kingdom`
+has no archaeal value and §2.4.1's producer argument depends on that coding being honest.
+
+⚠️ **The SaProt arm is not evaluated on the three new classes.** `foldseek` is fetched as a Linux binary
+and the existing 3Di strings were produced on the HPC, so new members carry the `no_structure` mask, which
+the coverage audit accepts as coverage. Every other arm is unaffected. Only ESM-2 650M mean-pooled is
+embedded for v3 so far.
+
+🟢 **§2.4.1's verdict changes on v3, in the direction that section predicted.** Its class-holdout test came
+back INCONCLUSIVE with a null so wide it was useless, and it said the cause was nine classes split seven to
+two. With eleven classes and four non-animal:
+
+| | v2, 9 classes | v3, 11 classes |
+|---|---|---|
+| balanced class-level accuracy | 0.500, the majority baseline | **0.804** (animal 0.86, non-animal 0.75) |
+| class-level permutation p | 0.21 | **0.0150** |
+| null draws reaching a perfect score | 8% | **0%** |
+| null 95th percentile | 1.000, so uninformative | 0.682 |
+
+By the preregistered rule that is **SUPPORTED**: target host survives leave-one-mechanism-class-out. So
+§2.4.1's finding stands as written and its diagnosis was right. What was missing was class diversity, and
+the pooled 0.929 remains a within-class number that never established this.
+
+⚠️ One interpretable side effect. `pore_forming_cytolysin`'s target-host accuracy falls from 71% to 29%
+once bacteriocins are in the panel labelled non-animal. Bacteriocins and pore-forming cytolysins both kill
+by making holes in a membrane, so labelling one family non-animal pulls the other toward it. The axis is
+real and it is not clean.
 
 ## 3. Result: recovery is class-dependent and spans the full range
 
@@ -1255,6 +1327,79 @@ preregistration itself — it specified a floor but no ceiling, so a uniform 100
 SUPPORTED when *uninformative* is more accurate — is recorded there too.
 
 Full record: [`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md`](EXTERNAL_VALIDATION_PREREGISTRATION.md).
+
+### 10.4 🔑 A second unreachable class, and margin locates both of them
+
+`src/28_second_failure_class.py`, on panel v3 (§2.5). This is the most useful result in the document, and
+it arrived by accident: the v3 expansion was built to fix a power problem in §2.4.1 and it produced a
+second failure.
+
+**Panel v3's leave-one-mechanism-out:**
+
+| class | n | @95 | @99 | AUROC |
+|---|---|---|---|---|
+| **phage_peptidoglycan_hydrolase** | **32** | **10%** | **2%** | **0.660** |
+| **beta_lactamase** | 14 | 19% | 7% | 0.820 |
+| *virulence_associated_non_toxin* (control) | *10* | *34%* | *12%* | *0.820* |
+| contact_dependent_inhibition | 4 | 75% | 75% | n<7 |
+| t3ss_effector_apparatus | 10 | 80% | 70% | 0.910 |
+| **bacteriocin** | 15 | **84%** | 81% | 0.976 |
+| **cry_insecticidal** | 22 | **87%** | 41% | 0.975 |
+| superantigen_enterotoxin | 7 | 91% | 37% | 0.980 |
+| rip_rrna_glycosidase | 7 | 94% | 71% | 0.987 |
+| adp-ribosyl / clostridial / pore-forming | 7 / 6 / 7 | 100% | 94 / 100 / 66% | 0.998 / n<7 / 0.987 |
+
+Through §9, beta-lactamase was a **single** anomalous class that had survived seven refused explanations.
+It is not single any more. A class the probe had never met recovers **10%**, worse than beta-lactamase, on
+32 members, which is the largest class in the panel.
+
+🔴 **The first explanation anyone reaches for is wrong, and it is written here rather than dropped.** Both
+failures hydrolyse a molecular substrate instead of attacking a cell: beta-lactamase cleaves a small
+molecule, the phage enzymes cleave a cell-wall polymer. **RIP refutes it.** Ribosome-inactivating proteins
+hydrolyse the N-glycosidic bond of rRNA, which is as molecular a substrate as either, and they recover at
+94%. Target host does not separate the pair either, since the other two classes added in v3 are also
+non-animal target and recover at 84% and 87%.
+
+**So instead of inventing a third axis to fit two points out of eleven, the test uses the predictor §10.1
+already established** at the member level, before v3 existed and before this failure was known:
+
+| predictor, class-mean | Spearman rho against recovery | perm p | are its two lowest classes the two failures? |
+|---|---|---|---|
+| **margin** = nearest other-class positive minus nearest negative | **+0.894** | **0.0001** | **yes** |
+| nearest other-class positive alone | +0.852 | 0.0002 | no |
+| nearest negative alone | +0.739 | 0.0034 | no |
+| class size | −0.564 | 0.97 | no |
+
+**Both predictions hold.** Margin ranks the two failures as the two lowest of eleven classes, which has
+probability 1/66 = 0.015 under a random ordering, and margin tracks recovery at rho +0.894 against a
+permutation null whose 95th percentile is +0.493. Margin also beats each of its own parts, which matters:
+without that column the claim would reduce to "classes near other hazards are recovered", which nn_pos
+already says and which does not locate the failures.
+
+🔑 **Both failing classes have a negative margin.** beta-lactamase −0.0082 and phage hydrolase −0.0055,
+meaning **their members sit closer to a benign protein than to any other hazard class**. Every recovered
+class is positive except the two controls. That is a mechanism rather than a correlation, and it is the same
+one §10.1 measured on individual proteins, now holding one level up.
+
+**It replicates on v2**, where there is one failure instead of two: margin rho **+0.940**, permutation p
+0.0003, and beta-lactamase is the single lowest-margin class of nine (chance 1/9). Notably nearest-negative
+alone is useless on v2, rho +0.052 with p 0.45, and informative on v3 at +0.739. The bacterial-target
+classes introduced benign-proximity variation that v2 did not contain.
+
+⚠️ **Two honest limits.** The class-size row is the reason to trust the rest: it runs at rho −0.564 with
+p 0.97, so the §9.6 power confound is absent and larger classes recover **less**, not more. But the
+relationship is not a threshold rule. The **third** lowest margin, contact-dependent inhibition at −0.0052,
+sits between the two failures and recovers at 75%. Margin locates the failures without predicting them from
+a cutoff, and eleven classes is eleven observations.
+
+🔑 **What this does to §9.** Seven explanations were refused for beta-lactamase, which read as seven dead
+ends for one odd class. With a second class behaving the same way and a measured property that picks both
+out, the refusals become informative rather than merely negative: **what §9 was failing to fix was never a
+property of beta-lactamase.** It is what happens when a hazard class lies closer to benign proteins than to
+any hazard the probe was trained on, and no amount of scale, pooling, architecture, corpus, layer depth,
+feature space or feature selection changes that geometry. The remaining §9.7 statement holds and gets
+sharper: the discriminative features exist, and nothing in the other classes points at where they are,
+because the other classes are further away than the benign set is.
 
 ## 11. What this does not claim
 

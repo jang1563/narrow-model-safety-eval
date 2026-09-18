@@ -1,0 +1,176 @@
+{
+  "panel": "v3",
+  "classes": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "nn_pos": 0.9861066937446594,
+      "nn_neg": 0.9803215861320496,
+      "margin": 0.005785039626061916,
+      "recovery": 1.0
+    },
+    "bacteriocin": {
+      "n": 15,
+      "nn_pos": 0.9829019904136658,
+      "nn_neg": 0.9767730832099915,
+      "margin": 0.006128962617367506,
+      "recovery": 0.8399999999999999
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "nn_pos": 0.9541829228401184,
+      "nn_neg": 0.9623600840568542,
+      "margin": -0.008177275769412518,
+      "recovery": 0.1857142857142857
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "nn_pos": 0.9903430938720703,
+      "nn_neg": 0.98240727186203,
+      "margin": 0.007935781963169575,
+      "recovery": 1.0
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "nn_pos": 0.9504182934761047,
+      "nn_neg": 0.9556137323379517,
+      "margin": -0.0051953792572021484,
+      "recovery": 0.75
+    },
+    "cry_insecticidal": {
+      "n": 22,
+      "nn_pos": 0.9836742877960205,
+      "nn_neg": 0.9791610240936279,
+      "margin": 0.004513269290328026,
+      "recovery": 0.8727272727272727
+    },
+    "phage_peptidoglycan_hydrolase": {
+      "n": 32,
+      "nn_pos": 0.9581087231636047,
+      "nn_neg": 0.9636483192443848,
+      "margin": -0.005539553239941597,
+      "recovery": 0.1
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "nn_pos": 0.9833247065544128,
+      "nn_neg": 0.9769596457481384,
+      "margin": 0.006365146022289991,
+      "recovery": 1.0
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "nn_pos": 0.9848662614822388,
+      "nn_neg": 0.9769548773765564,
+      "margin": 0.007911426946520805,
+      "recovery": 0.9428571428571428
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "nn_pos": 0.9875799417495728,
+      "nn_neg": 0.9829250574111938,
+      "margin": 0.004654926713556051,
+      "recovery": 0.9142857142857143
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "nn_pos": 0.9799047708511353,
+      "nn_neg": 0.9792272448539734,
+      "margin": 0.000677514064591378,
+      "recovery": 0.8
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "nn_pos": 0.9685289263725281,
+      "nn_neg": 0.9712660908699036,
+      "margin": -0.0027371705509722233,
+      "recovery": 0.34
+    }
+  },
+  "margin_order_low_to_high": [
+    "beta_lactamase",
+    "phage_peptidoglycan_hydrolase",
+    "contact_dependent_inhibition",
+    "virulence_associated_non_toxin",
+    "t3ss_effector_apparatus",
+    "cry_insecticidal",
+    "superantigen_enterotoxin",
+    "adp_ribosyl_ab_toxin",
+    "bacteriocin",
+    "pore_forming_cytolysin",
+    "rip_rrna_glycosidase",
+    "clostridial_neurotoxin"
+  ],
+  "P1": {
+    "spearman_rho": 0.8943883753090784,
+    "perm_p": 0.0002,
+    "perms": 20000,
+    "null_p95": 0.4929699706427991
+  },
+  "P2": {
+    "lowest_margin": [
+      "beta_lactamase",
+      "phage_peptidoglycan_hydrolase"
+    ],
+    "k": 2,
+    "predicted": [
+      "beta_lactamase",
+      "phage_peptidoglycan_hydrolase"
+    ],
+    "hit": true,
+    "chance": 0.015151515151515152
+  },
+  "decomposition": {
+    "margin": {
+      "rho": 0.8943883753090784,
+      "perm_p": 0.00015,
+      "two_lowest": [
+        "beta_lactamase",
+        "phage_peptidoglycan_hydrolase"
+      ],
+      "locates_failures": true
+    },
+    "nn_pos": {
+      "rho": 0.8521338063968384,
+      "perm_p": 0.0002,
+      "two_lowest": [
+        "beta_lactamase",
+        "contact_dependent_inhibition"
+      ],
+      "locates_failures": false
+    },
+    "nn_neg": {
+      "rho": 0.7394549559641986,
+      "perm_p": 0.00345,
+      "two_lowest": [
+        "beta_lactamase",
+        "contact_dependent_inhibition"
+      ],
+      "locates_failures": false
+    },
+    "n": {
+      "rho": -0.563778813554135,
+      "perm_p": 0.97155,
+      "two_lowest": [
+        "clostridial_neurotoxin",
+        "contact_dependent_inhibition"
+      ],
+      "locates_failures": false
+    }
+  },
+  "margin_beats_parts": true,
+  "third_lowest_margin_recovers": {
+    "class": "contact_dependent_inhibition",
+    "recovery": 0.75,
+    "note": "the relationship is not monotone at the low end: the third lowest margin recovers normally, so margin locates the failures without being a threshold rule"
+  },
+  "refuted_axis": {
+    "name": "hydrolyses a molecular substrate rather than attacking a cell",
+    "counterexample": "rip_rrna_glycosidase",
+    "members": {
+      "beta_lactamase": 0.1857142857142857,
+      "phage_peptidoglycan_hydrolase": 0.1,
+      "rip_rrna_glycosidase": 0.9428571428571428
+    }
+  },
+  "verdict": "SUPPORTED: the two lowest-margin classes are exactly the two failures and margin tracks recovery (rho +0.894, p 0.0002). The second failure is an instance of the \u00a710.1 margin mechanism"
+}

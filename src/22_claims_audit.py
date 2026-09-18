@@ -804,6 +804,48 @@ def seed_stability_all_arms():
             "esm2_3B_ci_hi": a["_esm2_3B"]["0.95"]["ci95"][1],
             "esmc300_30seed": e3["mean_30seed"], "esmc6B_30seed": eb["mean_30seed"]}
 
+
+def v3_second_failure():
+    """§10.4: v3 produced a second unreachable class, and margin locates both. The
+    decomposition column is load-bearing: without it the claim reduces to nn_pos."""
+    d = j("v3/second_failure_class.json")
+    v2 = j("v2/second_failure_class.json")
+    lomo = j("v3/lomo_results.json")["leave_one_mechanism_out"]
+    dc, r = d["decomposition"], d["classes"]
+    return {"panel_classes": len(r),
+            "phage_95": lomo["phage_peptidoglycan_hydrolase"]["flagged_95_mean"],
+            "beta_95": lomo["beta_lactamase"]["flagged_95_mean"],
+            "bacteriocin_95": lomo["bacteriocin"]["flagged_95_mean"],
+            "cry_95": lomo["cry_insecticidal"]["flagged_95_mean"],
+            "rip_95": lomo["rip_rrna_glycosidase"]["flagged_95_mean"],
+            "margin_rho": dc["margin"]["rho"], "margin_p": dc["margin"]["perm_p"],
+            "margin_locates": dc["margin"]["locates_failures"],
+            "nn_pos_locates": dc["nn_pos"]["locates_failures"],
+            "nn_neg_locates": dc["nn_neg"]["locates_failures"],
+            "size_rho": dc["n"]["rho"], "size_p": dc["n"]["perm_p"],
+            "beats_parts": d["margin_beats_parts"],
+            "beta_margin": r["beta_lactamase"]["margin"],
+            "phage_margin": r["phage_peptidoglycan_hydrolase"]["margin"],
+            "third_lowest_recovery": d["third_lowest_margin_recovers"]["recovery"],
+            "v2_margin_rho": v2["decomposition"]["margin"]["rho"],
+            "v2_hit": v2["P2"]["hit"]}
+
+
+def v3_panel_and_target_host():
+    """§2.5: v3's shape, and §2.4.1's INCONCLUSIVE resolving to SUPPORTED with a usable null."""
+    panel = j("../data/sequences/panel_v3_manifest.json")
+    mech = j("../data/annotations/mechanism_classes_v3.json")
+    th = j("v3/target_host_class_holdout.json")
+    ch = th["class_holdout"]
+    v2 = j("v2/target_host_class_holdout.json")["class_holdout"]
+    return {"positives": len(panel["positives"]), "negatives": len(panel["negatives"]),
+            "eligible_classes": len(mech["holdout_eligible_classes"]),
+            "nonanimal_classes": th["n_nonanimal_single_target_classes"],
+            "v3_balanced": ch["balanced_class_accuracy"], "v3_p": ch["perm_p"],
+            "v3_usable": ch["perm_usable"], "v3_p95": ch["perm_p95"],
+            "v2_balanced": v2["balanced_class_accuracy"], "v2_usable": v2["perm_usable"],
+            "verdict_supported": th["verdict"].startswith("SUPPORTED")}
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -1047,6 +1089,29 @@ CLAIMS = [
                 and v["n_published_outside_ci"] == 5),
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **6B** | **4.3%** | **0.0%** | **12.4% [7.4, 17.4]** |"}, []),
+    ("v3 has a second unreachable class and margin locates both", v3_second_failure,
+     lambda v: (v["panel_classes"] == 12
+                and v["phage_95"] < v["beta_95"] < 0.25
+                and v["bacteriocin_95"] > 0.8 and v["cry_95"] > 0.8 and v["rip_95"] > 0.9
+                and v["margin_rho"] > 0.85 and v["margin_p"] < 0.01
+                and v["margin_locates"] and not v["nn_pos_locates"]
+                and not v["nn_neg_locates"] and v["beats_parts"]
+                and v["size_rho"] < 0 and v["size_p"] > 0.5
+                and v["beta_margin"] < 0 and v["phage_margin"] < 0
+                and v["third_lowest_recovery"] > 0.5
+                and v["v2_margin_rho"] > 0.9 and v["v2_hit"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| **margin** = nearest other-class positive minus nearest negative | "
+      "**+0.894** | **0.0001** | **yes** |"}, []),
+    ("v3 panel shape, and target host survives class holdout on it",
+     v3_panel_and_target_host,
+     lambda v: (v["positives"] == 149 and v["negatives"] == 296
+                and v["eligible_classes"] == 11 and v["nonanimal_classes"] == 4
+                and v["v3_balanced"] > 0.75 and v["v3_p"] < 0.05 and v["v3_usable"]
+                and v["v3_p95"] < 0.75 and v["verdict_supported"]
+                and v["v2_balanced"] == 0.5 and not v["v2_usable"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "**v3 is 149 positives against 296 negatives**"}, []),
 ]
 
 

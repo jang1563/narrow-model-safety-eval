@@ -1,0 +1,145 @@
+{
+  "panel": "v2",
+  "classes": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "nn_pos": 0.9841715693473816,
+      "nn_neg": 0.965885579586029,
+      "margin": 0.01828603260219097,
+      "recovery": 1.0
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "nn_pos": 0.9534813165664673,
+      "nn_neg": 0.9620200395584106,
+      "margin": -0.008538774214684963,
+      "recovery": 0.21428571428571427
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "nn_pos": 0.9900345802307129,
+      "nn_neg": 0.970893383026123,
+      "margin": 0.019141187891364098,
+      "recovery": 1.0
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "nn_pos": 0.9490100741386414,
+      "nn_neg": 0.9554947018623352,
+      "margin": -0.006484702229499817,
+      "recovery": 0.35
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "nn_pos": 0.9803386330604553,
+      "nn_neg": 0.9689850807189941,
+      "margin": 0.011353560723364353,
+      "recovery": 0.6857142857142857
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "nn_pos": 0.9848661422729492,
+      "nn_neg": 0.9530330300331116,
+      "margin": 0.03183317929506302,
+      "recovery": 1.0
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "nn_pos": 0.9875798225402832,
+      "nn_neg": 0.9609869122505188,
+      "margin": 0.026592927053570747,
+      "recovery": 1.0
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "nn_pos": 0.9792183637619019,
+      "nn_neg": 0.9701989889144897,
+      "margin": 0.009019380435347557,
+      "recovery": 0.8
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "nn_pos": 0.9673411250114441,
+      "nn_neg": 0.9695361852645874,
+      "margin": -0.002195048378780484,
+      "recovery": 0.5
+    }
+  },
+  "margin_order_low_to_high": [
+    "beta_lactamase",
+    "contact_dependent_inhibition",
+    "virulence_associated_non_toxin",
+    "t3ss_effector_apparatus",
+    "pore_forming_cytolysin",
+    "adp_ribosyl_ab_toxin",
+    "clostridial_neurotoxin",
+    "superantigen_enterotoxin",
+    "rip_rrna_glycosidase"
+  ],
+  "P1": {
+    "spearman_rho": 0.9400193421607684,
+    "perm_p": 0.00045,
+    "perms": 20000,
+    "null_p95": 0.5831601474515878
+  },
+  "P2": {
+    "lowest_margin": [
+      "beta_lactamase"
+    ],
+    "k": 1,
+    "predicted": [
+      "beta_lactamase"
+    ],
+    "hit": true,
+    "chance": 0.1111111111111111
+  },
+  "decomposition": {
+    "margin": {
+      "rho": 0.9400193421607684,
+      "perm_p": 0.00035,
+      "two_lowest": [
+        "beta_lactamase"
+      ],
+      "locates_failures": true
+    },
+    "nn_pos": {
+      "rho": 0.9226115765651985,
+      "perm_p": 0.0005,
+      "two_lowest": [
+        "contact_dependent_inhibition"
+      ],
+      "locates_failures": false
+    },
+    "nn_neg": {
+      "rho": 0.052223296786709346,
+      "perm_p": 0.4512,
+      "two_lowest": [
+        "rip_rrna_glycosidase"
+      ],
+      "locates_failures": false
+    },
+    "n": {
+      "rho": -0.36073435433200624,
+      "perm_p": 0.84195,
+      "two_lowest": [
+        "contact_dependent_inhibition"
+      ],
+      "locates_failures": false
+    }
+  },
+  "margin_beats_parts": true,
+  "third_lowest_margin_recovers": {
+    "class": "virulence_associated_non_toxin",
+    "recovery": 0.5,
+    "note": "the relationship is not monotone at the low end: the third lowest margin recovers normally, so margin locates the failures without being a threshold rule"
+  },
+  "refuted_axis": {
+    "name": "hydrolyses a molecular substrate rather than attacking a cell",
+    "counterexample": "rip_rrna_glycosidase",
+    "members": {
+      "beta_lactamase": 0.21428571428571427,
+      "rip_rrna_glycosidase": 1.0
+    }
+  },
+  "verdict": "SUPPORTED: the two lowest-margin classes are exactly the two failures and margin tracks recovery (rho +0.940, p 0.0004). The second failure is an instance of the \u00a710.1 margin mechanism"
+}
