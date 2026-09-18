@@ -364,6 +364,36 @@ def plm_fusion():
             "concat": round(d["means"]["concat"], 4)}
 
 
+def prevalence_adjusted():
+    """The panel is 34.2% hazardous and a screening queue is not. Pins the first
+    AUPRC ever computed here alongside the precision collapse it implies, because
+    the tempting summary is the AUROC and the AUROC is the one number that does not
+    move with base rate. The 95% specificity row is the operating point every
+    recovery figure in this repository uses."""
+    d = json.load(open(R / "v2/prevalence_adjusted.json"))
+    op = d["operating_points"]["spec_0.95"]
+    return {"panel_prevalence": round(d["panel_prevalence"], 4),
+            "auprc": round(d["auprc_mean"], 3),
+            "auprc_baseline": round(d["auprc_baseline"], 3),
+            "precision_panel": round(op["precision"]["0.342"], 3),
+            "precision_1e-3": round(op["precision"]["0.001"], 4)}
+
+
+def layer_depth():
+    """§9.5. Section 9 lists axes that do not change the conclusions; depth does,
+    and it went unchecked until 2026-09-18. Pins three things together: that layer
+    12 beats the final layer, that the platform check separating depth from
+    cluster-versus-local embedding actually passed, and that beta-lactamase reaches
+    0.0% in the middle layers, which is what stops "wrong layer" becoming a fifth
+    explanation for the anomaly."""
+    d = json.load(open(R / "v2/layer_depth_sweep.json"))
+    return {"best": d["best"], "gain": round(d["best_minus_final"], 4),
+            "platform_valid": d["platform_check"]["valid"],
+            "platform_rel": d["platform_check"]["relative"],
+            "bl_L12": round(d["classes"]["L12"]["beta_lactamase"], 4),
+            "final_mean": round(d["means"]["final (33)"], 4)}
+
+
 def beta_lactamase_across_arms():
     """The corrected beta-lactamase claim. Earlier write-ups said the class resists
     every configuration and that alignment beats every embedding method on it. Both
@@ -584,6 +614,17 @@ CLAIMS = [
     ("fusing ESM-2 with ProtT5 does not beat ESM-2 alone", plm_fusion,
      lambda v: v["best"] == "esm2_650M" and v["delta"] < 0,
      {"docs/MECHANISM_GENERALIZATION.md": "Fusion costs **0.4 points**"}, []),
+    ("prevalence: AUROC hides a precision collapse the panel's 34% base rate conceals",
+     prevalence_adjusted,
+     lambda v: (abs(v["panel_prevalence"] - 0.3419) < 0.001
+                and v["auprc"] > 0.95 and abs(v["auprc_baseline"] - 0.342) < 0.002
+                and v["precision_panel"] > 0.85 and v["precision_1e-3"] < 0.05),
+     {"docs/MECHANISM_GENERALIZATION.md": "59 false alarms for every true one"}, []),
+    ("layer depth is the one axis in \u00a79 that does change the answer", layer_depth,
+     lambda v: (v["best"] == "L12" and v["gain"] > 0.03
+                and v["platform_valid"] is True and v["platform_rel"] < 1e-5
+                and v["bl_L12"] == 0.0 and abs(v["final_mean"] - 0.725) < 0.01),
+     {"docs/MECHANISM_GENERALIZATION.md": "Layer 12 beats the final layer by 4.8 points"}, []),
     ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
      lambda v: (v["n_arms"] == 14 and abs(v["alignment"] - 0.30) < 0.02
                 and v["duplicate_arm_max_diff"] == 0

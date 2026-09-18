@@ -108,6 +108,33 @@ over a single pair at 0.287 / 0.300.
 
 ---
 
+### 2.3 🔴 The panel is 34% hazardous and an order queue is not
+
+`src/03r_prevalence_adjusted.py`. Every AUROC above is computed on 80 positives against 154 negatives, so
+**34.2%** of this panel is hazardous. AUROC is insensitive to prevalence, so it carries over unchanged
+into a setting where it means something very different. AUPRC had never been computed here at all. It is
+**0.964 ± 0.023**, against a 0.342 coin at this base rate, a 2.82× lift.
+
+Precision is the quantity that moves, and it follows from the operating point with no new data:
+`precision(π) = TPR·π / (TPR·π + FPR·(1−π))`.
+
+| operating point | TPR | FPR | panel, 34.2% | 1 in 100 | 1 in 1,000 | 1 in 10,000 |
+|---|---|---|---|---|---|---|
+| **95% specificity**, used throughout this document | 89% | 5.2% | 89.9% | 14.7% | **1.7%** | 0.2% |
+| 99% specificity | 80% | 1.3% | 97.0% | 38.4% | 5.8% | 0.6% |
+| 99.9% specificity | 76% | 0.6% | 98.4% | 54.3% | 10.5% | 1.2% |
+
+🔑 **At the operating point used everywhere else here, precision falls from 89.9% on the panel to 1.7%
+at a one-in-a-thousand base rate**, which is 59 false alarms for every true one. AUROC 0.973 does not show
+that. Tightening to 99.9% specificity buys precision back to 10.5% and costs 13 points of recall.
+
+This is not a claim about any real screening queue's base rate, which is not public and varies by
+provider; the columns are round numbers so a reader can locate their own. What it establishes is narrower
+and enough: **a recovery figure at a fixed false-positive budget is not a deployment number.** §11 lists
+deployment readiness among the things this work does not claim, and this is the arithmetic behind that
+line.
+
+
 ## 3. Result: recovery is class-dependent and spans the full range
 
 ESM-2 650M, mean pooling, 5 seeds. `results/v2/lomo_results.json`, `src/03b_leave_one_mechanism_out.py`.
@@ -714,6 +741,60 @@ Standing after three candidates: the classifier head is refused (§9.1), corpus 
 (§9.3), and the toxin/AMR category distinction is inconclusive in its weak form and unsupported in its
 strong form, where this document previously read it as refuted. The anomaly is unexplained. Logged in
 [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
+
+### 9.5 🔴 One axis that DOES change the answer: which layer
+
+`src/02h_esm2_layer_sweep.py`, `src/03q_layer_depth_sweep.py`. Section 9 is a list of things that turn out
+not to matter. This is the exception, and it was never checked until 2026-09-18: every embedding in this
+document is pooled from the **final** layer of ESM-2 650M. Pooling was swept and scale was swept. Depth
+was not.
+
+One forward pass yields all hidden states, so the sweep costs a single pass over the panel. Protocol is
+03b's exactly, 30 seeds, only the pooled layer differs.
+
+⚠️ The canonical arm was embedded on the cluster and the layer arms locally, so depth and platform
+could confound. Re-embedding a sample at the final layer locally agrees with the canonical rows to a
+**maximum absolute deviation of 2.4e-06**, relative 2.9e-07, so the comparison is clean.
+
+| class | final (33) | L6 | **L12** | L18 | L24 | L30 |
+|---|---|---|---|---|---|---|
+| adp_ribosyl_ab_toxin | 99.5% | 41.9% | 99.0% | 100.0% | 98.6% | 90.0% |
+| **beta_lactamase** | **15.7%** | 10.5% | **0.0%** | **0.0%** | **0.0%** | 3.8% |
+| clostridial_neurotoxin | 100.0% | 100.0% | 100.0% | 100.0% | 100.0% | 100.0% |
+| **contact_dependent_inhibition** | **37.5%** | 13.3% | **100.0%** | 100.0% | 97.5% | 94.2% |
+| **pore_forming_cytolysin** | **68.6%** | 73.3% | **99.5%** | 100.0% | 94.3% | 84.3% |
+| rip_rrna_glycosidase | 100.0% | 87.6% | 100.0% | 100.0% | 100.0% | 100.0% |
+| superantigen_enterotoxin | 100.0% | 98.6% | 100.0% | 97.1% | 100.0% | 100.0% |
+| t3ss_effector_apparatus | 80.0% | 25.3% | 80.0% | 78.7% | 76.3% | 80.0% |
+| *virulence_associated_non_toxin* | *51.3%* | *22.3%* | *17.0%* | *10.3%* | *13.7%* | *31.3%* |
+| **mean** | **72.5%** | 52.5% | **77.3%** | 76.2% | 75.6% | 76.0% |
+
+**Layer 12 beats the final layer by 4.8 points**, and the gap survives the seeds: paired on the same 30
+splits the difference is **+0.048 with a bootstrap 95% CI of [+0.034, +0.060]**, L12 wins on **25 of 30**
+seeds, Wilcoxon **p = 2e-05**. L12 is also four times more stable across seeds, ±0.010 against ±0.038.
+
+🔑 **The mean understates it, because the composition changes.** Contact-dependent inhibition goes
+37.5% → 100% and pore-forming cytolysin 68.6% → 99.5%, while the labelled control falls 51.3% → 17.0%.
+Excluding the control, the eight mechanisms go **75.2% → 84.8%**; excluding beta-lactamase as well, the
+seven remaining go **83.7% → 96.9%**.
+
+That the control falls is the useful part rather than a loss. `virulence_associated_non_toxin` is a
+labelled non-mechanism and should be harder than a real mechanism, yet at the final layer it is recovered
+*better* than contact-dependent inhibition. At layer 12 the real mechanisms sit near 100% and the control
+at 17%, so the contrast the control exists to draw is drawn much more sharply.
+
+**Beta-lactamase goes the other way and reaches exactly 0.0% at layers 12, 18 and 24.** The anomaly gets
+deeper rather than resolving, which rules out "wrong layer" as its explanation and adds a fourth refused
+candidate to §9.4's three.
+
+What this does not do is overturn anything above. Recovery stays class-dependent and spans the full range
+at every depth tested. What it does mean is that the figures in this document are read off a layer that is
+not the best available for the task, which is the same conclusion §9.1 reaches about the classifier head
+and for the same reason: **these numbers are closer to a lower bound than to a ceiling.**
+
+⚠️ Five depths on a coarse grid, on one model. Layer 12 is the best of those tested rather than an
+optimum, and nothing here says the same depth would be best for another family.
+
 
 ## 10. The one claim that looked like a competence boundary, and failed
 

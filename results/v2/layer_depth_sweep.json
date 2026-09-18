@@ -1,0 +1,86 @@
+{
+  "protocol": "identical to src/03b_leave_one_mechanism_out.py, 30 seeds",
+  "platform_check": {
+    "max_abs_deviation": 2.384185791015625e-06,
+    "relative": 2.8890508474432863e-07,
+    "valid": true
+  },
+  "means": {
+    "final (33)": 0.7251587301587302,
+    "L6": 0.5254497354497354,
+    "L12": 0.7728571428571429,
+    "L18": 0.7623809523809525,
+    "L24": 0.7559523809523809,
+    "L30": 0.7595502645502646
+  },
+  "best": "L12",
+  "best_minus_final": 0.047698412698412684,
+  "classes": {
+    "final (33)": {
+      "adp_ribosyl_ab_toxin": 0.9952380952380953,
+      "beta_lactamase": 0.1571428571428571,
+      "clostridial_neurotoxin": 1.0,
+      "contact_dependent_inhibition": 0.375,
+      "pore_forming_cytolysin": 0.6857142857142858,
+      "rip_rrna_glycosidase": 1.0,
+      "superantigen_enterotoxin": 1.0,
+      "t3ss_effector_apparatus": 0.8000000000000003,
+      "virulence_associated_non_toxin": 0.5133333333333333
+    },
+    "L6": {
+      "adp_ribosyl_ab_toxin": 0.41904761904761895,
+      "beta_lactamase": 0.10476190476190476,
+      "clostridial_neurotoxin": 1.0,
+      "contact_dependent_inhibition": 0.13333333333333333,
+      "pore_forming_cytolysin": 0.7333333333333333,
+      "rip_rrna_glycosidase": 0.8761904761904764,
+      "superantigen_enterotoxin": 0.9857142857142858,
+      "t3ss_effector_apparatus": 0.2533333333333333,
+      "virulence_associated_non_toxin": 0.22333333333333333
+    },
+    "L12": {
+      "adp_ribosyl_ab_toxin": 0.9904761904761905,
+      "beta_lactamase": 0.0,
+      "clostridial_neurotoxin": 1.0,
+      "contact_dependent_inhibition": 1.0,
+      "pore_forming_cytolysin": 0.9952380952380953,
+      "rip_rrna_glycosidase": 1.0,
+      "superantigen_enterotoxin": 1.0,
+      "t3ss_effector_apparatus": 0.8000000000000003,
+      "virulence_associated_non_toxin": 0.16999999999999998
+    },
+    "L18": {
+      "adp_ribosyl_ab_toxin": 1.0,
+      "beta_lactamase": 0.0,
+      "clostridial_neurotoxin": 1.0,
+      "contact_dependent_inhibition": 1.0,
+      "pore_forming_cytolysin": 1.0,
+      "rip_rrna_glycosidase": 1.0,
+      "superantigen_enterotoxin": 0.9714285714285714,
+      "t3ss_effector_apparatus": 0.7866666666666667,
+      "virulence_associated_non_toxin": 0.10333333333333336
+    },
+    "L24": {
+      "adp_ribosyl_ab_toxin": 0.9857142857142858,
+      "beta_lactamase": 0.0,
+      "clostridial_neurotoxin": 1.0,
+      "contact_dependent_inhibition": 0.975,
+      "pore_forming_cytolysin": 0.9428571428571427,
+      "rip_rrna_glycosidase": 1.0,
+      "superantigen_enterotoxin": 1.0,
+      "t3ss_effector_apparatus": 0.7633333333333333,
+      "virulence_associated_non_toxin": 0.1366666666666667
+    },
+    "L30": {
+      "adp_ribosyl_ab_toxin": 0.9000000000000001,
+      "beta_lactamase": 0.03809523809523809,
+      "clostridial_neurotoxin": 1.0,
+      "contact_dependent_inhibition": 0.9416666666666667,
+      "pore_forming_cytolysin": 0.842857142857143,
+      "rip_rrna_glycosidase": 1.0,
+      "superantigen_enterotoxin": 1.0,
+      "t3ss_effector_apparatus": 0.8000000000000003,
+      "virulence_associated_non_toxin": 0.3133333333333334
+    }
+  }
+}
