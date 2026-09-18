@@ -430,6 +430,71 @@ def amr_test_input_present():
             "sha256": hashlib.sha256(b).hexdigest()}
 
 
+def _spearman(x, y):
+    """Spearman rho and a two-sided p-value using numpy only.
+
+    The release-surface CI job installs numpy and nothing else, deliberately: this
+    audit is meant to run anywhere. An earlier version of the FHS entry imported
+    scipy, passed locally, and failed CI with ModuleNotFoundError -- local green is
+    not CI green. Ranks use the average-rank convention for ties, and the p-value is
+    the standard t approximation on n-2 degrees of freedom, which matches
+    scipy.stats.spearmanr to the precision this audit asserts on.
+    """
+    def rank(v):
+        v = np.asarray(v, float)
+        order = v.argsort()
+        r = np.empty(len(v), float)
+        r[order] = np.arange(1, len(v) + 1)
+        # average tied ranks
+        for u in np.unique(v):
+            m = v == u
+            if m.sum() > 1:
+                r[m] = r[m].mean()
+        return r
+
+    rx, ry = rank(x), rank(y)
+    rho = float(np.corrcoef(rx, ry)[0, 1])
+    n = len(rx)
+    if n < 3 or abs(rho) >= 1.0:
+        return rho, 0.0 if abs(rho) >= 1.0 else 1.0
+    t = rho * math.sqrt((n - 2) / (1 - rho * rho))
+    # two-sided survival function of Student t via the incomplete beta identity
+    df = n - 2
+    x_b = df / (df + t * t)
+    p = _betainc_half(df / 2.0, 0.5, x_b)
+    return rho, float(min(1.0, max(0.0, p)))
+
+
+def _betainc_half(a, b, x, terms=2000):
+    """Regularised incomplete beta I_x(a, b) by continued fraction, enough for the
+    t-distribution tail used by _spearman. Numpy-only to keep this file dependency
+    free."""
+    if x <= 0:
+        return 0.0
+    if x >= 1:
+        return 1.0
+    lbeta = math.lgamma(a) + math.lgamma(b) - math.lgamma(a + b)
+    front = math.exp(math.log(x) * a + math.log(1 - x) * b - lbeta) / a
+    f, c, d = 1.0, 1.0, 0.0
+    for i in range(terms):
+        m = i // 2
+        if i == 0:
+            num = 1.0
+        elif i % 2 == 0:
+            num = (m * (b - m) * x) / ((a + 2 * m - 1) * (a + 2 * m))
+        else:
+            num = -((a + m) * (a + b + m) * x) / ((a + 2 * m) * (a + 2 * m + 1))
+        d = 1.0 + num * d
+        d = 1e-30 if abs(d) < 1e-30 else d
+        d = 1.0 / d
+        c = 1.0 + num / c
+        c = 1e-30 if abs(c) < 1e-30 else c
+        f *= c * d
+        if abs(1.0 - c * d) < 1e-12:
+            break
+    return front * (f - 1.0)
+
+
 def interplm_feature_overlap():
     """§9.6, the sixth refused candidate for the beta-lactamase anomaly. Pins the size
     control, because the unconditioned version of this looked like a finding: 279
@@ -478,7 +543,6 @@ def fhs_fsi_correlation_current():
     different number. This entry pins that current, honestly-paired figure, plus how
     much of it rests on the single most FSI-corrected protein, so neither number can be
     quoted without the other."""
-    from scipy import stats
     fhs_d = json.load(open(R / "fhs_results.json"))
     results = fhs_d["results"]
     fsi_data = json.load(open(R / "fsi_results.json"))
@@ -488,18 +552,17 @@ def fhs_fsi_correlation_current():
              for r in results if r["uniprot_id"] in fsi_lookup]
     fhs_v = [p[0] for p in pairs]
     fsi_v = [p[1] for p in pairs]
-    sp = stats.spearmanr(fhs_v, fsi_v)
-    i = [p[2] for p in pairs].index("P13423") if "P13423" in [p[2] for p in pairs] else None
-    fhs_wo = fhs_v[:i] + fhs_v[i + 1:]
-    fsi_wo = fsi_v[:i] + fsi_v[i + 1:]
-    sp_wo = stats.spearmanr(fhs_wo, fsi_wo)
-    return {"n": len(pairs), "rho": round(float(sp.correlation), 4),
-            "p": round(float(sp.pvalue), 4),
+    rho, pv = _spearman(fhs_v, fsi_v)
+    uids = [p[2] for p in pairs]
+    i = uids.index("P13423")
+    rho_wo, pv_wo = _spearman(fhs_v[:i] + fhs_v[i + 1:], fsi_v[:i] + fsi_v[i + 1:])
+    return {"n": len(pairs), "rho": round(rho, 4),
+            "p": round(pv, 4),
             "stale_stored_rho": round(fhs_d["fhs_fsi_spearman_r"], 4),
-            "rho_excluding_P13423": round(float(sp_wo.correlation), 4),
-            "p_excluding_P13423": round(float(sp_wo.pvalue), 4),
+            "rho_excluding_P13423": round(rho_wo, 4),
+            "p_excluding_P13423": round(pv_wo, 4),
             "stale_and_current_differ": bool(
-                abs(sp.correlation - fhs_d["fhs_fsi_spearman_r"]) > 0.01)}
+                abs(rho - fhs_d["fhs_fsi_spearman_r"]) > 0.01)}
 
 
 def training_set_contamination():
