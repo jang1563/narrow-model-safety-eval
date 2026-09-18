@@ -1448,6 +1448,53 @@ mechanism families need their own validation, and not a number to put in a speci
 did not survive external data, and the corresponding external test for this one does not exist yet: it needs
 a panel containing a mechanism class that v3 does not have.
 
+### 10.6 🔑 The geometry is representation-general: in all fourteen arms the failing class sits closer to benign
+
+`src/30_margin_across_arms.py`. §10.4 and §10.5 are both computed on one arm, ESM-2 650M mean-pooled, and
+both are phrased as claims about **geometry**: a class fails when its members lie closer to a benign protein
+than to any hazard the probe trained on. A claim in that language has to survive a change of representation,
+or the language is overreach. Panel v2 has all fourteen arms embedded and scored, so this is answerable from
+cache.
+
+| arm | dim | rho, margin against recovery | perm p | lowest-margin class |
+|---|---|---|---|---|
+| esm3_1_4B | 1536 | **+0.957** | 0.0001 | beta_lactamase |
+| esm2_3B | 2560 | +0.949 | 0.0003 | beta_lactamase |
+| **esm2_650M mean** (canonical) | 1280 | **+0.940** | 0.0004 | beta_lactamase |
+| esmc_6B | 2560 | +0.914 | 0.0003 | beta_lactamase |
+| esmc_300M | 960 | +0.908 | 0.0010 | beta_lactamase |
+| esm2_150M | 640 | +0.865 | 0.0027 | beta_lactamase |
+| esmc_600M | 1152 | +0.853 | 0.0029 | beta_lactamase |
+| prott5_xl | 1024 | +0.831 | 0.0047 | beta_lactamase |
+| **saprot_650M** | 1280 | +0.828 | 0.0042 | *virulence control* |
+| esm2_8M | 320 | +0.745 | 0.0127 | beta_lactamase |
+| **esm2_650M CLS** | 1280 | +0.695 | 0.0228 | *contact_dependent_inhibition* |
+| esm2_650M max | 1280 | +0.661 | 0.0323 | beta_lactamase |
+| esm2_35M | 480 | +0.588 | *0.0513* | beta_lactamase |
+
+🔑 **The strongest line in the table is the one that is not in it: beta-lactamase's margin is negative in
+14 of 14 arms.** Across five model families, a twentyfold parameter range, a different tokenizer and
+training objective in ProtT5, and a structure-aware representation in SaProt, the class the probe cannot
+recover always sits closer to a benign protein than to any other hazard class. That is what makes §10.4's
+geometric phrasing earned rather than decorative.
+
+**12 of 14 arms rank beta-lactamase lowest**, against a per-arm chance of 1/9, and **13 of 14 have a
+significant positive rank correlation**. The fourteenth, ESM-2 35M, is at rho +0.588 with **p 0.0513**, a
+hair over the line and reported as it came out rather than rounded into the majority.
+
+⚠️ **Two arms put a different class at the bottom, and they are the informative ones.** CLS pooling ranks
+contact-dependent inhibition lowest and SaProt ranks the labelled virulence control lowest. Both still have
+significant positive correlations, so the relationship survives in them while the specific ordering at the
+bottom does not. Note this differs from §9's pattern: the **member**-level margin effect fails on CLS *and*
+max, whereas here max pooling locates the class correctly and only CLS misses. The two effects are not the
+same quantity and should not be quoted as one.
+
+⚠️ **Two honest deflations.** The fourteen arms include one duplicate pair, the canonical run and
+`esm2_650M_mean`, which agree to zero, so the independent count is thirteen. And this is panel **v2**, which
+has one failure class rather than v3's two, because only the canonical arm is embedded for v3. Whether
+`phage_peptidoglycan_hydrolase` is also lowest-margin in other representations is untested and needs
+thirteen more embedding runs.
+
 ## 11. What this does not claim
 
 - **Not a better classifier.** DTVF (ProtT5 + LSTM/CNN) reports AUROC 0.92 on the standard 576/576

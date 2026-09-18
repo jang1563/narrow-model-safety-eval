@@ -1,0 +1,216 @@
+{
+  "panel": "v2",
+  "failure_class": "beta_lactamase",
+  "perms": 20000,
+  "note": "v2 has one failure class, so per-arm chance is 1/9. v3's pair cannot be used here: only the canonical arm is embedded for v3",
+  "distinct_from": "03k_margin_holdout, which tests whether low-margin MEMBERS are recovered less and is already pinned across 14 arms",
+  "arms": {
+    "canonical": {
+      "suffix": "",
+      "dim": 1280,
+      "rho": 0.9400193421607684,
+      "perm_p": 0.00045,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.008538774214684963
+    },
+    "esm2_8M": {
+      "suffix": "_esm2_8M",
+      "dim": 320,
+      "rho": 0.7447763937925935,
+      "perm_p": 0.0127,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.010310151614248753
+    },
+    "esm2_35M": {
+      "suffix": "_esm2_35M",
+      "dim": 480,
+      "rho": 0.5882560647712126,
+      "perm_p": 0.0513,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.01761600375175476
+    },
+    "esm2_150M": {
+      "suffix": "_esm2_150M",
+      "dim": 640,
+      "rho": 0.8645309671165332,
+      "perm_p": 0.0027,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.010122294537723064
+    },
+    "esm2_3B": {
+      "suffix": "_esm2_3B",
+      "dim": 2560,
+      "rho": 0.9492889050691345,
+      "perm_p": 0.00035,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.003549350192770362
+    },
+    "esm2_650M_max": {
+      "suffix": "_esm2_650M_max",
+      "dim": 1280,
+      "rho": 0.6611119160302902,
+      "perm_p": 0.0323,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": false,
+      "failure_margin": -0.00263987691141665
+    },
+    "esm2_650M_cls": {
+      "suffix": "_esm2_650M_cls",
+      "dim": 1280,
+      "rho": 0.6945667492672501,
+      "perm_p": 0.02285,
+      "lowest_margin_class": "contact_dependent_inhibition",
+      "locates_failure": false,
+      "n_classes": 9,
+      "mean_pooled": false,
+      "failure_margin": -0.001422043307684362
+    },
+    "esmc_300M": {
+      "suffix": "_esmc_300M",
+      "dim": 960,
+      "rho": 0.9075950713612995,
+      "perm_p": 0.00105,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.04672916978597641
+    },
+    "esmc_600M": {
+      "suffix": "_esmc_600M",
+      "dim": 1152,
+      "rho": 0.8529805141829194,
+      "perm_p": 0.00285,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.024139145389199257
+    },
+    "esmc_6B": {
+      "suffix": "_esmc_6B",
+      "dim": 2560,
+      "rho": 0.9139076937674137,
+      "perm_p": 0.00035,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.03715800493955612
+    },
+    "esm3_1_4B": {
+      "suffix": "_esm3_1_4B",
+      "dim": 1536,
+      "rho": 0.9574271077563381,
+      "perm_p": 0.0001,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.003843894926831126
+    },
+    "prott5_xl": {
+      "suffix": "_prott5_xl",
+      "dim": 1024,
+      "rho": 0.8306277919354929,
+      "perm_p": 0.0047,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.057498250156641006
+    },
+    "saprot_650M": {
+      "suffix": "_saprot_650M",
+      "dim": 1280,
+      "rho": 0.8284591346681659,
+      "perm_p": 0.00415,
+      "lowest_margin_class": "virulence_associated_non_toxin",
+      "locates_failure": false,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.02503696084022522
+    },
+    "esm2_650M_mean": {
+      "suffix": "_esm2_650M_mean",
+      "dim": 1280,
+      "rho": 0.9400193421607684,
+      "perm_p": 0.00045,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margin": -0.008651243522763252
+    }
+  },
+  "P1": {
+    "arms_locating_failure": [
+      "canonical",
+      "esm2_150M",
+      "esm2_35M",
+      "esm2_3B",
+      "esm2_650M_max",
+      "esm2_650M_mean",
+      "esm2_8M",
+      "esm3_1_4B",
+      "esmc_300M",
+      "esmc_600M",
+      "esmc_6B",
+      "prott5_xl"
+    ],
+    "n_arms": 14,
+    "majority": true
+  },
+  "P2": {
+    "arms_significant": [
+      "canonical",
+      "esm2_150M",
+      "esm2_3B",
+      "esm2_650M_cls",
+      "esm2_650M_max",
+      "esm2_650M_mean",
+      "esm2_8M",
+      "esm3_1_4B",
+      "esmc_300M",
+      "esmc_600M",
+      "esmc_6B",
+      "prott5_xl",
+      "saprot_650M"
+    ],
+    "majority": true
+  },
+  "arms_with_negative_failure_margin": [
+    "canonical",
+    "esm2_150M",
+    "esm2_35M",
+    "esm2_3B",
+    "esm2_650M_cls",
+    "esm2_650M_max",
+    "esm2_650M_mean",
+    "esm2_8M",
+    "esm3_1_4B",
+    "esmc_300M",
+    "esmc_600M",
+    "esmc_6B",
+    "prott5_xl",
+    "saprot_650M"
+  ],
+  "verdict": "SUPPORTED: 12/14 arms rank beta_lactamase as the lowest-margin class and 13/14 have a significant positive rank correlation, so the mechanism is representation-general rather than a property of one model"
+}

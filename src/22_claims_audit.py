@@ -865,6 +865,26 @@ def margin_predicts_new_classes():
             "rho_pre_expansion": d["rho_pre_expansion_classes"],
             "not_calibrated": "NOT CALIBRATED" in d["verdict"]}
 
+
+def margin_across_arms():
+    """§10.6: the class-level margin mechanism across all 14 arms. The 14/14 negative-margin
+    count is what licenses §10.4's geometric phrasing, so it is pinned alongside the two arms
+    that put a different class at the bottom."""
+    d = j("v2/margin_across_arms.json")
+    a = d["arms"]
+    return {"n_arms": len(a),
+            "locate_failure": len(d["P1"]["arms_locating_failure"]),
+            "significant": len(d["P2"]["arms_significant"]),
+            "negative_margin_arms": len(d["arms_with_negative_failure_margin"]),
+            "misses": sorted(k for k, v in a.items() if not v["locates_failure"]),
+            "max_locates": a["esm2_650M_max"]["locates_failure"],
+            "cls_locates": a["esm2_650M_cls"]["locates_failure"],
+            "weakest_rho": min(v["rho"] for v in a.values()),
+            "weakest_p": max(v["perm_p"] for v in a.values()),
+            "duplicate_agrees": abs(a["canonical"]["rho"]
+                                    - a["esm2_650M_mean"]["rho"]) < 1e-12,
+            "supported": d["verdict"].startswith("SUPPORTED")}
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -1142,6 +1162,16 @@ CLAIMS = [
                 and v["rho_pre_expansion"] > 0.85 and v["not_calibrated"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **phage_peptidoglycan_hydrolase** | **−0.0055** | **44%** | **10%** | **+34** |"}, []),
+    ("the class-level margin mechanism holds across all 14 representations",
+     margin_across_arms,
+     lambda v: (v["n_arms"] == 14 and v["negative_margin_arms"] == 14
+                and v["locate_failure"] == 12 and v["significant"] == 13
+                and v["misses"] == ["esm2_650M_cls", "saprot_650M"]
+                and v["max_locates"] and not v["cls_locates"]
+                and v["weakest_rho"] > 0.5 and 0.05 < v["weakest_p"] < 0.06
+                and v["duplicate_agrees"] and v["supported"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| **esm2_650M mean** (canonical) | 1280 | **+0.940** | 0.0004 | beta_lactamase |"}, []),
 ]
 
 
