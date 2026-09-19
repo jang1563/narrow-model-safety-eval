@@ -62,19 +62,34 @@ from sklearn.preprocessing import StandardScaler
 ROOT = Path(__file__).resolve().parent.parent
 V3 = ROOT / "results" / "v3"
 SEQ = ROOT / "data" / "sequences"
-POOL_NPY = V3 / "embeddings_pool_large.npy"
+# 🔴 The canonical 650M arm cannot embed this pool on the development machine. Swap was at
+# 9,045 of 10,240 MB with 67 MB of free RAM, so materialising 2.6 GB of weights stalls at 99%
+# of the load with 78 MB resident and no CPU activity. An earlier hang was misdiagnosed as a
+# network stall and "fixed" with offline mode; the constraint is memory. --model and --tag
+# therefore exist so a small arm can run here while the canonical arm waits for the HPC.
+ARMS = {"esm2_650M": "facebook/esm2_t33_650M_UR50D",
+        "esm2_35M": "facebook/esm2_t12_35M_UR50D",
+        "esm2_8M": "facebook/esm2_t6_8M_UR50D"}
 POOL_FASTA = SEQ / "benign_pool_large.fasta"
 FRAC, SPEC, SEEDS = 0.40, 0.95, 30
 SIZES = [296, 1000, 3000, 8259]
 FAIL_AT = 0.25
 CONTROL_CLASS = "virulence_associated_non_toxin"
-MODEL = "facebook/esm2_t33_650M_UR50D"
 
 
-def embed_pool(batch_size=8):
-    """Embed the pool with the canonical arm, because that is where every published number
-    lives and because the smaller arms have beta-lactamase near the floor already, so a
-    DECLINE could not be measured in them."""
+def pool_npy(tag):
+    return V3 / f"embeddings_pool_large_{tag}.npy"
+
+
+def embed_pool(tag, batch_size=8):
+    """Embed the pool with one arm.
+
+    ⚠️ Which arm can answer what. The canonical 650M arm is where every published number lives
+    and it has headroom in BOTH failing classes on v3 (beta-lactamase 18.6%, phage 10.0%), so
+    it is the only arm that can measure a decline in both. On esm2_35M beta-lactamase is
+    already at 1.4% and on esm2_8M at 0.0%, so in the small arms only the phage class
+    (26.9% and 31.2%) has room to fall. A small-arm run is therefore half the preregistered
+    test and is reported as such."""
     import torch
     from transformers import AutoModel, AutoTokenizer
     sys.path.insert(0, str(ROOT / "src"))
@@ -83,15 +98,16 @@ def embed_pool(batch_size=8):
     dev = ("cuda" if torch.cuda.is_available()
            else "mps" if getattr(torch.backends, "mps", None)
            and torch.backends.mps.is_available() else "cpu")
-    print(f"embedding {len(recs)} pool proteins with {MODEL} on {dev}")
-    tok = AutoTokenizer.from_pretrained(MODEL)
-    model = AutoModel.from_pretrained(MODEL).to(dev).eval()
+    mdl = ARMS[tag]
+    print(f"embedding {len(recs)} pool proteins with {mdl} on {dev}")
+    tok = AutoTokenizer.from_pretrained(mdl)
+    model = AutoModel.from_pretrained(mdl).to(dev).eval()
     X = m02.embed(recs, model, tok, dev, batch_size)
-    np.save(POOL_NPY, X)
-    json.dump({"model": MODEL, "n": int(X.shape[0]), "dim": int(X.shape[1]),
+    np.save(pool_npy(tag), X)
+    json.dump({"model": mdl, "tag": tag, "n": int(X.shape[0]), "dim": int(X.shape[1]),
                "rows": [r[0] for r in recs]},
-              open(V3 / "embedding_manifest_pool_large.json", "w"), indent=2)
-    print(f"wrote {POOL_NPY} {X.shape}")
+              open(V3 / f"embedding_manifest_pool_large_{tag}.json", "w"), indent=2)
+    print(f"wrote {pool_npy(tag)} {X.shape}")
 
 
 def recovery(P, N, hi, tri, seeds=SEEDS):
@@ -111,18 +127,21 @@ def recovery(P, N, hi, tri, seeds=SEEDS):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--embed", action="store_true")
+    ap.add_argument("--arm", default="esm2_650M", choices=sorted(ARMS))
     a = ap.parse_args()
+    tag = a.arm
     if a.embed:
-        embed_pool()
+        embed_pool(tag)
         return
-    if not POOL_NPY.exists():
-        raise SystemExit(f"{POOL_NPY} absent; run with --embed first")
+    if not pool_npy(tag).exists():
+        raise SystemExit(f"{pool_npy(tag)} absent; run with --embed --arm {tag} first")
 
-    man = json.load(open(V3 / "embedding_manifest_v3.json"))
+    suf = "" if tag == "esm2_650M" else f"_{tag}"
+    man = json.load(open(V3 / f"embedding_manifest_v3{suf}.json"))
     mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v3.json"))
-    lomo = json.load(open(V3 / "lomo_results.json"))["leave_one_mechanism_out"]
-    P = np.load(V3 / "embeddings_positive_v3.npy")
-    NP_ = np.load(POOL_NPY)
+    lomo = json.load(open(V3 / f"lomo_results{suf}.json"))["leave_one_mechanism_out"]
+    P = np.load(V3 / f"embeddings_positive_v3{suf}.npy")
+    NP_ = np.load(pool_npy(tag))
     cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
     pcls = np.array([cls[r["acc"]] for r in man["positive_rows"]])
 
@@ -134,7 +153,8 @@ def main():
              and lomo[c]["flagged_95_mean"] < 0.999}
     comparison = max(below, key=below.get)
     targets = failures + [comparison]
-    print(f"pool {NP_.shape}, positives {P.shape}")
+    print(f"arm {tag}: pool {NP_.shape}, positives {P.shape}")
+    measurable = [c for c in lomo if lomo[c]["flagged_95_mean"] >= 0.10]
     print(f"failures {failures}, comparison {comparison}\n")
 
     rng = np.random.default_rng(0)
@@ -184,8 +204,10 @@ def main():
                    "the benign set, so §10.7.1's density reading does not predict the converse")
     print(f"\nverdict: {verdict}")
 
-    dest = V3 / "negative_scaling_curve.json"
-    json.dump({"model": MODEL, "pool_n": int(NP_.shape[0]), "sizes": sizes, "seeds": SEEDS,
+    dest = V3 / f"negative_scaling_curve_{tag}.json"
+    json.dump({"arm": tag, "model": ARMS[tag], "pool_n": int(NP_.shape[0]),
+               "classes_with_headroom_to_decline": [c for c in targets
+                                                    if c in measurable], "sizes": sizes, "seeds": SEEDS,
                "failures": failures, "comparison": comparison,
                "pool_composition_note": ("87% bacterial: the per-organism cap bit hard on "
                                          "eukaryotic Swiss-Prot, so the pool resembles the "
