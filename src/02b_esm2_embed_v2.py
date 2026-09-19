@@ -90,6 +90,14 @@ def main():
     ap.add_argument("--batch_size", type=int, default=8)
     ap.add_argument("--device", default=None)
     ap.add_argument(
+        "--panel",
+        default="v2",
+        choices=["v2", "v3"],
+        help="Panel version. v2 is the frozen 80/154 panel every published number rests "
+        "on; v3 is 149/296. Switches the input FASTA and the output directory together, "
+        "so a v3 embedding cannot land on a v2 filename.",
+    )
+    ap.add_argument(
         "--tag",
         default=None,
         help="Suffix outputs, e.g. esm2_150M. Use to keep several models' "

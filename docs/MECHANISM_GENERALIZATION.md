@@ -1666,9 +1666,21 @@ negatives, which no real order queue is. They are a scale check rather than a fo
   virulence benchmark. The numbers here are on a self-built panel and are **not comparable**; presenting
   them as a win would be wrong.
 - **Not novel on homology control.** Homology-clustered evaluation is established practice.
-- **Not a competence boundary.** §10 was the attempt, and it failed externally.
-- **Not deployment-ready.** This is a 234-protein research panel. Common Mechanism and SecureDNA are
-  running in production; this is not in that category.
+- **Not a competence boundary, and the shape of the failure has changed.** §10.3 is the record of the
+  **member**-level claim being preregistered, frozen and failing on two external panels. The **class**-level
+  version in §10.4 to §10.6 is in better shape and still not a boundary: margin orders mechanism classes by
+  recovery, the ordering transfers to three mechanisms it was not fit on (§10.5) and holds in fourteen
+  representations (§10.6), but it **mis-states the miss rate by 34 points on the class it exists to flag**
+  and errs optimistic on every out-of-sample class. It also has **no external test**, because every class in
+  both external panels is already in v2, so they contain new members of known mechanisms rather than new
+  mechanisms. Read it as a triage signal for deciding which mechanism families need their own validation.
+- **Not deployment-ready, and §10.8 says how far off.** These are research panels, 234 proteins in v2 and
+  445 in v3. Common Mechanism and SecureDNA are running in production; this is not in that category. The
+  quantitative version: the threshold is a quantile of held-out negatives, so **every specificity above
+  0.9915 is extrapolation on this panel**, and calibrating a one-in-ten-thousand false-positive budget would
+  need a negative set roughly **850 times** larger. At the strictest budget that can be calibrated, ten
+  thousand screened sequences at a one-in-a-thousand hazard rate produce 175 alerts of which about five are
+  real.
 - **Not evidence that hazard is what is being detected.** See the provenance control in §2.
 - **Not a test of generalisation to functions no model has seen.** The held-out class is removed from the
   probe's training, not from the foundation model's pretraining, and every class here is in the public
@@ -1678,9 +1690,34 @@ negatives, which no real order queue is. They are a scale check rather than a fo
 
 ## 12. Reproducing
 
+Two panels live side by side. **v2 is frozen**: every number outside §2.5, §10.4 to §10.8 and the §2.4.1
+comparison is computed on it, and it must stay reproducible. **v3** adds three non-animal-target classes.
+`02b`, `03b`, `03s` and `03w` take `--panel`, which switches the input FASTA, the annotation files and the
+output directory together, so a v3 result can never land on a v2 filename.
+
 ```bash
-# panel and annotations are in the repository; embeddings are regenerated
+# v2, the frozen panel: all fourteen arms and every section up to §10.3
 PROJECT_DIR=$PWD PYTHON_BIN=path/to/python sbatch slurm/expanded_panel_full_sweep.sh
+
+# v3, built from UniProt with the panel's own admission rule. Dry run first: it writes a
+# staging file and touches nothing. --from-stage then builds v3 from the records reviewed.
+python src/26_panel_growth_yield.py                      # which families can supply a class
+python src/27_expand_nonanimal_classes.py                # dry run, screens and stages
+python src/27_expand_nonanimal_classes.py --from-stage    # writes the v3 file set
+python src/02b_esm2_embed_v2.py --panel v3               # v3 embeddings
+python src/03b_leave_one_mechanism_out.py --panel v3     # §2.5's recovery table
+
+# the margin line of work, §10.4 to §10.8
+python src/28_second_failure_class.py --panel v3          # margin locates both failures
+python src/29_margin_predicts_new_classes.py              # out-of-sample ordering
+python src/30_margin_across_arms.py                       # all 14 arms, on v2
+python src/31_margin_causal_test.py --panel v3            # causal, and how small
+python src/33_margin_dose_response.py --panel v3          # dose-response
+python src/32_deployment_operating_points.py --panel v3   # queue volume and the FP ceiling
+
+# seed stability, after two published numbers turned out to be 5-seed means
+python src/03v_lomo_seed_stability.py
+python src/03x_seed_stability_all_arms.py
 
 # every headline claim, recomputed from its artifact and matched to the documents
 python src/22_claims_audit.py
