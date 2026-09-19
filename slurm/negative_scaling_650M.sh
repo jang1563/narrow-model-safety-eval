@@ -34,18 +34,53 @@ PROJECT_DIR="${PROJECT_DIR:?set PROJECT_DIR}"
 PY="${PYTHON_BIN:?set PYTHON_BIN}"
 cd "$PROJECT_DIR"; mkdir -p logs
 
+# Point at the shared scratch model cache, the same one slurm/esm2_embed.sh uses. Without this,
+# transformers defaults to $HOME/.cache/huggingface, which would re-download ESM-2 650M (2.5 GB)
+# onto the home filesystem even though scratch already holds it.
+export HF_HOME="${HF_HOME:-/athena/masonlab/scratch/users/jak4013/narrow_model_safety_eval/hf_cache}"
+export TRANSFORMERS_CACHE="$HF_HOME"
+mkdir -p "$HF_HOME"
+echo "HF_HOME=$HF_HOME"
+
 fail=0
 step() {
   echo; echo "=== $* ==="
   if ! "$@"; then echo "STEP FAILED: $*"; fail=$((fail+1)); fi
 }
 
-# The pool and the v3 panel must both be present. A missing pool is a setup error rather
-# than something to work around: 34 builds it from UniProt and is not a GPU job.
+# Only GIT-TRACKED inputs are preconditions. An earlier version of this list also required
+# results/v3/embeddings_positive_v3.npy, which is gitignored as a regenerable artifact, so a
+# fresh clone would have failed the check immediately. Embeddings are produced below, not
+# required above.
 for f in data/sequences/benign_pool_large.fasta data/sequences/toxins_positive_v3.fasta \
-         results/v3/embeddings_positive_v3.npy results/v3/lomo_results.json; do
+         data/sequences/benign_negatives_v3.fasta \
+         data/annotations/mechanism_classes_v3.json results/v3/lomo_results.json; do
   [ -s "$f" ] || { echo "MISSING REQUIRED INPUT: $f"; exit 2; }
 done
+
+# The v3 panel's own embeddings, which a fresh clone does not have.
+step "$PY" src/02b_esm2_embed_v2.py --panel v3
+
+# ⚠️ Device reproducibility, checked rather than assumed. results/v3/lomo_results.json is
+# committed and was computed from MPS embeddings on a laptop; this partition is CUDA. Rather
+# than silently overwriting a published artifact with a slightly different one, the committed
+# file is preserved and the CUDA recomputation is written beside it for comparison. Any
+# difference is a float-precision difference between devices, not a finding, and the published
+# numbers stay the ones the audit pins.
+cp results/v3/lomo_results.json results/v3/lomo_results.committed_mps.json
+step "$PY" src/03b_leave_one_mechanism_out.py --panel v3
+mv results/v3/lomo_results.json results/v3/lomo_results.cuda650M.json
+mv results/v3/lomo_results.committed_mps.json results/v3/lomo_results.json
+echo "--- per-class MPS vs CUDA difference, recovery at 95% specificity ---"
+"$PY" - <<'PYCHECK'
+import json
+a = json.load(open("results/v3/lomo_results.json"))["leave_one_mechanism_out"]
+b = json.load(open("results/v3/lomo_results.cuda650M.json"))["leave_one_mechanism_out"]
+for c in sorted(a):
+    d = (b[c]["flagged_95_mean"] - a[c]["flagged_95_mean"]) * 100
+    flag = "  <-- differs by more than a point" if abs(d) > 1 else ""
+    print(f"  {c:<34}{a[c]['flagged_95_mean']*100:6.1f}% -> {b[c]['flagged_95_mean']*100:6.1f}%  ({d:+.1f}){flag}")
+PYCHECK
 
 step "$PY" src/35_negative_scaling_curve.py --embed --arm esm2_650M
 step "$PY" src/35_negative_scaling_curve.py --arm esm2_650M
