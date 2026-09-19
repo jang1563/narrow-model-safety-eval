@@ -107,6 +107,78 @@ not contain.
 
 ---
 
+### 1.1b-bis 🔴 What a full read of CRC-Screen changes, 2026-09-18
+
+The entry above was written from the abstract. Reading the paper changes two things and they run in
+opposite directions.
+
+**Against this project.** CRC-Screen's abstract already states the conclusion `§10.8` reaches:
+*"The binding constraint on certifiable DNA-synthesis screening is calibration data, not algorithms."*
+It quantifies it too: the CRC slack floor `1/(n_cal + 1)` caps the certifiable miss rate at **1.77%** on
+its 200-hazard subsample, and reaching a procurement-grade α of 10⁻³ needs an **18× larger calibration
+set**, which it says the full reviewed KW-0800 corpus can supply. So "the data is the bottleneck, not the
+model" is **published**, and `§10.8` must be framed as an independent measurement of the same thing on the
+**negative** side (quantile resolution for a specificity threshold, 850× for a 1-in-10,000 FPR) rather than
+as a new insight.
+
+**For this project, three things the full text makes concrete.**
+
+1. 🔑 **Its discrimination is dominated by an LLM reading the annotation text, not the sequence.** The
+   signal-by-signal table gives homology-only at **100% FPR**, LLM-panel-only at **1.75%**, embedding-only
+   at **6.85%**, and LLM+embedding at **0%**. The five-LLM judge panel scores *the order's public
+   annotation*. A screen whose main signal is the customer's own description of what they ordered is a
+   different instrument from a probe on frozen sequence embeddings, and the paper puts adversarial inputs
+   **out of scope** at exactly that point: *"An adversary designing a synthesis order to evade the screener
+   would target the LLM-panel (through annotation phrasing)."*
+2. 🔑 **Its folds are animal-venom families.** The ten held-out families named include Theraphosidae,
+   Sicariidae, Viperinae, Actiniidae and Lycosidae: tarantulas, recluse spiders, vipers, sea anemones, wolf
+   spiders. This project's panel is **74 of 80 bacterial producers**. The two panels slice hazard space
+   almost disjointly, which makes the taxonomic-versus-mechanism distinction concrete rather than rhetorical.
+3. ⚠️ **Its own limitations are the methodological opening.** Quoted: *"We evaluate on a 200-hazard
+   subsample with n_cal ≈ 55 per fold and a **single random seed**"*, per-fold FNR of zero on 5 to 29 test
+   hazards *"carries wide Wilson confidence intervals"*, and the TV term is *"a coarse approximation of the
+   residual-swap quantity, **not an upper bound**, and the slack we report could be larger or smaller than
+   the exact bound."* A certificate whose slack term is not a bound is not a certificate. This project's
+   30-seed protocol and its own discovery that its published 5-seed numbers were unstable
+   (`docs/DATA_CORRECTIONS.md`, fifth entry) are the relevant contrast.
+
+---
+
+### 1.1b-ter 🔴 The paper that actually solves this project's n problem, and what it leaves open
+
+**"Interpretable enzyme function prediction via sparse autoencoder features of ESMC across the microbial
+protein universe"**, [arXiv 2606.12209](https://arxiv.org/abs/2606.12209), June 2026, q-bio.QM, no venue yet.
+
+**4,868 microbial Swiss-Prot enzymes across 161 EC3 subclasses**, ESM-C 6B with a 16,384-dimension sparse
+autoencoder. Its **leave-one-EC3-class-out (LOCO)** protocol trains an EC1 superclass classifier on all
+subclasses but one and asks whether the held-out class's EC1 is recovered: **47.7% across 60 held-out
+classes**, 3.3× the 14.3% random baseline and 1.79× a 3-mer baseline.
+
+🔑 **This is the same protocol shape as `03b` at fourteen times the class count, and it gets there by using
+an external ontology instead of hand curation.** That is the direct answer to this project's binding
+limitation: every headline statistic here has an effective n of eleven to twelve classes, and a reviewer
+will say so. EC numbers, Pfam clans or GO terms supply the class axis from a published standard, which also
+removes the objection that the classes were defined by the author.
+
+⚠️ **State the remaining gap at its narrowest true width.** That paper **does** report per-class variation
+and explains it: hydrolases recover at **68.3%** when held out, isomerases at **22.6%** and ligases at
+**28.7%**, attributed to hydrolases having *"well-defined catalytic machinery (nucleophilic elbow, oxyanion
+hole)"* while isomerases and ligases are defined by the type of transformation. So **"nobody reports
+per-class variation" is false.** What is absent there is a quantity **computable before the class is held
+out** that predicts the outcome, validated out of sample and across representations, with a causal test of
+whether manipulating it repairs the failure. It reports averages plus a narrative explanation; it uses no
+nearest-neighbour or margin statistic.
+
+🔑 **And there is a substantive scientific hook in the comparison, not just a positioning one.** Hydrolases
+are the **easiest** class to place functionally in that paper and the two classes this project cannot flag
+are both hydrolases: beta-lactamase cleaves a beta-lactam ring, phage peptidoglycan hydrolases cleave
+peptidoglycan. Those are not in tension. The same ubiquity of hydrolase catalytic machinery that makes the
+family easy to *recognise* is what puts its members close to benign proteins and therefore hard to *flag*,
+which is exactly what margin measures. `§10.7`'s dose-response, where the effect keeps growing as more
+benign neighbours are removed, is the density that ubiquity implies.
+
+---
+
 ### 1.1c DNAS-Bench (July 2026) — nucleic-acid screening benchmark, the natural target if this extends to DNA
 
 [bioRxiv 2026.07.06.736904](https://www.biorxiv.org/content/10.64898/2026.07.06.736904v1.full). A
