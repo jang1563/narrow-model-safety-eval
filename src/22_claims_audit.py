@@ -966,6 +966,34 @@ def margin_dose_response():
                                       / d["training_negatives_per_fold"]),
             "scaling": d["verdict"].startswith("SCALING")}
 
+
+def v3_margin_across_arms():
+    """§10.6.1: the same across-arms test on v3, where two failing classes make the bottom-k
+    question much stricter. Pinned with BOTH halves: what survives in 3/3 arms and the fact
+    that the exact bottom-two holds in only one."""
+    d = j("v3/margin_across_arms.json")
+    a = d["arms"]
+    lom = {"canonical": j("v3/lomo_results.json"),
+           "esm2_35M": j("v3/lomo_results_esm2_35M.json"),
+           "esm2_8M": j("v3/lomo_results_esm2_8M.json")}
+    rec = {k: v["leave_one_mechanism_out"] for k, v in lom.items()}
+    return {"n_arms": len(a), "k": d["k"], "chance": d["chance_per_arm"],
+            "failures": sorted(d["failure_classes"]),
+            "locate": len(d["P1"]["arms_locating_failure"]),
+            "which_locates": d["P1"]["arms_locating_failure"],
+            "significant": len(d["P2"]["arms_significant"]),
+            "all_negative": len(d["arms_with_all_failure_margins_negative"]),
+            "beta_lowest_everywhere": all(v["lowest_margin_class"] == "beta_lactamase"
+                                          for v in a.values()),
+            "min_rho": min(v["rho"] for v in a.values()),
+            "displacer": sorted({c for v in a.values() if not v["locates_failure"]
+                                 for c in v["bottom_k"]}
+                                - set(d["failure_classes"])),
+            "beta_rec_falls": [rec[k]["beta_lactamase"]["flagged_95_mean"]
+                               for k in ("canonical", "esm2_35M", "esm2_8M")],
+            "phage_rec_rises": [rec[k]["phage_peptidoglycan_hydrolase"]["flagged_95_mean"]
+                                for k in ("canonical", "esm2_35M", "esm2_8M")]}
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -1299,6 +1327,19 @@ CLAIMS = [
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **K=80** | **+16.6** [+13.6, +19.6] | **+20.7** [+15.6, +25.8] | "
       "**+2.8** [−0.7, +6.3] |"}, []),
+    ("on v3 the across-arms test is stricter and comes back partial", v3_margin_across_arms,
+     lambda v: (v["n_arms"] == 3 and v["k"] == 2
+                and abs(v["chance"] - 1 / 66) < 1e-9
+                and v["failures"] == ["beta_lactamase", "phage_peptidoglycan_hydrolase"]
+                and v["all_negative"] == 3 and v["significant"] == 3
+                and v["beta_lowest_everywhere"] and v["min_rho"] > 0.75
+                and v["locate"] == 1 and v["which_locates"] == ["canonical"]
+                and v["displacer"] == ["virulence_associated_non_toxin"]
+                and v["beta_rec_falls"] == sorted(v["beta_rec_falls"], reverse=True)
+                and v["phage_rec_rises"] == sorted(v["phage_rec_rises"])),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| **canonical 650M** | 1280 | **+0.894** | 0.0002 | −0.0082 / 18.6% | "
+      "−0.0055 / 10.0% | **yes** |"}, []),
 ]
 
 

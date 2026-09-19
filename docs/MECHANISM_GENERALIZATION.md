@@ -1505,6 +1505,48 @@ has one failure class rather than v3's two, because only the canonical arm is em
 `phage_peptidoglycan_hydrolase` is also lowest-margin in other representations is untested and needs
 thirteen more embedding runs.
 
+#### 10.6.1 🔴 On v3 the same test is stricter, and it comes back PARTIAL
+
+`src/30_margin_across_arms.py --panel v3`. §10.6 asked whether margin locates the **one** failing
+class on v2, where the bottom-1 of nine has a per-arm chance of 1/9. v3 has **two** failing classes, so
+the test becomes whether the bottom-**two** of twelve are exactly those two, and the chance per arm falls
+to **1/66**. That is a much stricter question and the answer is not as clean.
+
+Only three arms are embedded for v3. The canonical 650M arm plus 8M and 35M; 150M, 3B and the ESM-C
+family need the GPU partition (`slurm/negative_scaling_650M.sh`), because the development machine ran out
+of memory rather than patience.
+
+| arm | dim | rho | perm p | beta-lactamase margin / recovery | phage margin / recovery | bottom-2 = the two failures |
+|---|---|---|---|---|---|---|
+| **canonical 650M** | 1280 | **+0.894** | 0.0002 | −0.0082 / 18.6% | −0.0055 / 10.0% | **yes** |
+| esm2_35M | 480 | +0.796 | 0.0018 | −0.0172 / 1.4% | −0.0021 / 26.9% | no |
+| esm2_8M | 320 | +0.846 | 0.0005 | −0.0278 / 0.0% | −0.0035 / 31.2% | no |
+
+**What holds in all three.** Every arm has a **negative margin for both failing classes**, every arm has a
+significant positive margin-against-recovery correlation (+0.796 to +0.894, p ≤ 0.0018), and
+**beta-lactamase is the single lowest-margin class in all three**. So §10.6's central claim, that the
+failing class sits closer to benign than to any hazard class the probe trained on, survives the move to a
+panel with two failures.
+
+🔴 **What does not hold is the exact bottom-two, and it holds in one arm of three.** In 8M and 35M the
+**labelled virulence control** displaces the phage class from second-lowest. That is the same shape as
+§10.6's CLS and SaProt exceptions: the ordering and the negative-margin property are
+representation-general, the identity of the bottom-k is not.
+
+⚠️ **A within-class check across arms, which agrees for one failure and not the other.** Reading down each
+column: beta-lactamase's margin becomes more negative as the model shrinks (−0.0082, −0.0172, −0.0278) and
+its recovery falls with it (18.6%, 1.4%, 0.0%), so the order agrees at every pair. The phage class does
+not: its margins run −0.0055, −0.0021, −0.0035 against recoveries of 10.0%, 26.9% and 31.2%, and 35M has
+the least negative margin without the highest recovery. Three points per class is descriptive either way,
+and reporting only the class that cooperates would be the error this document keeps logging.
+
+🔑 **One thing worth taking from the table on its own terms.** Which class is *worst* depends on the arm.
+Beta-lactamase goes 18.6% → 1.4% → 0.0% as the model shrinks while the phage class goes the other way,
+10.0% → 26.9% → 31.2%. So "the hardest mechanism for a hazard screen" is not a property of the mechanism
+alone. §10.5's triage claim is about **ordering classes within one representation**, and this is the
+boundary of it: the ordering is stable enough to be useful inside an arm and does not transfer as a
+ranked list between arms of very different capacity.
+
 ### 10.7 🔴 Benign proximity is a contributing cause and closes a tenth of the gap
 
 `src/31_margin_causal_test.py`. §10.4 to §10.6 are correlational: margin ranks the failures lowest, tracks
