@@ -35,7 +35,12 @@ import torch
 from transformers import AutoModel, AutoTokenizer
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "results" / "v2"
+# The panel version is a runtime choice, not a constant. It was hardcoded to v2, and
+# with the v3 expansion that meant the only way to embed v3 was to edit the v2 FASTA in
+# place, which is exactly what src/27 refuses to do and what would make every published
+# number unreproducible. --panel switches the input FASTA and the output directory
+# together, so a v3 embedding can never land on a v2 filename.
+RES_ROOT = ROOT / "results"
 MAX_LEN = 1022
 
 
@@ -106,11 +111,14 @@ def main():
         else "cpu"
     )
     tag = f"_{a.dry_run_tag}" if a.dry_run_tag else ""
+    pv = a.panel
+    OUT = RES_ROOT / pv
     OUT.mkdir(parents=True, exist_ok=True)
 
-    pos = read_fasta(ROOT / "data/sequences/toxins_positive_v2.fasta")
-    neg = read_fasta(ROOT / "data/sequences/benign_negatives_v2.fasta")
-    print(f"model={a.model}  device={dev}  positives={len(pos)}  negatives={len(neg)}")
+    pos = read_fasta(ROOT / f"data/sequences/toxins_positive_{pv}.fasta")
+    neg = read_fasta(ROOT / f"data/sequences/benign_negatives_{pv}.fasta")
+    print(f"panel={pv}  model={a.model}  device={dev}  "
+          f"positives={len(pos)}  negatives={len(neg)}")
     assert len({r[0] for r in pos}) == len(pos), "duplicate accession in positives"
     assert len({r[0] for r in neg}) == len(neg), "duplicate accession in negatives"
     assert not ({r[0] for r in pos} & {r[0] for r in neg}), "accession present in BOTH label sets"
@@ -124,8 +132,8 @@ def main():
     N = embed(neg, model, tok, dev, a.batch_size)
     assert P.shape[0] == len(pos) and N.shape[0] == len(neg), "row count mismatch"
 
-    np.save(OUT / f"embeddings_positive_v2{tag}.npy", P)
-    np.save(OUT / f"embeddings_negative_v2{tag}.npy", N)
+    np.save(OUT / f"embeddings_positive_{pv}{tag}.npy", P)
+    np.save(OUT / f"embeddings_negative_{pv}{tag}.npy", N)
 
     man = {
         "model": a.model,
@@ -155,7 +163,7 @@ def main():
             for i, r in enumerate(neg)
         ],
     }
-    json.dump(man, open(OUT / f"embedding_manifest_v2{tag}.json", "w"), indent=2)
+    json.dump(man, open(OUT / f"embedding_manifest_{pv}{tag}.json", "w"), indent=2)
     print(f"wrote {P.shape} and {N.shape} to {OUT}")
 
 

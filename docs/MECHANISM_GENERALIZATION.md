@@ -1543,6 +1543,10 @@ representations. Removing the proximity repairs a tenth of it. So benign proximi
 correlation" has been corrected accordingly. An operator can use margin to decide which mechanism families
 to distrust. An engineer cannot fix those families by curating the negative set.
 
+🟢 **The open question in this section is now answered: see §10.7.1.** The effect keeps growing with how
+many benign neighbours are removed rather than saturating, so the failure comes from a dense region rather
+than a few specific proteins.
+
 ⚠️ **Two analysis changes were made after seeing a result, and both improved it. Recording that is not
 optional.** The first run pooled 30 seeds × 25 draws into one null and compared the 30-value targeted mean
 against its 95th percentile, which returned REFUTED. That pooled null carries fold-to-fold variance the
@@ -1553,6 +1557,40 @@ has a negative margin and recovers at 37.5%, and its −8.5-point result was bri
 the mechanism. Failures are now defined by **recovery below 25%**, which is the property the mechanism is
 meant to explain. Both fixes are defensible without reference to their outcome, and both outcomes moved in
 the author's favour, so the sequence is stated here rather than only the final numbers.
+
+#### 10.7.1 🔑 The dose-response answers §10.7's open question: the region is dense, so curation cannot fix it
+
+`src/33_margin_dose_response.py`. §10.7 fixed K at 10 and left the shape of the curve as its standing
+caveat, because the two readings differ operationally: an effect that saturates means a small, nameable set
+of benign proteins carries the failure and a curator could handle them, while an effect that keeps growing
+means the class sits inside a dense benign region and no curation of the negative set reaches it.
+
+| removed | phage_peptidoglycan_hydrolase | beta_lactamase | rip_rrna_glycosidase (recovered, comparison) |
+|---|---|---|---|
+| K=5 | +5.2 [+3.7, +6.6] | +6.0 [+2.8, +9.2] | −0.4 [−3.4, +2.5] |
+| K=10 | +7.1 [+5.4, +8.7] | +8.8 [+5.0, +12.6] | +3.6 [+1.4, +5.7] |
+| K=20 | +14.3 [+11.8, +16.9] | +13.1 [+8.3, +18.0] | **+5.1** [+3.3, +6.9] |
+| K=40 | +14.9 [+12.2, +17.6] | +14.0 [+8.3, +19.7] | +5.0 [+3.3, +6.6] |
+| **K=80** | **+16.6** [+13.6, +19.6] | **+20.7** [+15.6, +25.8] | **+2.8** [−0.7, +6.3] |
+
+🔑 **The comparison class is what makes the contrast readable.** Both failing classes climb monotonically to
+the largest dose. The recovered class **peaks at K=20 and falls back to +2.8 by K=80**, with an interval that
+then includes zero, which is the boundary degrading once too many negatives are gone. So the failures are not
+simply benefiting from a looser boundary: whatever they gain keeps coming from the specific benign proteins
+nearest them, and there are many of those.
+
+**And the dose that gets furthest is not a dose anyone can apply.** K=80 removes 80 of 178 training
+negatives, keeping **55%**. At that dose beta-lactamase reaches **41.9%** and the phage class **27.8%**,
+closing **26%** and **19%** of the distance to a fully recovered class. Removing nearly half the benign
+training set buys a quarter of the gap, and removing benign controls is precisely what a screen cannot do,
+since they are what its false-positive rate is measured against.
+
+🔑 **So §10.7's answer sharpens rather than changes.** Benign proximity is causal, it scales with how much of
+the neighbourhood is removed, and it is still not most of the failure. The operational reading is the useful
+one: **margin identifies mechanism families a screen will miss, and curating the negative set is not the
+repair.** §10.8's finding that the panel is 850 times too small to calibrate a deployment threshold and this
+one point the same way: the negative set is the binding constraint on this kind of screen, and it binds in
+both directions at once.
 
 ### 10.8 🔑 The triage survives a tightening budget, and the panel cannot validate a deployable one
 

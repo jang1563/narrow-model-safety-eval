@@ -1,0 +1,215 @@
+{
+  "panel": "v3",
+  "K_grid": [
+    5,
+    10,
+    20,
+    40,
+    80
+  ],
+  "seeds": 30,
+  "draws_per_seed": 25,
+  "training_negatives_per_fold": 178,
+  "failing_classes": [
+    "phage_peptidoglycan_hydrolase",
+    "beta_lactamase"
+  ],
+  "comparison_class": "rip_rrna_glycosidase",
+  "curves": {
+    "phage_peptidoglycan_hydrolase": {
+      "5": {
+        "standard": 0.121875,
+        "nearest": 0.17395833333333333,
+        "random_mean": 0.12233333333333334,
+        "attributable_pts": 5.1625,
+        "ci95": [
+          3.7273083321161526,
+          6.597691667883847
+        ],
+        "mean_within_seed_percentile": 0.7893333333333333,
+        "training_negatives_left": 173
+      },
+      "10": {
+        "standard": 0.121875,
+        "nearest": 0.19166666666666668,
+        "random_mean": 0.12104166666666667,
+        "attributable_pts": 7.062499999999998,
+        "ci95": [
+          5.427038383735079,
+          8.697961616264918
+        ],
+        "mean_within_seed_percentile": 0.8413333333333333,
+        "training_negatives_left": 168
+      },
+      "20": {
+        "standard": 0.121875,
+        "nearest": 0.265625,
+        "random_mean": 0.12225,
+        "attributable_pts": 14.337499999999997,
+        "ci95": [
+          11.768773649044732,
+          16.906226350955265
+        ],
+        "mean_within_seed_percentile": 0.9426666666666667,
+        "training_negatives_left": 158
+      },
+      "40": {
+        "standard": 0.121875,
+        "nearest": 0.271875,
+        "random_mean": 0.12266666666666666,
+        "attributable_pts": 14.92083333333333,
+        "ci95": [
+          12.244600515220657,
+          17.597066151446004
+        ],
+        "mean_within_seed_percentile": 0.9199999999999999,
+        "training_negatives_left": 138
+      },
+      "80": {
+        "standard": 0.121875,
+        "nearest": 0.278125,
+        "random_mean": 0.112,
+        "attributable_pts": 16.612499999999997,
+        "ci95": [
+          13.636501921985694,
+          19.5884980780143
+        ],
+        "mean_within_seed_percentile": 0.9053333333333333,
+        "training_negatives_left": 98
+      }
+    },
+    "beta_lactamase": {
+      "5": {
+        "standard": 0.2119047619047619,
+        "nearest": 0.2761904761904762,
+        "random_mean": 0.21619047619047618,
+        "attributable_pts": 6.000000000000001,
+        "ci95": [
+          2.8115195850810326,
+          9.18848041491897
+        ],
+        "mean_within_seed_percentile": 0.5599999999999999,
+        "training_negatives_left": 173
+      },
+      "10": {
+        "standard": 0.2119047619047619,
+        "nearest": 0.30476190476190473,
+        "random_mean": 0.21695238095238092,
+        "attributable_pts": 8.780952380952382,
+        "ci95": [
+          4.989408039866357,
+          12.572496722038407
+        ],
+        "mean_within_seed_percentile": 0.6626666666666667,
+        "training_negatives_left": 168
+      },
+      "20": {
+        "standard": 0.2119047619047619,
+        "nearest": 0.3499999999999999,
+        "random_mean": 0.21857142857142856,
+        "attributable_pts": 13.142857142857142,
+        "ci95": [
+          8.264583470440998,
+          18.02113081527329
+        ],
+        "mean_within_seed_percentile": 0.6866666666666666,
+        "training_negatives_left": 158
+      },
+      "40": {
+        "standard": 0.2119047619047619,
+        "nearest": 0.36190476190476184,
+        "random_mean": 0.2215238095238095,
+        "attributable_pts": 14.038095238095238,
+        "ci95": [
+          8.347127121894193,
+          19.729063354296283
+        ],
+        "mean_within_seed_percentile": 0.7320000000000001,
+        "training_negatives_left": 138
+      },
+      "80": {
+        "standard": 0.2119047619047619,
+        "nearest": 0.4190476190476191,
+        "random_mean": 0.21247619047619046,
+        "attributable_pts": 20.65714285714285,
+        "ci95": [
+          15.557550842810365,
+          25.756734871475338
+        ],
+        "mean_within_seed_percentile": 0.8026666666666666,
+        "training_negatives_left": 98
+      }
+    },
+    "rip_rrna_glycosidase": {
+      "5": {
+        "standard": 0.9476190476190477,
+        "nearest": 0.9476190476190477,
+        "random_mean": 0.952,
+        "attributable_pts": -0.43809523809523854,
+        "ci95": [
+          -3.3723327580916673,
+          2.4961422819011903
+        ],
+        "mean_within_seed_percentile": 0.17333333333333334,
+        "training_negatives_left": 173
+      },
+      "10": {
+        "standard": 0.9476190476190477,
+        "nearest": 0.9857142857142858,
+        "random_mean": 0.9500952380952381,
+        "attributable_pts": 3.561904761904759,
+        "ci95": [
+          1.4067499293021404,
+          5.717059594507378
+        ],
+        "mean_within_seed_percentile": 0.2826666666666667,
+        "training_negatives_left": 168
+      },
+      "20": {
+        "standard": 0.9476190476190477,
+        "nearest": 1.0,
+        "random_mean": 0.9491428571428572,
+        "attributable_pts": 5.085714285714284,
+        "ci95": [
+          3.282685008438774,
+          6.888743562989793
+        ],
+        "mean_within_seed_percentile": 0.35333333333333344,
+        "training_negatives_left": 158
+      },
+      "40": {
+        "standard": 0.9476190476190477,
+        "nearest": 1.0,
+        "random_mean": 0.9502857142857144,
+        "attributable_pts": 4.971428571428568,
+        "ci95": [
+          3.2936614729367624,
+          6.649195669920373
+        ],
+        "mean_within_seed_percentile": 0.328,
+        "training_negatives_left": 138
+      },
+      "80": {
+        "standard": 0.9476190476190477,
+        "nearest": 0.9714285714285714,
+        "random_mean": 0.9430476190476189,
+        "attributable_pts": 2.8380952380952342,
+        "ci95": [
+          -0.6633201385555774,
+          6.339510614746045
+        ],
+        "mean_within_seed_percentile": 0.3106666666666666,
+        "training_negatives_left": 98
+      }
+    }
+  },
+  "k10_to_k40_change_pts": {
+    "phage_peptidoglycan_hydrolase": 7.8583333333333325,
+    "beta_lactamase": 5.257142857142856
+  },
+  "peak_K": {
+    "phage_peptidoglycan_hydrolase": 80,
+    "beta_lactamase": 80
+  },
+  "verdict": "SCALING: the effect grows by more than 5 points from K=10 to K=40 for every failing class, so the class sits inside a dense benign region and curating the negative set cannot fix it"
+}

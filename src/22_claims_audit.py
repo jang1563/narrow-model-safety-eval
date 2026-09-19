@@ -932,6 +932,39 @@ def deployment_operating_points():
             "clostridial_at_strict": d["catch_by_spec"][strict]["clostridial_neurotoxin"],
             "cdi_at_strict": d["catch_by_spec"][strict]["contact_dependent_inhibition"]}
 
+
+def margin_dose_response():
+    """§10.7.1: the attributable effect grows monotonically with how many benign neighbours are
+    removed for both failing classes, while the recovered comparison class peaks and falls back.
+    Pinned with the fraction of the gap the largest dose closes, because a growing effect that
+    still leaves three quarters of the gap is the actual finding."""
+    d = j("v3/margin_dose_response.json")
+    c = d["curves"]
+    ks = [str(k) for k in d["K_grid"]]
+    fails = d["failing_classes"]
+    comp = d["comparison_class"]
+
+    def mono(cl):
+        v = [c[cl][k]["attributable_pts"] for k in ks]
+        return all(b >= a - 0.5 for a, b in zip(v, v[1:]))
+    closed = {}
+    for cl in fails:
+        top = c[cl][ks[-1]]
+        gap = (1.0 - top["standard"]) * 100
+        closed[cl] = top["attributable_pts"] / gap
+    return {"k_grid": d["K_grid"], "failures": sorted(fails),
+            "both_monotone": all(mono(cl) for cl in fails),
+            "comp_peaks_mid": max(ks, key=lambda k: c[comp][k]["attributable_pts"]) != ks[-1],
+            "comp_top_ci_includes_zero": c[comp][ks[-1]]["ci95"][0] < 0,
+            "fail_ci_lo_positive_at_top": all(c[cl][ks[-1]]["ci95"][0] > 0 for cl in fails),
+            "beta_top_pts": c["beta_lactamase"][ks[-1]]["attributable_pts"],
+            "phage_top_pts": c["phage_peptidoglycan_hydrolase"][ks[-1]]["attributable_pts"],
+            "beta_frac_closed": closed["beta_lactamase"],
+            "phage_frac_closed": closed["phage_peptidoglycan_hydrolase"],
+            "train_neg_kept_at_top": (c["beta_lactamase"][ks[-1]]["training_negatives_left"]
+                                      / d["training_negatives_per_fold"]),
+            "scaling": d["verdict"].startswith("SCALING")}
+
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
 #  contain}, strings no public document may contain any more)
@@ -1250,6 +1283,20 @@ CLAIMS = [
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **0.99** | **55%** | **1.7%** | **223 (25% real)** | **175 (3% real)** | "
       "**170 (0% real)** |"}, []),
+    ("the benign-proximity effect scales with dose and still leaves most of the gap",
+     margin_dose_response,
+     lambda v: (v["k_grid"] == [5, 10, 20, 40, 80]
+                and v["failures"] == ["beta_lactamase", "phage_peptidoglycan_hydrolase"]
+                and v["both_monotone"] and v["scaling"]
+                and v["comp_peaks_mid"] and v["comp_top_ci_includes_zero"]
+                and v["fail_ci_lo_positive_at_top"]
+                and v["beta_top_pts"] > 18 and v["phage_top_pts"] > 15
+                and 0.2 < v["beta_frac_closed"] < 0.35
+                and 0.15 < v["phage_frac_closed"] < 0.25
+                and 0.5 < v["train_neg_kept_at_top"] < 0.6),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| **K=80** | **+16.6** [+13.6, +19.6] | **+20.7** [+15.6, +25.8] | "
+      "**+2.8** [−0.7, +6.3] |"}, []),
 ]
 
 
