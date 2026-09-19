@@ -58,6 +58,86 @@ Foldseek prerequisite.
 
 ---
 
+### 1.1b 🔴 CRC-Screen (April 2026) — **the closest prior work on the LOMO protocol itself, found 2026-09-18**
+
+| | |
+|---|---|
+| **arXiv** | [2605.00074](https://arxiv.org/abs/2605.00074) |
+| **Venue** | 6th Muslims in ML (MusIML) Workshop at ICML 2026 |
+| **Title** | Certified DNA-Synthesis Hazard Screening Under Taxonomic Shift |
+
+🔴 **This was missing from the survey until a review pass on 2026-09-18, and it is the nearest neighbour to
+this project's protocol.** It runs **ten leave-one-taxonomic-family-out folds on UniProt KW-0800 reviewed
+toxins**, which is the same keyword and the same general design shape as
+`src/03b_leave_one_mechanism_out.py`. Anyone reviewing the mechanism-generalization work will find it.
+
+**What it does.** A 200-hazard subsample of KW-0800. Three signals fused by a monotone logistic aggregator:
+k-mer Jaccard similarity to known toxins, a five-LLM judge panel, and cosine similarity to clustered
+embedding centroids. **Conformal Risk Control** then certifies `E[FNR] <= alpha + TV`, and it reports 0%
+empirical test miss rate on every fold.
+
+**Where it differs, stated precisely rather than dismissively:**
+
+| | CRC-Screen | this project |
+|---|---|---|
+| grouping axis for the folds | **taxonomic family** of the producing organism | **mechanism class**, the biochemical action |
+| what is claimed | a **bound** on the false-negative rate | **which** held-out group will be missed |
+| statistical apparatus | conformal risk control, a certificate | none; measured recovery with intervals |
+| signals | k-mer + LLM judges + embedding centroids, fused | a single linear probe on frozen embeddings |
+
+🔑 **The grouping axis is a substantive difference, not a cosmetic one, and this project measured it.**
+`§2.4` and `§2.4.1` of `docs/MECHANISM_GENERALIZATION.md` show that target host and producer taxonomy are
+separate axes, that producer kingdom is nearly constant across the panel (74 of 80), and that mechanism
+class very nearly determines target host. Holding out a taxonomic family and holding out a mechanism are
+therefore not interchangeable, and `§9.4`'s AMR-category test is the record of how easy it is to conflate
+them.
+
+🔑 **CRC-Screen explicitly does not predict which group fails**, it bounds the rate. That is exactly the gap
+`§10.4` to `§10.6` occupy: margin orders the classes by recovery at rho +0.894, ranks an unseen mechanism
+correctly out of sample, and is negative for the failing class in 14 of 14 representations. So the
+distinctive contribution here survives this paper and needs to be framed against it rather than as a first.
+
+⚠️ **Its certificate is loose in a way this project's `§10.8` explains.** The bound is `alpha + TV` with the
+total-variation term **capped at 24 to 49% across folds**, so a certificate at alpha = 0.05 permits a true
+FNR up to roughly a half. `§10.8`'s finding that 118 held-out negatives cannot calibrate any specificity
+above 0.9915, and that a one-in-ten-thousand budget would need a negative set roughly 850 times larger, is
+the same limitation measured from the other side. That is a complementary result, and it is a reasonable
+thing to say in a paper: certification does not manufacture tail resolution that the calibration set does
+not contain.
+
+---
+
+### 1.1c DNAS-Bench (July 2026) — nucleic-acid screening benchmark, the natural target if this extends to DNA
+
+[bioRxiv 2026.07.06.736904](https://www.biorxiv.org/content/10.64898/2026.07.06.736904v1.full). A
+deterministic benchmark for **Biosecurity Screening Software** on specific nucleic-acid sequences and
+targeted regions of malicious genomes. Relevant because it is the established comparison point for a DNA
+extension of the mechanism-generalization protocol, and because it is a *software-behaviour* benchmark
+rather than a representation study, so the two are complementary rather than competing.
+
+---
+
+### 1.1d Margin and generalization prediction — the ML citation obligation
+
+Two lines the `§10.4` margin result must cite rather than discover:
+
+- **Jiang et al., "Predicting the Generalization Gap in Deep Networks with Margin Distributions", ICLR
+  2019** ([1810.00113](https://arxiv.org/abs/1810.00113)), and the **NeurIPS 2020 PGDL competition** on
+  predicting generalization. Margin predicting generalization is a named research programme. The quantity
+  there is distance to the **decision boundary**; the quantity here is an embedding nearest-neighbour
+  difference between classes, and the target is **which class fails** rather than the overall gap.
+- **Sun et al., "Out-of-Distribution Detection with Deep Nearest Neighbors", ICML 2022**
+  ([2204.06507](https://arxiv.org/abs/2204.06507)). kNN distance in embedding space as an OOD score is
+  established. `margin = nn_pos - nn_neg` is a relative version of it.
+
+🔑 **So the honest novelty is not the statistic.** It is that the statistic is applied at **class level**,
+**before** the class is trained on, to a **safety screen's false-negative structure**, and that `§10.7`
+finds prediction and repair **dissociate**: removing the geometric cause repairs 8 to 11% of a failure the
+geometry predicts at rho +0.894. That dissociation is the part with no obvious precedent in either
+literature, and it is what a paper should lead with.
+
+---
+
 ### 1.2 SafeBench-Seq (December 2025)
 
 | Field | Detail |
