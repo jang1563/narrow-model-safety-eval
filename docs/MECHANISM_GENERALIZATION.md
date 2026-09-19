@@ -707,6 +707,10 @@ measured differently.
 | ProtT5-XL | 1024 | 0.949 | 3% | 80% | 86% | 100% | 100% | 94% | 100% | 40% |
 | SaProt-650M | 1280 | 0.949 | 10% | 80% | 86% | 100% | 100% | 97% | 94% | 55% |
 
+*Thirteen rows, and the text says "14 arms" throughout. The fourteenth artifact set is the canonical run
+repeated under the explicit name `esm2_650M_mean`, kept as a consistency check and agreeing with the first
+row to zero, so it is not given a duplicate row here. §10.6 reports the same deflation where it matters.*
+
 **Scale is not the fix.** Beta-lactamase runs 1%, 13%, 11%, 21%, 16% across the ESM-2 ladder from 8M to
 3B. 🔴 **"No trend" was how this read before the seeds were checked, and it is too strong.** At 30 seeds
 (`src/03x_seed_stability_all_arms.py`) the ladder reads **1.7%, 16.2%, 9.5%, 15.7%, 19.0%**, a rank
@@ -1714,6 +1718,17 @@ python src/30_margin_across_arms.py                       # all 14 arms, on v2
 python src/31_margin_causal_test.py --panel v3            # causal, and how small
 python src/33_margin_dose_response.py --panel v3          # dose-response
 python src/32_deployment_operating_points.py --panel v3   # queue volume and the FP ceiling
+
+# how the panel itself was built. These were unreferenced by any document until a
+# review pass on 2026-09-18 found them, which matters because §10.3's failed
+# preregistration and §10.5's argument that the external panels cannot test a NEW
+# mechanism both rest on panels built here.
+python src/02c_localization_annotate.py                    # localization, fetched blind to the label
+python src/02d_secreted_pathogen_negatives.py              # the secreted-from-pathogen negative block
+python src/05_external_panel_build.py                      # external validation panel, 51 positives
+python src/05b_external_negatives.py                       # its 81 negatives
+python src/05c_external_score.py                           # scoring the external panel
+python src/06_safeprotein_panel_build.py                   # the SafeProtein set, 66 recovered from the paper
 
 # seed stability, after two published numbers turned out to be 5-seed means
 python src/03v_lomo_seed_stability.py

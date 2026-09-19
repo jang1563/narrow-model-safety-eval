@@ -41,7 +41,7 @@ source_datasets:
 [![GitHub](https://img.shields.io/badge/GitHub-jang1563%2Fnarrow--model--safety--eval-black?logo=github)](https://github.com/jang1563/narrow-model-safety-eval)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-> **Summary**: Annotations, results, and evaluation data for a proof-of-concept framework assessing dual-use risk in narrow scientific AI models. Two lines of work: (1) **structure-level metrics** — FSPE, FSI, and Physical Realizability Tier — on eight published protein toxins and mechanism-matched benign controls (ESM-2, ProteinMPNN); (2) **mechanism generalization** — a 234-protein leave-one-mechanism-out panel measuring what an embedding hazard probe does when the toxin class was never in training, across 13 model configurations (ESM-2 8M–3B, ESM-C, ESM-3, ProtT5, SaProt).
+> **Summary**: Annotations, results, and evaluation data for a proof-of-concept framework assessing dual-use risk in narrow scientific AI models. Two lines of work: (1) **structure-level metrics** — FSPE, FSI, and Physical Realizability Tier — on eight published protein toxins and mechanism-matched benign controls (ESM-2, ProteinMPNN); (2) **mechanism generalization** — a leave-one-mechanism-out panel measuring what an embedding hazard probe does when the toxin class was never in training, across 13 model configurations (ESM-2 8M–3B, ESM-C, ESM-3, ProtT5, SaProt). Two panel versions: **v2, 234 proteins**, which every headline number is computed on and which is frozen, and **v3, 445 proteins**, which adds three non-animal-target mechanism classes and appears in the sections marked as such.
 
 GitHub: [jang1563/narrow-model-safety-eval](https://github.com/jang1563/narrow-model-safety-eval) · [Evaluation Report](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/EVALUATION_REPORT.md)
 
@@ -64,9 +64,14 @@ This dataset supports evaluation of dual-use risk in narrow scientific AI models
 - **`data/sequences/benign_negatives_v2.fasta`** — 154 benign proteins in three blocks (secreted cell-wall, cytoplasmic housekeeping, secreted-from-pathogen)
 - **`data/sequences/panel_v2_manifest.json`** — panel provenance, per-protein lab-strain and pathogen-derived flags, maintenance log
 - **`data/annotations/mechanism_classes_v2.json`** — class assignment with a written reason per protein
-- **`data/annotations/localization_v2.json`** — UniProt subcellular localization for all 234, fetched independently of the hazard label
+- **`data/annotations/localization_v2.json`** — UniProt subcellular localization for all 234, fetched independently of the hazard label. `_v3.json` is the same for v3's 445
 - **`data/annotations/structure_3di_v2.json`** — Foldseek 3Di tokens from AlphaFold DB (231 of 234; the 3 without a structure carry the SaProt mask rather than being dropped)
 - **`results/v2/*.json`** — 133 aggregate result files, one set per model configuration
+- **panel v3**: `toxins_positive_v3.fasta` (149), `benign_negatives_v3.fasta` (296),
+  `panel_v3_manifest.json`, the four `*_v3.json` annotations, and `results/v3/*.json`
+- ⚠️ **`src/` here is a partial mirror.** This is a dataset repository; the code is maintained on
+  [GitHub](https://github.com/jang1563/narrow-model-safety-eval) and the reproduction commands below clone
+  it. Scripts appear here only when a sync happened to touch them, so do not treat this copy as complete.
 
 **No model-generated dangerous sequences, synthesis routes, or design protocols are included.** Public reference protein records are used only to reproduce evaluation metrics; individual ProteinMPNN-designed sequences are not released. Only aggregate statistical metrics are reported.
 

@@ -23,6 +23,14 @@ the agent from the accessory. Three archaeal halocins were dropped at the same t
 different reason: `producer_kingdom` in the annotation has no archaeal value and §2.4.1's
 producer argument depends on that coding being honest.
 
+🔑 Why these three are publishable, stated affirmatively rather than only as the absence of a
+reason to withhold: every v3 addition targets **bacteria or insects**, while the already-public
+v2 panel contains ricin, tetanus neurotoxin, anthrax edema factor and protective antigen, Shiga
+toxin A, *Pseudomonas* exotoxin A and TSST-1. The expansion does not raise the panel's
+human-hazard ceiling. Bt Cry proteins are sprayed on food crops and expressed in commercial
+cultivars, so they are among the most widely distributed insecticidal proteins there are. The
+full reasoning, including what was held back, is in `docs/RELEASE_SURFACE.md`.
+
 Two are deliberately held back:
 
   * `plant_target_avirulence`, the single richest candidate at 32, is crop-targeting. The scope
