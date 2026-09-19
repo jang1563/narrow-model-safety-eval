@@ -50,6 +50,16 @@ done
 step "$PY" src/35_negative_scaling_curve.py --embed --arm esm2_650M
 step "$PY" src/35_negative_scaling_curve.py --arm esm2_650M
 
+# 35's design has a confound found while running it locally on esm2_35M: its n=296 point is a
+# random pool subsample, not the panel's real matched negatives, so its curve answers "replace
+# the negatives" rather than "add to them". 37 fixes that by keeping the panel's true 296 as a
+# fixed floor at every K and separates random addition from addition of the K NEAREST pool
+# proteins, the actual converse of §10.7.1's removal experiment. It also needs this arm: on
+# esm2_35M beta-lactamase's extreme seed variance (a 21-point swing across ten seeds on a
+# 14-member class) made the run uninterpretable, and phage_peptidoglycan_hydrolase did not even
+# clear the script's own failure threshold there.
+step "$PY" src/37_negative_supplement_from_pool.py --arm esm2_650M
+
 # The remaining v3 arms, which the local machine also could not finish. 150M was the fourth
 # arm for the across-arms check; 3B and the ESM-C family need this partition regardless.
 step "$PY" src/02b_esm2_embed_v2.py --panel v3 --model facebook/esm2_t30_150M_UR50D --tag esm2_150M

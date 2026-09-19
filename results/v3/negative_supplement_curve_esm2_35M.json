@@ -1,0 +1,114 @@
+{
+  "arm": "esm2_35M",
+  "K_grid": [
+    0,
+    500,
+    1500,
+    4000,
+    8259
+  ],
+  "failures": [
+    "beta_lactamase"
+  ],
+  "comparison": "superantigen_enterotoxin",
+  "k0_matches_stored_lomo": {
+    "beta_lactamase": false,
+    "superantigen_enterotoxin": true
+  },
+  "curves": {
+    "beta_lactamase": {
+      "random": {
+        "0": {
+          "mean": 0.06904761904761904,
+          "sd": 0.1035664740335816
+        },
+        "500": {
+          "mean": 0.08333333333333333,
+          "sd": 0.10789283220792965
+        },
+        "1500": {
+          "mean": 0.09999999999999999,
+          "sd": 0.09490911983284568
+        },
+        "4000": {
+          "mean": 0.10714285714285714,
+          "sd": 0.07677067672664384
+        },
+        "8259": {
+          "mean": 0.14285714285714285,
+          "sd": 0.10101525445522108
+        }
+      },
+      "nearest": {
+        "0": {
+          "mean": 0.06904761904761904,
+          "sd": 0.1035664740335816
+        },
+        "500": {
+          "mean": 0.021428571428571425,
+          "sd": 0.03329225712138564
+        },
+        "1500": {
+          "mean": 0.0047619047619047615,
+          "sd": 0.018122009407318746
+        },
+        "4000": {
+          "mean": 0.016666666666666663,
+          "sd": 0.04059434122542396
+        },
+        "8259": {
+          "mean": 0.1476190476190476,
+          "sd": 0.1060010312467817
+        }
+      }
+    },
+    "superantigen_enterotoxin": {
+      "random": {
+        "0": {
+          "mean": 0.9285714285714287,
+          "sd": 0.11097419040461884
+        },
+        "500": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "1500": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "4000": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "8259": {
+          "mean": 1.0,
+          "sd": 0.0
+        }
+      },
+      "nearest": {
+        "0": {
+          "mean": 0.9285714285714287,
+          "sd": 0.11097419040461884
+        },
+        "500": {
+          "mean": 0.9047619047619048,
+          "sd": 0.13698951471010978
+        },
+        "1500": {
+          "mean": 0.9904761904761905,
+          "sd": 0.036244018814637506
+        },
+        "4000": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "8259": {
+          "mean": 1.0,
+          "sd": 0.0
+        }
+      }
+    }
+  },
+  "note_on_35": "35's n=296 point was a random pool subsample, not the panel's real matched negatives, so its curve answers a different question than 'add to the existing panel'. This script fixes that by keeping the panel's 296 as a floor at every K.",
+  "verdict": "REFUTED: adding the nearest pool negatives does not drive recovery down, so \u00a710.7.1's K=80 curve does not extrapolate to a much larger candidate pool"
+}

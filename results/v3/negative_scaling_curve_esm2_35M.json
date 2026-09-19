@@ -1,0 +1,91 @@
+{
+  "arm": "esm2_35M",
+  "model": "facebook/esm2_t12_35M_UR50D",
+  "pool_n": 8259,
+  "classes_with_headroom_to_decline": [
+    "superantigen_enterotoxin"
+  ],
+  "sizes": [
+    296,
+    1000,
+    3000,
+    8259
+  ],
+  "seeds": 30,
+  "failures": [
+    "beta_lactamase"
+  ],
+  "comparison": "superantigen_enterotoxin",
+  "pool_composition_note": "87% bacterial: the per-organism cap bit hard on eukaryotic Swiss-Prot, so the pool resembles the panel's producer mix rather than Swiss-Prot's",
+  "curves": {
+    "beta_lactamase": {
+      "296": {
+        "mean": 0.09047619047619046,
+        "sd": 0.1200125100993329,
+        "held_out": 118,
+        "ceiling": 0.9915254237288136,
+        "spec_with_10_above": 0.9152542372881356
+      },
+      "1000": {
+        "mean": 0.17857142857142858,
+        "sd": 0.1056963105474154,
+        "held_out": 400,
+        "ceiling": 0.9975,
+        "spec_with_10_above": 0.975
+      },
+      "3000": {
+        "mean": 0.19761904761904767,
+        "sd": 0.08322183486198186,
+        "held_out": 1200,
+        "ceiling": 0.9991666666666666,
+        "spec_with_10_above": 0.9916666666666667
+      },
+      "8259": {
+        "mean": 0.18333333333333338,
+        "sd": 0.08530966347184572,
+        "held_out": 3303,
+        "ceiling": 0.9996972449288526,
+        "spec_with_10_above": 0.9969724492885256
+      }
+    },
+    "superantigen_enterotoxin": {
+      "296": {
+        "mean": 1.0,
+        "sd": 0.0,
+        "held_out": 118,
+        "ceiling": 0.9915254237288136,
+        "spec_with_10_above": 0.9152542372881356
+      },
+      "1000": {
+        "mean": 1.0,
+        "sd": 0.0,
+        "held_out": 400,
+        "ceiling": 0.9975,
+        "spec_with_10_above": 0.975
+      },
+      "3000": {
+        "mean": 1.0,
+        "sd": 0.0,
+        "held_out": 1200,
+        "ceiling": 0.9991666666666666,
+        "spec_with_10_above": 0.9916666666666667
+      },
+      "8259": {
+        "mean": 1.0,
+        "sd": 0.0,
+        "held_out": 3303,
+        "ceiling": 0.9996972449288526,
+        "spec_with_10_above": 0.9969724492885256
+      }
+    }
+  },
+  "drops_pts": {
+    "beta_lactamase": -9.285714285714292,
+    "superantigen_enterotoxin": 0.0
+  },
+  "monotone": {
+    "beta_lactamase": false,
+    "superantigen_enterotoxin": true
+  },
+  "verdict": "REFUTED: the failing classes do not decline monotonically with the size of the benign set, so \u00a710.7.1's density reading does not predict the converse"
+}

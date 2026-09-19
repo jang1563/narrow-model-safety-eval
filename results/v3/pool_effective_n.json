@@ -1,0 +1,81 @@
+{
+  "pool_n": 8259,
+  "distinct_names": 3550,
+  "name_redundancy_factor": 2.3264788732394366,
+  "most_repeated_names": [
+    [
+      "bifunctional protein glmu",
+      389
+    ],
+    [
+      "ctp synthase",
+      378
+    ],
+    [
+      "aspartyl/glutamyl-trna(asn/gln) amidotransferase subunit b",
+      341
+    ],
+    [
+      "dual-specificity rna methyltransferase rlmn",
+      208
+    ],
+    [
+      "probable dual-specificity rna methyltransferase rlmn",
+      177
+    ],
+    [
+      "protein nucleotidyltransferase ydiu",
+      167
+    ],
+    [
+      "fatty acid oxidation complex subunit alpha",
+      136
+    ],
+    [
+      "carbamoyl phosphate synthase large chain",
+      124
+    ],
+    [
+      "bifunctional protein hlde",
+      120
+    ],
+    [
+      "atp-dependent 6-phosphofructokinase",
+      112
+    ]
+  ],
+  "homology_sample_size": 600,
+  "homology_survivors": 378,
+  "homology_keep_rate": 0.63,
+  "homology_keep_rate_ci95": [
+    0.5913676094449231,
+    0.668632390555077
+  ],
+  "effective_n_by_homology": 5203.17,
+  "effective_n_ci95": [
+    4884.10508640562,
+    5522.2349135943805
+  ],
+  "calibration": {
+    "raw count": {
+      "effective_n": 8259.0,
+      "held_out": 3303,
+      "ceiling": 0.9996972449288526,
+      "spec_with_10_above": 0.9969724492885256
+    },
+    "by name": {
+      "effective_n": 3550.0,
+      "held_out": 1420,
+      "ceiling": 0.9992957746478873,
+      "spec_with_10_above": 0.9929577464788732
+    },
+    "by homology, estimated": {
+      "effective_n": 5203.17,
+      "held_out": 2081,
+      "ceiling": 0.9995194617972128,
+      "spec_with_10_above": 0.9951946179721288
+    }
+  },
+  "caveat": "the homology figure is a sample extrapolated to the pool and assumes the sampled subset clusters like the whole; the name figure is complete but misses homologs that curators named differently",
+  "verdict": "the pool's independent count is closer to 5203 than to 8259, so the ceiling it supports is 0.99952 rather than 0.99970. Still an order of magnitude better than the 296-negative panel's 0.9915, and not the figure the raw count implies"
+}
