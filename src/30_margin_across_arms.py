@@ -46,19 +46,46 @@ Usage:
     python src/30_margin_across_arms.py
 """
 
+import argparse
 import json
+import math
 from pathlib import Path
 
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
-V2 = ROOT / "results" / "v2"
+RES_ROOT = ROOT / "results"
 PERMS = 20000
-FAILURE = "beta_lactamase"
-ARMS = ["", "_esm2_8M", "_esm2_35M", "_esm2_150M", "_esm2_3B", "_esm2_650M_max",
-        "_esm2_650M_cls", "_esmc_300M", "_esmc_600M", "_esmc_6B", "_esm3_1_4B",
-        "_prott5_xl", "_saprot_650M", "_esm2_650M_mean"]
+# Which classes count as failures is taken from the panel's own recovery, not from margin,
+# for the reason in DATA_CORRECTIONS' seventh entry: selecting the test set with the predictor
+# under test is circular. v2 has one class below FAIL_AT, v3 has two, so k differs by panel and
+# the per-arm chance of hitting the bottom-k by accident is reported rather than assumed.
+FAIL_AT = 0.25
+CONTROL_CLASS = "virulence_associated_non_toxin"
 NON_MEAN = {"_esm2_650M_max", "_esm2_650M_cls"}
+
+
+# Dry-run artifacts live beside the real ones and must not be counted as model arms. The
+# smoke arm is a 150M sanity run; globbing for arms picked it up and turned the published
+# 12-of-14 into 12-of-15 until it was excluded, which the claims audit caught.
+SKIP_ARMS = ("smoke",)
+
+
+def discover_arms(res, pv):
+    """Arms are whatever has BOTH an embedding pair and its own lomo_results on this panel,
+    excluding dry-run artifacts. A fixed list was fine while only v2 existed; v3 is embedded
+    incrementally, so the list is read off the filesystem and what is missing is printed
+    rather than silently skipped."""
+    found, missing = [], []
+    for pos in sorted(res.glob(f"embeddings_positive_{pv}*.npy")):
+        suf = pos.name[len(f"embeddings_positive_{pv}"):-4]
+        if any(s in suf.lower() for s in SKIP_ARMS):
+            continue
+        need = [res / f"embeddings_negative_{pv}{suf}.npy",
+                res / f"embedding_manifest_{pv}{suf}.json",
+                res / f"lomo_results{suf}.json"]
+        (found if all(x.exists() for x in need) else missing).append(suf)
+    return found, missing
 
 
 def cos(A, B):
@@ -82,9 +109,23 @@ def _spearman(x, y):
 
 
 def main():
-    mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v2.json"))
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--panel", default="v2", choices=["v2", "v3"])
+    pv = ap.parse_args().panel
+    RES = RES_ROOT / pv
+    mech = json.load(open(ROOT / f"data/annotations/mechanism_classes_{pv}.json"))
     cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
     rng = np.random.default_rng(0)
+
+    ARMS, missing = discover_arms(RES, pv)
+    base = json.load(open(RES / "lomo_results.json"))["leave_one_mechanism_out"]
+    failures = sorted((c for c in base
+                       if base[c]["flagged_95_mean"] < FAIL_AT and c != CONTROL_CLASS),
+                      key=lambda c: base[c]["flagged_95_mean"])
+    k = len(failures)
+    print(f"panel {pv}: {len(ARMS)} arms with a complete set, "
+          f"{len(missing)} embedded but unscored {missing if missing else ''}")
+    print(f"failure classes on the canonical arm (recovery < {FAIL_AT:.0%}): {failures}\n")
 
     rows = {}
     hdr = (f"{'arm':<22}{'dim':>6}{'rho':>8}{'perm p':>9}{'lowest-margin class':>32}"
@@ -92,10 +133,10 @@ def main():
     print(hdr)
     print("-" * len(hdr))
     for suf in ARMS:
-        P = np.load(V2 / f"embeddings_positive_v2{suf}.npy")
-        N = np.load(V2 / f"embeddings_negative_v2{suf}.npy")
-        man = json.load(open(V2 / f"embedding_manifest_v2{suf}.json"))
-        lomo = json.load(open(V2 / f"lomo_results{suf}.json"))["leave_one_mechanism_out"]
+        P = np.load(RES / f"embeddings_positive_{pv}{suf}.npy")
+        N = np.load(RES / f"embeddings_negative_{pv}{suf}.npy")
+        man = json.load(open(RES / f"embedding_manifest_{pv}{suf}.json"))
+        lomo = json.load(open(RES / f"lomo_results{suf}.json"))["leave_one_mechanism_out"]
         pcls = np.array([cls[r["acc"]] for r in man["positive_rows"]])
         simPP, simPN = cos(P, P), cos(P, N)
         np.fill_diagonal(simPP, -np.inf)
@@ -110,37 +151,48 @@ def main():
         rho = _spearman(m, rec)
         null = np.array([_spearman(m, rng.permutation(rec)) for _ in range(PERMS)])
         p = float((null >= rho).mean())
-        lowest = classes[int(np.argmin(m))]
-        hit = lowest == FAILURE
+        order = [classes[i] for i in np.argsort(m)]
+        lowest = order[0]
+        hit = set(order[:k]) == set(failures)
         name = suf.lstrip("_") or "canonical"
         rows[name] = {"suffix": suf, "dim": int(P.shape[1]), "rho": rho, "perm_p": p,
                       "lowest_margin_class": lowest, "locates_failure": bool(hit),
+                      "bottom_k": order[:k],
                       "n_classes": len(classes), "mean_pooled": suf not in NON_MEAN,
-                      "failure_margin": m[classes.index(FAILURE)]}
+                      "failure_margins": {c: m[classes.index(c)] for c in failures}}
         print(f"{name:<22}{P.shape[1]:>6}{rho:>+8.3f}{p:>9.4f}{lowest:>32}"
               f"{('yes' if hit else 'no'):>5}", flush=True)
 
-    hits = [k for k, v in rows.items() if v["locates_failure"]]
-    sig = [k for k, v in rows.items() if v["rho"] > 0 and v["perm_p"] < 0.05]
-    mean_arms = [k for k, v in rows.items() if v["mean_pooled"]]
-    non_mean = [k for k, v in rows.items() if not v["mean_pooled"]]
+    # 🔴 Loop variables are named `a` for arm throughout. A first version used `k`, which is
+    # already the number of failure classes, so `rows[k]` indexed the arm dictionary with an
+    # integer. It would have raised KeyError rather than producing a wrong number, but the
+    # shadowing is the kind that does produce wrong numbers when the types happen to line up.
+    hits = [a for a, v in rows.items() if v["locates_failure"]]
+    sig = [a for a, v in rows.items() if v["rho"] > 0 and v["perm_p"] < 0.05]
+    mean_arms = [a for a, v in rows.items() if v["mean_pooled"]]
+    non_mean = [a for a, v in rows.items() if not v["mean_pooled"]]
     n = len(rows)
+    n_cls = max(v["n_classes"] for v in rows.values())
+    chance = math.comb(n_cls, k)
 
-    print(f"\nP1  arms ranking {FAILURE} lowest: {len(hits)}/{n}  (chance 1/9 per arm)")
+    print(f"\nP1  arms putting the {k} failure class(es) in the bottom {k} by margin: "
+          f"{len(hits)}/{n}   chance 1/{chance} per arm")
     print(f"P2  arms with a positive rho at p<0.05: {len(sig)}/{n}")
-    print(f"    mean-pooled arms: {sum(rows[k]['locates_failure'] for k in mean_arms)}"
-          f"/{len(mean_arms)} locate it, "
-          f"{sum(rows[k]['rho'] > 0 and rows[k]['perm_p'] < 0.05 for k in mean_arms)}"
+    print(f"    mean-pooled arms: {sum(rows[a]['locates_failure'] for a in mean_arms)}"
+          f"/{len(mean_arms)} locate them, "
+          f"{sum(rows[a]['rho'] > 0 and rows[a]['perm_p'] < 0.05 for a in mean_arms)}"
           f"/{len(mean_arms)} significant")
-    print(f"    CLS and max pooling: "
-          f"{sum(rows[k]['locates_failure'] for k in non_mean)}/{len(non_mean)} locate it, "
-          f"{[(k, round(rows[k]['rho'], 3), round(rows[k]['perm_p'], 4)) for k in non_mean]}")
-    neg = [k for k, v in rows.items() if v["failure_margin"] < 0]
-    print(f"    arms where {FAILURE}'s margin is negative: {len(neg)}/{n}")
+    if non_mean:
+        print(f"    CLS and max pooling: "
+              f"{sum(rows[a]['locates_failure'] for a in non_mean)}/{len(non_mean)} locate them, "
+              f"{[(a, round(rows[a]['rho'], 3), round(rows[a]['perm_p'], 4)) for a in non_mean]}")
+    neg = [a for a, v in rows.items()
+           if all(x < 0 for x in v["failure_margins"].values())]
+    print(f"    arms where EVERY failure class has a negative margin: {len(neg)}/{n}")
 
     p1, p2 = len(hits) > n / 2, len(sig) > n / 2
     if p1 and p2:
-        verdict = (f"SUPPORTED: {len(hits)}/{n} arms rank {FAILURE} as the lowest-margin class "
+        verdict = (f"SUPPORTED: {len(hits)}/{n} arms put the failure class(es) at the bottom "
                    f"and {len(sig)}/{n} have a significant positive rank correlation, so the "
                    f"mechanism is representation-general rather than a property of one model")
     elif p1 or p2:
@@ -152,8 +204,9 @@ def main():
                    f"and its geometric phrasing has to be narrowed")
     print(f"\nverdict: {verdict}")
 
-    dest = V2 / "margin_across_arms.json"
-    json.dump({"panel": "v2", "failure_class": FAILURE, "perms": PERMS,
+    dest = RES / "margin_across_arms.json"
+    json.dump({"panel": pv, "failure_classes": failures, "k": k, "perms": PERMS,
+               "arms_embedded_but_unscored": missing,
                "note": ("v2 has one failure class, so per-arm chance is 1/9. v3's pair cannot "
                         "be used here: only the canonical arm is embedded for v3"),
                "distinct_from": ("03k_margin_holdout, which tests whether low-margin MEMBERS "
@@ -162,7 +215,8 @@ def main():
                "P1": {"arms_locating_failure": sorted(hits), "n_arms": n,
                       "majority": bool(p1)},
                "P2": {"arms_significant": sorted(sig), "majority": bool(p2)},
-               "arms_with_negative_failure_margin": sorted(neg),
+               "arms_with_all_failure_margins_negative": sorted(neg),
+               "chance_per_arm": 1 / chance,
                "verdict": verdict}, open(dest, "w"), indent=2)
     print(f"\nwrote {dest}")
 

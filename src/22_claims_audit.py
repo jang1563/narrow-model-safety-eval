@@ -875,7 +875,8 @@ def margin_across_arms():
     return {"n_arms": len(a),
             "locate_failure": len(d["P1"]["arms_locating_failure"]),
             "significant": len(d["P2"]["arms_significant"]),
-            "negative_margin_arms": len(d["arms_with_negative_failure_margin"]),
+            "negative_margin_arms": len(d["arms_with_all_failure_margins_negative"]),
+            "smoke_arm_excluded": not any("smoke" in x for x in a),
             "misses": sorted(k for k, v in a.items() if not v["locates_failure"]),
             "max_locates": a["esm2_650M_max"]["locates_failure"],
             "cls_locates": a["esm2_650M_cls"]["locates_failure"],
@@ -1245,6 +1246,7 @@ CLAIMS = [
     ("the class-level margin mechanism holds across all 14 representations",
      margin_across_arms,
      lambda v: (v["n_arms"] == 14 and v["negative_margin_arms"] == 14
+                and v["smoke_arm_excluded"]
                 and v["locate_failure"] == 12 and v["significant"] == 13
                 and v["misses"] == ["esm2_650M_cls", "saprot_650M"]
                 and v["max_locates"] and not v["cls_locates"]
