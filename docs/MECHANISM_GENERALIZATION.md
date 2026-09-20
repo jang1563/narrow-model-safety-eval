@@ -2180,6 +2180,40 @@ separation is general rather than a property of that pair.
 precedent for what pooling the 149 members instead would do: a Spearman of −0.399 at p 0.0005 that was
 pseudoreplication of nine classes. The route to settling this is more mechanism classes, not more members.
 
+🟢 **One more class has been measured rather than guessed at, and it clears the floor on the panel's own
+hazard definition.** `src/44_candidate_class_yield_v3.py` screens a candidate family against v3's 149
+positives under §2's 0.30 rule and reports each survivor's hazard keywords, which is the number `26`
+deliberately leaves out. **Bacterial phospholipase C, EC 3.1.4.3**, gives 27 reviewed entries in the length
+window, **6 independent** at ≤ 0.30, and **all 6 novel** against the panel at a maximum similarity of 0.037:
+
+| accession | protein | organism | hazard keywords |
+|---|---|---|---|
+| P06200 | Hemolytic phospholipase C, PLC-H | *P. aeruginosa* | Toxin, Virulence, Cytolysis, Hemolysis |
+| P0C216 | Phospholipase C, **alpha-toxin** | *C. perfringens* | Toxin, Virulence, Cytolysis, Hemolysis |
+| Q2FWP1 | Phospholipase C, **beta-hemolysin** | *S. aureus* | Toxin, Virulence, Cytolysis, Hemolysis |
+| P09598 | Phospholipase C, cereolysin A | *B. cereus* | Cytolysis, Hemolysis |
+| P9WIB3 | Phospholipase C B | *M. tuberculosis* | Virulence |
+| O06350 | Carboxylesterase/phospholipase LipF | *M. tuberculosis* | **none** |
+
+🔴 O06350 is excluded and that is not a judgement call: its own UniProt function line says it hydrolyses
+short-chain esters and has **no activity on triacylglycerides**, so its EC 3.1.4.3 annotation does not
+describe what it does. That leaves **5 under the panel's operative hazard definition and 3 under the
+strictest one**, against an eligibility floor of 4, so the count straddles the floor and the reading decides
+it.
+
+**The panel's own harvests already use the loose reading.** `34`'s `BLOCK_KEYWORDS` keeps any protein
+carrying Virulence, Toxin, Cytolysis or Hemolysis **out of the benign pool**, so P09598 and P9WIB3 are
+already treated as hazard-side. Excluding them from a hazard class while also excluding them from the benign
+set would leave them in neither, which is the inconsistency `27` flags for the OspC pair in the thirteenth
+corrections entry.
+
+⚠️ Two things this class would and would not do. It takes the count from twelve to **thirteen**, which is
+what §10.9.2's resolution needs. It does **not** help §2.4.1's non-animal deficit, since its target host is
+animal. It does not disturb the producer balance either, since every producer is bacterial, which is what
+separates it from the animal-target candidates `26` measured and set aside. ⚠️ And it is a **proposal, not a
+result**: nothing is admitted, no annotation moves, and building it is a panel change rather than a
+correction.
+
 
 ## 11. What this does not claim
 
@@ -2225,7 +2259,9 @@ PROJECT_DIR=$PWD PYTHON_BIN=path/to/python sbatch slurm/expanded_panel_full_swee
 
 # v3, built from UniProt with the panel's own admission rule. Dry run first: it writes a
 # staging file and touches nothing. --from-stage then builds v3 from the records reviewed.
-python src/26_panel_growth_yield.py                      # which families can supply a class
+python src/26_panel_growth_yield.py                      # which families can supply a class, vs v2
+python src/44_candidate_class_yield_v3.py --name phospholipase_c --query "ec:3.1.4.3" \
+    --target animal --producer bacteria                  # supply AND hazard annotation, vs v3
 python src/27_expand_nonanimal_classes.py                # dry run, screens and stages
 python src/27_expand_nonanimal_classes.py --from-stage    # writes the v3 file set
 python src/02b_esm2_embed_v2.py --panel v3               # v3 embeddings

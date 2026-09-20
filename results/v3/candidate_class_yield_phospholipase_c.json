@@ -1,0 +1,138 @@
+{
+  "name": "phospholipase_c",
+  "query": "(ec:3.1.4.3) AND reviewed:true AND length:[100 TO 1400] AND (taxonomy_name:Bacteria)",
+  "taxon": "Bacteria",
+  "target_host": "animal",
+  "producer_kingdom": "bacteria",
+  "homology_max": 0.3,
+  "eligibility_floor": 4,
+  "panel_positives_screened_against": 149,
+  "reviewed_in_window": 27,
+  "independent": 6,
+  "novel": 6,
+  "novel_any_hazard": 5,
+  "novel_strict_hazard": 3,
+  "novel_no_hazard": [
+    "O06350"
+  ],
+  "members": [
+    {
+      "acc": "O06350",
+      "name": "Carboxylesterase/phospholipase LipF",
+      "alt": [],
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "length": 373,
+      "max_vs_panel": 0.032906677366774315,
+      "closest_positive": "P0DTW2",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "P9WIB3",
+      "name": "Phospholipase C B",
+      "alt": [
+        "Mycobacterial phospholipase C B"
+      ],
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv)",
+      "length": 521,
+      "max_vs_panel": 0.03187534066334954,
+      "closest_positive": "P77335",
+      "novel": true,
+      "hazard_keywords": [
+        "Virulence"
+      ],
+      "strict": false,
+      "any_hazard": true
+    },
+    {
+      "acc": "P0C216",
+      "name": "Phospholipase C",
+      "alt": [
+        "Alpha-toxin",
+        "Hemolysin",
+        "Lecithinase"
+      ],
+      "organism": "Clostridium perfringens (strain 13 / Type A)",
+      "length": 398,
+      "max_vs_panel": 0.03144317066000476,
+      "closest_positive": "Q8SD18",
+      "novel": true,
+      "hazard_keywords": [
+        "Toxin",
+        "Virulence",
+        "Cytolysis",
+        "Hemolysis"
+      ],
+      "strict": true,
+      "any_hazard": true
+    },
+    {
+      "acc": "P09598",
+      "name": "Phospholipase C",
+      "alt": [
+        "Cereolysin A",
+        "Phosphatidylcholine cholinephosphohydrolase"
+      ],
+      "organism": "Bacillus cereus",
+      "length": 283,
+      "max_vs_panel": 0.03692606016507654,
+      "closest_positive": "Q38135",
+      "novel": true,
+      "hazard_keywords": [
+        "Cytolysis",
+        "Hemolysis"
+      ],
+      "strict": false,
+      "any_hazard": true
+    },
+    {
+      "acc": "Q2FWP1",
+      "name": "Phospholipase C",
+      "alt": [
+        "Beta-hemolysin",
+        "Beta-toxin",
+        "Sphingomyelinase"
+      ],
+      "organism": "Staphylococcus aureus (strain NCTC 8325 / PS 47)",
+      "length": 330,
+      "max_vs_panel": 0.0353268843107796,
+      "closest_positive": "O34344",
+      "novel": true,
+      "hazard_keywords": [
+        "Toxin",
+        "Virulence",
+        "Cytolysis",
+        "Hemolysis"
+      ],
+      "strict": true,
+      "any_hazard": true
+    },
+    {
+      "acc": "P06200",
+      "name": "Hemolytic phospholipase C",
+      "alt": [
+        "Heat-labile hemolysin",
+        "PLC-H",
+        "Phosphatidylcholine cholinephosphohydrolase"
+      ],
+      "organism": "Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1)",
+      "length": 730,
+      "max_vs_panel": 0.026915293707357117,
+      "closest_positive": "P03706",
+      "novel": true,
+      "hazard_keywords": [
+        "Toxin",
+        "Virulence",
+        "Cytolysis",
+        "Hemolysis"
+      ],
+      "strict": true,
+      "any_hazard": true
+    }
+  ],
+  "admits_nothing": true,
+  "not_pinned_reason": "live UniProt snapshot; an audit claim on these counts would fail CI on curation work rather than on a defect, the same reason 26 is unpinned",
+  "verdict": "BUILDABLE ONLY under the four-keyword OR: 5 novel members carry any hazard keyword against 3 carrying Toxin and Virulence, so the n=4 floor is cleared by the loose reading and not the strict one. Which reading applies is a labelling decision, not a retrieval result"
+}
