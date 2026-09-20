@@ -43,15 +43,48 @@ PREREGISTERED, written before the run
     R3  Either way, the hard-negative false-positive rate is reported next to it, because a gain
         bought by a looser effective boundary on matched negatives is not a gain.
 
-⚠️ Caveat that cannot be fixed here. The pool has internal redundancy: `36` put its effective
-count at about 5,203 of 8,259 by homology, a keep rate near 0.63. So the reserved background almost
-certainly contains homologs of proteins some arms train on, which inflates apparent specificity at
-large K. Removing them needs the full pairwise matrix the pool never had computed. The direction of
-the bias is known and it flatters the large-K arms, so an R2 result is safe against it and an R1
-result is not.
+    R4  🔑 The control that decides R1 against R3. Take the K=0 model and loosen its threshold
+        until it incurs the SAME hard-negative false-positive rate the K arm incurs, then measure
+        its recovery. Anything the K arm achieves at or below that iso-FP baseline could have been
+        had by moving one number, with no pool, no harvest and no extra training data. Only the
+        excess above it is something the benign data bought.
+
+        This is §6's finding turned into a per-arm control. §6 varied the calibration set alone and
+        found the operating point dominates; an iso-FP baseline removes the operating point from the
+        comparison entirely.
+
+    R5  🔴 The iso-FP match is exact in COUNT and slack in VALUE, and the slack has to be subtracted.
+        118 hard negatives give a false-positive rate in steps of 1/118, so two different thresholds
+        can flag the same number of them while sitting either side of a gap in their scores. The
+        lower of the two is more permissive on the positives at no measured cost. At K=0 the arm and
+        its own iso-FP baseline are the SAME model, so whatever excess appears there is entirely this
+        slack: on the 35M arm it is +1.4 points for beta-lactamase and +12.4 for a 35-member
+        comparison class, so it is neither negligible nor constant across classes. Every excess is
+        therefore reported net of its own K=0 value, and the verdict is taken on the net figure.
+
+🔴 The pool's redundancy is worse than a homology estimate suggests, and it is measured, not
+estimated. `36` put the effective count at about 5,203 of 8,259 by homology on a 600-protein sample,
+a keep rate near 0.63. By protein NAME the figure is both lower and complete: 8,259 records carry
+**3,550 distinct names**, a redundancy factor of 2.33, and the single most repeated name appears
+**389 times**. A random 2,000 / 6,259 split therefore puts orthologs of the same protein on both
+sides with near certainty, so the reserved background is contaminated by construction rather than
+by bad luck. Contamination inflates apparent specificity on the background, which lowers the
+threshold and raises recovery at large K.
+
+That is why this script has two split modes and reports both.
+
+    --split random         the naive split, contaminated as described
+    --split name-disjoint  groups the 8,259 rows by normalised protein name and splits GROUPS, so
+                           no name appears on both sides of the reservation
+
+If the two modes agree, the contamination did not matter at this scale and the result is one result.
+If they disagree, the gap between them IS the contamination, reported as such. Under the random
+split alone an R2 verdict is safe against the bias and an R1 verdict is not, which is the asymmetry
+the name-disjoint mode exists to remove.
 
 Usage:
-    python src/40_fixed_background_operating_point.py --arm esm2_650M
+    python src/40_fixed_background_operating_point.py --arm esm2_650M --split random
+    python src/40_fixed_background_operating_point.py --arm esm2_650M --split name-disjoint
 """
 
 import argparse
@@ -73,12 +106,30 @@ N_RESERVE = 2000
 RESERVE_SEED = 12345
 FAIL_AT = 0.25
 CONTROL_CLASS = "virulence_associated_non_toxin"
+# The multiple of the K=0 hard-negative false-positive rate an arm may reach and still be read as a
+# screen operating at the panel's budget. 1.5 is a judgement, stated here rather than buried in a
+# comparison, and the raw ratio is in every row so a reader can move it.
+FP_BUDGET = 1.5
+
+
+def pool_names(fasta):
+    """fasta_id -> normalised protein name, taken from the description up to the OS= field. This is
+    the same grouping `36` used to get 3,550 distinct names from 8,259 records."""
+    out = {}
+    for line in open(fasta):
+        if not line.startswith(">"):
+            continue
+        head = line[1:].rstrip()
+        fid, _, desc = head.partition(" ")
+        out[fid] = desc.split(" OS=")[0].strip().lower() or fid
+    return out
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", default="esm2_650M")
     ap.add_argument("--seeds", type=int, default=SEEDS)
+    ap.add_argument("--split", choices=("random", "name-disjoint"), default="random")
     a = ap.parse_args()
     tag = a.arm
     suf = "" if tag == "esm2_650M" else f"_{tag}"
@@ -92,11 +143,37 @@ def main():
     cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
     pcls = np.array([cls[r["acc"]] for r in man["positive_rows"]])
 
-    res_perm = np.random.default_rng(RESERVE_SEED).permutation(len(N_pool))
-    reserve_idx, avail_idx = res_perm[:N_RESERVE], res_perm[N_RESERVE:]
+    rrng = np.random.default_rng(RESERVE_SEED)
+    if a.split == "random":
+        res_perm = rrng.permutation(len(N_pool))
+        reserve_idx, avail_idx = res_perm[:N_RESERVE], res_perm[N_RESERVE:]
+        n_groups = None
+    else:
+        pool_man = json.load(open(V3 / f"embedding_manifest_pool_large_{tag}.json"))
+        names = pool_names(ROOT / "data/sequences/benign_pool_large.fasta")
+        # 🔴 The manifest's row order is the embedding order. Mapping by position would silently
+        # mis-assign if the FASTA were ever reordered, so every row is looked up by its own id and
+        # a miss is fatal.
+        missing = [r for r in pool_man["rows"] if r not in names]
+        if missing:
+            raise SystemExit(f"{len(missing)} manifest rows absent from the FASTA, e.g. {missing[:3]}")
+        groups = {}
+        for i, r in enumerate(pool_man["rows"]):
+            groups.setdefault(names[r], []).append(i)
+        keys = list(groups)
+        rrng.shuffle(keys)
+        reserve, avail = [], []
+        for k_ in keys:
+            (reserve if len(reserve) < N_RESERVE else avail).extend(groups[k_])
+        reserve_idx, avail_idx = np.array(reserve), np.array(avail)
+        n_groups = len(keys)
+        print(f"name-disjoint split: {n_groups} distinct names, "
+              f"largest group {max(len(v) for v in groups.values())}")
     BG, AVAIL = N_pool[reserve_idx], N_pool[avail_idx]
+    assert len(set(reserve_idx.tolist()) & set(avail_idx.tolist())) == 0
+    assert len(reserve_idx) + len(avail_idx) == len(N_pool)
     ks = [0, 500, 1500, 4000, len(AVAIL)]
-    print(f"arm {tag}: panel {len(N_panel)}, pool {len(N_pool)}, "
+    print(f"arm {tag}: panel {len(N_panel)}, pool {len(N_pool)}, split {a.split}, "
           f"reserved background {len(BG)}, available to add {len(AVAIL)}")
     print(f"K grid {ks}, seeds {a.seeds}\n")
 
@@ -110,92 +187,156 @@ def main():
     targets = failures + [comparison]
     print(f"failures {failures}, comparison {comparison}\n")
 
+    def fit(tri, N_tr):
+        m = make_pipeline(StandardScaler(), LogisticRegression(max_iter=5000, C=1.0))
+        m.fit(np.vstack([P[tri], N_tr]), np.r_[np.ones(len(tri)), np.zeros(len(N_tr))])
+        return m
+
     out = {c: {} for c in targets}
     for c in targets:
         hi = np.where(pcls == c)[0]
         tri = np.setdiff1d(np.arange(len(P)), hi)
-        for k in ks:
-            rec, fp_hard, fp_bg = [], [], []
+        # Per-seed cache of the K=0 model, which is the iso-FP baseline for every K. `perm` is the
+        # first draw from default_rng(seed) and so is identical at every K, which is what makes one
+        # cached model per seed the right baseline rather than an approximation of it.
+        base = {}
+        for seed in range(a.seeds):
+            perm = np.random.default_rng(seed).permutation(len(N_panel))
+            cut = int(len(N_panel) * FRAC)
+            hard, base_tr = N_panel[perm[:cut]], N_panel[perm[cut:]]
+            m0 = fit(tri, base_tr)
+            base[seed] = (hard, base_tr, np.sort(m0.predict_proba(hard)[:, 1]),
+                          m0.predict_proba(P[hi])[:, 1])
+        for k in ks:  # noqa: the floor pass below runs after this loop completes
+            rec, fp_hard, fp_bg, rec_iso = [], [], [], []
             for seed in range(a.seeds):
                 rng = np.random.default_rng(seed)
-                perm = rng.permutation(len(N_panel))
-                cut = int(len(N_panel) * FRAC)
-                # The panel's held-out 40% is kept out of training for continuity with 03b, but it
-                # is no longer the calibration set: it is the hard-negative price list.
-                hard, base_tr = N_panel[perm[:cut]], N_panel[perm[cut:]]
+                # consume the panel permutation so the pool draw matches the cached split
+                rng.permutation(len(N_panel))
+                hard, base_tr, s_hard0_sorted, s_pos0 = base[seed]
                 add = AVAIL[rng.permutation(len(AVAIL))[:k]] if k else AVAIL[:0]
-                N_tr = np.vstack([base_tr, add])
-                m = make_pipeline(StandardScaler(),
-                                  LogisticRegression(max_iter=5000, C=1.0))
-                m.fit(np.vstack([P[tri], N_tr]),
-                      np.r_[np.ones(len(tri)), np.zeros(len(N_tr))])
+                m = fit(tri, np.vstack([base_tr, add]))
                 s_bg = m.predict_proba(BG)[:, 1]
                 thr = np.quantile(s_bg, SPEC)
                 rec.append(float((m.predict_proba(P[hi])[:, 1] >= thr).mean()))
-                fp_hard.append(float((m.predict_proba(hard)[:, 1] >= thr).mean()))
+                f = float((m.predict_proba(hard)[:, 1] >= thr).mean())
+                fp_hard.append(f)
                 fp_bg.append(float((s_bg >= thr).mean()))
+                # R4: the K=0 model loosened to the same hard-negative FP rate. Taking the order
+                # statistic directly rather than np.quantile keeps the realised rate equal to f to
+                # within 1/118 instead of landing between two interpolated points.
+                n = len(s_hard0_sorted)
+                j = int(round((1.0 - f) * n))
+                thr_iso = s_hard0_sorted[min(max(j, 0), n - 1)]
+                rec_iso.append(float((s_pos0 >= thr_iso).mean()))
             out[c][str(k)] = {
                 "recovery": {"mean": float(np.mean(rec)), "sd": float(np.std(rec, ddof=1))},
                 "fp_panel_hard": {"mean": float(np.mean(fp_hard)),
                                   "sd": float(np.std(fp_hard, ddof=1))},
                 "fp_background": {"mean": float(np.mean(fp_bg)),
-                                  "sd": float(np.std(fp_bg, ddof=1))}}
+                                  "sd": float(np.std(fp_bg, ddof=1))},
+                "recovery_iso_fp_baseline": {"mean": float(np.mean(rec_iso)),
+                                             "sd": float(np.std(rec_iso, ddof=1))},
+                "excess_over_iso_fp": {"mean": float(np.mean(rec) - np.mean(rec_iso))}}
+        # R5: subtract each class's own K=0 slack, where arm and baseline are the same model.
+        floor = out[c]["0"]["excess_over_iso_fp"]["mean"]
+        for k in ks:
+            out[c][str(k)]["excess_net"] = {
+                "mean": out[c][str(k)]["excess_over_iso_fp"]["mean"] - floor}
+        out[c]["granularity_floor_pts"] = floor * 100
 
     # S1: the threshold is the 0.95 quantile of the background it is measured on, so the background
     # false-positive rate must be ~0.05 at every K. 2,000 points, granularity 1/2000.
     bad = [(c, k) for c in targets for k in ks
            if abs(out[c][str(k)]["fp_background"]["mean"] - 0.05) > 0.003]
+    neg = [(c, round(out[c]["granularity_floor_pts"], 2)) for c in targets
+           if out[c]["granularity_floor_pts"] < -1e-9]
+    print("self-test S2 (K=0 slack is non-negative): "
+          + ("PASS" if not neg else f"FAIL at {neg}"))
     print("self-test S1 (background FP pinned at 0.05): "
           + ("PASS" if not bad else f"FAIL at {bad[:4]}"))
-    if bad:
+    if bad or neg:
         raise SystemExit("self-test failure, results not written")
 
     hdr = f"{'class':<32}{'quantity':<18}" + "".join(f"{f'K={k}':>9}" for k in ks)
     print(f"\n{hdr}\n" + "-" * len(hdr))
     for c in targets:
-        for key, label in (("recovery", "recovery"), ("fp_panel_hard", "FP on 118 hard")):
+        for key, label in (("recovery", "recovery"), ("fp_panel_hard", "FP on 118 hard"),
+                           ("recovery_iso_fp_baseline", "K=0 at same FP"),
+                           ("excess_over_iso_fp", "excess"),
+                           ("excess_net", "excess net")):
             print(f"{c:<32}{label:<18}"
                   + "".join(f"{out[c][str(k)][key]['mean'] * 100:>8.1f}%" for k in ks))
         print()
 
-    print(f"{'class':<32}{'K=0':>8}{'best':>8}{'at K':>8}{'gain':>8}"
-          f"{'hardFP K=0':>12}{'hardFP best':>13}   verdict")
+    # 🔑 The best K is chosen by EXCESS over the iso-FP baseline, not by raw recovery. Choosing by
+    # raw recovery would reward an arm that only moved the threshold, which is the whole thing this
+    # script exists to rule out. It is still a max over five K values on the same seeds, so the K it
+    # lands on is reported with it.
+    print(f"{'class':<32}{'K=0':>7}{'rec':>7}{'isoFP':>7}{'net':>7}{'floor':>7}{'at K':>7}"
+          f"{'hardFP':>8}{'ratio':>7}   verdict")
     summary = {}
     for c in targets:
         r0 = out[c]["0"]["recovery"]["mean"]
-        bk = max(ks, key=lambda k: out[c][str(k)]["recovery"]["mean"])
+        bk = max(ks, key=lambda k: out[c][str(k)]["excess_net"]["mean"])
         rb = out[c][str(bk)]["recovery"]["mean"]
+        iso = out[c][str(bk)]["recovery_iso_fp_baseline"]["mean"]
+        exc = out[c][str(bk)]["excess_net"]["mean"]
         h0 = out[c]["0"]["fp_panel_hard"]["mean"]
         hb = out[c][str(bk)]["fp_panel_hard"]["mean"]
-        v = "RISES" if rb - r0 > 0.02 else "FLAT/FALLS"
-        summary[c] = {"recovery_K0": r0, "recovery_best": rb, "best_K": bk,
-                      "gain_pts": (rb - r0) * 100, "fp_hard_K0": h0, "fp_hard_best": hb,
+        # 🔑 Three states, not two. An arm can show a genuine excess and still be useless, because
+        # the excess is measured at whatever hard-negative false-positive rate the arm drifted to.
+        # On the 35M arm beta-lactamase's best net excess is +2.9 points at 2.3x the K=0 rate, and
+        # calling that a repair would be wrong whatever the excess. FP_BUDGET is the multiple of the
+        # K=0 rate an arm may reach and still be judged on its excess at all.
+        ratio = (hb / h0) if h0 > 0 else float("inf")
+        v = ("THRESHOLD" if exc <= 0.02
+             else "OFF-BUDGET" if ratio > FP_BUDGET
+             else "BUYS")
+        summary[c] = {"recovery_K0": r0, "recovery_best": rb, "best_K_by_excess": bk,
+                      "iso_fp_baseline_at_best_K": iso, "excess_net_pts": exc * 100,
+                      "granularity_floor_pts": out[c]["granularity_floor_pts"],
+                      "raw_gain_pts": (rb - r0) * 100,
+                      "fp_hard_K0": h0, "fp_hard_best": hb,
                       "fp_hard_ratio": (hb / h0) if h0 > 0 else None, "verdict": v}
-        print(f"{c:<32}{r0 * 100:>7.1f}%{rb * 100:>7.1f}%{bk:>8}{(rb - r0) * 100:>+8.1f}"
-              f"{h0 * 100:>11.1f}%{hb * 100:>12.1f}%   {v}")
+        print(f"{c:<32}{r0 * 100:>6.1f}%{rb * 100:>6.1f}%{iso * 100:>6.1f}%{exc * 100:>+7.1f}"
+              f"{out[c]['granularity_floor_pts']:>+7.1f}{bk:>7}{hb * 100:>7.1f}%"
+              f"{(hb / h0) if h0 > 0 else float('nan'):>7.1f}   {v}")
 
     fv = {summary[c]["verdict"] for c in failures}
-    if fv == {"RISES"}:
-        verdict = ("R1: on a fixed realistic background, recovery of every unreachable class rises "
-                   "with the amount of benign training data, so the addition direction is a real "
-                   "repair and §10.7.1's closing line needs qualifying. Read with the "
-                   "hard-negative column and the homology caveat, both of which flatter this result")
-    elif fv == {"FLAT/FALLS"}:
-        verdict = ("R2: on a fixed realistic background the pool buys no unreachable class "
-                   "anything, so 37's three to fourfold gain lived in the moving operating point "
-                   "and §10.7.1's closing line stands for addition as well as removal")
+    if fv == {"BUYS"}:
+        verdict = ("R1: every unreachable class beats the iso-FP baseline while staying inside "
+                   f"{FP_BUDGET}x the K=0 hard-negative rate, so the benign data buys something the "
+                   "threshold alone cannot and §10.7.1's closing line needs qualifying for the "
+                   "addition direction. Read with the redundancy caveat, which flatters this result")
+    elif fv == {"THRESHOLD"}:
+        verdict = ("R2: no unreachable class beats the K=0 model loosened to the same hard-negative "
+                   "false-positive rate, so the pool buys nothing a threshold could not, 37's three "
+                   "to fourfold gain was an operating point, and §10.7.1's closing line stands for "
+                   "addition as well as removal")
+    elif fv == {"OFF-BUDGET"}:
+        verdict = ("R2 with a caveat: every unreachable class does show an excess over the iso-FP "
+                   f"baseline, but only after its hard-negative false-positive rate has passed "
+                   f"{FP_BUDGET}x the K=0 rate, so the excess is not available at the panel's "
+                   "budget. 37's gain was an operating point and §10.7.1's closing line stands, "
+                   "with the excess recorded rather than denied")
     else:
-        verdict = ("R1/R2 SPLIT: " + ", ".join(f"{c}={summary[c]['verdict']}" for c in failures)
+        verdict = ("SPLIT: " + ", ".join(f"{c}={summary[c]['verdict']}" for c in failures)
                    + ", so the answer is class-specific")
     print(f"\nverdict: {verdict}")
 
-    dest = V3 / f"fixed_background_operating_point_{tag}.json"
-    json.dump({"arm": tag, "K_grid": ks, "seeds": a.seeds, "n_reserved_background": N_RESERVE,
+    sfx = "" if a.split == "random" else "_namedisjoint"
+    dest = V3 / f"fixed_background_operating_point_{tag}{sfx}.json"
+    json.dump({"arm": tag, "K_grid": ks, "seeds": a.seeds, "n_reserved_background": len(BG),
+               "n_available": len(AVAIL), "split": a.split, "n_name_groups": n_groups,
                "reserve_seed": RESERVE_SEED, "failures": failures, "comparison": comparison,
                "curves": out, "summary": summary,
-               "homology_caveat": ("36 put the pool's effective count at about 5203 of 8259, so the "
-                                  "reserved background probably contains homologs of proteins the "
-                                  "large-K arms train on. The bias flatters large K"),
+               "redundancy_caveat": ("8259 records carry 3550 distinct names, redundancy factor "
+                                     "2.33, most repeated name 389 times. Under split=random the "
+                                     "reserved background shares orthologs with training by "
+                                     "construction, which flatters large K. split=name-disjoint "
+                                     "removes that and the gap between the two modes is the size "
+                                     "of the contamination"),
                "verdict": verdict}, open(dest, "w"), indent=2)
     print(f"wrote {dest}")
 

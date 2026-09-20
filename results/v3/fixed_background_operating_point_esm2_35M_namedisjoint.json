@@ -1,0 +1,298 @@
+{
+  "arm": "esm2_35M",
+  "K_grid": [
+    0,
+    500,
+    1500,
+    4000,
+    6255
+  ],
+  "seeds": 30,
+  "n_reserved_background": 2004,
+  "n_available": 6255,
+  "split": "name-disjoint",
+  "n_name_groups": 3550,
+  "reserve_seed": 12345,
+  "failures": [
+    "beta_lactamase"
+  ],
+  "comparison": "superantigen_enterotoxin",
+  "curves": {
+    "beta_lactamase": {
+      "0": {
+        "recovery": {
+          "mean": 0.021428571428571425,
+          "sd": 0.03821307718728029
+        },
+        "fp_panel_hard": {
+          "mean": 0.042372881355932195,
+          "sd": 0.013166429370039522
+        },
+        "fp_background": {
+          "mean": 0.050415834996673334,
+          "sd": 9.110488315122514e-05
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.007142857142857143,
+          "sd": 0.021794898330668906
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.014285714285714284
+        },
+        "excess_net": {
+          "mean": 0.0
+        }
+      },
+      "500": {
+        "recovery": {
+          "mean": 0.2619047619047619,
+          "sd": 0.15842883276232889
+        },
+        "fp_panel_hard": {
+          "mean": 0.09745762711864404,
+          "sd": 0.02821691191150921
+        },
+        "fp_background": {
+          "mean": 0.0503992015968064,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.21904761904761905,
+          "sd": 0.17185224056549214
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.04285714285714287
+        },
+        "excess_net": {
+          "mean": 0.028571428571428588
+        }
+      },
+      "1500": {
+        "recovery": {
+          "mean": 0.2095238095238095,
+          "sd": 0.1124441112772009
+        },
+        "fp_panel_hard": {
+          "mean": 0.11638418079096048,
+          "sd": 0.028494932098582768
+        },
+        "fp_background": {
+          "mean": 0.0503992015968064,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.28809523809523807,
+          "sd": 0.18989546119757283
+        },
+        "excess_over_iso_fp": {
+          "mean": -0.07857142857142857
+        },
+        "excess_net": {
+          "mean": -0.09285714285714286
+        }
+      },
+      "4000": {
+        "recovery": {
+          "mean": 0.17619047619047618,
+          "sd": 0.061454723878868044
+        },
+        "fp_panel_hard": {
+          "mean": 0.14802259887005648,
+          "sd": 0.03343734906154027
+        },
+        "fp_background": {
+          "mean": 0.0503992015968064,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.41428571428571426,
+          "sd": 0.2092175699009115
+        },
+        "excess_over_iso_fp": {
+          "mean": -0.23809523809523808
+        },
+        "excess_net": {
+          "mean": -0.2523809523809524
+        }
+      },
+      "6255": {
+        "recovery": {
+          "mean": 0.1976190476190476,
+          "sd": 0.03600049521383793
+        },
+        "fp_panel_hard": {
+          "mean": 0.15310734463276834,
+          "sd": 0.034111931579472926
+        },
+        "fp_background": {
+          "mean": 0.0503992015968064,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.43333333333333324,
+          "sd": 0.19667658622311673
+        },
+        "excess_over_iso_fp": {
+          "mean": -0.23571428571428563
+        },
+        "excess_net": {
+          "mean": -0.24999999999999992
+        }
+      },
+      "granularity_floor_pts": 1.4285714285714284
+    },
+    "superantigen_enterotoxin": {
+      "0": {
+        "recovery": {
+          "mean": 0.9142857142857144,
+          "sd": 0.110018871134137
+        },
+        "fp_panel_hard": {
+          "mean": 0.04322033898305085,
+          "sd": 0.013417950925797978
+        },
+        "fp_background": {
+          "mean": 0.0503992015968064,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.7904761904761906,
+          "sd": 0.24809856311731698
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.12380952380952381
+        },
+        "excess_net": {
+          "mean": 0.0
+        }
+      },
+      "500": {
+        "recovery": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "fp_panel_hard": {
+          "mean": 0.10225988700564972,
+          "sd": 0.02787992436918714
+        },
+        "fp_background": {
+          "mean": 0.0503992015968064,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.9857142857142858,
+          "sd": 0.04358979666133782
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.014285714285714235
+        },
+        "excess_net": {
+          "mean": -0.10952380952380958
+        }
+      },
+      "1500": {
+        "recovery": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "fp_panel_hard": {
+          "mean": 0.11807909604519776,
+          "sd": 0.028057016501514143
+        },
+        "fp_background": {
+          "mean": 0.0503992015968064,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.9952380952380953,
+          "sd": 0.02608202654786506
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.004761904761904745
+        },
+        "excess_net": {
+          "mean": -0.11904761904761907
+        }
+      },
+      "4000": {
+        "recovery": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "fp_panel_hard": {
+          "mean": 0.14265536723163844,
+          "sd": 0.03060276141781929
+        },
+        "fp_background": {
+          "mean": 0.0503992015968064,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.0
+        },
+        "excess_net": {
+          "mean": -0.12380952380952381
+        }
+      },
+      "6255": {
+        "recovery": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "fp_panel_hard": {
+          "mean": 0.15141242937853105,
+          "sd": 0.03184404802862765
+        },
+        "fp_background": {
+          "mean": 0.0503992015968064,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.0
+        },
+        "excess_net": {
+          "mean": -0.12380952380952381
+        }
+      },
+      "granularity_floor_pts": 12.380952380952381
+    }
+  },
+  "summary": {
+    "beta_lactamase": {
+      "recovery_K0": 0.021428571428571425,
+      "recovery_best": 0.2619047619047619,
+      "best_K_by_excess": 500,
+      "iso_fp_baseline_at_best_K": 0.21904761904761905,
+      "excess_net_pts": 2.857142857142859,
+      "granularity_floor_pts": 1.4285714285714284,
+      "raw_gain_pts": 24.047619047619047,
+      "fp_hard_K0": 0.042372881355932195,
+      "fp_hard_best": 0.09745762711864404,
+      "fp_hard_ratio": 2.3,
+      "verdict": "OFF-BUDGET"
+    },
+    "superantigen_enterotoxin": {
+      "recovery_K0": 0.9142857142857144,
+      "recovery_best": 0.9142857142857144,
+      "best_K_by_excess": 0,
+      "iso_fp_baseline_at_best_K": 0.7904761904761906,
+      "excess_net_pts": 0.0,
+      "granularity_floor_pts": 12.380952380952381,
+      "raw_gain_pts": 0.0,
+      "fp_hard_K0": 0.04322033898305085,
+      "fp_hard_best": 0.04322033898305085,
+      "fp_hard_ratio": 1.0,
+      "verdict": "THRESHOLD"
+    }
+  },
+  "redundancy_caveat": "8259 records carry 3550 distinct names, redundancy factor 2.33, most repeated name 389 times. Under split=random the reserved background shares orthologs with training by construction, which flatters large K. split=name-disjoint removes that and the gap between the two modes is the size of the contamination",
+  "verdict": "R2 with a caveat: every unreachable class does show an excess over the iso-FP baseline, but only after its hard-negative false-positive rate has passed 1.5x the K=0 rate, so the excess is not available at the panel's budget. 37's gain was an operating point and \u00a710.7.1's closing line stands, with the excess recorded rather than denied"
+}
