@@ -351,6 +351,86 @@ once bacteriocins are in the panel labelled non-animal. Bacteriocins and pore-fo
 by making holes in a membrane, so labelling one family non-animal pulls the other toward it. The axis is
 real and it is not clean.
 
+### 2.6 🔴 The negatives have no test set, and every specificity here is measured on the set that chose the threshold
+
+`src/45_negative_test_set_audit.py`. `03b` produces every leave-one-mechanism-out number in this
+document, and it splits the negatives **once**:
+
+```python
+nte, ntr = nperm[:ncut], nperm[ncut:]        # 40% / 60%
+Xtr = np.vstack([P[tri], N[ntr]])            # train on the 60%
+s_nte = model.predict_proba(N[nte])[:, 1]
+t95 = threshold_at_specificity(s_nte, 0.95)  # threshold FROM the 40%
+...
+(s_nte >= t95).mean()                        # "realised FPR", on the SAME 40%
+```
+
+The variable is named `nte`, as in negative test, and it is a **calibration** set: the threshold is its
+0.95 quantile. `03b`'s own docstring says as much, "makes FPR 5% by construction". So the positives have a
+test set, the held-out mechanism class, and the negatives never do. A sweep of all 45 scripts in `src/`
+finds **no three-way negative split anywhere**. Every "at 95% specificity" in this repository is a
+within-calibration-set specificity, and the rate on negatives the threshold has never seen had never been
+measured.
+
+**The measurement.** Training negatives stay at the published 178, and the published 118 is divided into m
+calibration and 118 − m test, so the published protocol is the **m = 118 endpoint with an empty test set**.
+300 seeds, no class held out, on both arms that have the data:
+
+| m | test n | in-sample FP | out-of-sample FP, 650M | out-of-sample FP, 35M | order-statistic bracket | conformal arm, 650M |
+|---|---|---|---|---|---|---|
+| 20 | 98 | 5.00% | **8.64% ± 0.35** | **8.79% ± 0.33** | [4.76, 9.52] | 4.65% (≤4.76 held) |
+| 30 | 88 | 6.67% | 7.10% ± 0.27 | 7.58% ± 0.28 | [6.45, 9.68] | 2.86% (≤3.23 held) |
+| 45 | 73 | 6.67% | 6.91% ± 0.26 | 6.81% ± 0.25 | [6.52, 8.70] | 4.27% (≤4.35 held) |
+| 60 | 58 | 5.00% | 6.47% ± 0.26 | 6.20% ± 0.24 | [4.92, 6.56] | 4.87% (≤4.92 held) |
+| 78 | 40 | 5.13% | 5.87% ± 0.27 | 5.47% ± 0.24 | [5.06, 6.33] | 3.63% (≤3.80 held) |
+| 98 | 20 | 5.10% | 5.58% ± 0.34 | 5.38% ± 0.31 | [5.05, 6.06] | 3.87% (≤4.04 held) |
+| **118** | **0** | 5.08% | **never measured, this is `03b`** | | [5.04, 5.88] | |
+
+🔑 **`np.quantile(s, 0.95)` cannot deliver 5% out of sample at these sample sizes, and not because of
+noise.** With m calibration points the achievable exceedance rates are the discrete set `{j/(m+1)}`. At
+m=30 the neighbours are 1/31 = 3.2% and 2/31 = 6.5%, and **5% is not among them**. Interpolating does not
+create the missing rate; it lands between two order statistics and the realised rate is bracketed by them.
+At **4 of the 6** sizes the bracket's *lower* edge already exceeds 5%. The observed mean falls inside the
+bracket at **6 of 6 sizes on both arms**, so this is the estimator behaving predictably rather than a
+model failing.
+
+At the smallest calibration set the gap is not subtle: **8.6%** measured against **5%** stated, 1.7 times
+nominal, and individual splits reach **36.7%**.
+
+🟢 **The fix is arithmetic and it is demonstrated rather than recommended.** Taking the k-th largest
+calibration score with k = ⌊(m+1)α⌋ gives the conformal guarantee that a fresh negative exceeds it with
+probability ≤ k/(m+1) ≤ α. That arm **held its guarantee at every size on both arms**, at the price of
+running conservative, 2.9% to 4.9% where 5% was asked for. A finite-sample bound is available; an
+interpolated point estimate is not.
+
+⚠️ **What this does and does not do to the numbers in this document.** The published protocol uses the
+largest calibration set available, all 118, which is the best case in the table: its bracket is
+[5.04, 5.88], so its true out-of-sample rate is within about 0.9 points of what it claims. The published
+figures are not overturned. What was wrong is that the rate was **never measured**, and what the table adds
+is that the error grows sharply as calibration data shrinks.
+
+🔴 **And the classes most sensitive to it are the ones §10 is about.** Panel B re-runs the recovery table
+at each m. Sorted by how far each class moves between m=20 and m=118 on the canonical arm:
+
+| class | m=20 | m=118 | swing |
+|---|---|---|---|
+| virulence_associated_non_toxin | 44.3% | 31.3% | **+13.0** |
+| phage_peptidoglycan_hydrolase | 21.0% | 12.2% | **+8.9** |
+| beta_lactamase | 26.9% | 21.2% | **+5.7** |
+| adp_ribosyl_ab_toxin, clostridial_neurotoxin | 100.0% | 100.0% | 0.0 |
+
+The classes at the ceiling do not move at all and the low-recovery classes move most, because recovery and
+the realised false-positive rate rise together when the threshold loosens. So **"recovery at 95%
+specificity" conflates the two whenever the calibration set is small**, which is the same operating-point
+confusion §10.9.1 found in the pool experiment, arriving here from calibration size alone.
+
+🔑 **This also explains §10.8's requirement rather than restating it.** §10.8 says a one-in-ten-thousand
+budget needs **250,003** panel negatives, 100,001 of them in the calibration split, derived from wanting
+ten negatives above the threshold. The order statistics give the same number for a stated reason: k=10
+granularity at α=10⁻⁴ needs m ≥ 99,999 calibration points, which is **249,998** at a 40% split. Two
+derivations, one number, and now with the reason attached: the calibration set size fixes the **granularity
+of the achievable operating points**, not merely the precision of one.
+
 ## 3. Result: recovery is class-dependent and spans the full range
 
 ESM-2 650M, mean pooling, 5 seeds. `results/v2/lomo_results.json`, `src/03b_leave_one_mechanism_out.py`.

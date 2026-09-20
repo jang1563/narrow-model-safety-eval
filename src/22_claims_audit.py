@@ -847,6 +847,39 @@ def v3_panel_and_target_host():
             "verdict_supported": th["verdict"].startswith("SUPPORTED")}
 
 
+def negative_test_set_audit():
+    """§2.6: the negatives have no test set, so every published specificity is within-calibration-set.
+    Pinned on both halves at once: the estimator misses nominal by a computable amount at small
+    calibration sizes, AND the conformal alternative holds its guarantee, because the first without the
+    second is a complaint and the second without the first is an unmotivated change."""
+    a = j("v3/negative_test_set_audit_esm2_650M.json")
+    b = j("v3/negative_test_set_audit_esm2_35M.json")
+    A, B = a["panel_A_deployable_model"], b["panel_A_deployable_model"]
+    ms = [str(m) for m in a["m_grid"] if A[str(m)]["fp_out_mean"] is not None]
+    inb = lambda D, m: (D[m]["bracket_lo"] - 2 * D[m]["se_fp_out"] <= D[m]["fp_out_mean"]
+                        <= D[m]["bracket_hi"] + 2 * D[m]["se_fp_out"])
+    held = lambda D, m: (D[m]["conformal_fp_out_mean"]
+                         <= D[m]["conformal_guarantee"] + 2 * D[m]["se_conformal"])
+    pb = a["panel_B_lomo_recovery"]
+    swing = {c: (pb[c]["20"]["mean"] - pb[c]["118"]["mean"]) * 100 for c in pb}
+    return {"seeds_panel_a": A["20"]["seeds"], "m_grid": a["m_grid"],
+            "published_split": a["published_split"],
+            "fp_out_at_m20_650M": A["20"]["fp_out_mean"], "fp_out_at_m20_35M": B["20"]["fp_out_mean"],
+            "worst_split_650M": A["20"]["fp_out_max"],
+            "in_bracket_650M": sum(inb(A, m) for m in ms),
+            "in_bracket_35M": sum(inb(B, m) for m in ms),
+            "n_sizes": len(ms),
+            "conformal_held_650M": sum(held(A, m) for m in ms),
+            "conformal_held_35M": sum(held(B, m) for m in ms),
+            "sizes_where_nominal_unreachable": sum(A[m]["bracket_lo"] > 0.05 for m in ms),
+            "published_m118_bracket": [A["118"]["bracket_lo"], A["118"]["bracket_hi"]],
+            "ceiling_classes_do_not_move":
+                all(abs(swing[c]) < 1e-9 for c in ("adp_ribosyl_ab_toxin", "clostridial_neurotoxin")),
+            "swing_control": swing["virulence_associated_non_toxin"],
+            "swing_phage": swing["phage_peptidoglycan_hydrolase"],
+            "swing_beta": swing["beta_lactamase"]}
+
+
 def what_predicts_the_response():
     """§10.9.2: what predicts whether a larger benign set helps or hurts a class. Pinned with its own
     multiplicity failure, because the surviving correlation misses a Bonferroni threshold the
@@ -1480,6 +1513,26 @@ CLAIMS = [
                 and v["v2_balanced"] == 0.5 and not v["v2_usable"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "**v3 is 149 positives against 296 negatives**"}, []),
+    ("the negatives have no test set, and the estimator misses nominal where conformal holds",
+     negative_test_set_audit,
+     lambda v: (v["seeds_panel_a"] == 300 and v["n_sizes"] == 6
+                and v["published_split"]["test"] == 0
+                and 0.085 < v["fp_out_at_m20_650M"] < 0.088
+                and 0.087 < v["fp_out_at_m20_35M"] < 0.089
+                and v["fp_out_at_m20_650M"] > 1.7 * 0.05
+                and v["worst_split_650M"] > 0.30
+                # the estimator is predictable: inside the order-statistic bracket everywhere
+                and v["in_bracket_650M"] == 6 and v["in_bracket_35M"] == 6
+                # and the fix works: the conformal guarantee holds everywhere
+                and v["conformal_held_650M"] == 6 and v["conformal_held_35M"] == 6
+                and v["sizes_where_nominal_unreachable"] == 4
+                and abs(v["published_m118_bracket"][0] - 0.0504) < 0.001
+                # the sensitivity is concentrated in the low-recovery classes
+                and v["ceiling_classes_do_not_move"]
+                and v["swing_control"] > 12 and v["swing_phage"] > 8 and v["swing_beta"] > 5),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "**`np.quantile(s, 0.95)` cannot deliver 5% out of sample at these sample sizes, and not because of\nnoise.**"},
+     []),
     ("the one predictor of the per-class sign fails both its multiplicity check and a second arm",
      what_predicts_the_response,
      lambda v: (v["n_classes"] == 12 and v["seeds"] == 30 and v["perms"] == 20000

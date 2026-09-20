@@ -1,0 +1,569 @@
+{
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "spec_target": 0.95,
+  "n_positives": 149,
+  "n_negatives": 296,
+  "published_split": {
+    "train": 178,
+    "calibrate": 118,
+    "test": 0
+  },
+  "m_grid": [
+    20,
+    30,
+    45,
+    60,
+    78,
+    98,
+    118
+  ],
+  "panel_A_deployable_model": {
+    "20": {
+      "n_test": 98,
+      "fp_in_sample_mean": 0.049999999999999996,
+      "fp_out_mean": 0.08785714285714284,
+      "fp_out_sd": 0.05712679674263674,
+      "fp_out_min": 0.0,
+      "fp_out_max": 0.2857142857142857,
+      "frac_seeds_over_2x_nominal": 0.37,
+      "k_above_threshold": 1,
+      "pred_order_statistic": 0.047619047619047616,
+      "sd_from_threshold": 0.046466018864229276,
+      "sd_from_test_set": 0.022015764296317783,
+      "sd_total_predicted": 0.05141774777877705,
+      "bracket_lo": 0.047619047619047616,
+      "bracket_hi": 0.09523809523809523,
+      "interp_fraction": 0.05000000000000071,
+      "conformal_k": 1,
+      "conformal_guarantee": 0.047619047619047616,
+      "conformal_fp_out_mean": 0.04503401360544218,
+      "conformal_fp_out_max": 0.24489795918367346,
+      "seeds": 300,
+      "se_fp_out": 0.003298217147730235,
+      "se_conformal": 0.0026047170254218867
+    },
+    "30": {
+      "n_test": 88,
+      "fp_in_sample_mean": 0.06666666666666667,
+      "fp_out_mean": 0.07575757575757576,
+      "fp_out_sd": 0.04784614817292109,
+      "fp_out_min": 0.0,
+      "fp_out_max": 0.2727272727272727,
+      "frac_seeds_over_2x_nominal": 0.2733333333333333,
+      "k_above_threshold": 2,
+      "pred_order_statistic": 0.06451612903225806,
+      "sd_from_threshold": 0.03852758751855612,
+      "sd_from_test_set": 0.023233009432114638,
+      "sd_total_predicted": 0.04499052930642992,
+      "bracket_lo": 0.06451612903225806,
+      "bracket_hi": 0.0967741935483871,
+      "interp_fraction": 0.5499999999999972,
+      "conformal_k": 1,
+      "conformal_guarantee": 0.03225806451612903,
+      "conformal_fp_out_mean": 0.029583333333333333,
+      "conformal_fp_out_max": 0.17045454545454544,
+      "seeds": 300,
+      "se_fp_out": 0.002762398652732271,
+      "se_conformal": 0.0018345285456523063
+    },
+    "45": {
+      "n_test": 73,
+      "fp_in_sample_mean": 0.06666666666666667,
+      "fp_out_mean": 0.06808219178082191,
+      "fp_out_sd": 0.04253471523398741,
+      "fp_out_min": 0.0,
+      "fp_out_max": 0.2602739726027397,
+      "frac_seeds_over_2x_nominal": 0.21666666666666667,
+      "k_above_threshold": 3,
+      "pred_order_statistic": 0.06521739130434782,
+      "sd_from_threshold": 0.03179053786698711,
+      "sd_from_test_set": 0.025508526643200108,
+      "sd_total_predicted": 0.04075933303403272,
+      "bracket_lo": 0.06521739130434782,
+      "bracket_hi": 0.08695652173913043,
+      "interp_fraction": 0.7999999999999972,
+      "conformal_k": 2,
+      "conformal_guarantee": 0.043478260869565216,
+      "conformal_fp_out_mean": 0.042831050228310505,
+      "conformal_fp_out_max": 0.2054794520547945,
+      "seeds": 300,
+      "se_fp_out": 0.0024557429290246705,
+      "se_conformal": 0.002060354347335987
+    },
+    "60": {
+      "n_test": 58,
+      "fp_in_sample_mean": 0.049999999999999996,
+      "fp_out_mean": 0.06195402298850577,
+      "fp_out_sd": 0.04209566500219197,
+      "fp_out_min": 0.0,
+      "fp_out_max": 0.2413793103448276,
+      "frac_seeds_over_2x_nominal": 0.19,
+      "k_above_threshold": 3,
+      "pred_order_statistic": 0.04918032786885246,
+      "sd_from_threshold": 0.0276790359705331,
+      "sd_from_test_set": 0.028617573573616963,
+      "sd_total_predicted": 0.03981324590509351,
+      "bracket_lo": 0.04918032786885246,
+      "bracket_hi": 0.06557377049180328,
+      "interp_fraction": 0.04999999999999716,
+      "conformal_k": 3,
+      "conformal_guarantee": 0.04918032786885246,
+      "conformal_fp_out_mean": 0.04632183908045977,
+      "conformal_fp_out_max": 0.1896551724137931,
+      "seeds": 300,
+      "se_fp_out": 0.002430394352073184,
+      "se_conformal": 0.0021358524855072595
+    },
+    "78": {
+      "n_test": 40,
+      "fp_in_sample_mean": 0.05128205128205127,
+      "fp_out_mean": 0.05466666666666666,
+      "fp_out_sd": 0.04154083563965734,
+      "fp_out_min": 0.0,
+      "fp_out_max": 0.25,
+      "frac_seeds_over_2x_nominal": 0.07666666666666666,
+      "k_above_threshold": 4,
+      "pred_order_statistic": 0.05063291139240506,
+      "sd_from_threshold": 0.02436698586202242,
+      "sd_from_test_set": 0.03446012188022557,
+      "sd_total_predicted": 0.04220485754033535,
+      "bracket_lo": 0.05063291139240506,
+      "bracket_hi": 0.06329113924050633,
+      "interp_fraction": 0.14999999999999147,
+      "conformal_k": 3,
+      "conformal_guarantee": 0.0379746835443038,
+      "conformal_fp_out_mean": 0.032916666666666664,
+      "conformal_fp_out_max": 0.2,
+      "seeds": 300,
+      "se_fp_out": 0.0023983612638918163,
+      "se_conformal": 0.0018941408122348674
+    },
+    "98": {
+      "n_test": 20,
+      "fp_in_sample_mean": 0.051020408163265314,
+      "fp_out_mean": 0.05383333333333333,
+      "fp_out_sd": 0.05325811655342576,
+      "fp_out_min": 0.0,
+      "fp_out_max": 0.2,
+      "frac_seeds_over_2x_nominal": 0.11333333333333333,
+      "k_above_threshold": 5,
+      "pred_order_statistic": 0.050505050505050504,
+      "sd_from_threshold": 0.021794494717703377,
+      "sd_from_test_set": 0.04873397172404484,
+      "sd_total_predicted": 0.05338539126015658,
+      "bracket_lo": 0.050505050505050504,
+      "bracket_hi": 0.06060606060606061,
+      "interp_fraction": 0.14999999999999147,
+      "conformal_k": 4,
+      "conformal_guarantee": 0.04040404040404041,
+      "conformal_fp_out_mean": 0.0395,
+      "conformal_fp_out_max": 0.2,
+      "seeds": 300,
+      "se_fp_out": 0.0030748587928652823,
+      "se_conformal": 0.002792378942062808
+    },
+    "118": {
+      "n_test": 0,
+      "fp_in_sample_mean": 0.05084745762711863,
+      "fp_out_mean": null,
+      "fp_out_sd": null,
+      "fp_out_min": null,
+      "fp_out_max": null,
+      "frac_seeds_over_2x_nominal": null,
+      "k_above_threshold": 6,
+      "pred_order_statistic": 0.05042016806722689,
+      "sd_from_threshold": 0.019895560643855545,
+      "sd_from_test_set": null,
+      "sd_total_predicted": null,
+      "bracket_lo": 0.05042016806722689,
+      "bracket_hi": 0.058823529411764705,
+      "interp_fraction": 0.14999999999999147,
+      "conformal_k": 5,
+      "conformal_guarantee": 0.04201680672268908,
+      "conformal_fp_out_mean": null,
+      "conformal_fp_out_max": null,
+      "seeds": 300,
+      "se_fp_out": null,
+      "se_conformal": null
+    }
+  },
+  "panel_B_lomo_recovery": {
+    "adp_ribosyl_ab_toxin": {
+      "20": {
+        "mean": 0.9619047619047619,
+        "sd": 0.06425377787268625
+      },
+      "30": {
+        "mean": 0.9333333333333335,
+        "sd": 0.08162092338905227
+      },
+      "45": {
+        "mean": 0.9142857142857144,
+        "sd": 0.07118183987463428
+      },
+      "60": {
+        "mean": 0.9000000000000001,
+        "sd": 0.06658451424277133
+      },
+      "78": {
+        "mean": 0.9095238095238096,
+        "sd": 0.07001893112193731
+      },
+      "98": {
+        "mean": 0.9047619047619048,
+        "sd": 0.0684947573550549
+      },
+      "118": {
+        "mean": 0.9000000000000001,
+        "sd": 0.06658451424277133
+      }
+    },
+    "bacteriocin": {
+      "20": {
+        "mean": 0.92,
+        "sd": 0.09810464348233949
+      },
+      "30": {
+        "mean": 0.9133333333333334,
+        "sd": 0.08239703896774045
+      },
+      "45": {
+        "mean": 0.8977777777777778,
+        "sd": 0.07161697466401065
+      },
+      "60": {
+        "mean": 0.8911111111111113,
+        "sd": 0.06889012481897122
+      },
+      "78": {
+        "mean": 0.8888888888888891,
+        "sd": 0.09482120029583462
+      },
+      "98": {
+        "mean": 0.8866666666666668,
+        "sd": 0.08423648521046583
+      },
+      "118": {
+        "mean": 0.8866666666666668,
+        "sd": 0.06814453874610597
+      }
+    },
+    "beta_lactamase": {
+      "20": {
+        "mean": 0.18095238095238092,
+        "sd": 0.17769076766650088
+      },
+      "30": {
+        "mean": 0.13809523809523808,
+        "sd": 0.13647483719337253
+      },
+      "45": {
+        "mean": 0.09285714285714285,
+        "sd": 0.13283833756416896
+      },
+      "60": {
+        "mean": 0.07142857142857142,
+        "sd": 0.10101525445522108
+      },
+      "78": {
+        "mean": 0.054761904761904755,
+        "sd": 0.07888056813959823
+      },
+      "98": {
+        "mean": 0.06666666666666667,
+        "sd": 0.10432810619146021
+      },
+      "118": {
+        "mean": 0.06904761904761904,
+        "sd": 0.1035664740335816
+      }
+    },
+    "clostridial_neurotoxin": {
+      "20": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "30": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "45": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "60": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "78": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "98": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "118": {
+        "mean": 1.0,
+        "sd": 0.0
+      }
+    },
+    "contact_dependent_inhibition": {
+      "20": {
+        "mean": 0.9666666666666667,
+        "sd": 0.08643647591044011
+      },
+      "30": {
+        "mean": 0.9666666666666667,
+        "sd": 0.08643647591044011
+      },
+      "45": {
+        "mean": 0.9583333333333334,
+        "sd": 0.09476225544736293
+      },
+      "60": {
+        "mean": 0.9583333333333334,
+        "sd": 0.09476225544736293
+      },
+      "78": {
+        "mean": 0.95,
+        "sd": 0.10170952554312156
+      },
+      "98": {
+        "mean": 0.95,
+        "sd": 0.10170952554312156
+      },
+      "118": {
+        "mean": 0.9416666666666667,
+        "sd": 0.10754576678801907
+      }
+    },
+    "cry_insecticidal": {
+      "20": {
+        "mean": 0.7,
+        "sd": 0.24712654723952102
+      },
+      "30": {
+        "mean": 0.6545454545454543,
+        "sd": 0.24999287536157394
+      },
+      "45": {
+        "mean": 0.6878787878787878,
+        "sd": 0.21444465690894002
+      },
+      "60": {
+        "mean": 0.6272727272727272,
+        "sd": 0.22566831810793284
+      },
+      "78": {
+        "mean": 0.6151515151515151,
+        "sd": 0.23985049648282342
+      },
+      "98": {
+        "mean": 0.6075757575757577,
+        "sd": 0.2275807734727397
+      },
+      "118": {
+        "mean": 0.6348484848484848,
+        "sd": 0.21101180254015953
+      }
+    },
+    "phage_peptidoglycan_hydrolase": {
+      "20": {
+        "mean": 0.3229166666666667,
+        "sd": 0.14938210859341924
+      },
+      "30": {
+        "mean": 0.32395833333333335,
+        "sd": 0.12486073420175894
+      },
+      "45": {
+        "mean": 0.325,
+        "sd": 0.11150179757326321
+      },
+      "60": {
+        "mean": 0.32083333333333336,
+        "sd": 0.09707929422804891
+      },
+      "78": {
+        "mean": 0.2916666666666667,
+        "sd": 0.108356816641334
+      },
+      "98": {
+        "mean": 0.2791666666666667,
+        "sd": 0.09282348685889623
+      },
+      "118": {
+        "mean": 0.275,
+        "sd": 0.0805757835615126
+      }
+    },
+    "pore_forming_cytolysin": {
+      "20": {
+        "mean": 0.9571428571428572,
+        "sd": 0.10710179837256507
+      },
+      "30": {
+        "mean": 0.9761904761904763,
+        "sd": 0.06587614819677344
+      },
+      "45": {
+        "mean": 0.9666666666666668,
+        "sd": 0.08118868245084791
+      },
+      "60": {
+        "mean": 0.9714285714285714,
+        "sd": 0.06917631401592891
+      },
+      "78": {
+        "mean": 0.9476190476190477,
+        "sd": 0.10927007089386535
+      },
+      "98": {
+        "mean": 0.942857142857143,
+        "sd": 0.12214364935069914
+      },
+      "118": {
+        "mean": 0.9523809523809524,
+        "sd": 0.12059746487342225
+      }
+    },
+    "rip_rrna_glycosidase": {
+      "20": {
+        "mean": 0.9857142857142858,
+        "sd": 0.057511128562349835
+      },
+      "30": {
+        "mean": 0.9952380952380953,
+        "sd": 0.02608202654786506
+      },
+      "45": {
+        "mean": 0.9904761904761905,
+        "sd": 0.0521640530957301
+      },
+      "60": {
+        "mean": 0.9857142857142858,
+        "sd": 0.057511128562349835
+      },
+      "78": {
+        "mean": 0.9857142857142858,
+        "sd": 0.057511128562349835
+      },
+      "98": {
+        "mean": 0.9857142857142858,
+        "sd": 0.057511128562349835
+      },
+      "118": {
+        "mean": 0.9857142857142858,
+        "sd": 0.057511128562349835
+      }
+    },
+    "superantigen_enterotoxin": {
+      "20": {
+        "mean": 0.942857142857143,
+        "sd": 0.127775312999988
+      },
+      "30": {
+        "mean": 0.961904761904762,
+        "sd": 0.09138340427849886
+      },
+      "45": {
+        "mean": 0.9523809523809526,
+        "sd": 0.08663977640901754
+      },
+      "60": {
+        "mean": 0.9571428571428573,
+        "sd": 0.0764261543745606
+      },
+      "78": {
+        "mean": 0.9285714285714286,
+        "sd": 0.12859879292814397
+      },
+      "98": {
+        "mean": 0.9238095238095239,
+        "sd": 0.12850755574537248
+      },
+      "118": {
+        "mean": 0.9285714285714287,
+        "sd": 0.11097419040461884
+      }
+    },
+    "t3ss_effector_apparatus": {
+      "20": {
+        "mean": 0.7366666666666668,
+        "sd": 0.13514572807192965
+      },
+      "30": {
+        "mean": 0.7433333333333335,
+        "sd": 0.10726484571581123
+      },
+      "45": {
+        "mean": 0.7433333333333333,
+        "sd": 0.09352607356658148
+      },
+      "60": {
+        "mean": 0.7533333333333335,
+        "sd": 0.08603661343041528
+      },
+      "78": {
+        "mean": 0.7166666666666669,
+        "sd": 0.14874957741657352
+      },
+      "98": {
+        "mean": 0.7100000000000002,
+        "sd": 0.12958820721144293
+      },
+      "118": {
+        "mean": 0.7133333333333334,
+        "sd": 0.12793676598989842
+      }
+    },
+    "virulence_associated_non_toxin": {
+      "20": {
+        "mean": 0.3766666666666667,
+        "sd": 0.1546594330452723
+      },
+      "30": {
+        "mean": 0.37666666666666665,
+        "sd": 0.11351236704106019
+      },
+      "45": {
+        "mean": 0.35000000000000003,
+        "sd": 0.09737945687202025
+      },
+      "60": {
+        "mean": 0.33333333333333337,
+        "sd": 0.10933445471810681
+      },
+      "78": {
+        "mean": 0.3366666666666667,
+        "sd": 0.11591713250937243
+      },
+      "98": {
+        "mean": 0.32,
+        "sd": 0.10305673027596216
+      },
+      "118": {
+        "mean": 0.32,
+        "sd": 0.10305673027596216
+      }
+    }
+  },
+  "classes": [
+    "adp_ribosyl_ab_toxin",
+    "bacteriocin",
+    "beta_lactamase",
+    "clostridial_neurotoxin",
+    "contact_dependent_inhibition",
+    "cry_insecticidal",
+    "phage_peptidoglycan_hydrolase",
+    "pore_forming_cytolysin",
+    "rip_rrna_glycosidase",
+    "superantigen_enterotoxin",
+    "t3ss_effector_apparatus",
+    "virulence_associated_non_toxin"
+  ],
+  "defect": "03b names its calibration set `nte` and fits the threshold on it, so every reported specificity is within-calibration-set. No script in src/ does a three-way negative split",
+  "verdict": "THE ESTIMATOR, NOT THE MODEL. The out-of-sample false-positive rate falls inside the order-statistic bracket at 6 of 6 calibration sizes, and at the smallest it is 8.79% against a stated 5%, 1.8x nominal, with single splits reaching 28.6%. At 4 of 6 sizes the bracket's LOWER edge already exceeds nominal, so 5% is not an achievable rate at those sample sizes by any order statistic. The conformal threshold delivers its guarantee at every size, so the fix is arithmetic. Report a finite-sample bound, not an interpolated point estimate"
+}

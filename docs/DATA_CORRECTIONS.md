@@ -1605,3 +1605,75 @@ reported as any.
 §10.9.2's heading now says the predictor does not replicate, its table carries both arms, and the
 audit pins the second arm's rho, its non-significance, the sign agreement, the halved magnitude and margin's
 null in both arms, so the −0.601 cannot be quoted without the −0.343 beside it.
+
+## 2026-09-20 (fifteenth entry) — The negatives never had a test set, and the threshold estimator cannot deliver the specificity it reports
+
+### The defect, found by reading the split rather than the results
+
+`03b` splits the negatives once, 40% and 60%, trains on the 60% and takes the threshold as the 0.95
+quantile of the 40%. It then reports the realised false-positive rate **on that same 40%**, which its own
+docstring describes as "5% by construction". The variable is called `nte`, as in negative test; it is a
+calibration set.
+
+🔴 **A sweep of all 45 scripts in `src/` finds no three-way negative split anywhere.** Not one holds
+negatives out of both training and threshold-fitting. So the positives have a test set, the held-out
+mechanism class, and the negatives never have. Every "at 95% specificity" in this repository is a
+within-calibration-set specificity.
+
+### What the measurement found
+
+`src/45` keeps training at the published 178 and divides the published 118 into m calibration and 118 − m
+test, so the published protocol is the m = 118 endpoint with an empty test set. 300 seeds, two arms.
+
+- At **m = 20** the out-of-sample rate is **8.64%** on the canonical arm and **8.79%** on 35M against a
+  stated 5%, **1.7 to 1.8 times nominal**, with single splits reaching **36.7%**.
+- 🔑 **`np.quantile(s, 0.95)` cannot return 5% at these sample sizes.** With m calibration points the
+  achievable exceedance rates are `{j/(m+1)}`; at m=30 the neighbours are 3.2% and 6.5% and 5% is not among
+  them. At **4 of 6** sizes the order-statistic bracket's lower edge already exceeds 5%. The observed mean
+  falls inside the bracket at **6 of 6 sizes on both arms**, so the estimator is behaving predictably.
+- 🟢 The conformal threshold, the k-th largest with k = ⌊(m+1)α⌋, **held its guarantee at every size on
+  both arms**, running conservative at 2.9% to 4.9%.
+
+### Three corrections to my own preregistration, all made before the numbers were believed
+
+1. The first prediction said the estimator is near-unbiased and the mean out-of-sample rate is 5%. That
+   treated `np.quantile` as if it returned a population quantile, which it does not on 20 points.
+2. The replacement asserted the point prediction `k/(m+1)` and missed by 3.8 points at m=20, because the
+   interpolation fraction was 0.05 there and the threshold sat almost on the (k+1)-th order statistic. The
+   defensible quantity is the **bracket**, which holds 6 of 6.
+3. The spread prediction used calibration noise only. The sweep trades calibration size against test size,
+   so the total is the root of two variances and is U-shaped in m rather than monotone.
+
+⚠️ A fourth was caught by the noise itself. At 30 seeds the canonical arm appeared to **violate** the
+conformal guarantee at m=78, 4.08% against ≤3.80%. The standard error of that mean was 0.57 points, so the
+excess was inside it. Panel A now runs at **300** seeds and every bracket and guarantee check is made
+against two standard errors rather than at face value. A guarantee checked with too few seeds to see it is
+not checked.
+
+### What this does and does not change
+
+🟢 **No published number is overturned.** The published protocol uses the largest calibration set
+available, all 118, whose bracket is [5.04, 5.88]. Its true out-of-sample rate is within about 0.9 points
+of what it claims. What was wrong is that the rate was never measured.
+
+🔴 **The classes most sensitive to it are the ones §10 is about.** Between m=20 and m=118 the virulence
+control moves 13.0 points, the phage class 8.9 and beta-lactamase 5.7, while the two classes at the ceiling
+move exactly 0.0. Recovery and the realised false-positive rate rise together when the threshold loosens,
+so "recovery at 95% specificity" conflates them whenever the calibration set is small. That is §10.9.1's
+operating-point confusion arriving from calibration size alone.
+
+🔑 It also explains §10.8 rather than restating it. §10.8's 250,003 requirement was derived from wanting
+ten negatives above the threshold; k=10 granularity at α=10⁻⁴ needs m ≥ 99,999, which is **249,998** at a
+40% split. The calibration set size fixes the **granularity** of the achievable operating points, not
+merely the precision of one.
+
+### Fix
+
+§2.6 carries the split, the table, the bracket, the conformal arm and the §10.8 closure. `src/45` is
+committed with its preregistration and its three corrections. The audit pins the m=20 rate on both arms,
+the 6-of-6 bracket, the 6-of-6 conformal guarantee, the four sizes where 5% is unreachable and the
+concentration of sensitivity in the low-recovery classes, so neither half can be quoted without the other.
+
+⚠️ `03b` is **not** changed. Rewriting the protocol would invalidate every published number for a defect
+that the m=118 bracket shows costs under a point. The three-way split belongs in the next panel, not
+retrofitted to this one.
