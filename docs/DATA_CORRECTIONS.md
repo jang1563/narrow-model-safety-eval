@@ -1490,3 +1490,70 @@ Both annotations now record the confirmed identity, the evidence, and why the as
 a **text replacement**, four lines across the two files, verified to change exactly two parsed values and
 nothing else: a parse-and-redump round trip had re-encoded an unrelated `§` escape in v3, which is more
 than a frozen artifact should absorb for a documentation change.
+
+## 2026-09-20 (thirteenth entry) — The last unassigned mechanism is assignable, and the family it belongs to cannot be a class
+
+### The second flag the same sweep found
+
+Sweeping both annotations for hedged reasons turned up exactly two across 80 and 149 proteins. The twelfth
+entry is the first. The second is `sp|Q7NWF2|COPC_CHRVO`, in the remainder class `other_toxin_mechanism`
+with the reason **"C. violaceum. Mechanism NOT confidently assigned"**.
+
+### It is assignable now
+
+Swiss-Prot gives Q7NWF2 the recommended name **Arginine ADP-riboxanase CopC**, EC **4.3.99.-**, family
+**OspC**, catalysing
+
+```
+L-arginyl-[protein] + NAD(+) = ADP-riboxanated L-argininyl-[protein] + nicotinamide + NH4(+) + H(+)
+```
+
+which blocks host caspase processing. ⚠️ ADP-riboxanation is **not** ADP-ribosylation: it releases ammonia
+and forms a different adduct, and Swiss-Prot names the two activities separately. So the panel's
+`adp_ribosyl_ab_toxin` class is the wrong home for it on chemistry, quite apart from that class being an
+AB-toxin architecture and this being a T3SS effector.
+
+🔴 **The panel already holds the only other independent member of that mechanism, in a different class.**
+`A0A0H2US87` OspC3 carries the same recommended-name pattern, the same EC and the same catalytic reaction,
+and the panel labels it `t3ss_effector_apparatus` with the reason "Shigella OspC3, T3SS effector, caspase-4
+inhibition". One mechanism, two classes: one member labelled by delivery, the other recorded as unassigned.
+
+### Why this cannot become a class, which closes the route it was found on
+
+The sweep was looking for an **unblocked** way to raise the class count above twelve, since n=12 is the
+resolution every claim in §10.4 to §10.6 and §10.9.2 runs at. A mechanism class defined by one EC and one
+catalytic reaction would have been the tightest definition in the panel. It fails the panel's own admission
+rule.
+
+Reviewed UniProt holds **seven** arginine ADP-riboxanases, all OspC family, all inside the panel's 100 to
+1400 length window. Under normalized Smith-Waterman at ≤ 0.30 they collapse to **two** independent
+sequences:
+
+| cluster | members | mutual similarity |
+|---|---|---|
+| *Shigella* / *E. coli* | OspC1 Q8VSJ7, OspC2 Q8VSL8, **OspC3 A0A0H2US87**, OspC4 A0A0H2USP8, OspC3 P0DV36 | 0.638 to 0.970 |
+| *Chromobacterium* | **CopC Q7NWF2**, OspC3 A0A2H5DV25 | 0.858 |
+
+Between the clusters, 0.269 to 0.301. Effective n is **2** against an eligibility floor of **4**, so the
+class is not buildable, and seven database entries are two independent sequences.
+
+🟢 **And the two the panel already has are exactly those two representatives, at 0.279.** Whoever selected
+them took one from each cluster and left nothing on the table, while labelling them into different classes.
+
+### Standing
+
+⚠️ Class assignments are left **UNCHANGED** for the same reason as the twelfth entry. Moving CopC into
+`t3ss_effector_apparatus` would take an eligible class from n=10 to 11 and change its recovery figure; a
+`arginine_adp_riboxanase` class of n=2 is ineligible and would take OspC3 **out** of an eligible class,
+changing the same figure the other way. Both are labelling decisions rather than corrections.
+
+⚠️ This route to raising n is now closed and the negative is worth recording, because the family looks like
+a strong candidate from its entry count and is not one. The two candidate classes that could raise n,
+`plant_target_avirulence` at 32 admissible and `chitinase_antifungal` at 29, are waiting on a crop-target
+release policy and a hazard-label validity call respectively.
+
+### Fix
+
+Both annotations record the assigned mechanism, the EC, the reaction, the family's effective n and why no
+class follows. No published number changes: `other_toxin_mechanism` is not holdout-eligible and appears in
+no LOMO result.

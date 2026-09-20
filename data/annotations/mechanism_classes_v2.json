@@ -116,7 +116,7 @@
       "fasta_id": "sp|Q7NWF2|COPC_CHRVO",
       "short_name": "COPC_CHRVO",
       "mechanism_class": "other_toxin_mechanism",
-      "reason": "C. violaceum. Mechanism NOT confidently assigned",
+      "reason": "Chromobacterium violaceum CopC. Mechanism ASSIGNED 2026-09-20: Swiss-Prot names it Arginine ADP-riboxanase CopC, EC 4.3.99.-, OspC family, catalysing L-arginyl-[protein] + NAD(+) = ADP-riboxanated L-argininyl-[protein] + nicotinamide + NH4(+), which inhibits host caspase processing. ADP-riboxanation is not ADP-ribosylation, so adp_ribosyl_ab_toxin is the wrong home. The panel already holds the only other independent member of this family, A0A0H2US87 OspC3 at 0.279 normalized SW, and labels it t3ss_effector_apparatus, so one mechanism sits in two classes. No arginine_adp_riboxanase class is possible: all 7 reviewed members collapse to 2 independent sequences at the 0.30 rule, below the n=4 eligibility floor, and those 2 are exactly the pair already here. Class left UNCHANGED. See docs/DATA_CORRECTIONS.md.",
       "holdout_eligible": false
     },
     {
