@@ -1099,3 +1099,78 @@ and a dose-response curve is the obvious next check: an effect that saturates at
 `results/{v2,v3}/margin_causal_test.json` are committed, and `src/22_claims_audit.py` pins both the
 positive attributable effects and the fraction of the gap they close, so neither half can be quoted
 without the other.
+
+## 2026-09-20 (eighth entry) — The first test of §10.7.1's converse varied two factors at once, and the section §6 exists to prevent that
+
+### What was being tested
+
+§10.7.1 read the dose-response curve as evidence that the failing classes sit inside a **dense** benign
+region: removing the K benign proteins nearest a class keeps helping it all the way to K=80, so there is no
+small nameable set of neighbours a curator could handle. That reading makes a converse prediction. If
+density is the story, then **adding** benign proteins near these classes should push them down, and a pool
+an order of magnitude larger than the panel should push them down a lot.
+
+`src/34_scale_negative_set.py` harvested that pool, 8,259 reviewed Swiss-Prot proteins, and
+`src/35_negative_scaling_curve.py` swept the size of the benign set across it.
+
+### 🔴 The design flaw
+
+35's smallest point is **n=296 drawn at random from the pool**, not the panel's own 296 matched negatives.
+Its curve therefore varies **size and composition together**, and its low anchor is not the published
+baseline. What it answers is "replace the panel's negatives with n pool proteins", not "add n pool proteins
+to the panel", and those are different questions with different answers.
+
+That conflation is the specific error §6 was built to rule out. §6 varied the negative set 2×2 over sample
+size and decision boundary on v2 and found **sample size explains none of the effect** while the operating
+point dominates, so for this panel composition is the live factor and size is not. Running a size sweep
+whose points also change composition puts the two back together.
+
+The size of the substitution is visible in 35's own output. At **identical n=296**, the canonical 650M arm
+gives the phage class **46.5%** on a random pool sample and **12.2%** on the panel's real matched negatives,
+a **34-point** gap with the sample size held exactly fixed. §6's conclusion reappears here at 28 times the
+scale, from an experiment that was not built to test it.
+
+A second property of the pool belongs with the first. The harvest's per-organism cap bit hard on
+eukaryotic Swiss-Prot, so the pool is **87% bacterial** and resembles the panel's producer mix rather than
+Swiss-Prot's. It is a larger benign set drawn from roughly the same world, which is the right material for
+this question and not a neutral background sample. `pool_composition_note` in both artifacts records it.
+
+### The fix, and what it changes
+
+`src/37_negative_supplement_from_pool.py` keeps the panel's real 296 as a **fixed floor at every K** and
+adds K pool proteins on top, so only composition grows and the K=0 point is the panel itself. It also
+splits the addition two ways: K proteins drawn at random, and the K **nearest** pool proteins to the held-out
+class, which is the actual converse of §10.7's removal experiment.
+
+On the canonical 650M arm the comparison class is again what makes the result readable, and it does not
+read the way proximity predicts. Adding the 500 **nearest** pool proteins costs the recovered class
+**43.3 points**, 94.8% to 51.4%, while beta-lactamase falls only **5.7** and the phage class **rises 5.3**.
+The proteins nearest a class hurt the class that was working far more than the two that were not. By K=8259
+the two addition modes converge, because both have added the whole pool.
+
+### ⚠️ A third design change made after seeing a result
+
+37 was written after 35 returned REFUTED. The flaw is defensible without reference to that outcome, since
+varying two factors at once when an earlier section has shown one of them dominates is wrong whichever way
+it comes out, but it is still a design change made after seeing a result and it is the **third** in this
+line of work. The first two are in the seventh entry. All three are published with the numbers rather than
+behind them.
+
+35's artifacts are kept for both arms rather than deleted, because its own question is a real one and its
+answer is the composition effect §6 predicts, in the direction §6 predicts. On the 35M arm, where
+beta-lactamase starts at the floor, a pool sample of 296 gives 9.0% and growing it to 8,259 gives 18.3%.
+
+### Standing
+
+⚠️ **The baseline in 37, 38 and 39 is a 30-seed recomputation, not the published figure.** At K=0 those
+scripts give beta-lactamase **21.2%** and the phage class **12.2%**, against the published 5-seed **18.6%**
+and **10.0%**. 37's own tolerance check flagged the gap rather than hiding it: `k0_matches_stored_lomo` is
+False for both failing classes and True for the comparison class, at a 2-point tolerance. The cause is seed
+noise on a 14-member and a 16-member class, the same effect as the fifth entry, and the published 5-seed
+numbers stay the ones the audit pins.
+
+### Fix
+
+§10.9 carries the pool, both curves, the decomposition and this disclosure. `src/35` keeps its own
+verdict string and its artifacts are committed for both arms, with `note_on_35` in every 37 artifact
+pointing at the flaw from the fixed side.

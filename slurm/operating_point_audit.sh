@@ -35,7 +35,20 @@ done
 [ -s results/v3/threshold_vs_boundary_esm2_650M.json ] \
   || echo "WARNING: 38's artifact absent, self-test S4 will be skipped and fit order is unpinned"
 
-$PY src/39_operating_point_audit.py --arm esm2_650M
-rc=$?
-echo; echo "exit: $rc"
-exit $rc
+# 🔴 Exit-code aggregation, written out rather than chained. An earlier version of these two lines
+# ended with a bare `rc=$?`, which captures only the LAST command, so a failing 39 followed by a
+# passing 40 would have exited 0 and the job would have looked clean. Each step's status is captured
+# at the point it is produced and the job fails if any of them did.
+#
+# STEPS lets one step be re-run alone without editing the file: STEPS=40 sbatch ...
+STEPS="${STEPS:-39 40}"
+declare -A SCRIPT=( [39]=src/39_operating_point_audit.py [40]=src/40_fixed_background_operating_point.py )
+fail=0
+for n in $STEPS; do
+  echo; echo "=== step $n: ${SCRIPT[$n]} ==="
+  if ! $PY "${SCRIPT[$n]}" --arm esm2_650M; then
+    echo "STEP $n FAILED"; fail=$((fail+1))
+  fi
+done
+echo; echo "failed steps: $fail"
+exit $fail
