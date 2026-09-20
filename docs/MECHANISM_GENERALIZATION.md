@@ -403,6 +403,17 @@ probability ≤ k/(m+1) ≤ α. That arm **held its guarantee at every size on b
 running conservative, 2.9% to 4.9% where 5% was asked for. A finite-sample bound is available; an
 interpolated point estimate is not.
 
+⚠️ **The conformal half of this is not new, and the survey already says so.** CRC-Screen
+([arXiv 2605.00074](https://arxiv.org/abs/2605.00074), MusIML @ ICML 2026) applies Conformal Risk Control
+to hazard screening and states the same slack floor from the same arithmetic: its certifiable miss rate is
+capped at `1/(n_cal + 1)`, which is 1.77% at their n_cal ≈ 55, and a procurement-grade budget needs an
+order of magnitude more calibration data. That the calibration set, not the model, is the binding
+constraint is **published**. What §2.6 adds is the same limit measured on the **specificity** side of a
+mechanism panel rather than the miss-rate side of a taxonomic one, with the extra observation that the
+achievable operating points are a discrete set and the nominal 5% is usually not in it. See
+`research/05_v2_related_work_survey.md` §1.1b for the full comparison, including that CRC-Screen's own slack
+term is a coarse approximation and not a bound.
+
 ⚠️ **What this does and does not do to the numbers in this document.** The published protocol uses the
 largest calibration set available, all 118, which is the best case in the table: its bracket is
 [5.04, 5.88], so its true out-of-sample rate is within about 0.9 points of what it claims. The published
@@ -1856,6 +1867,13 @@ solves.
 
 ⚠️ Volume figures are arithmetic on the measured TPR and FPR and assume the queue is drawn like the panel's
 negatives, which no real order queue is. They are a scale check rather than a forecast.
+
+⚠️ **This is the same conclusion CRC-Screen reached, measured from the other side.** That paper's abstract
+already states that "the binding constraint on certifiable DNA-synthesis screening is calibration data, not
+algorithms" ([arXiv 2605.00074](https://arxiv.org/abs/2605.00074)). §10.8 is an independent measurement of
+the same limit on the **negative** side of a mechanism panel, quantile resolution for a specificity
+threshold, rather than the miss-rate side of a taxonomic one, so it must be framed as a corroboration rather
+than a first. §2.6 turns the same arithmetic into a per-split finite-sample bound.
 
 ### 10.9 🔑 A benign set 28 times larger appears to repair both unreachable classes
 
