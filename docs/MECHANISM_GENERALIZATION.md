@@ -1808,8 +1808,10 @@ the hazard label *is* the annotation, so a classifier trained that way learns th
 the negative side has no such problem, because a benign set is defined by the absence of the keywords
 rather than their presence.
 
-⚠️ `34`'s docstring originally quoted v2's 0.818 next to v3's 43.6%, two figures from two panels. Both
-pairs are now pinned together in the audit for that reason.
+⚠️ Two published surfaces had this pair muddled and are corrected with it. `34`'s docstring quoted v2's
+0.818 next to v3's 43.6%, two figures from two panels, and the Hugging Face card gave 0.818 and 53% against
+"the panel" without naming which, at a point where the card describes both. Both pairs are now pinned
+together in the audit for that reason.
 
 **The harvest failed three times before it worked, and each failure produced a plausible-looking
 result.** UniProt echoes the comma-separated `fields` parameter inside the `Link` header, so splitting

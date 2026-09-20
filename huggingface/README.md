@@ -250,8 +250,8 @@ Spearman **+0.894, permutation p 0.00015**, and it beats each of its own parts w
 runs the other way at −0.564. **Both failing classes have a negative margin: their members sit
 closer to a benign protein than to any hazard class the probe trained on.**
 
-So the seven refused explanations in `docs/MECHANISM_GENERALIZATION.md` §9 were never about
-beta-lactamase. v2 stays frozen and fully reproducible; v3 is a parallel file set. See §2.5 and
+So the seven refused explanations in `docs/MECHANISM_GENERALIZATION.md` §9 were all looking for
+something specific to beta-lactamase, and the phenomenon is not specific to it. v2 stays frozen and fully reproducible; v3 is a parallel file set. See §2.5 and
 §10.4 of [`docs/MECHANISM_GENERALIZATION.md`](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/MECHANISM_GENERALIZATION.md).
 
 🟢 *This one holds up under the seed check above. At 30 seeds ESM-C 600M gives **48.3%, 95% CI
@@ -263,8 +263,10 @@ alignment's 29.5%, with no other arm's interval reaching it. Three other arm-to-
 **Three cautions that belong with any number above:**
 
 - A probe trained on **lab-strain provenance with the hazard label ignored** still reaches AUROC
-  0.818, and the organism label agrees with the hazard label on
-  53% of the panel. Separability here cannot be attributed to hazard alone.
+  **0.818 ± 0.012 on v2** and **0.794 ± 0.062 on v3**, and the organism label agrees with the hazard
+  label on **53.4%** of v2 and **43.6%** of v3. Separability here cannot be attributed to hazard alone.
+  The v3 control is weaker and five times noisier, and still above chance by more than two standard
+  deviations.
 - Amino-acid **composition alone** reaches AUROC 0.754; the embedding adds about
   22 points over it. With labels shuffled the same pipeline returns
   0.506.
