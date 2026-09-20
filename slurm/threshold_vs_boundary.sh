@@ -17,6 +17,11 @@
 set -uo pipefail
 PROJECT_DIR="${PROJECT_DIR:?set PROJECT_DIR}"
 PY="${PYTHON_BIN:?set PYTHON_BIN}"
+# 🔴 Run python unbuffered. Without -u, every print from these scripts sits in a block buffer
+# until the process exits, so a SLURM log shows only the bash `echo` lines and a job that is
+# working looks identical to a job that is hung. Job 3377636 was polled four times over ten
+# minutes with no way to tell which it was.
+PY="$PY -u"
 cd "$PROJECT_DIR"; mkdir -p logs
 export HF_HOME="${HF_HOME:-/athena/masonlab/scratch/users/jak4013/narrow_model_safety_eval/hf_cache}"
 export TRANSFORMERS_CACHE="$HF_HOME"
@@ -33,18 +38,18 @@ for f in results/v3/embeddings_positive_v3.npy results/v3/embeddings_negative_v3
 done
 
 # The question that decides whether 37's result is a finding or an artifact.
-step "$PY" src/38_threshold_vs_boundary.py --arm esm2_650M
+step $PY src/38_threshold_vs_boundary.py --arm esm2_650M
 
 # 🔴 Job 3377580's across-arms step ran on three arms, not five, and the audit caught it. The 8M
 # and 35M embeddings exist only on the laptop, because .npy is gitignored, so this machine had
 # canonical, 150M and 3B while the committed artifact describes canonical, 8M and 35M. Two
 # machines each holding a different partial arm set is how a pinned claim drifts. These two are
 # cheap, so the fix is to have every arm on the machine that does the analysis.
-step "$PY" src/02b_esm2_embed_v2.py --panel v3 --model facebook/esm2_t6_8M_UR50D --tag esm2_8M
-step "$PY" src/03b_leave_one_mechanism_out.py --panel v3 --tag esm2_8M
-step "$PY" src/02b_esm2_embed_v2.py --panel v3 --model facebook/esm2_t12_35M_UR50D --tag esm2_35M
-step "$PY" src/03b_leave_one_mechanism_out.py --panel v3 --tag esm2_35M
-step "$PY" src/30_margin_across_arms.py --panel v3
+step $PY src/02b_esm2_embed_v2.py --panel v3 --model facebook/esm2_t6_8M_UR50D --tag esm2_8M
+step $PY src/03b_leave_one_mechanism_out.py --panel v3 --tag esm2_8M
+step $PY src/02b_esm2_embed_v2.py --panel v3 --model facebook/esm2_t12_35M_UR50D --tag esm2_35M
+step $PY src/03b_leave_one_mechanism_out.py --panel v3 --tag esm2_35M
+step $PY src/30_margin_across_arms.py --panel v3
 
 echo; echo "failed steps: $fail"
 exit $fail

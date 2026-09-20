@@ -32,6 +32,11 @@
 set -uo pipefail
 PROJECT_DIR="${PROJECT_DIR:?set PROJECT_DIR}"
 PY="${PYTHON_BIN:?set PYTHON_BIN}"
+# 🔴 Run python unbuffered. Without -u, every print from these scripts sits in a block buffer
+# until the process exits, so a SLURM log shows only the bash `echo` lines and a job that is
+# working looks identical to a job that is hung. Job 3377636 was polled four times over ten
+# minutes with no way to tell which it was.
+PY="$PY -u"
 cd "$PROJECT_DIR"; mkdir -p logs
 
 # Point at the shared scratch model cache, the same one slurm/esm2_embed.sh uses. Without this,
@@ -59,7 +64,7 @@ for f in data/sequences/benign_pool_large.fasta data/sequences/toxins_positive_v
 done
 
 # The v3 panel's own embeddings, which a fresh clone does not have.
-step "$PY" src/02b_esm2_embed_v2.py --panel v3
+step $PY src/02b_esm2_embed_v2.py --panel v3
 
 # ⚠️ Device reproducibility, checked rather than assumed. results/v3/lomo_results.json is
 # committed and was computed from MPS embeddings on a laptop; this partition is CUDA. Rather
@@ -68,11 +73,11 @@ step "$PY" src/02b_esm2_embed_v2.py --panel v3
 # difference is a float-precision difference between devices, not a finding, and the published
 # numbers stay the ones the audit pins.
 cp results/v3/lomo_results.json results/v3/lomo_results.committed_mps.json
-step "$PY" src/03b_leave_one_mechanism_out.py --panel v3
+step $PY src/03b_leave_one_mechanism_out.py --panel v3
 mv results/v3/lomo_results.json results/v3/lomo_results.cuda650M.json
 mv results/v3/lomo_results.committed_mps.json results/v3/lomo_results.json
 echo "--- per-class MPS vs CUDA difference, recovery at 95% specificity ---"
-"$PY" - <<'PYCHECK'
+$PY - <<'PYCHECK'
 import json
 a = json.load(open("results/v3/lomo_results.json"))["leave_one_mechanism_out"]
 b = json.load(open("results/v3/lomo_results.cuda650M.json"))["leave_one_mechanism_out"]
@@ -82,8 +87,8 @@ for c in sorted(a):
     print(f"  {c:<34}{a[c]['flagged_95_mean']*100:6.1f}% -> {b[c]['flagged_95_mean']*100:6.1f}%  ({d:+.1f}){flag}")
 PYCHECK
 
-step "$PY" src/35_negative_scaling_curve.py --embed --arm esm2_650M
-step "$PY" src/35_negative_scaling_curve.py --arm esm2_650M
+step $PY src/35_negative_scaling_curve.py --embed --arm esm2_650M
+step $PY src/35_negative_scaling_curve.py --arm esm2_650M
 
 # 35's design has a confound found while running it locally on esm2_35M: its n=296 point is a
 # random pool subsample, not the panel's real matched negatives, so its curve answers "replace
@@ -93,18 +98,18 @@ step "$PY" src/35_negative_scaling_curve.py --arm esm2_650M
 # esm2_35M beta-lactamase's extreme seed variance (a 21-point swing across ten seeds on a
 # 14-member class) made the run uninterpretable, and phage_peptidoglycan_hydrolase did not even
 # clear the script's own failure threshold there.
-step "$PY" src/37_negative_supplement_from_pool.py --arm esm2_650M
+step $PY src/37_negative_supplement_from_pool.py --arm esm2_650M
 
 # The remaining v3 arms, which the local machine also could not finish. 150M was the fourth
 # arm for the across-arms check; 3B and the ESM-C family need this partition regardless.
-step "$PY" src/02b_esm2_embed_v2.py --panel v3 --model facebook/esm2_t30_150M_UR50D --tag esm2_150M
-step "$PY" src/03b_leave_one_mechanism_out.py --panel v3 --tag esm2_150M
-step "$PY" src/02b_esm2_embed_v2.py --panel v3 --model facebook/esm2_t36_3B_UR50D --tag esm2_3B
-step "$PY" src/03b_leave_one_mechanism_out.py --panel v3 --tag esm2_3B
-step "$PY" src/30_margin_across_arms.py --panel v3
+step $PY src/02b_esm2_embed_v2.py --panel v3 --model facebook/esm2_t30_150M_UR50D --tag esm2_150M
+step $PY src/03b_leave_one_mechanism_out.py --panel v3 --tag esm2_150M
+step $PY src/02b_esm2_embed_v2.py --panel v3 --model facebook/esm2_t36_3B_UR50D --tag esm2_3B
+step $PY src/03b_leave_one_mechanism_out.py --panel v3 --tag esm2_3B
+step $PY src/30_margin_across_arms.py --panel v3
 
 echo; echo "=== audit ==="
-step "$PY" src/22_claims_audit.py
+step $PY src/22_claims_audit.py
 
 echo; echo "failed steps: $fail"
 exit $fail
