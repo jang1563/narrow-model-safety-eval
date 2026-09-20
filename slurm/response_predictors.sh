@@ -25,7 +25,14 @@ for f in results/v3/embeddings_pool_large_esm2_650M.npy \
   [ -s "$f" ] || { echo "MISSING $f -- produce it with slurm/negative_scaling_650M.sh first"; exit 2; }
 done
 
-$PY src/43_what_predicts_the_response.py --arm esm2_650M
+# Two runs, and they are not alternatives. 42's census found one pool protein at 0.871 against a panel
+# positive in the labelled virulence control, so the default run drops it and the KEEP_HOMOLOGS run keeps
+# it. The gap between them measures how much that single protein was worth, in the class whose pool
+# proximity it creates. Set KEEP_HOMOLOGS=1 for the comparison arm.
+ARGS=""
+[ "${KEEP_HOMOLOGS:-0}" = "1" ] && ARGS="--keep-pool-homologs"
+echo "running with ARGS='${ARGS:-<none, homologs dropped>}'"
+$PY src/43_what_predicts_the_response.py --arm esm2_650M $ARGS
 rc=$?
 echo; echo "exit: $rc"
 exit $rc
