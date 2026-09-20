@@ -856,10 +856,13 @@ def negative_test_set_audit():
     b = j("v3/negative_test_set_audit_esm2_35M.json")
     A, B = a["panel_A_deployable_model"], b["panel_A_deployable_model"]
     ms = [str(m) for m in a["m_grid"] if A[str(m)]["fp_out_mean"] is not None]
-    inb = lambda D, m: (D[m]["bracket_lo"] - 2 * D[m]["se_fp_out"] <= D[m]["fp_out_mean"]
-                        <= D[m]["bracket_hi"] + 2 * D[m]["se_fp_out"])
-    held = lambda D, m: (D[m]["conformal_fp_out_mean"]
-                         <= D[m]["conformal_guarantee"] + 2 * D[m]["se_conformal"])
+    def inb(D, m):
+        return (D[m]["bracket_lo"] - 2 * D[m]["se_fp_out"] <= D[m]["fp_out_mean"]
+                <= D[m]["bracket_hi"] + 2 * D[m]["se_fp_out"])
+
+    def held(D, m):
+        return (D[m]["conformal_fp_out_mean"]
+                <= D[m]["conformal_guarantee"] + 2 * D[m]["se_conformal"])
     pb = a["panel_B_lomo_recovery"]
     swing = {c: (pb[c]["20"]["mean"] - pb[c]["118"]["mean"]) * 100 for c in pb}
     return {"seeds_panel_a": A["20"]["seeds"], "m_grid": a["m_grid"],
