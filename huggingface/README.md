@@ -245,8 +245,8 @@ The pair is not explained by target host, since the other two new classes recove
 87%, nor by "hydrolyses a molecular substrate", which ribosome-inactivating proteins refute at
 94%. What does locate both is **margin**, the embedding proximity measure already established
 at the member level: nearest other-class positive minus nearest negative. Its two lowest
-classes out of eleven are exactly the two failures (chance 1/66), it tracks recovery at
-Spearman **+0.894, permutation p 0.0001**, and it beats each of its own parts while class size
+classes out of twelve are exactly the two failures (chance 1/66), it tracks recovery at
+Spearman **+0.894, permutation p 0.00015**, and it beats each of its own parts while class size
 runs the other way at −0.564. **Both failing classes have a negative margin: their members sit
 closer to a benign protein than to any hazard class the probe trained on.**
 

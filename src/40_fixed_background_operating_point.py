@@ -207,7 +207,7 @@ def main():
             m0 = fit(tri, base_tr)
             base[seed] = (hard, base_tr, np.sort(m0.predict_proba(hard)[:, 1]),
                           m0.predict_proba(P[hi])[:, 1])
-        for k in ks:  # noqa: the floor pass below runs after this loop completes
+        for k in ks:  # the floor pass below this loop needs every K present, so it runs after
             rec, fp_hard, fp_bg, rec_iso = [], [], [], []
             for seed in range(a.seeds):
                 rng = np.random.default_rng(seed)

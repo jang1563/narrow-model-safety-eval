@@ -1389,7 +1389,7 @@ CLAIMS = [
                 and v["v2_margin_rho"] > 0.9 and v["v2_hit"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **margin** = nearest other-class positive minus nearest negative | "
-      "**+0.894** | **0.0001** | **yes** |"}, []),
+      "**+0.894** | **0.00015** | **yes** |"}, []),
     ("v3 panel shape, and target host survives class holdout on it",
      v3_panel_and_target_host,
      lambda v: (v["positives"] == 149 and v["negatives"] == 296

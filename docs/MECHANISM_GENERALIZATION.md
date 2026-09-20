@@ -1369,14 +1369,19 @@ already established** at the member level, before v3 existed and before this fai
 
 | predictor, class-mean | Spearman rho against recovery | perm p | are its two lowest classes the two failures? |
 |---|---|---|---|
-| **margin** = nearest other-class positive minus nearest negative | **+0.894** | **0.0001** | **yes** |
+| **margin** = nearest other-class positive minus nearest negative | **+0.894** | **0.00015** | **yes** |
 | nearest other-class positive alone | +0.852 | 0.0002 | no |
-| nearest negative alone | +0.739 | 0.0034 | no |
+| nearest negative alone | +0.739 | 0.0035 | no |
 | class size | −0.564 | 0.97 | no |
 
-**Both predictions hold.** Margin ranks the two failures as the two lowest of eleven classes, which has
+**Both predictions hold.** Margin ranks the two failures as the two lowest of **twelve** classes, which has
 probability 1/66 = 0.015 under a random ordering, and margin tracks recovery at rho +0.894 against a
-permutation null whose 95th percentile is +0.493. Margin also beats each of its own parts, which matters:
+permutation null whose 95th percentile is +0.493. ⚠️ Twelve, not eleven: the ordering covers the eleven
+holdout-eligible classes **plus the labelled virulence control**, which is not a mechanism and is not
+eligible for holdout but is ranked with the rest. It matters that it is in there, because it sits
+**fourth-lowest** and it is the class that displaces the phage class from the bottom two in three of the
+five arms in §10.6.1. An earlier version of this sentence said eleven while quoting a 1/66 chance that
+only twelve classes produce. Margin also beats each of its own parts, which matters:
 without that column the claim would reduce to "classes near other hazards are recovered", which nn_pos
 already says and which does not locate the failures.
 

@@ -132,7 +132,7 @@ def main():
         for label, _ in ARMS:
             r = out[c][label]["0.95"]
             lo, hi_ = r["ci95"][0] * 100, r["ci95"][1] * 100
-            interval = "[%.1f, %.1f]" % (lo, hi_)
+            interval = f"[{lo:.1f}, {hi_:.1f}]"
             print(f"{label:<18}{r['published_5seed'] * 100:>8.1f}%{r['mean_30seed'] * 100:>8.1f}%"
                   f"{r['sd'] * 100:>7.1f}{interval:>18}"
                   f"{r['zero_seeds']:>8} /{SEEDS:<3}{str(r['published_inside_ci']):>11}")
@@ -149,18 +149,18 @@ def main():
               f"{sep if sep else 'none'}")
 
         # every pair, so the claim is not only about the canonical arm
-        names = [l for l, _ in ARMS]
+        names = [lab for lab, _ in ARMS]
         disjoint_pairs = [(a, b) for i, a in enumerate(names) for b in names[i + 1:]
                           if not overlap(out[c][a]["0.95"]["ci95"], out[c][b]["0.95"]["ci95"])]
         n_pairs = len(names) * (len(names) - 1) // 2
         print(f"  disjoint pairs among all {n_pairs}: {len(disjoint_pairs)}  {disjoint_pairs}")
 
         # B: does the top arm change with the seed count?
-        top5 = max(names, key=lambda l: out[c][l]["0.95"]["published_5seed"])
-        top30 = max(names, key=lambda l: out[c][l]["0.95"]["mean_30seed"])
+        top5 = max(names, key=lambda a: out[c][a]["0.95"]["published_5seed"])
+        top30 = max(names, key=lambda a: out[c][a]["0.95"]["mean_30seed"])
         print(f"  highest at 5 seeds: {top5}   at 30 seeds: {top30}   "
               f"{'SAME' if top5 == top30 else 'CHANGES'}")
-        outside = [l for l in names if not out[c][l]["0.95"]["published_inside_ci"]]
+        outside = [a for a in names if not out[c][a]["0.95"]["published_inside_ci"]]
         print(f"  published 5-seed figure outside its own 30-seed interval: "
               f"{outside if outside else 'none'}")
         summary[c] = {"arms_disjoint_from_canonical": sep,
@@ -185,7 +185,7 @@ def main():
 
     dest = V3 / "arm_seed_stability.json"
     json.dump({"panel": "v3", "seeds": SEEDS, "specs": SPECS, "classes": CLASSES,
-               "arms": [l for l, _ in ARMS], "results": out, "summary": summary,
+               "arms": [lab for lab, _ in ARMS], "results": out, "summary": summary,
                "distinct_from": ("03x, which runs beta-lactamase on v2's fourteen arms and is "
                                  "pinned by the audit for that result"),
                "verdict": verdict}, open(dest, "w"), indent=2)
