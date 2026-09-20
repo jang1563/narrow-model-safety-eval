@@ -2073,9 +2073,9 @@ verdict would not; that is what happened, on the class where it mattered.
 the pool contains homologs of one class and not the other, is measured and refuted in §10.9: zero pool
 proteins reach the panel's 0.30 admission threshold against either, with maxima of 0.115 and 0.105. The
 eight functional analogues that are in there hydrolyse the same bond as the class that **gains**, which is
-the opposite of a contamination story. So the per-class sign is real and unexplained, and margin does not
-predict it: margin locates both classes together, at −0.0082 and −0.0055, and says nothing about which of
-them a larger benign set will help.
+the opposite of a contamination story. And margin does not predict the sign: it locates both classes
+together, at −0.0082 and −0.0055, and says nothing about which of them a larger benign set will help.
+§10.9.2 runs the same arm on all twelve classes and finds one candidate that does, suggestively.
 
 🔑 **+20.3, +23.4 and +23.5 from three framings that share no threshold.** `39`'s boundary arm holds the panel's own operating
 point; `40`'s two iso-FP controls hold a reserved pool background, contaminated and decontaminated. All
@@ -2111,6 +2111,75 @@ the operating point moves the other way, and it produces an apparent three to fo
 mostly not there. A reader who takes one thing from §10.9 should take that: the same mechanism that
 costs a screen 21 points when the benign set is sharpened will hand it back 20 or 30 points when the
 benign set is broadened, and neither number is about the classifier.
+
+#### 10.9.2 ⚠️ What predicts the sign is how much closer the pool is than the panel's own negatives, suggestively
+
+`src/43_what_predicts_the_response.py`, panel v3, canonical 650M arm, boundary arm only so the
+false-positive budget stays at the panel's 5.1%, all **twelve** classes, 30 seeds, 20,000-permutation
+nulls.
+
+§10.9.1 measured three classes. Run the same arm on all twelve and the spread is wider than those three
+suggested:
+
+| class | n | K=0 | at the top dose | change |
+|---|---|---|---|---|
+| phage_peptidoglycan_hydrolase | 32 | 12.2% | 30.6% | **+18.4** |
+| contact_dependent_inhibition | 4 | 72.5% | 85.8% | **+13.3** |
+| superantigen_enterotoxin | 7 | 95.2% | 100.0% | +4.8 |
+| bacteriocin | 15 | 86.2% | 86.7% | +0.4 |
+| clostridial_neurotoxin | 6 | 100.0% | 100.0% | +0.0 |
+| virulence_associated_non_toxin | 10 | 31.3% | 31.0% | −0.3 |
+| adp_ribosyl_ab_toxin | 7 | 100.0% | 98.6% | −1.4 |
+| pore_forming_cytolysin | 7 | 100.0% | 98.1% | −1.9 |
+| t3ss_effector_apparatus | 10 | 80.0% | 75.0% | −5.0 |
+| cry_insecticidal | 22 | 79.4% | 73.9% | −5.5 |
+| beta_lactamase | 14 | 21.2% | 6.9% | **−14.3** |
+| rip_rrna_glycosidase | 7 | 94.8% | 57.1% | **−37.6** |
+
+Two classes gain more than ten points, two lose more than ten, and eight move inside ±6. So §10.9.1's
+phage class is not the only gainer: contact-dependent inhibition rises 13.3 points from a 72.5% baseline.
+⚠️ That class has **four members**, so its figure is the noisiest in the table and should be read as a
+direction rather than a magnitude.
+
+**The predictors, each against the response, with the ceiling confound removed as well as reported.**
+A class at 100% can only fall and a class at 12% has room, so every correlation is given twice: raw, and
+after least-squares removal of the K=0 baseline from both sides.
+
+| predictor | rho | perm p | rho with baseline partialled out | perm p |
+|---|---|---|---|---|
+| **pool proximity minus negative proximity** | **−0.601** | **0.0398** | **−0.769** | **0.0054** |
+| pool proximity alone | −0.266 | 0.402 | −0.406 | 0.196 |
+| **margin** (§10.4's predictor) | −0.182 | 0.571 | −0.217 | 0.503 |
+| nearest-negative proximity alone | −0.098 | 0.763 | −0.077 | 0.812 |
+| class size | −0.096 | 0.767 | +0.151 | 0.633 |
+| baseline recovery | −0.120 | 0.713 | — | — |
+
+🔴 **Read the multiplicity before reading the result.** That table is **ten** tests, and none of them is
+corrected. The Bonferroni threshold at ten tests is 0.005, and the surviving partial correlation is at
+**0.0054**. It misses. Worse for the finding, the version that does pass is the **contaminated** one: with
+`Q8X739` PHOQ_ECO57 left in the pool the same figure reads −0.795 at p **0.0042**, and removing the one
+protein §10.9 identified pushes it back over the line. So this is **suggestive and not established**, and
+the honest summary is that one predictor out of five is worth following up at a resolution of twelve
+classes.
+
+🔑 **What makes it worth following up is which predictor it is.** Pool proximity **alone** does not predict
+anything, at −0.266 and p 0.40. What predicts is pool proximity **minus** the proximity the class already
+had to the panel's own negatives. A class whose nearest benign neighbour was already a panel negative gains
+nothing when the pool arrives; a class for which the pool brings benign proteins closer than anything the
+panel held loses ground. That quantity is §10.4's margin with the pool substituted for the hazard side:
+margin is `nn_pos − nn_neg`, this is `nn_pool − nn_neg`.
+
+**And margin itself is null here, exactly as preregistered.** At −0.182 with p 0.571 it has no relationship
+with the response. The two statistics answer different questions on the same panel: **margin says which
+mechanism classes a screen will miss, and it says nothing about which of them a larger benign set will make
+worse.** §10.9.1 showed those two questions come apart for the two failing classes; this says the
+separation is general rather than a property of that pair.
+
+⚠️ Standing limits, all of them the same limit. n = 12 classes, which is the resolution every claim in
+§10.4 to §10.6 runs at. `03p`'s entry in [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md) is the
+precedent for what pooling the 149 members instead would do: a Spearman of −0.399 at p 0.0005 that was
+pseudoreplication of nine classes. The route to settling this is more mechanism classes, not more members.
+
 
 ## 11. What this does not claim
 
@@ -2181,6 +2250,9 @@ PY=path/to/python; D=$PWD
 PROJECT_DIR=$D PYTHON_BIN=$PY sbatch slurm/negative_scaling_650M.sh   # 35, then 37's fix of it
 PROJECT_DIR=$D PYTHON_BIN=$PY sbatch slurm/threshold_vs_boundary.sh   # 38, boundary vs threshold
 PROJECT_DIR=$D PYTHON_BIN=$PY sbatch slurm/operating_point_audit.sh   # 39, then 40 on both splits
+python src/42_pool_homology_against_panel.py              # §10.9's homology census, ~15 min, local
+PROJECT_DIR=$D PYTHON_BIN=$PY sbatch slurm/response_predictors.sh     # 43, §10.9.2, drops the homolog
+KEEP_HOMOLOGS=1 PROJECT_DIR=$D PYTHON_BIN=$PY sbatch slurm/response_predictors.sh   # its comparison arm
 
 # how the panel itself was built. These were unreferenced by any document until a
 # review pass on 2026-09-18 found them, which matters because §10.3's failed

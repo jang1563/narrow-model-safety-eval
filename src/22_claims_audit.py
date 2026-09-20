@@ -847,6 +847,40 @@ def v3_panel_and_target_host():
             "verdict_supported": th["verdict"].startswith("SUPPORTED")}
 
 
+def what_predicts_the_response():
+    """§10.9.2: what predicts whether a larger benign set helps or hurts a class. Pinned with its own
+    multiplicity failure, because the surviving correlation misses a Bonferroni threshold the
+    CONTAMINATED version of the same run passes, and quoting the effect without that would be the
+    overstatement this log keeps recording."""
+    c = j("v3/response_predictors_esm2_650M.json")
+    w = j("v3/response_predictors_esm2_650M_withhomologs.json")
+    st, wt = c["stats"], w["stats"]
+    # 10 tests in the reported table: 6 predictors, 5 of them with a partial as well
+    n_tests = 2 * len(st) - 2
+    bonf = 0.05 / n_tests
+    resp = c["response"]
+    return {"n_classes": c["n_classes"], "seeds": c["seeds"], "perms": c["perms"],
+            "pool_used_clean": c["pool_n_used"], "pool_used_kept": w["pool_n_used"],
+            "dropped": c["pool_homologs_dropped"],
+            "pmn_rho": st["pool_minus_neg"]["rho"], "pmn_p": st["pool_minus_neg"]["perm_p"],
+            "pmn_partial": st["pool_minus_neg"]["rho_partial_baseline"],
+            "pmn_partial_p": st["pool_minus_neg"]["perm_p_partial"],
+            "kept_partial_p": wt["pool_minus_neg"]["perm_p_partial"],
+            "n_tests": n_tests, "bonferroni": bonf,
+            "clean_fails_bonferroni": st["pool_minus_neg"]["perm_p_partial"] > bonf,
+            "kept_passes_bonferroni": wt["pool_minus_neg"]["perm_p_partial"] < bonf,
+            "nn_pool_alone_null": st["nn_pool"]["perm_p_partial"] > 0.05,
+            "margin_null": st["margin"]["perm_p"] > 0.5,
+            "baseline_null": st["baseline"]["perm_p"] > 0.5,
+            "phage_pts": resp["phage_peptidoglycan_hydrolase"]["response_top_pts"],
+            "cdi_pts": resp["contact_dependent_inhibition"]["response_top_pts"],
+            "cdi_n": resp["contact_dependent_inhibition"]["n"],
+            "beta_pts": resp["beta_lactamase"]["response_top_pts"],
+            "rip_pts": resp["rip_rrna_glycosidase"]["response_top_pts"],
+            "n_gainers_over_10": sum(1 for v in resp.values() if v["response_top_pts"] > 10),
+            "n_losers_over_10": sum(1 for v in resp.values() if v["response_top_pts"] < -10)}
+
+
 def pool_homology_against_panel():
     """§10.9: the homology census the harvest skipped, all 8,259 pool proteins against all 149
     positives. Pinned on both halves. Every MECHANISM class is clean, which is what keeps §10.9.1's
@@ -1433,6 +1467,23 @@ CLAIMS = [
                 and v["v2_balanced"] == 0.5 and not v["v2_usable"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "**v3 is 149 positives against 296 negatives**"}, []),
+    ("one predictor of the per-class sign survives, and it misses its own multiplicity threshold",
+     what_predicts_the_response,
+     lambda v: (v["n_classes"] == 12 and v["seeds"] == 30 and v["perms"] == 20000
+                and v["pool_used_clean"] == 8258 and v["pool_used_kept"] == 8259
+                and v["dropped"] == ["Q8X739"]
+                and -0.61 < v["pmn_rho"] < -0.59 and 0.039 < v["pmn_p"] < 0.041
+                and -0.78 < v["pmn_partial"] < -0.76
+                and v["n_tests"] == 10 and abs(v["bonferroni"] - 0.005) < 1e-9
+                # 🔴 the finding fails correction and the contaminated run passes it
+                and v["clean_fails_bonferroni"] and v["kept_passes_bonferroni"]
+                and v["pmn_partial_p"] > v["kept_partial_p"]
+                and v["nn_pool_alone_null"] and v["margin_null"] and v["baseline_null"]
+                and 18 < v["phage_pts"] < 19 and 13 < v["cdi_pts"] < 14 and v["cdi_n"] == 4
+                and -15 < v["beta_pts"] < -14 and -38 < v["rip_pts"] < -37
+                and v["n_gainers_over_10"] == 2 and v["n_losers_over_10"] == 2),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "It misses. Worse for the finding, the version that does pass is the **contaminated** one"}, []),
     ("the pool holds no homolog of any mechanism class and exactly one of the labelled control",
      pool_homology_against_panel,
      lambda v: (v["pool_n"] == 8259 and v["positives_screened"] == 149
