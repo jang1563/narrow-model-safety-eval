@@ -161,8 +161,10 @@ def main():
     # mechanism at all. A first version of this script took every class in the annotation and put that
     # catch-all into a mechanism-class correlation. Matching `28` and `30` keeps every §10.4 to §10.6
     # claim and this one at the same twelve.
-    classes = [c for c in sorted(set(pcls)) if c in lomo]
-    dropped = sorted(set(pcls) - set(classes))
+    # str() because pcls is a numpy array, so its elements are np.str_ and print as
+    # np.str_('...') in every list repr. The JSON is unaffected, np.str_ being a str subclass.
+    classes = [str(c) for c in sorted(set(pcls)) if c in lomo]
+    dropped = sorted(str(c) for c in set(pcls) - set(classes))
     print(f"classes in LOMO: {len(classes)}; dropped as not held out: {dropped}")
     ks = [k for k in K_GRID if k < len(POOL)] + [len(POOL)]
     print(f"arm {tag}: {len(P)} positives in {len(classes)} classes, {len(N)} panel negatives, "

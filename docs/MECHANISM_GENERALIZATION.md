@@ -2112,7 +2112,7 @@ mostly not there. A reader who takes one thing from §10.9 should take that: the
 costs a screen 21 points when the benign set is sharpened will hand it back 20 or 30 points when the
 benign set is broadened, and neither number is about the classifier.
 
-#### 10.9.2 ⚠️ What predicts the sign is how much closer the pool is than the panel's own negatives, suggestively
+#### 10.9.2 🔴 One predictor looked like it explained the sign, and it does not replicate in a second arm
 
 `src/43_what_predicts_the_response.py`, panel v3, canonical 650M arm, boundary arm only so the
 false-positive budget stays at the panel's 5.1%, all **twelve** classes, 30 seeds, 20,000-permutation
@@ -2158,22 +2158,43 @@ after least-squares removal of the K=0 baseline from both sides.
 corrected. The Bonferroni threshold at ten tests is 0.005, and the surviving partial correlation is at
 **0.0054**. It misses. Worse for the finding, the version that does pass is the **contaminated** one: with
 `Q8X739` PHOQ_ECO57 left in the pool the same figure reads −0.795 at p **0.0042**, and removing the one
-protein §10.9 identified pushes it back over the line. So this is **suggestive and not established**, and
-the honest summary is that one predictor out of five is worth following up at a resolution of twelve
-classes.
+protein §10.9 identified pushes it back over the line.
 
-🔑 **What makes it worth following up is which predictor it is.** Pool proximity **alone** does not predict
-anything, at −0.266 and p 0.40. What predicts is pool proximity **minus** the proximity the class already
-had to the panel's own negatives. A class whose nearest benign neighbour was already a panel negative gains
-nothing when the pool arrives; a class for which the pool brings benign proteins closer than anything the
-panel held loses ground. That quantity is §10.4's margin with the pool substituted for the hazard side:
-margin is `nn_pos − nn_neg`, this is `nn_pool − nn_neg`.
+🔴 **And it does not replicate.** §10.6's discipline for a class-level statistic is to compute it inside each
+arm and then count arms, which is how margin earns "significant in 5 of 5". Applied here, with the whole
+measurement re-run on `esm2_35M`:
 
-**And margin itself is null here, exactly as preregistered.** At −0.182 with p 0.571 it has no relationship
-with the response. The two statistics answer different questions on the same panel: **margin says which
-mechanism classes a screen will miss, and it says nothing about which of them a larger benign set will make
-worse.** §10.9.1 showed those two questions come apart for the two failing classes; this says the
-separation is general rather than a property of that pair.
+| predictor | canonical 650M, rho (p) | partialled (p) | esm2_35M, rho (p) | partialled (p) |
+|---|---|---|---|---|
+| pool proximity minus negative proximity | **−0.601** (0.040) | **−0.769** (0.0054) | −0.343 (0.276) | −0.385 (0.220) |
+| margin, preregistered null | −0.182 (0.571) | −0.217 (0.503) | −0.252 (0.425) | +0.350 (0.263) |
+
+The **sign agrees** in both arms and nothing else does: the magnitude roughly halves and the significance is
+gone, so the count is **1 arm of 2**, against margin's 5 of 5 in §10.6.1. Combined with missing its own
+multiplicity threshold, the honest position is that **`nn_pool − nn_neg` is not supported**, and §10.9.1's
+question stays open.
+
+🟢 What does replicate is the preregistered half. Margin has no relationship with the response in either
+arm, at −0.182 and −0.252 with p 0.57 and 0.43. So the claim that margin says which classes a screen misses
+and nothing about which of them a larger benign set makes worse holds in both representations, while the
+exploratory positive result holds in one.
+
+⚠️ Only two arms could be tested. Pool embeddings exist for `esm2_650M` and `esm2_35M`; the other three v3
+arms would need all 8,259 pool proteins embedded, which is GPU work rather than a rerun.
+
+🔑 **What made it worth testing at all is which predictor it was.** Pool proximity **alone** predicts
+nothing on either arm. What moved was pool proximity **minus** the proximity the class already had to the
+panel's own negatives, which is §10.4's margin with the pool substituted for the hazard side: margin is
+`nn_pos − nn_neg`, this is `nn_pool − nn_neg`. The mechanism it would have described is readable, that a
+class whose nearest benign neighbour was already a panel negative gains nothing when the pool arrives while
+a class for which the pool brings benign proteins closer than anything the panel held loses ground. That is
+what a second arm was for, and the second arm does not support it.
+
+**Margin itself is null here, exactly as preregistered**, at −0.182 with p 0.571 on the canonical arm and
+−0.252 with p 0.425 on the 35M arm. The two statistics answer different questions on the same panel:
+**margin says which mechanism classes a screen will miss, and it says nothing about which of them a larger
+benign set will make worse.** §10.9.1 showed those two questions come apart for the two failing classes,
+and that separation is the part of this section that survives.
 
 ⚠️ Standing limits, all of them the same limit. n = 12 classes, which is the resolution every claim in
 §10.4 to §10.6 runs at. `03p`'s entry in [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md) is the

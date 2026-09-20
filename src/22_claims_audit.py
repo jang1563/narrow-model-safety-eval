@@ -854,7 +854,8 @@ def what_predicts_the_response():
     overstatement this log keeps recording."""
     c = j("v3/response_predictors_esm2_650M.json")
     w = j("v3/response_predictors_esm2_650M_withhomologs.json")
-    st, wt = c["stats"], w["stats"]
+    m = j("v3/response_predictors_esm2_35M.json")
+    st, wt, mt = c["stats"], w["stats"], m["stats"]
     # 10 tests in the reported table: 6 predictors, 5 of them with a partial as well
     n_tests = 2 * len(st) - 2
     bonf = 0.05 / n_tests
@@ -878,7 +879,19 @@ def what_predicts_the_response():
             "beta_pts": resp["beta_lactamase"]["response_top_pts"],
             "rip_pts": resp["rip_rrna_glycosidase"]["response_top_pts"],
             "n_gainers_over_10": sum(1 for v in resp.values() if v["response_top_pts"] > 10),
-            "n_losers_over_10": sum(1 for v in resp.values() if v["response_top_pts"] < -10)}
+            "n_losers_over_10": sum(1 for v in resp.values() if v["response_top_pts"] < -10),
+            # the second arm, which is what turns "suggestive" into "not supported"
+            "arm2_n_classes": m["n_classes"],
+            "arm2_pmn_rho": mt["pool_minus_neg"]["rho"],
+            "arm2_pmn_p": mt["pool_minus_neg"]["perm_p"],
+            "arm2_pmn_partial": mt["pool_minus_neg"]["rho_partial_baseline"],
+            "arm2_pmn_partial_p": mt["pool_minus_neg"]["perm_p_partial"],
+            "pmn_sign_agrees": (st["pool_minus_neg"]["rho"] < 0) == (mt["pool_minus_neg"]["rho"] < 0),
+            "pmn_replicates": mt["pool_minus_neg"]["perm_p_partial"] < 0.05,
+            "arm2_magnitude_roughly_halves":
+                abs(mt["pool_minus_neg"]["rho"]) < 0.7 * abs(st["pool_minus_neg"]["rho"]),
+            "margin_null_both_arms": (st["margin"]["perm_p"] > 0.4 and mt["margin"]["perm_p"] > 0.4),
+            "arms_tested": 2}
 
 
 def pool_homology_against_panel():
@@ -1467,7 +1480,7 @@ CLAIMS = [
                 and v["v2_balanced"] == 0.5 and not v["v2_usable"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "**v3 is 149 positives against 296 negatives**"}, []),
-    ("one predictor of the per-class sign survives, and it misses its own multiplicity threshold",
+    ("the one predictor of the per-class sign fails both its multiplicity check and a second arm",
      what_predicts_the_response,
      lambda v: (v["n_classes"] == 12 and v["seeds"] == 30 and v["perms"] == 20000
                 and v["pool_used_clean"] == 8258 and v["pool_used_kept"] == 8259
@@ -1481,9 +1494,16 @@ CLAIMS = [
                 and v["nn_pool_alone_null"] and v["margin_null"] and v["baseline_null"]
                 and 18 < v["phage_pts"] < 19 and 13 < v["cdi_pts"] < 14 and v["cdi_n"] == 4
                 and -15 < v["beta_pts"] < -14 and -38 < v["rip_pts"] < -37
-                and v["n_gainers_over_10"] == 2 and v["n_losers_over_10"] == 2),
+                and v["n_gainers_over_10"] == 2 and v["n_losers_over_10"] == 2
+                # 🔴 the replication, which is why the section's verdict is "not supported"
+                and v["arms_tested"] == 2 and v["arm2_n_classes"] == 12
+                and -0.35 < v["arm2_pmn_rho"] < -0.33
+                and v["arm2_pmn_p"] > 0.2 and v["arm2_pmn_partial_p"] > 0.2
+                and v["pmn_sign_agrees"] and not v["pmn_replicates"]
+                and v["arm2_magnitude_roughly_halves"]
+                and v["margin_null_both_arms"]),
      {"docs/MECHANISM_GENERALIZATION.md":
-      "It misses. Worse for the finding, the version that does pass is the **contaminated** one"}, []),
+      "the count is **1 arm of 2**, against margin\u0027s 5 of 5 in \u00a710.6.1"}, []),
     ("the pool holds no homolog of any mechanism class and exactly one of the labelled control",
      pool_homology_against_panel,
      lambda v: (v["pool_n"] == 8259 and v["positives_screened"] == 149

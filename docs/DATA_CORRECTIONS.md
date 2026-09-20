@@ -1557,3 +1557,51 @@ release policy and a hazard-label validity call respectively.
 Both annotations record the assigned mechanism, the EC, the reaction, the family's effective n and why no
 class follows. No published number changes: `other_toxin_mechanism` is not holdout-eligible and appears in
 no LOMO result.
+
+## 2026-09-20 (fourteenth entry) — §10.9.2's one positive result was reported before it was replicated, and it does not replicate
+
+### What was published, hours earlier on the same day
+
+§10.9.2 ran the boundary arm on all twelve classes and tested five predictors of the per-class response. One
+survived: **pool proximity minus the proximity the class already had to the panel's own negatives**, at
+Spearman **−0.601** (permutation p 0.0398) and **−0.769** (p 0.0054) with the K=0 baseline partialled out.
+The section stated the multiplicity problem plainly, that ten uncorrected tests put the Bonferroni threshold
+at 0.005 and the surviving figure at 0.0054, and called the result "suggestive and not established".
+
+🔴 **It was still published as one arm's correlation with no replication attempted**, in a section of a
+document whose §10.6 exists precisely because a class-level statistic has to be recomputed inside every
+model arm before it is believed. The discipline was available and was not applied before writing.
+
+### The replication, and it fails
+
+`src/43` re-run on `esm2_35M`, same twelve classes, same 30 seeds, same 20,000-permutation nulls:
+
+| predictor | canonical 650M, rho (p) | partialled (p) | esm2_35M, rho (p) | partialled (p) |
+|---|---|---|---|---|
+| pool proximity − negative proximity | **−0.601** (0.040) | **−0.769** (0.0054) | −0.343 (0.276) | −0.385 (0.220) |
+| margin, the preregistered null | −0.182 (0.571) | −0.217 (0.503) | −0.252 (0.425) | +0.350 (0.263) |
+
+The **sign agrees** and nothing else does. The magnitude roughly halves and the significance is gone, so the
+count is **1 arm of 2** against margin's 5 of 5 in §10.6.1. With the multiplicity miss on top, the honest
+statement is that the predictor is **not supported**.
+
+🟢 **The preregistered half does replicate.** Margin has no relationship with the response in either arm, at
+p 0.571 and 0.425. So "margin says which mechanism classes a screen will miss, and nothing about which of
+them a larger benign set makes worse" holds in both representations. The section's surviving content is that
+separation and §10.9.1's class split, not the predictor.
+
+### Standing
+
+⚠️ Only two arms can be tested today. Pool embeddings exist for `esm2_650M` and `esm2_35M` only; the other
+three v3 arms would need all 8,259 pool proteins embedded, which is GPU work rather than a rerun. Two arms
+is weak either way, and a 1-of-2 is not evidence against the predictor so much as an absence of evidence
+for it.
+
+⚠️ The sign agreeing in both arms is the one thing worth keeping. It is not significance and it is not
+reported as any.
+
+### Fix
+
+§10.9.2's heading now says the predictor does not replicate, its table carries both arms, and the
+audit pins the second arm's rho, its non-significance, the sign agreement, the halved magnitude and margin's
+null in both arms, so the −0.601 cannot be quoted without the −0.343 beside it.
