@@ -3,6 +3,14 @@
 This file records corrections to the protein panel after data-integrity review.
 It exists for reproducibility and publication transparency.
 
+**How the entries are numbered, since the sequence is not a clean per-date index.** The `(nth entry)`
+label is a **stable citation handle, not a position**. Scripts and public documents cite entries by
+ordinal, so an ordinal is never reassigned once anything points at it, and the sequence therefore carries
+its history: 2026-09-05's ordinals start at "second" on its third entry, 2026-09-20's continue 2026-09-18's
+count rather than restarting, and 2026-09-18's fourth entry was written two days late because the ordinal
+had been reserved for a write-up that did not happen while `src/03x` cited it by number the whole time. The
+gap-closing entry says so itself. Tidying any of this would break the references it exists to serve.
+
 ## 2026-05-20 — Mislabeled UniProt accessions in the v2 panel
 
 ### Summary
@@ -907,6 +915,60 @@ tracked as the next step rather than folded into this entry.
 
 
 ---
+
+## 2026-09-18 (fourth entry) — The audit imported scipy for one Spearman call and broke CI, and this entry was skipped for two days
+
+### Why this ordinal was empty
+
+🔴 **This entry did not exist until 2026-09-20, and `src/03x_seed_stability_all_arms.py` cited it by number
+the whole time.** Its docstring explains why it computes Spearman by hand: "The release-surface CI job
+installs numpy only, and importing scipy into an audited path has already broken CI once (see
+docs/DATA_CORRECTIONS.md, 2026-09-18, fourth entry)." The incident was real, the fix was committed, and the
+write-up was never done, so a script's design rationale pointed at nothing. Found by sweeping the log's
+ordinals and noticing the sequence runs third, fifth.
+
+### What happened
+
+The **third entry** above added an FHS-against-FSI Spearman correlation to `src/22_claims_audit.py`, using
+`scipy.stats.spearmanr` for one call. It passed locally and failed CI with `ModuleNotFoundError`.
+
+The audit's CI step installs **numpy and nothing else**, deliberately, so that the gate runs anywhere:
+
+```yaml
+- name: Audit headline claims against their artifacts
+  run: |
+    pip install numpy
+    python src/22_claims_audit.py
+```
+
+Adding scipy to that job would have been the smaller diff and the wrong one, because the constraint is the
+point. Commit `405d2a7` replaced the call with a numpy-only implementation: average ranks for ties, Pearson
+on the ranks, and the two-sided p-value from the standard t approximation on n−2 degrees of freedom via a
+continued-fraction incomplete beta.
+
+### That it is the same function, checked rather than asserted
+
+Verified against `scipy.stats.spearmanr` on **200 random vectors of length 5 to 20**: maximum absolute
+deviation **3.8 × 10⁻¹¹** across both rho and p. The third entry's own values are unchanged, rho 0.6585 at
+p 0.0199 and rho 0.5818 at p 0.0604 excluding P13423, so the claim it pins is identical and only its
+dependency footprint is smaller.
+
+### Standing
+
+⚠️ scipy is still used by five scripts outside the audited path, `03p`, `04_esm2_masked_prediction`,
+`05_esm2_nearest_neighbor`, `07_fsi_analysis` and `10_fsi_temperature_sensitivity`. The constraint applies
+to `22_claims_audit.py` and anything it imports, not to the repository.
+
+⚠️ The numbering is **not** renumbered to close the gap. Entries five, six and seven are cited by ordinal in
+this log, in `src/03x`, `src/41` and `src/43`, and in the public documents, so shifting them would break
+every one of those references to tidy a sequence.
+
+### Fix
+
+The entry exists. `src/03x` and `src/43` both hand-roll Spearman for this reason and both now point at
+something. The general lesson is the one this log keeps recording from a new direction: **local green is not
+CI green**, and on 2026-09-20 it recurred as a lint gate, with a local ruff 0.15.4 passing where CI's pinned
+0.15.16 failed.
 
 ## 2026-09-18 (fifth entry) — The published beta-lactamase recovery is a 5-seed mean that falls outside its own 30-seed confidence interval
 

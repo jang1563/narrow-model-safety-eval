@@ -76,8 +76,10 @@ def ci95(v):
 
 def _spearman_rho(x, y):
     """Rank correlation without scipy. The release-surface CI job installs numpy only,
-    and importing scipy into an audited path has already broken CI once (see
-    docs/DATA_CORRECTIONS.md, 2026-09-18, fourth entry)."""
+    and importing scipy into an audited path has already broken CI once: the audit did it
+    for one Spearman call, passed locally and failed with ModuleNotFoundError, fixed in
+    405d2a7. Written up in docs/DATA_CORRECTIONS.md, 2026-09-18 fourth entry, which was
+    itself two days late and empty while this comment already cited it."""
     def rank(v):
         v = np.asarray(v, float)
         order = v.argsort()
