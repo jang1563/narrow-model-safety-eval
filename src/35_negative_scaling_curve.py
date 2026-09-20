@@ -37,8 +37,16 @@ rather than smoothed over. The 296-negative panel is taxon-matched to its positi
 **87% bacterial** (7,226 Bacteria, 424 Archaea, 339 Viruses, 270 Eukaryota) rather than the
 proportional split `34` asked for: the per-organism cap of 30 bit hard on eukaryotic Swiss-Prot,
 which is dominated by a handful of model organisms. So the pool happens to resemble the panel's
-producer composition (74 of 80 bacterial) more closely than Swiss-Prot's. Reported as what
-happened, not as what was designed.
+producer composition more closely than Swiss-Prot's. Reported as what happened, not as what was
+designed.
+
+An earlier version of this note put the panel's own producer mix at "74 of 80 bacterial". Counting
+the 45 distinct organisms in `panel_v2_manifest.json` gives **71 bacteria**, six plants (Ricinus
+communis, Abrus precatorius, Phytolacca heterotepala, Suregada multiflora, Polygonatum multiflorum,
+Silene chalcedonica, all of them ribosome-inactivating-protein sources) and three viral entries
+(Reovirus type 3, plus the bacteriophages Corynephage beta and Clostridium botulinum C phage). 74
+counted all three viral entries as bacterial, which is defensible for the two phages that carry
+bacterial toxin genes and wrong for Reovirus.
 
 ⚠️ Within the pool, composition IS constant across sizes: every size subsamples from the same
 single pool, which is `03e`'s discipline of varying size without varying the boundary.

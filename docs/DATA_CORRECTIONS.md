@@ -1120,6 +1120,14 @@ Its curve therefore varies **size and composition together**, and its low anchor
 baseline. What it answers is "replace the panel's negatives with n pool proteins", not "add n pool proteins
 to the panel", and those are different questions with different answers.
 
+🔴 **The caveat was already written down, one script earlier.** `34`'s own docstring says the pool is
+deliberately not taxon-matched, unlike the panel's negative blocks, and states it plainly: "Results at 296
+from this pool and from the panel are therefore not the same experiment and are reported separately." 35
+then built its curve on the pool's 296 and the reading treated it as the panel's. So this is not a caveat
+nobody had thought of. It is a caveat that was recorded and then walked into by the next script, which is
+the more common way a controlled comparison goes wrong and the reason it is written up here rather than
+quietly fixed.
+
 That conflation is the specific error §6 was built to rule out. §6 varied the negative set 2×2 over sample
 size and decision boundary on v2 and found **sample size explains none of the effect** while the operating
 point dominates, so for this panel composition is the live factor and size is not. Running a size sweep
@@ -1174,3 +1182,70 @@ numbers stay the ones the audit pins.
 §10.9 carries the pool, both curves, the decomposition and this disclosure. `src/35` keeps its own
 verdict string and its artifacts are committed for both arms, with `note_on_35` in every 37 artifact
 pointing at the flaw from the fixed side.
+
+## 2026-09-20 (ninth entry) — §10.6.1 compared five model arms by their 5-seed points, which is the same mistake as the sixth entry, made the same day it was written
+
+### What was published
+
+§10.6.1 was rewritten earlier on 2026-09-20 from three model arms to five, and the rewrite correctly
+withdrew a capacity-monotone reading that the three-arm version had invented. It then made a new claim of
+its own: **"3B and 150M are far worse on beta-lactamase than the canonical arm, 4.3% against 18.6%"**, and
+for the phage class that it "sits between 6.9% and 10.0% across all three larger arms before jumping to
+26.9% and 31.2% in the two small ones".
+
+Every one of those figures comes from `lomo_results*.json`, which runs the published protocol at **five**
+negative-holdout seeds.
+
+### 🔴 Why that was already known to be unsafe
+
+The fifth entry above established that a 5-seed mean of beta-lactamase recovery can sit outside its own
+30-seed interval. The sixth entry withdrew **three separate §9 sentences** for comparing model arms by
+their 5-seed points. §10.6.1's rewrite then did it again, on the same day, in the section whose entire
+subject is comparing model arms.
+
+On v2 that comparison does not survive at all. From `results/v2/seed_stability_all_arms.json`,
+beta-lactamase across the ESM-2 ladder reads 1.4 / 12.9 / 11.4 / **21.4** / 15.7 at five seeds and
+1.7 / 16.2 / 9.5 / 15.7 / **19.0** at thirty. **The peak moves from 650M to 3B**, and every interval among
+the four larger arms overlaps every other, so on v2 "which arm is better" is a seed artefact.
+
+### What the 30-seed check actually found on v3
+
+`src/41_v3_arm_seed_stability.py` runs the v3 equivalent, both failing classes, five arms, 30 seeds, at
+both operating points. The answer is the opposite of v2's:
+
+- **The arms do separate.** 9 of 10 pairs are disjoint on beta-lactamase, 8 of 10 on the phage class, and
+  the canonical arm separates from all four others on both classes. The direction of §10.6.1's claim
+  therefore stands.
+- **Three of five 5-seed figures for beta-lactamase sit outside their own 30-seed intervals** (3B, 150M,
+  35M), and two of five do for the phage class (3B, 8M).
+- 🔑 **Two coincidental ties dissolved.** 3B and 150M read 4.3% each on beta-lactamase and 6.9% each on
+  the phage class, which is 3 of 70 arriving twice. At 30 seeds they are **9.3% [5.6, 13.0]** and
+  **1.9% [0.8, 3.1]** on beta-lactamase, a factor of five apart with disjoint intervals, and 4.1% and 7.2%
+  on the phage class, also disjoint. The sentence had treated them as the same result.
+- **The phage class's best arm changes with the seed count**, 8M at five and 35M at thirty, and those two
+  overlap, so the ranking between them was noise in both directions.
+
+### Why v2 and v3 disagree, which is the useful part
+
+v2 holds out 40% of 154 negatives, so its threshold is a quantile of **61** points. v3 holds out 40% of 296
+and gets **118**. Doubling the calibration sample halves that noise source, and differences between arms
+that v2 cannot resolve become resolvable on v3. §10.8's calibration constraint therefore also limits what
+the study itself can measure, not only what a screen could deploy.
+
+### Standing
+
+⚠️ The published 5-seed figures stay the ones the audit pins, following the fifth entry's convention: the
+protocol is 5 seeds and reproduces exactly, and the 30-seed recomputation is reported beside it rather than
+over it. §10.6.1's table now carries both columns.
+
+⚠️ The margin results are untouched. Margin orders classes **within** an arm and every rank correlation is
+computed over twelve classes per arm, so none of them rests on an arm-to-arm recovery difference. What
+needed the seed check was only the per-arm recovery figures quoted side by side.
+
+### Fix
+
+§10.6.1 carries the 30-seed column, the separation result and the dissolved ties; `src/41` is committed
+with its preregistration; `results/v3/arm_seed_stability.json` is committed; and
+`src/22_claims_audit.py` pins the pair counts, the three-and-two outside-interval lists, the dissolved tie
+and the inverse-capacity effect on the phage class, so the direction cannot be quoted without the seed
+check that supports it.

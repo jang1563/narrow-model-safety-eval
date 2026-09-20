@@ -1516,13 +1516,17 @@ Five arms are embedded for v3. The three larger ones needed the GPU partition
 (`slurm/negative_scaling_650M.sh`), because the development machine ran out of memory rather than
 patience. Rows are ordered by capacity, not by result.
 
-| arm | dim | rho | perm p | beta-lactamase margin / recovery | phage margin / recovery | bottom-2 = the two failures |
-|---|---|---|---|---|---|---|
-| esm2_3B | 2560 | +0.831 | 0.0006 | −0.0030 / 4.3% | −0.0014 / 6.9% | **yes** |
-| **canonical 650M** | 1280 | **+0.894** | 0.0002 | −0.0082 / 18.6% | −0.0055 / 10.0% | **yes** |
-| esm2_150M | 640 | +0.861 | 0.0003 | −0.0090 / 4.3% | −0.0008 / 6.9% | no |
-| esm2_35M | 480 | +0.796 | 0.0015 | −0.0172 / 1.4% | −0.0021 / 26.9% | no |
-| esm2_8M | 320 | +0.846 | 0.0008 | −0.0278 / 0.0% | −0.0035 / 31.2% | no |
+Recovery is given twice: the published protocol's 5 seeds, which the audit pins, and a 30-seed
+recomputation with a 95% interval (`src/41_v3_arm_seed_stability.py`), because every side-by-side
+comparison below is between arms and this project has retracted three such comparisons already.
+
+| arm | dim | rho | perm p | β-lact margin | β-lact 5s → 30s [ci] | phage margin | phage 5s → 30s [ci] | bottom-2 |
+|---|---|---|---|---|---|---|---|---|
+| esm2_3B | 2560 | +0.831 | 0.0006 | −0.0030 | 4.3% → **9.3%** [5.6, 13.0] | −0.0014 | 6.9% → **4.1%** [2.4, 5.7] | **yes** |
+| **canonical 650M** | 1280 | **+0.894** | 0.0002 | −0.0082 | 18.6% → **21.2%** [16.5, 25.9] | −0.0055 | 10.0% → **12.2%** [10.0, 14.4] | **yes** |
+| esm2_150M | 640 | +0.861 | 0.0003 | −0.0090 | 4.3% → **1.9%** [0.8, 3.1] | −0.0008 | 6.9% → **7.2%** [5.4, 9.0] | no |
+| esm2_35M | 480 | +0.796 | 0.0015 | −0.0172 | 1.4% → **6.9%** [3.2, 10.6] | −0.0021 | 26.9% → **27.5%** [24.6, 30.4] | no |
+| esm2_8M | 320 | +0.846 | 0.0008 | −0.0278 | 0.0% → **0.0%** [0.0, 0.0] | −0.0035 | 31.2% → **26.0%** [22.8, 29.3] | no |
 
 **What holds in all five.** Every arm has a **negative margin for both failing classes**, every arm has a
 significant positive margin-against-recovery correlation (+0.796 to +0.894, every p ≤ 0.0016), and
@@ -1539,11 +1543,59 @@ representation-general; the identity of the bottom-k is not.
 
 ⚠️ **An earlier version of this section read the arm dependence as capacity-monotone and that was wrong.**
 It was written from three arms, the canonical one plus 8M and 35M, and described beta-lactamase falling and
-the phage class rising as the model shrinks. With 150M and 3B added there is no gradient. **3B and 150M are
-far worse on beta-lactamase than the canonical arm**, 4.3% against 18.6%, and the phage class sits between
-6.9% and 10.0% across all three larger arms before jumping to 26.9% and 31.2% in the two small ones. The
-structure is a split, three arms with two failing classes against two arms with one, not a trend in
-capacity.
+the phage class rising as the model shrinks. With 150M and 3B added there is no gradient, and the structure
+is a split, three arms with two failing classes against two arms with one.
+
+🟢 **The arms really do differ, and it took 30 seeds to say so.** At 30 seeds **9 of the 10 arm pairs are
+disjoint on beta-lactamase and 8 of 10 on the phage class**, and the canonical arm's interval separates from
+all four others on both. The direction of the claim survives: the canonical arm is genuinely the best arm
+for beta-lactamase, [16.5, 25.9] against 3B's [5.6, 13.0], and the two smallest arms are genuinely the best
+for the phage class, 26.0% and 27.5% against 4.1% for 3B, which is a **real inverse-capacity effect for one
+class** and holds with disjoint intervals.
+
+🔴 **Three of the five 5-seed figures for beta-lactamase and two for the phage class sit outside their own
+30-seed intervals, and one coincidence dissolved.** The table's old reading had 3B and 150M tied at 4.3% on
+beta-lactamase and tied again at 6.9% on the phage class. Both ties were 3 of 70 arriving twice: at 30 seeds
+they are **9.3% and 1.9%** on beta-lactamase with disjoint intervals, a factor of five apart, and 4.1% and
+7.2% on the phage class, also disjoint. The phage class's best arm also changes with the seed count, 8M at
+five seeds and 35M at thirty, and those two overlap, so their ranking was noise either way.
+
+🔴 **Every arm-to-arm comparison in the table above is a 5-seed comparison, and on v2 that kind of
+comparison does not survive 30 seeds.** `results/v2/seed_stability_all_arms.json` has the same ESM-2 ladder
+for beta-lactamase at both seed counts:
+
+| arm | 5 seeds | 30 seeds | 95% interval | seeds at exactly 0% |
+|---|---|---|---|---|
+| esm2_8M | 1.4% | 1.7% | [0.2, 3.1] | 25 of 30 |
+| esm2_35M | 12.9% | 16.2% | [9.3, 23.1] | 9 |
+| esm2_150M | 11.4% | 9.5% | [6.1, 13.0] | 9 |
+| canonical 650M | **21.4%** | 15.7% | [11.2, 20.2] | 7 |
+| esm2_3B | 15.7% | **19.0%** | [14.5, 23.6] | 4 |
+
+At 5 seeds the peak is the canonical arm; at 30 seeds it is 3B. **The location of the peak is a
+seed artefact**, and the four larger arms' intervals all overlap, with only 8M clearly apart. The canonical
+arm is also the one arm whose published 5-seed figure sits outside its own 30-seed interval, which is the
+fifth entry in [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
+
+⚠️ **v3 has no 30-seed ladder, so the v3 table's between-arm differences are untested in the same way.**
+`src/03x_seed_stability_all_arms.py` is v2-only, so `src/41_v3_arm_seed_stability.py` runs the v3
+equivalent for both failing classes across the five arms, and its figures are in the table above.
+
+🔑 **The two panels answer the same question differently, and the reason is the negative set.** On v2 the
+four larger arms' intervals all overlap and the peak moves with the seed count. On v3 nine of ten pairs
+separate. v2 holds out 40% of 154 negatives, so its threshold is a quantile of **61** points; v3 holds out
+40% of 296 and gets **118**. Doubling the calibration sample halves that noise source, and differences
+between arms that v2 could not resolve become resolvable. This is §10.8's constraint showing up as a
+limit on what the study can measure rather than on what a screen can deploy.
+
+🔑 **A report that predates all of this says why the irregularity is not about capacity at all.**
+`src/04_scale_sweep_report.py` ran these five arms on the frozen panel and
+`results/v2/scale_sweep_report.json` has sat unreferenced since. The 150M arm sits below **both** its
+neighbours in **5 of 9** v2 classes: adp-ribosylating (97.1 → 60.0 → 100.0), beta-lactamase,
+contact-dependent inhibition, T3SS effectors and the virulence control. A dip that appears in five
+unrelated mechanism classes at one arm is a property of that arm rather than of its parameter count. ⚠️
+Those figures are 5-seed too, so the dip is a pattern across classes within one arm rather than a
+established per-class difference.
 
 ⚠️ **The within-class check across arms fails once the middle arms are in.** Over three arms
 beta-lactamase's margin and recovery moved together at every pair. Over five they do not: 150M has a more
@@ -1719,6 +1771,253 @@ solves.
 ⚠️ Volume figures are arithmetic on the measured TPR and FPR and assume the queue is drawn like the panel's
 negatives, which no real order queue is. They are a scale check rather than a forecast.
 
+### 10.9 🔑 A benign set 28 times larger appears to repair both unreachable classes
+
+`src/34_scale_negative_set.py`, `src/35`, `src/36`, `src/37`, `src/38`, `src/39`, `src/40`, panel v3,
+canonical 650M arm unless stated.
+
+**Two reasons to build a benign set an order of magnitude larger, and one reason not to touch the
+positive side.** §10.8 showed the threshold is a quantile of held-out negatives, so at 118 of them the
+finest resolution available is one in 118 and every specificity above 0.9915 is extrapolation.
+Calibrating a one-in-ten-thousand budget with ten negatives above the threshold needs roughly 250,000.
+Reviewed Swiss-Prot supplies **503,488** eligible entries in the panel's length window once the six
+hazard keywords are excluded, checked live on 2026-09-20, so on this one constraint the supply is about
+twice the requirement. This is the only binding limit in the project that more data actually fixes.
+
+The second reason is scientific. §10.7.1 read the dose-response as density, and density makes a
+falsifiable prediction with a direction: if removing the nearest benign proteins keeps helping all the
+way to K=80, then **adding** benign proteins should make these classes worse and leave the recovered
+ones alone.
+
+⚠️ **The positive side is deliberately left alone, and this is where "just use all of UniProt" stops.**
+There are **6,720** reviewed entries in the length window carrying the Toxin or Virulence keyword, the
+same figure live today as when `34` recorded it. Using
+them as positives would replace 149 curated labels, each with a written reason, by whatever a curator
+flagged. §2's own provenance control is the argument, and it was recomputed on v3 for this section
+rather than carried over: a probe that discards the hazard label entirely and predicts lab-strain
+origin reaches **AUROC 0.794 ± 0.062** on v3, against 0.818 ± 0.012 on v2, and the organism label
+agrees with the hazard label on **43.6%** of v3 against 53.4% of v2. The v3 control is weaker and five
+times noisier, and it still sits above chance by more than two standard deviations. At keyword scale
+the hazard label *is* the annotation, so a classifier trained that way learns the annotation. Scaling
+the negative side has no such problem, because a benign set is defined by the absence of the keywords
+rather than their presence.
+
+⚠️ `34`'s docstring originally quoted v2's 0.818 next to v3's 43.6%, two figures from two panels. Both
+pairs are now pinned together in the audit for that reason.
+
+**The harvest failed three times before it worked, and each failure produced a plausible-looking
+result.** UniProt echoes the comma-separated `fields` parameter inside the `Link` header, so splitting
+that header on commas found a truncated URL and the pagination loop ended quietly after one page: a
+harvest that looks complete and is not. UniProt also returns results clustered by organism, so
+sequential paging under a per-organism cap is a pathological sampler, and a first run drew 500 records
+that were all *Homo sapiens*, rejected 493 of them, and kept 6. And a single
+`TimeoutError: The read operation timed out` partway through the first kingdom discarded everything
+collected so far, because there were no retries. The fixes are a `rel="next"` regex that asserts the
+reported total was reached, superkingdom stratification with quotas proportional to the eligible corpus,
+and exponential-backoff retries. All three are commented at the site in `34`, since a pagination loop
+that ends quietly is worse than one that crashes.
+
+**8,259 proteins, and the pool is not what its raw count says.** `36` applies §2.1's effective-n
+discipline to the negative side, which the project had only ever applied to positives:
+
+| count | effective n | held out at 40% | specificity ceiling |
+|---|---|---|---|
+| raw records | 8,259 | 3,303 | 0.99970 |
+| by homology, 600-protein sample | **5,203** [4,884, 5,522] | 2,081 | **0.99952** |
+| by distinct protein name, complete | **3,550** | 1,420 | 0.99930 |
+| the panel, for comparison | 296 | 118 | 0.9915 |
+
+🔴 **The name figure is the lower one and it is the complete one.** 8,259 records carry 3,550 distinct
+names, a redundancy factor of **2.33**, and the most repeated name appears **389 times**. The homology
+figure keeps 63% of a 600-protein sample [0.591, 0.669] and extrapolates; the name figure misses
+homologs that curators named differently but counts every record. So the pool is worth an order of
+magnitude more than the panel and roughly two orders less than a deployable budget needs, and the
+figure to quote is 0.9995 rather than the 0.9997 the raw count implies.
+
+**The pool is 87% bacterial, and it is 8,259 rather than the 12,000 requested, for the same reason.**
+Realised composition is 7,226 Bacteria, 424 Archaea, 339 Viruses and **270 Eukaryota against a quota
+of 4,011**. The harvest fetched 39,000 records and kept 8,259; the per-organism cap of 30 alone
+rejected **28,728** of them. Swiss-Prot's eukaryotic half is dominated by a handful of model
+organisms, so a cap that keeps any one organism from dominating removes most of that half by
+construction. The result resembles the panel's own producer mix, **71 of v2's 80 positives are
+bacterial** with six plant RIP sources and three viral entries, more closely than it resembles
+Swiss-Prot, which is the right material for this question and is not a neutral background sample. The query is `reviewed:true AND length:[100 TO 1400]` excluding Virulence,
+Toxin, Cytolysis, Hemolysis, Bacteriocin and Bacteriolytic enzyme.
+
+**The first attempt at the prediction varied two things at once.** `35` swept the size of the benign set
+across the pool, and its smallest point was 296 proteins drawn from the pool rather than the panel's own
+296. That changes size and composition together, which is the exact confound §6 exists to separate, and
+`34`'s docstring had already written the caveat down before `35` walked into it. The substitution is
+worth 34 points: at identical n=296 the phage class reads **46.5%** on a pool sample and **12.2%** on the
+panel's real negatives. See [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md), eighth entry.
+
+**The fixed test keeps the panel's 296 as a floor and adds on top.** `37` adds K pool proteins to the
+panel's own negatives, two ways: K drawn at random, and the K **nearest** the held-out class, which is
+the actual converse of §10.7's removal.
+
+| class | mode | K=0 | 500 | 1,500 | 4,000 | 8,259 |
+|---|---|---|---|---|---|---|
+| phage_peptidoglycan_hydrolase | random | 12.2% | 29.0% | 36.9% | 42.9% | **49.3%** |
+| phage_peptidoglycan_hydrolase | nearest | 12.2% | 17.5% | 21.4% | 46.2% | 47.9% |
+| beta_lactamase | random | 21.2% | 10.5% | 25.2% | 42.4% | **41.9%** |
+| beta_lactamase | nearest | 21.2% | 15.5% | 20.5% | 22.4% | 42.1% |
+| rip_rrna_glycosidase (recovered) | random | 94.8% | 91.0% | 91.4% | 88.6% | 89.5% |
+| rip_rrna_glycosidase (recovered) | nearest | 94.8% | **51.4%** | 68.1% | 78.1% | 90.0% |
+
+Two readings are available and they point opposite ways. The density prediction is **refuted in the
+direction it cared about**: both failing classes end three to four times higher rather than lower. But
+the nearest arm behaves exactly as proximity predicts on the wrong class. Adding the 500 nearest pool
+proteins costs the recovered class **43.3 points** while beta-lactamase falls 5.7 and the phage class
+rises 5.3, so the proteins nearest a class hurt the class that was working far more than the two that
+were not.
+
+⚠️ The K=0 baseline here is a 30-seed recomputation of the published protocol, 21.2% and 12.2%, against
+the published 5-seed 18.6% and 10.0%. `37`'s own tolerance check flagged the gap rather than hiding it.
+The cause is seed noise on a 14-member and a 16-member class, the same effect as the fifth corrections
+entry, and the published 5-seed figures stay the ones the audit pins.
+
+**On §10.8's constraint the pool does exactly what it was built to do, and the cap that protects the
+panel is what stops it going further.** A one-in-ten-thousand false-positive budget needs 250,003
+panel negatives, 100,001 of them in the calibration split. Against that requirement:
+
+| negative set | n | remaining gap |
+|---|---|---|
+| the panel | 296 | 845× |
+| the pool, raw records | 8,259 | **30×** |
+| the pool, by homology | 5,203 | 48× |
+| the pool, by distinct protein name | 3,550 | **70×** |
+
+🔑 **The two constraints pull against each other, which is the part that is not obvious.** The harvest
+caps each organism at 30 records, and that cap exists because provenance is a live confound: the probe
+that ignores the hazard label and predicts lab-strain origin still reaches AUROC 0.794 on v3. Letting a
+few model organisms dominate the benign set would make organism the signal. But 1,996 contributing
+organisms at 30 each tops out at **59,880** records, so the harvest design that keeps provenance
+separable cannot itself reach a deployable calibration set: 250,003 under the same cap needs **8,334**
+contributing organisms, 4.2 times as many as this harvest touched. The cap already rejected 28,728 of
+39,000 fetched records.
+
+So the supply exists, 503,488 eligible entries against a 250,003 requirement, and the binding
+constraint moves from "is there enough reviewed benign protein" to "is there enough taxonomic breadth
+to draw it without reintroducing provenance". That is a different problem than the one §10.8 named, and
+it is the one a screen would actually have to solve.
+
+#### 10.9.1 🔴 At a fixed false-positive budget it repairs one of them, and §6 says why the other looked repaired
+
+`src/38`, `src/39`, `src/40`, panel v3, canonical 650M arm, 30 seeds throughout.
+
+🔴 **Before that table can be read as a repair, the false-positive budget has to be checked, and it
+moved.** `38` split the gain into a decision-boundary arm and a threshold-estimation arm:
+
+| class | K=0 | boundary_only | threshold_only | both |
+|---|---|---|---|---|
+| phage_peptidoglycan_hydrolase | 12.2% | 32.5% | 0.9% | 51.7% |
+| beta_lactamase | 21.2% | 7.1% | 11.2% | 39.5% |
+| rip_rrna_glycosidase (recovered) | 94.8% | 56.7% | 89.0% | 90.0% |
+
+The two single-factor arms together fall **30.4 points** short of `both` for the phage class and **42.3**
+short for beta-lactamase, so the effect is an interaction and the share-of-gain statistic says nothing.
+`38` preregistered that case. Of its three arms only **`boundary_only` leaves the operating point
+alone**: its threshold is the 0.95 quantile of the panel's own 118 held-out negatives, the same
+population the published baseline uses. In `both` at K=8259 the calibration set is 118 panel negatives
+plus 3,303 pool proteins, 96.5% pool, and the model was trained on those proteins too.
+
+**`39` measures the budget instead of arguing about it**, and four self-tests make the run falsifiable.
+`boundary_only`'s false-positive rate on the panel's 118 is **5.1% at every K and every class**, 6 of 118,
+because that is its calibration set. `threshold_only`'s model never changes with K, so its rethresholded
+recovery is flat at the baseline. Both hold in every cell. Every recovery figure also reproduces `38`'s
+artifact to 1e-9, which pins the fit order and the random stream.
+
+🔑 **At a fixed 5.1% false-positive rate on matched negatives, the pool helps exactly one class.**
+
+| class | K=0 | 500 | 1,500 | 4,000 | 8,259 | best change |
+|---|---|---|---|---|---|---|
+| phage_peptidoglycan_hydrolase | 12.2% | 27.5% | 33.2% | **35.7%** | 32.5% | **+23.5** |
+| beta_lactamase | 21.2% | 17.6% | 15.7% | 15.7% | **7.1%** | **−14.0** |
+| rip_rrna_glycosidase (recovered) | 94.8% | 78.1% | 78.1% | 69.0% | **56.7%** | **−38.1** |
+
+The phage rise is monotone across four increasing doses before it turns over, so it is not one lucky K
+out of five. Beta-lactamase declines monotonically and the recovered class declines further. **The two
+classes this project calls unreachable respond to the same intervention in opposite directions**, which
+§10.4 to §10.7 had no way to see, because margin locates them together and every test until now treated
+them as one phenomenon.
+
+**So beta-lactamase's headline is the budget moving, and it moves a long way.** `both`'s threshold
+incurs 11.1% to 14.5% false positives on the panel's matched negatives against a nominal 5.1%, so
+`37`'s K>0 points were running at roughly **two to three times** the budget of its K=0 point. Rethreshold
+`both`'s own model on the panel's 118 and beta-lactamase reads **13.3%** against its 21.2% baseline: worse,
+not better, and its best value over all five doses is the baseline itself. The phage class survives the
+same test at **37.3%**.
+
+**A third framing, built to be the deployment one, lands on the same split.** `40` reserves 2,000 pool
+proteins that no arm trains on, calibrates every arm on that same background, and compares each arm
+against the K=0 model loosened to the **same** hard-negative false-positive rate. That iso-FP control is
+what separates a better classifier from a looser threshold, and it needs one correction of its own: 118
+hard negatives quantise the rate at 1/118, so two thresholds can flag the same number while sitting
+either side of a gap in their scores, and at K=0 the arm and its baseline are the same model, so the
+excess there is pure slack. It is +0.5 points for the phage class, +4.3 for beta-lactamase and +1.9 for
+the recovered class, neither negligible nor constant, so every excess is reported net of it.
+
+Every figure below is at the top dose, K=6,259, so the columns are comparable across rows.
+
+| class | recovery on the fixed background | the same K=0 model at the same FP | net excess | hard-negative FP |
+|---|---|---|---|---|
+| phage_peptidoglycan_hydrolase | 1.1% → 52.0% | 28.0% | **+23.4** | 2.2% → 11.8%, **5.3×** |
+| beta_lactamase | 12.4% → 56.4% | 49.0% | **+3.1** | 3.2% → 14.5%, **4.5×** |
+| rip_rrna_glycosidase (recovered) | 90.0% → 100.0% | 100.0% | **−1.9** | 4.0% → 16.8%, **4.2×** |
+
+🔴 **And the pool's own redundancy was holding up the one piece of evidence that beta-lactamase gained
+anything.** 8,259 records carry 3,550 distinct names, so a random 2,000 / 6,259 reservation puts orthologs
+of the same protein on both sides by construction, which inflates specificity on the background and
+flatters large K. Splitting **name groups** instead of rows removes that, and the two splits disagree on
+exactly one class:
+
+| class | net excess, random split | net excess, name-disjoint split |
+|---|---|---|
+| phage_peptidoglycan_hydrolase | +23.4 | **+20.3** at K=1,500 |
+| beta_lactamase | +3.1 | **+0.0**, and −6.4, −8.8, −24.0, −31.7 at the four positive doses |
+| rip_rrna_glycosidase (recovered) | −1.9 | +0.0, falling to −18.1 at the top dose |
+
+Beta-lactamase's +3.1 was the contamination. Under the name-disjoint split its best dose is **K=0**, the
+baseline itself, and every dose above that is worse than moving the threshold, by up to 31.7 points. The
+phage class loses about 3 points to the same correction and keeps the rest. The caveat written into `40`
+before it ran said the bias flatters large K and that an R2 verdict would be safe against it while an R1
+verdict would not; that is what happened, on the class where it mattered.
+
+🔑 **+20.3, +23.4 and +23.5 from three framings that share no threshold.** `39`'s boundary arm holds the panel's own operating
+point; `40`'s two iso-FP controls hold a reserved pool background, contaminated and decontaminated. All
+three agree on the phage class to within three points, and all three agree that beta-lactamase gains
+nothing a threshold could not have bought: −14.0 at the panel's own budget, +3.1 with a contaminated
+background and **+0.0 once the contamination is removed**.
+
+⚠️ **The deployment reading is worse than either number suggests, and the direction of the drift is not
+the obvious one.** At K=0 a threshold set on the broad background is *stricter* than nominal on matched
+negatives, 2.2% to 4.0% against a nominal 5%, because pool proteins are out of distribution for a model
+trained on the panel alone and score high enough to push the quantile up. As the training set grows to
+resemble the background it is calibrated on, that reverses: the hard-negative rate rises to **4.2 to 5.3
+times** its starting value, 11.8% to 16.8% against the same nominal 5%. So a screen whose specificity is
+quoted against a broad benign background is quiet on matched negatives when it is trained narrowly and
+loud on them once it is trained broadly, and the quoted figure moves for neither reason. `39`'s boundary
+arm is the exception that proves the point: the phage gain is available at **exactly** the panel's budget,
+because that arm never let the budget move.
+
+**§10.7.1's closing line needs one word changed, and its experiment stands.** It said margin identifies
+mechanism families a screen will miss, and *curating the negative set is not the repair*. §10.7 tested
+curation by **removal** only, and the removal result is unchanged. Addition is a different operation and
+it is not uniform: for one of the two failing classes, adding 4,000 benign proteins to the training set
+buys 23.5 points at a fixed false-positive budget. For the other it costs 14.0 points, and for a class
+that already worked it costs 38.1. So the corrected statement is narrower and more useful: **curating the
+negative set is not a general repair, it is a per-class intervention with a sign that has to be measured,
+and at panel scale its expected effect on a working class is negative.**
+
+**None of this is a new mechanism. It is §6 running backwards at 28 times the scale.** §6 varied the
+negative set 2×2 on v2 and found the operating point dominates, losing 21.4 points across 8 of 9 classes
+when only the calibration set changed, against 10.5 points when only the boundary changed. That was
+measured while making the negative set **harder**. Here the negative set is made **larger and easier**,
+the operating point moves the other way, and it produces an apparent three to fourfold repair that is
+mostly not there. A reader who takes one thing from §10.9 should take that: the same mechanism that
+costs a screen 21 points when the benign set is sharpened will hand it back 20 or 30 points when the
+benign set is broadened, and neither number is about the classifier.
+
 ## 11. What this does not claim
 
 - **Not a better classifier.** DTVF (ProtT5 + LSTM/CNN) reports AUROC 0.92 on the standard 576/576
@@ -1739,7 +2038,10 @@ negatives, which no real order queue is. They are a scale check rather than a fo
   0.9915 is extrapolation on this panel**, and calibrating a one-in-ten-thousand false-positive budget would
   need a negative set roughly **850 times** larger. At the strictest budget that can be calibrated, ten
   thousand screened sequences at a one-in-a-thousand hazard rate produce 175 alerts of which about five are
-  real.
+  real. §10.9 closes part of that gap and renames the rest of it: an 8,259-protein benign pool brings the
+  shortfall to **30×** by raw count and **70×** by distinct protein name, and what then binds is taxonomic
+  breadth rather than supply, because the per-organism cap that keeps provenance separable tops the harvest
+  design out at 59,880 records.
 - **Not evidence that hazard is what is being detected.** See the provenance control in §2.
 - **Not a test of generalisation to functions no model has seen.** The held-out class is removed from the
   probe's training, not from the foundation model's pretraining, and every class here is in the public
@@ -1770,9 +2072,21 @@ python src/03b_leave_one_mechanism_out.py --panel v3     # §2.5's recovery tabl
 python src/28_second_failure_class.py --panel v3          # margin locates both failures
 python src/29_margin_predicts_new_classes.py              # out-of-sample ordering
 python src/30_margin_across_arms.py                       # all 14 arms, on v2
+python src/30_margin_across_arms.py --panel v3            # five arms, on v3, §10.6.1
 python src/31_margin_causal_test.py --panel v3            # causal, and how small
 python src/33_margin_dose_response.py --panel v3          # dose-response
 python src/32_deployment_operating_points.py --panel v3   # queue volume and the FP ceiling
+
+# the negative set at scale, §10.9. The pool embeddings are 42 MB and each sweep is
+# between 450 and 1,350 logistic fits, so these live on SLURM. A local attempt at the
+# 650M pool embedding stalled with 67 MB of free RAM; the diagnosis is in the job script
+# because an earlier hang of the same kind was misread as a network stall.
+python src/34_scale_negative_set.py                       # harvest 8,259 reviewed Swiss-Prot proteins
+python src/36_pool_effective_n.py                         # what the pool is worth after homology
+PY=path/to/python; D=$PWD
+PROJECT_DIR=$D PYTHON_BIN=$PY sbatch slurm/negative_scaling_650M.sh   # 35, then 37's fix of it
+PROJECT_DIR=$D PYTHON_BIN=$PY sbatch slurm/threshold_vs_boundary.sh   # 38, boundary vs threshold
+PROJECT_DIR=$D PYTHON_BIN=$PY sbatch slurm/operating_point_audit.sh   # 39, then 40 on both splits
 
 # how the panel itself was built. These were unreferenced by any document until a
 # review pass on 2026-09-18 found them, which matters because §10.3's failed
@@ -1787,7 +2101,8 @@ python src/06_safeprotein_panel_build.py                   # the SafeProtein set
 
 # seed stability, after two published numbers turned out to be 5-seed means
 python src/03v_lomo_seed_stability.py
-python src/03x_seed_stability_all_arms.py
+python src/03x_seed_stability_all_arms.py                 # v2, beta-lactamase, 14 arms
+python src/41_v3_arm_seed_stability.py                    # v3, both failing classes, 5 arms, §10.6.1
 
 # every headline claim, recomputed from its artifact and matched to the documents
 python src/22_claims_audit.py
@@ -1797,3 +2112,12 @@ The audit exits 1 if any claim disagrees with its artifact, and CI runs it on ev
 after four separate number-drift defects were found by hand, each because someone happened to look; the
 two entries covering this panel were added after two more. All are documented in
 [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
+
+**The recovery figures do not depend on the device.** The v3 leave-one-mechanism-out run was repeated on
+CUDA for the canonical 650M arm and on CPU for the 8M arm, against the published Apple MPS run. All twelve
+classes agree **bit for bit** at both the 95% and the 99% operating point, on both arms. The embeddings
+themselves do differ: per-seed calibrated thresholds move in the fifth decimal. Recovery is a count over a
+dozen-odd class members, so a shift that small has to cross a member's score to change anything, and here
+none of them did. The CUDA recomputation is kept **beside** the published file as
+`results/v3/lomo_results.cuda650M.json` rather than over it, so the published numbers stay the ones the
+audit pins.

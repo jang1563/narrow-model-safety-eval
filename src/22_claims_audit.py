@@ -847,6 +847,135 @@ def v3_panel_and_target_host():
             "verdict_supported": th["verdict"].startswith("SUPPORTED")}
 
 
+def negative_set_at_fixed_budget():
+    """§10.9.1: at a FIXED false-positive budget the pool repairs one unreachable class and makes
+    the other worse. Pinned together with the budget drift, because the headline three to fourfold
+    gain and the fact that it ran at two to three times the budget cannot be quoted apart."""
+    d = j("v3/threshold_vs_boundary_esm2_650M.json")
+    a = j("v3/operating_point_audit_esm2_650M.json")
+    ks = [str(k) for k in a["K_grid"]]
+    top, mid = ks[-1], "4000"
+    c = a["curves"]
+    def bo(cl, k):
+        return c[cl]["boundary_only"][k]["rec"]["mean"]
+    gs = d["gain_split"]
+    fps = {cl: [c[cl]["boundary_only"][k]["fp_panel"]["mean"] for k in ks] for cl in c}
+    return {"seeds": a["seeds"], "self_tests": a["self_tests"],
+            # 38: the two single-factor arms fall far short of `both`, so the split statistic is empty
+            "residual_phage": gs["phage_peptidoglycan_hydrolase"]["additive_residual_pts"],
+            "residual_beta": gs["beta_lactamase"]["additive_residual_pts"],
+            # 39 S1: boundary_only's budget is the panel's own, at every K and every class
+            "boundary_fp_constant": all(abs(x - fps[cl][0]) < 1e-9 for cl in fps for x in fps[cl]),
+            "boundary_fp": fps["beta_lactamase"][0],
+            # the fixed-budget result
+            "phage_best_gain_pts": (bo("phage_peptidoglycan_hydrolase", mid)
+                                    - bo("phage_peptidoglycan_hydrolase", "0")) * 100,
+            "phage_monotone_to_4000": all(
+                bo("phage_peptidoglycan_hydrolase", x) <= bo("phage_peptidoglycan_hydrolase", y) + 1e-9
+                for x, y in zip(ks[:3], ks[1:4])),
+            "beta_change_pts": (bo("beta_lactamase", top) - bo("beta_lactamase", "0")) * 100,
+            "rip_change_pts": (bo("rip_rrna_glycosidase", top) - bo("rip_rrna_glycosidase", "0")) * 100,
+            # what `both` was actually running at
+            "both_fp_min": min(c[cl]["both"][top]["fp_panel"]["mean"] for cl in c),
+            "both_fp_max": max(c[cl]["both"][top]["fp_panel"]["mean"] for cl in c),
+            "beta_rethresholded": a["summary"]["beta_lactamase"]["both_recovery_at_panel_op_maxK"],
+            "beta_baseline": a["summary"]["beta_lactamase"]["baseline"],
+            "beta_verdict": a["summary"]["beta_lactamase"]["verdict"],
+            "phage_verdict": a["summary"]["phage_peptidoglycan_hydrolase"]["verdict"],
+            "split_verdict": a["verdict"].startswith("Q1 SPLIT")}
+
+
+def pool_contamination_changes_one_class():
+    """§10.9.1: the iso-FP control under both reservation splits. The name-disjoint split is what
+    removes beta-lactamase's apparent excess entirely, so both splits are pinned and the direction of
+    the contamination bias is pinned with them."""
+    r = j("v3/fixed_background_operating_point_esm2_650M.json")
+    n = j("v3/fixed_background_operating_point_esm2_650M_namedisjoint.json")
+    def net(d, cl):
+        return d["summary"][cl]["excess_net_pts"]
+    nd = n["curves"]["beta_lactamase"]
+    doses = [str(k) for k in n["K_grid"]][1:]
+    return {"random_split": r["split"], "nd_split": n["split"],
+            "nd_name_groups": n["n_name_groups"],
+            "phage_net_random": net(r, "phage_peptidoglycan_hydrolase"),
+            "phage_net_nd": net(n, "phage_peptidoglycan_hydrolase"),
+            "beta_net_random": net(r, "beta_lactamase"),
+            "beta_net_nd": net(n, "beta_lactamase"),
+            "beta_nd_best_K": n["summary"]["beta_lactamase"]["best_K_by_excess"],
+            "beta_nd_all_doses_negative": all(
+                nd[k]["excess_net"]["mean"] < 0 for k in doses),
+            "beta_nd_worst_pts": min(nd[k]["excess_net"]["mean"] for k in doses) * 100,
+            "rip_net_nd": net(n, "rip_rrna_glycosidase"),
+            "phage_fp_ratio_nd": n["summary"]["phage_peptidoglycan_hydrolase"]["fp_hard_ratio"],
+            "nd_verdict_split": n["verdict"].startswith("SPLIT")}
+
+
+def v3_arm_seed_stability():
+    """§10.6.1: are the between-arm recovery differences on v3 real at 30 seeds? On v2 the same
+    check found no separation and a moving peak, so this is pinned for both the separation and the
+    5-seed figures that fall outside their own intervals."""
+    d = j("v3/arm_seed_stability.json")
+    r, sm = d["results"], d["summary"]
+    b, ph = r["beta_lactamase"], r["phage_peptidoglycan_hydrolase"]
+    return {"seeds": d["seeds"], "n_arms": len(d["arms"]),
+            "beta_disjoint_pairs": sm["beta_lactamase"]["n_disjoint_pairs"],
+            "phage_disjoint_pairs": sm["phage_peptidoglycan_hydrolase"]["n_disjoint_pairs"],
+            "beta_canonical_separates_from_all":
+                len(sm["beta_lactamase"]["arms_disjoint_from_canonical"]) == 4,
+            "phage_canonical_separates_from_all":
+                len(sm["phage_peptidoglycan_hydrolase"]["arms_disjoint_from_canonical"]) == 4,
+            "beta_outside_ci": sorted(sm["beta_lactamase"]["published_outside_own_ci"]),
+            "phage_outside_ci": sorted(sm["phage_peptidoglycan_hydrolase"]["published_outside_own_ci"]),
+            "beta_top_changes": sm["beta_lactamase"]["top_arm_changes"],
+            "phage_top_changes": sm["phage_peptidoglycan_hydrolase"]["top_arm_changes"],
+            "beta_canonical_30s": b["canonical 650M"]["0.95"]["mean_30seed"],
+            "beta_3B_30s": b["esm2_3B"]["0.95"]["mean_30seed"],
+            "beta_150M_30s": b["esm2_150M"]["0.95"]["mean_30seed"],
+            "phage_3B_30s": ph["esm2_3B"]["0.95"]["mean_30seed"],
+            "phage_8M_30s": ph["esm2_8M"]["0.95"]["mean_30seed"],
+            "phage_35M_30s": ph["esm2_35M"]["0.95"]["mean_30seed"],
+            "beta_4pct_tie_dissolved":
+                abs(b["esm2_3B"]["0.95"]["mean_30seed"] - b["esm2_150M"]["0.95"]["mean_30seed"]) > 0.05,
+            "a1": d["verdict"].startswith("A1")}
+
+
+def pool_and_calibration_gap():
+    """§10.9 and §11: what the 8,259-protein benign pool is worth, and how much of §10.8's
+    calibration shortfall it closes. Pinned because the raw count overstates it: the complete
+    name-based count is lower than the sampled homology estimate, so the honest gap figure is the
+    larger of the two rather than the one the raw count implies."""
+    d = j("v3/pool_effective_n.json")
+    dep = j("v3/deployment_operating_points.json")
+    need = dep["negatives_needed"]["0.9999"]["panel_negatives_required"]
+    cal = d["calibration"]
+    return {"pool_n": d["pool_n"], "distinct_names": d["distinct_names"],
+            "name_factor": d["name_redundancy_factor"],
+            "most_repeated": d["most_repeated_names"][0][1],
+            "eff_homology": d["effective_n_by_homology"],
+            "homology_keep": d["homology_keep_rate"],
+            "ceiling_raw": cal["raw count"]["ceiling"],
+            "ceiling_homology": cal["by homology, estimated"]["ceiling"],
+            "ceiling_name": cal["by name"]["ceiling"],
+            "need_9999": need,
+            "gap_panel": need / 296, "gap_raw": need / d["pool_n"],
+            "gap_name": need / d["distinct_names"],
+            "name_count_is_lower": d["distinct_names"] < d["effective_n_by_homology"]}
+
+
+def v3_provenance_control():
+    """§10.9: the provenance control on v3, which is the argument against scaling the POSITIVE side
+    to keyword scale. Pinned for both panels together because the two were once quoted mixed: v2's
+    AUROC sat next to v3's agreement rate in `34`'s docstring."""
+    a = j("v2/lomo_results.json")
+    b = j("v3/lomo_results.json")
+    return {"v2_auroc": a["provenance_auroc"][0], "v2_sd": a["provenance_auroc"][1],
+            "v2_agreement": a["organism_label_agreement_with_hazard"],
+            "v3_auroc": b["provenance_auroc"][0], "v3_sd": b["provenance_auroc"][1],
+            "v3_agreement": b["organism_label_agreement_with_hazard"],
+            "v3_above_chance_by_2sd": b["provenance_auroc"][0] - 2 * b["provenance_auroc"][1] > 0.5,
+            "v3_noisier": b["provenance_auroc"][1] > 3 * a["provenance_auroc"][1]}
+
+
 def margin_predicts_new_classes():
     """§10.5: margin ranks an unseen mechanism correctly out of sample and mis-states its
     miss rate by 34 points. Both halves are pinned, because the ordering result without the
@@ -1270,6 +1399,68 @@ CLAIMS = [
                 and v["v2_balanced"] == 0.5 and not v["v2_usable"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "**v3 is 149 positives against 296 negatives**"}, []),
+    ("at a fixed false-positive budget the pool repairs the phage class and harms beta-lactamase",
+     negative_set_at_fixed_budget,
+     lambda v: (v["seeds"] == 30 and v["self_tests"] == "all pass"
+                and v["residual_phage"] > 25 and v["residual_beta"] > 35
+                and v["boundary_fp_constant"] and abs(v["boundary_fp"] - 6 / 118) < 1e-9
+                and 23 < v["phage_best_gain_pts"] < 24 and v["phage_monotone_to_4000"]
+                and -15 < v["beta_change_pts"] < -13
+                and -39 < v["rip_change_pts"] < -37
+                and 0.10 < v["both_fp_min"] and v["both_fp_max"] < 0.15
+                and v["beta_rethresholded"] < v["beta_baseline"]
+                and v["beta_verdict"] == "ARTEFACT" and v["phage_verdict"] == "SURVIVES"
+                and v["split_verdict"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "**At a fixed 5.1% false-positive rate on matched negatives, the pool helps exactly one class.**"},
+     []),
+    ("removing the pool's name redundancy removes beta-lactamase's apparent excess entirely",
+     pool_contamination_changes_one_class,
+     lambda v: (v["random_split"] == "random" and v["nd_split"] == "name-disjoint"
+                and v["nd_name_groups"] == 3550
+                and 23 < v["phage_net_random"] < 24 and 20 < v["phage_net_nd"] < 21
+                and 3 < v["beta_net_random"] < 4 and abs(v["beta_net_nd"]) < 1e-9
+                and v["beta_nd_best_K"] == 0 and v["beta_nd_all_doses_negative"]
+                and v["beta_nd_worst_pts"] < -30
+                and abs(v["rip_net_nd"]) < 1e-9 and v["nd_verdict_split"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "Beta-lactamase's +3.1 was the contamination."}, []),
+    ("on v3 the arms genuinely separate at 30 seeds, and two 5-seed ties dissolve",
+     v3_arm_seed_stability,
+     lambda v: (v["seeds"] == 30 and v["n_arms"] == 5
+                and v["beta_disjoint_pairs"] == 9 and v["phage_disjoint_pairs"] == 8
+                and v["beta_canonical_separates_from_all"]
+                and v["phage_canonical_separates_from_all"]
+                and v["beta_outside_ci"] == ["esm2_150M", "esm2_35M", "esm2_3B"]
+                and v["phage_outside_ci"] == ["esm2_3B", "esm2_8M"]
+                and not v["beta_top_changes"] and v["phage_top_changes"]
+                and v["beta_4pct_tie_dissolved"] and v["a1"]
+                and abs(v["beta_canonical_30s"] - 0.212) < 0.002
+                and abs(v["beta_3B_30s"] - 0.093) < 0.002
+                and abs(v["beta_150M_30s"] - 0.019) < 0.002
+                and abs(v["phage_3B_30s"] - 0.041) < 0.002
+                and v["phage_8M_30s"] > 6 * v["phage_3B_30s"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "**9 of the 10 arm pairs are\ndisjoint on beta-lactamase and 8 of 10 on the phage class**"}, []),
+    ("the benign pool closes §10.8's gap to 30x by count and 70x by distinct name",
+     pool_and_calibration_gap,
+     lambda v: (v["pool_n"] == 8259 and v["distinct_names"] == 3550
+                and abs(v["name_factor"] - 2.33) < 0.01 and v["most_repeated"] == 389
+                and abs(v["eff_homology"] - 5203) < 1 and abs(v["homology_keep"] - 0.63) < 0.005
+                and v["need_9999"] == 250003
+                and 840 < v["gap_panel"] < 850
+                and 30 <= v["gap_raw"] < 31 and 70 <= v["gap_name"] < 71
+                and v["name_count_is_lower"]
+                and abs(v["ceiling_name"] - 0.99930) < 1e-5
+                and abs(v["ceiling_homology"] - 0.99952) < 1e-5),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "shortfall to **30\u00d7** by raw count and **70\u00d7** by distinct protein name"}, []),
+    ("the provenance control holds on v3 and is weaker and noisier there",
+     v3_provenance_control,
+     lambda v: (abs(v["v2_auroc"] - 0.818) < 0.002 and abs(v["v2_agreement"] - 0.534) < 0.002
+                and abs(v["v3_auroc"] - 0.794) < 0.002 and abs(v["v3_agreement"] - 0.436) < 0.002
+                and v["v3_above_chance_by_2sd"] and v["v3_noisier"]),
+     {"docs/MECHANISM_GENERALIZATION.md": "**AUROC 0.794 \u00b1 0.062** on v3"}, []),
     ("margin ranks an unseen mechanism right and mis-states its miss rate",
      margin_predicts_new_classes,
      lambda v: (v["p1_hit"] and v["lowest"] == "phage_peptidoglycan_hydrolase"
@@ -1355,7 +1546,8 @@ CLAIMS = [
                 and v["displacer"] == ["virulence_associated_non_toxin"]
                 and v["beta_not_monotone_in_capacity"]),
      {"docs/MECHANISM_GENERALIZATION.md":
-      "| esm2_3B | 2560 | +0.831 | 0.0006 | −0.0030 / 4.3% | −0.0014 / 6.9% | **yes** |"}, []),
+      "| esm2_3B | 2560 | +0.831 | 0.0006 | −0.0030 | 4.3% → **9.3%** [5.6, 13.0] "
+      "| −0.0014 | 6.9% → **4.1%** [2.4, 5.7] | **yes** |"}, []),
 ]
 
 

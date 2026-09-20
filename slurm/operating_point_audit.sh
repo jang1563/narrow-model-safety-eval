@@ -41,14 +41,21 @@ done
 # at the point it is produced and the job fails if any of them did.
 #
 # STEPS lets one step be re-run alone without editing the file: STEPS=40 sbatch ...
+# 40 runs twice, once per reservation split. The two are not alternatives: the gap between them is
+# the measurement of how much the pool's 2.33x name redundancy was inflating the background.
 STEPS="${STEPS:-39 40}"
-declare -A SCRIPT=( [39]=src/39_operating_point_audit.py [40]=src/40_fixed_background_operating_point.py )
 fail=0
+run() {
+  echo; echo "=== $* ==="
+  if ! $PY "$@"; then echo "FAILED: $*"; fail=$((fail+1)); fi
+}
 for n in $STEPS; do
-  echo; echo "=== step $n: ${SCRIPT[$n]} ==="
-  if ! $PY "${SCRIPT[$n]}" --arm esm2_650M; then
-    echo "STEP $n FAILED"; fail=$((fail+1))
-  fi
+  case "$n" in
+    39) run src/39_operating_point_audit.py --arm esm2_650M ;;
+    40) run src/40_fixed_background_operating_point.py --arm esm2_650M --split random
+        run src/40_fixed_background_operating_point.py --arm esm2_650M --split name-disjoint ;;
+    *)  echo "unknown step $n"; fail=$((fail+1)) ;;
+  esac
 done
 echo; echo "failed steps: $fail"
 exit $fail

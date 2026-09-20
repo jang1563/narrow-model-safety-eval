@@ -1,0 +1,435 @@
+{
+  "arm": "esm2_650M",
+  "K_grid": [
+    0,
+    500,
+    1500,
+    4000,
+    6259
+  ],
+  "seeds": 30,
+  "n_reserved_background": 2000,
+  "n_available": 6259,
+  "split": "random",
+  "n_name_groups": null,
+  "reserve_seed": 12345,
+  "failures": [
+    "phage_peptidoglycan_hydrolase",
+    "beta_lactamase"
+  ],
+  "comparison": "rip_rrna_glycosidase",
+  "curves": {
+    "phage_peptidoglycan_hydrolase": {
+      "0": {
+        "recovery": {
+          "mean": 0.011458333333333333,
+          "sd": 0.017376669273985484
+        },
+        "fp_panel_hard": {
+          "mean": 0.022033898305084745,
+          "sd": 0.011038283528524696
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.00625,
+          "sd": 0.012713690692890196
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.005208333333333332
+        },
+        "excess_net": {
+          "mean": 0.0
+        }
+      },
+      "500": {
+        "recovery": {
+          "mean": 0.40520833333333334,
+          "sd": 0.07407990453386887
+        },
+        "fp_panel_hard": {
+          "mean": 0.10197740112994352,
+          "sd": 0.025519334492072325
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.24583333333333332,
+          "sd": 0.07902853951245249
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.15937500000000002
+        },
+        "excess_net": {
+          "mean": 0.15416666666666667
+        }
+      },
+      "1500": {
+        "recovery": {
+          "mean": 0.4875,
+          "sd": 0.09696359964013514
+        },
+        "fp_panel_hard": {
+          "mean": 0.12655367231638417,
+          "sd": 0.027068675959967172
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.3020833333333333,
+          "sd": 0.06582396630582121
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.18541666666666667
+        },
+        "excess_net": {
+          "mean": 0.18020833333333333
+        }
+      },
+      "4000": {
+        "recovery": {
+          "mean": 0.5052083333333334,
+          "sd": 0.07389785247606802
+        },
+        "fp_panel_hard": {
+          "mean": 0.11779661016949154,
+          "sd": 0.026923427984795065
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.28020833333333334,
+          "sd": 0.08061060305389511
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.22500000000000003
+        },
+        "excess_net": {
+          "mean": 0.2197916666666667
+        }
+      },
+      "6259": {
+        "recovery": {
+          "mean": 0.5197916666666667,
+          "sd": 0.028995546873714022
+        },
+        "fp_panel_hard": {
+          "mean": 0.11751412429378533,
+          "sd": 0.02383849300586435
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.28020833333333334,
+          "sd": 0.06487062998813463
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.23958333333333331
+        },
+        "excess_net": {
+          "mean": 0.23437499999999997
+        }
+      },
+      "granularity_floor_pts": 0.5208333333333333
+    },
+    "beta_lactamase": {
+      "0": {
+        "recovery": {
+          "mean": 0.12380952380952381,
+          "sd": 0.06745951253584632
+        },
+        "fp_panel_hard": {
+          "mean": 0.03248587570621469,
+          "sd": 0.015271004054624879
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.08095238095238094,
+          "sd": 0.06951458651737547
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.04285714285714287
+        },
+        "excess_net": {
+          "mean": 0.0
+        }
+      },
+      "500": {
+        "recovery": {
+          "mean": 0.4071428571428571,
+          "sd": 0.13803435609423642
+        },
+        "fp_panel_hard": {
+          "mean": 0.122316384180791,
+          "sd": 0.03230346299470237
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.42857142857142866,
+          "sd": 0.13656075148403066
+        },
+        "excess_over_iso_fp": {
+          "mean": -0.021428571428571574
+        },
+        "excess_net": {
+          "mean": -0.06428571428571445
+        }
+      },
+      "1500": {
+        "recovery": {
+          "mean": 0.47619047619047616,
+          "sd": 0.15842883276232886
+        },
+        "fp_panel_hard": {
+          "mean": 0.1480225988700565,
+          "sd": 0.03343734906154027
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.5142857142857143,
+          "sd": 0.14334890728170888
+        },
+        "excess_over_iso_fp": {
+          "mean": -0.03809523809523818
+        },
+        "excess_net": {
+          "mean": -0.08095238095238105
+        }
+      },
+      "4000": {
+        "recovery": {
+          "mean": 0.48333333333333334,
+          "sd": 0.13615217576662664
+        },
+        "fp_panel_hard": {
+          "mean": 0.15254237288135591,
+          "sd": 0.03155237248657453
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.5095238095238096,
+          "sd": 0.13877585516922536
+        },
+        "excess_over_iso_fp": {
+          "mean": -0.026190476190476264
+        },
+        "excess_net": {
+          "mean": -0.06904761904761914
+        }
+      },
+      "6259": {
+        "recovery": {
+          "mean": 0.5642857142857144,
+          "sd": 0.060347340854469224
+        },
+        "fp_panel_hard": {
+          "mean": 0.14519774011299436,
+          "sd": 0.025054135419097925
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.4904761904761905,
+          "sd": 0.11368891796488878
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.07380952380952388
+        },
+        "excess_net": {
+          "mean": 0.03095238095238101
+        }
+      },
+      "granularity_floor_pts": 4.285714285714287
+    },
+    "rip_rrna_glycosidase": {
+      "0": {
+        "recovery": {
+          "mean": 0.9,
+          "sd": 0.08513763332406252
+        },
+        "fp_panel_hard": {
+          "mean": 0.0403954802259887,
+          "sd": 0.017048704326642964
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 0.880952380952381,
+          "sd": 0.09984740879660657
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.01904761904761898
+        },
+        "excess_net": {
+          "mean": 0.0
+        }
+      },
+      "500": {
+        "recovery": {
+          "mean": 0.9523809523809524,
+          "sd": 0.07809603908436201
+        },
+        "fp_panel_hard": {
+          "mean": 0.1194915254237288,
+          "sd": 0.02963804738067947
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "excess_over_iso_fp": {
+          "mean": -0.04761904761904756
+        },
+        "excess_net": {
+          "mean": -0.06666666666666654
+        }
+      },
+      "1500": {
+        "recovery": {
+          "mean": 0.980952380952381,
+          "sd": 0.04939227194882293
+        },
+        "fp_panel_hard": {
+          "mean": 0.15282485875706214,
+          "sd": 0.026843591001592313
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "excess_over_iso_fp": {
+          "mean": -0.01904761904761898
+        },
+        "excess_net": {
+          "mean": -0.03809523809523796
+        }
+      },
+      "4000": {
+        "recovery": {
+          "mean": 0.9523809523809524,
+          "sd": 0.078096039084362
+        },
+        "fp_panel_hard": {
+          "mean": 0.15762711864406778,
+          "sd": 0.040034853907378196
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "excess_over_iso_fp": {
+          "mean": -0.04761904761904756
+        },
+        "excess_net": {
+          "mean": -0.06666666666666654
+        }
+      },
+      "6259": {
+        "recovery": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "fp_panel_hard": {
+          "mean": 0.16807909604519775,
+          "sd": 0.029279362515581366
+        },
+        "fp_background": {
+          "mean": 0.05000000000000002,
+          "sd": 1.4115032135209254e-17
+        },
+        "recovery_iso_fp_baseline": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "excess_over_iso_fp": {
+          "mean": 0.0
+        },
+        "excess_net": {
+          "mean": -0.01904761904761898
+        }
+      },
+      "granularity_floor_pts": 1.904761904761898
+    }
+  },
+  "summary": {
+    "phage_peptidoglycan_hydrolase": {
+      "recovery_K0": 0.011458333333333333,
+      "recovery_best": 0.5197916666666667,
+      "best_K_by_excess": 6259,
+      "iso_fp_baseline_at_best_K": 0.28020833333333334,
+      "excess_net_pts": 23.437499999999996,
+      "granularity_floor_pts": 0.5208333333333333,
+      "raw_gain_pts": 50.83333333333333,
+      "fp_hard_K0": 0.022033898305084745,
+      "fp_hard_best": 0.11751412429378533,
+      "fp_hard_ratio": 5.333333333333334,
+      "verdict": "OFF-BUDGET"
+    },
+    "beta_lactamase": {
+      "recovery_K0": 0.12380952380952381,
+      "recovery_best": 0.5642857142857144,
+      "best_K_by_excess": 6259,
+      "iso_fp_baseline_at_best_K": 0.4904761904761905,
+      "excess_net_pts": 3.095238095238101,
+      "granularity_floor_pts": 4.285714285714287,
+      "raw_gain_pts": 44.04761904761906,
+      "fp_hard_K0": 0.03248587570621469,
+      "fp_hard_best": 0.14519774011299436,
+      "fp_hard_ratio": 4.469565217391304,
+      "verdict": "OFF-BUDGET"
+    },
+    "rip_rrna_glycosidase": {
+      "recovery_K0": 0.9,
+      "recovery_best": 0.9,
+      "best_K_by_excess": 0,
+      "iso_fp_baseline_at_best_K": 0.880952380952381,
+      "excess_net_pts": 0.0,
+      "granularity_floor_pts": 1.904761904761898,
+      "raw_gain_pts": 0.0,
+      "fp_hard_K0": 0.0403954802259887,
+      "fp_hard_best": 0.0403954802259887,
+      "fp_hard_ratio": 1.0,
+      "verdict": "THRESHOLD"
+    }
+  },
+  "redundancy_caveat": "8259 records carry 3550 distinct names, redundancy factor 2.33, most repeated name 389 times. Under split=random the reserved background shares orthologs with training by construction, which flatters large K. split=name-disjoint removes that and the gap between the two modes is the size of the contamination",
+  "verdict": "R2 with a caveat: every unreachable class does show an excess over the iso-FP baseline, but only after its hard-negative false-positive rate has passed 1.5x the K=0 rate, so the excess is not available at the panel's budget. 37's gain was an operating point and \u00a710.7.1's closing line stands, with the excess recorded rather than denied"
+}

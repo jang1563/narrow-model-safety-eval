@@ -24,9 +24,14 @@ recovered classes alone. That is a prediction with a direction, and it is cheap 
 in the length window carrying the Toxin or Virulence keyword, and using them as positives would
 replace 149 curated labels, each with a written reason, by whatever UniProt curators flagged.
 This project's own provenance control is the argument against that: a probe that discards the
-hazard label entirely and predicts lab-strain origin reaches **AUROC 0.818**, and the organism
-label agrees with the hazard label on 44% of the v3 panel. At keyword scale the hazard label IS
-the annotation, so the classifier would learn the annotation. `§2` exists to keep that separable.
+hazard label entirely and predicts lab-strain origin reaches **AUROC 0.794 +/- 0.062** on v3
+(0.818 +/- 0.012 on v2), and the organism label agrees with the hazard label on **43.6%** of v3
+(53.4% of v2). At keyword scale the hazard label IS the annotation, so the classifier would learn
+the annotation. `§2` exists to keep that separable.
+
+An earlier version of this docstring quoted v2's 0.818 next to v3's 44%, which are figures from two
+different panels. Both are in `results/{v2,v3}/lomo_results.json` under `provenance_auroc` and
+`organism_label_agreement_with_hazard`, and the audit now pins the v3 pair as well as the v2 one.
 
 Composition is held fixed and only size varies
 ----------------------------------------------
