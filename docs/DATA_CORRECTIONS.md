@@ -1249,3 +1249,40 @@ with its preregistration; `results/v3/arm_seed_stability.json` is committed; and
 `src/22_claims_audit.py` pins the pair counts, the three-and-two outside-interval lists, the dissolved tie
 and the inverse-capacity effect on the phage class, so the direction cannot be quoted without the seed
 check that supports it.
+
+## 2026-09-20 (tenth entry) — §10.4 named the wrong number of classes under a chance figure only the right number produces, and truncated a p-value column
+
+### The class count
+
+§10.4 read: "Margin ranks the two failures as the two lowest of **eleven** classes, which has probability
+**1/66** = 0.015 under a random ordering." Eleven classes give 1/55. The two figures could not both be
+right and the chance figure was the correct one.
+
+The margin ordering covers **twelve** classes: v3's eleven holdout-eligible mechanism classes **plus the
+labelled virulence control**, which is not a mechanism, cannot be held out, and is ranked with the rest.
+`results/v3/second_failure_class.json` carries `margin_order_low_to_high` as a list of twelve and
+`chance` as 0.015151..., which is 1/C(12,2).
+
+🔑 **Including the control is load-bearing rather than incidental**, which is why the correction is worth
+more than a digit. The control sits **fourth-lowest** in the margin ordering, and it is the class that
+takes second place from the phage class in **three of the five arms** in §10.6.1. A version of the test
+run over the eleven eligible classes only would have removed the one class that explains §10.6.1's
+misses.
+
+### The p-value column
+
+The same table gave margin's permutation p as **0.0001** where the artifact says **0.00015**, and the
+nearest-negative's as 0.0034 where it says 0.00345. The column had been **truncated rather than rounded**,
+which understates the margin p-value by a third. The other two rows, 0.0002 and 0.97, are unaffected by
+the same truncation.
+
+⚠️ Two different p-values for the same rho of +0.894 appear in this document and both are correct.
+§10.4's table reports the decomposition's figure, 0.00015, and §10.6.1's table reports
+`30_margin_across_arms.py`'s figure for the canonical arm, 0.0002. They are separate permutation runs of
+separate scripts over the same ordering, and the difference is four draws out of 20,000.
+
+### Fix
+
+§10.4 carries twelve, 0.00015, 0.0035 and a note on why the control is in the ordering.
+`huggingface/README.md` carried the same two errors and is corrected with it. The audit's pin on that
+table row is updated, so the row cannot drift again without failing CI.
