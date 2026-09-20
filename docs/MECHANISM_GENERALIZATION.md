@@ -2214,6 +2214,40 @@ separates it from the animal-target candidates `26` measured and set aside. ⚠�
 result**: nothing is admitted, no annotation moves, and building it is a panel change rather than a
 correction.
 
+**It is also the only one of six candidates that got that far**, and the pattern in the other five is the
+more useful finding:
+
+| candidate | reviewed | independent | with a hazard keyword | verdict |
+|---|---|---|---|---|
+| phospholipase C, EC 3.1.4.3 | 27 | 6 | **5** | buildable on the loose reading |
+| hyaluronate lyase, EC 4.2.2.1 | 9 | 6 | 2 | no |
+| protein-glutamine deamidase, EC 3.5.1.44 | 200 | 13 | 2 | no |
+| bacterial collagenase, EC 3.4.24.3 | 10 | 3 | 1 | no |
+| sialidase, EC 3.2.1.18 | 11 | **8** | **0** | no |
+| clostridial glucosylating toxin, LCGT family | **0** | 0 | 0 | no, and for a different reason |
+
+🔑 **Homology is not what stops these classes. Hazard annotation is.** Five of the six have between three
+and thirteen independent members, comfortably past the n=4 floor on supply, and they fail because the same
+catalytic activity is overwhelmingly carried by enzymes nobody calls a toxin. Sialidase is the clean case:
+**8 independent members and not one hazard keyword between them**. EC 3.5.1.44 is the vivid one: 200
+reviewed entries, 13 independent, and 11 of those 13 are CheB and CheD chemotaxis enzymes that share the
+deamidase activity and nothing else. So the panel has twelve classes rather than thirty because
+mechanism-defined **hazard** classes are rare, not because nobody has curated them.
+
+⚠️ The glucosylating toxins fail on a third axis entirely, and it is the panel's own: `TcdA` is **2,710**
+residues and `TcdB` **2,366**, against a length window of 100 to 1,400. C. difficile's large clostridial
+toxins are excluded by §2's length rule, not by supply or homology.
+
+🔴 **One of these verdicts was wrong before the function lines were read, and the tool cannot catch it.**
+`44` counts hazard keywords, not mechanisms. Run on a name-based deamidase query it returned BUILDABLE at
+four members; reading the six survivors' own UniProt entries cut that to two. `P9WNU9` deamidates Pup, a
+*bacterial* protein, not a host target. `Q6TKR8` AvrRxo1's stated reaction is `NAD(+) + ATP = 3'-NADP(+) +
+ADP`, an NAD kinase matched on a text mention. `P17452` has **no catalytic activity stated at all** and
+entered on its protein name. The same reading is what excludes `O06350` LipF from the phospholipase C set,
+since its own function line says it has no activity on triacylglycerides. **The counts in that table are
+upper bounds**, and a candidate has to be defined by an EC or a stated reaction and then read entry by
+entry.
+
 
 ## 11. What this does not claim
 

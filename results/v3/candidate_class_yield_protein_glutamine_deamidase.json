@@ -1,0 +1,219 @@
+{
+  "name": "protein_glutamine_deamidase",
+  "query": "((ec:3.5.1.44)) AND reviewed:true AND length:[100 TO 1400] AND (taxonomy_name:Bacteria)",
+  "taxon": "Bacteria",
+  "target_host": "animal",
+  "producer_kingdom": "bacteria",
+  "homology_max": 0.3,
+  "eligibility_floor": 4,
+  "panel_positives_screened_against": 149,
+  "reviewed_in_window": 200,
+  "independent": 13,
+  "novel": 13,
+  "novel_any_hazard": 2,
+  "novel_strict_hazard": 2,
+  "novel_no_hazard": [
+    "P07330",
+    "Q9AQQ8",
+    "Q9X005",
+    "Q2INL1",
+    "P72253",
+    "Q6LTM2",
+    "Q2SFK0",
+    "B2J4Q8",
+    "Q8F5D8",
+    "Q20XK3",
+    "Q45047"
+  ],
+  "members": [
+    {
+      "acc": "P07330",
+      "name": "Protein-glutamate methylesterase/protein-glutamine glutaminase",
+      "alt": [
+        "Chemotaxis response regulator protein-glutamate methylesterase/glutamine deamidase",
+        "Methyl-accepting chemotaxis proteins-specific methylesterase/deamidase"
+      ],
+      "organism": "Escherichia coli (strain K12)",
+      "length": 349,
+      "max_vs_panel": 0.034593399611823304,
+      "closest_positive": "P0DTW2",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q9AQQ8",
+      "name": "Protein-glutamine glutaminase",
+      "alt": [
+        "Protein-glutaminase"
+      ],
+      "organism": "Chryseobacterium proteolyticum",
+      "length": 320,
+      "max_vs_panel": 0.040184878901215165,
+      "closest_positive": "P09776",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "P0DUW5",
+      "name": "Protein-glutamine deamidase Cif",
+      "alt": [
+        "Cycle-inhibiting factor"
+      ],
+      "organism": "Escherichia coli",
+      "length": 282,
+      "max_vs_panel": 0.03910490039750507,
+      "closest_positive": "P22522",
+      "novel": true,
+      "hazard_keywords": [
+        "Toxin",
+        "Virulence"
+      ],
+      "strict": true,
+      "any_hazard": true
+    },
+    {
+      "acc": "Q63KH5",
+      "name": "Protein-glutamine deamidase Cif",
+      "alt": [
+        "Cycle-inhibiting factor homolog"
+      ],
+      "organism": "Burkholderia pseudomallei (strain K96243)",
+      "length": 328,
+      "max_vs_panel": 0.03912650922468011,
+      "closest_positive": "O52623",
+      "novel": true,
+      "hazard_keywords": [
+        "Toxin",
+        "Virulence"
+      ],
+      "strict": true,
+      "any_hazard": true
+    },
+    {
+      "acc": "Q9X005",
+      "name": "Chemoreceptor glutamine deamidase CheD",
+      "alt": [
+        "Chemoreceptor glutamate methylesterase CheD"
+      ],
+      "organism": "Thermotoga maritima (strain ATCC 43589 / DSM 3109 / JCM 10099 / NBRC 100826 / MSB8)",
+      "length": 157,
+      "max_vs_panel": 0.05776457077764765,
+      "closest_positive": "P0DTW2",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q2INL1",
+      "name": "Protein-glutamate methylesterase/protein-glutamine glutaminase 2",
+      "alt": [],
+      "organism": "Anaeromyxobacter dehalogenans (strain 2CP-C)",
+      "length": 341,
+      "max_vs_panel": 0.03620464732134923,
+      "closest_positive": "P0DTW2",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "P72253",
+      "name": "Protein-glutamate methylesterase/protein-glutamine glutaminase of group 2 operon",
+      "alt": [],
+      "organism": "Rhodospirillum centenum (strain ATCC 51521 / SW)",
+      "length": 394,
+      "max_vs_panel": 0.034496961200705174,
+      "closest_positive": "P00720",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q6LTM2",
+      "name": "Protein-glutamate methylesterase/protein-glutamine glutaminase 2",
+      "alt": [],
+      "organism": "Photobacterium profundum (strain SS9)",
+      "length": 394,
+      "max_vs_panel": 0.03838869457330979,
+      "closest_positive": "O34344",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q2SFK0",
+      "name": "Protein-glutamate methylesterase/protein-glutamine glutaminase 3",
+      "alt": [],
+      "organism": "Hahella chejuensis (strain KCTC 2396)",
+      "length": 349,
+      "max_vs_panel": 0.03425900112581767,
+      "closest_positive": "P09776",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "B2J4Q8",
+      "name": "Protein-glutamate methylesterase/protein-glutamine glutaminase",
+      "alt": [],
+      "organism": "Nostoc punctiforme (strain ATCC 29133 / PCC 73102)",
+      "length": 354,
+      "max_vs_panel": 0.04581146675794842,
+      "closest_positive": "P0DTW2",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q8F5D8",
+      "name": "Putative protein-glutamate methylesterase/protein-glutamine glutaminase",
+      "alt": [],
+      "organism": "Leptospira interrogans serogroup Icterohaemorrhagiae serovar Lai (strain 56601)",
+      "length": 193,
+      "max_vs_panel": 0.06308442503433498,
+      "closest_positive": "P04190",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q20XK3",
+      "name": "Protein-glutamate methylesterase/protein-glutamine glutaminase 2",
+      "alt": [],
+      "organism": "Rhodopseudomonas palustris (strain BisB18)",
+      "length": 366,
+      "max_vs_panel": 0.04095115343906057,
+      "closest_positive": "P00806",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q45047",
+      "name": "Protein-glutamate methylesterase/protein-glutamine glutaminase",
+      "alt": [],
+      "organism": "Borreliella burgdorferi (strain ATCC 35210 / DSM 4680 / CIP 102532 / B31)",
+      "length": 385,
+      "max_vs_panel": 0.039933255702725844,
+      "closest_positive": "Q6QGP7",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    }
+  ],
+  "admits_nothing": true,
+  "not_pinned_reason": "live UniProt snapshot; an audit claim on these counts would fail CI on curation work rather than on a defect, the same reason 26 is unpinned",
+  "verdict": "NOT BUILDABLE: 2 novel hazard-annotated members under the loosest reading, below the n=4 floor"
+}

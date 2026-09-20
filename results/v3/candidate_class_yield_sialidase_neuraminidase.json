@@ -1,0 +1,152 @@
+{
+  "name": "sialidase_neuraminidase",
+  "query": "((ec:3.2.1.18)) AND reviewed:true AND length:[100 TO 1400] AND (taxonomy_name:Bacteria)",
+  "taxon": "Bacteria",
+  "target_host": "animal",
+  "producer_kingdom": "bacteria",
+  "homology_max": 0.3,
+  "eligibility_floor": 4,
+  "panel_positives_screened_against": 149,
+  "reviewed_in_window": 11,
+  "independent": 8,
+  "novel": 8,
+  "novel_any_hazard": 0,
+  "novel_strict_hazard": 0,
+  "novel_no_hazard": [
+    "P29768",
+    "Q02834",
+    "P15698",
+    "A5F7A4",
+    "P62575",
+    "P29767",
+    "P31206",
+    "Q54727"
+  ],
+  "members": [
+    {
+      "acc": "P29768",
+      "name": "Sialidase",
+      "alt": [
+        "N-acylneuraminate glycohydrolase",
+        "Neuraminidase",
+        "STNA"
+      ],
+      "organism": "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)",
+      "length": 382,
+      "max_vs_panel": 0.036663273428518106,
+      "closest_positive": "P00648",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q02834",
+      "name": "Sialidase",
+      "alt": [
+        "Neuraminidase"
+      ],
+      "organism": "Micromonospora viridifaciens",
+      "length": 647,
+      "max_vs_panel": 0.026597725975221875,
+      "closest_positive": "P22522",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "P15698",
+      "name": "Sialidase",
+      "alt": [
+        "Neuraminidase"
+      ],
+      "organism": "Paraclostridium sordellii",
+      "length": 404,
+      "max_vs_panel": 0.036290483103289056,
+      "closest_positive": "P0A0M0",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "A5F7A4",
+      "name": "Sialidase",
+      "alt": [
+        "Neuraminidase"
+      ],
+      "organism": "Vibrio cholerae serotype O1 (strain ATCC 39541 / Classical Ogawa 395 / O395)",
+      "length": 781,
+      "max_vs_panel": 0.025736580894956163,
+      "closest_positive": "P00648",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "P62575",
+      "name": "Sialidase A",
+      "alt": [
+        "Neuraminidase A"
+      ],
+      "organism": "Streptococcus pneumoniae",
+      "length": 1035,
+      "max_vs_panel": 0.02228700542474693,
+      "closest_positive": "P0DG09",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "P29767",
+      "name": "Sialidase",
+      "alt": [
+        "Neuraminidase"
+      ],
+      "organism": "Clostridium septicum",
+      "length": 1014,
+      "max_vs_panel": 0.022759018460540185,
+      "closest_positive": "P0A0M0",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "P31206",
+      "name": "Sialidase",
+      "alt": [
+        "Neuraminidase"
+      ],
+      "organism": "Bacteroides fragilis (strain YCH46)",
+      "length": 544,
+      "max_vs_panel": 0.032416192978049,
+      "closest_positive": "O48471",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q54727",
+      "name": "Sialidase B",
+      "alt": [
+        "Neuraminidase B"
+      ],
+      "organism": "Streptococcus pneumoniae serotype 4 (strain ATCC BAA-334 / TIGR4)",
+      "length": 697,
+      "max_vs_panel": 0.02933987748340907,
+      "closest_positive": "P0A0M0",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    }
+  ],
+  "admits_nothing": true,
+  "not_pinned_reason": "live UniProt snapshot; an audit claim on these counts would fail CI on curation work rather than on a defect, the same reason 26 is unpinned",
+  "verdict": "NOT BUILDABLE: 0 novel hazard-annotated members under the loosest reading, below the n=4 floor"
+}

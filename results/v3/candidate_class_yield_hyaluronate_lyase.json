@@ -1,0 +1,126 @@
+{
+  "name": "hyaluronate_lyase",
+  "query": "((ec:4.2.2.1)) AND reviewed:true AND length:[100 TO 1400] AND (taxonomy_name:Bacteria)",
+  "taxon": "Bacteria",
+  "target_host": "animal",
+  "producer_kingdom": "bacteria",
+  "homology_max": 0.3,
+  "eligibility_floor": 4,
+  "panel_positives_screened_against": 149,
+  "reviewed_in_window": 9,
+  "independent": 6,
+  "novel": 6,
+  "novel_any_hazard": 2,
+  "novel_strict_hazard": 0,
+  "novel_no_hazard": [
+    "B2FHL8",
+    "A0A3D9VCI6",
+    "Q54873",
+    "Q59801"
+  ],
+  "members": [
+    {
+      "acc": "Q837L8",
+      "name": "Hyaluronate lyase HylB",
+      "alt": [
+        "Chondroitin lyase",
+        "Chondroitinase",
+        "Hyaluronidase"
+      ],
+      "organism": "Enterococcus faecalis (strain ATCC 700802 / V583)",
+      "length": 1004,
+      "max_vs_panel": 0.027206751573086076,
+      "closest_positive": "P0DTW2",
+      "novel": true,
+      "hazard_keywords": [
+        "Virulence"
+      ],
+      "strict": false,
+      "any_hazard": true
+    },
+    {
+      "acc": "A0A2B7ICX0",
+      "name": "Hyaluronate lyase HylA",
+      "alt": [
+        "Hyaluronate lyase",
+        "Hyaluronidase"
+      ],
+      "organism": "Cutibacterium acnes",
+      "length": 826,
+      "max_vs_panel": 0.02378014630370472,
+      "closest_positive": "P15935",
+      "novel": true,
+      "hazard_keywords": [
+        "Virulence"
+      ],
+      "strict": false,
+      "any_hazard": true
+    },
+    {
+      "acc": "B2FHL8",
+      "name": "Polysaccharide lyase",
+      "alt": [
+        "Alginate lyase",
+        "Endolytic polysaccharide lyase",
+        "Hyaluronate lyase"
+      ],
+      "organism": "Stenotrophomonas maltophilia (strain K279a)",
+      "length": 331,
+      "max_vs_panel": 0.03443324362680742,
+      "closest_positive": "P06736",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "A0A3D9VCI6",
+      "name": "Hyaluronate lyase",
+      "alt": [
+        "Hyaluronidase",
+        "TcHly8B"
+      ],
+      "organism": "Thermasporomyces composti",
+      "length": 778,
+      "max_vs_panel": 0.02735077044943261,
+      "closest_positive": "P22522",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q54873",
+      "name": "Hyaluronate lyase",
+      "alt": [
+        "Hyaluronidase"
+      ],
+      "organism": "Streptococcus pneumoniae serotype 4 (strain ATCC BAA-334 / TIGR4)",
+      "length": 1066,
+      "max_vs_panel": 0.026791950786502275,
+      "closest_positive": "P0A0M0",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "Q59801",
+      "name": "Hyaluronate lyase",
+      "alt": [
+        "Hyaluronidase"
+      ],
+      "organism": "Staphylococcus aureus (strain NCTC 8325 / PS 47)",
+      "length": 807,
+      "max_vs_panel": 0.029568850838182913,
+      "closest_positive": "P09963",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    }
+  ],
+  "admits_nothing": true,
+  "not_pinned_reason": "live UniProt snapshot; an audit claim on these counts would fail CI on curation work rather than on a defect, the same reason 26 is unpinned",
+  "verdict": "NOT BUILDABLE: 2 novel hazard-annotated members under the loosest reading, below the n=4 floor"
+}

@@ -41,6 +41,19 @@ somebody's curation work rather than on a defect.
 the annotation and the hazard are not the same thing, and a keyword count is evidence for a labelling
 decision rather than the decision.
 
+🔴 **It does not check that a survivor's MECHANISM matches the candidate class, and this has already
+produced a wrong verdict.** Run on a deamidase query that was an activity-OR-name disjunction, it
+returned BUILDABLE at 4 members carrying Toxin and Virulence. Reading the six survivors' own function
+lines cut that to three: `P9WNU9` deamidates Pup, a *bacterial* protein, not a host target; `Q6TKR8`
+AvrRxo1's stated reaction is `NAD(+) + ATP = 3'-NADP(+) + ADP`, so it is an NAD kinase matched on a text
+mention; and `P17452` has **no catalytic activity stated at all** and entered on the protein name. The
+same reading excluded `O06350` LipF from the phospholipase C candidate, whose own function line says it
+has no activity on triacylglycerides.
+
+**So the counts this prints are an upper bound.** Define the candidate by an EC number or a stated
+reaction rather than by a name, then read every survivor's `FUNCTION` and `CATALYTIC ACTIVITY` before
+believing the verdict. A keyword is not a mechanism.
+
 Usage:
     python src/44_candidate_class_yield_v3.py --name phospholipase_c --query "ec:3.1.4.3" \\
         --target animal --producer bacteria

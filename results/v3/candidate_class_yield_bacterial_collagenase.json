@@ -1,0 +1,69 @@
+{
+  "name": "bacterial_collagenase",
+  "query": "((ec:3.4.24.3)) AND reviewed:true AND length:[100 TO 1400] AND (taxonomy_name:Bacteria)",
+  "taxon": "Bacteria",
+  "target_host": "animal",
+  "producer_kingdom": "bacteria",
+  "homology_max": 0.3,
+  "eligibility_floor": 4,
+  "panel_positives_screened_against": 149,
+  "reviewed_in_window": 10,
+  "independent": 3,
+  "novel": 3,
+  "novel_any_hazard": 1,
+  "novel_strict_hazard": 0,
+  "novel_no_hazard": [
+    "Q8D4Y9",
+    "P43154"
+  ],
+  "members": [
+    {
+      "acc": "Q9X721",
+      "name": "Collagenase ColG",
+      "alt": [
+        "Class I collagenase",
+        "Gelatinase ColG",
+        "Microbial collagenase"
+      ],
+      "organism": "Hathewaya histolytica",
+      "length": 1118,
+      "max_vs_panel": 0.024246637558780898,
+      "closest_positive": "P00720",
+      "novel": true,
+      "hazard_keywords": [
+        "Virulence"
+      ],
+      "strict": false,
+      "any_hazard": true
+    },
+    {
+      "acc": "Q8D4Y9",
+      "name": "Microbial collagenase",
+      "alt": [],
+      "organism": "Vibrio vulnificus (strain CMCP6)",
+      "length": 807,
+      "max_vs_panel": 0.02366024045849481,
+      "closest_positive": "P33486",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    },
+    {
+      "acc": "P43154",
+      "name": "Microbial collagenase",
+      "alt": [],
+      "organism": "Vibrio alginolyticus",
+      "length": 814,
+      "max_vs_panel": 0.022756045894571926,
+      "closest_positive": "P0DTW2",
+      "novel": true,
+      "hazard_keywords": [],
+      "strict": false,
+      "any_hazard": false
+    }
+  ],
+  "admits_nothing": true,
+  "not_pinned_reason": "live UniProt snapshot; an audit claim on these counts would fail CI on curation work rather than on a defect, the same reason 26 is unpinned",
+  "verdict": "NOT BUILDABLE: 1 novel hazard-annotated members under the loosest reading, below the n=4 floor"
+}
