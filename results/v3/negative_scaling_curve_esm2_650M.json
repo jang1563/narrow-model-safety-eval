@@ -1,0 +1,126 @@
+{
+  "arm": "esm2_650M",
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "pool_n": 8259,
+  "classes_with_headroom_to_decline": [
+    "phage_peptidoglycan_hydrolase",
+    "beta_lactamase",
+    "rip_rrna_glycosidase"
+  ],
+  "sizes": [
+    296,
+    1000,
+    3000,
+    8259
+  ],
+  "seeds": 30,
+  "failures": [
+    "phage_peptidoglycan_hydrolase",
+    "beta_lactamase"
+  ],
+  "comparison": "rip_rrna_glycosidase",
+  "pool_composition_note": "87% bacterial: the per-organism cap bit hard on eukaryotic Swiss-Prot, so the pool resembles the panel's producer mix rather than Swiss-Prot's",
+  "curves": {
+    "phage_peptidoglycan_hydrolase": {
+      "296": {
+        "mean": 0.46458333333333335,
+        "sd": 0.13403081756622715,
+        "held_out": 118,
+        "ceiling": 0.9915254237288136,
+        "spec_with_10_above": 0.9152542372881356
+      },
+      "1000": {
+        "mean": 0.4322916666666667,
+        "sd": 0.08993057866979984,
+        "held_out": 400,
+        "ceiling": 0.9975,
+        "spec_with_10_above": 0.975
+      },
+      "3000": {
+        "mean": 0.5416666666666666,
+        "sd": 0.07625270863853063,
+        "held_out": 1200,
+        "ceiling": 0.9991666666666666,
+        "spec_with_10_above": 0.9916666666666667
+      },
+      "8259": {
+        "mean": 0.5947916666666667,
+        "sd": 0.08468506777480307,
+        "held_out": 3303,
+        "ceiling": 0.9996972449288526,
+        "spec_with_10_above": 0.9969724492885256
+      }
+    },
+    "beta_lactamase": {
+      "296": {
+        "mean": 0.25476190476190474,
+        "sd": 0.14246662551422118,
+        "held_out": 118,
+        "ceiling": 0.9915254237288136,
+        "spec_with_10_above": 0.9152542372881356
+      },
+      "1000": {
+        "mean": 0.2642857142857143,
+        "sd": 0.10469284184224309,
+        "held_out": 400,
+        "ceiling": 0.9975,
+        "spec_with_10_above": 0.975
+      },
+      "3000": {
+        "mean": 0.36666666666666675,
+        "sd": 0.1322853489942362,
+        "held_out": 1200,
+        "ceiling": 0.9991666666666666,
+        "spec_with_10_above": 0.9916666666666667
+      },
+      "8259": {
+        "mean": 0.3666666666666668,
+        "sd": 0.10228448504458089,
+        "held_out": 3303,
+        "ceiling": 0.9996972449288526,
+        "spec_with_10_above": 0.9969724492885256
+      }
+    },
+    "rip_rrna_glycosidase": {
+      "296": {
+        "mean": 0.8857142857142858,
+        "sd": 0.09490911983284568,
+        "held_out": 118,
+        "ceiling": 0.9915254237288136,
+        "spec_with_10_above": 0.9152542372881356
+      },
+      "1000": {
+        "mean": 0.842857142857143,
+        "sd": 0.12069468170893842,
+        "held_out": 400,
+        "ceiling": 0.9975,
+        "spec_with_10_above": 0.975
+      },
+      "3000": {
+        "mean": 0.9952380952380953,
+        "sd": 0.026082026547865057,
+        "held_out": 1200,
+        "ceiling": 0.9991666666666666,
+        "spec_with_10_above": 0.9916666666666667
+      },
+      "8259": {
+        "mean": 0.9523809523809524,
+        "sd": 0.0684947573550549,
+        "held_out": 3303,
+        "ceiling": 0.9996972449288526,
+        "spec_with_10_above": 0.9969724492885256
+      }
+    }
+  },
+  "drops_pts": {
+    "phage_peptidoglycan_hydrolase": -13.020833333333337,
+    "beta_lactamase": -11.190476190476206,
+    "rip_rrna_glycosidase": -6.666666666666665
+  },
+  "monotone": {
+    "phage_peptidoglycan_hydrolase": false,
+    "beta_lactamase": false,
+    "rip_rrna_glycosidase": false
+  },
+  "verdict": "REFUTED: the failing classes do not decline monotonically with the size of the benign set, so \u00a710.7.1's density reading does not predict the converse"
+}
