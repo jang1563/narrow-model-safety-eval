@@ -1432,3 +1432,61 @@ at use, by `43`, and any future script that trains on the pool should do the sam
 preregistration; `results/v3/pool_homology_against_panel.json` is committed; and the audit pins the
 violation's accession pair, its class, its similarity and the fact that every mechanism class is clean, so
 neither half can be quoted without the other.
+
+## 2026-09-20 (twelfth entry) — A panel positive labelled "phospholipase" is Exoenzyme S, and its own FASTA header said so all along
+
+### The flag that sat unresolved
+
+`data/annotations/mechanism_classes_{v2,v3}.json` carried, for `tr|Q51451|Q51451_PSEAI` in the
+`phospholipase` class, the reason **"P. aeruginosa TrEMBL entry, grouped with ExoU on organism and panel
+context. Identity NOT independently confirmed"**, and the class note read "n=2, and one identity
+unconfirmed". Both have been in the committed panel since it was built. Nothing resolved them.
+
+Found while looking for an **unblocked** way to raise the class count above twelve, since n=12 is the
+resolution every claim in §10.4 to §10.6 and §10.9.2 runs at. Two candidate classes are waiting on
+labelling decisions, so the next place to look was the classes already annotated but too small to hold out,
+which is where the flag was.
+
+### Resolved, and the grouping is wrong
+
+Checked against UniProt on 2026-09-20:
+
+| accession | submission names | keywords |
+|---|---|---|
+| **Q51451** | Exoenzyme S, gene `exoS` | GTPase activation, NAD, Nucleotidyltransferase, Transferase, Glycosyltransferase, Secreted, Toxin, Virulence |
+| **O34208** | ExoU, PepA, Type III effector protein | **Hydrolase, Lipid degradation, Lipid metabolism** |
+
+Q51451 carries **no Hydrolase and no Lipid degradation keyword**. It is *Pseudomonas aeruginosa* Exoenzyme
+S, an ADP-ribosyltransferase with an N-terminal Rho GAP domain, delivered by the type III secretion system.
+O34208 is ExoU, a patatin-like phospholipase, and is correctly placed.
+
+So the `phospholipase` class holds **one phospholipase and one ADP-ribosyltransferase**. What the two
+members actually share is a producer organism and a delivery system, not a mechanism.
+
+🔴 **The information needed to catch this was in the panel's own FASTA file from the start.** The header
+reads `>tr|Q51451|Q51451_PSEAI Exoenzyme S OS=Pseudomonas aeruginosa OX=287 GN=exoS`. The entry was grouped
+by organism while its own description named the protein.
+
+### What it does and does not change
+
+🟢 **No published number moves.** `phospholipase` is **not holdout-eligible** in v2 or v3 and appears in no
+LOMO result in either, so no per-class recovery figure depends on the grouping. Q51451 contributes only as a
+training positive in every other class's holdout and as one of the 80 or 149 positives behind the baseline
+AUROC, which is unaffected by which label it carries.
+
+⚠️ **The class assignment is therefore left UNCHANGED, deliberately.** Moving Q51451 into
+`t3ss_effector_apparatus`, which is holdout-eligible at n=10, **would** change that class's recovery figure
+and every number downstream of it. That is a labelling decision rather than a correction, and it is JK's to
+make. The same reasoning kept the pool's PhoQ ortholog in place in the eleventh entry: document at the site,
+fix at the point of use, do not mutate a frozen artifact to tidy a label.
+
+⚠️ Consequences of the decision, so it can be made on the numbers: moving it makes `phospholipase` n=1 and
+permanently ineligible, takes `t3ss_effector_apparatus` to n=11, and leaves the class count at twelve either
+way. It does not help the n=12 limitation, which is what the search was for.
+
+### Fix
+
+Both annotations now record the confirmed identity, the evidence, and why the assignment stands. The edit is
+a **text replacement**, four lines across the two files, verified to change exactly two parsed values and
+nothing else: a parse-and-redump round trip had re-encoded an unrelated `§` escape in v3, which is more
+than a frozen artifact should absorb for a documentation change.

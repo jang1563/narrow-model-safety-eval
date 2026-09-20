@@ -31,7 +31,7 @@
     "virulence_associated_non_toxin": "NOT a confound diagnostic. metadata.json shows a predefined category 'virulence_factors' explicitly described as non-toxin, with matched positive and negative counts, so their presence among positives is BY DESIGN. Holding this class out therefore asks a different question: does a probe trained on toxins generalize to non-toxin virulence factors? Run it as a generalization test, not as a contamination check.",
     "other_toxin_mechanism": "NOT holdout-eligible. Mechanisms differ from each other; this is a remainder set, kept small and explicit rather than hidden in a catch-all.",
     "secreted_protease": "NOT holdout-eligible. Only one unique protein (SpeB) present twice.",
-    "phospholipase": "NOT holdout-eligible. n=2, and one identity unconfirmed.",
+    "phospholipase": "NOT holdout-eligible. n=2 and only ONE of them is a phospholipase: O34208 ExoU. Q51451 was grouped here on organism and panel context; on 2026-09-20 its identity was confirmed as Exoenzyme S, an ADP-ribosyltransferase and Rho GAP, which is not this mechanism. Left in place deliberately: the class is never held out, so no published number depends on the grouping.",
     "expansion_2026_09_18": "Three non-animal-target classes added to make leave-one-class-out able to train AND test on non-animal hazard. Before this, non-animal target was carried by two classes, so holding one out left a single example of the category, which is why MECHANISM_GENERALIZATION \u00a72.4.1's class-level test had no power. phage_peptidoglycan_hydrolase is named for the mechanism rather than for endolysins, because UniProt's Bacteriolytic enzyme keyword on viral producers also returns virion-associated hydrolases (T4 Gp5, T5 pb2, phi29 morphogenesis protein 1, T7 gp16) that digest peptidoglycan during injection rather than at lysis."
   },
   "proteins": [
@@ -560,7 +560,7 @@
       "fasta_id": "tr|Q51451|Q51451_PSEAI",
       "short_name": "Q51451_PSEAI",
       "mechanism_class": "phospholipase",
-      "reason": "P. aeruginosa TrEMBL entry, grouped with ExoU on organism and panel context. Identity NOT independently confirmed",
+      "reason": "P. aeruginosa Exoenzyme S, gene exoS. Identity CONFIRMED against UniProt 2026-09-20 and the phospholipase grouping is WRONG: Q51451 carries the keywords GTPase activation, NAD, Nucleotidyltransferase, Transferase and Glycosyltransferase, with no Hydrolase and no Lipid degradation, so it is an ADP-ribosyltransferase and Rho GAP delivered by the T3SS rather than a phospholipase. O34208 ExoU in the same class carries Hydrolase, Lipid degradation and Lipid metabolism and is correctly placed. The class assignment is left UNCHANGED because phospholipase is not holdout-eligible in either panel and appears in no LOMO result, so nothing published depends on the grouping, while moving it into t3ss_effector_apparatus WOULD change that class\u0027s recovery figure and is a labelling decision rather than a correction. See docs/DATA_CORRECTIONS.md.",
       "holdout_eligible": false
     },
     {
