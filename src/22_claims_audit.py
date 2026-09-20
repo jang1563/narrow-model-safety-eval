@@ -974,6 +974,8 @@ def v3_margin_across_arms():
     d = j("v3/margin_across_arms.json")
     a = d["arms"]
     lom = {"canonical": j("v3/lomo_results.json"),
+           "esm2_3B": j("v3/lomo_results_esm2_3B.json"),
+           "esm2_150M": j("v3/lomo_results_esm2_150M.json"),
            "esm2_35M": j("v3/lomo_results_esm2_35M.json"),
            "esm2_8M": j("v3/lomo_results_esm2_8M.json")}
     rec = {k: v["leave_one_mechanism_out"] for k, v in lom.items()}
@@ -989,10 +991,18 @@ def v3_margin_across_arms():
             "displacer": sorted({c for v in a.values() if not v["locates_failure"]
                                  for c in v["bottom_k"]}
                                 - set(d["failure_classes"])),
-            "beta_rec_falls": [rec[k]["beta_lactamase"]["flagged_95_mean"]
-                               for k in ("canonical", "esm2_35M", "esm2_8M")],
-            "phage_rec_rises": [rec[k]["phage_peptidoglycan_hydrolase"]["flagged_95_mean"]
-                                for k in ("canonical", "esm2_35M", "esm2_8M")]}
+            "beta_rec_by_capacity": [rec[k]["beta_lactamase"]["flagged_95_mean"]
+                                     for k in ("esm2_3B", "canonical", "esm2_150M",
+                                               "esm2_35M", "esm2_8M")],
+            "phage_rec_by_capacity": [rec[k]["phage_peptidoglycan_hydrolase"]["flagged_95_mean"]
+                                      for k in ("esm2_3B", "canonical", "esm2_150M",
+                                                "esm2_35M", "esm2_8M")],
+            "beta_not_monotone_in_capacity": (
+                [rec[k]["beta_lactamase"]["flagged_95_mean"]
+                 for k in ("esm2_3B", "canonical", "esm2_150M", "esm2_35M", "esm2_8M")]
+                != sorted([rec[k]["beta_lactamase"]["flagged_95_mean"]
+                           for k in ("esm2_3B", "canonical", "esm2_150M",
+                                     "esm2_35M", "esm2_8M")]))}
 
 # ---- the registry --------------------------------------------------------------
 # (label, recompute -> dict, assertion on that dict, {document: string it must
@@ -1327,19 +1337,25 @@ CLAIMS = [
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **K=80** | **+16.6** [+13.6, +19.6] | **+20.7** [+15.6, +25.8] | "
       "**+2.8** [−0.7, +6.3] |"}, []),
-    ("on v3 the across-arms test is stricter and comes back partial", v3_margin_across_arms,
-     lambda v: (v["n_arms"] == 3 and v["k"] == 2
+    ("on v3 the across-arms test is stricter and comes back partial across five arms",
+     v3_margin_across_arms,
+     # Five arms now, not three. The three-arm version of this claim also pinned that
+    # beta-lactamase recovery falls and the phage class rises monotonically with capacity;
+    # 150M and 3B break both orderings, so those two conditions are gone and the section
+    # says so. What is pinned is what survived: every arm negative on both failures, every
+    # arm significant, beta-lactamase lowest everywhere, and the bottom-two holding in a
+    # minority with the labelled control as the sole displacer.
+    lambda v: (v["n_arms"] == 5 and v["k"] == 2
                 and abs(v["chance"] - 1 / 66) < 1e-9
                 and v["failures"] == ["beta_lactamase", "phage_peptidoglycan_hydrolase"]
-                and v["all_negative"] == 3 and v["significant"] == 3
+                and v["all_negative"] == 5 and v["significant"] == 5
                 and v["beta_lowest_everywhere"] and v["min_rho"] > 0.75
-                and v["locate"] == 1 and v["which_locates"] == ["canonical"]
+                and v["locate"] == 2
+                and sorted(v["which_locates"]) == ["canonical", "esm2_3B"]
                 and v["displacer"] == ["virulence_associated_non_toxin"]
-                and v["beta_rec_falls"] == sorted(v["beta_rec_falls"], reverse=True)
-                and v["phage_rec_rises"] == sorted(v["phage_rec_rises"])),
+                and v["beta_not_monotone_in_capacity"]),
      {"docs/MECHANISM_GENERALIZATION.md":
-      "| **canonical 650M** | 1280 | **+0.894** | 0.0002 | −0.0082 / 18.6% | "
-      "−0.0055 / 10.0% | **yes** |"}, []),
+      "| esm2_3B | 2560 | +0.831 | 0.0006 | −0.0030 / 4.3% | −0.0014 / 6.9% | **yes** |"}, []),
 ]
 
 

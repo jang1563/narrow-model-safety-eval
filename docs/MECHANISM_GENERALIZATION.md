@@ -1512,40 +1512,53 @@ class on v2, where the bottom-1 of nine has a per-arm chance of 1/9. v3 has **tw
 the test becomes whether the bottom-**two** of twelve are exactly those two, and the chance per arm falls
 to **1/66**. That is a much stricter question and the answer is not as clean.
 
-Only three arms are embedded for v3. The canonical 650M arm plus 8M and 35M; 150M, 3B and the ESM-C
-family need the GPU partition (`slurm/negative_scaling_650M.sh`), because the development machine ran out
-of memory rather than patience.
+Five arms are embedded for v3. The three larger ones needed the GPU partition
+(`slurm/negative_scaling_650M.sh`), because the development machine ran out of memory rather than
+patience. Rows are ordered by capacity, not by result.
 
 | arm | dim | rho | perm p | beta-lactamase margin / recovery | phage margin / recovery | bottom-2 = the two failures |
 |---|---|---|---|---|---|---|
+| esm2_3B | 2560 | +0.831 | 0.0006 | −0.0030 / 4.3% | −0.0014 / 6.9% | **yes** |
 | **canonical 650M** | 1280 | **+0.894** | 0.0002 | −0.0082 / 18.6% | −0.0055 / 10.0% | **yes** |
-| esm2_35M | 480 | +0.796 | 0.0018 | −0.0172 / 1.4% | −0.0021 / 26.9% | no |
-| esm2_8M | 320 | +0.846 | 0.0005 | −0.0278 / 0.0% | −0.0035 / 31.2% | no |
+| esm2_150M | 640 | +0.861 | 0.0003 | −0.0090 / 4.3% | −0.0008 / 6.9% | no |
+| esm2_35M | 480 | +0.796 | 0.0015 | −0.0172 / 1.4% | −0.0021 / 26.9% | no |
+| esm2_8M | 320 | +0.846 | 0.0008 | −0.0278 / 0.0% | −0.0035 / 31.2% | no |
 
-**What holds in all three.** Every arm has a **negative margin for both failing classes**, every arm has a
-significant positive margin-against-recovery correlation (+0.796 to +0.894, p ≤ 0.0018), and
-**beta-lactamase is the single lowest-margin class in all three**. So §10.6's central claim, that the
+**What holds in all five.** Every arm has a **negative margin for both failing classes**, every arm has a
+significant positive margin-against-recovery correlation (+0.796 to +0.894, every p ≤ 0.0016), and
+**beta-lactamase is the single lowest-margin class in all five**. So §10.6's central claim, that the
 failing class sits closer to benign than to any hazard class the probe trained on, survives the move to a
-panel with two failures.
+panel with two failures and holds across a **375-fold parameter range**, 8M to 3B.
 
-🔴 **What does not hold is the exact bottom-two, and it holds in one arm of three.** In 8M and 35M the
-**labelled virulence control** displaces the phage class from second-lowest. That is the same shape as
-§10.6's CLS and SaProt exceptions: the ordering and the negative-margin property are
-representation-general, the identity of the bottom-k is not.
+🔴 **What does not hold is the exact bottom-two, and it holds in two arms of five.** In 150M, 35M and 8M
+the **labelled virulence control** takes second-lowest and displaces the phage class. The displacer is the
+same class in all three misses, which is the informative part: the control is a genuinely borderline set,
+so the bottom of the margin ordering is where hazard and the control become hard to tell apart. That is the
+same shape as §10.6's CLS and SaProt exceptions. The ordering and the negative-margin property are
+representation-general; the identity of the bottom-k is not.
 
-⚠️ **A within-class check across arms, which agrees for one failure and not the other.** Reading down each
-column: beta-lactamase's margin becomes more negative as the model shrinks (−0.0082, −0.0172, −0.0278) and
-its recovery falls with it (18.6%, 1.4%, 0.0%), so the order agrees at every pair. The phage class does
-not: its margins run −0.0055, −0.0021, −0.0035 against recoveries of 10.0%, 26.9% and 31.2%, and 35M has
-the least negative margin without the highest recovery. Three points per class is descriptive either way,
-and reporting only the class that cooperates would be the error this document keeps logging.
+⚠️ **An earlier version of this section read the arm dependence as capacity-monotone and that was wrong.**
+It was written from three arms, the canonical one plus 8M and 35M, and described beta-lactamase falling and
+the phage class rising as the model shrinks. With 150M and 3B added there is no gradient. **3B and 150M are
+far worse on beta-lactamase than the canonical arm**, 4.3% against 18.6%, and the phage class sits between
+6.9% and 10.0% across all three larger arms before jumping to 26.9% and 31.2% in the two small ones. The
+structure is a split, three arms with two failing classes against two arms with one, not a trend in
+capacity.
 
-🔑 **One thing worth taking from the table on its own terms.** Which class is *worst* depends on the arm.
-Beta-lactamase goes 18.6% → 1.4% → 0.0% as the model shrinks while the phage class goes the other way,
-10.0% → 26.9% → 31.2%. So "the hardest mechanism for a hazard screen" is not a property of the mechanism
-alone. §10.5's triage claim is about **ordering classes within one representation**, and this is the
-boundary of it: the ordering is stable enough to be useful inside an arm and does not transfer as a
-ranked list between arms of very different capacity.
+⚠️ **The within-class check across arms fails once the middle arms are in.** Over three arms
+beta-lactamase's margin and recovery moved together at every pair. Over five they do not: 150M has a more
+negative margin than the canonical arm (−0.0090 against −0.0082) and 3B has a much less negative one
+(−0.0030) while both recover at 4.3% against the canonical arm's 18.6%. Margin orders **classes within an
+arm**, which is what every claim here rests on, and it does not order **arms within a class**. Reporting
+the three-arm version, where it happened to do both, would have been the error this document keeps logging.
+
+🔑 **The boundary of §10.5's triage claim, stated from this.** The triage is about ranking mechanism
+classes inside one representation, and that is what survives: five of five significant, both failures
+negative in five of five. It is not a statement about which mechanism is hardest in absolute terms, because
+that depends on the arm: beta-lactamase is worst on three arms and the phage class on two, and the two
+swap places between the canonical arm and every other one. An operator can use margin to rank which
+mechanism families to distrust **in the representation they are actually deploying**, and cannot carry that
+ranking to a different model.
 
 ### 10.7 🔴 Benign proximity is a contributing cause and closes a tenth of the gap
 

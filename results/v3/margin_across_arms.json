@@ -28,11 +28,29 @@
         "beta_lactamase": -0.008177275769412518
       }
     },
+    "esm2_150M": {
+      "suffix": "_esm2_150M",
+      "dim": 640,
+      "rho": 0.8613463314991642,
+      "perm_p": 0.0003,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": false,
+      "bottom_k": [
+        "beta_lactamase",
+        "virulence_associated_non_toxin"
+      ],
+      "n_classes": 12,
+      "mean_pooled": true,
+      "failure_margins": {
+        "phage_peptidoglycan_hydrolase": -0.0007585827261209488,
+        "beta_lactamase": -0.008975787088274956
+      }
+    },
     "esm2_35M": {
       "suffix": "_esm2_35M",
       "dim": 480,
       "rho": 0.7957943811805186,
-      "perm_p": 0.0018,
+      "perm_p": 0.00155,
       "lowest_margin_class": "beta_lactamase",
       "locates_failure": false,
       "bottom_k": [
@@ -46,11 +64,29 @@
         "beta_lactamase": -0.017207404598593712
       }
     },
+    "esm2_3B": {
+      "suffix": "_esm2_3B",
+      "dim": 2560,
+      "rho": 0.8310065219407187,
+      "perm_p": 0.00055,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase",
+        "phage_peptidoglycan_hydrolase"
+      ],
+      "n_classes": 12,
+      "mean_pooled": true,
+      "failure_margins": {
+        "phage_peptidoglycan_hydrolase": -0.001381443813443184,
+        "beta_lactamase": -0.003043144941329956
+      }
+    },
     "esm2_8M": {
       "suffix": "_esm2_8M",
       "dim": 320,
       "rho": 0.8461538461538463,
-      "perm_p": 0.0005,
+      "perm_p": 0.00085,
       "lowest_margin_class": "beta_lactamase",
       "locates_failure": false,
       "bottom_k": [
@@ -67,24 +103,29 @@
   },
   "P1": {
     "arms_locating_failure": [
-      "canonical"
+      "canonical",
+      "esm2_3B"
     ],
-    "n_arms": 3,
+    "n_arms": 5,
     "majority": false
   },
   "P2": {
     "arms_significant": [
       "canonical",
+      "esm2_150M",
       "esm2_35M",
+      "esm2_3B",
       "esm2_8M"
     ],
     "majority": true
   },
   "arms_with_all_failure_margins_negative": [
     "canonical",
+    "esm2_150M",
     "esm2_35M",
+    "esm2_3B",
     "esm2_8M"
   ],
   "chance_per_arm": 0.015151515151515152,
-  "verdict": "PARTIAL: 1/3 arms locate the failure and 3/3 have a significant rho, so one preregistered majority holds and the other does not"
+  "verdict": "PARTIAL: 2/5 arms locate the failure and 5/5 have a significant rho, so one preregistered majority holds and the other does not"
 }
