@@ -116,6 +116,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", default="esm2_650M")
     ap.add_argument("--seeds", type=int, default=SEEDS)
+    ap.add_argument("--keep-pool-homologs", action="store_true",
+                    help="keep pool proteins that 42 found above the panel's 0.30 admission "
+                         "threshold; the default drops them")
     a = ap.parse_args()
     tag = a.arm
     suf = "" if tag == "esm2_650M" else f"_{tag}"
@@ -126,6 +129,30 @@ def main():
     P = np.load(V3 / f"embeddings_positive_v3{suf}.npy")
     N = np.load(V3 / f"embeddings_negative_v3{suf}.npy")
     POOL = np.load(V3 / f"embeddings_pool_large_{tag}.npy")
+    # 🔴 Drop the pool proteins 42's census found above §2's 0.30 admission threshold. On v3 that is
+    # one: Q8X739 PHOQ_ECO57 at 0.871 against the panel's D0ZV89 PHOQ_SALT1, which is a POSITIVE in
+    # virulence_associated_non_toxin. Leaving it in would be actively dangerous for this experiment
+    # rather than merely untidy. That class's pool proximity is extreme by construction, and letting a
+    # 0.871 homolog of one of its own members enter training as a negative would push that member to
+    # the benign side at high K. The result would be a strongly negative response in the
+    # highest-proximity class, which is exactly the correlation R1 predicts, manufactured.
+    dropped_pool = []
+    hom_path = V3 / "pool_homology_against_panel.json"
+    if not a.keep_pool_homologs:
+        if not hom_path.exists():
+            raise SystemExit(f"{hom_path} missing; run src/42 first or pass --keep-pool-homologs")
+        hom = json.load(open(hom_path))
+        bad = {e["pool_acc"] for e in hom["above_threshold"]}
+        pool_man = json.load(open(V3 / f"embedding_manifest_pool_large_{tag}.json"))
+        keep = [i for i, r in enumerate(pool_man["rows"]) if r.split("|")[1] not in bad]
+        dropped_pool = [r for r in pool_man["rows"] if r.split("|")[1] in bad]
+        if len(pool_man["rows"]) != len(POOL):
+            raise SystemExit("pool manifest and embedding row counts disagree")
+        POOL = POOL[np.array(keep)]
+        print(f"dropped {len(dropped_pool)} pool protein(s) above the 0.30 admission threshold: "
+              f"{[r.split('|')[1] for r in dropped_pool]}")
+    else:
+        print("KEEPING pool homologs, so any pool-proximity correlation is confounded by them")
     cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
     pcls = np.array([cls[r["acc"]] for r in man["positive_rows"]])
     # 🔴 The class set is the one `28` and `30` use: a class is in the analysis only if LOMO produced
@@ -137,7 +164,7 @@ def main():
     classes = [c for c in sorted(set(pcls)) if c in lomo]
     dropped = sorted(set(pcls) - set(classes))
     print(f"classes in LOMO: {len(classes)}; dropped as not held out: {dropped}")
-    ks = [k for k in K_GRID if k <= len(POOL)]
+    ks = [k for k in K_GRID if k < len(POOL)] + [len(POOL)]
     print(f"arm {tag}: {len(P)} positives in {len(classes)} classes, {len(N)} panel negatives, "
           f"pool {len(POOL)}")
     print(f"K grid {ks}, {a.seeds} seeds, boundary_only arm only "
@@ -240,9 +267,13 @@ def main():
           f"(p {stats['margin']['perm_p']:.4f}), preregistered near zero")
     print(f"verdict: {verdict}")
 
-    dest = V3 / f"response_predictors_{tag}.json"
+    sfx = "_withhomologs" if a.keep_pool_homologs else ""
+    dest = V3 / f"response_predictors_{tag}{sfx}.json"
     json.dump({"arm": tag, "K_grid": ks, "seeds": a.seeds, "perms": PERMS,
                "n_classes": len(classes), "classes": classes, "dropped_not_in_lomo": dropped,
+               "pool_n_used": int(len(POOL)),
+               "pool_homologs_dropped": [r.split("|")[1] for r in dropped_pool],
+               "keep_pool_homologs": bool(a.keep_pool_homologs),
                "response": resp, "predictors": pred,
                "stats": stats, "survivors": survivors,
                "underpowered_note": ("n = 12 classes, the same resolution as §10.4 to §10.6. A null "

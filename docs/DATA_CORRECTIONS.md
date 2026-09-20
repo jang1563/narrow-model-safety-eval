@@ -1286,3 +1286,77 @@ separate scripts over the same ordering, and the difference is four draws out of
 §10.4 carries twelve, 0.00015, 0.0035 and a note on why the control is in the ordering.
 `huggingface/README.md` carried the same two errors and is corrected with it. The audit's pin on that
 table row is updated, so the row cannot drift again without failing CI.
+
+## 2026-09-20 (eleventh entry) — The benign pool was filtered by name and never by sequence, and it holds one 0.871 ortholog of a panel positive
+
+### What the pool was screened for, and what it was not
+
+`34` harvests 8,259 reviewed Swiss-Prot proteins as a large benign reference set. It excludes six hazard
+keywords, re-checks them in Python, applies `02d`'s protein-name blocklist and a positive-class-term
+blocklist, and dedups against both panels on **accession and sequence hash**.
+
+Nothing in that screens a pool candidate against a panel positive **by sequence**. §2 admits a panel member
+only at normalized Smith-Waterman **≤ 0.30** against every existing one, and §2.1 counts effective n at the
+same threshold, so the pool was assembled under a weaker rule than the panel it was added to.
+
+### 🔴 The name filter leaks, and asymmetrically between the two classes that matter
+
+`CLASS_BLOCK` covers the phage class's canonical names, "endolysin", "lysozyme", "muramidase", "amidase"
+and "holin". It does not cover "peptidoglycan hydrolase", "autolysin" or "peptidoglycan", so the pool holds
+**eight genuine peptidoglycan hydrolases as negatives**: seven *Staphylococcus* "Bifunctional autolysin"
+entries and "Peptidoglycan hydrolase PcsB". The autolysins are bifunctional amidase/glucosaminidases, so
+the exact domain the block list names arrived under a protein name that does not contain the word.
+
+Beta-lactamase is covered, with "lactamase", "beta-lactam", "penicillinase", "cephalosporinase" and
+"carbapenemase" all blocked and zero matching entries. So the two classes §10.9.1 finds responding in
+opposite directions had been filtered at different effective stringency, which is why this was checked at
+all.
+
+### What the census found, which was not what it was looking for
+
+`src/42` runs every pool protein against every positive, **1,230,591** local alignments, no sampling.
+
+- **Every mechanism class is clean.** The highest similarity any of them reaches is **0.174**
+  (T3SS effectors), then 0.115 for beta-lactamase and 0.105 for the phage class. The eight cell-wall
+  entries are functional analogues at about a third of the admission threshold, not sequence homologs, so
+  §10.9.1's class split is not label contamination and its numbers stand.
+- 🔴 **One violation, in the labelled virulence control.** `Q8X739` PHOQ_ECO57, *E. coli* O157:H7 sensor
+  protein PhoQ, sits in the pool as a **negative** at **0.871** against `D0ZV89` PHOQ_SALT1, the
+  *Salmonella* PhoQ that is a **positive** on the panel. Two orthologs of the same two-component sensor,
+  0.87 identical, one labelled hazardous and one benign.
+
+No keyword or name filter could have caught it. Both proteins are called "Sensor protein PhoQ" and neither
+carries a hazard keyword, which is the same reason beta-lactamase needs its own §2 footnote. The defect is
+reachable only by sequence.
+
+### Why it is worth an entry rather than a silent fix
+
+The census was built to test a hypothesis about the failing classes, both of which turned out clean, and it
+found a defect in a class nobody was asking about. A targeted check would have returned a clean answer and
+left it there.
+
+⚠️ **And it was one script away from manufacturing a result.** `src/43` measures every class's response to
+the pool, including the control. That class's pool proximity is extreme **because of this one protein**, and
+letting a 0.871 homolog of one of its members enter training as a negative drives that member to the benign
+side at high dose. The output would be a strongly negative response in the highest-proximity class, which
+is precisely the correlation a crowding account predicts. `43` now drops the protein by default, keeps a
+`--keep-pool-homologs` run for comparison, and the gap between the two is reported as the size of the
+effect.
+
+### Standing
+
+⚠️ `CLASS_BLOCK` is deliberately **not** patched. Adding the missing terms changes which proteins the pool
+holds, which invalidates every §10.9 and §10.9.1 number unless the pool is rebuilt and five scripts re-run,
+and the census shows that would change the inputs without changing the conclusion. The terms a future
+harvest should add are named at the site in `34`, along with the recommendation to use `42`'s census as the
+admission gate instead of trusting names.
+
+⚠️ The one violation is **not** removed from the committed pool either, for the same reason. It is removed
+at use, by `43`, and any future script that trains on the pool should do the same.
+
+### Fix
+
+§10.9 carries the census table, the violation and what it reaches; `src/42` is committed with its
+preregistration; `results/v3/pool_homology_against_panel.json` is committed; and the audit pins the
+violation's accession pair, its class, its similarity and the fact that every mechanism class is clean, so
+neither half can be quoted without the other.

@@ -848,22 +848,30 @@ def v3_panel_and_target_host():
 
 
 def pool_homology_against_panel():
-    """§10.9: the homology census the harvest skipped. The pool was filtered by protein name, that
-    filter leaks asymmetrically between the two failing classes, and §10.9.1's central result is that
-    those two classes respond to the pool in opposite directions. Pinned because a null result is the
-    only thing standing between that result and a label-contamination explanation."""
+    """§10.9: the homology census the harvest skipped, all 8,259 pool proteins against all 149
+    positives. Pinned on both halves. Every MECHANISM class is clean, which is what keeps §10.9.1's
+    class split from being label contamination. The labelled virulence control is not: one pool protein
+    sits at 0.871 against a panel positive, and that is what forces `43` to drop it."""
     d = j("v3/pool_homology_against_panel.json")
     pc = d["per_class"]
-    return {"pool_n": d["pool_n"], "threshold": d["threshold"],
-            "alignments": d["alignments"], "n_above": len(d["above_threshold"]),
-            "positives_screened": d["positives_screened"],
-            "classes_screened": len(d["classes"]),
+    over = d["above_threshold"]
+    control = "virulence_associated_non_toxin"
+    mech_clean = all(v["counts_above"]["0.30"] == 0 for c, v in pc.items() if c != control)
+    reported = ("beta_lactamase", "phage_peptidoglycan_hydrolase", "rip_rrna_glycosidase")
+    return {"pool_n": d["pool_n"], "positives_screened": d["positives_screened"],
+            "alignments": d["alignments"], "threshold": d["threshold"],
+            "n_classes": len(pc), "n_above": len(over),
+            "mechanism_classes_clean": mech_clean,
+            "reported_classes_clean": all(pc[c]["counts_above"]["0.30"] == 0 for c in reported),
             "beta_max": pc["beta_lactamase"]["max"],
             "phage_max": pc["phage_peptidoglycan_hydrolase"]["max"],
-            "beta_above_030": pc["beta_lactamase"]["counts_above"]["0.30"],
-            "phage_above_030": pc["phage_peptidoglycan_hydrolase"]["counts_above"]["0.30"],
-            "every_class_clean": all(v["counts_above"]["0.30"] == 0 for v in pc.values()),
-            "h1": d["verdict"].startswith("H1")}
+            "t3ss_max": pc["t3ss_effector_apparatus"]["max"],
+            "control_max": pc[control]["max"],
+            "violation_pool_acc": over[0]["pool_acc"] if over else None,
+            "violation_positive": over[0]["positive"] if over else None,
+            "violation_class": over[0]["positive_class"] if over else None,
+            "violation_sim": over[0]["similarity"] if over else None,
+            "h2": d["verdict"].startswith("H2")}
 
 
 def negative_set_at_fixed_budget():
@@ -1418,22 +1426,24 @@ CLAIMS = [
                 and v["v2_balanced"] == 0.5 and not v["v2_usable"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "**v3 is 149 positives against 296 negatives**"}, []),
-    ("no pool protein reaches the panel's own homology admission threshold",
+    ("the pool holds no homolog of any mechanism class and exactly one of the labelled control",
      pool_homology_against_panel,
-     lambda v: (v["pool_n"] == 8259 and abs(v["threshold"] - 0.30) < 1e-9
-                and v["n_above"] == 0 and v["every_class_clean"]
-                and v["beta_above_030"] == 0 and v["phage_above_030"] == 0
-                and 0.11 < v["beta_max"] < 0.12 and 0.10 < v["phage_max"] < 0.11
-                and v["beta_max"] < 0.5 * v["threshold"]
-                and v["phage_max"] < 0.5 * v["threshold"]
-                # the alignment count is pinned so that re-running 42 over MORE positives, which
-                # overwrites this artifact, fails the audit instead of silently leaving the figure
-                # quoted in the document behind. That is the exact defect shape the audit exists for.
+     lambda v: (v["pool_n"] == 8259 and v["positives_screened"] == 149
+                and v["alignments"] == 1230591
                 and v["alignments"] == v["pool_n"] * v["positives_screened"]
-                and v["positives_screened"] == 46 and v["alignments"] == 379914
-                and v["h1"]),
+                and abs(v["threshold"] - 0.30) < 1e-9 and v["n_classes"] == 16
+                and v["mechanism_classes_clean"] and v["reported_classes_clean"]
+                and v["n_above"] == 1 and v["h2"]
+                and v["violation_pool_acc"] == "Q8X739"
+                and v["violation_positive"] == "D0ZV89"
+                and v["violation_class"] == "virulence_associated_non_toxin"
+                and 0.87 < v["violation_sim"] < 0.872
+                and 0.11 < v["beta_max"] < 0.12 and 0.10 < v["phage_max"] < 0.11
+                and 0.17 < v["t3ss_max"] < 0.18
+                and v["t3ss_max"] < 0.6 * v["threshold"]),
      {"docs/MECHANISM_GENERALIZATION.md":
-      "The\nmaxima are **0.115** against beta-lactamase and **0.105** against the phage class"}, []),
+      "**0.871** against `D0ZV89` **PHOQ_SALT1**, the *Salmonella* PhoQ that is a **positive** in the "
+      "labelled\nvirulence control"}, []),
     ("at a fixed false-positive budget the pool repairs the phage class and harms beta-lactamase",
      negative_set_at_fixed_budget,
      lambda v: (v["seeds"] == 30 and v["self_tests"] == "all pass"

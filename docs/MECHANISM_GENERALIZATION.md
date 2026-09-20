@@ -1866,17 +1866,39 @@ under a protein name that does not contain the word. Beta-lactamase is covered, 
 "beta-lactam", "penicillinase", "cephalosporinase" and "carbapenemase" all blocked and **zero** matching
 entries in the pool.
 
-🟢 **Checked by sequence rather than by name, and it does not matter.** `src/42` runs the census the
-harvest skipped: every pool protein against every positive in the two failing classes, 379,914 local
-alignments under the same BLOSUM62 screen `02d` and `27` use. **Zero** pool proteins reach 0.30. The
-maxima are **0.115** against beta-lactamase and **0.105** against the phage class, so the eight cell-wall
-entries are functional analogues at roughly a tenth of the admission threshold rather than sequence
-homologs. The asymmetry §10.9.1 reports is therefore not label contamination.
+🟢 **Checked by sequence rather than by name. Every mechanism class is clean.** `src/42` runs the census
+the harvest skipped: all 8,259 pool proteins against all 149 positives, **1,230,591** local alignments
+under the same BLOSUM62 screen `02d` and `27` use. No sampling, because this direction is 3% of the
+all-pairs count that forced `36` to sample.
 
-⚠️ That is a negative result about sequence, not about function. Eight proteins that hydrolyse the same
-bond as a positive class sit in the negative set, and the class they resemble functionally is the one that
-**improves** when the pool is added. Whatever the probe learns from them, it is not learning from sequence
-similarity to the held-out class.
+| class | max similarity to a pool protein | above 0.30 |
+|---|---|---|
+| t3ss_effector_apparatus | 0.174 | 0 |
+| beta_lactamase | 0.115 | 0 |
+| phage_peptidoglycan_hydrolase | 0.105 | 0 |
+| the other twelve | ≤ 0.093 | 0 |
+| **virulence_associated_non_toxin** (labelled control) | **0.871** | **1** |
+
+So the eight cell-wall entries are functional analogues at roughly a third of the admission threshold
+rather than sequence homologs, and the asymmetry §10.9.1 reports is not label contamination.
+
+🔴 **The census found one violation, and it is not in the class the check was built for.** `Q8X739`
+**PHOQ_ECO57**, *Escherichia coli* O157:H7 sensor protein PhoQ, sits in the pool as a negative at
+**0.871** against `D0ZV89` **PHOQ_SALT1**, the *Salmonella* PhoQ that is a **positive** in the labelled
+virulence control. One benign-labelled ortholog of a hazard-labelled panel member, 0.87 identical, which
+no keyword or name filter could have caught because both are called "Sensor protein PhoQ" and neither
+carries a hazard keyword. This is the difference between a targeted check and a census: the hypothesis was
+about the failing classes, both of which are clean, and the defect was somewhere else.
+
+**What it does and does not reach.** §10.9.1 reports beta-lactamase, the phage class and RIP, all three
+clean, so its result stands unchanged. §10.6's margin is computed from the panel's own negatives and never
+touches the pool. What it does reach is `src/43`, which measures every class's response to the pool,
+including the control: that class's pool proximity is extreme **because of this one protein**, and letting
+a 0.871 homolog of one of its members enter training as a negative would drive that member to the benign
+side at high dose. The result would be a strongly negative response in the highest-proximity class, which
+is exactly the correlation a crowding account predicts, manufactured. `43` therefore drops the offending
+protein by default and reports the kept-in version beside it, so the size of that effect is measured
+rather than argued about.
 
 **The first attempt at the prediction varied two things at once.** `35` swept the size of the benign set
 across the pool, and its smallest point was 296 proteins drawn from the pool rather than the panel's own
@@ -2158,10 +2180,16 @@ two entries covering this panel were added after two more. All are documented in
 [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
 
 **The recovery figures do not depend on the device.** The v3 leave-one-mechanism-out run was repeated on
-CUDA for the canonical 650M arm and on CPU for the 8M arm, against the published Apple MPS run. All twelve
-classes agree **bit for bit** at both the 95% and the 99% operating point, on both arms. The embeddings
-themselves do differ: per-seed calibrated thresholds move in the fifth decimal. Recovery is a count over a
-dozen-odd class members, so a shift that small has to cross a member's score to change anything, and here
-none of them did. The CUDA recomputation is kept **beside** the published file as
-`results/v3/lomo_results.cuda650M.json` rather than over it, so the published numbers stay the ones the
-audit pins.
+CUDA for the canonical 650M arm and on CPU for the 35M and 8M arms, against the published Apple MPS run.
+All twelve classes agree **bit for bit** at both the 95% and the 99% operating point, on all three arms
+across all three devices. The embeddings themselves do differ: per-seed calibrated thresholds move in the
+fifth decimal. Recovery is a count over a dozen-odd class members, so a shift that small has to cross a
+member's score to change anything, and here none of them did. The CUDA recomputation is kept **beside** the
+published file as `results/v3/lomo_results.cuda650M.json` rather than over it, so the published numbers
+stay the ones the audit pins.
+
+The same holds for §10.6's margin, with one figure worth naming. Recomputing `margin_across_arms` on CPU
+moves each class's margin in its **eighth significant figure**, for example beta-lactamase's canonical
+−0.008177275769 against −0.008177250624, while every reported quantity is identical: the rank correlations,
+the permutation p-values, the lowest-margin class and the bottom-two membership on all five arms. §10.6.1
+quotes margins to four decimals, four orders of magnitude above that noise.

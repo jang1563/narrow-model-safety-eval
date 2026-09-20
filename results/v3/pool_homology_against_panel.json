@@ -1,13 +1,49 @@
 {
   "pool_n": 8259,
-  "positives_screened": 46,
+  "positives_screened": 149,
   "classes": [
+    "adp_ribosyl_ab_toxin",
+    "bacteriocin",
     "beta_lactamase",
-    "phage_peptidoglycan_hydrolase"
+    "clostridial_neurotoxin",
+    "contact_dependent_inhibition",
+    "cry_insecticidal",
+    "nuclease_dnase_rnase",
+    "other_toxin_mechanism",
+    "phage_peptidoglycan_hydrolase",
+    "phospholipase",
+    "pore_forming_cytolysin",
+    "rip_rrna_glycosidase",
+    "secreted_protease",
+    "superantigen_enterotoxin",
+    "t3ss_effector_apparatus",
+    "virulence_associated_non_toxin"
   ],
   "threshold": 0.3,
-  "alignments": 379914,
+  "alignments": 1230591,
   "per_class": {
+    "adp_ribosyl_ab_toxin": {
+      "n_positives": 7,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.061612801136101555,
+      "mean": 0.02146589757375408
+    },
+    "bacteriocin": {
+      "n_positives": 15,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.09286552269297679,
+      "mean": 0.033122489035806085
+    },
     "beta_lactamase": {
       "n_positives": 14,
       "counts_above": {
@@ -19,6 +55,61 @@
       "max": 0.1148302835795748,
       "mean": 0.02597236581048338
     },
+    "clostridial_neurotoxin": {
+      "n_positives": 6,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.02863575309522107,
+      "mean": 0.012844155428377519
+    },
+    "contact_dependent_inhibition": {
+      "n_positives": 4,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.06505653527387419,
+      "mean": 0.023543984293190958
+    },
+    "cry_insecticidal": {
+      "n_positives": 22,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.052541413479874566,
+      "mean": 0.019944829304821724
+    },
+    "nuclease_dnase_rnase": {
+      "n_positives": 2,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.06197696625102055,
+      "mean": 0.02425276168656144
+    },
+    "other_toxin_mechanism": {
+      "n_positives": 3,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.05526983717432737,
+      "mean": 0.021326438118285673
+    },
     "phage_peptidoglycan_hydrolase": {
       "n_positives": 32,
       "counts_above": {
@@ -29,10 +120,95 @@
       },
       "max": 0.10479841959746693,
       "mean": 0.03193948172273422
+    },
+    "phospholipase": {
+      "n_positives": 2,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.057041088839216554,
+      "mean": 0.018257890524352352
+    },
+    "pore_forming_cytolysin": {
+      "n_positives": 7,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.0733162203948964,
+      "mean": 0.02156966444582545
+    },
+    "rip_rrna_glycosidase": {
+      "n_positives": 7,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.05670810274232576,
+      "mean": 0.022738984531870496
+    },
+    "secreted_protease": {
+      "n_positives": 1,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.047914262100589446,
+      "mean": 0.017669982044543574
+    },
+    "superantigen_enterotoxin": {
+      "n_positives": 7,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.06993684938289207,
+      "mean": 0.024754948865174046
+    },
+    "t3ss_effector_apparatus": {
+      "n_positives": 10,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.17424545877603406,
+      "mean": 0.024359375672531252
+    },
+    "virulence_associated_non_toxin": {
+      "n_positives": 10,
+      "counts_above": {
+        "0.30": 1,
+        "0.40": 1,
+        "0.50": 1,
+        "0.70": 1
+      },
+      "max": 0.8709491234158377,
+      "mean": 0.029355225040022134
     }
   },
-  "above_threshold": [],
+  "above_threshold": [
+    {
+      "pool_acc": "Q8X739",
+      "pool_name": "Sensor protein PhoQ",
+      "similarity": 0.8709491234158377,
+      "positive": "D0ZV89",
+      "positive_class": "virulence_associated_non_toxin"
+    }
+  ],
   "aligner": "Bio.Align.PairwiseAligner local BLOSUM62 gap -11/-1, normalized score/sqrt(self_i*self_j), the same screen as 02d and 27",
   "not_a_sample": "every pool protein against every screened positive; 36 sampled because all-pairs WITHIN the pool is 34 million, this is 3% of that",
-  "verdict": "H1: no pool protein reaches the panel's 0.30 admission threshold against any positive, so the pool respects a rule it was never screened by and the cell-wall entries are functional analogues rather than sequence homologs"
+  "verdict": "H2: 1 pool proteins exceed 0.30 against a panel positive, so the pool contains sequence homologs of positives admitted as negatives. The highest is 0.871. \u00a710.9's boundary arm has to be re-run without them before its per-class result can stand"
 }
