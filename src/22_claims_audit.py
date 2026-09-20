@@ -855,6 +855,7 @@ def pool_homology_against_panel():
     d = j("v3/pool_homology_against_panel.json")
     pc = d["per_class"]
     over = d["above_threshold"]
+    ref = d["panel_negative_reference"]
     control = "virulence_associated_non_toxin"
     mech_clean = all(v["counts_above"]["0.30"] == 0 for c, v in pc.items() if c != control)
     reported = ("beta_lactamase", "phage_peptidoglycan_hydrolase", "rip_rrna_glycosidase")
@@ -871,6 +872,12 @@ def pool_homology_against_panel():
             "violation_positive": over[0]["positive"] if over else None,
             "violation_class": over[0]["positive_class"] if over else None,
             "violation_sim": over[0]["similarity"] if over else None,
+            # the reference that decides whether the violation is an outlier or the panel's own policy
+            "panel_neg_n": ref["n_negatives"], "panel_neg_above": ref["n_above_threshold"],
+            "panel_neg_max": ref["max"], "panel_neg_max_acc": ref["max_negative"],
+            "panel_neg_max_class": ref["max_positive_class"],
+            "pool_over_panel": ref["pool_max_over_panel_max"],
+            "panel_top5": [(e["negative"], round(e["similarity"], 3)) for e in ref["top5"]],
             "h2": d["verdict"].startswith("H2")}
 
 
@@ -1440,7 +1447,17 @@ CLAIMS = [
                 and 0.87 < v["violation_sim"] < 0.872
                 and 0.11 < v["beta_max"] < 0.12 and 0.10 < v["phage_max"] < 0.11
                 and 0.17 < v["t3ss_max"] < 0.18
-                and v["t3ss_max"] < 0.6 * v["threshold"]),
+                and v["t3ss_max"] < 0.6 * v["threshold"]
+                # the panel's own negatives, assembled under the same absence of a screen, land
+                # entirely below the positives' admission threshold, which is what makes 0.871 an
+                # outlier rather than the convention
+                and v["panel_neg_n"] == 296 and v["panel_neg_above"] == 0
+                and abs(v["panel_neg_max"] - 0.282) < 0.001
+                and v["panel_neg_max_acc"] == "Q06320"
+                and v["panel_neg_max_class"] == "phage_peptidoglycan_hydrolase"
+                and 3.0 < v["pool_over_panel"] < 3.1
+                and v["panel_top5"][:4] == [("Q06320", 0.282), ("Q6HAY0", 0.17),
+                                            ("P36548", 0.159), ("Q6HAX7", 0.153)]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "**0.871** against `D0ZV89` **PHOQ_SALT1**, the *Salmonella* PhoQ that is a **positive** in the "
       "labelled\nvirulence control"}, []),
@@ -1614,7 +1631,14 @@ def main():
         if not good:
             failures.append(label)
         for doc, s in must.items():
-            if doc not in docs:
+            # 🔴 A non-string pin used to crash the whole audit with a bare TypeError from `s not in
+            # text`, which is worse than a failed claim: the gate dies instead of reporting. It
+            # happened on 2026-09-20 from a `{"huggingface/README.md": None}` entry added by mistake,
+            # and a grep of the output for the OK line hid the crash. Name the defect instead.
+            if not isinstance(s, str) or not s:
+                print(f"     XX pin for {doc} is not a non-empty string: {s!r}")
+                failures.append(f"{label}: bad pin for {doc}")
+            elif doc not in docs:
                 print(f"     XX document not found: {doc}")
                 failures.append(f"{label}: absent {doc}")
             elif s not in docs[doc]:

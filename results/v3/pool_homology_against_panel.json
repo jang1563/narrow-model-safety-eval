@@ -199,6 +199,47 @@
       "mean": 0.029355225040022134
     }
   },
+  "panel_negative_reference": {
+    "n_negatives": 296,
+    "n_above_threshold": 0,
+    "max": 0.28200822087841454,
+    "max_negative": "Q06320",
+    "max_name": "Sporulation-specific N-acetylmuramoyl-L-alanine amidase",
+    "max_positive_class": "phage_peptidoglycan_hydrolase",
+    "top5": [
+      {
+        "similarity": 0.28200822087841454,
+        "negative": "Q06320",
+        "name": "Sporulation-specific N-acetylmuramoyl-L-alanine amidase",
+        "positive_class": "phage_peptidoglycan_hydrolase"
+      },
+      {
+        "similarity": 0.1701214881425145,
+        "negative": "Q6HAY0",
+        "name": "ATP synthase subunit beta",
+        "positive_class": "t3ss_effector_apparatus"
+      },
+      {
+        "similarity": 0.1586461150631128,
+        "negative": "P36548",
+        "name": "N-acetylmuramoyl-L-alanine amidase AmiA",
+        "positive_class": "phage_peptidoglycan_hydrolase"
+      },
+      {
+        "similarity": 0.1527962856382372,
+        "negative": "Q6HAX7",
+        "name": "ATP synthase subunit alpha",
+        "positive_class": "t3ss_effector_apparatus"
+      },
+      {
+        "similarity": 0.08023751583713956,
+        "negative": "P0A3V1",
+        "name": "Spore cortex-lytic enzyme",
+        "positive_class": "phage_peptidoglycan_hydrolase"
+      }
+    ],
+    "pool_max_over_panel_max": 3.088382036179506
+  },
   "above_threshold": [
     {
       "pool_acc": "Q8X739",
@@ -210,5 +251,6 @@
   ],
   "aligner": "Bio.Align.PairwiseAligner local BLOSUM62 gap -11/-1, normalized score/sqrt(self_i*self_j), the same screen as 02d and 27",
   "not_a_sample": "every pool protein against every screened positive; 36 sampled because all-pairs WITHIN the pool is 34 million, this is 3% of that",
-  "verdict": "H2: 1 pool proteins exceed 0.30 against a panel positive, so the pool contains sequence homologs of positives admitted as negatives. The highest is 0.871. \u00a710.9's boundary arm has to be re-run without them before its per-class result can stand"
+  "policy_note": "\u00a72's 0.30 rule governs positives against positives. 27 states that negatives are NOT screened against positives, because mechanism-matched benign proteins are wanted as hard negatives. So the pool matching that policy is not itself a defect; what makes a pool number an outlier is what the panel's own negatives reach under the same policy",
+  "verdict": "H2: 1 pool proteins exceed 0.30 against a panel positive, so the pool contains sequence homologs of positives admitted as negatives. The highest is 0.871, against 0.282 for the panel's own negative set under the same no-screen policy. Any script that trains on the pool has to drop them"
 }

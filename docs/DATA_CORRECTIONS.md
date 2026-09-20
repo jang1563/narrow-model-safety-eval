@@ -1295,9 +1295,19 @@ table row is updated, so the row cannot drift again without failing CI.
 keywords, re-checks them in Python, applies `02d`'s protein-name blocklist and a positive-class-term
 blocklist, and dedups against both panels on **accession and sequence hash**.
 
-Nothing in that screens a pool candidate against a panel positive **by sequence**. §2 admits a panel member
-only at normalized Smith-Waterman **≤ 0.30** against every existing one, and §2.1 counts effective n at the
-same threshold, so the pool was assembled under a weaker rule than the panel it was added to.
+Nothing in that screens a pool candidate against a panel positive **by sequence**.
+
+⚠️ **That is not by itself a defect, and an earlier version of this entry said it was.** §2's ≤ 0.30
+normalized Smith-Waterman rule governs **positives against positives**. `27` states plainly that negatives
+are *not* screened against the positives, because mechanism-matched benign proteins are **wanted** as hard
+negatives, and `data/sequences/benign_homologs.fasta` is the block that exists for exactly that. The pool
+follows the panel's own policy for negatives rather than a weaker one.
+
+🔑 **What makes a pool number an outlier is what the panel's own negatives reach under that policy.** `42`
+measures it: the panel's 296 negatives against its 149 positives, 44,104 alignments, **zero** above 0.30,
+highest **0.282**, second 0.170. A negative set assembled with no homology screen lands entirely below the
+positives' own admission threshold. The pool's worst case is **3.1 times** that. So the finding below is an
+outlier inside a documented policy, not a broken rule, and it is fixed at the point of use.
 
 ### 🔴 The name filter leaks, and asymmetrically between the two classes that matter
 

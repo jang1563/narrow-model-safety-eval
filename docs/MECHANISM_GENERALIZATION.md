@@ -1850,11 +1850,21 @@ bacterial** with six plant RIP sources and three viral entries, more closely tha
 Swiss-Prot, which is the right material for this question and is not a neutral background sample. The query is `reviewed:true AND length:[100 TO 1400]` excluding Virulence,
 Toxin, Cytolysis, Hemolysis, Bacteriocin and Bacteriolytic enzyme.
 
-🔴 **The pool was never screened against the panel by sequence, and the filter that stood in for that
-leaks.** §2 admits a panel member only at normalized Smith-Waterman **≤ 0.30** against every existing one,
-and §2.1 counts effective n at the same threshold. `34` never applies it to the pool: it dedups on
-accession and sequence hash, which catches exact duplicates only, then filters by UniProt keyword and by
-protein name.
+⚠️ **The pool was never screened against the panel by sequence, and that matches the panel's own policy
+rather than breaking it.** §2's **≤ 0.30** normalized Smith-Waterman rule governs **positives against
+positives**, and §2.1 counts effective n at the same threshold. `27` says plainly that negatives are *not*
+screened against the positives, because mechanism-matched benign proteins are **wanted** as hard negatives
+and `data/sequences/benign_homologs.fasta` is the block that exists for exactly that. `34` follows the same
+policy for the pool: it dedups on accession and sequence hash, which catches exact duplicates only, then
+filters by UniProt keyword and by protein name.
+
+🔑 **So what makes a pool number an outlier is what the panel's own negatives reach under that same
+policy, and that is measurable.** `src/42` runs it: the panel's **296 negatives against its 149
+positives**, 44,104 alignments. **Zero** reach 0.30. The highest is **0.282**, a sporulation-specific
+N-acetylmuramoyl-L-alanine amidase against a phage endolysin, and the second is 0.170. A negative set
+assembled with no homology screen at all lands entirely below the positives' own admission threshold.
+
+**The filter that stood in for the screen does leak, though.**
 
 The name filter is demonstrably porous, and it is porous asymmetrically between the two classes this
 section is about. `CLASS_BLOCK` covers the phage class's canonical names, "endolysin", "lysozyme",
@@ -1865,6 +1875,17 @@ autolysins are bifunctional amidase/glucosaminidases, so the exact domain `CLASS
 under a protein name that does not contain the word. Beta-lactamase is covered, with "lactamase",
 "beta-lactam", "penicillinase", "cephalosporinase" and "carbapenemase" all blocked and **zero** matching
 entries in the pool.
+
+🟢 And the panel does the same thing deliberately, which is how those eight should be read. Its own
+negative set's **single closest protein to any positive** is `Q06320`, a **sporulation-specific
+N-acetylmuramoyl-L-alanine amidase**, at 0.282 against a phage endolysin. An amidase, which is the exact
+enzyme class most phage endolysins belong to, admitted on purpose as a mechanism-matched hard negative, and
+it is the top of the list rather than a stray. `P36548` AmiA sits at 0.159 and `P0A3V1` spore cortex-lytic
+enzyme at 0.080, both the same story. A functional analogue of a positive class sitting in the negative set
+is this panel's design, not its failure mode.
+
+The list is also a check that the aligner is finding real biology rather than noise: second and fourth are
+ATP synthase subunits β and α at 0.170 and 0.153 against the T3SS ATPase, which is an F1-ATPase homolog.
 
 🟢 **Checked by sequence rather than by name. Every mechanism class is clean.** `src/42` runs the census
 the harvest skipped: all 8,259 pool proteins against all 149 positives, **1,230,591** local alignments
@@ -1889,6 +1910,11 @@ virulence control. One benign-labelled ortholog of a hazard-labelled panel membe
 no keyword or name filter could have caught because both are called "Sensor protein PhoQ" and neither
 carries a hazard keyword. This is the difference between a targeted check and a census: the hypothesis was
 about the failing classes, both of which are clean, and the defect was somewhere else.
+
+**0.871 against the panel's own 0.282 is what makes it a defect rather than a policy.** The pool's single
+worst case is **3.1 times** anything the panel's negative set contains, built under the same absence of a
+screen. So this is an outlier inside a documented policy rather than a broken rule, and the fix belongs at
+the point of use rather than in the policy.
 
 **What it does and does not reach.** §10.9.1 reports beta-lactamase, the phage class and RIP, all three
 clean, so its result stands unchanged. §10.6's margin is computed from the panel's own negatives and never
@@ -1963,8 +1989,8 @@ it is the one a screen would actually have to solve.
 
 `src/38`, `src/39`, `src/40`, panel v3, canonical 650M arm, 30 seeds throughout.
 
-🔴 **Before that table can be read as a repair, the false-positive budget has to be checked, and it
-moved.** `38` split the gain into a decision-boundary arm and a threshold-estimation arm:
+🔴 **Before §10.9's supplement table can be read as a repair, the false-positive budget has to be checked,
+and it moved.** `38` split the gain into a decision-boundary arm and a threshold-estimation arm:
 
 | class | K=0 | boundary_only | threshold_only | both |
 |---|---|---|---|---|

@@ -47,6 +47,13 @@ PREREGISTERED, written before the run
 the 149 positives, 1.23 million local alignments. `36` sampled because all-pairs within the pool is
 34 million; this direction is 3% of that and needs no extrapolation.
 
+🔑 The reference that makes any of it interpretable. §2's 0.30 rule governs POSITIVES against
+positives. `27` states plainly that negatives are **not** homology-screened against the positives,
+because mechanism-matched benign proteins are wanted as hard negatives and `benign_homologs.fasta`
+exists for exactly that. So the pool matching that policy is not by itself a defect. What decides
+whether a pool number is an outlier is what the panel's **own** 296 negatives reach under the same
+policy, so the run measures that too: 44,104 more alignments, reported beside the pool's.
+
 Usage:
     python src/42_pool_homology_against_panel.py
     python src/42_pool_homology_against_panel.py --classes beta_lactamase phage_peptidoglycan_hydrolase
@@ -168,21 +175,60 @@ def main():
     if len(over) > 25:
         print(f"  ... {len(over) - 25} more")
 
+    # ---- the reference the pool's numbers have to be read against --------------------
+    # 🔴 §2's 0.30 rule governs POSITIVES against positives. `27` states plainly that negatives are
+    # NOT homology-screened against the positives, because mechanism-matched benign proteins are
+    # wanted as hard negatives and `benign_homologs.fasta` exists for exactly that. So "the pool
+    # was never screened" is not by itself a defect: it matches the panel's own policy. What decides
+    # whether a pool number is an outlier is what the panel's own negatives reach under the same
+    # policy, and that has to be measured rather than assumed.
+    neg = read_fasta(SEQ / "benign_negatives_v3.fasta")
+    print(f"\nreference: the panel's own {len(neg)} negatives against the same positives, "
+          f"{len(neg) * len(keys):,} alignments")
+    nb = []
+    for nk, (nv, nd) in neg.items():
+        sq = clean(nv)
+        if not sq:
+            continue
+        ss = al.score(sq, sq)
+        top, tk = 0.0, None
+        for k in keys:
+            v = al.score(sq, pseq[k]) / np.sqrt(ss * pself[k])
+            if v > top:
+                top, tk = v, k
+        nb.append((float(top), nk.split("|")[1], nd.split(" OS=")[0], tk))
+    nb.sort(reverse=True)
+    n_over = [r for r in nb if r[0] > THRESH]
+    print(f"  panel negatives above {THRESH}: {len(n_over)} of {len(nb)}; "
+          f"highest {nb[0][0]:.3f} ({nb[0][1]} {nb[0][2][:40]} -> {cls[nb[0][3]]})")
+    for sim, acc, nm, tk in nb[1:4]:
+        print(f"  then {sim:.3f}  {acc:<11}{nm[:40]:<42} -> {cls[tk]}")
+    panel_ref = {"n_negatives": len(nb), "n_above_threshold": len(n_over),
+                 "max": nb[0][0], "max_negative": nb[0][1], "max_name": nb[0][2],
+                 "max_positive_class": cls[nb[0][3]],
+                 "top5": [{"similarity": s, "negative": a, "name": n,
+                           "positive_class": cls[t]} for s, a, n, t in nb[:5]]}
+    if over:
+        ratio = over[0][1][0] / nb[0][0]
+        print(f"  so the pool's highest, {over[0][1][0]:.3f}, is {ratio:.1f}x the highest the panel's "
+              f"own negative set reaches under the same policy")
+        panel_ref["pool_max_over_panel_max"] = float(ratio)
+
     verdict = ("H1: no pool protein reaches the panel's 0.30 admission threshold against any "
                "positive, so the pool respects a rule it was never screened by and the cell-wall "
                "entries are functional analogues rather than sequence homologs"
                if not over else
                f"H2: {len(over)} pool proteins exceed 0.30 against a panel positive, so the pool "
                f"contains sequence homologs of positives admitted as negatives. The highest is "
-               f"{over[0][1][0]:.3f}. §10.9's boundary arm has to be re-run without them before its "
-               f"per-class result can stand")
+               f"{over[0][1][0]:.3f}, against {nb[0][0]:.3f} for the panel's own negative set under "
+               f"the same no-screen policy. Any script that trains on the pool has to drop them")
     print(f"\nverdict: {verdict}")
 
     dest = V3 / "pool_homology_against_panel.json"
     json.dump({"pool_n": len(pool), "positives_screened": len(keys),
                "classes": sorted(per_class), "threshold": THRESH,
                "alignments": len(pool) * len(keys),
-               "per_class": summary,
+               "per_class": summary, "panel_negative_reference": panel_ref,
                "above_threshold": [{"pool_acc": pk.split("|")[1], "pool_name": nm,
                                     "similarity": sim, "positive": tk.split("|")[1],
                                     "positive_class": cls[tk]}
@@ -191,6 +237,11 @@ def main():
                            "normalized score/sqrt(self_i*self_j), the same screen as 02d and 27"),
                "not_a_sample": ("every pool protein against every screened positive; 36 sampled "
                                 "because all-pairs WITHIN the pool is 34 million, this is 3% of that"),
+               "policy_note": ("§2's 0.30 rule governs positives against positives. 27 states that "
+                               "negatives are NOT screened against positives, because mechanism-matched "
+                               "benign proteins are wanted as hard negatives. So the pool matching that "
+                               "policy is not itself a defect; what makes a pool number an outlier is "
+                               "what the panel's own negatives reach under the same policy"),
                "verdict": verdict}, open(dest, "w"), indent=2)
     print(f"wrote {dest}")
 
