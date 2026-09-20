@@ -890,7 +890,8 @@ else that moved with it.
 
 **Attempt two, correlating recovery with how much of each family was in pretraining**
 (`src/03p_pretraining_exposure.py`), using UniRef50 cluster size as the proxy and needing no new
-sequences. Pooling all 72 members gives Spearman **rho −0.399, p 0.0005**, in the direction opposite to
+sequences. The per-protein cluster lookups are cached in `results/v2/uniref50_cluster_sizes.json`, which
+is the input to `results/v2/pretraining_exposure.json` rather than a result of its own. Pooling all 72 members gives Spearman **rho −0.399, p 0.0005**, in the direction opposite to
 the caveat, and it does not survive:
 
 | test | rho | p |
@@ -1858,7 +1859,9 @@ panel's real negatives. See [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md), e
 
 **The fixed test keeps the panel's 296 as a floor and adds on top.** `37` adds K pool proteins to the
 panel's own negatives, two ways: K drawn at random, and the K **nearest** the held-out class, which is
-the actual converse of §10.7's removal.
+the actual converse of §10.7's removal. Both arms are in
+`results/v3/negative_supplement_curve_esm2_650M.json`, with the 35M arm beside it and `note_on_35` in
+each recording the flaw above from the fixed side.
 
 | class | mode | K=0 | 500 | 1,500 | 4,000 | 8,259 |
 |---|---|---|---|---|---|---|
