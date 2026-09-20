@@ -103,6 +103,26 @@ CLASS_BLOCK = (
     "colicin", "microcin", "endolysin", "lysozyme", "muramidase", "amidase", "holin",
     "delta-endotoxin", "crystal protein", "insecticidal",
 )
+# 🔴 KNOWN LEAK, found 2026-09-20 and deliberately NOT patched. CLASS_BLOCK covers the phage class's
+# canonical names, "endolysin", "lysozyme", "muramidase", "amidase", "holin". It does NOT cover
+# "peptidoglycan hydrolase", "autolysin" or "peptidoglycan", so the committed pool contains eight
+# genuine peptidoglycan hydrolases as negatives: seven Staphylococcus "Bifunctional autolysin" entries
+# and "Peptidoglycan hydrolase PcsB". The autolysins are bifunctional amidase/glucosaminidases, so the
+# exact domain this list names is present under a protein name that does not contain the word. A name
+# filter sees names.
+#
+# Why the list is left alone rather than fixed. Adding the terms changes which proteins the pool holds,
+# which invalidates every number in §10.9 and §10.9.1 unless the pool is rebuilt and five scripts are
+# re-run. `src/42` ran the census the harvest skipped, every pool protein against every panel positive
+# under §2's own 0.30 normalized-Smith-Waterman rule, and found ZERO above it: the maxima are 0.115
+# against beta-lactamase and 0.105 against the phage class. Those eight are functional analogues at
+# about a third of the admission threshold, not sequence homologs, so a rebuild would change the inputs
+# without changing the conclusion.
+#
+# A FUTURE harvest should add "peptidoglycan", "autolysin", "glucosaminidase" and "cell wall hydrolase",
+# and should run `src/42`'s census as an admission gate instead of trusting names at all. The name
+# filter is a cheap pre-screen; the sequence screen is the rule the panel is actually built on.
+
 
 
 def H(s):

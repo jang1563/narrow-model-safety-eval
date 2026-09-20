@@ -1,0 +1,38 @@
+{
+  "pool_n": 8259,
+  "positives_screened": 46,
+  "classes": [
+    "beta_lactamase",
+    "phage_peptidoglycan_hydrolase"
+  ],
+  "threshold": 0.3,
+  "alignments": 379914,
+  "per_class": {
+    "beta_lactamase": {
+      "n_positives": 14,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.1148302835795748,
+      "mean": 0.02597236581048338
+    },
+    "phage_peptidoglycan_hydrolase": {
+      "n_positives": 32,
+      "counts_above": {
+        "0.30": 0,
+        "0.40": 0,
+        "0.50": 0,
+        "0.70": 0
+      },
+      "max": 0.10479841959746693,
+      "mean": 0.03193948172273422
+    }
+  },
+  "above_threshold": [],
+  "aligner": "Bio.Align.PairwiseAligner local BLOSUM62 gap -11/-1, normalized score/sqrt(self_i*self_j), the same screen as 02d and 27",
+  "not_a_sample": "every pool protein against every screened positive; 36 sampled because all-pairs WITHIN the pool is 34 million, this is 3% of that",
+  "verdict": "H1: no pool protein reaches the panel's 0.30 admission threshold against any positive, so the pool respects a rule it was never screened by and the cell-wall entries are functional analogues rather than sequence homologs"
+}

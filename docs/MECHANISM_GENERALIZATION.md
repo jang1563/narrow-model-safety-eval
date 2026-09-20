@@ -1850,6 +1850,34 @@ bacterial** with six plant RIP sources and three viral entries, more closely tha
 Swiss-Prot, which is the right material for this question and is not a neutral background sample. The query is `reviewed:true AND length:[100 TO 1400]` excluding Virulence,
 Toxin, Cytolysis, Hemolysis, Bacteriocin and Bacteriolytic enzyme.
 
+🔴 **The pool was never screened against the panel by sequence, and the filter that stood in for that
+leaks.** §2 admits a panel member only at normalized Smith-Waterman **≤ 0.30** against every existing one,
+and §2.1 counts effective n at the same threshold. `34` never applies it to the pool: it dedups on
+accession and sequence hash, which catches exact duplicates only, then filters by UniProt keyword and by
+protein name.
+
+The name filter is demonstrably porous, and it is porous asymmetrically between the two classes this
+section is about. `CLASS_BLOCK` covers the phage class's canonical names, "endolysin", "lysozyme",
+"muramidase", "amidase" and "holin". It does not cover "peptidoglycan hydrolase", "autolysin" or
+"peptidoglycan", so the pool contains **eight genuine peptidoglycan hydrolases admitted as negatives**:
+seven *Staphylococcus* "Bifunctional autolysin" entries and "Peptidoglycan hydrolase PcsB". The
+autolysins are bifunctional amidase/glucosaminidases, so the exact domain `CLASS_BLOCK` names is present
+under a protein name that does not contain the word. Beta-lactamase is covered, with "lactamase",
+"beta-lactam", "penicillinase", "cephalosporinase" and "carbapenemase" all blocked and **zero** matching
+entries in the pool.
+
+🟢 **Checked by sequence rather than by name, and it does not matter.** `src/42` runs the census the
+harvest skipped: every pool protein against every positive in the two failing classes, 379,914 local
+alignments under the same BLOSUM62 screen `02d` and `27` use. **Zero** pool proteins reach 0.30. The
+maxima are **0.115** against beta-lactamase and **0.105** against the phage class, so the eight cell-wall
+entries are functional analogues at roughly a tenth of the admission threshold rather than sequence
+homologs. The asymmetry §10.9.1 reports is therefore not label contamination.
+
+⚠️ That is a negative result about sequence, not about function. Eight proteins that hydrolyse the same
+bond as a positive class sit in the negative set, and the class they resemble functionally is the one that
+**improves** when the pool is added. Whatever the probe learns from them, it is not learning from sequence
+similarity to the held-out class.
+
 **The first attempt at the prediction varied two things at once.** `35` swept the size of the benign set
 across the pool, and its smallest point was 296 proteins drawn from the pool rather than the panel's own
 296. That changes size and composition together, which is the exact confound §6 exists to separate, and
@@ -1990,6 +2018,14 @@ baseline itself, and every dose above that is worse than moving the threshold, b
 phage class loses about 3 points to the same correction and keeps the rest. The caveat written into `40`
 before it ran said the bias flatters large K and that an R2 verdict would be safe against it while an R1
 verdict would not; that is what happened, on the class where it mattered.
+
+⚠️ **One thing this does not explain is why the two classes differ at all.** The obvious candidate, that
+the pool contains homologs of one class and not the other, is measured and refuted in §10.9: zero pool
+proteins reach the panel's 0.30 admission threshold against either, with maxima of 0.115 and 0.105. The
+eight functional analogues that are in there hydrolyse the same bond as the class that **gains**, which is
+the opposite of a contamination story. So the per-class sign is real and unexplained, and margin does not
+predict it: margin locates both classes together, at −0.0082 and −0.0055, and says nothing about which of
+them a larger benign set will help.
 
 🔑 **+20.3, +23.4 and +23.5 from three framings that share no threshold.** `39`'s boundary arm holds the panel's own operating
 point; `40`'s two iso-FP controls hold a reserved pool background, contaminated and decontaminated. All

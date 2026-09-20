@@ -847,6 +847,25 @@ def v3_panel_and_target_host():
             "verdict_supported": th["verdict"].startswith("SUPPORTED")}
 
 
+def pool_homology_against_panel():
+    """§10.9: the homology census the harvest skipped. The pool was filtered by protein name, that
+    filter leaks asymmetrically between the two failing classes, and §10.9.1's central result is that
+    those two classes respond to the pool in opposite directions. Pinned because a null result is the
+    only thing standing between that result and a label-contamination explanation."""
+    d = j("v3/pool_homology_against_panel.json")
+    pc = d["per_class"]
+    return {"pool_n": d["pool_n"], "threshold": d["threshold"],
+            "alignments": d["alignments"], "n_above": len(d["above_threshold"]),
+            "positives_screened": d["positives_screened"],
+            "classes_screened": len(d["classes"]),
+            "beta_max": pc["beta_lactamase"]["max"],
+            "phage_max": pc["phage_peptidoglycan_hydrolase"]["max"],
+            "beta_above_030": pc["beta_lactamase"]["counts_above"]["0.30"],
+            "phage_above_030": pc["phage_peptidoglycan_hydrolase"]["counts_above"]["0.30"],
+            "every_class_clean": all(v["counts_above"]["0.30"] == 0 for v in pc.values()),
+            "h1": d["verdict"].startswith("H1")}
+
+
 def negative_set_at_fixed_budget():
     """§10.9.1: at a FIXED false-positive budget the pool repairs one unreachable class and makes
     the other worse. Pinned together with the budget drift, because the headline three to fourfold
@@ -1399,6 +1418,22 @@ CLAIMS = [
                 and v["v2_balanced"] == 0.5 and not v["v2_usable"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "**v3 is 149 positives against 296 negatives**"}, []),
+    ("no pool protein reaches the panel's own homology admission threshold",
+     pool_homology_against_panel,
+     lambda v: (v["pool_n"] == 8259 and abs(v["threshold"] - 0.30) < 1e-9
+                and v["n_above"] == 0 and v["every_class_clean"]
+                and v["beta_above_030"] == 0 and v["phage_above_030"] == 0
+                and 0.11 < v["beta_max"] < 0.12 and 0.10 < v["phage_max"] < 0.11
+                and v["beta_max"] < 0.5 * v["threshold"]
+                and v["phage_max"] < 0.5 * v["threshold"]
+                # the alignment count is pinned so that re-running 42 over MORE positives, which
+                # overwrites this artifact, fails the audit instead of silently leaving the figure
+                # quoted in the document behind. That is the exact defect shape the audit exists for.
+                and v["alignments"] == v["pool_n"] * v["positives_screened"]
+                and v["positives_screened"] == 46 and v["alignments"] == 379914
+                and v["h1"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "The\nmaxima are **0.115** against beta-lactamase and **0.105** against the phage class"}, []),
     ("at a fixed false-positive budget the pool repairs the phage class and harms beta-lactamase",
      negative_set_at_fixed_budget,
      lambda v: (v["seeds"] == 30 and v["self_tests"] == "all pass"
