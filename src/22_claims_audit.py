@@ -1607,6 +1607,40 @@ def poisoning_neighbourhood_overlap():
             "union": len(set().union(*sets.values())), "slots": 500 * len(classes)}
 
 
+
+def criteria_scorecard_consistency():
+    """The README's summary of `docs/DETECTOR_CRITERIA.md` drifted out of step with the scorecard it
+    summarises and understated the project's own failures: it said two fails where the table had
+    three, and stayed at seventeen criteria after an eighteenth was added.
+
+    That is the drift this gate exists for, so the count is derived from the table rather than
+    trusted. Criteria headings and scorecard rows are counted directly and required to match each
+    other and the prose in both documents.
+
+    A verdict counts as a fail when the BOLD marker opening it is "fail", case-insensitively. That
+    is deliberately narrow. It catches criterion 3, whose verdict is "**Pass** on reporting, **fail**
+    on performance" and which the document's own tally of three includes, while not catching
+    criterion 2, whose "**Pass now, failed before.**" contains the word but is not a fail. Matching
+    the bare word anywhere would score four and matching only capital-F would score two, and both
+    have been checked against the table rather than assumed."""
+    import re
+    t = (ROOT / "docs/DETECTOR_CRITERIA.md").read_text()
+    r = (ROOT / "README.md").read_text()
+    heads = re.findall(r"^## (\d+)\. ", t, re.M)
+    rows = re.findall(r"^\| (\d+) [^|]*\| (.+?) \|$", t, re.M)
+    fails = [int(n) for n, v in rows if re.search(r"\*\*[Ff]ail", v)]
+    partials = [int(n) for n, v in rows if re.search(r"\*\*[Pp]artial", v)]
+    return {"headings": len(heads), "rows": len(rows),
+            "heads_are_1_to_n": heads == [str(i) for i in range(1, len(heads) + 1)],
+            "rows_match_heads": [n for n, _ in rows] == heads,
+            "fails": sorted(fails), "partials": sorted(partials),
+            "mixed": sorted(int(n) for n, v in rows if "Mixed" in v),
+            "doc_says_18": "on eighteen criteria" in t,
+            "doc_tally": "Three fails (1, 3, 12), three partials (4, 5, 18) and one mixed (7)" in t,
+            "readme_says_18": "states eighteen criteria" in r,
+            "readme_tally": "(three fails, three partials, one mixed)" in r}
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -2231,6 +2265,18 @@ CLAIMS = [
                 and v["union"] == 1999),
      {"docs/DETECTOR_CRITERIA.md":
       "and all thirteen together span only **1,999 distinct pool proteins out of 6,500"}, []),
+    ("detector criteria scorecard is internally consistent", criteria_scorecard_consistency,
+     lambda v: (v["headings"] == 18 and v["rows"] == 18
+                and v["heads_are_1_to_n"] and v["rows_match_heads"]
+                # the split, per-class performance, and the floor-only prereg
+                and v["fails"] == [1, 3, 12] and v["partials"] == [4, 5, 18]
+                and v["mixed"] == [7]
+                and v["doc_says_18"] and v["doc_tally"]
+                and v["readme_says_18"] and v["readme_tally"]),
+     {"README.md": "states eighteen criteria for evaluating a hazard detector"},
+     # the counts either document carried while the scorecard said otherwise. "five partials" was
+     # briefly written into both on 2026-09-21 and the table never had five, so it is forbidden too.
+     ["states seventeen criteria", "(two fails, four partials)", "five partials"]),
 ]
 
 

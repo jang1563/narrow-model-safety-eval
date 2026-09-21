@@ -645,7 +645,7 @@ Applied honestly, against its own criteria.
 | 17 annotation is the constraint | **Pass**, learned from a wasted sweep |
 | 18 reference set as attack surface | **Partial.** The panel's own negatives have a stated, reproducible selection rule (`02d`, `27`), which is the main ask. But the per-class before-and-after check was only run on 2026-09-21, long after the set was fixed, and it was run because the vulnerability was found rather than as a standing gate. One class, `rip_rrna_glycosidase`, loses 62.9 points to a supplement that moves the aggregate rate by 0.05 |
 
-Three fails and five partials on eighteen criteria, on a framework whose
+Three fails (1, 3, 12), three partials (4, 5, 18) and one mixed (7) on eighteen criteria, on a framework whose
 headline aggregate number is 0.981. That ratio is the reason this document
 exists.
 
