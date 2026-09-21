@@ -1682,6 +1682,78 @@ def tier3_coordinates():
             "tier2_lof_pairs": sorted(a for a in c if c[a]["any_tier2_lof"])}
 
 
+
+def flagged_entries_vs_uniprot():
+    """The two FSPE entries an offset cannot repair, checked against UniProt rather than reasoned
+    about further.
+
+    The load-bearing half is SEB. Its published ratio is computed at offset 0, and UniProt rules that
+    offset OUT: two of the nine positions fall inside the cleaved signal peptide while being
+    annotated as a receptor interface. At the only admissible offset the ratio crosses 1.0 and the
+    protein-level headline goes 13/15 at p = 0.0037 to 12/15 at p = 0.0176.
+
+    Pinned because the headline is on the model card and in the README, and because the caveat is
+    the kind that gets dropped when a number is quoted out loud. The assertion REQUIRES the flip, so
+    an edit that quietly rescored SEB into the thirteen would fail here.
+
+    ⚠️ The sign-test values are recomputed from `fspe_results.json` with SEB's ratio substituted,
+    not read back from `src/52`'s artifact, so the two files have to agree for this to pass."""
+    d = j("v3/flagged_entries_vs_uniprot.json")
+    seb, exo = d["entries"]["P01552"], d["entries"]["Q51451"]
+    v0 = seb["variants"]["published_offset_0"]
+    v27 = seb["variants"]["offset_plus_27"]
+    f = j("fspe_results.json")
+    rows = {(x.get("uniprot_id") or x.get("accession")): x["fspe_ratio"] for x in f["per_protein"]}
+    n = len(rows)
+    pub_k = sum(1 for v in rows.values() if v < 1.0)
+    alt = dict(rows, P01552=v27["ratio"])
+    alt_k = sum(1 for v in alt.values() if v < 1.0)
+    drop_k = sum(1 for a, v in rows.items() if a != "P01552" and v < 1.0)
+    return {"seb_signal_end": seb["uniprot_signal_end"],
+            "seb_offset0_in_signal": seb["offset0_positions_inside_signal_peptide"],
+            "seb_offset0_disproven": seb["offset0_disproven"],
+            "seb_disulfide_mature": seb["disulfide_mature"],
+            "seb_res_at_mature_93": seb["residue_at_mature_93"],
+            "seb_ratio_0": v0["ratio"], "seb_ratio_27": v27["ratio"],
+            "seb_flips": d["seb_verdict_flips"],
+            "seb_uniprot_has_sites": seb["uniprot_has_site_features"],
+            "headline_published": f"{pub_k}/{n}", "p_published": _sign_p(n, pub_k),
+            "headline_seb_at_27": f"{alt_k}/{n}", "p_seb_at_27": _sign_p(n, alt_k),
+            "headline_seb_dropped": f"{drop_k}/{n - 1}", "p_seb_dropped": _sign_p(n - 1, drop_k),
+            "exos_domain": exo["adp_rt_domain"],
+            "exos_domain_hypothesis_holds": exo["domain_start_hypothesis_holds"],
+            "exos_agrees": exo["agrees"], "exos_omits": exo["omits"],
+            "exos_all_below_1": d["exos_robust"],
+            "exos_n_variants": len(exo["variants"])}
+
+
+
+def signal_peptide_sweep():
+    """No annotated functional position may sit inside a cleaved signal peptide. Entry nineteen's
+    cheap identity-free gate, run over the whole panel.
+
+    This is the check that would have caught SEB on day one. `src/46`'s identity test can only catch
+    a wrong coordinate frame when the residue names are RIGHT, and SEB's are also wrong, so it
+    returned zero of nine and gave no signal for months.
+
+    ⚠️ Positions must be read AFTER applying each entry's own `precursor_offset`, because the three
+    entries repaired in entry sixteen store mature coordinates. A sweep that reads them raw flags its
+    own repairs; the first run of `src/53` did exactly that."""
+    d = j("v3/signal_peptide_sweep.json")
+    e = d["entries"]
+    with_sig = sorted(a for a in e
+                      if any(t == "Signal" for t, _s, _t in
+                             (tuple(x) for x in e[a]["cleaved"])))
+    return {"n_entries": d["n_entries"], "in_signal": d["in_signal"],
+            "in_propeptide": d["in_propeptide"], "past_end": d["past_end"],
+            "n_clean": sum(1 for a in e if e[a]["clean"]),
+            "accs_with_signal_peptide": len(with_sig),
+            "offsets_applied": {a: e[a]["precursor_offset"] for a in sorted(e)
+                                if e[a]["precursor_offset"]},
+            "repaired_entries_clean": all(e[a]["clean"] for a in ("P00588", "P00648", "P02879")),
+            "vacA_empty": e["P55981"]["positions"] == []}
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -2339,6 +2411,44 @@ CLAIMS = [
       "\"Light chain no longer cleaves SNAP25\" | yes |"},
      # the light-chain number, which is correct in its own frame and wrong for this pipeline
      ["precursor 223", "E223 in precursor"]),
+    ("SEB's published offset is ruled out and the headline moves", flagged_entries_vs_uniprot,
+     # Requires the flip. An edit that rescored SEB back into the thirteen, or that quietly dropped
+     # the signal-peptide argument, fails here rather than passing quietly.
+     lambda v: (v["seb_signal_end"] == 27
+                and v["seb_offset0_in_signal"] == [23, 25] and v["seb_offset0_disproven"]
+                and v["seb_disulfide_mature"] == [[93, 113]] and v["seb_res_at_mature_93"] == "C"
+                and abs(v["seb_ratio_0"] - 0.9556) < 0.001
+                and abs(v["seb_ratio_27"] - 1.0417) < 0.001
+                and v["seb_flips"] and not v["seb_uniprot_has_sites"]
+                and v["headline_published"] == "13/15"
+                and abs(v["p_published"] - 0.0037) < 0.0002
+                and v["headline_seb_at_27"] == "12/15"
+                and abs(v["p_seb_at_27"] - 0.0176) < 0.0002
+                and v["headline_seb_dropped"] == "12/14"
+                and abs(v["p_seb_dropped"] - 0.0065) < 0.0002
+                # ExoS: hypothesis refuted, four UniProt sites omitted, verdict unaffected
+                and v["exos_domain"] == [243, 429]
+                and not v["exos_domain_hypothesis_holds"]
+                and v["exos_agrees"] == [146, 381]
+                and v["exos_omits"] == [186, 187, 319, 343]
+                and v["exos_all_below_1"] and v["exos_n_variants"] == 4),
+     {"docs/EVALUATION_REPORT.md":
+      "| 🔴 **SEB scored in the only coordinate frame UniProt permits** | **12/15** | **0.0176** |",
+      "huggingface/README.md":
+      "At +27 the ratio goes **0.9556 to 1.0417 and crosses 1.0**, making the headline "
+      "**12/15 at p = 0.0176**."},
+     # the claim that src/52 made false, on both surfaces that carried it
+     ["SEB gets no equivalent test"]),
+    ("no functional position sits in a cleaved signal peptide, panel-wide", signal_peptide_sweep,
+     lambda v: (v["n_entries"] == 16 and v["n_clean"] == 15
+                and v["in_signal"] == ["P01552"]
+                and v["in_propeptide"] == [] and v["past_end"] == []
+                and v["accs_with_signal_peptide"] == 8
+                # the offsets entry sixteen installed, which the sweep must apply
+                and v["offsets_applied"] == {"P00588": 32, "P00648": 47, "P02879": 35}
+                and v["repaired_entries_clean"] and v["vacA_empty"]),
+     {"docs/EVALUATION_REPORT.md":
+      "Result: **15 of 16 entries are clean and the single hit is P01552.**"}, []),
 ]
 
 

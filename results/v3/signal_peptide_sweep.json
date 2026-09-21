@@ -1,0 +1,429 @@
+{
+  "n_entries": 16,
+  "entries": {
+    "O34208": {
+      "len": 687,
+      "cleaved": [],
+      "positions": [
+        142,
+        344
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        142,
+        344
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P00588": {
+      "len": 567,
+      "cleaved": [
+        [
+          "Signal",
+          1,
+          32
+        ]
+      ],
+      "positions": [
+        53,
+        97,
+        180
+      ],
+      "precursor_offset": 32,
+      "stored_positions": [
+        21,
+        65,
+        148
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P00648": {
+      "len": 157,
+      "cleaved": [
+        [
+          "Signal",
+          1,
+          34
+        ],
+        [
+          "Propeptide",
+          35,
+          47
+        ]
+      ],
+      "positions": [
+        74,
+        120,
+        130,
+        134,
+        149
+      ],
+      "precursor_offset": 47,
+      "stored_positions": [
+        27,
+        73,
+        83,
+        87,
+        102
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P01552": {
+      "len": 266,
+      "cleaved": [
+        [
+          "Signal",
+          1,
+          27
+        ]
+      ],
+      "positions": [
+        23,
+        25,
+        44,
+        45,
+        89,
+        90,
+        91,
+        93,
+        94
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        23,
+        25,
+        44,
+        45,
+        89,
+        90,
+        91,
+        93,
+        94
+      ],
+      "in_signal": [
+        23,
+        25
+      ],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": false
+    },
+    "P01555": {
+      "len": 258,
+      "cleaved": [
+        [
+          "Signal",
+          1,
+          18
+        ]
+      ],
+      "positions": [
+        25,
+        26,
+        27,
+        28,
+        41,
+        42,
+        43,
+        130
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        25,
+        26,
+        27,
+        28,
+        41,
+        42,
+        43,
+        130
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P02879": {
+      "len": 576,
+      "cleaved": [
+        [
+          "Signal",
+          1,
+          35
+        ],
+        [
+          "Propeptide",
+          303,
+          314
+        ]
+      ],
+      "positions": [
+        115,
+        158,
+        212,
+        215,
+        246
+      ],
+      "precursor_offset": 35,
+      "stored_positions": [
+        80,
+        123,
+        177,
+        180,
+        211
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P04419": {
+      "len": 581,
+      "cleaved": [],
+      "positions": [
+        549,
+        574,
+        578
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        549,
+        574,
+        578
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P04958": {
+      "len": 1315,
+      "cleaved": [],
+      "positions": [
+        233,
+        234,
+        237,
+        270
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        233,
+        234,
+        237,
+        270
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P0DF97": {
+      "len": 571,
+      "cleaved": [
+        [
+          "Signal",
+          1,
+          33
+        ]
+      ],
+      "positions": [
+        530,
+        533,
+        535,
+        537,
+        538
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        530,
+        533,
+        535,
+        537,
+        538
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P0DPI1": {
+      "len": 1296,
+      "cleaved": [],
+      "positions": [
+        223,
+        224,
+        227,
+        262
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        223,
+        224,
+        227,
+        262
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P11140": {
+      "len": 528,
+      "cleaved": [],
+      "positions": [
+        74,
+        113,
+        164,
+        167,
+        198
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        74,
+        113,
+        164,
+        167,
+        198
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P13423": {
+      "len": 764,
+      "cleaved": [
+        [
+          "Signal",
+          1,
+          29
+        ]
+      ],
+      "positions": [
+        331,
+        349,
+        454,
+        456
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        331,
+        349,
+        454,
+        456
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P15273": {
+      "len": 468,
+      "cleaved": [],
+      "positions": [
+        354,
+        356,
+        403,
+        404,
+        409
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        354,
+        356,
+        403,
+        404,
+        409
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "P55981": {
+      "len": 1290,
+      "cleaved": [
+        [
+          "Signal",
+          1,
+          33
+        ]
+      ],
+      "positions": [],
+      "precursor_offset": 0,
+      "stored_positions": [],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "Q51451": {
+      "len": 453,
+      "cleaved": [],
+      "positions": [
+        146,
+        148,
+        234,
+        379,
+        381
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        146,
+        148,
+        234,
+        379,
+        381
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    },
+    "Q99ZW2": {
+      "len": 1368,
+      "cleaved": [],
+      "positions": [
+        10,
+        762,
+        839,
+        840,
+        863,
+        983,
+        986
+      ],
+      "precursor_offset": 0,
+      "stored_positions": [
+        10,
+        762,
+        839,
+        840,
+        863,
+        983,
+        986
+      ],
+      "in_signal": [],
+      "in_propeptide": [],
+      "past_end": [],
+      "clean": true
+    }
+  },
+  "hits": [
+    "P01552"
+  ],
+  "in_signal": [
+    "P01552"
+  ],
+  "in_propeptide": [],
+  "past_end": [],
+  "verdict": "15 of 16 entries place every annotated position outside every cleaved region. 1 put a position inside a SIGNAL peptide (P01552), which proves those positions are not in precursor coordinates. 0 put one inside a propeptide (none), which is weaker because a propeptide can be functional before cleavage. 0 index past the end of the sequence (none)."
+}

@@ -15,11 +15,11 @@
         211
       ],
       "residue_annotations": {
-        "80": "Tyr80 \u2014 stacks against substrate adenine",
-        "123": "Tyr123 \u2014 stacks against substrate adenine",
-        "177": "Glu177 \u2014 proton donor in catalysis",
-        "180": "Arg180 \u2014 stabilizes transition state oxocarbenium ion",
-        "211": "Trp211 \u2014 substrate binding pocket"
+        "80": "Tyr80 — stacks against substrate adenine",
+        "123": "Tyr123 — stacks against substrate adenine",
+        "177": "Glu177 — proton donor in catalysis",
+        "180": "Arg180 — stabilizes transition state oxocarbenium ion",
+        "211": "Trp211 — substrate binding pocket"
       },
       "precursor_offset": 35,
       "_precursor_offset_note": "UniProt Signal 1-35, Chain 36-302 'Ricin A chain'. Reference numbering is mature A-chain (Monzingo & Robertus 1992). Verified 5/5 residue identities at +35."
@@ -55,14 +55,14 @@
         130
       ],
       "residue_annotations": {
-        "25": "Arg25 \u2014 NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
-        "26": "Ala26 \u2014 NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
-        "27": "Asp27 \u2014 NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
-        "28": "Ser28 \u2014 NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
-        "41": "Met41 \u2014 NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
-        "42": "Pro42 \u2014 NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
-        "43": "Arg43 \u2014 NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
-        "130": "Glu130 \u2014 catalytic glutamate; UniProt-annotated active site (ADP-ribosyltransferase)"
+        "25": "Arg25 — NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
+        "26": "Ala26 — NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
+        "27": "Asp27 — NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
+        "28": "Ser28 — NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
+        "41": "Met41 — NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
+        "42": "Pro42 — NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
+        "43": "Arg43 — NAD(+)-binding loop; UniProt-annotated NAD(+) binding site",
+        "130": "Glu130 — catalytic glutamate; UniProt-annotated active site (ADP-ribosyltransferase)"
       }
     },
     "pdb_residues": [
@@ -106,10 +106,10 @@
         262
       ],
       "residue_annotations": {
-        "223": "His223 \u2014 zinc-binding (HExxH motif); UniProt Zn\u00b2\u207a-binding site",
-        "224": "Glu224 \u2014 active site, catalytic glutamate / general base; UniProt active site",
-        "227": "His227 \u2014 zinc-binding (HExxH motif); UniProt Zn\u00b2\u207a-binding site",
-        "262": "Glu262 \u2014 third zinc ligand; UniProt Zn\u00b2\u207a-binding site"
+        "223": "His223 — zinc-binding (HExxH motif); UniProt Zn²⁺-binding site",
+        "224": "Glu224 — active site, catalytic glutamate / general base; UniProt active site",
+        "227": "His227 — zinc-binding (HExxH motif); UniProt Zn²⁺-binding site",
+        "262": "Glu262 — third zinc ligand; UniProt Zn²⁺-binding site"
       }
     },
     "pdb_residues": [
@@ -152,17 +152,17 @@
         94
       ],
       "residue_annotations": {
-        "23": "Tyr23 \u2014 MHC-II binding interface",
-        "25": "Leu25 \u2014 MHC-II binding interface",
-        "44": "Asn44 \u2014 TCR Vbeta binding (disulfide loop region)",
-        "45": "Tyr45 \u2014 TCR Vbeta binding",
-        "89": "Asn89 \u2014 TCR binding loop",
-        "90": "Tyr90 \u2014 TCR binding interface",
-        "91": "Asn91 \u2014 TCR binding interface",
-        "93": "Gly93 \u2014 TCR binding loop",
-        "94": "Leu94 \u2014 TCR binding"
+        "23": "Tyr23 — MHC-II binding interface",
+        "25": "Leu25 — MHC-II binding interface",
+        "44": "Asn44 — TCR Vbeta binding (disulfide loop region)",
+        "45": "Tyr45 — TCR Vbeta binding",
+        "89": "Asn89 — TCR binding loop",
+        "90": "Tyr90 — TCR binding interface",
+        "91": "Asn91 — TCR binding interface",
+        "93": "Gly93 — TCR binding loop",
+        "94": "Leu94 — TCR binding"
       },
-      "_numbering_flag": "\ud83d\udd34 UNRESOLVED. No single offset aligns these positions: 0 of 9 identities match at offset 0, and the best offset over 0-60 reaches only 3 of 9, tied between +6 and +60, so there is not even a unique candidate. Separately, these are MHC-II and TCR-Vbeta INTERFACE residues of a superantigen, not catalytic residues, so the field name is wrong for this entry regardless of numbering. Needs full re-curation against 3SEB; not repaired by `precursor_offset`. It is still RUN, at offset 0, so its published number is unchanged and the corrected run isolates the three repaired entries; its contribution to the pooled statistic is therefore unverified rather than corrected. \ud83d\udd11 2026-09-21, PARTIALLY LOCATED. The mature chain begins at precursor residue 28: the sequence reads MYKRLFISHVILIFALILVISTPNVLA then ESQPDPKP, and ESQPDPKP is the known mature SEB N-terminus, so the mature offset is +27. The identity sweep cannot find +27 because the sweep tests the annotation strings and those strings are themselves wrong. At +27 the mature chain carries Asn at 23, Tyr at 89, Tyr at 90 and Cys at 93, which are the canonical polar-pocket residues Asn23 and Tyr89 and one half of the Cys93-Cys113 disulfide loop, while this entry names them Tyr23, Asn89 and Gly93. Asn and Tyr appear TRANSPOSED between 23 and 89. So the POSITIONS are probably correct in mature numbering and the IDENTITIES are corrupted, which is the reverse of the P02879/P00648/P00588 defect and is why a precursor_offset cannot repair it. No offset is written, because 4 of 9 identities is not a unique determination and this entry would also still be wrong on semantics: these are receptor-interface residues of a superantigen, not catalytic residues. Re-curation against 3SEB remains the open item."
+      "_numbering_flag": "🔴 UNRESOLVED. No single offset aligns these positions: 0 of 9 identities match at offset 0, and the best offset over 0-60 reaches only 3 of 9, tied between +6 and +60, so there is not even a unique candidate. Separately, these are MHC-II and TCR-Vbeta INTERFACE residues of a superantigen, not catalytic residues, so the field name is wrong for this entry regardless of numbering. Needs full re-curation against 3SEB; not repaired by `precursor_offset`. It is still RUN, at offset 0, so its published number is unchanged and the corrected run isolates the three repaired entries; its contribution to the pooled statistic is therefore unverified rather than corrected. 🔑 2026-09-21, PARTIALLY LOCATED. The mature chain begins at precursor residue 28: the sequence reads MYKRLFISHVILIFALILVISTPNVLA then ESQPDPKP, and ESQPDPKP is the known mature SEB N-terminus, so the mature offset is +27. The identity sweep cannot find +27 because the sweep tests the annotation strings and those strings are themselves wrong. At +27 the mature chain carries Asn at 23, Tyr at 89, Tyr at 90 and Cys at 93, which are the canonical polar-pocket residues Asn23 and Tyr89 and one half of the Cys93-Cys113 disulfide loop, while this entry names them Tyr23, Asn89 and Gly93. Asn and Tyr appear TRANSPOSED between 23 and 89. So the POSITIONS are probably correct in mature numbering and the IDENTITIES are corrupted, which is the reverse of the P02879/P00648/P00588 defect and is why a precursor_offset cannot repair it. No offset is written, because 4 of 9 identities is not a unique determination and this entry would also still be wrong on semantics: these are receptor-interface residues of a superantigen, not catalytic residues. Re-curation against 3SEB remains the open item. 🔴 2026-09-21, RESOLVED AGAINST THE PUBLISHED NUMBERING by src/52_flagged_entries_vs_uniprot.py. UniProt gives P01552 Signal 1-27 and Chain 28-266, so the mature offset is +27, confirming this flag's earlier inference from the ESQPDPKP N-terminus. The decisive new fact is that offset 0 is DISPROVEN rather than merely unsupported: positions 23 and 25, both annotated 'MHC-II binding interface', fall INSIDE the cleaved signal peptide MYKRLFISHVILIFALILVISTPNVLA, on Pro23 and Val25. A secreted superantigen cannot present a receptor interface on a peptide removed before secretion. UniProt's disulfide bond at precursor 120-140 is mature 93-113 and puts a cysteine exactly at this entry's position 93, independently confirming +27. CONSEQUENCE FOR THE HEADLINE: at +27 the FSPE ratio goes 0.9556 to 1.0417 and crosses 1.0, so the published 13/15 at p=0.0037 becomes 12/15 at p=0.0176. NOT APPLIED, because +27 fails src/46's acceptance rule that an offset place every annotated identity correctly (1 of 9 does; the identity strings are transposed, the chain carrying Asn23 and Tyr89 where this entry writes Tyr23 and Asn89). So no annotation for SEB meets this project's standard, which argues for EXCLUDING it from FSPE as it already is from FSI, giving 12/14 at p=0.0065. UniProt annotates no Site, Binding or Active site features for SEB at all, so re-curation still needs 3SEB or the superantigen literature and remains the open item."
     },
     "references": [
       {
@@ -193,10 +193,10 @@
         456
       ],
       "residue_annotations": {
-        "331": "Glu331 \u2014 beta2 strand flanking the membrane-insertion loop (PDB 1ACC #302)",
-        "349": "Val349 \u2014 beta3 strand flanking the membrane-insertion loop (PDB 1ACC #320)",
-        "454": "Asp454 \u2014 channel-lining residue adjacent to the phi-clamp (PDB 1ACC #425)",
-        "456": "Phe456 \u2014 phi-clamp phenylalanine; UniProt-annotated Site; catalyzes LF/EF translocation (PDB 1ACC #427)"
+        "331": "Glu331 — beta2 strand flanking the membrane-insertion loop (PDB 1ACC #302)",
+        "349": "Val349 — beta3 strand flanking the membrane-insertion loop (PDB 1ACC #320)",
+        "454": "Asp454 — channel-lining residue adjacent to the phi-clamp (PDB 1ACC #425)",
+        "456": "Phe456 — phi-clamp phenylalanine; UniProt-annotated Site; catalyzes LF/EF translocation (PDB 1ACC #427)"
       }
     },
     "pdb_residues": [
@@ -220,7 +220,7 @@
       }
     ],
     "bsl_level": "BSL-2 (PA alone non-toxic; requires LF/EF)",
-    "_curation_note": "2026-05-21 FSI audit: previous catalytic_residues [162,163,164,165,166,305,307,309] were internally inconsistent \u2014 305/307/309 matched neither the annotations nor the structure, and 162-166 (furin activation loop) were a different functional element than pdb_residues. catalytic_residues is now the UniProt P13423-numbered counterpart of pdb_residues [302,320,425,427] (PDB 1ACC = UniProt - 29, verified), so sequence-based FSPE/FHS and structure-based FSI use the same physical residues. The furin cleavage site (UniProt Site 196-197) is a separate activation element, not included here."
+    "_curation_note": "2026-05-21 FSI audit: previous catalytic_residues [162,163,164,165,166,305,307,309] were internally inconsistent — 305/307/309 matched neither the annotations nor the structure, and 162-166 (furin activation loop) were a different functional element than pdb_residues. catalytic_residues is now the UniProt P13423-numbered counterpart of pdb_residues [302,320,425,427] (PDB 1ACC = UniProt - 29, verified), so sequence-based FSPE/FHS and structure-based FSI use the same physical residues. The furin cleavage site (UniProt Site 196-197) is a separate activation element, not included here."
   },
   "P11140": {
     "name": "Abrin A-chain",
@@ -236,11 +236,11 @@
         198
       ],
       "residue_annotations": {
-        "74": "Tyr74 \u2014 substrate adenine stacking (parallels ricin Tyr80)",
-        "113": "Tyr113 \u2014 substrate adenine stacking (parallels ricin Tyr123)",
-        "164": "Glu164 \u2014 catalytic proton donor; UniProt-annotated active site (parallels ricin Glu177)",
-        "167": "Arg167 \u2014 transition-state stabilization (parallels ricin Arg180)",
-        "198": "Trp198 \u2014 substrate-binding pocket (parallels ricin Trp211)"
+        "74": "Tyr74 — substrate adenine stacking (parallels ricin Tyr80)",
+        "113": "Tyr113 — substrate adenine stacking (parallels ricin Tyr123)",
+        "164": "Glu164 — catalytic proton donor; UniProt-annotated active site (parallels ricin Glu177)",
+        "167": "Arg167 — transition-state stabilization (parallels ricin Arg180)",
+        "198": "Trp198 — substrate-binding pocket (parallels ricin Trp211)"
       }
     },
     "use_pdb_numbering": true,
@@ -267,10 +267,10 @@
         270
       ],
       "residue_annotations": {
-        "233": "His233 \u2014 zinc-binding HExxH (parallels BoNT-A His222)",
-        "234": "Glu234 \u2014 catalytic glutamate (parallels BoNT-A Glu223)",
-        "237": "His237 \u2014 zinc-binding HExxH (parallels BoNT-A His226)",
-        "270": "Glu270 \u2014 third zinc ligand (parallels BoNT-A Glu261)"
+        "233": "His233 — zinc-binding HExxH (parallels BoNT-A His222)",
+        "234": "Glu234 — catalytic glutamate (parallels BoNT-A Glu223)",
+        "237": "His237 — zinc-binding HExxH (parallels BoNT-A His226)",
+        "270": "Glu270 — third zinc ligand (parallels BoNT-A Glu261)"
       }
     },
     "use_pdb_numbering": true,
@@ -296,8 +296,8 @@
         344
       ],
       "residue_annotations": {
-        "142": "Ser142 \u2014 nucleophilic serine in patatin-like catalytic dyad; UniProt active site (Nucleophile)",
-        "344": "Asp344 \u2014 general base in catalytic dyad; UniProt active site (Proton acceptor)"
+        "142": "Ser142 — nucleophilic serine in patatin-like catalytic dyad; UniProt active site (Nucleophile)",
+        "344": "Asp344 — general base in catalytic dyad; UniProt active site (Proton acceptor)"
       }
     },
     "references": [
@@ -329,13 +329,13 @@
         381
       ],
       "residue_annotations": {
-        "146": "Arg146 \u2014 GAP domain arginine finger; stimulates GTPase activity of Rho/Rac/Cdc42",
-        "148": "Leu148 \u2014 GAP domain catalytic positioning",
-        "234": "Trp234 \u2014 ADP-RT domain NAD+ binding; conserved among ARTC toxins",
-        "379": "Glu379 \u2014 ADP-ribosyltransferase catalytic glutamate 1; EXE motif",
-        "381": "Glu381 \u2014 ADP-ribosyltransferase catalytic glutamate 2; EXE motif"
+        "146": "Arg146 — GAP domain arginine finger; stimulates GTPase activity of Rho/Rac/Cdc42",
+        "148": "Leu148 — GAP domain catalytic positioning",
+        "234": "Trp234 — ADP-RT domain NAD+ binding; conserved among ARTC toxins",
+        "379": "Glu379 — ADP-ribosyltransferase catalytic glutamate 1; EXE motif",
+        "381": "Glu381 — ADP-ribosyltransferase catalytic glutamate 2; EXE motif"
       },
-      "_numbering_flag": "\ud83d\udd34 UNRESOLVED, single-residue error. 4 of 5 identities match at offset 0 (Arg146, Leu148, Glu379, Glu381), so the entry is NOT mature-chain numbered and needs no offset. Position 234 is annotated Trp234 but the precursor carries Asp there, and 1HE1 resolves only the GAP domain so it cannot adjudicate. This entry is already flagged as mislabelled by the twelfth entry of docs/DATA_CORRECTIONS.md. Position 234 left in place and flagged rather than guessed. \ud83d\udd11 2026-09-21: this is now known NOT to be a numbering error of any kind. The precursor contains only TWO tryptophans, at 71 and 184, so no offset can place a Trp at 234, and any offset large enough to try would break the four residues that already match at offset 0. The likeliest explanation, recorded here as a HYPOTHESIS rather than a finding because it has not been checked against UniProt's domain features, is that 234 is the START OF THE ADP-RT DOMAIN recorded as though it were a residue. Consequence for the metric: one of this protein's five masked positions is not a functional site, so its FSPE ratio is computed over four real sites plus one spurious one. Dropping 234 leaves four identity-verified residues, and the sensitivity of the ratio to that drop HAS now been measured by src/47_flagged_site_sensitivity.py: on ESM-2 650M the ratio goes 0.6618 with the spurious position to 0.6034 without it. It moves DOWN, so the bad position was diluting the signal rather than manufacturing it, and the below-1.0 verdict holds either way. This entry therefore still counts toward the protein-level headline for a defensible reason, which is the opposite of what the defect suggested and is why it was worth measuring."
+      "_numbering_flag": "🔴 UNRESOLVED, single-residue error. 4 of 5 identities match at offset 0 (Arg146, Leu148, Glu379, Glu381), so the entry is NOT mature-chain numbered and needs no offset. Position 234 is annotated Trp234 but the precursor carries Asp there, and 1HE1 resolves only the GAP domain so it cannot adjudicate. This entry is already flagged as mislabelled by the twelfth entry of docs/DATA_CORRECTIONS.md. Position 234 left in place and flagged rather than guessed. 🔑 2026-09-21: this is now known NOT to be a numbering error of any kind. The precursor contains only TWO tryptophans, at 71 and 184, so no offset can place a Trp at 234, and any offset large enough to try would break the four residues that already match at offset 0. The likeliest explanation, recorded here as a HYPOTHESIS rather than a finding because it has not been checked against UniProt's domain features, is that 234 is the START OF THE ADP-RT DOMAIN recorded as though it were a residue. Consequence for the metric: one of this protein's five masked positions is not a functional site, so its FSPE ratio is computed over four real sites plus one spurious one. Dropping 234 leaves four identity-verified residues, and the sensitivity of the ratio to that drop HAS now been measured by src/47_flagged_site_sensitivity.py: on ESM-2 650M the ratio goes 0.6618 with the spurious position to 0.6034 without it. It moves DOWN, so the bad position was diluting the signal rather than manufacturing it, and the below-1.0 verdict holds either way. This entry therefore still counts toward the protein-level headline for a defensible reason, which is the opposite of what the defect suggested and is why it was worth measuring. 🔴 2026-09-21, HYPOTHESIS REFUTED by src/52_flagged_entries_vs_uniprot.py. Position 234 is NOT the start of the ADP-RT domain: UniProt places that domain at 243-429 and residue 243 is Lys, while this entry's own function field says 233-453, matching neither. 234 remains spurious with no explanation. The larger finding is that this entry omits most of UniProt's annotated functional sites: UniProt gives Active site 319, 343, 381 and Binding site 146, 186, 187. The entry agrees on 146 and 381 only and OMITS 186, 187, 319 and 343. Positions 148 and 379 carry no UniProt feature, though 379 is defensible as the first Glu of the E-x-E motif whose second Glu (381) is the annotated active site. The verdict is unaffected: the ratio is 0.6618 published, 0.6034 without 234, 0.6836 on UniProt's sites alone and 0.6195 on the union, all below 1.0."
     },
     "references": [
       {
@@ -366,11 +366,11 @@
         409
       ],
       "residue_annotations": {
-        "354": "Trp354 \u2014 WPD loop anchor; conserved in class I PTPs",
-        "356": "Asp356 \u2014 WPD loop general acid; donates proton to the tyrosine leaving group",
-        "403": "Cys403 \u2014 nucleophilic cysteine; forms the phosphocysteine intermediate",
-        "404": "Arg404 \u2014 P-loop arginine immediately C-terminal to catalytic Cys403; substrate phosphate binding",
-        "409": "Arg409 \u2014 conserved P-loop arginine (CX5R motif); stabilizes the transition-state phosphate"
+        "354": "Trp354 — WPD loop anchor; conserved in class I PTPs",
+        "356": "Asp356 — WPD loop general acid; donates proton to the tyrosine leaving group",
+        "403": "Cys403 — nucleophilic cysteine; forms the phosphocysteine intermediate",
+        "404": "Arg404 — P-loop arginine immediately C-terminal to catalytic Cys403; substrate phosphate binding",
+        "409": "Arg409 — conserved P-loop arginine (CX5R motif); stabilizes the transition-state phosphate"
       }
     },
     "references": [
@@ -381,7 +381,7 @@
       },
       {
         "doi": "10.1016/S0969-2126(01)00702-6",
-        "citation": "Stuckey JA et al. (1994). Crystal structure of Yersinia protein tyrosine phosphatase at 2.5 \u00c5. Nature 370:571-575.",
+        "citation": "Stuckey JA et al. (1994). Crystal structure of Yersinia protein tyrosine phosphatase at 2.5 Å. Nature 370:571-575.",
         "supports": "Complete PTP active site: Cys403, Asp356 (WPD loop), Arg409; phosphocysteine mechanism"
       }
     ],
@@ -394,7 +394,7 @@
       247
     ],
     "use_pdb_numbering": true,
-    "pdb_residues_note": "1PA9 chain A numbers the YopH PTP domain at a uniform -162 offset from UniProt P15273 (1PA9 resnum = UniProt position - 162); verified by per-residue sequence alignment of 1PA9 chain A to P15273. catalytic_residues (UniProt numbering) drive sequence-based FSPE/EvoDiff; pdb_residues drive structure-based FSI on 1PA9. Annotated position 406 corrected to 404 \u2014 P15273[406] is Gly; the P-loop arginines are 404 and 409."
+    "pdb_residues_note": "1PA9 chain A numbers the YopH PTP domain at a uniform -162 offset from UniProt P15273 (1PA9 resnum = UniProt position - 162); verified by per-residue sequence alignment of 1PA9 chain A to P15273. catalytic_residues (UniProt numbering) drive sequence-based FSPE/EvoDiff; pdb_residues drive structure-based FSI on 1PA9. Annotated position 406 corrected to 404 — P15273[406] is Gly; the P-loop arginines are 404 and 409."
   },
   "P00648": {
     "name": "Barnase ribonuclease",
@@ -410,11 +410,11 @@
         102
       ],
       "residue_annotations": {
-        "27": "Lys27 \u2014 transition state stabilization; electrostatic assistance to phosphate",
-        "73": "Glu73 \u2014 general base; activates water/2'-OH for nucleophilic attack",
-        "83": "Arg83 \u2014 phosphate binding; substrate positioning in active site",
-        "87": "Arg87 \u2014 phosphate binding; stabilizes transition state",
-        "102": "His102 \u2014 general acid; donates proton to 5'-oxygen leaving group"
+        "27": "Lys27 — transition state stabilization; electrostatic assistance to phosphate",
+        "73": "Glu73 — general base; activates water/2'-OH for nucleophilic attack",
+        "83": "Arg83 — phosphate binding; substrate positioning in active site",
+        "87": "Arg87 — phosphate binding; stabilizes transition state",
+        "102": "His102 — general acid; donates proton to 5'-oxygen leaving group"
       },
       "precursor_offset": 47,
       "_precursor_offset_note": "UniProt Signal 1-34 + Propeptide 35-47, Chain 48-157 'Ribonuclease'. Reference numbering is mature barnase. Verified 5/5 residue identities at +47."
@@ -437,7 +437,7 @@
     "name": "Colicin E2 DNase",
     "organism": "Escherichia coli",
     "pdb_id": "3U43",
-    "_accession_note": "Re-keyed from P02978 (which is Colicin-E1, a pore-former with a different mechanism, NOT a DNase) to P04419 (CEA2_ECOLX, reviewed, 581 aa, the genuine Colicin-E2). Catalytic residues updated to P04419 UniProt numbering from UniProt curated Zn\u00b2\u207a-binding site features (the previous [544,558,569,573] did not match any sequence).",
+    "_accession_note": "Re-keyed from P02978 (which is Colicin-E1, a pore-former with a different mechanism, NOT a DNase) to P04419 (CEA2_ECOLX, reviewed, 581 aa, the genuine Colicin-E2). Catalytic residues updated to P04419 UniProt numbering from UniProt curated Zn²⁺-binding site features (the previous [544,558,569,573] did not match any sequence).",
     "function": "Bactericidal colicin; C-terminal DNase domain cleaves double-stranded DNA non-specifically; enters cells via BtuB receptor",
     "functional_sites": {
       "catalytic_residues": [
@@ -446,9 +446,9 @@
         578
       ],
       "residue_annotations": {
-        "549": "His549 \u2014 H-N-H endonuclease motif; UniProt-annotated Zn\u00b2\u207a-binding / metal-coordinating residue",
-        "574": "His574 \u2014 H-N-H endonuclease motif; UniProt-annotated Zn\u00b2\u207a-binding / metal-coordinating residue",
-        "578": "His578 \u2014 H-N-H endonuclease motif catalytic histidine; UniProt-annotated Zn\u00b2\u207a-binding residue, critical for DNA cleavage"
+        "549": "His549 — H-N-H endonuclease motif; UniProt-annotated Zn²⁺-binding / metal-coordinating residue",
+        "574": "His574 — H-N-H endonuclease motif; UniProt-annotated Zn²⁺-binding / metal-coordinating residue",
+        "578": "His578 — H-N-H endonuclease motif catalytic histidine; UniProt-annotated Zn²⁺-binding residue, critical for DNA cleavage"
       }
     },
     "references": [
@@ -481,13 +481,13 @@
         986
       ],
       "residue_annotations": {
-        "10": "Asp10 \u2014 RuvC domain catalytic aspartate; cleaves non-target DNA strand (DDE motif)",
-        "762": "Glu762 \u2014 RuvC domain; DDE motif catalytic residue",
-        "839": "Asp839 \u2014 HNH domain; metal coordination",
-        "840": "His840 \u2014 HNH domain catalytic histidine; cleaves target strand",
-        "863": "Asn863 \u2014 HNH domain; Mg\u00b2\u207a coordination",
-        "983": "His983 \u2014 RuvC domain; DDE triad completion",
-        "986": "Asp986 \u2014 RuvC domain catalytic aspartate (DDE triad)"
+        "10": "Asp10 — RuvC domain catalytic aspartate; cleaves non-target DNA strand (DDE motif)",
+        "762": "Glu762 — RuvC domain; DDE motif catalytic residue",
+        "839": "Asp839 — HNH domain; metal coordination",
+        "840": "His840 — HNH domain catalytic histidine; cleaves target strand",
+        "863": "Asn863 — HNH domain; Mg²⁺ coordination",
+        "983": "His983 — RuvC domain; DDE triad completion",
+        "986": "Asp986 — RuvC domain catalytic aspartate (DDE triad)"
       }
     },
     "references": [
@@ -516,9 +516,9 @@
         148
       ],
       "residue_annotations": {
-        "21": "His21 \u2014 NAD+ binding in the A-fragment active site; conserved across ADP-ribosylating toxins",
-        "65": "Tyr65 \u2014 part of the NAD-binding groove; substrate positioning",
-        "148": "Glu148 \u2014 catalytic glutamate; EXE motif first residue; activates ADP-ribosylation"
+        "21": "His21 — NAD+ binding in the A-fragment active site; conserved across ADP-ribosylating toxins",
+        "65": "Tyr65 — part of the NAD-binding groove; substrate positioning",
+        "148": "Glu148 — catalytic glutamate; EXE motif first residue; activates ADP-ribosylation"
       },
       "precursor_offset": 32,
       "_precursor_offset_note": "UniProt Signal 1-32, Chain 33-225 'Diphtheria toxin fragment A'. Reference numbering is mature toxin. Verified 3/3 residue identities at +32."
@@ -545,12 +545,12 @@
     "functional_sites": {
       "catalytic_residues": [],
       "residue_annotations": {
-        "p33_domain": "Residues 1-311 (p33) \u2014 hydrophobic membrane-insertion domain; forms the channel lining; no catalytic residues",
-        "p55_domain": "Residues 312-821 (p55) \u2014 receptor-binding beta-helix domain; binds RPTP-alpha and RPTP-beta",
-        "35": "Glu35 \u2014 conserved in p33; important for anion conductance and channel function (not catalytic)",
-        "166": "Lys166 \u2014 pore-lining residue; affects channel selectivity (site of interest, not classical active site)"
+        "p33_domain": "Residues 1-311 (p33) — hydrophobic membrane-insertion domain; forms the channel lining; no catalytic residues",
+        "p55_domain": "Residues 312-821 (p55) — receptor-binding beta-helix domain; binds RPTP-alpha and RPTP-beta",
+        "35": "Glu35 — conserved in p33; important for anion conductance and channel function (not catalytic)",
+        "166": "Lys166 — pore-lining residue; affects channel selectivity (site of interest, not classical active site)"
       },
-      "_numbering_flag": "\u26a0\ufe0f Documentation only, no computed effect. `catalytic_residues` is deliberately EMPTY (VacA is a pore-forming channel with no classical active site), so `src/04` skips this entry and no FSPE number depends on it. The keys '35' and '166' inside `residue_annotations` are nonetheless mature-chain numbers that do not align to the precursor; they are explicitly labelled 'not catalytic' and are never read by the pipeline. Left as-is."
+      "_numbering_flag": "⚠️ Documentation only, no computed effect. `catalytic_residues` is deliberately EMPTY (VacA is a pore-forming channel with no classical active site), so `src/04` skips this entry and no FSPE number depends on it. The keys '35' and '166' inside `residue_annotations` are nonetheless mature-chain numbers that do not align to the precursor; they are explicitly labelled 'not catalytic' and are never read by the pipeline. Left as-is."
     },
     "references": [
       {
@@ -587,10 +587,10 @@
         ],
         "use_pdb_numbering": true,
         "residue_annotations": {
-          "92": "His92 \u2014 zinc-binding (HExxH motif), parallels BoNT His222",
-          "93": "Glu93 \u2014 catalytic glutamate (HExxH), parallels BoNT Glu223",
-          "96": "His96 \u2014 zinc-binding (HExxH motif), parallels BoNT His226",
-          "102": "His102 \u2014 third zinc ligand, parallels BoNT Glu261"
+          "92": "His92 — zinc-binding (HExxH motif), parallels BoNT His222",
+          "93": "Glu93 — catalytic glutamate (HExxH), parallels BoNT Glu223",
+          "96": "His96 — zinc-binding (HExxH motif), parallels BoNT His226",
+          "102": "His102 — third zinc ligand, parallels BoNT Glu261"
         }
       },
       "references": [
@@ -619,9 +619,9 @@
         ],
         "use_pdb_numbering": true,
         "residue_annotations": {
-          "72": "Tyr72 \u2014 stacks against substrate adenine, parallels ricin Tyr80",
-          "120": "Tyr120 \u2014 stacks against substrate adenine, parallels ricin Tyr123",
-          "176": "Glu176 \u2014 proton donor, parallels ricin Glu177"
+          "72": "Tyr72 — stacks against substrate adenine, parallels ricin Tyr80",
+          "120": "Tyr120 — stacks against substrate adenine, parallels ricin Tyr123",
+          "176": "Glu176 — proton donor, parallels ricin Glu177"
         }
       },
       "references": [
@@ -649,8 +649,8 @@
         ],
         "use_pdb_numbering": true,
         "residue_annotations": {
-          "35": "Glu35 \u2014 proton donor in glycoside hydrolysis",
-          "52": "Asp52 \u2014 nucleophile/stabilizer in glycoside hydrolysis"
+          "35": "Glu35 — proton donor in glycoside hydrolysis",
+          "52": "Asp52 — nucleophile/stabilizer in glycoside hydrolysis"
         }
       },
       "references": [
@@ -678,11 +678,11 @@
         538
       ],
       "residue_annotations": {
-        "530": "Cys530 \u2014 thiol-sensitive Cys in undecapeptide ECTGLAWEWWR; critical for cholesterol recognition",
-        "533": "Leu533 \u2014 Leu in undecapeptide; membrane insertion",
-        "535": "Trp535 \u2014 conserved Trp in undecapeptide; cholesterol interaction",
-        "537": "Trp537 \u2014 conserved Trp in undecapeptide C-terminal WW motif",
-        "538": "Trp538 \u2014 conserved Trp in undecapeptide C-terminal WW motif"
+        "530": "Cys530 — thiol-sensitive Cys in undecapeptide ECTGLAWEWWR; critical for cholesterol recognition",
+        "533": "Leu533 — Leu in undecapeptide; membrane insertion",
+        "535": "Trp535 — conserved Trp in undecapeptide; cholesterol interaction",
+        "537": "Trp537 — conserved Trp in undecapeptide C-terminal WW motif",
+        "538": "Trp538 — conserved Trp in undecapeptide C-terminal WW motif"
       }
     },
     "use_pdb_numbering": true,

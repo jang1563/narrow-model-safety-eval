@@ -2043,3 +2043,115 @@ mean of 4.7%, but **131 of 200 seeds return exactly zero**. So the standing cave
 "has headroom in only one of the two failing classes" survives verification and should be stated as
 the stronger fact: a class that recovers nothing in two thirds of seeds has no room to decline, which
 is a better reason than the 1.4% point estimate that was standing in for it.
+
+---
+
+## 2026-09-21 (nineteenth entry) — SEB's published FSPE ratio is computed at a coordinate offset that UniProt rules out, two of its masked positions sit inside a cleaved signal peptide, and the correct frame moves the protein-level headline
+
+Found by running `src/52_flagged_entries_vs_uniprot.py`, which was written to close two long-standing
+open items by reading the canonical record instead of reasoning about them further. One closed
+favourably. This one did not.
+
+### The finding
+
+`P01552` (staphylococcal enterotoxin B) carries nine annotated positions, all nine of which fail the
+residue-identity check at the published offset of 0. That was already recorded as unresolved. What
+was not known is that offset 0 is **disproven**, not merely unsupported.
+
+UniProt gives P01552 a **Signal peptide at 1-27** and the mature chain at 28-266. At offset 0,
+positions **23 and 25** fall inside that signal peptide, `MYKRLFISHVILIFALILVISTPNVLA`, landing on
+Pro23 and Val25. Both are annotated "MHC-II binding interface". A secreted superantigen cannot
+present a receptor interface on a peptide that is cleaved off before secretion, so the published
+numbering places two of the nine masked positions somewhere the annotation's own description says
+they cannot be.
+
+Three independent facts agree that the correct frame is **+27**:
+
+- the signal-peptide boundary itself, Signal 1-27;
+- the known mature N-terminus `ESQPDPKP`, which the precursor carries at 28-35;
+- UniProt's **Disulfide bond at precursor 120-140**, which is mature **93-113** and puts a cysteine
+  exactly at this entry's position 93. The entry calls that position "Gly93, TCR binding loop": the
+  loop is right and the residue name is wrong.
+
+### What it does to the headline
+
+| panel | below 1.0 | exact sign test p |
+|---|---|---|
+| as published | 13/15 | 0.0037 |
+| SEB dropped | 12/14 | 0.0065 |
+| **SEB at +27, the only admissible frame** | **12/15** | **0.0176** |
+
+SEB's ratio goes **0.9556 to 1.0417** and crosses 1.0, so it stops being one of the thirteen. The
+0.9556 was already the weakest non-RIP ratio in the panel, which in hindsight is what a near-null
+contribution looks like when the masked positions are largely arbitrary and two of them are in a
+signal peptide.
+
+### Why it is recorded and not applied
+
+Applying +27 would violate this project's own acceptance rule for offsets, set in `src/46` and
+pinned in the claims audit: an offset is accepted only when it is the **unique** integer placing
+*every* annotated residue identity correctly. At +27, one of nine matches. The identity strings are
+themselves corrupt, and the corruption is legible: at +27 the mature chain carries **Asn23 and
+Tyr89** where this entry writes Tyr23 and Asn89, a transposition of the two residue names between
+two positions. That is the reverse of the P02879/P00648/P00588 defect, where the identities were
+right and the frame was wrong, and it is why a `precursor_offset` cannot repair this entry.
+
+So the honest state is that **no annotation for SEB currently meets this project's standard**:
+offset 0 is ruled out by biology, and +27 is ruled out by the project's own rule. That argues for
+exclusion rather than correction, and exclusion already has a second and independent justification
+sitting in `docs/EVALUATION_REPORT.md`: SEB is **excluded from FSI** on the grounds that a
+superantigen has no discrete catalytic site to recover, and the identical objection applies to FSPE,
+where the same residues are masked. Dropping it gives 12/14 at p = 0.0065 and resolves that
+asymmetry at the same time.
+
+The published panel stays as published until that call is made deliberately, because it changes a
+number on the Hugging Face model card and in the README. But the open item has moved from "the
+numbering is unresolved" to "the published numbering is ruled out", and those warrant different
+treatment. UniProt annotates no Site, Binding site or Active site features for SEB at all, so the
+re-curation that would actually fix the entry still needs 3SEB or the superantigen literature.
+
+### The other open item closed favourably, and its diagnosis was wrong
+
+`Q51451` (ExoS) carried a hypothesis, marked in the annotation file as unchecked, that its spurious
+position 234 was the **start of the ADP-RT domain** recorded as though it were a residue. UniProt
+refutes it: the ADP-ribosyltransferase domain runs **243-429** and residue 243 is Lys. The entry's
+own `function` field claims 233-453 and matches neither. Position 234 stays spurious with no
+explanation for where it came from.
+
+The real defect is larger than the open item named. UniProt annotates **Active site 319, 343, 381**
+and **Binding site 146, 186, 187** on this entry. The annotation agrees on two of those, 146 and
+381, and **omits four**: 186, 187, 319 and 343. Positions 148 and 379 have no UniProt feature,
+though 379 is defensible as the first glutamate of the E-x-E motif whose second glutamate, 381, is
+the annotated active site.
+
+None of it changes the verdict, which is why this half resolves favourably. The ratio is 0.6618 as
+published, 0.6034 without position 234, 0.6836 on UniProt's six sites alone, and 0.6195 on the union
+of both sets. All four are below 1.0. ExoS's contribution to the headline is robust to an annotation
+that is substantially incomplete, which is worth knowing and is the opposite of the SEB result.
+
+### The general lesson, which is not about either protein
+
+The identity check that `src/46` installed catches a wrong frame when the identities are right. It
+cannot catch a wrong frame when the identities are also wrong, and SEB is that case: zero of nine
+matched at offset 0 and the entry ran anyway for months. **A cheaper check would have caught it on
+day one: no annotated functional position may fall inside a cleaved signal peptide or propeptide.**
+That rule needs no residue identities, only the UniProt feature table, and it would have flagged
+this entry immediately.
+
+So it was run, over every entry, in `src/53_signal_peptide_sweep.py`. **Fifteen of sixteen entries
+place every annotated position outside every cleaved region, and the single hit is P01552.** Nothing
+lands inside a propeptide, which would have been the weaker case since a propeptide can be functional
+before cleavage, and nothing indexes past the end of a sequence. Seven of the sixteen accessions
+carry a signal peptide at all, so the check had real opportunity to fire and fired once.
+
+Two details worth keeping from that run. The three entries repaired in entry sixteen store their
+positions in **mature** coordinates and carry a `precursor_offset` the pipeline applies before
+masking, so a sweep that reads `catalytic_residues` raw scores them in the wrong frame: the first run
+of this script reported P00588 and P00648 as hits alongside P01552, which was the check firing on its
+own repairs. Applying each entry's own offset, as the pipeline does, clears both. And P55981 (VacA)
+has a deliberately **empty** position list because it is a pore-forming negative control with no
+discrete active site, which is why the panel has sixteen annotation entries and fifteen FSPE
+proteins.
+
+The rule is cheap enough to be a standing gate rather than a one-off sweep, and it is a better first
+check than the identity test because it holds regardless of whether the residue names are right.
