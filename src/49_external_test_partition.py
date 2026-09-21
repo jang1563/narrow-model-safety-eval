@@ -68,7 +68,11 @@ lomo = importlib.import_module("03b_leave_one_mechanism_out")
 ALPHAS = (0.05, 0.01)
 NEG_HOLDOUT_FRAC = 0.40  # identical to src/03b, so calibration is the published 118
 CONTAMINANT = "Q8X739"
-TAG = "esm2_35M"
+# The canonical arm's PANEL embeddings carry no tag (embeddings_positive_v3.npy) while its POOL
+# embeddings do (embeddings_pool_large_esm2_650M.npy), so the two suffixes are not the same string and
+# cannot be collapsed into one variable. Getting this wrong silently loads a different arm's panel.
+ARMS = {"esm2_35M": {"panel": "_esm2_35M", "pool": "esm2_35M"},
+        "canonical": {"panel": "", "pool": "esm2_650M"}}
 
 
 def conformal_threshold(s_cal, alpha):
@@ -92,14 +96,19 @@ def _name(row):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", type=int, default=200)
+    ap.add_argument("--arm", default="esm2_35M", choices=sorted(ARMS))
     a = ap.parse_args()
     RES = ROOT / "results/v3"
+    ps, pt = ARMS[a.arm]["panel"], ARMS[a.arm]["pool"]
 
-    P = np.load(RES / f"embeddings_positive_v3_{TAG}.npy")
-    N = np.load(RES / f"embeddings_negative_v3_{TAG}.npy")
-    POOL = np.load(RES / f"embeddings_pool_large_{TAG}.npy")
-    man = json.load(open(RES / f"embedding_manifest_v3_{TAG}.json"))
-    pman = json.load(open(RES / f"embedding_manifest_pool_large_{TAG}.json"))
+    P = np.load(RES / f"embeddings_positive_v3{ps}.npy")
+    N = np.load(RES / f"embeddings_negative_v3{ps}.npy")
+    POOL = np.load(RES / f"embeddings_pool_large_{pt}.npy")
+    man = json.load(open(RES / f"embedding_manifest_v3{ps}.json"))
+    pman = json.load(open(RES / f"embedding_manifest_pool_large_{pt}.json"))
+    # the panel and the pool must come from the same model, or the comparison is meaningless
+    assert man["model"] == pman["model"], f"{man['model']} != {pman['model']}"
+    assert P.shape[1] == POOL.shape[1], f"dim {P.shape[1]} != {POOL.shape[1]}"
     mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v3.json"))
 
     pool_acc = [_acc(r) for r in pman["rows"]]
@@ -237,8 +246,8 @@ def main():
         "comparable to the published table, unlike src/48's. SINGLE ARM, provisional.")
     print(f"\nverdict: {verdict}")
 
-    dest = RES / f"external_test_partition_{TAG}.json"
-    json.dump({"model": man["model"], "arm": TAG, "seeds": a.seeds,
+    dest = RES / f"external_test_partition_{a.arm}.json"
+    json.dump({"model": man["model"], "arm": a.arm, "seeds": a.seeds,
                "calibration_n": n_ca, "pool_n": int(len(POOL)),
                "pool_distinct_names": int(len(ded)), "contaminant_dropped": CONTAMINANT,
                "conformal_k": {str(al): conformal_threshold(np.zeros(n_ca), al)[1]
