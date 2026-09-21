@@ -526,7 +526,7 @@ Applied honestly, against its own criteria.
 
 | criterion | verdict |
 |---|---|
-| 1 the split | **Fail, and it is the worst one.** No test set at all (178/118/0), the estimator returns 8.6% for a nominal 5% out of sample, and the resolution ceiling is 0.9915. Stated honestly, not repaired |
+| 1 the split | **Fail, and it is the worst one.** The published panel still has no test set (178/118/0) and the resolution ceiling is 0.9915. Now quantified rather than only stated: a test partition was supplied two ways, and the honest out-of-sample figure for a nominal 5% budget is about 7%. Measured, not repaired |
 | 2 iso-FP comparisons | **Pass now, failed before.** The three-to-four fold "gain" was a budget artefact |
 | 3 per class not aggregate | **Pass** on reporting, **fail** on performance: 10% on a 32-member class |
 | 4 predicts its own failures | **Partial.** Ranks them at +0.894, over-predicts recovery by 34 points |
