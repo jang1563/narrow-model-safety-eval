@@ -1923,3 +1923,16 @@ noticed the drift either way. The committed 9/20 artifact is restored in place a
 number moves, but the observation is recorded because a future run on a third machine would otherwise
 reopen this question, and because "device does not change these numbers" is a claim that has now been
 checked on one script and is qualified rather than absolute on another.
+
+### One check on `src/37`, which is where the drift is stronger
+
+`src/37_negative_supplement_from_pool.py` was rerun with the same discipline and the drift is present
+across every K, including **both endpoints**, up to 0.95 pt. That looks worse than `src/35` at first,
+where K=296 and K=8259 matched to six decimals. It is not: `src/37` prepends the 296 panel negatives
+before the K pool proteins in `np.vstack([N_panel, N_pool[order[:k]]])`, and that concatenation puts
+the same rows in a different order in the matrix `StandardScaler` fits. Feature means and standard
+deviations are floating-point sums whose result depends on the order of the summands, so LogReg
+starts from a slightly different scaled input and converges to a slightly different solution. Same
+mechanism as the HPC vs Mac drift, this time inside one machine, driven by concatenation order. The
+verdict on `src/37` is REFUTED on both machines and no downstream number moves; the committed 9/20
+artifact is restored and this observation joins the entry rather than opening a new one.
