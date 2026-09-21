@@ -2,7 +2,7 @@
   "model": "facebook/esm2_t33_650M_UR50D",
   "panel": "v3",
   "tag": null,
-  "seeds": 30,
+  "seeds": 200,
   "alphas": [
     0.05,
     0.01
@@ -20,14 +20,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 1.0,
-        "conformal_mean": 0.9952380952380953,
-        "delta_pts": -0.4761904761904745
+        "quantile_mean": 0.9964285714285714,
+        "conformal_mean": 0.9892857142857144,
+        "delta_pts": -0.7142857142857006
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.9952380952380953,
+        "quantile_mean": 0.9585714285714286,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -38,14 +38,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 0.8822222222222222,
-        "conformal_mean": 0.8644444444444446,
-        "delta_pts": -1.777777777777767
+        "quantile_mean": 0.8733333333333334,
+        "conformal_mean": 0.8560000000000002,
+        "delta_pts": -1.73333333333332
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.8422222222222223,
+        "quantile_mean": 0.8303333333333336,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -56,14 +56,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 0.2904761904761905,
-        "conformal_mean": 0.23095238095238096,
-        "delta_pts": -5.952380952380953
+        "quantile_mean": 0.2675,
+        "conformal_mean": 0.19928571428571426,
+        "delta_pts": -6.821428571428576
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.1119047619047619,
+        "quantile_mean": 0.10392857142857143,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -92,14 +92,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 0.7416666666666667,
-        "conformal_mean": 0.7416666666666667,
-        "delta_pts": 0.0
+        "quantile_mean": 0.74,
+        "conformal_mean": 0.73,
+        "delta_pts": -1.0000000000000009
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.725,
+        "quantile_mean": 0.71375,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -110,14 +110,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 0.8666666666666667,
-        "conformal_mean": 0.8015151515151515,
-        "delta_pts": -6.515151515151518
+        "quantile_mean": 0.8277272727272725,
+        "conformal_mean": 0.7404545454545455,
+        "delta_pts": -8.727272727272705
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.5999999999999999,
+        "quantile_mean": 0.5304545454545455,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -128,14 +128,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 0.15625,
-        "conformal_mean": 0.11458333333333333,
-        "delta_pts": -4.166666666666667
+        "quantile_mean": 0.13484375,
+        "conformal_mean": 0.09171875,
+        "delta_pts": -4.312500000000001
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.04375,
+        "quantile_mean": 0.03328125,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -146,14 +146,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 1.0,
-        "conformal_mean": 0.9619047619047619,
-        "delta_pts": -3.809523809523807
+        "quantile_mean": 0.9564285714285714,
+        "conformal_mean": 0.8878571428571428,
+        "delta_pts": -6.857142857142861
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.8761904761904762,
+        "quantile_mean": 0.72,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -164,14 +164,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 0.9571428571428572,
-        "conformal_mean": 0.9285714285714286,
-        "delta_pts": -2.857142857142858
+        "quantile_mean": 0.9578571428571427,
+        "conformal_mean": 0.9007142857142857,
+        "delta_pts": -5.714285714285705
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.842857142857143,
+        "quantile_mean": 0.7821428571428569,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -182,14 +182,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 0.9761904761904763,
-        "conformal_mean": 0.9142857142857143,
-        "delta_pts": -6.190476190476202
+        "quantile_mean": 0.9571428571428572,
+        "conformal_mean": 0.8978571428571429,
+        "delta_pts": -5.928571428571427
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.7714285714285715,
+        "quantile_mean": 0.7378571428571428,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -200,14 +200,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 0.8000000000000003,
-        "conformal_mean": 0.7933333333333334,
-        "delta_pts": -0.6666666666666821
+        "quantile_mean": 0.7925,
+        "conformal_mean": 0.7829999999999999,
+        "delta_pts": -0.9500000000000064
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.7633333333333335,
+        "quantile_mean": 0.7234999999999999,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -218,14 +218,14 @@
       "alpha_0.05": {
         "k": 3,
         "guarantee": 0.05,
-        "quantile_mean": 0.39666666666666667,
-        "conformal_mean": 0.32,
-        "delta_pts": -7.666666666666666
+        "quantile_mean": 0.363,
+        "conformal_mean": 0.295,
+        "delta_pts": -6.800000000000001
       },
       "alpha_0.01": {
         "k": null,
         "guarantee": null,
-        "quantile_mean": 0.20666666666666667,
+        "quantile_mean": 0.17400000000000002,
         "conformal_mean": null,
         "delta_pts": null
       }
@@ -234,38 +234,38 @@
   "out_of_sample_fp": {
     "0.05": {
       "nominal": 0.05,
-      "n_obs": 360,
-      "quantile_fp_mean": 0.07333333333333333,
-      "quantile_overshoot_pts": 2.333333333333333,
-      "conformal_fp_mean": 0.06314814814814815,
-      "conformal_overshoot_pts": 1.3148148148148144,
+      "n_obs": 2400,
+      "quantile_fp_mean": 0.06403472222222222,
+      "quantile_overshoot_pts": 1.4034722222222213,
+      "conformal_fp_mean": 0.04982638888888889,
+      "conformal_overshoot_pts": -0.01736111111111105,
       "quantile_exceeds_nominal": true,
-      "n_seeds": 30,
+      "n_seeds": 200,
       "quantile_seed_ci": [
-        0.057641308711735006,
-        0.08902535795493163
+        0.05824847260286863,
+        0.06982097184157579
       ],
       "conformal_seed_ci": [
-        0.04730414852935415,
-        0.07899214776694215
+        0.04452724675976497,
+        0.05512553101801281
       ],
       "quantile_ci_excludes_nominal": true,
       "conformal_ci_excludes_nominal": false,
       "conformal_reachable": true,
-      "conformal_holds": false
+      "conformal_holds": true
     },
     "0.01": {
       "nominal": 0.01,
-      "n_obs": 360,
-      "quantile_fp_mean": 0.038796296296296294,
-      "quantile_overshoot_pts": 2.8796296296296293,
+      "n_obs": 2400,
+      "quantile_fp_mean": 0.028381944444444442,
+      "quantile_overshoot_pts": 1.8381944444444445,
       "conformal_fp_mean": null,
       "conformal_overshoot_pts": null,
       "quantile_exceeds_nominal": true,
-      "n_seeds": 30,
+      "n_seeds": 200,
       "quantile_seed_ci": [
-        0.028695544816577573,
-        0.048897047776015015
+        0.024410230398057606,
+        0.032353658490831286
       ],
       "conformal_seed_ci": null,
       "quantile_ci_excludes_nominal": true,

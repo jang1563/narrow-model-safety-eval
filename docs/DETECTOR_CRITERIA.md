@@ -10,10 +10,12 @@ and returns a hazard score or a flag: an embedding probe, an alignment screen,
 a classifier over annotations, a synthesis-order filter. The criteria are about
 the evaluation of such a system, not about its architecture.
 
-This document is **not yet on the audited surface** (`PUBLIC` in
-`src/22_claims_audit.py`). Adding it there is the first follow-up once the
-claims audit can be run, because a criteria document that drifts away from the
-numbers it cites is exactly the failure mode described in criterion 10.
+This document is **on the audited surface** (`PUBLIC` in
+`src/22_claims_audit.py`), so the figures below are checked against their
+artifacts on every run and a claim here that drifts from its number fails the
+gate. That is not decoration: it has already fired on this document twice, once
+for scoring criterion 1 a pass while omitting that the panel has no test set, and
+once for a conformal result that reversed when the seed count went up.
 
 ---
 
@@ -70,38 +72,47 @@ That much was established as a property of the estimator. `src/48` then does the
 thing that was missing, which is to carve an actual test partition out of the
 negatives (177 train / 59 calibrate / 60 test) and rerun leave-one-mechanism-out
 at a threshold set on calibrate and a false-positive rate measured on test, over
-30 seeds, with the seed as the unit of inference:
+200 seeds, with the seed as the unit of inference. Both arms:
 
 | arm | nominal | estimator | out-of-sample FP | seed-level 95% CI | excludes nominal |
 |---|---|---|---|---|---|
-| canonical 650M | 5% | `np.quantile` | 7.33% | [5.76, 8.90] | **yes** |
-| canonical 650M | 5% | conformal | 6.31% | [4.73, 7.90] | no |
-| canonical 650M | 1% | `np.quantile` | 3.88% | [2.87, 4.89] | **yes** |
-| canonical 650M | 1% | conformal | **unreachable** | | |
-| esm2_35M | 5% | `np.quantile` | 7.88% | [6.46, 9.30] | **yes** |
-| esm2_35M | 5% | conformal | 6.52% | [5.04, 8.00] | **yes** |
-| esm2_35M | 1% | `np.quantile` | 3.31% | [2.25, 4.37] | **yes** |
-| esm2_35M | 1% | conformal | **unreachable** | | |
+| canonical 650M | 5% | `np.quantile` | 6.40% | [5.82, 6.98] | **yes** |
+| canonical 650M | 5% | conformal | **4.98%** | [4.45, 5.51] | no |
+| canonical 650M | 1% | `np.quantile` | 2.84% | [2.44, 3.24] | **yes** |
+| canonical 650M | 1% | conformal | **unreachable at m = 59** | | |
+| esm2_35M | 5% | `np.quantile` | 6.67% | [6.09, 7.24] | **yes** |
+| esm2_35M | 5% | conformal | **5.15%** | [4.62, 5.69] | no |
+| esm2_35M | 1% | `np.quantile` | 2.90% | [2.52, 3.29] | **yes** |
+| esm2_35M | 1% | conformal | **unreachable at m = 59** | | |
 
 Three things follow, and the third is the one worth carrying.
 
-First, the published estimator's overshoot is now measured rather than inferred,
-and it replicates: its interval excludes nominal in both arms at both budgets. At
-a nominal 1% it realizes 3.88% and 3.31%, **three to four times the budget**.
+First, the published estimator's overshoot is measured, not inferred, and it
+replicates: the interval excludes nominal in both arms at both budgets, by +1.4
+and +1.7 points at a nominal 5%, and at a nominal 1% it realizes 2.84% and 2.90%,
+**roughly three times the budget**.
 
-Second, conformal is closer in both arms, and it is **not** a drop-in fix. Here
-the honest report is that the two arms disagree: its interval covers nominal on
-the canonical arm, [4.73, 7.90], and **excludes it on esm2_35M**, [5.04, 8.00],
-though only barely. By this document's own criterion 7, one arm is not a result,
-so the defensible statement is that conformal reduces the overshoot by about 1.3
-points in both arms and that whether it actually attains its guarantee on this
-panel is **unresolved at 30 seeds**, not settled in either direction. An earlier
-draft of this section said its interval covers nominal, full stop, which was true
-of the arm that had been run and would have been quietly wrong.
+Second, **conformal attains its guarantee.** At 200 seeds it lands at 4.98% and
+5.15% against a theoretical 5.00%, with both intervals covering nominal. Getting
+to that statement took three attempts and the first two were wrong in opposite
+directions: at 30 seeds on one arm it looked like it held, at 30 seeds on two arms
+it looked like the arms disagreed, and only at 200 seeds is the point estimate
+inside 0.15 points of theory in both. There is a reason 30 seeds could not settle
+it, and it is arithmetic rather than luck. With m = 59 and alpha = 0.05,
+`(m+1) * alpha` is **exactly 3**, so k = 3 and the guarantee is exactly 3/60 =
+5.00%. The estimator is exactly calibrated with **zero conservatism margin**, so its true mean
+sits exactly on the target and about half of all point estimates land above it by
+construction. Two arms both landing above is a coin flip coming up twice, not evidence.
+
+That arithmetic is worth checking before trusting any conformal number. `(m+1) * alpha` being
+an exact integer is the knife-edge case: m = 59, 79, 99 and 119 all hit it at alpha = 0.05.
+One fewer calibration point, m = 58, gives k = 2 and a guarantee of 3.39%, which is genuinely
+conservative. So the margin is not monotone in m, and a calibration size should be chosen to
+miss the integer rather than to be as large as possible.
 
 Third, and this is the real result: at a nominal 1% the conformal threshold
 **cannot be computed at all**, because `floor((m+1)*alpha)` is zero when m is 59.
-`np.quantile` returns a number anyway, and that number realizes 3.88%.
+`np.quantile` returns a number anyway, and that number realizes 2.84%.
 **Conformal declines to answer where the quantile estimator invents an answer.**
 So the binding constraint was never the estimator, it is the number of negatives,
 which is (c). An estimator that refuses is strictly more useful than one that
@@ -113,16 +124,17 @@ The conclusions survive the estimator, and "ordering" here means two different
 things that have to be kept apart.
 
 *Within* an arm, across estimators, the ordering is preserved in both arms.
-Conformal lowers per-class recovery almost everywhere, by 0.0 to 7.7 points on
-the canonical arm and 0.0 to 10.0 on esm2_35M, and the bottom three classes come
+Conformal lowers per-class recovery almost everywhere, by up to 8.7 points on
+the canonical arm and up to 13.6 on esm2_35M, and the bottom three classes come
 out in the same order under both threshold rules. So the failure story that
 criteria 3 and 4 are built on is **not** an artefact of the threshold rule, which
 is worth knowing because it easily could have been.
 
 *Across* arms, the bottom-two **set** agrees, phage peptidoglycan hydrolase and
 beta-lactamase in both, but the order inside it **flips**: phage is worse on the
-canonical arm (15.6% against 29.0%) and beta-lactamase is worse on esm2_35M (9.0%
-against 27.6%). So "which class is the worst" is arm-dependent even when "which
+canonical arm (13.5% against 26.8%) and beta-lactamase is worse on esm2_35M (9.1%
+against 28.4%). That flip survives 200 seeds, so it is a property rather than
+noise, unlike the conformal disagreement above which did not. So "which class is the worst" is arm-dependent even when "which
 two classes are the problem" is not. That is criterion 13 again, from a new
 direction: the recovery figure is a joint property, and here the joint term is
 the representation. Claims should be pitched at the set, not the ranking.
@@ -240,6 +252,14 @@ location of the peak was a seed artefact.** A confidence interval on one arm
 does not license a statement about which arm is best; that needs enough seeds
 for the ordering itself to be stable, which is a stricter and more expensive
 requirement.
+
+Criterion 1 supplies a second instance from this document's own work. The
+conformal result there **reversed** between 30 and 200 seeds: at 30 it looked
+like the two arms disagreed about whether the guarantee held, and at 200 both
+arms sit within 0.15 points of theory and agree. Thirty seeds is the count this
+project uses for its own stability checks, and it was not enough for a question
+whose answer was a coin flip by construction. How many seeds is enough is a
+property of the quantity being estimated, not a number to standardise on.
 
 And this criterion is criterion 1 wearing different clothes. On v2 the four
 larger arms' intervals all overlap and the peak moves with the seed count; on
