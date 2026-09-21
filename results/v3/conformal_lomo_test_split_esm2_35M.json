@@ -1,0 +1,278 @@
+{
+  "model": "facebook/esm2_t12_35M_UR50D",
+  "panel": "v3",
+  "tag": "esm2_35M",
+  "seeds": 30,
+  "alphas": [
+    0.05,
+    0.01
+  ],
+  "split": {
+    "train": 177,
+    "calibrate": 59,
+    "test": 60
+  },
+  "resolution_ceiling": 0.01694915254237288,
+  "per_class": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.9333333333333335,
+        "conformal_mean": 0.9142857142857144,
+        "delta_pts": -1.904761904761909
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.842857142857143,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "bacteriocin": {
+      "n": 15,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.92,
+        "conformal_mean": 0.8800000000000001,
+        "delta_pts": -3.9999999999999925
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.7644444444444446,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.09047619047619047,
+        "conformal_mean": 0.04285714285714285,
+        "delta_pts": -4.761904761904763
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.021428571428571425,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 1.0,
+        "conformal_mean": 1.0,
+        "delta_pts": 0.0
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 1.0,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.9583333333333334,
+        "conformal_mean": 0.9083333333333333,
+        "delta_pts": -5.000000000000004
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.8083333333333333,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "cry_insecticidal": {
+      "n": 22,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.7000000000000001,
+        "conformal_mean": 0.6,
+        "delta_pts": -10.000000000000009
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.32727272727272727,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "phage_peptidoglycan_hydrolase": {
+      "n": 32,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.2760416666666667,
+        "conformal_mean": 0.209375,
+        "delta_pts": -6.666666666666668
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.1,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.980952380952381,
+        "conformal_mean": 0.9476190476190477,
+        "delta_pts": -3.3333333333333326
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.7857142857142858,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.9952380952380953,
+        "conformal_mean": 0.9857142857142858,
+        "delta_pts": -0.952380952380949
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.9095238095238095,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.9380952380952382,
+        "conformal_mean": 0.8904761904761905,
+        "delta_pts": -4.761904761904767
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.6904761904761904,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "holdout_eligible": true,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.7466666666666667,
+        "conformal_mean": 0.7100000000000002,
+        "delta_pts": -3.6666666666666514
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.5033333333333332,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "holdout_eligible": false,
+      "alpha_0.05": {
+        "k": 3,
+        "guarantee": 0.05,
+        "quantile_mean": 0.34333333333333343,
+        "conformal_mean": 0.2966666666666667,
+        "delta_pts": -4.666666666666675
+      },
+      "alpha_0.01": {
+        "k": null,
+        "guarantee": null,
+        "quantile_mean": 0.19333333333333336,
+        "conformal_mean": null,
+        "delta_pts": null
+      }
+    }
+  },
+  "out_of_sample_fp": {
+    "0.05": {
+      "nominal": 0.05,
+      "n_obs": 360,
+      "quantile_fp_mean": 0.0787962962962963,
+      "quantile_overshoot_pts": 2.8796296296296293,
+      "conformal_fp_mean": 0.06518518518518518,
+      "conformal_overshoot_pts": 1.5185185185185177,
+      "quantile_exceeds_nominal": true,
+      "n_seeds": 30,
+      "quantile_seed_ci": [
+        0.06460556324289235,
+        0.09298702934970021
+      ],
+      "conformal_seed_ci": [
+        0.05039545228265042,
+        0.07997491808771995
+      ],
+      "quantile_ci_excludes_nominal": true,
+      "conformal_ci_excludes_nominal": true,
+      "conformal_reachable": true,
+      "conformal_holds": false
+    },
+    "0.01": {
+      "nominal": 0.01,
+      "n_obs": 360,
+      "quantile_fp_mean": 0.03310185185185185,
+      "quantile_overshoot_pts": 2.3101851851851847,
+      "conformal_fp_mean": null,
+      "conformal_overshoot_pts": null,
+      "quantile_exceeds_nominal": true,
+      "n_seeds": 30,
+      "quantile_seed_ci": [
+        0.022505476158728787,
+        0.04369822754497492
+      ],
+      "conformal_seed_ci": null,
+      "quantile_ci_excludes_nominal": true,
+      "conformal_ci_excludes_nominal": false,
+      "conformal_reachable": false,
+      "conformal_holds": false
+    }
+  },
+  "verdict": "measured on a real test partition, the published estimator's out-of-sample false-positive rate exceeds nominal with the seed-level interval excluding it at alpha in ['0.05', '0.01']. Conformal is closer but is NOT a clean fix here: it also exceeds nominal at ['0.05'], and it is UNREACHABLE at alpha in ['0.01'] because floor((m+1)*alpha) < 1 at m=59. That asymmetry is the finding: conformal declines to return a threshold it cannot guarantee, while np.quantile returns one anyway."
+}

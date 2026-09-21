@@ -127,27 +127,49 @@ def conformal_lomo_test_split():
     that realizes close to 4x the budget. The ordering of the failing classes is also checked,
     because the value of the run is that the failure story survives the threshold rule.
     """
-    d = j("v3/conformal_lomo_test_split.json")
-    if not d:
+    arms = {"canonical": j("v3/conformal_lomo_test_split.json"),
+            "esm2_35M": j("v3/conformal_lomo_test_split_esm2_35M.json")}
+    if not all(arms.values()):
         return None
-    f5, f1 = d["out_of_sample_fp"]["0.05"], d["out_of_sample_fp"]["0.01"]
-    order = sorted(d["per_class"].items(), key=lambda kv: kv[1]["alpha_0.05"]["quantile_mean"])
-    conf_order = sorted((kv for kv in d["per_class"].items()
-                         if kv[1]["alpha_0.05"]["conformal_mean"] is not None),
-                        key=lambda kv: kv[1]["alpha_0.05"]["conformal_mean"])
-    deltas = [kv[1]["alpha_0.05"]["delta_pts"] for kv in d["per_class"].items()
-              if kv[1]["alpha_0.05"]["delta_pts"] is not None]
-    return {"split": d["split"], "seeds": d["seeds"],
-            "q_fp_05": f5["quantile_fp_mean"], "c_fp_05": f5["conformal_fp_mean"],
-            "q_excludes_05": f5["quantile_ci_excludes_nominal"],
-            "c_excludes_05": f5["conformal_ci_excludes_nominal"],
-            "q_fp_01": f1["quantile_fp_mean"],
-            "q_excludes_01": f1["quantile_ci_excludes_nominal"],
-            "conformal_reachable_01": f1["conformal_reachable"],
-            "bottom3_quantile": [k for k, _ in order[:3]],
-            "bottom3_conformal": [k for k, _ in conf_order[:3]],
-            "ordering_preserved": [k for k, _ in order[:3]] == [k for k, _ in conf_order[:3]],
-            "max_delta_pts": max(deltas), "min_delta_pts": min(deltas)}
+
+    def one(d):
+        f5, f1 = d["out_of_sample_fp"]["0.05"], d["out_of_sample_fp"]["0.01"]
+        order = sorted(d["per_class"].items(), key=lambda kv: kv[1]["alpha_0.05"]["quantile_mean"])
+        conf = sorted((kv for kv in d["per_class"].items()
+                       if kv[1]["alpha_0.05"]["conformal_mean"] is not None),
+                      key=lambda kv: kv[1]["alpha_0.05"]["conformal_mean"])
+        deltas = [kv[1]["alpha_0.05"]["delta_pts"] for kv in d["per_class"].items()
+                  if kv[1]["alpha_0.05"]["delta_pts"] is not None]
+        return {"split": d["split"], "seeds": d["seeds"],
+                "q_fp_05": f5["quantile_fp_mean"], "c_fp_05": f5["conformal_fp_mean"],
+                "q_excludes_05": f5["quantile_ci_excludes_nominal"],
+                "c_excludes_05": f5["conformal_ci_excludes_nominal"],
+                "q_fp_01": f1["quantile_fp_mean"],
+                "q_excludes_01": f1["quantile_ci_excludes_nominal"],
+                "conformal_reachable_01": f1["conformal_reachable"],
+                "conformal_closer": f5["conformal_fp_mean"] < f5["quantile_fp_mean"],
+                "bottom2_quantile": [k for k, _ in order[:2]],
+                "bottom3_quantile": [k for k, _ in order[:3]],
+                "bottom3_conformal": [k for k, _ in conf[:3]],
+                "estimator_ordering_preserved":
+                    [k for k, _ in order[:3]] == [k for k, _ in conf[:3]],
+                "max_delta_pts": max(deltas), "min_delta_pts": min(deltas)}
+
+    a, b = one(arms["canonical"]), one(arms["esm2_35M"])
+    return {"arms": {"canonical": a, "esm2_35M": b},
+            # what holds in BOTH arms
+            "q_excludes_both_alphas_both_arms": all(
+                x["q_excludes_05"] and x["q_excludes_01"] for x in (a, b)),
+            "conformal_unreachable_01_both": not a["conformal_reachable_01"]
+            and not b["conformal_reachable_01"],
+            "conformal_closer_both": a["conformal_closer"] and b["conformal_closer"],
+            "estimator_ordering_preserved_both": a["estimator_ordering_preserved"]
+            and b["estimator_ordering_preserved"],
+            "bottom2_set_agrees": set(a["bottom2_quantile"]) == set(b["bottom2_quantile"]),
+            # what does NOT replicate, asserted so it cannot be quietly dropped
+            "conformal_covers_nominal_disagrees":
+                a["c_excludes_05"] != b["c_excludes_05"],
+            "worst_class_disagrees": a["bottom2_quantile"][0] != b["bottom2_quantile"][0]}
 
 
 def separability():
@@ -1491,19 +1513,20 @@ CLAIMS = [
     # estimator's excludes it, and conformal is UNREACHABLE at the tighter budget the quantile
     # estimator happily answers. The failing-class ordering is pinned too, because the run's real
     # value is that the failure story does not depend on the threshold rule.
-    ("the test partition the panel never had, and what the estimator choice does",
+    ("the test partition the panel never had, across two arms, with the parts that do not replicate",
      conformal_lomo_test_split,
-     lambda v: v is None or (v["split"]["test"] == 60 and v["split"]["calibrate"] == 59
-                             and v["seeds"] == 30
-                             and 0.070 < v["q_fp_05"] < 0.077 and v["q_excludes_05"]
-                             and 0.060 < v["c_fp_05"] < 0.066 and not v["c_excludes_05"]
-                             and 0.035 < v["q_fp_01"] < 0.042 and v["q_excludes_01"]
-                             and v["q_fp_01"] > 3.5 * 0.01
-                             and not v["conformal_reachable_01"]
-                             and v["bottom3_quantile"][:2] == ["phage_peptidoglycan_hydrolase",
-                                                               "beta_lactamase"]
-                             and v["ordering_preserved"]
-                             and v["max_delta_pts"] <= 0.001 and v["min_delta_pts"] > -8.0),
+     lambda v: v is None or (
+         # holds in both arms
+         v["q_excludes_both_alphas_both_arms"] and v["conformal_unreachable_01_both"]
+         and v["conformal_closer_both"] and v["estimator_ordering_preserved_both"]
+         and v["bottom2_set_agrees"]
+         and all(x["split"]["calibrate"] == 59 and x["split"]["test"] == 60 and x["seeds"] == 30
+                 and x["q_fp_01"] > 3.0 * 0.01 and x["max_delta_pts"] <= 0.001
+                 and x["min_delta_pts"] > -11.0
+                 for x in v["arms"].values())
+         # and the two disagreements, asserted TRUE so that a future run which quietly made them
+         # agree would fail the gate and force the document to be re-read rather than kept
+         and v["conformal_covers_nominal_disagrees"] and v["worst_class_disagrees"]),
      {"docs/DETECTOR_CRITERIA.md":
       "**Conformal declines to answer where the quantile estimator invents an answer.**"}, []),
     ("FSPE pseudoreplicated figure is labelled, not led with", fspe_protein_level,

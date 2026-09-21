@@ -72,23 +72,32 @@ negatives (177 train / 59 calibrate / 60 test) and rerun leave-one-mechanism-out
 at a threshold set on calibrate and a false-positive rate measured on test, over
 30 seeds, with the seed as the unit of inference:
 
-| nominal | estimator | out-of-sample FP | seed-level 95% CI | excludes nominal |
-|---|---|---|---|---|
-| 5% | `np.quantile` | 7.33% | [5.76, 8.90] | **yes** |
-| 5% | conformal | 6.31% | [4.73, 7.90] | no |
-| 1% | `np.quantile` | 3.88% | [2.87, 4.89] | **yes** |
-| 1% | conformal | **unreachable** | | |
+| arm | nominal | estimator | out-of-sample FP | seed-level 95% CI | excludes nominal |
+|---|---|---|---|---|---|
+| canonical 650M | 5% | `np.quantile` | 7.33% | [5.76, 8.90] | **yes** |
+| canonical 650M | 5% | conformal | 6.31% | [4.73, 7.90] | no |
+| canonical 650M | 1% | `np.quantile` | 3.88% | [2.87, 4.89] | **yes** |
+| canonical 650M | 1% | conformal | **unreachable** | | |
+| esm2_35M | 5% | `np.quantile` | 7.88% | [6.46, 9.30] | **yes** |
+| esm2_35M | 5% | conformal | 6.52% | [5.04, 8.00] | **yes** |
+| esm2_35M | 1% | `np.quantile` | 3.31% | [2.25, 4.37] | **yes** |
+| esm2_35M | 1% | conformal | **unreachable** | | |
 
 Three things follow, and the third is the one worth carrying.
 
 First, the published estimator's overshoot is now measured rather than inferred,
-and at a nominal 1% it realizes **3.88%, close to four times the budget**.
+and it replicates: its interval excludes nominal in both arms at both budgets. At
+a nominal 1% it realizes 3.88% and 3.31%, **three to four times the budget**.
 
-Second, conformal is better but is **not** a drop-in fix. Its interval covers
-nominal, so it is consistent with holding its guarantee, which is as much as 30
-seeds can say. Anyone reading its 6.31% point estimate against 5% and concluding
-it failed has compared a point to a target without an interval, which is the
-error this document's criterion 6 exists to prevent.
+Second, conformal is closer in both arms, and it is **not** a drop-in fix. Here
+the honest report is that the two arms disagree: its interval covers nominal on
+the canonical arm, [4.73, 7.90], and **excludes it on esm2_35M**, [5.04, 8.00],
+though only barely. By this document's own criterion 7, one arm is not a result,
+so the defensible statement is that conformal reduces the overshoot by about 1.3
+points in both arms and that whether it actually attains its guarantee on this
+panel is **unresolved at 30 seeds**, not settled in either direction. An earlier
+draft of this section said its interval covers nominal, full stop, which was true
+of the arm that had been run and would have been quietly wrong.
 
 Third, and this is the real result: at a nominal 1% the conformal threshold
 **cannot be computed at all**, because `floor((m+1)*alpha)` is zero when m is 59.
@@ -100,12 +109,23 @@ extrapolates silently, but neither creates resolution that the data does not hav
 
 Two riders on that run, both necessary.
 
-The conclusions survive the estimator. Conformal lowers per-class recovery almost
-everywhere, by 0.0 to 7.7 points, but the **ordering is preserved**: phage
-peptidoglycan hydrolase stays lowest, beta-lactamase second, the labelled
-virulence control third. The failure story that criteria 3 and 4 are built on is
-therefore not an artefact of the threshold rule, which is worth knowing because
-it easily could have been.
+The conclusions survive the estimator, and "ordering" here means two different
+things that have to be kept apart.
+
+*Within* an arm, across estimators, the ordering is preserved in both arms.
+Conformal lowers per-class recovery almost everywhere, by 0.0 to 7.7 points on
+the canonical arm and 0.0 to 10.0 on esm2_35M, and the bottom three classes come
+out in the same order under both threshold rules. So the failure story that
+criteria 3 and 4 are built on is **not** an artefact of the threshold rule, which
+is worth knowing because it easily could have been.
+
+*Across* arms, the bottom-two **set** agrees, phage peptidoglycan hydrolase and
+beta-lactamase in both, but the order inside it **flips**: phage is worse on the
+canonical arm (15.6% against 29.0%) and beta-lactamase is worse on esm2_35M (9.0%
+against 27.6%). So "which class is the worst" is arm-dependent even when "which
+two classes are the problem" is not. That is criterion 13 again, from a new
+direction: the recovery figure is a joint property, and here the joint term is
+the representation. Claims should be pitched at the set, not the ranking.
 
 And the recovery figures from that run are **not** comparable to the published
 table, because carving out a test partition also halved the calibration set from
