@@ -230,6 +230,48 @@ cleavage, and nothing indexes past the end of its sequence. The three entries re
 independent confirmation of those repairs; the first run of the sweep read the positions raw and
 flagged two of them, which was the check firing on its own corrections.
 
+🟢 **How much of the annotation set is in UniProt at all, measured rather than assumed.** Both
+repairs so far were found after a specific suspicion, which means they were found by luck.
+`src/54_annotation_provenance_audit.py` asks the general question over every entry, comparing the
+curated positions, offsets applied, against UniProt's **Active site** features.
+
+| | count |
+|---|---|
+| entries with both annotations and a UniProt Active site | 11 of 16 |
+| annotated positions that are UniProt active sites | 17 of 53 (32%) |
+| annotated positions grounded in UniProt under **some** feature type | 34 of 53 (64%) |
+| **UniProt active sites omitted from the curation, whole panel** | **2** |
+| entries matching UniProt's active-site set exactly | 1 (`O34208`) |
+| entries with no UniProt Active site feature at all | 5 |
+
+The number that matters is the fourth. **Across the whole panel only two UniProt active sites are
+missing from the curation, and both are `Q51451`'s 319 and 343**, on the single entry already known
+to be defective. The omission problem found in entry nineteen is not a symptom of a wider pattern.
+
+The 32% is not 68% unsourced, and reading it that way would be wrong. Of the 36 annotated positions
+that are not typed "Active site" in UniProt, 17 carry some other UniProt feature, mostly Binding
+site. The remaining 19 carry none, and that is expected: UniProt's Active site feature is sparse for
+toxins, five of these sixteen accessions have none at all, and a curator reading a structure paper
+legitimately knows residues the feature table does not list. Ricin's own case makes the point in both
+directions: the entry matches all four of UniProt's ricin active sites, and its fifth position,
+Trp211 mature, has no UniProt feature while being a real part of the active-site cleft.
+
+⚠️ **A methodological note on this audit, because the first version of it was wrong in the
+publishable direction.** It originally pooled Active site, Binding site and Site into one comparison
+and reported **64 omitted sites**. Most of those were carbohydrate-binding residues of ricin's
+B-chain lectin domain, AMP contacts, anthrax protective antigen's Ca(2+) sites, and furin cleavage
+and alpha/phi-clamp positions. None of them belong in a field called `catalytic_residues`, so that
+number measured the wrong thing and made the curation look far worse than it is. The corrected
+comparison is against Active site alone, with the broader set reported beside it rather than pooled
+into it.
+
+The audit also ran one preregistered test, and it is a null: FSPE ratio against the fraction of an
+entry's positions that UniProt confirms as active sites gives **rho -0.221, p 0.514, n = 11**. The
+direction is as predicted and the result is not significant. This was **preregistered as
+underpowered** and is reported for completeness only. With eleven entries it cannot support either
+conclusion, and in particular it is not evidence that FSPE is indifferent to whether the masked
+positions are genuine functional sites.
+
 ### Negative controls
 
 | Control | Mechanism match to | Control FSI | Toxin FSI | One-sided *p* (toxin > control) |

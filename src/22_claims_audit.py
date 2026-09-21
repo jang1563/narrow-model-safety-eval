@@ -1754,6 +1754,41 @@ def signal_peptide_sweep():
             "vacA_empty": e["P55981"]["positions"] == []}
 
 
+
+def annotation_provenance():
+    """How much of the FSPE annotation set is in UniProt, compared against **Active site** features
+    only.
+
+    The number that matters is the omission count. Across the whole panel only two UniProt active
+    sites are missing from the curation and both are Q51451's, on the entry entry nineteen already
+    found defective, so that omission is not a symptom of a wider pattern.
+
+    ⚠️ The first version of this audit pooled Active site with Binding site and Site and reported 64
+    omissions. Most were carbohydrate sites in ricin's B-chain lectin domain, AMP contacts, anthrax
+    protective antigen's Ca(2+) sites and furin cleavage positions, none of which belong in a field
+    called `catalytic_residues`. The forbid list bans the phrasing a live claim would use while
+    letting the documents name the number in order to explain that it was wrong.
+
+    ⚠️ P1 is pinned as a NULL that was preregistered underpowered. The assertion requires it to stay
+    non-significant, so a later run that turned it into a result would fail here and have to be
+    written up rather than absorbed."""
+    d = j("v3/annotation_provenance_audit.json")
+    t = d["totals"]
+    omit = {a: r["omit_active"] for a, r in d["entries"].items() if r["omit_active"]}
+    return {"primary": d["primary_comparison"], "n_entries": d["n_entries"],
+            "n_comparable": len(d["comparable"]),
+            "annotated": t["annotated"], "confirmed_active": t["confirmed_active"],
+            "frac_active": t["frac_active_confirmed"],
+            "omitted_active": t["omitted_active"], "who_omits": omit,
+            "extra_vs_active": t["extra_vs_active"],
+            "extra_explained": t["extra_explained_by_other_feature"],
+            "grounded": t["grounded_in_uniprot"], "frac_grounded": t["frac_grounded"],
+            "exact_match": d["exact_match"], "zero_confirmed": d["zero_confirmed"],
+            "no_active_site": d["no_uniprot_active_site"],
+            "p1_n": d["P1"]["n"], "p1_rho": d["P1"]["rho"], "p1_p": d["P1"]["p"],
+            "p1_significant": d["P1"]["significant_at_05"]}
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -2449,6 +2484,28 @@ CLAIMS = [
                 and v["repaired_entries_clean"] and v["vacA_empty"]),
      {"docs/EVALUATION_REPORT.md":
       "Result: **15 of 16 entries are clean and the single hit is P01552.**"}, []),
+    ("the annotation set against UniProt active sites", annotation_provenance,
+     lambda v: (v["primary"] == "Active site" and v["n_entries"] == 16 and v["n_comparable"] == 11
+                and v["annotated"] == 53 and v["confirmed_active"] == 17
+                and abs(v["frac_active"] - 17 / 53) < 1e-9
+                # the whole point: two omissions panel-wide, both on the known-bad entry
+                and v["omitted_active"] == 2
+                and v["who_omits"] == {"Q51451": [319, 343]}
+                and v["extra_vs_active"] == 36 and v["extra_explained"] == 17
+                and v["grounded"] == 34 and abs(v["frac_grounded"] - 34 / 53) < 1e-9
+                and v["exact_match"] == ["O34208"] and v["zero_confirmed"] == []
+                and v["no_active_site"] == ["P01552", "P04419", "P0DF97", "P13423", "P55981"]
+                # preregistered underpowered null; must stay a null
+                and v["p1_n"] == 11 and v["p1_rho"] < 0 and not v["p1_significant"]
+                and abs(v["p1_p"] - 0.5143) < 0.001),
+     {"docs/EVALUATION_REPORT.md":
+      "| **UniProt active sites omitted from the curation, whole panel** | **2** |"},
+     # The pooled figure the first version of this audit produced. Only the ASSERTION form is
+     # forbidden: `docs/EVALUATION_REPORT.md` names the number in a paragraph that labels it wrong,
+     # which is this repository's house style for corrections, and a forbid that banned the digits
+     # outright would forbid explaining the error. Forbidding the phrasing a live claim would use
+     # keeps the guard while leaving the narrative alone.
+     ["64 UniProt sites omitted", "64 UniProt-annotated sites"]),
 ]
 
 

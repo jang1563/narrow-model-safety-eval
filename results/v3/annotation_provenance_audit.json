@@ -1,0 +1,739 @@
+{
+  "site_types": [
+    "Active site",
+    "Binding site",
+    "Site"
+  ],
+  "primary_comparison": "Active site",
+  "n_entries": 16,
+  "comparable": [
+    "O34208",
+    "P00588",
+    "P00648",
+    "P01555",
+    "P02879",
+    "P04958",
+    "P0DPI1",
+    "P11140",
+    "P15273",
+    "Q51451",
+    "Q99ZW2"
+  ],
+  "no_uniprot_active_site": [
+    "P01552",
+    "P04419",
+    "P0DF97",
+    "P13423",
+    "P55981"
+  ],
+  "entries": {
+    "O34208": {
+      "n_annotated": 2,
+      "offset": 0,
+      "positions": [
+        142,
+        344
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          142,
+          344
+        ],
+        "Binding site": [],
+        "Site": []
+      },
+      "uniprot_ligands": [],
+      "n_active": 2,
+      "n_broad": 2,
+      "agree_active": [
+        142,
+        344
+      ],
+      "extra_vs_active": [],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [],
+      "frac_active_confirmed": 1.0,
+      "fspe_ratio": 0.0017160361367590258,
+      "has_active_site": true
+    },
+    "P00588": {
+      "n_annotated": 3,
+      "offset": 32,
+      "positions": [
+        53,
+        97,
+        180
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          180
+        ],
+        "Binding site": [
+          53,
+          97
+        ],
+        "Site": [
+          185,
+          225,
+          226
+        ]
+      },
+      "uniprot_ligands": [
+        "NAD(+)"
+      ],
+      "n_active": 1,
+      "n_broad": 6,
+      "agree_active": [
+        180
+      ],
+      "extra_vs_active": [
+        53,
+        97
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [
+        53,
+        97
+      ],
+      "frac_active_confirmed": 0.3333333333333333,
+      "fspe_ratio": 0.5615259153791502,
+      "has_active_site": true
+    },
+    "P00648": {
+      "n_annotated": 5,
+      "offset": 47,
+      "positions": [
+        74,
+        120,
+        130,
+        134,
+        149
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          120,
+          149
+        ],
+        "Binding site": [],
+        "Site": []
+      },
+      "uniprot_ligands": [],
+      "n_active": 2,
+      "n_broad": 2,
+      "agree_active": [
+        120,
+        149
+      ],
+      "extra_vs_active": [
+        74,
+        130,
+        134
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [],
+      "frac_active_confirmed": 0.4,
+      "fspe_ratio": 0.05104424453431635,
+      "has_active_site": true
+    },
+    "P01552": {
+      "n_annotated": 9,
+      "offset": 0,
+      "positions": [
+        23,
+        25,
+        44,
+        45,
+        89,
+        90,
+        91,
+        93,
+        94
+      ],
+      "uniprot_by_type": {
+        "Active site": [],
+        "Binding site": [],
+        "Site": []
+      },
+      "uniprot_ligands": [],
+      "n_active": 0,
+      "n_broad": 0,
+      "agree_active": [],
+      "extra_vs_active": [
+        23,
+        25,
+        44,
+        45,
+        89,
+        90,
+        91,
+        93,
+        94
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [],
+      "frac_active_confirmed": 0.0,
+      "fspe_ratio": 0.9555877115368474,
+      "has_active_site": false
+    },
+    "P01555": {
+      "n_annotated": 8,
+      "offset": 0,
+      "positions": [
+        25,
+        26,
+        27,
+        28,
+        41,
+        42,
+        43,
+        130
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          130
+        ],
+        "Binding site": [
+          25,
+          26,
+          27,
+          28,
+          41,
+          42,
+          43
+        ],
+        "Site": []
+      },
+      "uniprot_ligands": [
+        "NAD(+)"
+      ],
+      "n_active": 1,
+      "n_broad": 8,
+      "agree_active": [
+        130
+      ],
+      "extra_vs_active": [
+        25,
+        26,
+        27,
+        28,
+        41,
+        42,
+        43
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [
+        25,
+        26,
+        27,
+        28,
+        41,
+        42,
+        43
+      ],
+      "frac_active_confirmed": 0.125,
+      "fspe_ratio": 0.5245177439346022,
+      "has_active_site": true
+    },
+    "P02879": {
+      "n_annotated": 5,
+      "offset": 35,
+      "positions": [
+        115,
+        158,
+        212,
+        215,
+        246
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          115,
+          158,
+          212,
+          215
+        ],
+        "Binding site": [
+          43,
+          44,
+          45,
+          50,
+          85,
+          115,
+          116,
+          156,
+          157,
+          158,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          230,
+          231,
+          232,
+          324,
+          336,
+          337,
+          338,
+          339,
+          340,
+          349,
+          354,
+          360,
+          409,
+          449,
+          548,
+          549,
+          550,
+          551,
+          565,
+          566,
+          567,
+          568,
+          569
+        ],
+        "Site": []
+      },
+      "uniprot_ligands": [
+        "AMP",
+        "a carbohydrate"
+      ],
+      "n_active": 4,
+      "n_broad": 41,
+      "agree_active": [
+        115,
+        158,
+        212,
+        215
+      ],
+      "extra_vs_active": [
+        246
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [],
+      "frac_active_confirmed": 0.8,
+      "fspe_ratio": 1.2295546084011462,
+      "has_active_site": true
+    },
+    "P04419": {
+      "n_annotated": 3,
+      "offset": 0,
+      "positions": [
+        549,
+        574,
+        578
+      ],
+      "uniprot_by_type": {
+        "Active site": [],
+        "Binding site": [
+          549,
+          574,
+          578
+        ],
+        "Site": []
+      },
+      "uniprot_ligands": [
+        "Zn(2+)"
+      ],
+      "n_active": 0,
+      "n_broad": 3,
+      "agree_active": [],
+      "extra_vs_active": [
+        549,
+        574,
+        578
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [
+        549,
+        574,
+        578
+      ],
+      "frac_active_confirmed": 0.0,
+      "fspe_ratio": 0.1379687359759248,
+      "has_active_site": false
+    },
+    "P04958": {
+      "n_annotated": 4,
+      "offset": 0,
+      "positions": [
+        233,
+        234,
+        237,
+        270
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          234
+        ],
+        "Binding site": [
+          233,
+          237
+        ],
+        "Site": []
+      },
+      "uniprot_ligands": [
+        "Zn(2+)"
+      ],
+      "n_active": 1,
+      "n_broad": 3,
+      "agree_active": [
+        234
+      ],
+      "extra_vs_active": [
+        233,
+        237,
+        270
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [
+        233,
+        237
+      ],
+      "frac_active_confirmed": 0.25,
+      "fspe_ratio": 0.14490882578047748,
+      "has_active_site": true
+    },
+    "P0DF97": {
+      "n_annotated": 5,
+      "offset": 0,
+      "positions": [
+        530,
+        533,
+        535,
+        537,
+        538
+      ],
+      "uniprot_by_type": {
+        "Active site": [],
+        "Binding site": [],
+        "Site": []
+      },
+      "uniprot_ligands": [],
+      "n_active": 0,
+      "n_broad": 0,
+      "agree_active": [],
+      "extra_vs_active": [
+        530,
+        533,
+        535,
+        537,
+        538
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [],
+      "frac_active_confirmed": 0.0,
+      "fspe_ratio": 0.5085893124856756,
+      "has_active_site": false
+    },
+    "P0DPI1": {
+      "n_annotated": 4,
+      "offset": 0,
+      "positions": [
+        223,
+        224,
+        227,
+        262
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          224
+        ],
+        "Binding site": [
+          223,
+          227,
+          262
+        ],
+        "Site": []
+      },
+      "uniprot_ligands": [
+        "Zn(2+)"
+      ],
+      "n_active": 1,
+      "n_broad": 4,
+      "agree_active": [
+        224
+      ],
+      "extra_vs_active": [
+        223,
+        227,
+        262
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [
+        223,
+        227,
+        262
+      ],
+      "frac_active_confirmed": 0.25,
+      "fspe_ratio": 0.02701625887812163,
+      "has_active_site": true
+    },
+    "P11140": {
+      "n_annotated": 5,
+      "offset": 0,
+      "positions": [
+        74,
+        113,
+        164,
+        167,
+        198
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          164
+        ],
+        "Binding site": [],
+        "Site": []
+      },
+      "uniprot_ligands": [],
+      "n_active": 1,
+      "n_broad": 1,
+      "agree_active": [
+        164
+      ],
+      "extra_vs_active": [
+        74,
+        113,
+        167,
+        198
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [],
+      "frac_active_confirmed": 0.2,
+      "fspe_ratio": 1.0725526811689088,
+      "has_active_site": true
+    },
+    "P13423": {
+      "n_annotated": 4,
+      "offset": 0,
+      "positions": [
+        331,
+        349,
+        454,
+        456
+      ],
+      "uniprot_by_type": {
+        "Active site": [],
+        "Binding site": [
+          206,
+          208,
+          210,
+          212,
+          217,
+          251,
+          254,
+          264
+        ],
+        "Site": [
+          196,
+          197,
+          207,
+          216,
+          265,
+          343,
+          344,
+          456,
+          493,
+          712
+        ]
+      },
+      "uniprot_ligands": [
+        "Ca(2+)"
+      ],
+      "n_active": 0,
+      "n_broad": 18,
+      "agree_active": [],
+      "extra_vs_active": [
+        331,
+        349,
+        454,
+        456
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [
+        456
+      ],
+      "frac_active_confirmed": 0.0,
+      "fspe_ratio": 0.6499419070534089,
+      "has_active_site": false
+    },
+    "P15273": {
+      "n_annotated": 5,
+      "offset": 0,
+      "positions": [
+        354,
+        356,
+        403,
+        404,
+        409
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          403
+        ],
+        "Binding site": [],
+        "Site": []
+      },
+      "uniprot_ligands": [],
+      "n_active": 1,
+      "n_broad": 1,
+      "agree_active": [
+        403
+      ],
+      "extra_vs_active": [
+        354,
+        356,
+        404,
+        409
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [],
+      "frac_active_confirmed": 0.2,
+      "fspe_ratio": 0.024467608557234115,
+      "has_active_site": true
+    },
+    "P55981": {
+      "n_annotated": 0,
+      "offset": 0,
+      "positions": [],
+      "uniprot_by_type": {
+        "Active site": [],
+        "Binding site": [],
+        "Site": []
+      },
+      "uniprot_ligands": [],
+      "n_active": 0,
+      "n_broad": 0,
+      "agree_active": [],
+      "extra_vs_active": [],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [],
+      "frac_active_confirmed": null,
+      "fspe_ratio": null,
+      "has_active_site": false
+    },
+    "Q51451": {
+      "n_annotated": 5,
+      "offset": 0,
+      "positions": [
+        146,
+        148,
+        234,
+        379,
+        381
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          319,
+          343,
+          381
+        ],
+        "Binding site": [
+          146,
+          186,
+          187
+        ],
+        "Site": []
+      },
+      "uniprot_ligands": [
+        "GDP"
+      ],
+      "n_active": 3,
+      "n_broad": 6,
+      "agree_active": [
+        381
+      ],
+      "extra_vs_active": [
+        146,
+        148,
+        234,
+        379
+      ],
+      "omit_active": [
+        319,
+        343
+      ],
+      "extra_explained_by_other_feature": [
+        146
+      ],
+      "frac_active_confirmed": 0.2,
+      "fspe_ratio": 0.6617848961645644,
+      "has_active_site": true
+    },
+    "Q99ZW2": {
+      "n_annotated": 7,
+      "offset": 0,
+      "positions": [
+        10,
+        762,
+        839,
+        840,
+        863,
+        983,
+        986
+      ],
+      "uniprot_by_type": {
+        "Active site": [
+          10,
+          840
+        ],
+        "Binding site": [
+          10,
+          762,
+          766,
+          983,
+          1297,
+          1328
+        ],
+        "Site": []
+      },
+      "uniprot_ligands": [
+        "Mn(2+)"
+      ],
+      "n_active": 2,
+      "n_broad": 7,
+      "agree_active": [
+        10,
+        840
+      ],
+      "extra_vs_active": [
+        762,
+        839,
+        863,
+        983,
+        986
+      ],
+      "omit_active": [],
+      "extra_explained_by_other_feature": [
+        762,
+        983
+      ],
+      "frac_active_confirmed": 0.2857142857142857,
+      "fspe_ratio": 0.009477254790551675,
+      "has_active_site": true
+    }
+  },
+  "totals": {
+    "annotated": 53,
+    "confirmed_active": 17,
+    "omitted_active": 2,
+    "frac_active_confirmed": 0.32075471698113206,
+    "extra_vs_active": 36,
+    "extra_explained_by_other_feature": 17,
+    "grounded_in_uniprot": 34,
+    "frac_grounded": 0.6415094339622641
+  },
+  "exact_match": [
+    "O34208"
+  ],
+  "zero_confirmed": [],
+  "P1": {
+    "n": 11,
+    "rho": -0.22070423513841744,
+    "p": 0.5143071921721074,
+    "direction_as_predicted": true,
+    "significant_at_05": false
+  },
+  "verdict": "Against UniProt ACTIVE SITE features, 17 of 53 annotated positions across 11 comparable entries are confirmed (32%), with 2 UniProt active sites omitted. 1 entries match UniProt's active-site set exactly (O34208) and 0 have none confirmed (none). 5 entries have no UniProt Active site feature at all (P01552, P04419, P0DF97, P13423, P55981), so most of the curation is sourced from structure papers rather than the feature table, which is defensible for toxins and means the omissions are the actionable half, and there are almost none: the only omitted active sites in the whole panel are Q51451's 319 and 343, on the entry already known to be defective. The 32% is also not 68% unsourced. Of the 36 annotated positions that are not Active sites, 17 carry some other UniProt feature, so 34/53 (64%) are grounded in UniProt under some type, which is what a curator reading a structure paper would produce. An earlier version of this audit pooled Binding site and Site with Active site and reported 64 omissions; most of those were carbohydrate, Ca(2+) and cleavage-site features that a catalytic-residue field should not contain, so that number measured the wrong thing. P1 is NOT SUPPORTED (rho -0.221, p 0.514, n 11, underpowered by construction)."
+}
