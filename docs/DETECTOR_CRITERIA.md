@@ -63,11 +63,57 @@ sample.** It does not here. Asked for a 5% false-positive budget and evaluated
 on negatives held back from calibration, the published `np.quantile` estimator
 returns **8.64%** on the canonical arm and **8.79%** on a second arm at a
 calibration size of 20, and the nominal rate is unreachable at 4 of the sizes
-tested. A conformal estimator held at every size tested, 6 of 6, on both arms.
-So the gap is the estimator's, not the data's, and it is fixable.
+tested. An estimator that misses 5% by 3.6 points is not a rounding problem when
+the deployment budget is 1e-4.
 
-An estimator that misses 5% by 3.6 points is not a rounding problem when the
-deployment budget is 1e-4.
+That much was established as a property of the estimator. `src/48` then does the
+thing that was missing, which is to carve an actual test partition out of the
+negatives (177 train / 59 calibrate / 60 test) and rerun leave-one-mechanism-out
+at a threshold set on calibrate and a false-positive rate measured on test, over
+30 seeds, with the seed as the unit of inference:
+
+| nominal | estimator | out-of-sample FP | seed-level 95% CI | excludes nominal |
+|---|---|---|---|---|
+| 5% | `np.quantile` | 7.33% | [5.76, 8.90] | **yes** |
+| 5% | conformal | 6.31% | [4.73, 7.90] | no |
+| 1% | `np.quantile` | 3.88% | [2.87, 4.89] | **yes** |
+| 1% | conformal | **unreachable** | | |
+
+Three things follow, and the third is the one worth carrying.
+
+First, the published estimator's overshoot is now measured rather than inferred,
+and at a nominal 1% it realizes **3.88%, close to four times the budget**.
+
+Second, conformal is better but is **not** a drop-in fix. Its interval covers
+nominal, so it is consistent with holding its guarantee, which is as much as 30
+seeds can say. Anyone reading its 6.31% point estimate against 5% and concluding
+it failed has compared a point to a target without an interval, which is the
+error this document's criterion 6 exists to prevent.
+
+Third, and this is the real result: at a nominal 1% the conformal threshold
+**cannot be computed at all**, because `floor((m+1)*alpha)` is zero when m is 59.
+`np.quantile` returns a number anyway, and that number realizes 3.88%.
+**Conformal declines to answer where the quantile estimator invents an answer.**
+So the binding constraint was never the estimator, it is the number of negatives,
+which is (c). An estimator that refuses is strictly more useful than one that
+extrapolates silently, but neither creates resolution that the data does not have.
+
+Two riders on that run, both necessary.
+
+The conclusions survive the estimator. Conformal lowers per-class recovery almost
+everywhere, by 0.0 to 7.7 points, but the **ordering is preserved**: phage
+peptidoglycan hydrolase stays lowest, beta-lactamase second, the labelled
+virulence control third. The failure story that criteria 3 and 4 are built on is
+therefore not an artefact of the threshold rule, which is worth knowing because
+it easily could have been.
+
+And the recovery figures from that run are **not** comparable to the published
+table, because carving out a test partition also halved the calibration set from
+118 to 59, so two things changed at once. Only the quantile-against-conformal
+contrast within the run is clean, since both arms share the same splits, models
+and scores. Quoting `src/48`'s recovery numbers against the published ones would
+be the exact mistake criterion 2 describes, committed by the document that
+describes it.
 
 **(c) Check the resolution ceiling.** A threshold set as a quantile of held-out
 negatives cannot resolve a false-positive rate finer than one over the number of

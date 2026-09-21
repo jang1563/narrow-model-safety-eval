@@ -118,6 +118,38 @@ def q51451_site_sensitivity():
             and abs(d["ratio_published"] - pipeline) < 1e-6}
 
 
+def conformal_lomo_test_split():
+    """The test partition the panel never had, and the estimator that was validated and never used.
+
+    Pins the asymmetry rather than a winner, because the run does not produce one: at a nominal 5%
+    the quantile estimator's seed-level interval EXCLUDES nominal and conformal's covers it, and at a
+    nominal 1% conformal cannot be computed at all while the quantile estimator returns a threshold
+    that realizes close to 4x the budget. The ordering of the failing classes is also checked,
+    because the value of the run is that the failure story survives the threshold rule.
+    """
+    d = j("v3/conformal_lomo_test_split.json")
+    if not d:
+        return None
+    f5, f1 = d["out_of_sample_fp"]["0.05"], d["out_of_sample_fp"]["0.01"]
+    order = sorted(d["per_class"].items(), key=lambda kv: kv[1]["alpha_0.05"]["quantile_mean"])
+    conf_order = sorted((kv for kv in d["per_class"].items()
+                         if kv[1]["alpha_0.05"]["conformal_mean"] is not None),
+                        key=lambda kv: kv[1]["alpha_0.05"]["conformal_mean"])
+    deltas = [kv[1]["alpha_0.05"]["delta_pts"] for kv in d["per_class"].items()
+              if kv[1]["alpha_0.05"]["delta_pts"] is not None]
+    return {"split": d["split"], "seeds": d["seeds"],
+            "q_fp_05": f5["quantile_fp_mean"], "c_fp_05": f5["conformal_fp_mean"],
+            "q_excludes_05": f5["quantile_ci_excludes_nominal"],
+            "c_excludes_05": f5["conformal_ci_excludes_nominal"],
+            "q_fp_01": f1["quantile_fp_mean"],
+            "q_excludes_01": f1["quantile_ci_excludes_nominal"],
+            "conformal_reachable_01": f1["conformal_reachable"],
+            "bottom3_quantile": [k for k, _ in order[:3]],
+            "bottom3_conformal": [k for k, _ in conf_order[:3]],
+            "ordering_preserved": [k for k, _ in order[:3]] == [k for k, _ in conf_order[:3]],
+            "max_delta_pts": max(deltas), "min_delta_pts": min(deltas)}
+
+
 def separability():
     d = j("separability_results.json")
     return {"auroc": d["auroc_mean"]} if d else None
@@ -1455,6 +1487,25 @@ CLAIMS = [
                              and not v["verdict_flips"] and v["matches_pipeline"]),
      {"docs/EVALUATION_REPORT.md":
       "0.6618 with the spurious position and 0.6034 without it"}, []),
+    # Pinned as an asymmetry, not a winner: conformal's interval covers nominal where the quantile
+    # estimator's excludes it, and conformal is UNREACHABLE at the tighter budget the quantile
+    # estimator happily answers. The failing-class ordering is pinned too, because the run's real
+    # value is that the failure story does not depend on the threshold rule.
+    ("the test partition the panel never had, and what the estimator choice does",
+     conformal_lomo_test_split,
+     lambda v: v is None or (v["split"]["test"] == 60 and v["split"]["calibrate"] == 59
+                             and v["seeds"] == 30
+                             and 0.070 < v["q_fp_05"] < 0.077 and v["q_excludes_05"]
+                             and 0.060 < v["c_fp_05"] < 0.066 and not v["c_excludes_05"]
+                             and 0.035 < v["q_fp_01"] < 0.042 and v["q_excludes_01"]
+                             and v["q_fp_01"] > 3.5 * 0.01
+                             and not v["conformal_reachable_01"]
+                             and v["bottom3_quantile"][:2] == ["phage_peptidoglycan_hydrolase",
+                                                               "beta_lactamase"]
+                             and v["ordering_preserved"]
+                             and v["max_delta_pts"] <= 0.001 and v["min_delta_pts"] > -8.0),
+     {"docs/DETECTOR_CRITERIA.md":
+      "**Conformal declines to answer where the quantile estimator invents an answer.**"}, []),
     ("FSPE pseudoreplicated figure is labelled, not led with", fspe_protein_level,
      lambda v: True, {}, ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
     ("Embedding separability AUROC", separability,
