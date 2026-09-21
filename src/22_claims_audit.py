@@ -1537,6 +1537,76 @@ def v3_margin_across_arms():
 # others still carried the phrase and the audit would pass. Verified by breaking
 # README.md on purpose: the audit returned success. It now names each surface.
 
+
+def reference_set_poisoning():
+    """Criterion 18: 500 genuine Swiss-Prot proteins, labelled benign and appended to the panel's
+    296, suppress one hazard class while the aggregate an operator would watch stays flat or
+    improves.
+
+    Pinned across BOTH arms because the interesting halves separate. Which classes are suppressible
+    and the 5-of-13 selectivity ceiling replicate; the quietness does not, and the canonical arm is
+    the quiet one. Publishing the quietness without the arm qualifier would be the error criterion 7
+    exists to prevent, so the assertion REQUIRES the 35M arm to be loud.
+
+    cry_insecticidal is the headline rather than rip_rrna_glycosidase because rip's 62.9-point
+    canonical drop inverts on esm2_35M, where the same construction damages cry more than rip."""
+    a = j("v3/reference_set_poisoning_esm2_650M.json")
+    b = j("v3/reference_set_poisoning_esm2_35M.json")
+    out = {}
+    for tag, d in (("c", a), ("s", b)):
+        r = d["per_target"]
+        out[f"{tag}_p1_near"] = sum(r[t]["P1_targeted_beats_collateral"] for t in r)
+        out[f"{tag}_p1_sel"] = sum(r[t]["P1_selective_beats_collateral"] for t in r)
+        out[f"{tag}_p2_near"] = sum(r[t]["P2_fp_gives_no_signal"] for t in r)
+        out[f"{tag}_p2_sel"] = sum(r[t]["P2_selective_fp_gives_no_signal"] for t in r)
+        out[f"{tag}_n"] = len(r)
+        cry = r["cry_insecticidal"]
+        out[f"{tag}_cry_panel"] = cry["target_panel"]
+        out[f"{tag}_cry_sel"] = cry["target_selective"]
+        out[f"{tag}_cry_fp_panel"] = cry["pool_fp"]["panel"]
+        out[f"{tag}_cry_fp_sel"] = cry["pool_fp"]["selective"]
+    ra, rb = a["per_target"], b["per_target"]
+    both = sorted(set(ra) & set(rb))
+    out["agree_suppressible"] = sum(
+        (ra[t]["selective_delta_pts"] < -5) == (rb[t]["selective_delta_pts"] < -5) for t in both)
+    out["n_both"] = len(both)
+    out["c_rip_sel_pts"] = ra["rip_rrna_glycosidase"]["selective_delta_pts"]
+    out["s_rip_sel_pts"] = rb["rip_rrna_glycosidase"]["selective_delta_pts"]
+    out["c_rip_p1_sel"] = ra["rip_rrna_glycosidase"]["P1_selective_beats_collateral"]
+    out["s_rip_p1_sel"] = rb["rip_rrna_glycosidase"]["P1_selective_beats_collateral"]
+    return out
+
+
+def poisoning_neighbourhood_overlap():
+    """Criterion 18's mechanism: "nearest to hazard class X" is mostly "nearest to the panel", which
+    is why the attack is indiscriminate. Recomputed from the embeddings rather than read back from
+    an artifact, so a stale file cannot carry it.
+
+    ⚠️ numpy only, like the rest of this gate, so the release-surface CI job can run it."""
+    import numpy as np
+    V = ROOT / "results" / "v3"
+    man = json.load(open(V / "embedding_manifest_v3.json"))
+    pman = json.load(open(V / "embedding_manifest_pool_large_esm2_650M.json"))
+    mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v3.json"))
+    P = np.load(V / "embeddings_positive_v3.npy")
+    POOL = np.load(V / "embeddings_pool_large_esm2_650M.npy")
+    acc = [r.split("|")[1] if "|" in r else r for r in pman["rows"]]
+    POOL = POOL[np.array([i for i, x in enumerate(acc) if x != "Q8X739"])]
+    cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
+    pcls = np.array([cls[r["acc"]] for r in man["positive_rows"]])
+    classes = sorted({c for c in pcls if (pcls == c).sum() >= 3})
+    Pn = P / np.linalg.norm(P, axis=1, keepdims=True)
+    Qn = POOL / np.linalg.norm(POOL, axis=1, keepdims=True)
+    sets = {c: set(np.argsort(-(Qn @ Pn[np.where(pcls == c)[0]].T).max(axis=1))[:500].tolist())
+            for c in classes}
+    js = [(len(sets[x] & sets[y]) / len(sets[x] | sets[y]), x, y)
+          for i, x in enumerate(classes) for y in classes[i + 1:]]
+    mx = max(js)
+    return {"n_classes": len(classes), "mean_jaccard": float(np.mean([v for v, _, _ in js])),
+            "max_jaccard": mx[0], "max_pair": sorted([mx[1], mx[2]]),
+            "union": len(set().union(*sets.values())), "slots": 500 * len(classes)}
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -2129,6 +2199,38 @@ CLAIMS = [
      {"docs/MECHANISM_GENERALIZATION.md":
       "| esm2_3B | 2560 | +0.831 | 0.0006 | −0.0030 | 4.3% → **9.3%** [5.6, 13.0] "
       "| −0.0014 | 6.9% → **4.1%** [2.4, 5.7] | **yes** |"}, []),
+    ("reference set poisoning, both arms", reference_set_poisoning,
+     # The assertion deliberately requires the 35M arm to be LOUD (s_p2_near == 0), so a future run
+     # that made both arms quiet fails here instead of silently strengthening a claim the document
+     # scopes to one arm. Same for rip: canonical must support P1 and 35M must not, because the
+     # document says that inversion is the reason cry leads instead.
+     lambda v: (v["c_n"] == 13 and v["s_n"] == 13
+                and v["c_p1_sel"] == 5 and v["s_p1_sel"] == 5
+                and v["c_p1_near"] == 4 and v["s_p1_near"] == 2
+                and v["c_p2_near"] == 8 and v["s_p2_near"] == 0
+                and v["c_p2_sel"] == 3 and v["s_p2_sel"] == 1
+                and v["agree_suppressible"] == 12 and v["n_both"] == 13
+                and v["c_rip_p1_sel"] and not v["s_rip_p1_sel"]
+                and v["c_rip_sel_pts"] < -50 and v["s_rip_sel_pts"] > -20
+                and v["c_cry_sel"] < v["c_cry_panel"] and v["s_cry_sel"] < v["s_cry_panel"]
+                and v["s_cry_fp_sel"] < v["s_cry_fp_panel"]
+                and abs(v["s_cry_panel"] - 0.635) < 0.005
+                and abs(v["s_cry_sel"] - 0.167) < 0.005
+                and abs(v["s_cry_fp_panel"] - 0.0830) < 0.0005
+                and abs(v["s_cry_fp_sel"] - 0.0587) < 0.0005),
+     {"docs/DETECTOR_CRITERIA.md":
+      "| esm2_35M | 63.5% | **16.7%** | -12.1pt | 8.30% | **5.87%** |"},
+     # the in-sample collateral figure an earlier draft of criterion 18 nearly published
+     ["Every other hazard class is untouched"]),
+
+    ("poisoning neighbourhood overlap", poisoning_neighbourhood_overlap,
+     lambda v: (v["n_classes"] == 13 and v["slots"] == 6500
+                and abs(v["mean_jaccard"] - 0.324) < 0.002
+                and abs(v["max_jaccard"] - 0.883) < 0.002
+                and v["max_pair"] == ["adp_ribosyl_ab_toxin", "rip_rrna_glycosidase"]
+                and v["union"] == 1999),
+     {"docs/DETECTOR_CRITERIA.md":
+      "and all thirteen together span only **1,999 distinct pool proteins out of 6,500"}, []),
 ]
 
 

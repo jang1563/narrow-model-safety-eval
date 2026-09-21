@@ -12,9 +12,19 @@
   ],
   "comparison": "superantigen_enterotoxin",
   "k0_matches_stored_lomo": {
-    "beta_lactamase": false,
+    "beta_lactamase": true,
     "superantigen_enterotoxin": true
   },
+  "k0_five_seed": {
+    "beta_lactamase": 0.014285714285714285,
+    "superantigen_enterotoxin": 0.9428571428571428
+  },
+  "stored_lomo_five_seed": {
+    "beta_lactamase": 0.014285714285714285,
+    "superantigen_enterotoxin": 0.9428571428571428
+  },
+  "seeds": 30,
+  "stored_lomo_seeds": 5,
   "curves": {
     "beta_lactamase": {
       "random": {

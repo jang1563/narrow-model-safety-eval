@@ -1896,6 +1896,53 @@ repair.** §10.8's finding that the panel is 850 times too small to calibrate a 
 one point the same way: the negative set is the binding constraint on this kind of screen, and it binds in
 both directions at once.
 
+
+#### 10.7.2 🔑 The converse runs on the canonical arm, and proximity turns out to suppress the classes that WORK
+
+`src/37_negative_supplement_from_pool.py`, `src/50_reference_set_poisoning.py`, canonical 650M arm,
+30 seeds. §10.7.1 removed the K nearest training negatives and recovery rose. The converse is to
+ADD near confusors, which had only ever run on esm2_35M, where beta-lactamase is zero in 131 of 200
+seeds and phage clears the script's own failure threshold, so neither class could answer. The pool
+embedding now exists locally and both classes have headroom here.
+
+| class | mode | K=0 | K=500 | K=1500 | K=4000 | K=8259 |
+|---|---|---|---|---|---|---|
+| phage_peptidoglycan_hydrolase | random | 12.2% | 29.0% | 37.0% | 42.9% | 49.3% |
+| phage_peptidoglycan_hydrolase | nearest | 12.2% | 17.5% | 22.0% | 46.7% | 48.2% |
+| beta_lactamase | random | 21.2% | 10.7% | 25.7% | 42.4% | 41.7% |
+| beta_lactamase | nearest | 21.2% | 15.5% | 20.5% | 22.6% | 41.2% |
+| rip_rrna_glycosidase (recovered) | random | 94.8% | 91.0% | 91.0% | 88.6% | 89.5% |
+| rip_rrna_glycosidase (recovered) | nearest | 94.8% | **51.9%** | 68.1% | 77.1% | 89.0% |
+
+🔴 **P1, monotone decline in the failing classes, is refuted, and it could not have been supported.**
+At K=8259 "the 8,259 pool proteins nearest the class" and "8,259 random pool proteins" are the same
+8,259 proteins in a different row order, so the two modes are forced to converge at the right-hand
+end whatever the mechanism is. The prediction was unfalsifiable in its final point. That is a defect
+in how P1 was written and it is recorded rather than dropped. The residual 0.5 to 1.1 pt spread
+between the modes there is not an effect: it is the `StandardScaler` row-ordering sensitivity of
+`docs/DATA_CORRECTIONS.md` entry seventeen, reproducing on esm2_35M at 0.5 pt.
+
+🔑 **P2, proximity rather than volume, is supported on every class.** Paired by seed at K=500 against
+one fixed random draw: rip −39.5 pt (t = −10.09, p = 5.3e-11), beta-lactamase −19.3 pt (t = −6.45,
+p = 4.6e-07), phage −10.9 pt (t = −7.17, p = 6.9e-08).
+
+🔑 **The largest effect is on the class that was working.** `rip_rrna_glycosidase` recovers at 94.8%
+and falls to 51.9% when 500 of its own nearest benign neighbours are added as negatives. The failing
+classes move much less, because they are already inside the benign density and have less left to
+lose. So §10.7.1's reading survives, restated: **near benign confusors suppress the classes
+currently SEPARATED from benign, and a class already buried in benign is comparatively insensitive
+to more of it.** The converse-of-removal framing had the mechanism right and the class wrong.
+
+⚠️ **This is not by itself a targeted attack, and `src/50` is where that is settled rather than
+here.** Holding each class out in its own fit, the targeted drop exceeds the worst collateral drop
+on only 4 of 13 classes, rising to 5 of 13 when the supplement is selected for proximity to the
+target AND distance from every other class. The reason is geometric: the per-class nearest-500 sets
+overlap at mean pairwise Jaccard 0.324, reach 0.883 for `adp_ribosyl_ab_toxin` against
+`rip_rrna_glycosidase`, and span only 1,999 distinct pool proteins across 6,500 slots. "The benign
+neighbourhood of class X" is mostly "the benign neighbourhood of the panel". The security reading,
+including the two arms' disagreement about whether any of this is visible in the aggregate
+false-positive rate, is `docs/DETECTOR_CRITERIA.md` criterion 18.
+
 ### 10.8 🔑 The triage survives a tightening budget, and the panel cannot validate a deployable one
 
 `src/32_deployment_operating_points.py`, panel v3. §10.4 to §10.7 measured margin at **95% specificity**,

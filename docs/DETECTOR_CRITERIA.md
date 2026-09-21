@@ -32,7 +32,9 @@ A detector is worth deploying when you can state, before deployment, all of:
 4. the realized false-positive rate of every comparison you quote,
 5. what its negative set actually contains, in effective rather than raw size,
 6. its alert count and miss count at the deployment prevalence,
-7. what it does to a known-safe near neighbour of a hazard.
+7. what it does to a known-safe near neighbour of a hazard,
+8. where its **negative** set came from, because whoever supplies that set can
+   suppress one hazard class without touching the aggregate rate.
 
 Most published detector numbers, including several early ones in this
 repository, fail at least three of these.
@@ -43,7 +45,7 @@ repository, fail at least three of these.
 
 Three separate failures live in the negative split, and they compound. This is
 the criterion this project scores worst on, and it is listed first because the
-other sixteen are downstream of it.
+other seventeen are downstream of it.
 
 **(a) Check that a test set exists.** This panel's negatives divide as:
 
@@ -520,6 +522,104 @@ treated as upper bounds that need entry-by-entry reading.
 
 ---
 
+## 18. The benign reference set is an attack surface, and its curator is a trusted party
+
+The negative set decides where the boundary sits, so whoever supplies it
+decides what the screen can see. This is usually treated as a quality problem
+(criterion 8, effective size) and it is also a security problem, which is easy
+to miss because the mechanism needs no mislabelled data at all. Measured in
+`src/50_reference_set_poisoning.py` on the canonical arm, 13 classes, 30 seeds,
+each class held out in its own fit.
+
+**The headline case, chosen because it replicates on both arms.** Append to the
+panel's 296 negatives 500 pool proteins chosen for proximity to
+`cry_insecticidal` and distance from every other class, and label them benign:
+
+| arm | cry recovery, panel only | cry recovery, +500 selective | worst other class | pool FP, panel only | pool FP, +500 selective |
+|---|---|---|---|---|---|
+| canonical 650M | 79.4% | **54.8%** | -10.8pt | 7.13% | 7.68% |
+| esm2_35M | 63.5% | **16.7%** | -12.1pt | 8.30% | **5.87%** |
+
+On the small arm the targeted class falls from 63.5% to 16.7% while the false
+positive rate on 8,258 benign proteins **improves**, 8.30% down to 5.87%. An
+operator watching the only aggregate they have would record the supplemented
+reference set as the better one. Every one of the 500 is a genuine reviewed
+Swiss-Prot entry passing the panel's own hazard exclusions. Nothing is forged
+and nothing is mislabelled, and the additions are 6% of the pool.
+
+`rip_rrna_glycosidase` is the more dramatic single number, losing 62.9 points
+on the canonical arm against a 0.06 point move in the aggregate. It is quoted
+second rather than first because it does **not** replicate: on esm2_35M the same
+construction costs rip 14.8 points and costs `cry_insecticidal` 38.0, so on that
+arm it is not a targeted attack at all. Criterion 7 applies to this document's
+own findings.
+
+**But the clean cases are the minority, and reporting only them would be
+dishonest.** Across all 13 classes the targeted drop exceeds the worst
+collateral drop on only **4 of 13** under nearest-neighbour selection on the
+canonical arm and 2 of 13 on esm2_35M, rising to **5 of 13 on both arms** under
+selective. Nine times out of thirteen the class hurt most is not the class aimed
+at. Targeting `adp_ribosyl_ab_toxin` costs the target 16.7 points and costs
+`rip_rrna_glycosidase` 34.3.
+
+The reason is geometric and it is the more durable finding. The per-class
+nearest-500 sets are largely the same set: mean pairwise Jaccard **0.324**,
+reaching **0.883** for `adp_ribosyl_ab_toxin` against `rip_rrna_glycosidase`,
+and all thirteen together span only **1,999 distinct pool proteins out of 6,500
+slots**. Twelve pool proteins sit in the nearest-500 of twelve of the thirteen
+classes. So "the benign neighbourhood of hazard class X" is mostly just "the
+benign neighbourhood of the panel", and you cannot quietly suppress rip without
+also damaging the class that shares 88% of its neighbours. Which classes are
+suppressible at all is itself stable: the two arms agree on 12 of 13.
+
+**There is a defender's tradeoff here, and it is arm-dependent, which bounds
+how far it can be trusted.** The two attacks fail in opposite ways:
+
+- *Broad* near-neighbour supplementation is blunt: the damage lands on the wrong
+  class most of the time. On the canonical arm it is also quiet, holding the
+  pool false-positive rate within a point of the random control on 8 of 13
+  targets.
+- *Selective* supplementation is more precise and much louder. It holds the
+  rate on only 3 of 13 on the canonical arm, and where it is most precise it is
+  loudest: targeting `t3ss_effector_apparatus` or `phage_peptidoglycan_hydrolase`
+  pushes the pool rate to 16.9%, four times the control.
+
+⚠️ The quietness half of that tradeoff is a **canonical-arm property and does
+not replicate**. On esm2_35M the broad attack holds the false-positive rate on
+**0 of 13** targets and the selective one on 1 of 13. So "the blunt attack is
+invisible to aggregate monitoring" is true of the arm every published number
+here lives on and false of the other one measured. What replicates across arms
+is which classes are suppressible (12 of 13 agreement) and the 5-of-13
+selectivity ceiling, not the audibility.
+
+Taking those together, the aggregate false-positive rate is worth watching and
+is not sufficient. It caught most selective attacks on both arms. It missed the
+two cases that matter most: `cry_insecticidal` on esm2_35M, where the rate
+improved while recovery fell 46.8 points, and `rip_rrna_glycosidase` on the
+canonical arm, where precision and quietness coincided.
+
+What follows for practice. Treat the provenance of the benign reference set the
+way the hazard list's provenance is already treated: record who assembled it,
+against what query, and when. Before accepting an external or updated negative
+set, run the **per-class** recovery table on the old and the new set and compare
+class by class. The aggregate cannot carry this check alone, and in the rip case
+above it moves five hundredths of a point while the class loses 62.9. Watch it
+anyway, because it does catch the precise attacks on most classes. And prefer a
+negative set whose selection rule is stated and reproducible over a larger one
+of unstated origin, which inverts the usual instinct that more benign reference
+data is strictly safer.
+
+⚠️ Scope, stated because this is the kind of result that gets over-read. This
+is a mechanism demonstrated on one panel across two embedding arms, not an
+observed attack, and it does not establish that anyone would do this. It does not
+separate a deliberately chosen 500 from an innocently biased 500: a curator who
+over-collects one protein family produces the same input, which is the more
+likely route and has the same effect. And the 5-of-13 selectivity means this
+should be described as **a demonstrated vulnerability in specific classes**, not
+as a general-purpose targeted attack on any class an adversary picks.
+
+---
+
 ## Scorecard: how this project's own probe does
 
 Applied honestly, against its own criteria.
@@ -543,13 +643,14 @@ Applied honestly, against its own criteria.
 | 15 realizability separated | **Pass.** This is the framework's original point |
 | 16 measurement not objective | **Pass** by construction |
 | 17 annotation is the constraint | **Pass**, learned from a wasted sweep |
+| 18 reference set as attack surface | **Partial.** The panel's own negatives have a stated, reproducible selection rule (`02d`, `27`), which is the main ask. But the per-class before-and-after check was only run on 2026-09-21, long after the set was fixed, and it was run because the vulnerability was found rather than as a standing gate. One class, `rip_rrna_glycosidase`, loses 62.9 points to a supplement that moves the aggregate rate by 0.05 |
 
-Three fails and four partials on seventeen criteria, on a framework whose
+Three fails and five partials on eighteen criteria, on a framework whose
 headline aggregate number is 0.981. That ratio is the reason this document
 exists.
 
 And the ordering matters more than the tally. The worst failure is criterion 1,
-the split, which no amount of work on the other sixteen can compensate for: a
+the split, which no amount of work on the other seventeen can compensate for: a
 per-class table, a multiplicity threshold and an iso-FP control are all
 improvements to a number that was still never measured on unseen negatives. An
 earlier draft of this document listed calibration resolution as criterion 1 and

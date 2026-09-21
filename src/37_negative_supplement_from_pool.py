@@ -69,12 +69,58 @@ class this experiment most wants to watch.
 
 Both problems point at the same fix: this test needs the **canonical 650M arm**, where both
 failing classes have real headroom (18.6% and 10.0%) and where the seed-stability work already
-done (`03v`, `03x`) has the class's noise floor characterized. Queued in
-`slurm/negative_scaling_650M.sh`.
+done (`03v`, `03x`) has the class's noise floor characterized.
+
+🟢 CANONICAL 650M ARM, run 2026-09-21. The pool embedding exists locally now, so this ran here.
+
+    class      mode       K=0     K=500    K=1500    K=4000    K=8259
+    phage      random    12.2%     29.0%     37.0%     42.9%     49.3%
+    phage      nearest   12.2%     17.5%     22.0%     46.7%     48.2%
+    beta-lac   random    21.2%     10.7%     25.7%     42.4%     41.7%
+    beta-lac   nearest   21.2%     15.5%     20.5%     22.6%     41.2%
+    rip        random    94.8%     91.0%     91.0%     88.6%     89.5%
+    rip        nearest   94.8%     51.9%     68.1%     77.1%     89.0%
+
+**P1 is REFUTED and, worse for the preregistration, it could not have been supported.** At
+K=8259 "the 8,259 pool proteins nearest the class" and "8,259 random pool proteins" are the SAME
+8,259 proteins in a different row order. The two modes are forced to converge at the right-hand
+end of the sweep no matter what the mechanism is, so a prediction of monotone decline all the way
+to K=8259 was unfalsifiable in its final point. That is a flaw in how P1 was written, recorded
+here rather than quietly dropped. The residual 0.5 to 1.1pt spread between the modes at K=8259
+(phage 49.3 vs 48.2, beta-lactamase 41.7 vs 41.2, rip 89.5 vs 89.0) is not an effect: it is the
+StandardScaler row-ordering sensitivity of `docs/DATA_CORRECTIONS.md` entry seventeen, and it
+reproduces on esm2_35M at 0.5pt (14.3 vs 14.8). The sweep therefore measures the same quantity
+twice at its endpoint and gets the same answer twice, which is the check P1 should have asked for.
+
+**P2 is SUPPORTED, on every class, and this is the real result.** Held at a matched K the two
+modes differ sharply, so proximity and not volume is doing the work. Paired by seed at K=500
+against one fixed random draw:
+
+    rip_rrna_glycosidase            nearest 51.9%  random 91.4%   -39.5pt  t=-10.09  p=5.3e-11
+    beta_lactamase                  nearest 15.5%  random 34.8%   -19.3pt  t= -6.45  p=4.6e-07
+    phage_peptidoglycan_hydrolase   nearest 17.5%  random 28.4%   -10.9pt  t= -7.17  p=6.9e-08
+
+**The mechanism is real but it points at the opposite class from the one this script was built to
+watch.** The largest effect by far is on `rip_rrna_glycosidase`, the RECOVERED comparison class,
+which falls 94.8% -> 51.9% when 500 of its own nearest benign neighbours are added and labelled
+benign, and then climbs back to 89.0% as K grows to the whole pool. The failing classes move much
+less because they are already inside the benign density and have less left to lose. So §10.7.1's
+proximity reading survives, restated: **near benign confusors suppress the classes that are
+currently SEPARATED from benign, and a class already buried in benign is comparatively insensitive
+to more of it.** The converse-of-removal framing was right about the mechanism and wrong about
+which class would show it.
+
+⚠️ This is a supply-chain result as much as a modelling one, and it is followed up properly in
+`src/50_reference_set_poisoning.py` rather than concluded here. The 94.8% -> 51.9% figure above is
+real but it is NOT by itself evidence of a targeted attack: `50` shows the per-class nearest-500
+sets overlap at mean Jaccard 0.324 and up to 0.883, so "nearest to class X" is mostly "nearest to
+the panel", and the class damaged most is not the class aimed at in 9 of 13 targets. See
+`docs/DETECTOR_CRITERIA.md` criterion 18 for the version with the collateral measured out of
+sample, which is the one to quote.
 
 Usage:
     python src/37_negative_supplement_from_pool.py --arm esm2_35M   # ran, inconclusive; see above
-    python src/37_negative_supplement_from_pool.py --arm esm2_650M  # the version that can answer it
+    python src/37_negative_supplement_from_pool.py --arm esm2_650M  # ran 2026-09-21; P2 supported
 """
 
 import argparse
@@ -140,7 +186,9 @@ def main():
     targets = failures + [comparison]
     print(f"arm {tag}: panel negatives {len(N_panel)}, pool {len(N_pool)}")
     print(f"failures {failures}, comparison {comparison}")
-    print("K=0 must reproduce the real panel number exactly (sanity check)\n")
+    print(f"K=0 is the panel alone. It reproduces the published five-seed LOMO exactly when\n"
+          f"recomputed at five seeds; the K=0 column below is the better {SEEDS}-seed mean and\n"
+          f"therefore sits 2-3pt above the published number on the failing classes.\n")
 
     simPN = cos(P, N_pool)
     ks = [k for k in K_GRID if k <= len(N_pool)]
@@ -166,10 +214,23 @@ def main():
             print(f"{c:<32}{mode:<10}"
                   + "".join(f"{row[str(k)]['mean'] * 100:>9.1f}%" for k in ks))
 
-    # sanity: K=0 must equal the stored LOMO number for both modes (same computation)
-    k0_check = {c: abs(out[c]["random"]["0"]["mean"] - lomo[c]["flagged_95_mean"]) < 0.02
-                for c in targets}
-    print(f"\nK=0 matches stored LOMO (within seed noise): {k0_check}")
+    # Sanity: K=0 must equal the stored LOMO number, and it does -- but only when the two are
+    # averaged over the SAME seeds. `src/03b` publishes a five-seed mean (its SEEDS = [0,1,2,3,4])
+    # while this script runs SEEDS=30, so comparing the two directly reports a 2-3pt gap that is
+    # seed averaging and not a defect. Recomputing at five seeds reproduces the published table to
+    # the displayed decimal on every class, which is the check that was actually wanted. The
+    # thirty-seed value is kept in the output because it is the better estimate; the five-seed one
+    # exists only to verify that this script and `src/03b` compute the same quantity.
+    k0_5 = {}
+    for c in targets:
+        hi = np.where(pcls == c)[0]
+        tri = np.array([i for i in range(len(P)) if i not in set(hi.tolist())])
+        k0_5[c] = float(recover(P, N_panel, hi, tri, seeds=5).mean())
+    k0_check = {c: abs(k0_5[c] - lomo[c]["flagged_95_mean"]) < 0.02 for c in targets}
+    print(f"\nK=0 at five seeds matches the five-seed stored LOMO: {k0_check}")
+    for c in targets:
+        print(f"  {c:<32} stored {lomo[c]['flagged_95_mean']:>6.1%}   K=0 s=5 {k0_5[c]:>6.1%}"
+              f"   K=0 s={SEEDS} {out[c]['random']['0']['mean']:>6.1%}")
 
     def mono_decline(c, mode):
         v = [out[c][mode][str(k)]["mean"] for k in ks]
@@ -199,7 +260,10 @@ def main():
 
     dest = V3 / f"negative_supplement_curve_{tag}.json"
     json.dump({"arm": tag, "K_grid": ks, "failures": failures, "comparison": comparison,
-               "k0_matches_stored_lomo": k0_check, "curves": out,
+               "k0_matches_stored_lomo": k0_check,
+               "k0_five_seed": k0_5,
+               "stored_lomo_five_seed": {c: lomo[c]["flagged_95_mean"] for c in targets},
+               "seeds": SEEDS, "stored_lomo_seeds": 5, "curves": out,
                "note_on_35": ("35's n=296 point was a random pool subsample, not the panel's "
                              "real matched negatives, so its curve answers a different question "
                              "than 'add to the existing panel'. This script fixes that by keeping "

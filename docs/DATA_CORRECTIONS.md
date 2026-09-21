@@ -1936,3 +1936,110 @@ starts from a slightly different scaled input and converges to a slightly differ
 mechanism as the HPC vs Mac drift, this time inside one machine, driven by concatenation order. The
 verdict on `src/37` is REFUTED on both machines and no downstream number moves; the committed 9/20
 artifact is restored and this observation joins the entry rather than opening a new one.
+
+---
+
+## 2026-09-21 (eighteenth entry) — A collateral-damage measurement was scored on the training positives, which reports 100% whatever the negative set does, and would have turned a partly indiscriminate attack into a clean targeted one
+
+Found while writing criterion 18 of `docs/DETECTOR_CRITERIA.md`, before the number reached a
+committed document but after it had been drafted into one.
+
+### What happened
+
+`src/37`'s canonical-arm run showed that appending 500 pool proteins chosen for similarity to
+`rip_rrna_glycosidase`, labelled benign, cut that class from 94.8% to 51.9%. The obvious follow-up
+question is whether the damage is confined to the targeted class, because a targeted suppression and
+a general degradation have completely different security readings.
+
+The first pass answered it with a scratch script that scored three quantities per negative set: the
+held-out class's recovery, the false-positive rate on the pool, and "recovery on all other
+positives", computed as `m.predict_proba(P[tri])`. That third quantity is wrong. `P[tri]` is the
+training-positive matrix: every protein in it was just used to fit the model being scored. It
+returned 99.9% for the panel-only set and 100.0% for both supplemented sets, which is not a finding
+about collateral damage but a restatement of the fact that a logistic regression separates its own
+training data.
+
+The draft text that number produced said the targeted class fell 42.9 points while **"every other
+hazard class is untouched at 100.0%"**, and concluded that targeted suppression is invisible to
+aggregate monitoring.
+
+### What the correct measurement says
+
+Held out properly, each class in its own fit exactly as `03b` does it, the collateral is large and
+often larger than the targeted damage. Under the same nearest-500 supplement aimed at rip:
+
+| quantity | in-sample (wrong) | LOMO (correct) |
+|---|---|---|
+| targeted class, rip | 51.9% | 51.9% |
+| worst other class | 100.0% ("untouched") | 78.6%, `adp_ribosyl_ab_toxin`, −21.0 pt |
+
+Swept across all 13 classes in `src/50_reference_set_poisoning.py`, the targeted drop exceeds the
+worst collateral drop on only **4 of 13** classes on the canonical arm and 2 of 13 on esm2_35M.
+Targeting `adp_ribosyl_ab_toxin` costs the target 16.7 points and costs rip 34.3. The honest
+description is broad degradation with a targeted component in a minority of classes, not a precision
+attack, and the mechanism is geometric: the per-class nearest-500 sets overlap at mean Jaccard 0.324
+and up to 0.883, spanning 1,999 distinct proteins across 6,500 slots.
+
+### Why this one is worth an entry even though nothing shipped
+
+Three reasons. The error produced a number that was **more publishable than the truth**, which is the
+direction that does not self-correct. It was caught by asking what `P[tri]` actually contained rather
+than by any check in the repository, and no gate would have caught it, because the quantity was new
+and therefore pinned to nothing. And a 100.0% that does not move when the input changes is the
+signature to look for: the first pass reported 99.9%, 100.0%, 100.0% across three quite different
+negative sets and that invariance was the available clue, read at the time as a clean result rather
+than as a dead instrument.
+
+`src/50` now carries the warning in its module docstring so the next reader meets it before the
+method, and criterion 18 leads with `cry_insecticidal` rather than rip because cry replicates on both
+arms while rip's canonical 62.9-point drop inverts on esm2_35M. The claims audit pins both arms and
+its assertion **requires** the 35M arm to be loud, so a future run that quietly made both arms
+agreeable would fail the gate instead of strengthening the claim.
+
+### A rule for when a drifted artifact is replaced and when it is restored
+
+Entry seventeen restored both re-run artifacts and said no downstream number moved. On 2026-09-21
+that stopped being true for one of them, so the two are now handled differently and the rule is
+written down rather than decided case by case.
+
+**An artifact is replaced when a public document quotes its exact values, and restored otherwise.**
+
+- `results/v3/negative_scaling_curve_esm2_650M.json` is **restored** to the HPC version. The local
+  re-run reproduced entry seventeen's signature precisely and independently: endpoints exact at
+  n=296 and n=8259, intermediates drifting +0.21, −0.10, +0.48 and −0.24 pt at n=1000 and n=3000,
+  on the two failing classes only, `rip_rrna_glycosidase` exact, verdict REFUTED either way. No
+  document quotes these numbers, so there is nothing to gain by churning the file and the earlier
+  provenance is worth keeping.
+- `results/v3/negative_supplement_curve_esm2_650M.json` is **replaced** by the local run, because
+  §10.7.2 of `docs/MECHANISM_GENERALIZATION.md` is the first document to quote this arm's table and
+  the numbers in the document have to be the numbers in the artifact. The drift reaches 0.95 pt and
+  is visible at one decimal place in 6 of 6 rows, so quoting one file's values beside the other's
+  was not an option. The file also gains four diagnostic keys that did not exist before.
+- `results/v3/negative_supplement_curve_esm2_35M.json` is replaced with zero risk: it reproduced its
+  committed curve values to 0.0000 pt on every cell and changes only by the four new keys. That
+  exact reproduction is itself the control showing `src/37` is deterministic on an unchanged
+  embedding, which is what makes the 650M drift attributable to the re-generated pool embedding and
+  the concatenation order rather than to the script.
+
+### And the K=0 check in `src/37` was comparing a 30-seed mean to a 5-seed one
+
+The script's docstring already said this, correctly, in September: `03b` publishes a five-seed mean
+and `src/37`'s `recover()` uses thirty, so the printed "K=0 matches stored LOMO" line failed on the
+failing classes every time it ran. The code was not doing what the prose said. It now recomputes K=0
+at five seeds for the comparison and reports the thirty-seed value separately, and all three classes
+pass: phage 10.0% against 10.0%, beta-lactamase 18.6% against 18.6%, rip 94.3% against 94.3%.
+
+Worth stating because it bounds how the published per-class table should be read. At 200 seeds the
+canonical arm gives phage 12.1% and beta-lactamase 20.8%, so the published five-seed 10.0% and 18.6%
+sit about two points low. Every published class value is inside the 95% interval of a five-seed mean
+around its 200-seed value, so nothing is wrong, but the intervals are wide: beta-lactamase's per-seed
+standard deviation is 11.3%, giving a five-seed mean a ±9.9 pt interval. The classification of
+beta-lactamase as a sub-25% failure is therefore **not** established by the five-seed table alone,
+whose interval reaches 28.5%. It is established at 200 seeds, where the interval is [19.2, 22.4].
+
+On esm2_35M the same recomputation is starker and it sharpens rather than weakens that arm's
+documented limitation. The published 1.4% for beta-lactamase is a low five-seed draw of a 200-seed
+mean of 4.7%, but **131 of 200 seeds return exactly zero**. So the standing caveat that this arm
+"has headroom in only one of the two failing classes" survives verification and should be stated as
+the stronger fact: a class that recovers nothing in two thirds of seeds has no room to decline, which
+is a better reason than the 1.4% point estimate that was standing in for it.
