@@ -1,0 +1,33 @@
+{
+  "accession": "Q51451",
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "device": "cpu",
+  "spurious_position": 234,
+  "residue_at_spurious": "D",
+  "trp_positions_in_precursor": [
+    71,
+    184
+  ],
+  "no_offset_can_reach": true,
+  "residues_published": [
+    146,
+    148,
+    234,
+    379,
+    381
+  ],
+  "residues_without_spurious": [
+    146,
+    148,
+    379,
+    381
+  ],
+  "ratio_published": 0.6617853427733518,
+  "ratio_without_spurious": 0.6033882814416982,
+  "delta": -0.058397061331653566,
+  "both_below_1": true,
+  "verdict_flips": false,
+  "functional_entropy_published": 1.4813930816482752,
+  "functional_entropy_without_spurious": 1.2552000069408678,
+  "verdict": "dropping the spurious position moves the ratio DOWN, so it was diluting the signal rather than creating it, and the below-1.0 verdict holds"
+}

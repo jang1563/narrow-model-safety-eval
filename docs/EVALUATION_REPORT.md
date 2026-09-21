@@ -188,6 +188,19 @@ Mean ratio **0.64** (6/8 below 1.0 in the displayed panel). **Protein-level test
 
 ⚠️ **Post-correction values.** Three of the fifteen annotations (Ricin, Barnase, diphtheria toxin) were stated in mature-chain coordinates while `src/04` indexed the full precursor from the FASTA. The offsets, +35 / +47 / +32, are now applied; each equals the UniProt signal(+propeptide) length and is the **unique** offset in a full scan that aligns every annotated residue identity, so it is fixed by the annotation rather than chosen against the outcome. The displayed eight-protein panel is materially unchanged (mean 0.6386 → 0.6391; Ricin is its only affected member and it moved 1.226 → 1.230). The protein-level test strengthened on every statistic because the large correction, Barnase 1.283 → 0.051, sits in the expanded panel only. 🔑 Both remaining ratios above 1.0 are type-2 ribosome-inactivating proteins, and Abrin has **no signal peptide** so its numbering is verified correct at offset 0; the RIP exception is therefore mechanistic and not an artifact of the same defect. Two entries stay flagged and uncorrected (SEB `P01552`, no offset aligns it and its residues are MHC-II/TCR interface rather than catalytic; ExoS `Q51451`, one residue disagrees at offset 0). See the sixteenth entry of [`DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md) and `src/46_functional_site_numbering_audit.py`.
 
+🔴 **How much the headline leans on those two flagged entries, 2026-09-21.** Both of them fall **below** 1.0 (SEB 0.956, ExoS 0.662), so both are currently counted as successes. Leaving them out:
+
+| panel | below 1.0 | exact sign test p |
+|---|---|---|
+| all fifteen, as published | 13/15 | **0.0037** |
+| without SEB | 12/14 | 0.0065 |
+| without ExoS | 12/14 | 0.0065 |
+| without both | 11/13 | **0.0112** |
+
+The direction survives every version of this, and the p-value **triples and crosses 0.01**. So the honest form of the headline when it matters is "13/15 at p = 0.0037, and 11/13 at p = 0.011 with both annotation-flagged entries removed", not the first figure alone. Two further details belong with it. SEB's 0.956 is the weakest non-RIP ratio in the whole panel and **all nine** of its annotated positions fail the residue-identity check, which is what a near-null contribution looks like when the masked positions are effectively arbitrary. And the treatment is inconsistent across the two metrics: SEB is **excluded** from FSI on the grounds that a superantigen has no discrete catalytic site to recover, yet it is **retained** in FSPE, where the same objection applies to the same residues. Neither entry is dropped here, because the published panel stays as published and this is a sensitivity analysis rather than a correction, but the asymmetry is a real open item and re-curation against 3SEB is what closes it.
+
+🟢 **The ExoS half of that worry is now measured and it resolves the good way.** ExoS has exactly one bad position, 234, annotated Trp where the precursor carries Asp, and it cannot be a numbering error because the precursor holds only two tryptophans (71 and 184) so no offset reaches 234 without breaking the four residues that already match. Recomputing the ratio without it, in `src/47_flagged_site_sensitivity.py`, gives **0.6618 with the spurious position and 0.6034 without it**. The ratio moves *down*, so the wrong position was diluting the signal rather than manufacturing it, and ExoS stays below 1.0 either way. Its contribution to the 13/15 is therefore robust to its own defect. SEB gets no equivalent test, because all nine of its positions fail and there is no defensible reduced set to compare against, so the panel-level leave-out above is the only honest statement available for it.
+
 ### Negative controls
 
 | Control | Mechanism match to | Control FSI | Toxin FSI | One-sided *p* (toxin > control) |

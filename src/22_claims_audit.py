@@ -50,12 +50,72 @@ def j(p):
 
 # ---- recomputation, from artifacts only ---------------------------------------
 
+def _sign_p(n, k):
+    return sum(math.comb(n, i) for i in range(k, n + 1)) / 2 ** n
+
+
 def fspe_protein_level():
     d = j("fspe_results.json")
     r = np.array([x["fspe_ratio"] for x in d["per_protein"]], float)
     n, k = len(r), int((r < 1).sum())
-    p_sign = sum(math.comb(n, i) for i in range(k, n + 1)) / 2 ** n
-    return {"n": n, "below_1": k, "sign_p": p_sign}
+    return {"n": n, "below_1": k, "sign_p": _sign_p(n, k)}
+
+
+def fspe_flagged_leaveout():
+    """How much the protein-level headline rests on the two annotation-flagged entries.
+
+    SEB and ExoS both sit BELOW 1.0, so both are counted as successes by the published 13/15, and
+    both have positions that fail the residue-identity check: all nine of SEB's, and one of ExoS's
+    five. The headline should therefore be quotable with its leave-out value attached, which is what
+    this pins. The direction survives every subset; the p-value roughly triples and crosses 0.01, so
+    the number that must not drift is the both-removed one.
+    """
+    d = j("fspe_results.json")
+    rows = {(x.get("uniprot_id") or x.get("accession")): x["fspe_ratio"] for x in d["per_protein"]}
+    flagged = sorted(k for k, x in
+                     ((x.get("uniprot_id") or x.get("accession"), x) for x in d["per_protein"])
+                     if x.get("numbering_flagged"))
+
+    def sub(drop):
+        vals = [v for a, v in rows.items() if a not in drop]
+        n, k = len(vals), sum(1 for v in vals if v < 1.0)
+        return {"n": n, "below_1": k, "sign_p": _sign_p(n, k)}
+
+    full, both = sub(set()), sub(set(flagged))
+    return {"flagged": flagged,
+            "flagged_ratios": {a: rows[a] for a in flagged},
+            "flagged_all_below_1": all(rows[a] < 1.0 for a in flagged),
+            "full": full, "without_both": both,
+            "each": {a: sub({a}) for a in flagged},
+            "direction_survives": both["below_1"] * 2 > both["n"],
+            "p_inflation": both["sign_p"] / full["sign_p"]}
+
+
+def q51451_site_sensitivity():
+    """The one spurious ExoS position, and whether the headline leans on it.
+
+    Optional artifact: `src/47` needs torch, so a missing file returns None rather than failing the
+    release-surface job. When present the check is strict, and the load-bearing part is the
+    cross-artifact tie: the script's published-residue ratio must equal the value the pipeline itself
+    recorded for this protein, otherwise the sensitivity was measured on a different computation than
+    the one the headline uses.
+    """
+    d = j("v3/flagged_site_sensitivity.json")
+    if not d:
+        return None
+    fspe = j("fspe_results.json")
+    pipeline = {(x.get("uniprot_id") or x.get("accession")): x["fspe_ratio"]
+                for x in fspe["per_protein"]}.get(d["accession"])
+    return {"accession": d["accession"], "spurious": d["spurious_position"],
+            "residue_at_spurious": d["residue_at_spurious"],
+            "trp_positions": d["trp_positions_in_precursor"],
+            "no_offset_can_reach": d["no_offset_can_reach"],
+            "ratio_published": d["ratio_published"],
+            "ratio_without": d["ratio_without_spurious"],
+            "delta": d["delta"], "moves_down": d["delta"] < 0,
+            "both_below_1": d["both_below_1"], "verdict_flips": d["verdict_flips"],
+            "matches_pipeline": pipeline is not None
+            and abs(d["ratio_published"] - pipeline) < 1e-6}
 
 
 def separability():
@@ -1371,6 +1431,30 @@ CLAIMS = [
       "huggingface/README.md": "sign test p = 0.0037",
       "docs/EVALUATION_REPORT.md": "sign test p = 0.0037"},
      ["12/15 below 1.0", "sign test p = 0.018"]),
+    # Both flagged entries are counted as successes by the headline, so the leave-out value is part
+    # of the claim rather than a footnote to it. 11/13 is exactly 92/8192, so the tolerance is tight.
+    ("the FSPE headline's dependence on the two annotation-flagged entries", fspe_flagged_leaveout,
+     lambda v: (v["flagged"] == ["P01552", "Q51451"] and v["flagged_all_below_1"]
+                and v["full"]["n"] == 15 and v["full"]["below_1"] == 13
+                and v["without_both"]["n"] == 13 and v["without_both"]["below_1"] == 11
+                and abs(v["without_both"]["sign_p"] - 0.01123) < 1e-4
+                and all(s["n"] == 14 and s["below_1"] == 12 for s in v["each"].values())
+                and v["direction_survives"] and 2.5 < v["p_inflation"] < 3.5),
+     {"docs/EVALUATION_REPORT.md": "11/13 at p = 0.011 with both annotation-flagged entries removed"},
+     []),
+    # The worry was that a known-bad masked position was manufacturing ExoS's below-1.0 verdict. It
+    # was doing the reverse. Pinned because a robustness result that resolves the convenient way is
+    # exactly the kind that gets quoted loosely later.
+    ("the spurious ExoS position dilutes its ratio rather than creating it", q51451_site_sensitivity,
+     lambda v: v is None or (v["accession"] == "Q51451" and v["spurious"] == 234
+                             and v["residue_at_spurious"] == "D"
+                             and v["trp_positions"] == [71, 184] and v["no_offset_can_reach"]
+                             and abs(v["ratio_published"] - 0.6618) < 5e-4
+                             and abs(v["ratio_without"] - 0.6034) < 5e-4
+                             and v["moves_down"] and v["both_below_1"]
+                             and not v["verdict_flips"] and v["matches_pipeline"]),
+     {"docs/EVALUATION_REPORT.md":
+      "0.6618 with the spurious position and 0.6034 without it"}, []),
     ("FSPE pseudoreplicated figure is labelled, not led with", fspe_protein_level,
      lambda v: True, {}, ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
     ("Embedding separability AUROC", separability,
