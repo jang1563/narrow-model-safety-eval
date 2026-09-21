@@ -1285,11 +1285,21 @@ def negative_set_at_fixed_budget():
 
 
 def pool_contamination_changes_one_class():
-    """§10.9.1: the iso-FP control under both reservation splits. The name-disjoint split is what
-    removes beta-lactamase's apparent excess entirely, so both splits are pinned and the direction of
-    the contamination bias is pinned with them."""
+    """§10.9.1: the iso-FP control under both reservation splits, on BOTH arms.
+
+    The name-disjoint split removes beta-lactamase's apparent excess entirely on the canonical arm,
+    so both splits are pinned there and the direction of the contamination bias is pinned with them.
+
+    🔴 The zero is canonical-only and the second arm is pinned to say so. On esm2_35M the same
+    name-disjoint run gives beta-lactamase +0.0, +2.9, -9.3, -25.2, -25.0, so the +2.9 at K=500 clears
+    that arm's 1.43-point granularity floor and "no dose at all" is false there. What survives is the
+    verdict rather than the number: `40` scores that point OFF-BUDGET because the hard-negative
+    false-positive rate goes 4.2% to 9.7% to buy it. The assertion therefore REQUIRES the small arm to
+    have a positive dose and to be off-budget, so a future edit cannot quietly present the canonical
+    zero as a replicated result."""
     r = j("v3/fixed_background_operating_point_esm2_650M.json")
     n = j("v3/fixed_background_operating_point_esm2_650M_namedisjoint.json")
+    m = j("v3/fixed_background_operating_point_esm2_35M_namedisjoint.json")
     def net(d, cl):
         return d["summary"][cl]["excess_net_pts"]
     nd = n["curves"]["beta_lactamase"]
@@ -1306,7 +1316,18 @@ def pool_contamination_changes_one_class():
             "beta_nd_worst_pts": min(nd[k]["excess_net"]["mean"] for k in doses) * 100,
             "rip_net_nd": net(n, "rip_rrna_glycosidase"),
             "phage_fp_ratio_nd": n["summary"]["phage_peptidoglycan_hydrolase"]["fp_hard_ratio"],
-            "nd_verdict_split": n["verdict"].startswith("SPLIT")}
+            "nd_verdict_split": n["verdict"].startswith("SPLIT"),
+            # second arm, same split, same class
+            "arm2": m["arm"], "arm2_split": m["split"],
+            "arm2_beta_net_nd": m["summary"]["beta_lactamase"]["excess_net_pts"],
+            "arm2_beta_best_K": m["summary"]["beta_lactamase"]["best_K_by_excess"],
+            "arm2_beta_floor_pts": m["summary"]["beta_lactamase"]["granularity_floor_pts"],
+            "arm2_beta_verdict": m["summary"]["beta_lactamase"]["verdict"],
+            "arm2_beta_fp_ratio": m["summary"]["beta_lactamase"]["fp_hard_ratio"],
+            "arm2_beta_recovery_K0": m["summary"]["beta_lactamase"]["recovery_K0"],
+            "arm2_beta_all_doses_negative": all(
+                m["curves"]["beta_lactamase"][k]["excess_net"]["mean"] < 0 for k in doses),
+            "zero_replicates": abs(m["summary"]["beta_lactamase"]["excess_net_pts"]) < 1e-9}
 
 
 def v3_arm_seed_stability():
@@ -2247,7 +2268,7 @@ CLAIMS = [
      {"docs/MECHANISM_GENERALIZATION.md":
       "**At a fixed 5.1% false-positive rate on matched negatives, the pool helps exactly one class.**"},
      []),
-    ("removing the pool's name redundancy removes beta-lactamase's apparent excess entirely",
+    ("name redundancy removes beta-lactamase's excess on the canonical arm, not on both",
      pool_contamination_changes_one_class,
      lambda v: (v["random_split"] == "random" and v["nd_split"] == "name-disjoint"
                 and v["nd_name_groups"] == 3550
@@ -2255,9 +2276,21 @@ CLAIMS = [
                 and 3 < v["beta_net_random"] < 4 and abs(v["beta_net_nd"]) < 1e-9
                 and v["beta_nd_best_K"] == 0 and v["beta_nd_all_doses_negative"]
                 and v["beta_nd_worst_pts"] < -30
-                and abs(v["rip_net_nd"]) < 1e-9 and v["nd_verdict_split"]),
+                and abs(v["rip_net_nd"]) < 1e-9 and v["nd_verdict_split"]
+                # the second arm must NOT reproduce the zero, and must be off-budget instead
+                and v["arm2"] == "esm2_35M" and v["arm2_split"] == "name-disjoint"
+                and not v["zero_replicates"]
+                and not v["arm2_beta_all_doses_negative"]
+                and v["arm2_beta_best_K"] == 500
+                and v["arm2_beta_net_nd"] > v["arm2_beta_floor_pts"]
+                and v["arm2_beta_verdict"] == "OFF-BUDGET"
+                and v["arm2_beta_fp_ratio"] > 2.0
+                and v["arm2_beta_recovery_K0"] < 0.05),
      {"docs/MECHANISM_GENERALIZATION.md":
-      "Beta-lactamase's +3.1 was the contamination."}, []),
+      "Beta-lactamase's +3.1 was the contamination.",
+      # the arm qualifier itself, on both public surfaces that carry the dose curve
+      "docs/DETECTOR_CRITERIA.md":
+      "On esm2_35M the same name-disjoint run gives **+0.0, +2.9, -9.3, -25.2,"}, []),
     ("on v3 the arms genuinely separate at 30 seeds, and two 5-seed ties dissolve",
      v3_arm_seed_stability,
      lambda v: (v["seeds"] == 30 and v["n_arms"] == 5

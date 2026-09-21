@@ -2310,6 +2310,26 @@ phage class loses about 3 points to the same correction and keeps the rest. The 
 before it ran said the bias flatters large K and that an R2 verdict would be safe against it while an R1
 verdict would not; that is what happened, on the class where it mattered.
 
+⚠️ **That table is the canonical 650M arm, and the second arm does not reproduce its zero. Added
+2026-09-21, because criterion 7 applies to this finding as much as to any other.** `40` also ran
+name-disjoint on esm2_35M, and there beta-lactamase's dose curve is **+0.0, +2.9, −9.3, −25.2, −25.0**.
+The +2.9 at K=500 is above that arm's 1.43-point granularity floor, so "its best dose is no dose at all"
+is a canonical-arm statement and is false on esm2_35M.
+
+What replicates is the conclusion rather than the number, and it replicates because of the budget rather
+than the excess. `40` classes that esm2_35M point **OFF-BUDGET**: the hard-negative false-positive rate
+goes 4.2% → 9.7% to buy it, a ratio of 2.3. So on neither arm does beta-lactamase earn a within-budget
+gain from a larger benign set. On the canonical arm every positive dose is negative outright; on
+esm2_35M one dose is positive and is paid for by more than doubling the false-positive rate on hard
+negatives.
+
+⚠️ And the esm2_35M figure is weak in both directions, so it should not be read as a refutation either.
+That arm's beta-lactamase recovery at K=0 is **2.1%**, essentially floored, which is the same reason
+`src/37` and `src/49` record that esm2_35M cannot do per-class work for this class. A +2.9-point excess
+measured up from a 2.1% floor is not comparable to a measurement made where the class has headroom. The
+honest form is: the canonical arm says zero, the small arm says 2.9 off-budget from a floored baseline,
+and neither credits the class with a real gain.
+
 ⚠️ **One thing this does not explain is why the two classes differ at all.** The obvious candidate, that
 the pool contains homologs of one class and not the other, is measured and refuted in §10.9: zero pool
 proteins reach the panel's 0.30 admission threshold against either, with maxima of 0.115 and 0.105. The

@@ -248,6 +248,16 @@ between 11.1% and 14.5% while the nominal budget still read 5%. Under a
 name-disjoint split beta-lactamase's best dose is no dose at all: +0.0 at K=0,
 and -6.4, -8.8, -24.0, -31.7 above it.
 
+⚠️ Those dose figures are the canonical 650M arm, and criterion 7 below applies
+to them. On esm2_35M the same name-disjoint run gives **+0.0, +2.9, -9.3, -25.2,
+-25.0**, so the +2.9 at K=500 clears that arm's 1.43-point granularity floor and
+"no dose at all" does not hold there. The conclusion survives through the budget
+rather than the excess: that point is scored **OFF-BUDGET**, because the
+hard-negative false-positive rate goes 4.2% to 9.7% to buy it. Neither arm credits
+the class with a within-budget gain, which is the claim that matters, and the small
+arm's number is itself weak because its beta-lactamase baseline is 2.1% and
+effectively floored.
+
 So the defensible statement is neither "curating negatives repairs hard
 classes" nor "curating negatives does not help". It is that the intervention is
 **per class with a sign that has to be measured**, and that the same change
