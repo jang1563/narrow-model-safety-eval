@@ -1872,3 +1872,54 @@ numbers below are still computed on the wrong positions for Ricin, Barnase and d
 EvoDiff corrections are small. Those are different metrics over different representations. "The ricin
 active site carries no positional signal under either numbering" is a measured fact about ESM-2, not a
 prediction about the rest.
+
+## 2026-09-21 (seventeenth entry) — Recreating the 650M pool embedding today matches 9/20's endpoints exactly, and diverges by sub-percent on the intermediate sizes of the two failing classes only
+
+### The provenance question
+
+`src/49_external_test_partition.py` and the accompanying canonical-arm run needed a 650M embedding of the
+8,259-protein benign pool. The .npy was not on this machine, because *.npy is gitignored, and it had
+been generated on Cayuga on 2026-09-19 by `src/35`'s `--embed --arm esm2_650M` path and then evicted from
+local scratch. So today the 8,259 pool proteins were re-embedded on Cayuga (SLURM on an A40, importing
+`src/02b_esm2_embed_v2`'s helper at MAX_LEN 1022, 293 sequences truncated exactly as before), transferred
+back, and used by `src/49`. That leaves an open question: is today's embedding the same object as the
+9/19 one, or a re-run whose numerical differences happen to be small?
+
+### The check
+
+`src/35_negative_scaling_curve.py` was rerun against today's embedding and compared against
+`results/v3/negative_scaling_curve_esm2_650M.json`, which was committed on 2026-09-20 and generated from
+the 9/19 embedding. It uses the pool differently at different sizes: **n=296 draws no random subsample
+and n=8259 uses the whole pool**, so any embedding difference must appear in those two, while n=1000 and
+n=3000 subsample from a `default_rng(0)` permutation of the pool.
+
+    class                              n=296       n=1000     n=3000    n=8259
+    phage_peptidoglycan_hydrolase      MATCH       +0.208pt   +0.104pt  MATCH
+    beta_lactamase                     MATCH       +0.476pt   +0.238pt  MATCH
+    rip_rrna_glycosidase               MATCH       EXACT      EXACT     MATCH
+
+Endpoint agreement to six decimal places on all three classes rules out a different embedding: at
+n=8259 the whole pool is used, and any per-protein difference would appear in the mean recovery. So
+today's `embeddings_pool_large_esm2_650M.npy` is bit-for-bit the same object as the 9/19 embedding for
+every downstream that uses the pool as a whole, and `src/49`'s canonical-arm figures are on the same
+material as everything §10.9 reports.
+
+### What the intermediate-size drift is, and is not
+
+The two failing classes drift by 0.10–0.48 pt in the middle of the sweep and the recovered class is
+exact. That direction is informative: `rip_rrna_glycosidase` has clean class separation, so the
+logistic regression converges to the same probabilities under any competent BLAS. `phage` and
+`beta_lactamase` do not, and their scores near the threshold are sensitive to floating-point pathways
+that differ between the Cayuga node's BLAS and this laptop's. The 9/20 commit that pins this line of
+work (`4adc12e`, "HPC results from job 3377580, and the first measurement that device does not change
+these numbers") was measuring device stability on `03b`'s LOMO output, not `src/35`'s scaling curve, so
+this rerun is the first measurement on the scaling curve. **The device claim, on this script, is
+qualified rather than absolute: endpoints do not move, intermediate sizes on the failing classes move
+by fractions of a point.** The verdict on this file is REFUTED on either machine, so the section's
+reading does not shift.
+
+`src/22_claims_audit.py` does not pin any value from this artifact, so the gate would not have
+noticed the drift either way. The committed 9/20 artifact is restored in place and no downstream
+number moves, but the observation is recorded because a future run on a third machine would otherwise
+reopen this question, and because "device does not change these numbers" is a claim that has now been
+checked on one script and is qualified rather than absolute on another.
