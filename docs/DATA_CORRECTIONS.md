@@ -1677,3 +1677,198 @@ concentration of sensitivity in the low-recovery classes, so neither half can be
 ⚠️ `03b` is **not** changed. Rewriting the protocol would invalidate every published number for a defect
 that the m=118 bracket shows costs under a point. The three-way split belongs in the next panel, not
 retrofitted to this one.
+
+---
+
+## 2026-09-20 (sixteenth entry) — Three FSPE annotations were in mature-chain coordinates while the pipeline indexed the precursor, and the audit that named this risk installed its guard on the other pathway
+
+### The defect
+
+`functional_sites.json` stores `catalytic_residues` for each panel protein. **Twelve scripts read that
+one field, and they do not agree on what the numbers mean.** They split into two groups:
+
+**Sequence-position consumers** — index the FASTA in `data/sequences/toxins_positive*.fasta` with
+`r - 1`, so a mature-chain number silently lands on an unrelated residue:
+
+| script | metric | state |
+|---|---|---|
+| `04_esm2_masked_prediction.py` | FSPE (ESM-2) | 🟢 fixed and re-run |
+| `14_esm3_separability_fspe.py` | FSPE (ESM-3, SaProt) | 🟢 code fixed, ⚠️ results **not** re-runnable here |
+| `15_sae_fhs.py` | FHS (SAE) | 🟢 code fixed, ⚠️ results **not** re-run |
+| `13_evodiff_fsi.py` | EvoDiff site recovery | 🟢 code fixed, ⚠️ results **not** re-run |
+| `utils.py::get_functional_residues()` | public helper | 🔴 handed out raw numbers with a docstring promising "1-indexed residue positions" and no coordinate caveat. Zero callers, so it never fired: a loaded gun, not a wound. Now documented and superseded. |
+
+**PDB-numbering consumers** — resolve against `pdb_residues` / the structure, and are unaffected:
+`06_proteinmpnn_redesign.py` (FSI, and the only one that ever had the identity guard),
+`10_fsi_temperature_sensitivity.py`, `11_esmfold_validation.py`, `12_ligandmpnn_fsi.py`,
+`17_stepping_stone.py`.
+
+⚠️ Three of those five prefer `pdb_residues` and **silently fall back** to `catalytic_residues`
+(`info.get("pdb_residues", fs["catalytic_residues"])`). Three entries carry `use_pdb_numbering: true`
+with **no** `pdb_residues` to fall back to (Abrin, Tetanus LC, Streptolysin O). All three are verified
+clean at offset 0, so nothing is currently wrong through that door, but the door is open.
+
+Those FASTA records are full **precursors**. For a secreted toxin the structural literature numbers
+residues on the **mature chain**, and three entries were curated straight from that literature:
+
+| Accession | Protein | Annotated | UniProt boundary | Indexed as | Should be |
+|---|---|---|---|---|---|
+| `P02879` | Ricin A-chain | 80, 123, 177, 180, 211 | Signal 1-35, Chain 36-302 | those positions in the 576-aa precursor | **+35** → 115, 158, 212, 215, 246 |
+| `P00648` | Barnase | 27, 73, 83, 87, 102 | Signal 1-34 + Propeptide 35-47, Chain 48-157 | ditto, 157-aa precursor | **+47** → 74, 120, 130, 134, 149 |
+| `P00588` | Diphtheria toxin | 21, 65, 148 | Signal 1-32, Chain 33-225 (fragment A) | ditto, 567-aa precursor | **+32** → 53, 97, 180 |
+
+So for four months every sequence-position consumer masked five residues of Ricin, five of Barnase and
+three of diphtheria toxin at positions that were **not** the annotated catalytic residues, and reported
+the resulting entropy ratio as the model's confidence at functional sites.
+
+🔑 The count is the point. The 2026-05-21 audit read this field as having two consumers and guarded one.
+It actually had twelve consumers in two coordinate systems, five of them indexing sequences. A field
+whose meaning varies per entry needs one resolver, not a convention that each caller is trusted to
+remember.
+
+### Why it survived the audit that was looking for it
+
+`docs/FSI_NUMBERING_AUDIT.md` (2026-05-21) is not silent on this. It states the mechanism outright:
+"FSI is unaffected (it uses `pdb_residues`), but **FSPE and FHS use `catalytic_residues` as sequence
+positions**." It then acted on that sentence for exactly one protein, Anthrax PA, and its scope line
+reads "the 8 structures with computed FSI values" against an FSPE panel of 15. Three things followed:
+
+1. 🔴 **Ricin was declared "clean, 5/5."** True in 2AAI, whose A-chain is numbered on the mature
+   chain, so the FSI lookup succeeds on the same numbers that fail in the FASTA. One word, correct in
+   its declared scope, read as global.
+2. 🔴 **Barnase and diphtheria toxin were never examined at all.** Neither has an FSI entry, so both
+   sat outside the audit's scope by construction.
+3. 🔴 **Recommendation 4's loud-failure identity check went into `06` only.** The FSPE pathway, named
+   in the audit's own text as the one that reads these numbers as sequence positions, got no check.
+
+🔑 The sharpest illustration is that the audit's repairs **split two homologs into different
+conventions**. Abrin and Ricin are both type-2 RIPs with the same catalytic tetrad, and the abrin
+annotation was explicitly derived by parallel to ricin. Abrin was flagged, so on 2026-05-22 it was
+re-curated to `[74, 113, 164, 167, 198]` in UniProt/precursor numbering. Ricin was called clean, so it
+kept mature numbering. The two ended up on opposite coordinate systems by way of a correction.
+
+### What the offsets rest on, since the correction favours the project's own claim
+
+Every corrected statistic moved in the direction the report argues for, so the offsets need to be
+fixed by something other than the outcome. Two independent criteria, neither of which is FSPE:
+
+- **Residue identity, and it is unique.** Scanning every offset from 0 to the end of each sequence,
+  the number that aligns *all* annotated identities is **+35 alone for Ricin (5/5), +47 alone for
+  Barnase (5/5), +32 alone for diphtheria toxin (3/3)**. No alternative offset produces a full match.
+- **It equals the UniProt feature boundary.** Each offset is exactly the signal (or signal +
+  propeptide) length that precedes the mature chain, fetched from UniProt, not inferred.
+
+An offset chosen to improve a ratio would be fitting. An offset over-determined by residue identity
+and independently equal to a database boundary is not available for fitting. `src/46` records both.
+
+### What changed
+
+| Quantity | Before | After |
+|---|---|---|
+| Ricin `P02879` ratio | 1.226 | **1.230** (r −0.58 → −0.72) |
+| Barnase `P00648` ratio | 1.283 | **0.051** (p 0.616 → **0.0004**) |
+| Diphtheria `P00588` ratio | 0.955 | **0.562** (p 0.177 → 0.058) |
+| Expanded panel mean (n=15) | 0.546 | **0.437** |
+| Ratios below 1.0 | 12/15 | **13/15** |
+| Protein-level sign test | p = 0.018 | **p = 0.0037** |
+| Sign-flip permutation | p = 0.0010 | **p = 0.0002** |
+| Residue-pooled Mann-Whitney | p = 2.6 × 10⁻⁸, r = 0.41 | **p = 4.5 × 10⁻¹⁰, r = 0.46** |
+| Per-protein significant at p < 0.05 | 8/15 | **9/15** (Barnase gained; none lost) |
+
+🟢 **The displayed eight-protein headline panel is materially unchanged**, mean 0.6386 → 0.6391, still
+6/8 below 1.0. Ricin is its only affected member and Ricin barely moved. The strengthening is entirely
+in the expanded panel and the protein-level test, because Barnase, the large correction, is not in the
+displayed table. Anyone quoting the headline number was quoting a number the defect did not touch.
+
+⚠️ The other twelve proteins agree between the pre- and post-correction runs to within **2.1 × 10⁻⁶**,
+which is the forward-pass floating-point floor, not a change. Ricin's +3.9 × 10⁻³ is three orders
+above that floor, so it is a real move on genuinely different residues that happens to land in the
+same place: ESM-2 has no positional signal on the ricin A-chain active site under either numbering.
+
+🔑 **The RIP exception survives the correction and is now mechanistic.** The two ratios still above
+1.0 are Ricin (1.230) and Abrin (1.073), both type-2 ribosome-inactivating proteins. Abrin has **no
+signal peptide** in UniProt, its chain starts at residue 1, so its numbering is verified correct at
+offset 0 and cannot be explained away by this defect. Two independent RIPs, one with confirmed-clean
+annotation, both showing no functional-site confidence, is a property of the mechanism class rather
+than a curation artifact. This is consistent with the RIP class behaving separately elsewhere in the
+panel and should be read as a finding, not as residual error.
+
+### Two entries are flagged and deliberately not corrected
+
+- 🔴 **SEB `P01552`.** No offset works. All nine annotated identities are parsed and all nine
+  are scored, and **0 of 9 match at offset 0**; sweeping offsets 0-60 the best any offset
+  reaches is 3 of 9, tied between two different offsets (+6 and +60), so there is no unique
+  candidate of the kind that fixed the three entries above. Separately, SEB is a superantigen with no catalytic site, and these are MHC-II and
+  TCR-Vβ **interface** residues, so `catalytic_residues` is the wrong field for this entry whatever the
+  numbering. The 2026-05-21 audit's recommendation 1 asked for SEB re-curation; the resolution instead
+  added `exclude_from_fsi`. That removed it from one consumer of the field and left it in the other,
+  which is the same asymmetry as the rest of this entry. It is still **run at offset 0**, so its
+  published 0.956 is unchanged and the corrected run isolates the three repaired entries; its
+  contribution to the pooled statistic is unverified rather than corrected.
+- 🔴 **ExoS `Q51451`.** 4 of 5 identities match at offset 0 (Arg146, Leu148, Glu379, Glu381), and
+  offset 0 is also the **best** offset over the whole 0-60 sweep, so this entry is *not*
+  mature-numbered and needs no offset. Position 234 is annotated Trp but the precursor
+  carries Asp, and 1HE1 resolves only the GAP domain so it cannot adjudicate. Left in place and
+  flagged rather than guessed. This entry is already recorded as mislabelled by the twelfth entry.
+- ⚠️ **VacA `P55981`, documentation only.** Its `catalytic_residues` is deliberately empty (a
+  pore-forming channel with no classical active site), so `src/04` skips it and no number depends on
+  it. Two keys inside `residue_annotations` are nonetheless mature-numbered; both are explicitly
+  labelled "not catalytic" and are never read. Left as-is. An audit pass that reads
+  `residue_annotations` rather than `catalytic_residues` will flag this entry as broken; it is not.
+
+### Fix
+
+`functional_sites.json` carries an explicit `precursor_offset` per entry, with the UniProt boundary and
+the verified match count in a sibling note, plus `_numbering_flag` on the three entries above. The
+annotated numbers are **left in the cited reference's coordinates** rather than rewritten, so every
+position can still be checked against the paper it came from. The offset is applied at index time by one
+shared resolver in `utils.py`, and `src/04` records `precursor_offset`, `residues_annotated`,
+`residues_indexed` and `numbering_flagged` on each result.
+
+**One resolver, not a convention.** The missing half of recommendation 4 is installed in `utils.py`, not
+in one script. `sequence_functional_positions()` applies `precursor_offset`, calls
+`check_residue_identities()` and reports the `_numbering_flag` state; all four sequence-position
+consumers (`src/04`, `src/13`, `src/14`, `src/15`) now go through it, so they cannot drift apart again,
+and `get_functional_residues()` carries a docstring that names the coordinate hazard and points here. The
+guard parses the expected amino acid out of `residue_annotations` and prints `WARNING: RESIDUE MISMATCH`
+for any scored position whose identity does not land where the pipeline indexes it. On the corrected
+panel it fires on exactly `P01552` (9/9) and `Q51451` (1/5) and is silent on the other thirteen, and it
+is **print-only**: max |delta| between the pre- and post-guard runs is 0.00e+00. The helper reproduces
+`src/04`'s recorded provenance for 15/15 proteins, and the provenance fields stay in `main()` rather than
+inside `evaluate_protein_fspe()` because `src/46` imports that function for the bit-identical recompute.
+
+`src/46` carries the offset derivation, the uniqueness scan (`offset_uniqueness()`, the anti-p-hacking
+check described above) and the recompute. 🔴 It also had a bug of its own, introduced by this fix: it
+read `published_ratio` from `fspe_results.json`, which this correction rewrote, so it would have compared
+the fix against itself and reported no change. It now reads
+`fspe_results_PRE_NUMBERING_FIX_2026_05_22.json` explicitly. Its module docstring separately claimed the
+five mis-numbered proteins were "exactly the five weakest" in the published panel. 🔴 That is **false**
+and is corrected in place: the mis-numbered set is ranks 1, 2, 4, 5 and 6, skipping rank 3 (Abrin, clean
+5/5) and reaching past the weakest five. The gap at rank 3 is what makes the RIP finding above survive.
+
+**Artifacts regenerated** from the corrected `fspe_results.json`, each with a `*_PRE_NUMBERING_FIX*`
+sibling so the change is reproducible in both directions: `fspe_results.json`,
+`fspe_protein_level_test.json`, `mdrp_risk_table.json` (`fspe_esm2` column) and
+`evaluation_report.json`. Hand-curated files updated in lockstep, following the precedent set by the
+2026-06-04 entry: `README.md`, `docs/EVALUATION_REPORT.md`, `docs/BIOHUB_RESEARCH_BRIEF.md`,
+**`huggingface/README.md`** (the public model card) and **`results/summary_risk_table.csv`** (the public
+Hugging Face dataset preview, which had Ricin at 1.226 / p 0.9788 and now reads 1.230 / 0.9952). The
+model card was the one I missed on the first pass, which is the third time that file has needed a
+separate sweep; the 2026-06-04 rule that it moves with the other two is not yet a habit.
+
+### 🔴 Still wrong, and why it cannot be fixed here
+
+The code is fixed for all four sequence consumers, but only ESM-2 could be re-run on this machine. The
+numbers below are still computed on the wrong positions for Ricin, Barnase and diphtheria toxin and
+**must not be quoted** until regenerated:
+
+| artifact | blocker |
+|---|---|
+| `results/esm3_fspe_results.json`, and the `fspe_esm3` / `fspe_saprot` columns of `mdrp_risk_table.json` | the `esm` package is not installed here; SaProt additionally needs Foldseek 3Di preprocessing on the cluster |
+| `results/fhs_results.json`, and the `fhs` column | needs the SAE. Independently, `docs/EVALUATION_REPORT.md` already records FHS as non-reproducible because the fallback SAE trains without a seed, so a re-run would move these numbers for a second, unrelated reason. FHS was already labelled a direction of work rather than a measurement; this is the second reason not to quote it. |
+| `results/fsi_evodiff_results.json`, Ricin row only | needs EvoDiff. Barnase and diphtheria toxin have no EvoDiff run, so Ricin is the only affected row. |
+
+⚠️ Ricin's ESM-2 correction was +0.004, and that is **not** a reason to assume the ESM-3, SaProt, FHS and
+EvoDiff corrections are small. Those are different metrics over different representations. "The ricin
+active site carries no positional signal under either numbering" is a measured fact about ESM-2, not a
+prediction about the rest.

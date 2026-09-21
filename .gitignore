@@ -79,6 +79,13 @@ data/sequences/_*_fetch.json
 # manifest's maintenance_notes, which is tracked. Named explicitly rather than
 # widening the glob, so a future artifact cannot be ignored by accident.
 data/sequences/_small_class_expansion.json
+# The v3 equivalents of the same two record classes. Both are regenerable:
+# _nonanimal_class_expansion.json from src/27, _scaled_negative_pool.json from
+# src/34, and the pool's tallies that anything cites are in src/36's tracked
+# output. The pool is also 6.3 MB of Swiss-Prot sequence, which is a mirror of a
+# public database rather than a release artifact.
+data/sequences/_nonanimal_class_expansion.json
+data/sequences/_scaled_negative_pool.json
 
 # Superseded: computed on the 91-negative panel, kept locally for provenance only.
 results/v2/*_smoke150M.json

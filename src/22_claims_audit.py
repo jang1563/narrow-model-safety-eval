@@ -39,7 +39,8 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 R = ROOT / "results"
 PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
-          "docs/ARCHITECTURE.md", "docs/MECHANISM_GENERALIZATION.md"]
+          "docs/ARCHITECTURE.md", "docs/MECHANISM_GENERALIZATION.md",
+          "docs/DETECTOR_CRITERIA.md"]
 
 
 def j(p):
@@ -70,19 +71,102 @@ def fsi_aggregate():
             "n": d["aggregate"]["n_structures"]}
 
 
+def _fspe_pre_and_post():
+    """Current FSPE ratios, the pre-numbering-fix snapshot, and which proteins actually moved.
+
+    The snapshot is what makes the numbering fix auditable: without it the corrected file can only
+    be compared against itself. `noise` is set two orders of magnitude above the forward-pass
+    nondeterminism measured on this panel (1e-7 to 2.1e-6), so "moved" means re-masked, not re-run.
+    Accessions are read by direct subscript rather than through a `.get(...) or .get(...)` hedge, so
+    an artifact that renames the key fails the gate instead of quietly matching None against None.
+    """
+    cur = j("fspe_results.json")["per_protein"]
+    pre = {e["uniprot_id"]: e["fspe_ratio"]
+           for e in j("fspe_results_PRE_NUMBERING_FIX_2026_05_22.json")["per_protein"]}
+    noise = 1e-4
+    moved = sorted(e["uniprot_id"] for e in cur
+                   if abs(e["fspe_ratio"] - pre[e["uniprot_id"]]) > noise)
+    return cur, pre, moved, noise
+
+
 def flip_count():
-    rows = json.load(open(ROOT / "data/sequences/mdrp_risk_table.json"))["proteins"] \
-        if (ROOT / "data/sequences/mdrp_risk_table.json").exists() else j("mdrp_risk_table.json")["proteins"]
+    """Cross-model FSPE sign flips, counted only on the rows where the comparison is still legitimate.
+
+    The 2026-05-22 numbering fix re-ran ESM-2 alone. ESM-3 and SaProt still hold values computed
+    with mature-chain positions masked on a precursor, so on the three proteins carrying a
+    `precursor_offset` this table now compares one corrected column against two stale ones. The
+    published "3 of 12" was true of the pre-fix table, and the "4 of 12" the current file would
+    produce is a mixed-numbering artifact: neither is a statement anyone can make today. So the
+    count is reported on the nine rows where no column moved, with the other three named as
+    indeterminate until ESM-3 and SaProt are re-run. The moved set is derived from the FSPE
+    snapshots and cross-checked against the annotation offsets, so re-running one model cannot
+    quietly shrink the indeterminate set while leaving this claim passing.
+    """
+    rows = j("mdrp_risk_table.json")["proteins"]
+    _, pre, _, noise = _fspe_pre_and_post()
+    moved = {r["uniprot_id"] for r in rows
+             if abs(r["fspe_esm2"] - pre[r["uniprot_id"]]) > noise}
     cols = ["fspe_esm2", "fspe_esm3", "fspe_saprot"]
     side = lambda v: ">1" if v > 1 else "<1"          # noqa: E731
-    n = 0
-    for r in rows:
-        av = [r.get(c) for c in cols]
-        av = [v for v in av if v is not None]
-        if len(av) >= 2 and len({side(v) for v in av}) > 1:
-            n += 1
-    return {"flips": n, "n_rows": len(rows)}
 
+    def flips(subset):
+        n = 0
+        for r in rows:
+            if r["uniprot_id"] not in subset:
+                continue
+            av = [v for v in (r.get(c) for c in cols) if v is not None]
+            if len(av) >= 2 and len({side(v) for v in av}) > 1:
+                n += 1
+        return n
+
+    ids = {r["uniprot_id"] for r in rows}
+    return {"n_rows": len(rows), "indeterminate": sorted(moved),
+            "comparable_rows": len(ids - moved), "comparable_flips": flips(ids - moved),
+            "all_rows_flips_do_not_quote": flips(ids),
+            "max_comparable_delta": max(abs(r["fspe_esm2"] - pre[r["uniprot_id"]])
+                                        for r in rows if r["uniprot_id"] not in moved)}
+
+
+def functional_site_numbering():
+    """The mature-chain numbering fix, pinned from the artifacts alone.
+
+    One annotation field (`precursor_offset`) feeds twelve consumers across two coordinate systems,
+    and the guard against re-breaking it is the residue-identity check in `utils`. This is the
+    release-surface half of that guard: it cannot import `utils` (this job installs numpy and
+    nothing else), so rather than re-deriving identities it pins the shape of the correction, which
+    is what a regression would disturb. Three offsets, each carrying a verified note; three entries
+    flagged in the annotation file but only two reaching the runtime, because P55981 has no
+    catalytic residues to mis-index; every indexed position equal to its annotated position plus the
+    offset; and, against the pre-fix snapshot, exactly the three offset carriers moved while the
+    other twelve stayed inside float noise. That last condition is the load-bearing one: it is what
+    says the field was threaded through every consumer and not just the headline.
+    """
+    fs = json.load(open(ROOT / "data/annotations/functional_sites.json"))
+    entries = {k: v for k, v in fs.items() if not k.startswith("_")}
+    offsets, verified_notes, flags = {}, 0, []
+    for acc, e in entries.items():
+        site = e.get("functional_sites", {})
+        if site.get("precursor_offset", 0):
+            offsets[acc] = site["precursor_offset"]
+            if "Verified" in str(site.get("_precursor_offset_note", "")):
+                verified_notes += 1
+        if "_numbering_flag" in site:
+            flags.append(acc)
+
+    cur, pre, moved, _ = _fspe_pre_and_post()
+    scored = {e["uniprot_id"] for e in cur}
+    return {"entries": len(entries), "n_fspe": len(cur), "offsets": offsets,
+            "verified_notes": verified_notes, "annotation_flags": sorted(flags),
+            "runtime_flagged": sorted(e["uniprot_id"] for e in cur if e["numbering_flagged"]),
+            "skipped_no_catalytic_residues": sorted(set(flags) - scored),
+            "indexing_consistent": all(
+                e["residues_indexed"] == [r + e["precursor_offset"]
+                                          for r in e["residues_annotated"]] for e in cur),
+            "moved": moved, "moved_is_the_offset_set": moved == sorted(offsets),
+            "max_unmoved_delta": max(abs(e["fspe_ratio"] - pre[e["uniprot_id"]])
+                                     for e in cur if e["uniprot_id"] not in moved),
+            "below_1_pre": int(sum(1 for v in pre.values() if v < 1)),
+            "below_1_now": int(sum(1 for e in cur if e["fspe_ratio"] < 1))}
 
 
 def fsi_seven_toxins():
@@ -1260,11 +1344,19 @@ def v3_margin_across_arms():
 # README.md on purpose: the audit returned success. It now names each surface.
 
 CLAIMS = [
+    # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
+    # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
+    # are 121/32768 and 576/32768, so a loose window would let the stale figure pass as the new one.
+    # The forbid catches what the three positive pins cannot: a document carrying the old and the new
+    # figure side by side, and the two public surfaces with no FSPE pin at all (ARCHITECTURE.md,
+    # MECHANISM_GENERALIZATION.md). It is scoped to PUBLIC only, so src/46's deliberate quotation of
+    # the old headline, and the same quotation in docs/DATA_CORRECTIONS.md, are untouched.
     ("FSPE protein-level sign test", fspe_protein_level,
-     lambda v: abs(v["sign_p"] - 0.018) < 0.002 and v["below_1"] == 12 and v["n"] == 15,
-     {"README.md": "sign test p = 0.018",
-      "huggingface/README.md": "sign test p = 0.018",
-      "docs/EVALUATION_REPORT.md": "sign test p = 0.018"}, []),
+     lambda v: abs(v["sign_p"] - 0.0037) < 1e-4 and v["below_1"] == 13 and v["n"] == 15,
+     {"README.md": "13/15 below 1.0, sign test p = 0.0037",
+      "huggingface/README.md": "sign test p = 0.0037",
+      "docs/EVALUATION_REPORT.md": "sign test p = 0.0037"},
+     ["12/15 below 1.0", "sign test p = 0.018"]),
     ("FSPE pseudoreplicated figure is labelled, not led with", fspe_protein_level,
      lambda v: True, {}, ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
     ("Embedding separability AUROC", separability,
@@ -1289,8 +1381,33 @@ CLAIMS = [
      lambda v: (abs(v["p"] - 0.85) < 0.01 and v["wt_ll"] == -1.572
                 and v["top_ll"] == -1.574 and v["bottom_ll"] == -1.560),
      {"docs/EVALUATION_REPORT.md": "Mann–Whitney p = 0.85"}, []),
-    ("Cross-model FSPE flips", flip_count,
-     lambda v: v["flips"] == 3 and v["n_rows"] == 12, {}, []),
+    # 🔴 This claim used to read `flips == 3 and n_rows == 12`, and it kept passing after the
+    # numbering fix for the wrong reason: the corrected ESM-2 column moved P00648 from >1 to <1
+    # while P02879 stayed >1, so the total happened to stay near 3. The quantity was never
+    # recomputable, because two of the three columns are still in the old coordinates. What is
+    # pinned now is the subset where the comparison is legitimate, plus the three rows that are not.
+    ("Cross-model FSPE flips, on the rows where the models share a numbering", flip_count,
+     lambda v: (v["n_rows"] == 12 and v["comparable_rows"] == 9 and v["comparable_flips"] == 2
+                and v["indeterminate"] == ["P00588", "P00648", "P02879"]
+                and v["max_comparable_delta"] < 1e-5),
+     {}, []),
+    ("the mature-chain numbering fix reached every consumer and moved nothing else",
+     functional_site_numbering,
+     lambda v: (v["entries"] == 16 and v["n_fspe"] == 15
+                and v["offsets"] == {"P02879": 35, "P00648": 47, "P00588": 32}
+                and v["verified_notes"] == 3
+                # three entries are flagged, two reach the runtime: P55981's catalytic_residues is
+                # empty by design, so src/04 skips it and no published number depends on it
+                and v["annotation_flags"] == ["P01552", "P55981", "Q51451"]
+                and v["runtime_flagged"] == ["P01552", "Q51451"]
+                and v["skipped_no_catalytic_residues"] == ["P55981"]
+                and v["indexing_consistent"]
+                # the load-bearing pair: only the offset carriers moved, and the rest by float noise
+                and v["moved_is_the_offset_set"] and v["max_unmoved_delta"] < 1e-5
+                and v["below_1_pre"] == 12 and v["below_1_now"] == 13),
+     # ASCII prefix on purpose: the sentence continues with a Unicode arrow, and a pin that can
+     # mismatch on a codepoint fails for a reason that has nothing to do with the claim.
+     {"README.md": "The displayed eight-protein panel barely moved (mean 0.6386"}, []),
     ("v2 panel and LOMO results describe the same panel", v2_panel_consistency,
      lambda v: (v["members"] == v["manifest_positives"] == v["results_n_positive"]
                 == v["after_dedup"]

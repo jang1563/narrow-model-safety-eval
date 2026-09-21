@@ -51,6 +51,7 @@ from utils import (
     RESULTS_DIR,
     add_schema_version,
     load_functional_sites,
+    sequence_functional_positions,
     load_negative_sequences,
     load_positive_sequences,
     print_header,
@@ -353,11 +354,20 @@ def main():
         if uniprot_id not in pos_seq_lookup:
             print(f"  WARNING: {uniprot_id} ({info['name']}) not in positive FASTA, skipping")
             continue
+        # `catalytic_residues` is stored here already offset-corrected into sequence space,
+        # because the two consumers below index it with `r - 1`. Raw annotated numbers are kept
+        # alongside for provenance. See sixteenth entry, docs/DATA_CORRECTIONS.md.
+        _resolved = sequence_functional_positions(
+            uniprot_id, pos_seq_lookup[uniprot_id], info["functional_sites"]
+        )
         toxic_proteins[uniprot_id] = {
             "name": info["name"],
             "pdb_id": info.get("pdb_id", ""),
             "sequence": pos_seq_lookup[uniprot_id],
-            "catalytic_residues": info["functional_sites"]["catalytic_residues"],
+            "catalytic_residues": _resolved["positions"],
+            "residues_annotated": list(info["functional_sites"]["catalytic_residues"]),
+            "precursor_offset": _resolved["offset"],
+            "numbering_flagged": _resolved["flagged"],
         }
 
     # Benign proteins: all negative sequences

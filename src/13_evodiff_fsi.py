@@ -46,6 +46,7 @@ from utils import (
     compute_fsi,
     compute_site_recovery,
     load_functional_sites,
+    sequence_functional_positions,
     load_positive_sequences,
     print_header,
     truncate_sequence,
@@ -266,11 +267,20 @@ def main():
         if uniprot_id not in seq_lookup:
             print(f"  Skipping {pdb_id}: sequence not in positive set")
             continue
+        # Offset-corrected into sequence space: this script indexes the FASTA with `r - 1`,
+        # so it is a sequence consumer, not a PDB-numbering one (sixteenth entry,
+        # docs/DATA_CORRECTIONS.md).
+        _resolved = sequence_functional_positions(
+            uniprot_id, seq_lookup[uniprot_id], info["functional_sites"]
+        )
         proteins_to_eval[pdb_id] = {
             "uniprot": uniprot_id,
             "name": info["name"],
             "sequence": seq_lookup[uniprot_id],
-            "catalytic_residues": info["functional_sites"]["catalytic_residues"],
+            "catalytic_residues": _resolved["positions"],
+            "residues_annotated": list(info["functional_sites"]["catalytic_residues"]),
+            "precursor_offset": _resolved["offset"],
+            "numbering_flagged": _resolved["flagged"],
         }
 
     print(f"\nProteins to evaluate ({len(proteins_to_eval)}):")

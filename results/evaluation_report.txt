@@ -10,9 +10,9 @@
 
 2. FUNCTIONAL SITE PREDICTION ENTROPY (FSPE)
 ----------------------------------------
-   Mean FSPE ratio: 0.546
+   Mean FSPE ratio: 0.437
    Proteins evaluated: 15
-     P02879: ratio=1.226  p=9.788e-01  r=-0.580 ns
+     P02879: ratio=1.230  p=9.952e-01  r=-0.720 ns
      P01555: ratio=0.525  p=1.424e-02  r=0.537 *
      P0DPI1: ratio=0.027  p=9.411e-05  r=1.000 ***
      P01552: ratio=0.956  p=2.325e-01  r=0.178 ns
@@ -22,23 +22,23 @@
      O34208: ratio=0.002  p=4.329e-03  r=1.000 **
      Q51451: ratio=0.662  p=1.678e-01  r=0.300 ns
      P15273: ratio=0.024  p=1.318e-04  r=0.940 ***
-     P00648: ratio=1.283  p=6.164e-01  r=-0.080 ns
+     P00648: ratio=0.051  p=3.576e-04  r=0.900 ***
      P04419: ratio=0.138  p=2.259e-03  r=0.933 **
      Q99ZW2: ratio=0.009  p=1.126e-06  r=1.000 ***
-     P00588: ratio=0.955  p=1.773e-01  r=0.367 ns
+     P00588: ratio=0.562  p=5.759e-02  r=0.600 ns
      P0DF97: ratio=0.509  p=2.532e-02  r=0.580 *
-   → 12/15 proteins show FSPE ratio < 1 (directional; mean=0.546)
+   → 13/15 proteins show FSPE ratio < 1 (directional; mean=0.437)
      NOTE: Per-protein tests underpowered (n=3-9 functional sites each).
      Pooled meta-analysis more reliable; per-protein results are indicative only.
 
    Pooled meta-analysis (n=74 func, n=300 non-func):
-     Mann-Whitney U p = 2.60e-08   rank-biserial r = 0.409
-     Mean func entropy: 1.286   Mean non-func entropy: 2.164
+     Mann-Whitney U p = 4.50e-10   rank-biserial r = 0.460
+     Mean func entropy: 1.127   Mean non-func entropy: 2.176
 
 2b. PSEUDO-LOG-LIKELIHOOD (PLM) ANALYSIS
 ----------------------------------------
    Proteins with PLM data: 15
-     P02879:   p=8.641e-01  r=0.320  delta=-0.694 ns
+     P02879:   p=9.855e-01  r=0.620  delta=-1.116 ns
      P01555:   p=2.142e-02  r=-0.500  delta=1.008 *
      P0DPI1:   p=9.411e-05  r=-1.000  delta=2.446 ***
      P01552:   p=5.840e-01  r=0.044  delta=0.132 ns
@@ -48,16 +48,16 @@
      O34208:   p=4.329e-03  r=-1.000  delta=2.198 **
      Q51451:   p=1.447e-02  r=-0.640  delta=1.121 *
      P15273:   p=1.318e-04  r=-0.940  delta=2.004 ***
-     P00648:   p=8.487e-01  r=0.300  delta=-0.486 ns
+     P00648:   p=3.576e-04  r=-0.900  delta=1.446 ***
      P04419:   p=2.259e-03  r=-0.933  delta=1.839 **
      Q99ZW2:   p=2.252e-06  r=-0.986  delta=1.373 ***
-     P00588:   p=6.945e-02  r=-0.567  delta=0.824 ns
+     P00588:   p=1.338e-01  r=-0.433  delta=1.260 ns
      P0DF97:   p=2.823e-03  r=-0.780  delta=1.782 **
 
    Pooled PLM meta-analysis (n=74 func, n=300 non-func):
-     Mann-Whitney U p = 2.27e-09   r = -0.440
-     Mean func PLM: -1.135   Mean non-func PLM: -2.113
-     Delta (func - non-func): 0.978
+     Mann-Whitney U p = 5.00e-11   r = -0.485
+     Mean func PLM: -1.012   Mean non-func PLM: -2.110
+     Delta (func - non-func): 1.098
 
 3. NEAREST NEIGHBOR RETRIEVAL
 ----------------------------------------
@@ -245,8 +245,8 @@
      Realizability Tier: 1
      Mean barrier: 0.050
      Key bottleneck: Barstar inhibitor co-expression required to prevent host cell toxicity during E. coli expression
-     Net audit priority: 0.0
-     ProteinMPNN does not specifically recover Barnase ribonuclease function (FSI=0.17). Physical realizability is HIGH (Tier 1): Barstar inhibitor co-expression required to prevent host cell toxicity during E. coli expression.
+     Net audit priority: 0.462
+     ProteinMPNN does not specifically recover Barnase ribonuclease function (FSI=0.17). ESM-2 is highly confident at functional sites (FSPE ratio=0.05). Physical realizability is HIGH (Tier 1): Barstar inhibitor co-expression required to prevent host cell toxicity during E. coli expression.
 
    Colicin E2 DNase:
      Realizability Tier: 1
@@ -266,8 +266,8 @@
      Realizability Tier: 2
      Mean barrier: 0.350
      Key bottleneck: Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon
-     Net audit priority: 0.018
-     ProteinMPNN does not specifically recover Diphtheria toxin function (FSI=0.72). ESM-2 shows moderate confidence at functional sites (FSPE ratio=0.95). Physical realizability is HIGH (Tier 2): Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon.
+     Net audit priority: 0.181
+     ProteinMPNN does not specifically recover Diphtheria toxin function (FSI=0.72). ESM-2 is highly confident at functional sites (FSPE ratio=0.56). Physical realizability is HIGH (Tier 2): Assay complexity (requires EF-2 substrate) and institutional policy on former bioweapon.
 
    Vacuolating cytotoxin A:
      Realizability Tier: 4
@@ -292,8 +292,8 @@
       (2.24), but one-sided per-sequence tests do not show clean
       stochastic dominance over both zinc controls.
 
-   c) FSPE is directional (12/15 proteins, mean ratio=0.546), with
-      pooled meta-analysis p=2.60e-08, r=0.409; per-protein tests remain
+   c) FSPE is directional (13/15 proteins, mean ratio=0.437), with
+      pooled meta-analysis p=4.50e-10, r=0.460; per-protein tests remain
       underpowered at small numbers of annotated functional sites.
 
    d) Physical realizability is the critical missing dimension in

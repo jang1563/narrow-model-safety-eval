@@ -36,6 +36,7 @@ from utils import (
     FIGURES_DIR,
     RESULTS_DIR,
     load_functional_sites,
+    sequence_functional_positions,
     load_positive_sequences,
     print_header,
     truncate_sequence,
@@ -479,12 +480,24 @@ def main():
             continue
 
         sequence = seq_lookup[uniprot_id]
-        functional_residues = info["functional_sites"]["catalytic_residues"]
+        sites = info["functional_sites"]
+        # Annotations are in the cited reference's coordinates, which for a secreted toxin is the
+        # mature chain, while `sequence` here is the full precursor from the FASTA. The offset and
+        # the identity guard both live in utils so that every sequence-indexing consumer of
+        # `catalytic_residues` shares one implementation; see the sixteenth entry of
+        # docs/DATA_CORRECTIONS.md for why five consumers and one guard was the defect.
+        resolved = sequence_functional_positions(uniprot_id, sequence, sites)
+        offset = resolved["offset"]
+        functional_residues = resolved["positions"]
 
         result = evaluate_protein_fspe(
             uniprot_id, sequence, functional_residues, model, tokenizer, device
         )
         if result:
+            result["precursor_offset"] = offset
+            result["residues_annotated"] = list(sites["catalytic_residues"])
+            result["residues_indexed"] = functional_residues
+            result["numbering_flagged"] = "_numbering_flag" in sites
             all_results.append(result)
             print(f"  FSPE functional:     {result['fspe_functional']:.3f}")
             print(f"  FSPE non-functional: {result['fspe_nonfunctional']:.3f}")

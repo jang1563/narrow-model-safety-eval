@@ -1,6 +1,6 @@
 {
   "_description": "Functional site annotations for select agent toxin proteins and benign mechanism-matched controls. Sources: UniProt active site/binding site annotations, published literature (DOIs provided per protein).",
-  "_note": "Residue numbering follows UniProt canonical sequence unless 'use_pdb_numbering' is true. PDB residue numbers may differ \u2014 verify against PDB SEQRES alignment.",
+  "_note": "Residue numbering. `catalytic_residues` are stated in the coordinates used by the cited reference, which for a secreted toxin is usually the MATURE chain. `src/04` indexes the full precursor stored in data/sequences/toxins_positive*.fasta, so any entry whose reference numbering is mature-chain needs `precursor_offset` added to every position before indexing. `precursor_offset` is absent or 0 when the two conventions coincide. Each offset equals the UniProt signal/propeptide length and was verified by checking that every annotated residue identity matches at that offset. See the sixteenth entry of docs/DATA_CORRECTIONS.md and src/46_functional_site_numbering_audit.py.",
   "P02879": {
     "name": "Ricin A-chain",
     "organism": "Ricinus communis",
@@ -20,7 +20,9 @@
         "177": "Glu177 \u2014 proton donor in catalysis",
         "180": "Arg180 \u2014 stabilizes transition state oxocarbenium ion",
         "211": "Trp211 \u2014 substrate binding pocket"
-      }
+      },
+      "precursor_offset": 35,
+      "_precursor_offset_note": "UniProt Signal 1-35, Chain 36-302 'Ricin A chain'. Reference numbering is mature A-chain (Monzingo & Robertus 1992). Verified 5/5 residue identities at +35."
     },
     "references": [
       {
@@ -159,7 +161,8 @@
         "91": "Asn91 \u2014 TCR binding interface",
         "93": "Gly93 \u2014 TCR binding loop",
         "94": "Leu94 \u2014 TCR binding"
-      }
+      },
+      "_numbering_flag": "\ud83d\udd34 UNRESOLVED. No single offset aligns these positions: 0 of 9 identities match at offset 0, and the best offset over 0-60 reaches only 3 of 9, tied between +6 and +60, so there is not even a unique candidate. Separately, these are MHC-II and TCR-Vbeta INTERFACE residues of a superantigen, not catalytic residues, so the field name is wrong for this entry regardless of numbering. Needs full re-curation against 3SEB; not repaired by `precursor_offset`. It is still RUN, at offset 0, so its published number is unchanged and the corrected run isolates the three repaired entries; its contribution to the pooled statistic is therefore unverified rather than corrected."
     },
     "references": [
       {
@@ -331,7 +334,8 @@
         "234": "Trp234 \u2014 ADP-RT domain NAD+ binding; conserved among ARTC toxins",
         "379": "Glu379 \u2014 ADP-ribosyltransferase catalytic glutamate 1; EXE motif",
         "381": "Glu381 \u2014 ADP-ribosyltransferase catalytic glutamate 2; EXE motif"
-      }
+      },
+      "_numbering_flag": "\ud83d\udd34 UNRESOLVED, single-residue error. 4 of 5 identities match at offset 0 (Arg146, Leu148, Glu379, Glu381), so the entry is NOT mature-chain numbered and needs no offset. Position 234 is annotated Trp234 but the precursor carries Asp there, and 1HE1 resolves only the GAP domain so it cannot adjudicate. This entry is already flagged as mislabelled by the twelfth entry of docs/DATA_CORRECTIONS.md. Position 234 left in place and flagged rather than guessed."
     },
     "references": [
       {
@@ -411,7 +415,9 @@
         "83": "Arg83 \u2014 phosphate binding; substrate positioning in active site",
         "87": "Arg87 \u2014 phosphate binding; stabilizes transition state",
         "102": "His102 \u2014 general acid; donates proton to 5'-oxygen leaving group"
-      }
+      },
+      "precursor_offset": 47,
+      "_precursor_offset_note": "UniProt Signal 1-34 + Propeptide 35-47, Chain 48-157 'Ribonuclease'. Reference numbering is mature barnase. Verified 5/5 residue identities at +47."
     },
     "references": [
       {
@@ -513,7 +519,9 @@
         "21": "His21 \u2014 NAD+ binding in the A-fragment active site; conserved across ADP-ribosylating toxins",
         "65": "Tyr65 \u2014 part of the NAD-binding groove; substrate positioning",
         "148": "Glu148 \u2014 catalytic glutamate; EXE motif first residue; activates ADP-ribosylation"
-      }
+      },
+      "precursor_offset": 32,
+      "_precursor_offset_note": "UniProt Signal 1-32, Chain 33-225 'Diphtheria toxin fragment A'. Reference numbering is mature toxin. Verified 3/3 residue identities at +32."
     },
     "references": [
       {
@@ -541,7 +549,8 @@
         "p55_domain": "Residues 312-821 (p55) \u2014 receptor-binding beta-helix domain; binds RPTP-alpha and RPTP-beta",
         "35": "Glu35 \u2014 conserved in p33; important for anion conductance and channel function (not catalytic)",
         "166": "Lys166 \u2014 pore-lining residue; affects channel selectivity (site of interest, not classical active site)"
-      }
+      },
+      "_numbering_flag": "\u26a0\ufe0f Documentation only, no computed effect. `catalytic_residues` is deliberately EMPTY (VacA is a pore-forming channel with no classical active site), so `src/04` skips this entry and no FSPE number depends on it. The keys '35' and '166' inside `residue_annotations` are nonetheless mature-chain numbers that do not align to the precursor; they are explicitly labelled 'not catalytic' and are never read by the pipeline. Left as-is."
     },
     "references": [
       {

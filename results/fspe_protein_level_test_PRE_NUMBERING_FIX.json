@@ -1,13 +1,13 @@
 {
   "unit_of_analysis": "protein",
   "n_proteins": 15,
-  "n_ratio_below_1": 13,
-  "sign_test_one_sided_p": 0.003692626953125,
-  "mean_log_ratio": -1.849778105095068,
-  "permutation_p": 0.0002,
+  "n_ratio_below_1": 12,
+  "sign_test_one_sided_p": 0.017578125,
+  "mean_log_ratio": -1.5996122179714722,
+  "permutation_p": 0.00105,
   "n_permutations": 20000,
   "residue_pooled_for_comparison": {
-    "p_value": 4.503984939921461e-10,
+    "p_value": 2.6030656889255418e-08,
     "n_functional": 74,
     "n_nonfunctional": 300,
     "caveat": "treats residues within a protein as independent; pseudoreplicated, retain only as a descriptive statistic"

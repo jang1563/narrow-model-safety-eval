@@ -4,6 +4,7 @@ utils.py — Shared utilities for Narrow Scientific Model Safety Evaluation.
 """
 
 import json
+import re
 from abc import ABC, abstractmethod
 from pathlib import Path
 
@@ -80,16 +81,86 @@ def load_functional_sites() -> dict:
         return json.load(f)
 
 
+_AA3 = {"Ala": "A", "Arg": "R", "Asn": "N", "Asp": "D", "Cys": "C", "Gln": "Q", "Glu": "E",
+        "Gly": "G", "His": "H", "Ile": "I", "Leu": "L", "Lys": "K", "Met": "M", "Phe": "F",
+        "Pro": "P", "Ser": "S", "Thr": "T", "Trp": "W", "Tyr": "Y", "Val": "V"}
+
+
 def get_functional_residues(uniprot_id: str) -> list[int]:
-    """Get functional residue positions for a given UniProt ID.
+    """Get RAW annotated functional residue positions for a given UniProt ID.
+
+    These are in the cited reference's coordinates, which for several secreted toxins is the
+    MATURE chain, while the FASTA files hold the full PRECURSOR. Do not index a sequence with
+    these: call `sequence_functional_positions()` instead, which adds `precursor_offset` and
+    checks residue identity. See the sixteenth entry of docs/DATA_CORRECTIONS.md.
 
     Returns:
-        List of 1-indexed residue positions.
+        List of 1-indexed residue positions in the ANNOTATION's coordinate system.
     """
     sites = load_functional_sites()
     if uniprot_id in sites:
         return sites[uniprot_id]["functional_sites"]["catalytic_residues"]
     return []
+
+
+def check_residue_identities(uniprot_id: str, sequence: str, sites: dict, offset: int) -> int:
+    """Verify each annotated residue identity lands where the pipeline will index it.
+
+    `residue_annotations` states the expected amino acid in three-letter form ("Tyr80 - ...").
+    A silent mismatch means the position is being read on the wrong coordinate system. Returns
+    the mismatch count so the caller can decide; this never raises, because two entries are
+    known bad and are carried deliberately with a `_numbering_flag`.
+    """
+    expected = {}
+    for key, text in (sites.get("residue_annotations") or {}).items():
+        if not key.isdigit():
+            continue                                   # domain-range keys like "p33_domain"
+        m = re.match(r"([A-Z][a-z]{2})(\d+)", text.strip())
+        if m and m.group(1) in _AA3 and int(m.group(2)) == int(key):
+            expected[int(key)] = _AA3[m.group(1)]
+    annotated = set(sites.get("catalytic_residues") or [])
+    mismatches = []
+    for pos, aa in sorted(expected.items()):
+        if pos not in annotated:
+            continue                                   # annotated but not scored, e.g. Anthrax
+        idx = pos + offset - 1
+        got = sequence[idx] if 0 <= idx < len(sequence) else None
+        if got != aa:
+            mismatches.append(f"{aa}{pos}->{'pos ' + str(pos + offset)}={got or 'out of range'}")
+    if mismatches:
+        print(f"  WARNING: RESIDUE MISMATCH ({len(mismatches)}/{len(expected)}): "
+              f"{', '.join(mismatches)}")
+    return len(mismatches)
+
+
+def sequence_functional_positions(
+    uniprot_id: str, sequence: str, sites: dict, verbose: bool = True
+) -> dict:
+    """Resolve annotated `catalytic_residues` to 1-indexed positions in `sequence`.
+
+    `sequence` is the full precursor from data/sequences/toxins_positive*.fasta, while the
+    annotations are in the cited reference's coordinates. `precursor_offset` bridges the two.
+    Every script that indexes a SEQUENCE with these numbers must go through this function;
+    the PDB-numbering consumers (FSI and friends) use `pdb_residues` instead and must not.
+
+    Returns:
+        {"positions": list[int] (1-indexed, offset applied), "offset": int,
+         "n_mismatch": int, "flagged": bool}
+    """
+    offset = sites.get("precursor_offset", 0)
+    annotated = sites.get("catalytic_residues") or []
+    positions = [r + offset for r in annotated]
+    if verbose and offset:
+        print(f"  precursor_offset +{offset}: {annotated} -> {positions}")
+    n_mm = check_residue_identities(uniprot_id, sequence, sites, offset) if verbose else 0
+    flagged = "_numbering_flag" in sites
+    if verbose:
+        if flagged and annotated:
+            print("  numbering flagged unresolved, reported but not trusted")
+        elif n_mm:
+            print(f"  {n_mm} unexplained mismatch(es) and no _numbering_flag: "
+                  "curate the entry or flag it before trusting this result")
+    return {"positions": positions, "offset": offset, "n_mismatch": n_mm, "flagged": flagged}
 
 
 # ============================================================================

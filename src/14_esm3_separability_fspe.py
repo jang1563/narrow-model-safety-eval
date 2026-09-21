@@ -55,6 +55,7 @@ from utils import (
     RESULTS_DIR,
     add_schema_version,
     load_functional_sites,
+    sequence_functional_positions,
     load_positive_sequences,
     load_negative_sequences,
     print_header,
@@ -350,7 +351,13 @@ def run_fspe_analysis(
         seq = truncate_sequence(sequence, MAX_SEQ_LEN)
         seq_len = len(seq)
 
-        catalytic_residues = info["functional_sites"]["catalytic_residues"]
+        # Offset-correct before indexing: several entries are annotated on the MATURE chain
+        # while `sequence` is the full precursor. Shared with src/04 so the two FSPE
+        # implementations cannot drift apart again (sixteenth entry, docs/DATA_CORRECTIONS.md).
+        resolved = sequence_functional_positions(
+            uniprot_id, sequence, info["functional_sites"]
+        )
+        catalytic_residues = resolved["positions"]
         func_positions = [r - 1 for r in catalytic_residues if r - 1 < seq_len]
 
         if not func_positions:
