@@ -40,7 +40,11 @@ ROOT = Path(__file__).resolve().parent.parent
 R = ROOT / "results"
 PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/ARCHITECTURE.md", "docs/MECHANISM_GENERALIZATION.md",
-          "docs/DETECTOR_CRITERIA.md"]
+          "docs/DETECTOR_CRITERIA.md",
+          # Added 2026-09-21. The preregistration is linked from the README and now carries
+          # verified residue positions in its amendment log, so it is a surface where a number can
+          # drift. Checked clean against every forbid string in this registry before adding.
+          "docs/MUTATION_EXTENSION_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1641,6 +1645,43 @@ def criteria_scorecard_consistency():
             "readme_tally": "(three fails, three partials, one mixed)" in r}
 
 
+
+def tier3_coordinates():
+    """Step 1 of the mutation extension's run order: every tier 3 substitution position verified
+    against UniProt before any run, in PRECURSOR coordinates because that is what the pipeline
+    indexes.
+
+    Pinned hard because this is the exact shape of `docs/DATA_CORRECTIONS.md` entry sixteen, where
+    three annotations were in mature-chain coordinates while the pipeline indexed the precursor. The
+    BoNT-A residue is the live case: UniProt and the HExxH motif both put it at precursor 224, and
+    the research literature calls the same residue 223 counting from the light chain's own start.
+
+    ⚠️ The assertion requires the offset sweep to be NON-unique on three of the four. That is not a
+    defect to be fixed later, it is the honest strength of a one-constraint identity check, and
+    requiring it here stops a future edit from quietly claiming `src/46`-grade uniqueness for these."""
+    d = j("v3/tier3_coordinate_verification.json")
+    c = d["candidates"]
+    sub = {a: {s["mature"]: s for s in c[a]["substitutions"]} for a in c}
+    return {"n": len(c),
+            "all_seq_match": all(c[a]["panel_matches_uniprot"] for a in c),
+            "all_identities_ok": all(c[a]["all_identities_ok"] for a in c),
+            "survivors": sorted(d["surviving_pairs"]),
+            "offsets": {a: c[a]["offset"] for a in sorted(c)},
+            "unique_offset": sorted(a for a in c if c[a]["offset_unique"]),
+            "bont_precursor": sub["P0DPI1"][223]["precursor"],
+            "bont_residue": sub["P0DPI1"][223]["found"],
+            "bont_exact_sub_annotated": sub["P0DPI1"][223]["this_substitution_annotated"],
+            "pertussis_precursor": [sub["P04977"][9]["precursor"], sub["P04977"][129]["precursor"]],
+            "pertussis_129_sub_annotated": sub["P04977"][129]["this_substitution_annotated"],
+            "crm197_precursor": sub["P00588"][52]["precursor"],
+            "crm197_mutagenesis": sub["P00588"][52]["uniprot_mutagenesis"],
+            "ricin_precursor": sub["P02879"][177]["precursor"],
+            "ricin_mutagenesis": sub["P02879"][177]["uniprot_mutagenesis"],
+            "ricin_lof_alternatives": [[x["precursor"], x["mature"], x["orig"]]
+                                       for x in c["P02879"]["lof_annotated_alternatives"]],
+            "tier2_lof_pairs": sorted(a for a in c if c[a]["any_tier2_lof"])}
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -2277,6 +2318,27 @@ CLAIMS = [
      # the counts either document carried while the scorecard said otherwise. "five partials" was
      # briefly written into both on 2026-09-21 and the table never had five, so it is forbidden too.
      ["states seventeen criteria", "(two fails, four partials)", "five partials"]),
+    ("tier 3 mutation coordinates verified against UniProt", tier3_coordinates,
+     lambda v: (v["n"] == 4 and v["all_seq_match"] and v["all_identities_ok"]
+                and v["offsets"] == {"P00588": 32, "P02879": 35, "P04977": 34, "P0DPI1": 1}
+                # BoNT-A: precursor 224, not the literature's light-chain 223
+                and v["bont_precursor"] == 224 and v["bont_residue"] == "E"
+                and v["bont_exact_sub_annotated"]
+                and v["pertussis_precursor"] == [43, 163]
+                # UniProt annotates E163D, not the vaccine mutant's E163G
+                and not v["pertussis_129_sub_annotated"]
+                and v["crm197_precursor"] == 84 and not v["crm197_mutagenesis"]
+                # the ricin row fails its own stated check: no annotation at the active site
+                and v["ricin_precursor"] == 212 and not v["ricin_mutagenesis"]
+                and v["ricin_lof_alternatives"] == [[110, 75, "D"]]
+                and v["tier2_lof_pairs"] == ["P04977", "P0DPI1"]
+                # one constraint cannot pin an offset; only the two-substitution pair is unique
+                and v["unique_offset"] == ["P04977"]),
+     {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
+      "| BoNT-A light chain E->Q | 223 | +1 | **224** | E | **E->K,Q**, "
+      "\"Light chain no longer cleaves SNAP25\" | yes |"},
+     # the light-chain number, which is correct in its own frame and wrong for this pipeline
+     ["precursor 223", "E223 in precursor"]),
 ]
 
 

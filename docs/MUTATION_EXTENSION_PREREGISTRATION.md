@@ -372,3 +372,69 @@ next run rather than after.
 
 - 2026-09-21: document created. No run has been executed. No result has been
   looked at.
+
+- 2026-09-21: **step 1 of section 7's run order executed: tier 3 coordinates
+  verified against UniProt.** `src/51_tier3_coordinate_verification.py`,
+  artifact `results/v3/tier3_coordinate_verification.json`, UniProt records
+  cached under `data/uniprot_cache/` so the check is reproducible without a
+  network. No model was run and no score was computed. What changed:
+
+  **Tier 3 is not dropped.** All four panel sequences are byte-identical to
+  their UniProt entries, every offset comes from UniProt's own Signal or
+  Propeptide boundary rather than from assumption, and the wild-type residue is
+  correct at mature+offset in all four cases. The verified positions, in
+  **precursor** coordinates, which is what the pipeline indexes:
+
+  | pair | mature | offset | precursor | residue | UniProt Mutagenesis | tier 2 LOF |
+  |---|---|---|---|---|---|---|
+  | BoNT-A light chain E->Q | 223 | +1 | **224** | E | **E->K,Q**, "Light chain no longer cleaves SNAP25" | yes |
+  | pertussis S1 9K | 9 | +34 | **43** | R | absent | n/a |
+  | pertussis S1 129G | 129 | +34 | **163** | E | E->D only, "Reduction of several orders of magnitude" | yes |
+  | diphtheria CRM197 G52E | 52 | +32 | **84** | G | absent | n/a |
+  | ricin E177 | 177 | +35 | **212** | E | **absent** | no |
+
+  **The ricin row does not survive as written and is amended.** Its stated check
+  was "verify that the phenotype text meets the tier 2 rule rather than assuming
+  it". There is no phenotype text: UniProt annotates no Mutagenesis at precursor
+  212 at all. The only loss-of-function variant P02879 carries is D110 in
+  precursor coordinates, D75 mature, "Suppresses the toxic activity", which is
+  part of the vascular-leak-syndrome LDV motif at mature 74-76 and not an
+  active-site residue. The other four annotated variants on that entry open with
+  "No effect on the toxic activity", which is a real phenotype and not a loss of
+  the toxic function. So ricin is demoted from a tier 3 pair to a candidate that
+  would need a literature source outside UniProt, and it is **last** in the run
+  order rather than fourth. If it is used at all, the pair must be stated as
+  D75/D110 with the VLS phenotype, not as an active-site substitution.
+
+  **A limit on the identity check, recorded because it would otherwise be
+  over-read.** The offset sweep pins the offset on identity evidence alone for
+  only one of the four, P04977, which is the only pair carrying two
+  substitutions. One substitution is one constraint, and over 121 candidate
+  offsets roughly six will satisfy it by chance: the sweeps return 15, 9 and 7
+  admissible offsets for diphtheria, BoNT-A and ricin respectively. Those three
+  offsets rest on the UniProt feature boundary, which is independent of the
+  identity check but is a single source. This is weaker than the functional-site
+  numbering fix in `src/46`, where each offset was the unique integer satisfying
+  three to five simultaneous constraints, and the difference is stated rather
+  than smoothed over.
+
+  **One number is now fixed that two coordinate systems both have a claim on.**
+  The BoNT-A zinc-ligand glutamate is **precursor 224**; the HExxH motif reads
+  H223-E224-L225-I226-H227 there, and UniProt places its Mutagenesis feature at
+  224. The research literature numbers the same residue **223**, counting from
+  the light chain's own first residue, because the light chain is Chain 2-448 of
+  a precursor whose residue 1 is the initiator methionine. Both are correct in
+  their own frame and only 224 is usable here. This is `docs/DATA_CORRECTIONS.md`
+  entry sixteen's failure mode on a different protein, caught before a run
+  rather than after, which is the reason section 7 put this step first.
+
+  **Strength ordering for the run, which is new information the document did not
+  have.** BoNT-A is the strongest pair: the exact substitution is
+  UniProt-annotated with a loss-of-function phenotype. Pertussis is second: both
+  positions verify and the position carries a loss-of-function phenotype, but
+  UniProt annotates E163D rather than the vaccine mutant's E163G, so the
+  substitution itself is sourced from the vaccine literature and not from
+  UniProt. Diphtheria is third: position and residue verify, no UniProt
+  Mutagenesis annotation exists, and CRM197's identity rests entirely on the
+  product literature. Ricin is last, as above. Section 7's order is superseded by
+  this one.

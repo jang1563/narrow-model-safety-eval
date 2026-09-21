@@ -1,0 +1,208 @@
+{
+  "candidates": {
+    "P00588": {
+      "pair": "diphtheria toxin and CRM197",
+      "panel_matches_uniprot": true,
+      "uniprot_len": 567,
+      "offset": 32,
+      "offset_evidence": "Signal 1-32",
+      "offset_sweep": [
+        2,
+        6,
+        14,
+        21,
+        24,
+        32,
+        44,
+        55,
+        58,
+        59,
+        67,
+        87,
+        99,
+        108,
+        110
+      ],
+      "offset_unique": false,
+      "substitutions": [
+        {
+          "mature": 52,
+          "precursor": 84,
+          "expect": "G",
+          "found": "G",
+          "identity_ok": true,
+          "substitution": "E",
+          "note": "CRM197, the conjugate-vaccine carrier",
+          "uniprot_mutagenesis": false,
+          "uniprot_alts": [],
+          "this_substitution_annotated": false,
+          "phenotypes": [],
+          "meets_tier2_lof": false
+        }
+      ],
+      "all_identities_ok": true,
+      "any_uniprot_mutagenesis": false,
+      "any_tier2_lof": false,
+      "n_constraints": 1,
+      "offset_pinned_by_identities_alone": false,
+      "survives": true
+    },
+    "P04977": {
+      "pair": "pertussis toxin S1 and the 9K/129G double mutant",
+      "panel_matches_uniprot": true,
+      "uniprot_len": 269,
+      "offset": 34,
+      "offset_evidence": "Signal 1-34",
+      "offset_sweep": [
+        34
+      ],
+      "offset_unique": true,
+      "substitutions": [
+        {
+          "mature": 9,
+          "precursor": 43,
+          "expect": "R",
+          "found": "R",
+          "identity_ok": true,
+          "substitution": "K",
+          "note": "9K",
+          "uniprot_mutagenesis": false,
+          "uniprot_alts": [],
+          "this_substitution_annotated": false,
+          "phenotypes": [],
+          "meets_tier2_lof": false
+        },
+        {
+          "mature": 129,
+          "precursor": 163,
+          "expect": "E",
+          "found": "E",
+          "identity_ok": true,
+          "substitution": "G",
+          "note": "129G",
+          "uniprot_mutagenesis": true,
+          "uniprot_alts": [
+            "D"
+          ],
+          "this_substitution_annotated": false,
+          "phenotypes": [
+            "Reduction of several orders of magnitude of enzymatic activity.",
+            "Dramatic decrease in enzymatic activity."
+          ],
+          "meets_tier2_lof": true
+        }
+      ],
+      "all_identities_ok": true,
+      "any_uniprot_mutagenesis": true,
+      "any_tier2_lof": true,
+      "n_constraints": 2,
+      "offset_pinned_by_identities_alone": true,
+      "survives": true
+    },
+    "P0DPI1": {
+      "pair": "BoNT-A light chain and its zinc-ligand E->Q mutant",
+      "panel_matches_uniprot": true,
+      "uniprot_len": 1296,
+      "offset": 1,
+      "offset_evidence": "no Signal; first Chain starts at 2",
+      "offset_sweep": [
+        1,
+        29,
+        34,
+        38,
+        39,
+        56,
+        58,
+        96,
+        102
+      ],
+      "offset_unique": false,
+      "substitutions": [
+        {
+          "mature": 223,
+          "precursor": 224,
+          "expect": "E",
+          "found": "E",
+          "identity_ok": true,
+          "substitution": "Q",
+          "note": "light-chain numbering, as papers write it",
+          "uniprot_mutagenesis": true,
+          "uniprot_alts": [
+            "K",
+            "Q"
+          ],
+          "this_substitution_annotated": true,
+          "phenotypes": [
+            "Light chain no longer cleaves SNAP25."
+          ],
+          "meets_tier2_lof": true
+        }
+      ],
+      "all_identities_ok": true,
+      "any_uniprot_mutagenesis": true,
+      "any_tier2_lof": true,
+      "n_constraints": 1,
+      "offset_pinned_by_identities_alone": false,
+      "survives": true
+    },
+    "P02879": {
+      "pair": "ricin A chain and an annotated active-site substitution",
+      "panel_matches_uniprot": true,
+      "uniprot_len": 576,
+      "offset": 35,
+      "offset_evidence": "Signal 1-35",
+      "offset_sweep": [
+        3,
+        4,
+        35,
+        43,
+        45,
+        66,
+        78
+      ],
+      "offset_unique": false,
+      "substitutions": [
+        {
+          "mature": 177,
+          "precursor": 212,
+          "expect": "E",
+          "found": "E",
+          "identity_ok": true,
+          "substitution": "Q",
+          "note": "the classic active-site glutamate",
+          "uniprot_mutagenesis": false,
+          "uniprot_alts": [],
+          "this_substitution_annotated": false,
+          "phenotypes": [],
+          "meets_tier2_lof": false
+        }
+      ],
+      "all_identities_ok": true,
+      "any_uniprot_mutagenesis": false,
+      "any_tier2_lof": false,
+      "n_constraints": 1,
+      "offset_pinned_by_identities_alone": false,
+      "survives": true,
+      "lof_annotated_alternatives": [
+        {
+          "precursor": 110,
+          "mature": 75,
+          "orig": "D",
+          "alts": [
+            "A",
+            "E",
+            "N"
+          ],
+          "phenotype": "Suppresses the toxic activity."
+        }
+      ]
+    }
+  },
+  "surviving_pairs": [
+    "P00588",
+    "P04977",
+    "P0DPI1",
+    "P02879"
+  ],
+  "verdict": "4 of 4 tier 3 pairs have a panel sequence identical to UniProt, an offset read from UniProt's own Signal or Propeptide boundary, and the correct wild-type residue at mature+offset: P00588, P04977, P0DPI1, P02879. Tier 3 is NOT dropped. \u26a0\ufe0f The identity check pins the offset on its own for only 1 of 4 (P04977), because a single substitution is one constraint and leaves about six admissible offsets by chance; the other three rest on the UniProt feature boundary, which is independent of the identity check but is a single source. Only 2 of 4 carry a UniProt Mutagenesis phenotype meeting the tier 2 loss-of-function rule (P04977, P0DPI1). The ricin row does not survive as written: its active-site substitution carries no UniProt Mutagenesis annotation at all, so there is no phenotype text to meet the tier 2 rule, and the only loss-of-function variants the entry annotates are vascular-leak-syndrome motif residues, not active-site ones."
+}
