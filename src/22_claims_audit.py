@@ -1759,20 +1759,57 @@ def signal_peptide_sweep():
 
     ⚠️ Positions must be read AFTER applying each entry's own `precursor_offset`, because the three
     entries repaired in entry sixteen store mature coordinates. A sweep that reads them raw flags its
-    own repairs; the first run of `src/53` did exactly that."""
-    d = j("v3/signal_peptide_sweep.json")
-    e = d["entries"]
-    with_sig = sorted(a for a in e
-                      if any(t == "Signal" for t, _s, _t in
-                             (tuple(x) for x in e[a]["cleaved"])))
-    return {"n_entries": d["n_entries"], "in_signal": d["in_signal"],
-            "in_propeptide": d["in_propeptide"], "past_end": d["past_end"],
+    own repairs; the first run of `src/53` did exactly that.
+
+    🔑 RECOMPUTED from `data/annotations/functional_sites.json` and the UniProt cache, not read back
+    from `src/53`'s artifact. That is the difference between a record and a gate: reading the artifact
+    would let someone add a bad annotation and pass, because the artifact would still hold yesterday's
+    answer. Recomputing means the gate fails on the edit itself.
+
+    ⚠️ It also fails when it CANNOT check. An entry whose accession has no cached UniProt record is
+    reported in `uncheckable` and the assertion requires that list to be empty, so adding an entry
+    without caching its record is a failure rather than a silent skip. Pure json, no numpy, so the
+    release-surface CI job can run it."""
+    sites = json.load(open(ROOT / "data/annotations/functional_sites.json"))
+    cache = ROOT / "data" / "uniprot_cache"
+    accs = sorted(a for a in sites if not a.startswith("_"))
+    e, uncheckable = {}, []
+    for a in accs:
+        f = cache / f"{a}.json"
+        if not f.exists():
+            uncheckable.append(a)
+            continue
+        d = json.load(open(f))
+        seq_len = len(d["sequence"]["value"])
+        cleaved = [(ft["type"], ft["location"]["start"]["value"], ft["location"]["end"]["value"])
+                   for ft in d.get("features", [])
+                   if ft["type"] in ("Signal", "Propeptide")]
+        site = sites[a]["functional_sites"]
+        off = site.get("precursor_offset") or 0
+        pos = [q + off for q in site["catalytic_residues"]]
+        in_sig = sorted({q for q in pos for t, s_, t_ in cleaved
+                         if t == "Signal" and s_ <= q <= t_})
+        in_pro = sorted({q for q in pos for t, s_, t_ in cleaved
+                         if t == "Propeptide" and s_ <= q <= t_})
+        e[a] = {"precursor_offset": off, "positions": pos,
+                "has_signal": any(t == "Signal" for t, _s, _t in cleaved),
+                "in_signal": in_sig, "in_propeptide": in_pro,
+                "past_end": [q for q in pos if q > seq_len],
+                "clean": not (in_sig or in_pro or any(q > seq_len for q in pos))}
+    with_sig = sorted(a for a in e if e[a]["has_signal"])
+    return {"n_entries": len(accs), "uncheckable": uncheckable,
+            "in_signal": sorted(a for a in e if e[a]["in_signal"]),
+            "in_propeptide": sorted(a for a in e if e[a]["in_propeptide"]),
+            "past_end": sorted(a for a in e if e[a]["past_end"]),
             "n_clean": sum(1 for a in e if e[a]["clean"]),
             "accs_with_signal_peptide": len(with_sig),
             "offsets_applied": {a: e[a]["precursor_offset"] for a in sorted(e)
                                 if e[a]["precursor_offset"]},
             "repaired_entries_clean": all(e[a]["clean"] for a in ("P00588", "P00648", "P02879")),
-            "vacA_empty": e["P55981"]["positions"] == []}
+            "vacA_empty": e["P55981"]["positions"] == [],
+            # the stored artifact must agree with this recomputation, or src/53 is stale
+            "artifact_agrees": (j("v3/signal_peptide_sweep.json")["in_signal"]
+                                == sorted(a for a in e if e[a]["in_signal"]))}
 
 
 
@@ -2511,6 +2548,7 @@ CLAIMS = [
      lambda v: (v["n_entries"] == 16 and v["n_clean"] == 15
                 and v["in_signal"] == ["P01552"]
                 and v["in_propeptide"] == [] and v["past_end"] == []
+                and v["uncheckable"] == [] and v["artifact_agrees"]
                 and v["accs_with_signal_peptide"] == 8
                 # the offsets entry sixteen installed, which the sweep must apply
                 and v["offsets_applied"] == {"P00588": 32, "P00648": 47, "P02879": 35}

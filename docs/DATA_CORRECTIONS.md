@@ -2154,4 +2154,16 @@ discrete active site, which is why the panel has sixteen annotation entries and 
 proteins.
 
 The rule is cheap enough to be a standing gate rather than a one-off sweep, and it is a better first
-check than the identity test because it holds regardless of whether the residue names are right.
+check than the identity test because it holds regardless of whether the residue names are right. So it
+is now a gate rather than a record: the claim in `src/22_claims_audit.py` **recomputes** the sweep from
+`data/annotations/functional_sites.json` and the UniProt cache instead of reading `src/53`'s artifact,
+because reading the artifact would let someone add a bad annotation and still pass on yesterday's
+answer. It also fails when it cannot check: an entry whose accession has no cached UniProt record lands
+in an `uncheckable` list that the assertion requires to be empty, so adding an entry without caching
+its record is a failure and not a silent skip.
+
+Both failure modes were negative-tested rather than assumed, because a gate never seen to fail is not
+known to work. Injecting position 10 into `P01555`, whose signal peptide is 1-18, makes the audit exit
+1 and name the entry. Adding an entry with no cached record makes it exit 1 with that accession in
+`uncheckable`, and a second claim fires independently on the same edit. The annotation file was
+restored from a byte-level backup afterwards and `git status` confirms it unchanged.
