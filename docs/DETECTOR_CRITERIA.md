@@ -159,12 +159,20 @@ So the defensible deployment figure for a nominal 5% budget here is close to
 **8%**, using the better estimator, on de-duplicated out-of-distribution
 negatives. Not 5%.
 
-⚠️ Single arm. Pool embeddings exist only for `esm2_35M`, so this is
-**provisional** by criterion 7 until the pool is embedded with the canonical
-650M model. What supports it meanwhile is that the same script reproduces the
-published per-class table at the published seed count, including beta-lactamase at
-1.4% exactly, and diverges from it at 200 seeds only for the class this project
-had already documented as seed-fragile.
+⚠️ Single arm, and the arm matters more than "single" suggests. Pool embeddings
+existed only for `esm2_35M`, so this is **provisional** by criterion 7. The
+sharper problem is one this repository had already written down in
+`src/35_negative_scaling_curve.py`: on `esm2_35M` beta-lactamase recovery is
+**already floored at 1.4%**, so that arm has headroom in only one of the two
+failing classes and can measure a decline in phage but not in beta-lactamase. The
+canonical 650M arm has headroom in both. So the per-class column above is half a
+test, exactly as that docstring warned, and the false-positive decomposition is
+the part that does not depend on class headroom.
+
+What supports the run meanwhile is that the same script reproduces the published
+per-class table at the published seed count, beta-lactamase at 1.4% exactly, and
+diverges at 200 seeds only for the class this project had already documented as
+seed-fragile.
 
 Two riders on that run, both necessary.
 

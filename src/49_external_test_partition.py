@@ -38,9 +38,14 @@ effective sample that is 2.33 times smaller than it looks.
 
 Limits, stated because they bound what may be concluded
 -------------------------------------------------------
-⚠️ SINGLE ARM. Pool embeddings exist only for esm2_35M, so this runs on that arm alone. By the
-criterion 7 in `docs/DETECTOR_CRITERIA.md`, one arm is not a result, so everything here is
-PROVISIONAL until the pool is embedded with the canonical 650M model, which is a GPU job.
+⚠️ SINGLE ARM, and which arm is the bigger caveat. Pool embeddings existed only for esm2_35M. By
+criterion 7 in `docs/DETECTOR_CRITERIA.md` one arm is not a result, so this is PROVISIONAL. Worse,
+`src/35_negative_scaling_curve.py` already recorded why this particular arm is weak for per-class
+work: on esm2_35M beta-lactamase recovery is **already floored at 1.4%**, so the arm has headroom in
+only ONE of the two failing classes. It can show a decline in phage and cannot show one in
+beta-lactamase, which makes the per-class table here half a test. The false-positive decomposition
+does not depend on class headroom and is the durable part. The canonical 650M arm has headroom in
+both and is the run that settles the per-class question.
 
 ⚠️ Q8X739 is dropped. It is the one pool protein at 0.871 identity to a labelled panel positive, and
 this repository's own rule is that anything training or calibrating on the pool drops it.
