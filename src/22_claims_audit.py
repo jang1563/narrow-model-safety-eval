@@ -177,6 +177,50 @@ def conformal_lomo_test_split():
             "worst_class_disagrees": a["bottom2_quantile"][0] != b["bottom2_quantile"][0]}
 
 
+def external_test_partition():
+    """Where the false-positive budget actually goes, decomposed, with calibration left at 118.
+
+    src/48 had to shrink calibration to 59 to get a test set, which broke comparability with the
+    published table and put the conformal threshold out of reach at a nominal 1%. src/49 takes the
+    test negatives from the 8,259-protein pool instead, so calibration stays at the published 118 and
+    conformal is reachable at both budgets. The three arms separate the estimator from the shift:
+    pool-to-pool is exchangeable so the guarantee should hold, panel-to-pool is the deployment
+    condition, and the distinct-name version removes the pool's 2.4x name redundancy.
+    """
+    d = j("v3/external_test_partition_esm2_35M.json")
+    if not d:
+        return None
+    fp = d["false_positives"]
+
+    def g(alpha, arm, est, field="mean"):
+        s = fp[str(alpha)][arm][est]
+        return None if s is None else s[field]
+
+    return {"calibration_n": d["calibration_n"], "pool_n": d["pool_n"],
+            "distinct_names": d["pool_distinct_names"], "seeds": d["seeds"],
+            "dropped": d["contaminant_dropped"],
+            "k": {a: d["conformal_k"][a] for a in d["conformal_k"]},
+            "guarantee": {a: d["conformal_guarantee"][a] for a in d["conformal_guarantee"]},
+            "conformal_reachable_at_1pct": d["conformal_k"]["0.01"] >= 1,
+            # exchangeable control: conformal should land on its guarantee, quantile should not
+            "ctrl_conf_05": g(0.05, "control", "conformal"),
+            "ctrl_conf_05_covers": not fp["0.05"]["control"]["conformal"]["excludes_nominal"],
+            "ctrl_conf_01": g(0.01, "control", "conformal"),
+            "ctrl_conf_01_covers": not fp["0.01"]["control"]["conformal"]["excludes_nominal"],
+            "ctrl_quant_05_exceeds": fp["0.05"]["control"]["quantile"]["excludes_nominal"],
+            "ctrl_quant_01_exceeds": fp["0.01"]["control"]["quantile"]["excludes_nominal"],
+            # shift and redundancy each add on top
+            "shift_conf_05": g(0.05, "shift", "conformal"),
+            "shift_conf_05_exceeds": fp["0.05"]["shift"]["conformal"]["excludes_nominal"],
+            "shift_conf_01": g(0.01, "shift", "conformal"),
+            "dedup_conf_05": g(0.05, "shift_dedup", "conformal"),
+            "dedup_quant_05": g(0.05, "shift_dedup", "quantile"),
+            "shift_quant_05": g(0.05, "shift", "quantile"),
+            "dedup_raises_fp": g(0.05, "shift_dedup", "quantile") > g(0.05, "shift", "quantile"),
+            "conformal_holds_in_control": d["conformal_holds_in_control"],
+            "single_arm_provisional": d["single_arm_provisional"]}
+
+
 def separability():
     d = j("separability_results.json")
     return {"auroc": d["auroc_mean"]} if d else None
@@ -1534,8 +1578,34 @@ CLAIMS = [
          # the one disagreement that survives 200 seeds, asserted TRUE so that a later run which
          # quietly made it agree fails the gate and forces the write-up to be re-read
          and v["worst_class_disagrees"]),
+     # Pin a single-line, distinctive string. An earlier pin spanned a line break and failed the
+     # moment the paragraph was rewrapped, which is a pin testing the line wrapping, not the claim.
+     {"docs/DETECTOR_CRITERIA.md": "| conformal | **unreachable at m = 59** | | |"}, []),
+    # The decomposition is the claim: conformal lands on its guarantee when the negatives are
+    # exchangeable, and every point above nominal after that is attributable to distribution shift or
+    # to the pool's name redundancy, not to the estimator. Marked provisional in the artifact because
+    # pool embeddings exist for one arm only.
+    ("where the false-positive budget goes once the test negatives come from outside the panel",
+     external_test_partition,
+     lambda v: v is None or (
+         v["calibration_n"] == 118 and v["pool_n"] == 8258 and v["dropped"] == "Q8X739"
+         and v["seeds"] == 200 and v["single_arm_provisional"]
+         # at m=118 conformal is reachable at BOTH budgets, unlike at m=59
+         and v["k"]["0.05"] == 5 and v["k"]["0.01"] == 1 and v["conformal_reachable_at_1pct"]
+         and abs(v["guarantee"]["0.05"] - 0.0420) < 1e-3
+         and abs(v["guarantee"]["0.01"] - 0.0084) < 1e-3
+         # exchangeable control: conformal sits on its guarantee, the quantile estimator does not
+         and v["conformal_holds_in_control"] and v["ctrl_conf_05_covers"]
+         and v["ctrl_conf_01_covers"]
+         and abs(v["ctrl_conf_05"] - v["guarantee"]["0.05"]) < 0.005
+         and abs(v["ctrl_conf_01"] - v["guarantee"]["0.01"]) < 0.005
+         and v["ctrl_quant_05_exceeds"] and v["ctrl_quant_01_exceeds"]
+         # shift costs conformal its guarantee, and redundancy costs more on top
+         and v["shift_conf_05_exceeds"] and v["shift_conf_05"] > v["ctrl_conf_05"]
+         and v["dedup_conf_05"] > v["shift_conf_05"] and v["dedup_raises_fp"]
+         and v["dedup_quant_05"] > 0.09),
      {"docs/DETECTOR_CRITERIA.md":
-      "**Conformal declines to answer where the quantile estimator invents an answer.**"}, []),
+      "4.23%   what it delivers when the negatives really are exchangeable"}, []),
     ("FSPE pseudoreplicated figure is labelled, not led with", fspe_protein_level,
      lambda v: True, {}, ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
     ("Embedding separability AUROC", separability,

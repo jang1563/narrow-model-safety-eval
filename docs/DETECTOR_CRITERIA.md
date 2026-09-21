@@ -110,13 +110,61 @@ One fewer calibration point, m = 58, gives k = 2 and a guarantee of 3.39%, which
 conservative. So the margin is not monotone in m, and a calibration size should be chosen to
 miss the integer rather than to be as large as possible.
 
-Third, and this is the real result: at a nominal 1% the conformal threshold
-**cannot be computed at all**, because `floor((m+1)*alpha)` is zero when m is 59.
-`np.quantile` returns a number anyway, and that number realizes 2.84%.
-**Conformal declines to answer where the quantile estimator invents an answer.**
-So the binding constraint was never the estimator, it is the number of negatives,
-which is (c). An estimator that refuses is strictly more useful than one that
-extrapolates silently, but neither creates resolution that the data does not have.
+Third, at a nominal 1% the conformal threshold **cannot be computed at all** at
+m = 59, because `floor((m+1)*alpha)` is zero. `np.quantile` returns a number
+anyway, and that number realizes 2.84%. **Conformal declines to answer where the
+quantile estimator invents an answer**, and an estimator that refuses is strictly
+more useful than one that extrapolates silently.
+
+**(d) Take the test negatives from outside the panel, and the budget decomposes.**
+That 1% unreachability is a property of m = 59, so of where `src/48` took its test
+set, not of the panel. `src/49` takes the test negatives from the 8,259-protein
+benign pool instead, which leaves calibration at the **published 118**, where
+conformal is reachable at both budgets with real conservatism: k = 5 giving a
+4.20% guarantee at a nominal 5%, and k = 1 giving 0.84% at a nominal 1%.
+
+Three arms separate the estimator from the data, at 200 seeds, nominal 5%:
+
+| arm | `np.quantile` | conformal |
+|---|---|---|
+| pool to pool, **exchangeable** | 5.86% [5.56, 6.16] **exceeds** | **4.23%** [3.98, 4.49] covers |
+| panel to pool, deployment shift | 7.94% [7.67, 8.20] exceeds | 6.18% [5.96, 6.41] **exceeds** |
+| panel to pool, **distinct names only** | **10.29%** [9.91, 10.67] exceeds | 7.79% [7.46, 8.13] exceeds |
+
+Read down the conformal column and the budget decomposes:
+
+```
+4.20%   the guarantee the arithmetic promises
+4.23%   what it delivers when the negatives really are exchangeable
+6.18%   after calibration and test negatives come from different curations
+7.79%   after the pool's duplicate names stop hiding the failures
+```
+
+The theory is exact to within 0.03 points, and **every point of overshoot above
+that is bought by distribution shift and by redundancy**, not by the estimator.
+The same pattern holds at a nominal 1%: conformal gives 0.78% against a 0.84%
+guarantee under exchangeability and 1.31% under shift, while `np.quantile` gives
+1.92% and 3.10%.
+
+Two consequences worth separating. First, `np.quantile` **exceeds nominal even
+under exchangeability**, 5.86% against 5%, so part of its overshoot was never
+about shift. Second, and this is the larger surprise, collapsing the pool to one
+protein per distinct name **raises** the measured false-positive rate, 7.94% to
+10.29%. The duplicated entries were the easy ones, so a rate over 8,258 raw
+proteins flatters itself by about 2.4 points against the same rate over 3,407
+distinct names. **Effective n does not only widen intervals, it moves point
+estimates**, which is a stronger version of criterion 8 than criterion 8 states.
+
+So the defensible deployment figure for a nominal 5% budget here is close to
+**8%**, using the better estimator, on de-duplicated out-of-distribution
+negatives. Not 5%.
+
+⚠️ Single arm. Pool embeddings exist only for `esm2_35M`, so this is
+**provisional** by criterion 7 until the pool is embedded with the canonical
+650M model. What supports it meanwhile is that the same script reproduces the
+published per-class table at the published seed count, including beta-lactamase at
+1.4% exactly, and diverges from it at 200 seeds only for the class this project
+had already documented as seed-fragile.
 
 Two riders on that run, both necessary.
 
