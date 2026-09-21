@@ -21,7 +21,9 @@ numbers it cites is exactly the failure mode described in criterion 10.
 
 A detector is worth deploying when you can state, before deployment, all of:
 
-1. the finest false-positive rate its calibration set can resolve,
+1. the split: whether a held-out **test** set exists at all, whether the
+   threshold estimator delivers its own nominal rate out of sample, and the
+   finest false-positive rate the calibration set can resolve,
 2. its recovery **per hazard class**, not in aggregate,
 3. which classes it is expected to fail on, with the accuracy of that
    prediction reported as an error and not only as a correlation,
@@ -35,23 +37,56 @@ repository, fail at least three of these.
 
 ---
 
-## 1. Calibration resolution is a hard ceiling, and it is usually coarser than the quoted operating point
+## 1. The split comes first: a calibration set is not a test set
 
-A threshold set as a quantile of held-out negatives cannot resolve a
-false-positive rate finer than one over the number of negatives in that
-quantile set.
+Three separate failures live in the negative split, and they compound. This is
+the criterion this project scores worst on, and it is listed first because the
+other sixteen are downstream of it.
 
-This panel holds out 40% of 296 negatives, so 118 proteins set the threshold.
-One over 118 is 0.0085, so **every specificity above 0.9915 in this
-repository is extrapolation from the tail of 118 points, not a measurement.**
-A 1e-4 false-positive budget, which is the kind of number a synthesis screen
-actually needs, would require about 250,003 panel negatives. That is roughly
-850 times the current panel.
+**(a) Check that a test set exists.** This panel's negatives divide as:
 
-The test is one division. Do it before quoting an operating point.
+| partition | count |
+|---|---|
+| train | 178 |
+| calibrate | 118 |
+| **test** | **0** |
 
-Corollary: reporting `@99` and `@99.9` side by side from the same calibration
-set is reporting one measurement twice.
+There is no held-out test set. Every negative is either fitted on or used to
+place the threshold, so no false-positive number in this repository was ever
+measured on negatives the pipeline had not already seen. That is not a subtle
+statistical point. It means the reported specificity is an in-sample quantity,
+and the first question to ask any detector is the one that is easiest to skip
+because the answer is usually assumed.
+
+**(b) Check that the threshold estimator delivers its own nominal rate out of
+sample.** It does not here. Asked for a 5% false-positive budget and evaluated
+on negatives held back from calibration, the published `np.quantile` estimator
+returns **8.64%** on the canonical arm and **8.79%** on a second arm at a
+calibration size of 20, and the nominal rate is unreachable at 4 of the sizes
+tested. A conformal estimator held at every size tested, 6 of 6, on both arms.
+So the gap is the estimator's, not the data's, and it is fixable.
+
+An estimator that misses 5% by 3.6 points is not a rounding problem when the
+deployment budget is 1e-4.
+
+**(c) Check the resolution ceiling.** A threshold set as a quantile of held-out
+negatives cannot resolve a false-positive rate finer than one over the number of
+negatives in that quantile set. With 118 calibration proteins, one over 118 is
+0.0085, so **every specificity above 0.9915 in this repository is extrapolation
+from the tail of 118 points, not a measurement.** A 1e-4 budget, which is the
+kind of number a synthesis screen actually needs, would require about 250,003
+panel negatives, roughly 850 times the current panel.
+
+The test for (c) is one division. Do it before quoting an operating point.
+Corollary: reporting `@99` and `@99.9` side by side from the same calibration set
+is reporting one measurement twice.
+
+Taken together: (a) says the number is in-sample, (b) says the in-sample number
+is also optimistic by about 3.6 points at small calibration sizes, and (c) says
+the tail where a screen would actually operate is not resolvable at all. A
+detector can satisfy every other criterion in this document and still be
+unusable if it fails these three, which is why the split, and not the model, is
+where a dataset audit should start.
 
 ## 2. Compare at a fixed realized false-positive rate, never at a nominal one
 
@@ -343,7 +378,7 @@ Applied honestly, against its own criteria.
 
 | criterion | verdict |
 |---|---|
-| 1 calibration resolution stated | **Pass**, and the finding is that the 99.9% column should not exist |
+| 1 the split | **Fail, and it is the worst one.** No test set at all (178/118/0), the estimator returns 8.6% for a nominal 5% out of sample, and the resolution ceiling is 0.9915. Stated honestly, not repaired |
 | 2 iso-FP comparisons | **Pass now, failed before.** The three-to-four fold "gain" was a budget artefact |
 | 3 per class not aggregate | **Pass** on reporting, **fail** on performance: 10% on a 32-member class |
 | 4 predicts its own failures | **Partial.** Ranks them at +0.894, over-predicts recovery by 34 points |
@@ -361,9 +396,19 @@ Applied honestly, against its own criteria.
 | 16 measurement not objective | **Pass** by construction |
 | 17 annotation is the constraint | **Pass**, learned from a wasted sweep |
 
-Two fails and four partials on seventeen criteria, on a framework whose
+Three fails and four partials on seventeen criteria, on a framework whose
 headline aggregate number is 0.981. That ratio is the reason this document
 exists.
+
+And the ordering matters more than the tally. The worst failure is criterion 1,
+the split, which no amount of work on the other sixteen can compensate for: a
+per-class table, a multiplicity threshold and an iso-FP control are all
+improvements to a number that was still never measured on unseen negatives. An
+earlier draft of this document listed calibration resolution as criterion 1 and
+scored it a pass, which was true of resolution and quietly omitted that the
+panel has no test set. Getting the ordering wrong is the most likely way to
+audit a dataset thoroughly and still miss the thing that decides whether any of
+it is usable.
 
 ---
 

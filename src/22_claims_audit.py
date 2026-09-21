@@ -1755,7 +1755,11 @@ CLAIMS = [
                 and v["ceiling_classes_do_not_move"]
                 and v["swing_control"] > 12 and v["swing_phage"] > 8 and v["swing_beta"] > 5),
      {"docs/MECHANISM_GENERALIZATION.md":
-      "**`np.quantile(s, 0.95)` cannot deliver 5% out of sample at these sample sizes, and not because of\nnoise.**"},
+      "**`np.quantile(s, 0.95)` cannot deliver 5% out of sample at these sample sizes, and not because of\nnoise.**",
+      # The criteria document scores this as its worst failure, so it has to carry the split itself.
+      # An earlier draft of that document scored criterion 1 a pass by reporting only the resolution
+      # ceiling and omitting that there is no test set, which is the drift this pin exists to stop.
+      "docs/DETECTOR_CRITERIA.md": "| **test** | **0** |"},
      []),
     ("the one predictor of the per-class sign fails both its multiplicity check and a second arm",
      what_predicts_the_response,
