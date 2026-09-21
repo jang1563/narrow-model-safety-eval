@@ -153,9 +153,23 @@ def functional_site_numbering():
         if "_numbering_flag" in site:
             flags.append(acc)
 
+    # The anti-p-hacking half. Each offset moves a ratio in the direction this project's own claim
+    # wants, so the offset has to be pinned by something that does not mention FSPE. `src/46` records
+    # every offset achieving a FULL identity match; a singleton list means the value was not chosen.
+    # Absent when src/46 has not been re-run (it needs torch), so the claim tolerates None rather
+    # than turning a missing optional artifact into a failed gate.
+    na = j("v3/functional_site_numbering_audit.json")
+    uniq = None if not na else {
+        acc: {"full_match_offsets": v["offset_uniqueness"]["full_match_offsets"],
+              "n_checkable": v["offset_uniqueness"]["n_checkable"],
+              "determined": bool(v["offset_is_uniquely_determined"])}
+        for acc, v in na["recomputed"].items()
+        if isinstance(v.get("offset_uniqueness"), dict)} or None
+
     cur, pre, moved, _ = _fspe_pre_and_post()
     scored = {e["uniprot_id"] for e in cur}
     return {"entries": len(entries), "n_fspe": len(cur), "offsets": offsets,
+            "offset_uniqueness": uniq,
             "verified_notes": verified_notes, "annotation_flags": sorted(flags),
             "runtime_flagged": sorted(e["uniprot_id"] for e in cur if e["numbering_flagged"]),
             "skipped_no_catalytic_residues": sorted(set(flags) - scored),
@@ -1404,7 +1418,13 @@ CLAIMS = [
                 and v["indexing_consistent"]
                 # the load-bearing pair: only the offset carriers moved, and the rest by float noise
                 and v["moved_is_the_offset_set"] and v["max_unmoved_delta"] < 1e-5
-                and v["below_1_pre"] == 12 and v["below_1_now"] == 13),
+                and v["below_1_pre"] == 12 and v["below_1_now"] == 13
+                and (v["offset_uniqueness"] is None
+                     or (set(v["offset_uniqueness"]) == set(v["offsets"])
+                         and all(u["determined"]
+                                 and u["full_match_offsets"] == [v["offsets"][a]]
+                                 and u["n_checkable"] >= 3
+                                 for a, u in v["offset_uniqueness"].items())))),
      # ASCII prefix on purpose: the sentence continues with a Unicode arrow, and a pin that can
      # mismatch on a codepoint fails for a reason that has nothing to do with the claim.
      {"README.md": "The displayed eight-protein panel barely moved (mean 0.6386"}, []),

@@ -246,6 +246,13 @@ by two criteria that never mention FSPE: each offset is the unique integer
 that makes every annotated residue identity land correctly, and each
 independently equals the UniProt chain boundary.
 
+Uniqueness is swept rather than asserted. Over every offset the sequence admits,
+the set achieving a **full** identity match is exactly `[35]` for Ricin at 5 of 5
+checkable residues, `[47]` for barnase at 5 of 5, and `[32]` for diphtheria
+toxin at 3 of 3. A singleton set is the whole point: the value was not available
+to be chosen. The claims audit pins all three, and the assertion was
+negative-tested by declaring one offset non-unique, which fails the gate.
+
 The evidence that this discipline was real is that **one of the three
 corrections pushed the metric the wrong way.** Ricin went from 1.226 to 1.230
 under its own fix and stayed on the wrong side of 1.0. The entire headline gain

@@ -1,0 +1,109 @@
+{
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "recomputed": {
+    "P02879": {
+      "name": "Ricin A-chain",
+      "offset": 35,
+      "offset_uniqueness": {
+        "full_match_offsets": [
+          35
+        ],
+        "n_checkable": 5,
+        "unique": true,
+        "best_n": 5,
+        "best_offset": 35
+      },
+      "offset_is_uniquely_determined": true,
+      "residues_wrong": [
+        80,
+        123,
+        177,
+        180,
+        211
+      ],
+      "residues_fixed": [
+        115,
+        158,
+        212,
+        215,
+        246
+      ],
+      "ratio_wrong": 1.2256382104847936,
+      "ratio_fixed": 1.2295554031664924,
+      "published_ratio": 1.2256364628628242,
+      "func_entropy_wrong": 2.7850434303283693,
+      "func_entropy_fixed": 2.794694995880127,
+      "improved": false
+    },
+    "P00648": {
+      "name": "Barnase ribonuclease",
+      "offset": 47,
+      "offset_uniqueness": {
+        "full_match_offsets": [
+          47
+        ],
+        "n_checkable": 5,
+        "unique": true,
+        "best_n": 5,
+        "best_offset": 47
+      },
+      "offset_is_uniquely_determined": true,
+      "residues_wrong": [
+        27,
+        73,
+        83,
+        87,
+        102
+      ],
+      "residues_fixed": [
+        74,
+        120,
+        130,
+        134,
+        149
+      ],
+      "ratio_wrong": 1.2831810514267377,
+      "ratio_fixed": 0.05104479374954,
+      "published_ratio": 1.2831842407849623,
+      "func_entropy_wrong": 1.828051471710205,
+      "func_entropy_fixed": 0.08277895003557205,
+      "improved": true
+    },
+    "P00588": {
+      "name": "Diphtheria toxin",
+      "offset": 32,
+      "offset_uniqueness": {
+        "full_match_offsets": [
+          32
+        ],
+        "n_checkable": 3,
+        "unique": true,
+        "best_n": 3,
+        "best_offset": 32
+      },
+      "offset_is_uniquely_determined": true,
+      "residues_wrong": [
+        21,
+        65,
+        148
+      ],
+      "residues_fixed": [
+        53,
+        97,
+        180
+      ],
+      "ratio_wrong": 0.9551917497658542,
+      "ratio_fixed": 0.5615261396366489,
+      "published_ratio": 0.9551919430488982,
+      "func_entropy_wrong": 2.4690423806508384,
+      "func_entropy_fixed": 1.4411087930202484,
+      "improved": true
+    }
+  },
+  "not_recomputed": {
+    "P01552": "matches at no offset (0/9 direct; best over 0-60 is 3/9, tied at +6 and +60, so not even a unique candidate). Annotation is wrong beyond numbering: these are MHC-II/TCR interface residues on a superantigen with no catalytic site. Left at offset 0 so this run isolates the three repaired entries.",
+    "Q51451": "mislabelled entry (12th correction). 4/5 direct at offset 0, and offset 0 is the best over the whole sweep, so it needs NO offset; residue 234 is annotated Trp but the precursor carries Asp and 1HE1 resolves only the GAP domain, so it cannot be adjudicated.",
+    "P55981": "FALSE POSITIVE of an earlier pass of this audit. `catalytic_residues` is deliberately EMPTY (pore-forming channel, no classical active site), so src/04 skips it and no number depends on it. The two mature-numbered keys in `residue_annotations` are explicitly labelled 'not catalytic' and are never read. An audit that scans `residue_annotations` instead of `catalytic_residues` will flag this entry as broken; it is not."
+  },
+  "verdict": "correcting the numbering lowered the FSPE ratio for 2 of 3 proteins, a mixed result that needs reading per protein"
+}
