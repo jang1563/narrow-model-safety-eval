@@ -187,16 +187,19 @@ def external_test_partition():
     pool-to-pool is exchangeable so the guarantee should hold, panel-to-pool is the deployment
     condition, and the distinct-name version removes the pool's 2.4x name redundancy.
     """
-    d = j("v3/external_test_partition_esm2_35M.json")
-    if not d:
+    arms = {"esm2_35M": j("v3/external_test_partition_esm2_35M.json"),
+            "canonical": j("v3/external_test_partition_canonical.json")}
+    if not all(arms.values()):
         return None
-    fp = d["false_positives"]
 
-    def g(alpha, arm, est, field="mean"):
-        s = fp[str(alpha)][arm][est]
-        return None if s is None else s[field]
+    def one(d):
+        fp = d["false_positives"]
 
-    return {"calibration_n": d["calibration_n"], "pool_n": d["pool_n"],
+        def g(alpha, arm, est, field="mean"):
+            s = fp[str(alpha)][arm][est]
+            return None if s is None else s[field]
+
+        return {"calibration_n": d["calibration_n"], "pool_n": d["pool_n"],
             "distinct_names": d["pool_distinct_names"], "seeds": d["seeds"],
             "dropped": d["contaminant_dropped"],
             "k": {a: d["conformal_k"][a] for a in d["conformal_k"]},
@@ -217,8 +220,22 @@ def external_test_partition():
             "dedup_quant_05": g(0.05, "shift_dedup", "quantile"),
             "shift_quant_05": g(0.05, "shift", "quantile"),
             "dedup_raises_fp": g(0.05, "shift_dedup", "quantile") > g(0.05, "shift", "quantile"),
-            "conformal_holds_in_control": d["conformal_holds_in_control"],
-            "single_arm_provisional": d["single_arm_provisional"]}
+            "conformal_holds_in_control": d["conformal_holds_in_control"]}
+
+    a, b = one(arms["esm2_35M"]), one(arms["canonical"])
+    return {"arms": {"esm2_35M": a, "canonical": b},
+            # the decomposition now replicates across two arms, so it is no longer provisional
+            "ctrl_conf_on_guarantee_both": all(
+                abs(x["ctrl_conf_05"] - x["guarantee"]["0.05"]) < 0.005
+                and abs(x["ctrl_conf_01"] - x["guarantee"]["0.01"]) < 0.005 for x in (a, b)),
+            "ctrl_quant_exceeds_both": all(
+                x["ctrl_quant_05_exceeds"] and x["ctrl_quant_01_exceeds"] for x in (a, b)),
+            "shift_breaks_conformal_both": all(
+                x["shift_conf_05_exceeds"] and x["shift_conf_05"] > x["ctrl_conf_05"]
+                for x in (a, b)),
+            "dedup_raises_fp_both": all(x["dedup_raises_fp"] for x in (a, b)),
+            "monotone_decomposition_both": all(
+                x["guarantee"]["0.05"] < x["shift_conf_05"] < x["dedup_conf_05"] for x in (a, b))}
 
 
 def separability():
@@ -1588,24 +1605,23 @@ CLAIMS = [
     ("where the false-positive budget goes once the test negatives come from outside the panel",
      external_test_partition,
      lambda v: v is None or (
-         v["calibration_n"] == 118 and v["pool_n"] == 8258 and v["dropped"] == "Q8X739"
-         and v["seeds"] == 200 and v["single_arm_provisional"]
-         # at m=118 conformal is reachable at BOTH budgets, unlike at m=59
-         and v["k"]["0.05"] == 5 and v["k"]["0.01"] == 1 and v["conformal_reachable_at_1pct"]
-         and abs(v["guarantee"]["0.05"] - 0.0420) < 1e-3
-         and abs(v["guarantee"]["0.01"] - 0.0084) < 1e-3
-         # exchangeable control: conformal sits on its guarantee, the quantile estimator does not
-         and v["conformal_holds_in_control"] and v["ctrl_conf_05_covers"]
-         and v["ctrl_conf_01_covers"]
-         and abs(v["ctrl_conf_05"] - v["guarantee"]["0.05"]) < 0.005
-         and abs(v["ctrl_conf_01"] - v["guarantee"]["0.01"]) < 0.005
-         and v["ctrl_quant_05_exceeds"] and v["ctrl_quant_01_exceeds"]
-         # shift costs conformal its guarantee, and redundancy costs more on top
-         and v["shift_conf_05_exceeds"] and v["shift_conf_05"] > v["ctrl_conf_05"]
-         and v["dedup_conf_05"] > v["shift_conf_05"] and v["dedup_raises_fp"]
-         and v["dedup_quant_05"] > 0.09),
+         all(x["calibration_n"] == 118 and x["pool_n"] == 8258 and x["dropped"] == "Q8X739"
+             and x["seeds"] == 200
+             # at m=118 conformal is reachable at BOTH budgets, unlike at m=59
+             and x["k"]["0.05"] == 5 and x["k"]["0.01"] == 1
+             and x["conformal_reachable_at_1pct"]
+             and abs(x["guarantee"]["0.05"] - 0.0420) < 1e-3
+             and abs(x["guarantee"]["0.01"] - 0.0084) < 1e-3
+             and x["conformal_holds_in_control"]
+             and x["ctrl_conf_05_covers"] and x["ctrl_conf_01_covers"]
+             and x["dedup_quant_05"] > 0.09
+             for x in v["arms"].values())
+         # the whole decomposition replicates across both arms
+         and v["ctrl_conf_on_guarantee_both"] and v["ctrl_quant_exceeds_both"]
+         and v["shift_breaks_conformal_both"] and v["dedup_raises_fp_both"]
+         and v["monotone_decomposition_both"]),
      {"docs/DETECTOR_CRITERIA.md":
-      "4.23%   what it delivers when the negatives really are exchangeable"}, []),
+      "4.32%   what it delivers when the negatives really are exchangeable"}, []),
     ("FSPE pseudoreplicated figure is labelled, not led with", fspe_protein_level,
      lambda v: True, {}, ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
     ("Embedding separability AUROC", separability,

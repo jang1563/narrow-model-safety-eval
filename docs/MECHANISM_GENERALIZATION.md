@@ -509,33 +509,35 @@ the data, 200 seeds, nominal 5%, `esm2_35M`:
 
 | arm | `np.quantile` | conformal |
 |---|---|---|
-| pool to pool, **exchangeable** | 5.86% [5.56, 6.16] **exceeds** | **4.23%** [3.98, 4.49] covers |
-| panel to pool, deployment shift | 7.94% [7.67, 8.20] exceeds | 6.18% [5.96, 6.41] **exceeds** |
-| panel to pool, **distinct names only** | **10.29%** [9.91, 10.67] exceeds | 7.79% [7.46, 8.13] exceeds |
+| pool to pool, **exchangeable** | 5.87% [5.59, 6.16] **exceeds** | **4.32%** [4.08, 4.57] covers |
+| panel to pool, deployment shift | 7.87% [7.57, 8.16] exceeds | 5.98% [5.73, 6.23] **exceeds** |
+| panel to pool, **distinct names only** | **9.64%** [9.25, 10.03] exceeds | 7.14% [6.81, 7.47] exceeds |
 
-Read down the conformal column and the budget decomposes:
+Every row replicates on `esm2_35M`: 5.86% and 4.23% in the control, 7.94% and 6.18% under shift,
+10.29% and 7.79% de-duplicated. Read down the conformal column and the budget decomposes:
 
 ```
 4.20%   the guarantee the arithmetic promises
-4.23%   what it delivers when the negatives really are exchangeable
-6.18%   after calibration and test negatives come from different curations
-7.79%   after the pool's duplicate names stop hiding the failures
+4.32%   what it delivers when the negatives really are exchangeable
+5.98%   after calibration and test negatives come from different curations
+7.14%   after the pool's duplicate names stop hiding the failures
 ```
 
 **The theory is exact to within 0.03 points, and every point of overshoot above that is bought by
 distribution shift and by name redundancy rather than by the estimator.** Same pattern at nominal 1%:
-conformal gives 0.78% against a 0.84% guarantee under exchangeability and 1.31% under shift, against
-`np.quantile`'s 1.92% and 3.10%.
+conformal gives 0.83% against a 0.84% guarantee under exchangeability and 1.72% under shift, against
+`np.quantile`'s 1.99% and 3.18%.
 
 Two results fall out of that table which §2.6 could not have seen. First, `np.quantile` **exceeds
 nominal even under exchangeability**, 5.86% against 5%, so part of its overshoot was never about shift
 at all. Second, and this is the one that should change how §10.9's pool numbers are read: collapsing
-the pool to one protein per distinct name **raises** the measured false-positive rate, 7.94% to
-10.29%. The duplicated entries are the easy ones, so a rate computed over 8,258 raw proteins flatters
-itself by about 2.4 points against the same rate over 3,407 distinct names. **Effective n does not only
+the pool to one protein per distinct name **raises** the measured false-positive rate, 7.87% to
+9.64% on the canonical arm and 7.94% to 10.29% on esm2_35M. The duplicated entries are the easy ones,
+so a rate computed over 8,258 raw proteins flatters itself by 1.8 to 2.4 points against the same rate
+over 3,407 distinct names. **Effective n does not only
 widen intervals, it moves point estimates**, which is stronger than the effective-n argument in §10.9.
 
-So the defensible figure for a nominal 5% budget on this panel is close to **8%**: better estimator,
+So the defensible figure for a nominal 5% budget on this panel is close to **7%**: better estimator,
 de-duplicated, out-of-distribution negatives. Not 5%.
 
 **What replicates, what does not.** Across the two arms in route 1, the quantile overshoot replicates
@@ -548,13 +550,15 @@ against 28.4%). Which class is worst is arm-dependent where which two classes ar
 so claims belong at the set and not the ranking. That is §10.4's joint-property point with the
 representation as the joint term.
 
-⚠️ **Route 2 is single-arm and PROVISIONAL.** Pool embeddings existed only for `esm2_35M`, and the
-`embed_pool()` docstring in `src/35` already recorded why that arm is weak for per-class work:
-beta-lactamase is **already floored at 1.4%** there, so the arm has headroom in only one of the two
-failing classes. Its per-class column is half a test. The false-positive decomposition does not depend
-on class headroom and is the durable part. What supports the run meanwhile is that the same script
-reproduces this document's published per-class figures at the published seed count, beta-lactamase at
-1.4% exactly, and diverges at 200 seeds only for the class §10.6.1 already documented as seed-fragile.
+🟢 **Route 2 now runs on both arms, and the per-class half is answered.** It was first run on
+`esm2_35M` only, and the `embed_pool()` docstring in `src/35` had already recorded why that arm is
+weak for per-class work: beta-lactamase is **already floored at 1.4%** there, so it has headroom in
+only one of the two failing classes. The canonical 650M pool embeddings were computed for this, 8,259
+proteins in one GPU job, and that arm has headroom in both. Under the correct estimator **both failing
+classes decline**: phage 12.1% to 7.3%, beta-lactamase 20.8% to 14.0%. Its quantile figures, 12.1% and
+20.8%, sit close to §10.4's published 10.0% and 18.6%, which is the check that this route measures the
+same quantity the published table measures. The cross-arm flip survives here too, at the published
+calibration size, so it is not an artefact of route 1's 59-point split.
 
 ### 3.1 The representation is doing the work
 
