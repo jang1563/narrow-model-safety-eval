@@ -27,7 +27,7 @@ with real-world consequence is a case series rather than a powered test.**
 
 | tier | what it needs | feasible | power |
 |---|---|---|---|
-| 1. FSPE-M, per-position wild-type log-odds at catalytic against background sites | one re-run of the existing masked forward pass, saving a reduction it currently discards | **Yes, now.** No new model, no new data, CPU-feasible on the 15-protein panel | n = 15 proteins, same unit as the existing protein-level test |
+| 1. FSPE-M, per-position wild-type log-odds at catalytic against background sites | one re-run of the existing masked forward pass, saving a reduction it currently discards | **Yes, now.** No new model, no new data, CPU-feasible on the panel | n = 14 proteins, the same unit as the existing protein-level test (15 before the 2026-09-22 SEB exclusion; see `docs/DATA_CORRECTIONS.md` entry twenty) |
 | 2. Validation against annotated substitutions | UniProt `Mutagenesis` features with unambiguous phenotype text, read entry by entry | **Yes, small.** Exists for well-studied toxins because the mechanism papers made the mutants | tens of substitutions, dominated by a few heavily studied proteins |
 | 3. Matched toxin against licensed genetically detoxified product | published single or double substitutions in real products | **Yes, but n is single digits** | a case series, reported as such, no significance test |
 

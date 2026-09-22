@@ -74,7 +74,9 @@ FSPE = mean H(functional sites) / mean H(background residues)
 
 **Significance test**: Mann–Whitney U-test (FSPE < 1.0, one-sided).
 
-**Known limitation**: With 3–9 catalytic residues per protein, individual tests are underpowered (power < 0.4 at α = 0.05). The protein-level tests (sign test, sign-flip permutation over the 15 per-protein ratios) are the defensible aggregate. A residue-pooled Mann–Whitney is pseudoreplicated and is retained as a descriptive statistic only.
+**Known limitation**: With 3–9 catalytic residues per protein, individual tests are underpowered (power < 0.4 at α = 0.05). The protein-level tests (sign test, sign-flip permutation over the per-protein ratios) are the defensible aggregate. A residue-pooled Mann–Whitney is pseudoreplicated and is retained as a descriptive statistic only.
+
+**Exclusions**: an entry may carry `fspe_excluded: true` in `data/annotations/functional_sites.json`, in which case `src/21_fspe_protein_level_test.py` drops it from the protein-level tests and records what the full set would have given under `without_exclusions`, so an exclusion can never be silent. **`P01552` (SEB) is excluded as of 2026-09-22**, taking the test from 15 ratios to **14**, so a protein-level figure quoted from before that date has n = 15. The reasons are that no admissible coordinate frame exists for the entry and that a superantigen has no discrete catalytic site, which is already why it is excluded from FSI. See the twentieth entry of [`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
 
 ### Physical Realizability Tier
 
