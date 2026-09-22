@@ -240,23 +240,76 @@ def load_saprot(device: str):
         sys.exit(1)
 
 
+def _interleave(aa: str, threedi: str) -> str:
+    """SaProt's structure-aware alphabet: one uppercase residue then one lowercase 3Di code."""
+    return "".join(a + d.lower() for a, d in zip(aa, threedi))
+
+
 def load_saprot_tokens() -> dict:
-    """Load Foldseek-generated structure-aware token strings.
+    """Load structure-aware token strings, preferring the reproducible v2 3Di file.
 
-    Expected file: data/annotations/saprot_tokens.json
-    Format: {"UNIPROT_ID": "Ac#dE&fG...", ...}  (aa + 3Di token per residue)
+    🔴 Why this function has two paths, 2026-09-22. `src/02h_saprot_prepare.py` writes
+    `data/annotations/structure_3di_v2.json`: 234 proteins, keyed by FASTA header, storing the bare
+    3Di string beside `acc` and `len`. This function used to read
+    `data/annotations/saprot_tokens.json` instead, keyed by bare accession and storing aa and 3Di
+    already interleaved. Nothing connected the two, so the September 3Di work was never wired in.
 
-    Generate with: slurm/esm3_foldseek_preprocess.sh
+    The consequence was a reproducibility hole rather than a wrong number that anyone could see. The
+    only copy of `saprot_tokens.json` was an **April 16** file on a Cayuga clone, untracked and not
+    gitignored, holding **8** proteins, one of them `P10844` -- the BoNT-A accession that
+    `docs/DATA_CORRECTIONS.md` records as corrected to `P0DPI1` and that a CI gate now guards
+    against. So every published `fspe_saprot` value came from a file that predates the 2026-05-22
+    mature-chain numbering fix and is not in the repository, which is the same defect class as the
+    superseded AUROC 0.981: an input nobody can obtain from the public artifact.
+
+    The v2 path fixes both halves. It keys on `acc`, so the bare-accession lookups at the call sites
+    keep working, and it interleaves against the panel FASTA so the tokens are built here rather than
+    trusted from an opaque file. Positions with no usable structure already carry SaProt's `#` mask
+    from `02h`, which makes those proteins sequence-only rather than dropped.
+
+    ⚠️ The legacy path is kept ONLY as an explicit fallback and says what it is. It must not be used
+    for anything published.
     """
+    v2 = ANNOT_DIR / "structure_3di_v2.json"
+    if v2.exists():
+        blob = json.loads(v2.read_text())
+        # The loaders return (header, description, sequence) tuples, so index by both the full
+        # header and the bare accession: the 3Di file keys on the header and the call sites on the
+        # accession.
+        seqs = {}
+        for hdr, _desc, aa in load_positive_sequences() + load_negative_sequences():
+            seqs[hdr] = aa
+            parts = hdr.split("|")
+            if len(parts) > 1:
+                seqs[parts[1]] = aa
+        out, skipped = {}, []
+        for header, rec in blob["proteins"].items():
+            acc, threedi = rec.get("acc"), rec.get("threedi")
+            if not acc or not threedi:
+                continue
+            aa = seqs.get(acc) or seqs.get(header)
+            if aa is None:
+                skipped.append(acc)
+                continue
+            # A length disagreement means the 3Di string and the sequence are not the same protein,
+            # which would silently shift every structure token by the difference. Refuse instead.
+            if len(aa) != len(threedi):
+                skipped.append(f"{acc}(len {len(aa)} vs 3Di {len(threedi)})")
+                continue
+            out[acc] = _interleave(aa, threedi)
+        print(f"SaProt tokens: {len(out)} built from {v2.name}")
+        if skipped:
+            print(f"  skipped {len(skipped)}: {skipped[:8]}{' ...' if len(skipped) > 8 else ''}")
+        return out
+
     token_path = ANNOT_DIR / "saprot_tokens.json"
     if not token_path.exists():
-        print(f"ERROR: SaProt token file not found: {token_path}")
-        print("Run: bash slurm/esm3_foldseek_preprocess.sh")
+        print(f"ERROR: no SaProt tokens. Expected {v2.name} (preferred) or {token_path.name}.")
+        print("Run: python src/02h_saprot_prepare.py")
         return {}
-    with open(token_path) as f:
-        raw = json.load(f)
-    # Foldseek outputs 3Di codes as uppercase; SaProt expects lowercase.
-    # Fix: lowercase every odd-indexed character (the 3Di code in each 2-char pair).
+    print(f"⚠️  FALLBACK: using legacy {token_path.name}. This file predates the 2026-05-22")
+    print("    mature-chain numbering fix and is not in version control. Do NOT publish from it.")
+    raw = json.loads(token_path.read_text())
     return {
         uid: "".join(c.lower() if i % 2 == 1 else c for i, c in enumerate(seq))
         for uid, seq in raw.items()
