@@ -2541,7 +2541,12 @@ CLAIMS = [
       "| 🔴 **SEB scored in the only coordinate frame UniProt permits** | **12/15** | **0.0176** |",
       "huggingface/README.md":
       "At +27 the ratio goes **0.9556 to 1.0417 and crosses 1.0**, making the headline "
-      "**12/15 at p = 0.0176**."},
+      "**12/15 at p = 0.0176**.",
+      # README stated the headline twice and carried no caveat at all until 2026-09-22, which is the
+      # surface most likely to be read and quoted. Pinned so it cannot silently lose it again.
+      "README.md":
+      "In the only admissible frame, +27, its ratio becomes 1.0417 and crosses 1.0, making the "
+      "panel **12/15 at p = 0.0176**."},
      # the claim that src/52 made false, on both surfaces that carried it
      ["SEB gets no equivalent test"]),
     ("no functional position sits in a cleaved signal peptide, panel-wide", signal_peptide_sweep,
