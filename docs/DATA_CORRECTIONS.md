@@ -2104,10 +2104,11 @@ superantigen has no discrete catalytic site to recover, and the identical object
 where the same residues are masked. Dropping it gives 12/14 at p = 0.0065 and resolves that
 asymmetry at the same time.
 
-The published panel stays as published until that call is made deliberately, because it changes a
-number on the Hugging Face model card and in the README. But the open item has moved from "the
-numbering is unresolved" to "the published numbering is ruled out", and those warrant different
-treatment. UniProt annotates no Site, Binding site or Active site features for SEB at all, so the
+The published panel stayed as published until that call was made deliberately, because it changes a
+number on the Hugging Face model card and in the README. ✅ **The call was made on 2026-09-22 and SEB
+is excluded; see the twentieth entry.** The open item had moved from "the numbering is unresolved" to
+"the published numbering is ruled out", and those warrant different treatment: the first is a caveat,
+the second is a correction. UniProt annotates no Site, Binding site or Active site features for SEB at all, so the
 re-curation that would actually fix the entry still needs 3SEB or the superantigen literature.
 
 ### The other open item closed favourably, and its diagnosis was wrong
@@ -2167,3 +2168,75 @@ known to work. Injecting position 10 into `P01555`, whose signal peptide is 1-18
 1 and name the entry. Adding an entry with no cached record makes it exit 1 with that accession in
 `uncheckable`, and a second claim fires independently on the same edit. The annotation file was
 restored from a byte-level backup afterwards and `git status` confirms it unchanged.
+
+---
+
+## 2026-09-22 (twentieth entry) — SEB is excluded from the FSPE protein-level test, the headline weakens to 12/14 at p = 0.0065, and the two protein-level tests move in opposite directions
+
+The decision entry nineteen said should be taken. Taken deliberately rather than drifted into, because
+it changes a number on the Hugging Face model card, in the README and in this report.
+
+### What changed
+
+`P01552` (staphylococcal enterotoxin B) now carries `fspe_excluded: true` in
+`data/annotations/functional_sites.json`, with the reasoning in `_fspe_exclusion_reason`, and
+`src/21_fspe_protein_level_test.py` honours the flag.
+
+| statistic | before | after | direction |
+|---|---|---|---|
+| ratios below 1.0 | 13/15 | **12/14** | one fewer success, one fewer protein |
+| exact sign test p | 0.0037 | **0.0065** | **weaker** |
+| sign-flip permutation p | 0.0002 | **0.0001** | stronger |
+| mean log ratio | −1.850 | −1.979 | more negative |
+
+### Why exclusion rather than rescoring
+
+Two independent reasons, either sufficient alone.
+
+**No admissible annotation exists.** Entry nineteen established that the published offset of 0 is
+disproven: positions 23 and 25, both annotated "MHC-II binding interface", fall inside the cleaved
+signal peptide at 1-27, and a secreted superantigen cannot present a receptor interface on a peptide
+removed before secretion. The only frame consistent with the record is +27, agreed independently by
+the signal-peptide boundary, the `ESQPDPKP` mature N-terminus and UniProt's disulfide at precursor
+120-140, which is mature 93-113. But +27 places only **1 of 9** annotated residue identities
+correctly, because the identity strings are themselves transposed, so it fails the acceptance rule
+`src/46` applied to every other corrected entry: an offset is accepted only when it is the unique
+integer placing *every* identity correctly. Rescoring at +27 would mean holding this entry to a weaker
+standard than the three that were repaired properly.
+
+**The objection that already excludes it from FSI applies here unchanged.** SEB has been excluded from
+FSI since the metric was written, on the grounds that a superantigen has no discrete catalytic site to
+recover. Masking `catalytic_residues` is not defined for such a protein, and that is true whatever the
+coordinates are. So excluding it from FSPE does not create an inconsistency, it **closes** one that
+`docs/EVALUATION_REPORT.md` had carried as an open item for months.
+
+### The direction, which is the part worth trusting
+
+The sign test gets **worse**, 0.0037 to 0.0065. That is the headline figure on three public surfaces
+and it is now weaker than it was. This is the direction-blind test of
+`docs/DETECTOR_CRITERIA.md` criterion 11, and it is the third time this project has kept a correction
+that hurt the metric: the Ricin numbering fix in entry sixteen pushed its ratio the wrong way
+(1.226 to 1.230) and was kept, and one of three iso-FP corrections hurt and was kept.
+
+⚠️ **But the permutation test gets better, and reporting only one of the two would be cherry-picking.**
+It moves 0.0002 to 0.0001, because SEB's 0.956 was the closest to 1.0 of all thirteen successes, so
+removing it makes the mean log ratio more negative. The count-based test loses a success while the
+magnitude-based test loses its weakest contributor. Both figures are now stated together on every
+surface, and the claims audit asserts **both directions** so neither can be quoted alone: it requires
+the sign test to be the weaker one and the permutation p to be the smaller one.
+
+### What was deliberately not done
+
+`results/fspe_results.json` is **not** regenerated. Every per-protein ratio in it, SEB's 0.9556
+included, is the record of what was computed and stays visible. Recomputing fourteen unaffected
+proteins in order to drop one row would move them by the floating-point drift documented in entry
+seventeen and force every published per-protein figure to be restated for no gain. The exclusion is an
+analysis decision and is applied where the analysis happens, in `src/21`.
+
+SEB's `catalytic_residues` and `residue_annotations` are also left in place rather than deleted. They
+are the record of what was curated, and `src/53`'s signal-peptide gate reads them and must keep
+flagging this entry: deleting them would make the panel look clean by removing the evidence.
+
+`src/21` now writes a `without_exclusions` block alongside the reported figures, so the exclusion can
+never become a silent one, and it reports any accession flagged for exclusion that is **absent** from
+the results, because a flag that matches nothing is a no-op that would otherwise pass unnoticed.

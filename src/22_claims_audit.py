@@ -59,10 +59,38 @@ def _sign_p(n, k):
 
 
 def fspe_protein_level():
+    """The reported protein-level headline, which since 2026-09-22 is the EXCLUDED one.
+
+    Both figures are pinned. `n`/`below_1`/`sign_p` are what the documents lead with, after SEB is
+    dropped, and `full_*` is what the unexcluded set gives. Pinning only the reported pair would let
+    an edit quietly restore the stronger number; pinning only the full pair would not notice the
+    exclusion being dropped.
+
+    ⚠️ The permutation p is pinned too, and in the OPPOSITE direction to the sign test. The exclusion
+    weakens the sign test (0.0037 to 0.0065) and strengthens the permutation test (0.0002 to 0.0001),
+    because SEB's 0.956 was the nearest to 1.0 of the successes. Both are asserted so neither can be
+    quoted alone."""
     d = j("fspe_results.json")
-    r = np.array([x["fspe_ratio"] for x in d["per_protein"]], float)
-    n, k = len(r), int((r < 1).sum())
-    return {"n": n, "below_1": k, "sign_p": _sign_p(n, k)}
+    t = j("fspe_protein_level_test.json")
+    sites = json.load(open(ROOT / "data/annotations/functional_sites.json"))
+    excl = {a for a in sites if not a.startswith("_")
+            and sites[a]["functional_sites"].get("fspe_excluded")}
+    rows = {(x.get("uniprot_id") or x.get("accession")): x["fspe_ratio"]
+            for x in d["per_protein"]}
+    kept = [v for a, v in rows.items() if a not in excl]
+    n, k = len(kept), sum(1 for v in kept if v < 1.0)
+    fn, fk = len(rows), sum(1 for v in rows.values() if v < 1.0)
+    return {"n": n, "below_1": k, "sign_p": _sign_p(n, k),
+            "excluded": sorted(excl), "excluded_ratios": {a: rows[a] for a in sorted(excl)},
+            "full_n": fn, "full_below_1": fk, "full_sign_p": _sign_p(fn, fk),
+            # the artifact src/21 wrote must agree with this recomputation
+            "artifact_n": t["n_proteins"], "artifact_below_1": t["n_ratio_below_1"],
+            "artifact_sign_p": t["sign_test_one_sided_p"],
+            "artifact_perm_p": t["permutation_p"],
+            "artifact_full_sign_p": t["without_exclusions"]["sign_test_one_sided_p"],
+            "artifact_full_perm_p": t["without_exclusions"]["permutation_p"],
+            "weakens": t["exclusion_weakens_headline"],
+            "flagged_but_absent": t["flagged_but_absent_from_results"]}
 
 
 def fspe_flagged_leaveout():
@@ -1855,12 +1883,27 @@ CLAIMS = [
     # figure side by side, and the two public surfaces with no FSPE pin at all (ARCHITECTURE.md,
     # MECHANISM_GENERALIZATION.md). It is scoped to PUBLIC only, so src/46's deliberate quotation of
     # the old headline, and the same quotation in docs/DATA_CORRECTIONS.md, are untouched.
-    ("FSPE protein-level sign test", fspe_protein_level,
-     lambda v: abs(v["sign_p"] - 0.0037) < 1e-4 and v["below_1"] == 13 and v["n"] == 15,
-     {"README.md": "13/15 below 1.0, sign test p = 0.0037",
-      "huggingface/README.md": "sign test p = 0.0037",
-      "docs/EVALUATION_REPORT.md": "sign test p = 0.0037"},
-     ["12/15 below 1.0", "sign test p = 0.018"]),
+    ("FSPE protein-level sign test, SEB excluded", fspe_protein_level,
+     lambda v: (v["n"] == 14 and v["below_1"] == 12 and abs(v["sign_p"] - 0.0065) < 1e-4
+                and v["excluded"] == ["P01552"]
+                and abs(v["excluded_ratios"]["P01552"] - 0.9556) < 1e-3
+                # the superseded figures, still pinned so the exclusion cannot be silently undone
+                and v["full_n"] == 15 and v["full_below_1"] == 13
+                and abs(v["full_sign_p"] - 0.0037) < 1e-4
+                # src/21's artifact must agree with this recomputation
+                and v["artifact_n"] == 14 and v["artifact_below_1"] == 12
+                and abs(v["artifact_sign_p"] - 0.0065) < 1e-4
+                and abs(v["artifact_full_sign_p"] - 0.0037) < 1e-4
+                # opposite directions: sign test weaker, permutation stronger
+                and v["weakens"]
+                and v["artifact_perm_p"] < v["artifact_full_perm_p"]
+                and abs(v["artifact_perm_p"] - 0.0001) < 1e-4
+                and v["flagged_but_absent"] == []),
+     {"README.md": "12/14 below 1.0, sign test p = 0.0065",
+      "huggingface/README.md": "12/14 below 1.0, sign test p = 0.0065",
+      "docs/EVALUATION_REPORT.md": "12/14 ratios below 1.0, exact sign test p = 0.0065"},
+     # the superseded headline, which must not be led with on any public surface again
+     ["13/15 below 1.0, sign test p = 0.0037", "12/15 below 1.0", "sign test p = 0.018"]),
     # Both flagged entries are counted as successes by the headline, so the leave-out value is part
     # of the claim rather than a footnote to it. 11/13 is exactly 92/8192, so the tolerance is tight.
     ("the FSPE headline's dependence on the two annotation-flagged entries", fspe_flagged_leaveout,
@@ -1870,7 +1913,8 @@ CLAIMS = [
                 and abs(v["without_both"]["sign_p"] - 0.01123) < 1e-4
                 and all(s["n"] == 14 and s["below_1"] == 12 for s in v["each"].values())
                 and v["direction_survives"] and 2.5 < v["p_inflation"] < 3.5),
-     {"docs/EVALUATION_REPORT.md": "11/13 at p = 0.011 with both annotation-flagged entries removed"},
+     {"docs/EVALUATION_REPORT.md":
+      "11/13 at p = 0.011 with the other annotation-flagged entry removed too"},
      []),
     # The worry was that a known-bad masked position was manufacturing ExoS's below-1.0 verdict. It
     # was doing the reverse. Pinned because a robustness result that resolves the convenient way is
@@ -2543,10 +2587,10 @@ CLAIMS = [
       "At +27 the ratio goes **0.9556 to 1.0417 and crosses 1.0**, making the headline "
       "**12/15 at p = 0.0176**.",
       # README stated the headline twice and carried no caveat at all until 2026-09-22, which is the
-      # surface most likely to be read and quoted. Pinned so it cannot silently lose it again.
+      # surface most likely to be read and quoted. Now it carries the applied exclusion instead of
+      # the caveat, pinned so the reason for the change cannot be dropped along with the old number.
       "README.md":
-      "In the only admissible frame, +27, its ratio becomes 1.0417 and crosses 1.0, making the "
-      "panel **12/15 at p = 0.0176**."},
+      "The only admissible frame, +27, places just 1 of 9 annotated residue identities correctly"},
      # the claim that src/52 made false, on both surfaces that carried it
      ["SEB gets no equivalent test"]),
     ("no functional position sits in a cleaved signal peptide, panel-wide", signal_peptide_sweep,

@@ -1,11 +1,29 @@
 {
   "unit_of_analysis": "protein",
-  "n_proteins": 15,
-  "n_ratio_below_1": 13,
-  "sign_test_one_sided_p": 0.003692626953125,
-  "mean_log_ratio": -1.849778105095068,
-  "permutation_p": 0.0002,
+  "n_proteins": 14,
+  "n_ratio_below_1": 12,
+  "sign_test_one_sided_p": 0.0064697265625,
+  "mean_log_ratio": -1.978660203813671,
+  "permutation_p": 0.00015,
   "n_permutations": 20000,
+  "excluded": [
+    "P01552"
+  ],
+  "exclusion_reasons": {
+    "P01552": "\ud83d\udd34 EXCLUDED FROM THE FSPE PROTEIN-LEVEL TEST, decision taken 2026-09-22. Two independent reasons, either of which is sufficient. (1) No admissible annotation exists. The published offset of 0 is DISPROVEN, because positions 23 and 25, both annotated 'MHC-II binding interface', fall inside the cleaved signal peptide (UniProt Signal 1-27), and a secreted superantigen cannot present a receptor interface on a peptide removed before secretion. The only frame consistent with the record is +27, agreed by the signal boundary, the ESQPDPKP mature N-terminus and UniProt's disulfide at precursor 120-140 (mature 93-113), but +27 places only 1 of 9 annotated identities correctly and so fails src/46's acceptance rule that every other corrected entry had to meet. (2) The same objection that already excludes SEB from FSI applies here unchanged: a superantigen has no discrete catalytic site, so masking 'catalytic_residues' is not defined for it. Excluding it resolves that long-documented FSI/FSPE asymmetry. EFFECT: the headline moves from 13/15 at p=0.0037 to 12/14 at p=0.0065, so this correction WEAKENS the published result, which is why it is recorded as a direction-blind one under docs/DETECTOR_CRITERIA.md criterion 11. The positions and residue_annotations are deliberately left in place rather than deleted: they are the record of what was curated, and src/53's signal-peptide gate reads them and must keep flagging this entry. See docs/DATA_CORRECTIONS.md entries nineteen and twenty."
+  },
+  "excluded_ratios": {
+    "P01552": 0.9555877115368474
+  },
+  "flagged_but_absent_from_results": [],
+  "without_exclusions": {
+    "n_proteins": 15,
+    "n_ratio_below_1": 13,
+    "sign_test_one_sided_p": 0.003692626953125,
+    "mean_log_ratio": -1.849778105095068,
+    "permutation_p": 0.0002
+  },
+  "exclusion_weakens_headline": true,
   "residue_pooled_for_comparison": {
     "p_value": 4.503984939921461e-10,
     "n_functional": 74,
