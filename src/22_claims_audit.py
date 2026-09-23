@@ -302,42 +302,40 @@ def _fspe_pre_and_post():
 
 
 def flip_count():
-    """Cross-model FSPE sign flips, counted only on the rows where the comparison is still legitimate.
+    """Cross-model FSPE sign flips over all three columns, which now share one numbering.
 
-    The 2026-05-22 numbering fix re-ran ESM-2 alone. ESM-3 and SaProt still hold values computed
-    with mature-chain positions masked on a precursor, so on the three proteins carrying a
-    `precursor_offset` this table now compares one corrected column against two stale ones. The
-    published "3 of 12" was true of the pre-fix table, and the "4 of 12" the current file would
-    produce is a mixed-numbering artifact: neither is a statement anyone can make today. So the
-    count is reported on the nine rows where no column moved, with the other three named as
-    indeterminate until ESM-3 and SaProt are re-run. The moved set is derived from the FSPE
-    snapshots and cross-checked against the annotation offsets, so re-running one model cannot
-    quietly shrink the indeterminate set while leaving this claim passing.
+    History, because this quantity has been wrong in two different ways. The 2026-05-22 numbering
+    fix re-ran ESM-2 alone, leaving ESM-3 and SaProt with mature-chain positions masked on a
+    precursor. A count over all twelve rows then compared one corrected column against two stale
+    ones, so the claim was narrowed to the nine rows where no column had moved and the other three
+    were named indeterminate, pending a re-run.
+
+    🟢 Cayuga job 3392513 did that re-run through the same offset resolver, so the narrowing is no
+    longer needed and the indeterminate set is empty. `stale_columns` is asserted at zero rather than
+    assumed: it recomputes which rows the ESM-2 fix moved and checks that ESM-3 and SaProt now carry
+    a value for every one of them, so a future edit that reverted one column to a pre-fix artifact
+    would fail here instead of quietly restoring a mixed-numbering count.
     """
     rows = j("mdrp_risk_table.json")["proteins"]
     _, pre, _, noise = _fspe_pre_and_post()
-    moved = {r["uniprot_id"] for r in rows
-             if abs(r["fspe_esm2"] - pre[r["uniprot_id"]]) > noise}
     cols = ["fspe_esm2", "fspe_esm3", "fspe_saprot"]
     side = lambda v: ">1" if v > 1 else "<1"          # noqa: E731
 
-    def flips(subset):
-        n = 0
-        for r in rows:
-            if r["uniprot_id"] not in subset:
-                continue
-            av = [v for v in (r.get(c) for c in cols) if v is not None]
-            if len(av) >= 2 and len({side(v) for v in av}) > 1:
-                n += 1
-        return n
+    # rows the ESM-2 correction moved; each must now carry a re-run value in the other two columns
+    moved = {r["uniprot_id"] for r in rows
+             if r["uniprot_id"] in pre and abs(r["fspe_esm2"] - pre[r["uniprot_id"]]) > noise}
+    stale = sum(1 for r in rows if r["uniprot_id"] in moved
+                and any(r.get(c) is None for c in ("fspe_esm3", "fspe_saprot")))
 
-    ids = {r["uniprot_id"] for r in rows}
-    return {"n_rows": len(rows), "indeterminate": sorted(moved),
-            "comparable_rows": len(ids - moved), "comparable_flips": flips(ids - moved),
-            "all_rows_flips_do_not_quote": flips(ids),
-            "max_comparable_delta": max(abs(r["fspe_esm2"] - pre[r["uniprot_id"]])
-                                        for r in rows if r["uniprot_id"] not in moved)}
-
+    flips = 0
+    for r in rows:
+        av = [v for v in (r.get(c) for c in cols) if v is not None]
+        if len(av) >= 2 and len({side(v) for v in av}) > 1:
+            flips += 1
+    return {"n_rows": len(rows), "flips": flips,
+            "all_columns_present": sum(1 for r in rows if all(r.get(c) is not None for c in cols)),
+            "esm2_corrected_rows": sorted(moved), "stale_columns": stale,
+            "indeterminate": []}
 
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
@@ -2000,16 +1998,28 @@ CLAIMS = [
      lambda v: (abs(v["p"] - 0.85) < 0.01 and v["wt_ll"] == -1.572
                 and v["top_ll"] == -1.574 and v["bottom_ll"] == -1.560),
      {"docs/EVALUATION_REPORT.md": "Mann–Whitney p = 0.85"}, []),
-    # 🔴 This claim used to read `flips == 3 and n_rows == 12`, and it kept passing after the
-    # numbering fix for the wrong reason: the corrected ESM-2 column moved P00648 from >1 to <1
-    # while P02879 stayed >1, so the total happened to stay near 3. The quantity was never
-    # recomputable, because two of the three columns are still in the old coordinates. What is
-    # pinned now is the subset where the comparison is legitimate, plus the three rows that are not.
-    ("Cross-model FSPE flips, on the rows where the models share a numbering", flip_count,
-     lambda v: (v["n_rows"] == 12 and v["comparable_rows"] == 9 and v["comparable_flips"] == 2
-                and v["indeterminate"] == ["P00588", "P00648", "P02879"]
-                and v["max_comparable_delta"] < 1e-5),
-     {}, []),
+    # 🟢 RESOLVED 2026-09-23. This claim twice measured something other than what it said.
+    # It first read `flips == 3 and n_rows == 12` and kept passing after the numbering fix for the
+    # wrong reason: the corrected ESM-2 column moved P00648 from >1 to <1 while P02879 stayed >1, so
+    # the total happened to land near 3. It was then narrowed to the nine rows where no column had
+    # moved, with three named indeterminate, because ESM-3 and SaProt were still in the old
+    # coordinates and no count over all twelve compared like with like.
+    #
+    # Cayuga job 3392513 re-ran both of those columns through the same offset resolver, so all three
+    # now share one numbering and the whole table is comparable. The count is 5 of 12. The
+    # indeterminate subset is gone, which is the outcome the narrowed version existed to wait for.
+    #
+    # ⚠️ The superseded figure is forbidden in its ASSERTION form only. The evaluation report names
+    # "2 of 9" in the sentence that retires it, which is this repository's house style for
+    # corrections, so a forbid on the bare digits would forbid explaining the change. Same treatment
+    # as the pooled omission count in the annotation-provenance claim.
+    ("Cross-model FSPE flips, now that all three columns share a numbering", flip_count,
+     lambda v: (v["n_rows"] == 12 and v["all_columns_present"] == 12
+                and v["flips"] == 5 and v["indeterminate"] == []
+                and v["stale_columns"] == 0),
+     {"docs/EVALUATION_REPORT.md":
+      "**5 of 12 rows** disagree in sign between at least two of the three models"},
+     ["honest current figure is **2 of 9**", "the figure is 2 of 9"]),
     ("the mature-chain numbering fix reached every consumer and moved nothing else",
      functional_site_numbering,
      lambda v: (v["entries"] == 16 and v["n_fspe"] == 15
