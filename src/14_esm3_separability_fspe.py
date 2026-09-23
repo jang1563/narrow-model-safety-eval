@@ -661,7 +661,28 @@ def main():
 
                 # Build reverse lookup: AA sequence → uniprot_id
                 # (AA seq = every other char from SaProt token string)
-                _aa_to_uid = {tokens[::2]: uid for uid, tokens in saprot_tokens.items()}
+                #
+                # 🔴 Both the full AA string and its truncated prefix are registered, 2026-09-23.
+                # `run_fspe_analysis` hands this function `truncate_sequence(sequence, MAX_SEQ_LEN)`,
+                # so an exact match on the full string fails for every protein longer than
+                # MAX_SEQ_LEN: the lookup returns None, every position returns None, and the protein
+                # drops out with "Could not compute entropies" rather than with an error naming the
+                # cause. P04958 at 1,315 residues is the only panel member over the limit and it is
+                # exactly the one that vanished.
+                #
+                # The bug is older than it looks. The legacy April token file was built from
+                # already-truncated sequences, so its keys happened to match what this function is
+                # handed, and the defect stayed latent until the v2 3Di adapter started building
+                # tokens at full length, which is the correct thing for it to do.
+                #
+                # ⚠️ Matching a model input by exact sequence string is fragile by construction. This
+                # keeps the mechanism and removes the length dependence; passing the accession down
+                # would be the real fix and is a larger change than this run should carry.
+                _aa_to_uid = {}
+                for uid, tokens in saprot_tokens.items():
+                    aa = tokens[::2]
+                    _aa_to_uid[aa] = uid
+                    _aa_to_uid.setdefault(aa[:MAX_SEQ_LEN], uid)
 
                 def get_saprot_masked_entropy(sequence, position, model, device):
                     """SaProt masked prediction entropy at a given position."""

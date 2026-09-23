@@ -189,6 +189,17 @@
       "rank_biserial_r": 0.4
     },
     {
+      "uniprot_id": "P0DPI1",
+      "model": "saprot_650m_af2",
+      "n_functional_sites": 4,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 1.7708529401570559,
+      "fspe_nonfunctional": 2.962006849050522,
+      "fspe_ratio": 0.5978557884579865,
+      "mannwhitney_pvalue": 0.06747600225861095,
+      "rank_biserial_r": 0.5
+    },
+    {
       "uniprot_id": "P01552",
       "model": "saprot_650m_af2",
       "n_functional_sites": 9,
@@ -220,6 +231,17 @@
       "fspe_ratio": 0.28883895636907503,
       "mannwhitney_pvalue": 0.001562205910031997,
       "rank_biserial_r": 0.8200000000000001
+    },
+    {
+      "uniprot_id": "P04958",
+      "model": "saprot_650m_af2",
+      "n_functional_sites": 4,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 1.6676606684923172,
+      "fspe_nonfunctional": 3.4012729465961455,
+      "fspe_ratio": 0.4903048637014691,
+      "mannwhitney_pvalue": 0.02776209297948428,
+      "rank_biserial_r": 0.625
     },
     {
       "uniprot_id": "O34208",
@@ -275,6 +297,17 @@
       "fspe_ratio": 0.6083426856336934,
       "mannwhitney_pvalue": 0.029926595143986445,
       "rank_biserial_r": 0.7
+    },
+    {
+      "uniprot_id": "Q99ZW2",
+      "model": "saprot_650m_af2",
+      "n_functional_sites": 7,
+      "n_nonfunctional_sites": 20,
+      "fspe_functional": 1.4235483280250005,
+      "fspe_nonfunctional": 2.7628932774066923,
+      "fspe_ratio": 0.5152382611612026,
+      "mannwhitney_pvalue": 0.006727250205511076,
+      "rank_biserial_r": 0.6285714285714286
     },
     {
       "uniprot_id": "P00588",
