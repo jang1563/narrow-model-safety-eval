@@ -328,7 +328,7 @@ For 3BTA, ESM-IF1 log-likelihood per residue: WT **−1.572**, top-FSI designs *
 
 ### Cross-model FSPE (ESM-2 vs ESM-3 vs SaProt)
 
-`mdrp_risk_table.json` carries three separate FSPE columns. Three of 12 proteins **flip ratio sign across models** — i.e., FSPE is model-conditional and not a global capability claim about "protein language models" as a class.
+`mdrp_risk_table.json` carries three separate FSPE columns, and since the 2026-09-23 re-run (`src/14`, Cayuga job 3392513) all three are computed on one numbering. **5 of 12 proteins flip ratio sign across models** — i.e., FSPE is model-conditional and not a global capability claim about "protein language models" as a class. 🔴 This section asserted three of twelve until 2026-09-24; that figure predates the mature-chain numbering fix and is superseded, along with the 4 / 12 the mixed-numbering table would have produced and the interim 2 of 9. See § 7 and entry twenty-one of [`DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
 
 ### FSI temperature sensitivity (3BTA)
 
@@ -359,7 +359,7 @@ An honest card documents failures, not just successes:
 
 - **FSI significance shrank under audit.** The count of FSI-significant structures fell from 5 → 3 after residue re-curation (§ 6.2). The original 5-of-8 headline was wrong; the corrected 3-of-7 is the result of record.
 - **FSPE sign-flips.** Abrin (1.073) and Ricin (1.230) show FSPE ratio *above* 1.0 — the model is *less* confident at their catalytic sites than at background positions, the opposite of the expected direction. Two of eight proteins contradicting the hypothesis is not a rounding error; it is a genuine boundary of the metric.
-- **Cross-model inconsistency.** Three of 12 proteins flip FSPE direction between ESM-2, ESM-3, and SaProt. The metric is model-conditional; any claim about "PLMs as a class" would over-generalize.
+- **Cross-model inconsistency.** 5 of 12 proteins flip FSPE direction between ESM-2, ESM-3, and SaProt, counted on columns that share one numbering. The metric is model-conditional; any claim about "PLMs as a class" would over-generalize. The disagreement is wider than the three-of-twelve this section reported until 2026-09-24, so the correction moved this bullet against the framework rather than for it.
 - **Negative controls constrain interpretation.** Astacin (FSI 1.85) and thermolysin (FSI 1.69) — mechanism-matched *benign* zinc proteins — show elevated FSI comparable to BoNT-A. FSI alone cannot distinguish dangerous zinc-protease from benign zinc-protease.
 - **Panel size.** Seven FSI-scored toxins across four mechanism families. Extrapolation beyond this panel is not warranted.
 

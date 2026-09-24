@@ -2240,3 +2240,102 @@ flagging this entry: deleting them would make the panel look clean by removing t
 `src/21` now writes a `without_exclusions` block alongside the reported figures, so the exclusion can
 never become a silent one, and it reports any accession flagged for exclusion that is **absent** from
 the results, because a flag that matches nothing is a no-op that would otherwise pass unnoticed.
+
+---
+
+## 2026-09-24 (twenty-first entry) — A length-dependent SaProt lookup silently dropped 3 of 15 proteins, the comment shipped with its fix mis-stated the census, and the figure that re-run retired survived in prose on two other sections
+
+Three defects on one thread, written up together because they are the same failure repeated at three
+altitudes: a silent drop in code, a wrong count in the comment about that drop, and a stale figure in
+the document the drop was fixed to correct. The first two were found and fixed on 2026-09-23 but never
+entered here; the third was found on 2026-09-24 while writing this entry, and is the one the gate
+should have caught and did not.
+
+### 1. The silent drop
+
+`get_saprot_masked_entropy` in `src/14_esm3_separability_fspe.py` resolved a protein's structure
+tokens by an **exact match on the full amino-acid string**, while `run_fspe_analysis` hands it
+`truncate_sequence(sequence, MAX_SEQ_LEN)` with `MAX_SEQ_LEN = 1022`. Any protein longer than the
+limit therefore missed the lookup, returned `None` at every position, and dropped out of the run with
+`Could not compute entropies` — the generic message for a protein with no usable positions, not an
+error naming the cause.
+
+| accession | protein | length | visible as a loss? |
+|---|---|---:|---|
+| `P04958` | tetanus toxin | 1,315 | yes, it had a value and lost it |
+| `P0DPI1` | botulinum neurotoxin A | 1,296 | **no**, never carried one |
+| `Q99ZW2` | Cas9 (negative-class member) | 1,368 | **no**, never carried one |
+
+Verified against the panel FASTA: 15 members, exactly these 3 over 1,022. The two invisible ones are
+the point. A protein that never had a value reads as ordinary missing coverage, and SaProt had partial
+coverage for unrelated reasons (missing AlphaFold structures), so the absence had a ready innocent
+explanation sitting next to it.
+
+**Older than it looks, and exposed by something getting more correct.** The legacy April token file was
+built from already-truncated sequences, so its keys matched what the function is handed and the defect
+stayed latent for five months. It surfaced only when the v2 3Di adapter began building tokens at full
+length, which is the right behaviour: the adapter becoming more correct is what made the consumer's
+bug observable.
+
+⚠️ **The first diagnosis was wrong and is recorded because it was confidently stated.** The initial
+claim was that `MAX_SEQ_LEN` was being applied to an interleaved amino-acid/structure string and so
+halved the effective limit. SaProt's `vocab_size` is 446, about 21 amino acids times 21 structure
+states, so the alphabet is combined and one interleaved pair is **one** token; 1,022 is correct in
+residues. Reading the config settled in one minute what reasoning from the encoding had got backwards.
+
+**Fix and its limit.** Both the full string and its truncated prefix are registered as keys (Cayuga job
+3392513, 2m24s, purely additive: 27 rows to 30, zero change among shared rows, zero remaining warnings,
+SaProt now covers all 15). Matching a model input by exact sequence string is fragile by construction;
+**passing the accession down is the real repair and was not done**, because it is a larger change than
+that run should carry. It remains open.
+
+### 2. The census inside the fix
+
+The comment shipped with that fix stated that `P04958` "is the only panel member over the limit and it
+is exactly the one that vanished", while the commit message shipping the same change said three. The
+comment held the count taken before the census; the message held the count after it. Nothing in
+between checked them against each other, and the comment is the copy a future reader meets first.
+Corrected 2026-09-24 against the panel FASTA, with the superseded count named in place rather than
+deleted.
+
+### 3. The figure that would not die
+
+The 2026-09-23 re-run existed to retire a cross-model flip count that had been wrong twice: **3 / 12**
+before the 2026-05-22 numbering fix, then, once that fix re-ran ESM-2 alone and left two columns in the
+old coordinates, a narrowing to the nine unmoved rows giving **2 of 9** with three rows named
+indeterminate. The re-run put all three columns on one numbering and the honest figure is **5 of 12**.
+
+`docs/EVALUATION_REPORT.md` § 7 was updated to say so. **Two other sections of the same document were
+not**, and kept asserting the superseded figure in words:
+
+| line | section | text as it stood |
+|---|---|---|
+| 331 | § Cross-model FSPE | "Three of 12 proteins **flip ratio sign across models**" |
+| 362 | § Where this framework currently loses | "Three of 12 proteins flip FSPE direction between ESM-2, ESM-3, and SaProt" |
+
+So for one commit the report stated 5 of 12 in its limitations and three of twelve in its results, and
+`src/22_claims_audit.py` passed all 69 claims while it did.
+
+**Why the gate missed it, which is the transferable part.** The claim carried a `must` pin on the new
+sentence and a `forbid` list containing `"honest current figure is **2 of 9**"` and
+`"the figure is 2 of 9"`. The pin proved the new figure was **present**; nothing proved the old one was
+**gone**, because that is what the forbid list is for, and the forbid list was written in the same
+minute, by the same person, in the spelling that person had just used. The retiring commit even said
+the forbid was "narrowed to its assertion form" — and the assertion form actually in the file was the
+prose `Three of 12 proteins`, not the digits. **A forbid inherits the blind spot of whoever retires the
+figure.** The rule that follows: when a figure is retired, grep the surface for every spelling of the
+old number before writing the forbid, and forbid what the grep finds rather than what you remember
+writing.
+
+Both sentences now carry 5 of 12 and name the superseded value, and the forbid list covers the prose
+form in both cases. Direction: this correction moves the framework's own cross-model consistency
+**from three disagreements to five**, so § "Where this framework currently loses" got worse, which is
+where it belongs. This is the fourth kept correction that hurts the metric under
+`docs/DETECTOR_CRITERIA.md` criterion 11.
+
+### What was deliberately not done
+
+`results/esm3_fspe_results.json` is not regenerated: the 09-23 run is the record and the shared rows
+were verified unchanged. No per-protein FSPE value moves in this entry — the SaProt fix is additive and
+the flip count is a derived statistic over columns that already existed. The accession-keyed lookup that
+would make §1 structurally impossible is still open, and is named here rather than quietly deferred.

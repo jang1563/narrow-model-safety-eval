@@ -667,8 +667,13 @@ def main():
                 # so an exact match on the full string fails for every protein longer than
                 # MAX_SEQ_LEN: the lookup returns None, every position returns None, and the protein
                 # drops out with "Could not compute entropies" rather than with an error naming the
-                # cause. P04958 at 1,315 residues is the only panel member over the limit and it is
-                # exactly the one that vanished.
+                # cause. Three of the fifteen panel proteins are over the limit and all three were
+                # being suppressed: P04958 at 1,315, P0DPI1 at 1,296 and Q99ZW2 at 1,368. Only
+                # P04958 was visible as a loss; the other two had never carried a SaProt value, so
+                # their absence read as ordinary missing coverage rather than as a bug. (This
+                # comment said P04958 was the only one over the limit until 2026-09-24, which was
+                # the count taken before the census and is exactly the error the census exists to
+                # prevent. Verified against the panel FASTA: 15 members, 3 over 1,022.)
                 #
                 # The bug is older than it looks. The legacy April token file was built from
                 # already-truncated sequences, so its keys happened to match what this function is

@@ -2019,7 +2019,15 @@ CLAIMS = [
                 and v["stale_columns"] == 0),
      {"docs/EVALUATION_REPORT.md":
       "**5 of 12 rows** disagree in sign between at least two of the three models"},
-     ["honest current figure is **2 of 9**", "the figure is 2 of 9"]),
+     # 🔴 The prose forms were added 2026-09-23 after the digit-only forbid missed them. The
+     # 09-23 retirement forbade "2 of 9" and left the *words* "Three of 12 proteins" standing in
+     # two body sections of the same report, so the document asserted 5 of 12 in § 7 and three of
+     # twelve in §§ 5 and 5.x for one commit. A forbid that only covers the spelling the author
+     # happened to use when retiring a figure does not cover the spellings already in the file.
+     # Entry twenty-one of docs/DATA_CORRECTIONS.md. Both cases are listed because the sentence
+     # can start either mid-line or after a period.
+     ["honest current figure is **2 of 9**", "the figure is 2 of 9",
+      "Three of 12 proteins", "three of 12 proteins"]),
     ("the mature-chain numbering fix reached every consumer and moved nothing else",
      functional_site_numbering,
      lambda v: (v["entries"] == 16 and v["n_fspe"] == 15
