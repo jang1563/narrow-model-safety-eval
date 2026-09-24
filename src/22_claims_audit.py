@@ -49,7 +49,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # surface where a number is most likely to be spoken aloud, and it was the only document
           # quoting headline figures that no gate checked. Adding it immediately failed on a stale
           # FSPE panel count, which is the argument for having added it.
-          "docs/BIOHUB_RESEARCH_BRIEF.md"]
+          "docs/BIOHUB_RESEARCH_BRIEF.md",
+          # Added 2026-09-24 with the document itself. It is a standalone summary written to be read
+          # instead of the long documents, which makes it the surface most likely to be quoted and
+          # the one where a stale figure would travel furthest.
+          "docs/DETECTOR_EVALUATION_SUMMARY.md"]
 
 
 def j(p):
@@ -2039,6 +2043,7 @@ CLAIMS = [
          and abs(v["dedup_quant_35M"] - 0.1029) < 5e-4),
      {"docs/DETECTOR_CRITERIA.md":
       "4.32%   what it delivers when the negatives really are exchangeable",
+      "docs/DETECTOR_EVALUATION_SUMMARY.md": "7.14%   after the pool's duplicate names stop hiding the failures",
       # added 2026-09-24: the in-sample nature of flagged@95 had never been stated on either public
       # headline surface, so the project's worst-scoring criterion was invisible to anyone who read
       # only the README or the dataset card
@@ -2155,7 +2160,9 @@ CLAIMS = [
                 and v["superantigen"] == (1.0, 1.0) and v["clostridial"] == (1.0, 1.0)
                 and v["t3ss"] == (0.8, 0.8)
                 and abs(v["provenance_auroc"] - 0.818) < 0.002),
-     {"docs/MECHANISM_GENERALIZATION.md": "**80 hazardous proteins**"}, []),
+     {"docs/MECHANISM_GENERALIZATION.md": "**80 hazardous proteins**",
+      # the standalone summary quotes the alignment comparison; pinned so it cannot drift
+      "docs/DETECTOR_EVALUATION_SUMMARY.md": 'beats Smith-Waterman by **+55.9 points**. On beta-lactamase alignment wins, **29.5% against 21.4%**.'}, []),
     ("LOMO figures quoted in the document match the artifact", lomo_class_recovery,
      lambda v: True,
      {"docs/MECHANISM_GENERALIZATION.md": "| **beta_lactamase** | 14 | **21%** | **1%** | 0.751 |"},
@@ -2357,7 +2364,8 @@ CLAIMS = [
                 and v["v2_margin_rho"] > 0.9 and v["v2_hit"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **margin** = nearest other-class positive minus nearest negative | "
-      "**+0.894** | **0.00015** | **yes** |"}, []),
+      "**+0.894** | **0.00015** | **yes** |",
+      "docs/DETECTOR_EVALUATION_SUMMARY.md": '- It tracks recovery at Spearman **+0.894**, permutation *p* = 0.0001.'}, []),
     ("v3 panel shape, and target host survives class holdout on it",
      v3_panel_and_target_host,
      lambda v: (v["positives"] == 149 and v["negatives"] == 296
@@ -2624,7 +2632,8 @@ CLAIMS = [
                 and abs(v["s_cry_fp_panel"] - 0.0830) < 0.0005
                 and abs(v["s_cry_fp_sel"] - 0.0587) < 0.0005),
      {"docs/DETECTOR_CRITERIA.md":
-      "| esm2_35M | 63.5% | **16.7%** | -12.1pt | 8.30% | **5.87%** |"},
+      "| esm2_35M | 63.5% | **16.7%** | -12.1pt | 8.30% | **5.87%** |",
+      "docs/DETECTOR_EVALUATION_SUMMARY.md": '| esm2_35M | 63.5% | **16.7%** | 8.30% | **5.87%** |'},
      # the in-sample collateral figure an earlier draft of criterion 18 nearly published
      ["Every other hazard class is untouched"]),
 

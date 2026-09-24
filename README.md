@@ -34,6 +34,8 @@
 
 ## Reviewer Framing
 
+🔑 **Start here if you read one thing.** [`docs/DETECTOR_EVALUATION_SUMMARY.md`](docs/DETECTOR_EVALUATION_SUMMARY.md) is a six-page standalone summary of the whole detector-evaluation line: what recovery looks like per hazard class, why two classes are unreachable and how geometry locates them, what the false-positive budget really costs out of sample, how a benign reference set can be used to suppress a hazard class while the aggregate improves, and the eighteen criteria this project scores itself against. It is written to be read instead of the long documents, not after them.
+
 For the full evaluator-facing description (metrics, audits, limitations, responsible release), see [`docs/EVALUATION_REPORT.md`](docs/EVALUATION_REPORT.md).
 
 A second line of work asks a different question — **what the probe does when the hazardous molecule is not on the list at all** — by holding out entire toxin mechanism classes. That panel, its controls, and its negative results are documented separately in [`docs/MECHANISM_GENERALIZATION.md`](docs/MECHANISM_GENERALIZATION.md); the preregistered claim that failed twice is in [`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md`](docs/EXTERNAL_VALIDATION_PREREGISTRATION.md).

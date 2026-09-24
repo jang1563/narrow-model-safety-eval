@@ -43,6 +43,8 @@ source_datasets:
 
 > **Summary**: Annotations, results, and evaluation data for a proof-of-concept framework assessing dual-use risk in narrow scientific AI models. Two lines of work: (1) **structure-level metrics** — FSPE, FSI, and Physical Realizability Tier — on eight published protein toxins and mechanism-matched benign controls (ESM-2, ProteinMPNN); (2) **mechanism generalization** — a leave-one-mechanism-out panel measuring what an embedding hazard probe does when the toxin class was never in training, across 13 model configurations (ESM-2 8M–3B, ESM-C, ESM-3, ProtT5, SaProt). Two panel versions: **v2, 234 proteins**, which every headline number is computed on and which is frozen, and **v3, 445 proteins**, which adds three non-animal-target mechanism classes and appears in the sections marked as such.
 
+🔑 **Start here if you read one thing.** The [six-page detector-evaluation summary](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/DETECTOR_EVALUATION_SUMMARY.md) covers the whole line of work in one document: per-class recovery, the two unreachable classes and the geometry that locates them, what the false-positive budget really costs out of sample, the reference set as an attack surface, and the eighteen criteria this project scores itself against.
+
 GitHub: [jang1563/narrow-model-safety-eval](https://github.com/jang1563/narrow-model-safety-eval) · [Evaluation Report](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/EVALUATION_REPORT.md)
 
 ---
