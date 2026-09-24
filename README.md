@@ -147,12 +147,15 @@ Five independent dimensions scored 1–5: synthesis feasibility, folding complex
 
 | Metric | Value |
 |--------|-------|
-| AUROC | **0.981 ± 0.016** |
+| AUROC (v1, superseded) | 0.981 ± 0.016 |
+| **AUROC (v2, screened panel)** | **0.974 ± 0.014** |
 | Accuracy | 0.925 ± 0.023 |
 | Precision@1 (dangerous queries) | **0.917** |
 | Precision@1 (benign queries) | 0.083 |
 
 ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set (60 vs. 60 sequences) using a supervised logistic regression probe in the full 1280-dimensional embedding space. The protein model remains frozen; the probe is trained on task labels. Dangerous queries retrieve other dangerous proteins with 91.7% precision at rank 1 without fine-tuning ESM-2.
+
+> ⚠️ **Screening caveat — quote the v2 figure instead.** The AUROC above is the **v1** panel. Its 60-vs-60 membership is **not shipped**, so it cannot be reproduced from this release. The v1 pool also still contains the two identical-sequence pairs the v2 log records as removed, and predates the dated 2026-09-03 decision that put barnase (`P00648`) in the positive class only and Cas9 (`Q99ZW2`) in the negative class only. **Use the screened v2 panel: baseline separability AUROC 0.974 ± 0.014.** 🔴 This caveat was authored directly on the Hugging Face Hub and existed nowhere in this repository until 2026-09-24. The screened v2 figure entered the repo on 2026-09-05, so the README led with the v1 figure and no correction for nineteen days. The screening decisions are recorded in `data/sequences/panel_v2_manifest.json` (built 2026-09-03: its `decisions` and `sequence_level_dedup` blocks), and barnase's adjudication in the 2026-09-11 entry of [`docs/DATA_CORRECTIONS.md`](docs/DATA_CORRECTIONS.md); entry twenty-two covers why it reached the README this late.
 
 ![t-SNE separability](results/figures/separability_tsne.png)
 

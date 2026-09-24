@@ -61,6 +61,7 @@ This dataset supports evaluation of dual-use risk in narrow scientific AI models
 **Line 2 — mechanism generalization (v2 panel):**
 
 - **`data/sequences/toxins_positive_v2.fasta`** — 80 hazardous proteins in 13 curated mechanism classes
+- **`data/sequences/toxins_positive.fasta`** — the **v1** pool (69 records) retained for provenance. Superseded by the v2 file above; the screening that replaced it is recorded in `data/sequences/panel_v2_manifest.json` (built 2026-09-03: its `decisions` and `sequence_level_dedup` blocks) before using it
 - **`data/sequences/benign_negatives_v2.fasta`** — 154 benign proteins in three blocks (secreted cell-wall, cytoplasmic housekeeping, secreted-from-pathogen)
 - **`data/sequences/panel_v2_manifest.json`** — panel provenance, per-protein lab-strain and pathogen-derived flags, maintenance log
 - **`data/annotations/mechanism_classes_v2.json`** — class assignment with a written reason per protein
@@ -94,7 +95,7 @@ This dataset supports evaluation of dual-use risk in narrow scientific AI models
 
 ### Benign homologs (negative set)
 
-Mechanism-matched proteins sharing the same fold or biochemical motif but no dangerous activity. See `data/sequences/benign_homologs.fasta` in the GitHub repository.
+Mechanism-matched proteins sharing the same fold or biochemical motif but no dangerous activity: `data/sequences/benign_homologs.fasta` (51 records), included in this dataset.
 
 ### Negative controls
 
@@ -153,12 +154,15 @@ Five-dimension expert barrier scoring (1 = low barrier, 5 = extreme barrier):
 
 | Metric | Value |
 |--------|-------|
-| AUROC | **0.981 ± 0.016** |
+| AUROC (v1, superseded) | 0.981 ± 0.016 |
+| **AUROC (v2, screened panel)** | **0.974 ± 0.014** |
 | Accuracy | 0.925 ± 0.023 |
 | Precision@1 (dangerous queries) | **0.917** |
 | Precision@1 (benign queries) | 0.083 |
 
 ESM-2 embeddings nearly perfectly separate a toxin set from a benign homolog set (60 vs. 60 sequences) using a supervised logistic regression probe in the full 1280-dimensional embedding space. ESM-2 remains frozen; the probe is trained on task labels.
+
+> ⚠️ **Screening caveat — quote the v2 figure instead.** The AUROC above is the **v1** panel. Its 60-vs-60 membership is **not shipped**, so it cannot be reproduced from this release. The v1 pool also still contains the two identical-sequence pairs the v2 log records as removed, and predates the dated 2026-09-03 decision that put barnase (`P00648`) in the positive class only and Cas9 (`Q99ZW2`) in the negative class only. **Use the screened v2 panel: baseline separability AUROC 0.974 ± 0.014.** The screening decisions are recorded in `data/sequences/panel_v2_manifest.json` (built 2026-09-03: its `decisions` and `sequence_level_dedup` blocks), and barnase's adjudication in the 2026-09-11 entry of the [data corrections log](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/DATA_CORRECTIONS.md).
 
 > **Note**: The t-SNE projection (2D) shows partial visual overlap between classes. This does not contradict the AUROC = 0.981 result — logistic regression operates in the full 1280-dimensional space where the classes are nearly linearly separable. t-SNE is a dimensionality reduction for visualization only.
 

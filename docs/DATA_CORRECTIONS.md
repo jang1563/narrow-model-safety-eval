@@ -561,7 +561,7 @@ class was included, and none of the fixes applied to other panel defects this se
 class itself was never mislabeled, only its provenance was undocumented.
 
 **One new candidate explanation, alongside two refuted ones.** The corpus/capacity hypothesis for the
-ESM-C anomaly was tested on ESM-C 6B and refuted (2026-09-10 entry). This is a third, independent
+ESM-C anomaly was tested on ESM-C 6B and refuted (§ 9.3 of `docs/MECHANISM_GENERALIZATION.md`; this sentence cited a "2026-09-10 entry" of this log until 2026-09-24, and no entry of that date has ever existed — entry twenty-two). This is a third, independent
 candidate: beta-lactamase may resist generalization not because of any property of the models tested, but
 because it was never the same *kind* of hazard as the other eight classes, and an embedding trained to
 recognize host-interacting toxins has no principled reason to key on it. This is stated as a candidate,
@@ -2339,3 +2339,88 @@ where it belongs. This is the fourth kept correction that hurts the metric under
 were verified unchanged. No per-protein FSPE value moves in this entry — the SaProt fix is additive and
 the flip count is a derived statistic over columns that already existed. The accession-keyed lookup that
 would make §1 structurally impossible is still open, and is named here rather than quietly deferred.
+
+---
+
+## 2026-09-24 (twenty-second entry) — The Hugging Face card and this repository had diverged in both directions, so the correction telling readers not to quote the headline AUROC existed on one surface only
+
+Found while preparing the first push in four days, by diffing the live dataset card against the
+repository copy before overwriting it. That check was the whole finding: **a blind repository-to-Hub
+sync would have deleted a correction.**
+
+### What the diff showed
+
+44 changed lines. The repository is newer on everything from the September work — the 12/14 FSPE
+headline, the SEB and numbering caveats, Ricin at 1.230 rather than the pre-fix 1.226, the v2/v3
+provenance-control numbers. But three things existed **only on the Hub**:
+
+| Hub-only content | status |
+|---|---|
+| the `AUROC (v1, superseded)` / `AUROC (v2, screened panel)` rows and the **screening caveat** telling readers to quote 0.974 instead of 0.981 | a real correction, now in the repository |
+| `benign_homologs.fasta` described as included in the dataset | correct: the file is in the dataset (33 KB); the repository copy said "see the GitHub repository" |
+| the v1 pool (`toxins_positive.fasta`, 69 records) provenance bullet | correct: the file ships; the repository copy had dropped the bullet |
+
+`git log -S "Screening caveat" --all` returns nothing, so that text was authored directly on the Hub
+web interface and never came back. The Hub is a git remote that can be edited in a browser, and an
+edit made there is invisible to every gate in this repository.
+
+### The part that matters: the most-quoted number had no correction on the primary surface
+
+`README.md` leads its Key Results with **AUROC 0.981 ± 0.016**. That is the v1 panel, whose 60-vs-60
+membership is not shipped, which still contains the two identical-sequence pairs the v2 build removed,
+and which predates the dated 2026-09-03 decision assigning barnase to the positive class and Cas9 to
+the negative class. The screened figure is **0.974 ± 0.014**, and it entered this repository on
+2026-09-05.
+
+So for **nineteen days** the project's single most-quoted number was led with, uncorrected, on its
+primary surface, while the correction sat on a secondary one. No gate could notice: the
+`Embedding separability AUROC` claim recomputed 0.981 from its artifact and pinned it to **no
+document at all**, and a claim with no document pin cannot fail on a document.
+
+🔴 **Direction.** The quotable figure moves 0.981 to 0.974 and the panel it is computed on shrinks
+from an unshipped set to a shipped one. This weakens the headline, and it is the fifth kept correction
+that does so under `docs/DETECTOR_CRITERIA.md` criterion 11.
+
+### Two more defects found by the same pass
+
+**The interview brief was off the audited surface.** `docs/BIOHUB_RESEARCH_BRIEF.md` is the document
+most likely to have its numbers spoken aloud, and it was the only one quoting headline figures that no
+gate checked. Adding it to `PUBLIC` immediately surfaced a stale row: `15 proteins; mean ratio 0.437;
+13/15 below 1.0`, the pre-exclusion headline the audit already forbids leading with. It survived
+because the forbid string was the full sentence `13/15 below 1.0, sign test p = 0.0037` and the brief
+carried the fragment. **Second time in two days that a forbid pinned to one spelling missed another**
+(entry twenty-one was the same defect on `Three of 12 proteins`). The forbid is now the fragment.
+
+**Three sentences cited an entry of this log that has never existed.** Two on the Hub card and one
+inside this file referred to a "2026-09-10 entry". The dated headings here run 09-05, 09-11, 09-18; no
+09-10 entry was ever written. The screening decisions those sentences meant are in
+`data/sequences/panel_v2_manifest.json`, and the ESM-C 6B refutation the third one meant is § 9.3 of
+`docs/MECHANISM_GENERALIZATION.md`. All three now point at what actually holds the record.
+
+This is the **second occurrence** of this defect class: on 2026-09-20 an entry was cited by number for
+two days before it was written. A citation is cheap to write, nothing downstream reads it, and a
+reader who follows a dead one concludes the record is missing rather than misnamed. It is now gated:
+`cited_entries_exist` resolves every `<date> entry` citation in the audited documents and in this log
+against the headings actually present, skipping dates in quotes so a sentence can name the citation it
+replaces.
+
+### What is gated now, and negative-tested
+
+Three checks were added or tightened, each verified to fail when the defect is reintroduced and to
+pass when it is removed:
+
+| check | fails on |
+|---|---|
+| `the v1 separability figure carries its screening caveat on every surface that prints it` | removing the caveat from the README, the card or the brief; 0.974 is recomputed from the v2 LOMO artifact rather than quoted |
+| forbid `13/15 below 1.0` (was the full sentence) | the fragment reappearing on any audited surface |
+| `every dated entry cited by a document exists in the corrections log` | any `<date> entry` citation with no matching heading |
+
+71 claims.
+
+### What was deliberately not done
+
+The Hub card is **not** overwritten from the repository until the three Hub-only items above are in
+the repository copy, which is the point of this entry. No result artifact is regenerated: every number
+here already existed, on one surface or the other. And the underlying asymmetry is unfixed — the Hub
+remains editable in a browser, so the next out-of-band edit will be just as invisible. The check that
+would close it is a CI step diffing the live card against the repository copy, which is not written.

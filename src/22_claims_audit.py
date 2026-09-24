@@ -44,7 +44,12 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-21. The preregistration is linked from the README and now carries
           # verified residue positions in its amendment log, so it is a surface where a number can
           # drift. Checked clean against every forbid string in this registry before adding.
-          "docs/MUTATION_EXTENSION_PREREGISTRATION.md"]
+          "docs/MUTATION_EXTENSION_PREREGISTRATION.md",
+          # Added 2026-09-24. This is the interview and collaboration-scoping brief, so it is the
+          # surface where a number is most likely to be spoken aloud, and it was the only document
+          # quoting headline figures that no gate checked. Adding it immediately failed on a stale
+          # FSPE panel count, which is the argument for having added it.
+          "docs/BIOHUB_RESEARCH_BRIEF.md"]
 
 
 def j(p):
@@ -81,6 +86,9 @@ def fspe_protein_level():
     n, k = len(kept), sum(1 for v in kept if v < 1.0)
     fn, fk = len(rows), sum(1 for v in rows.values() if v < 1.0)
     return {"n": n, "below_1": k, "sign_p": _sign_p(n, k),
+            # the mean is here because docs/BIOHUB_RESEARCH_BRIEF.md quotes it, and that document
+            # joined the audited surface on 2026-09-24 carrying the pre-exclusion pair (0.437, 13/15)
+            "mean_ratio": sum(kept) / n, "full_mean_ratio": sum(rows.values()) / fn,
             "excluded": sorted(excl), "excluded_ratios": {a: rows[a] for a in sorted(excl)},
             "full_n": fn, "full_below_1": fk, "full_sign_p": _sign_p(fn, fk),
             # the artifact src/21 wrote must agree with this recomputation
@@ -336,6 +344,41 @@ def flip_count():
             "all_columns_present": sum(1 for r in rows if all(r.get(c) is not None for c in cols)),
             "esm2_corrected_rows": sorted(moved), "stale_columns": stale,
             "indeterminate": []}
+
+def cited_entries_exist():
+    """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
+
+    🔴 Added 2026-09-24, entry twenty-two, after the second occurrence of the same defect. Three
+    sentences — two on the Hugging Face card, one inside the log itself — cited a "2026-09-10 entry"
+    of docs/DATA_CORRECTIONS.md, and no entry of that date has ever existed. The first occurrence was
+    2026-09-20, when an entry was cited by number for two days before being written. A citation is
+    cheap to write and nothing downstream reads it, so it is exactly the kind of reference that rots
+    silently; a reader who follows it concludes the record is missing rather than misnamed.
+
+    A date inside double quotes is being discussed rather than cited, which is how a corrected
+    sentence names the citation it is replacing, so those are skipped.
+    """
+    import re
+    log = (ROOT / "docs/DATA_CORRECTIONS.md").read_text()
+    headings = set(re.findall(r"^## (\d{4}-\d{2}-\d{2})", log, re.M))
+    scanned = [*PUBLIC, "docs/DATA_CORRECTIONS.md"]
+    dangling, n = {}, 0
+    for rel in scanned:
+        f = ROOT / rel
+        if not f.exists():
+            continue
+        text = f.read_text()
+        quoted = set(re.findall(r'"(\d{4}-\d{2}-\d{2}) entry', text))
+        for d in re.findall(r"(\d{4}-\d{2}-\d{2}) entry", text):
+            if d in quoted:
+                continue
+            n += 1
+            if d not in headings:
+                dangling.setdefault(rel, []).append(d)
+    return {"headings": len(headings), "citations": n,
+            "dangling": {k: sorted(set(v)) for k, v in dangling.items()},
+            "scanned": len(scanned)}
+
 
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
@@ -1899,9 +1942,15 @@ CLAIMS = [
                 and v["flagged_but_absent"] == []),
      {"README.md": "12/14 below 1.0, sign test p = 0.0065",
       "huggingface/README.md": "12/14 below 1.0, sign test p = 0.0065",
-      "docs/EVALUATION_REPORT.md": "12/14 ratios below 1.0, exact sign test p = 0.0065"},
-     # the superseded headline, which must not be led with on any public surface again
-     ["13/15 below 1.0, sign test p = 0.0037", "12/15 below 1.0", "sign test p = 0.018"]),
+      "docs/EVALUATION_REPORT.md": "12/14 ratios below 1.0, exact sign test p = 0.0065",
+      # the interview brief quotes the panel mean as well as the count, so both are pinned
+      "docs/BIOHUB_RESEARCH_BRIEF.md":
+      "14 proteins; mean ratio 0.400; 12/14 below 1.0; sign test p = 0.0065"},
+     # The superseded headline, which must not be led with on any public surface again. 🔴 The first
+     # string was "13/15 below 1.0, sign test p = 0.0037" until 2026-09-24, and the brief carried a
+     # bare "13/15 below 1.0" underneath it for two days without failing the gate: a forbid pinned to
+     # one full sentence does not cover the fragment. Shortened to the fragment, which subsumes it.
+     ["13/15 below 1.0", "12/15 below 1.0", "sign test p = 0.018"]),
     # Both flagged entries are counted as successes by the headline, so the leave-out value is part
     # of the claim rather than a footnote to it. 11/13 is exactly 92/8192, so the tolerance is tight.
     ("the FSPE headline's dependence on the two annotation-flagged entries", fspe_flagged_leaveout,
@@ -1978,6 +2027,19 @@ CLAIMS = [
      lambda v: True, {}, ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
     ("Embedding separability AUROC", separability,
      lambda v: v is None or abs(v["auroc"] - 0.981) < 0.002, {}, []),
+    # 🔴 Added 2026-09-24, entry twenty-two. The v1 0.981 is the most-quoted number in the project and
+    # the caveat telling a reader to use the screened v2 0.974 instead existed on the Hugging Face
+    # card ONLY, where it had been edited in on the Hub and never brought back to the repository. The
+    # README led with 0.981 and no correction, and no gate noticed, because a claim with no document
+    # pin cannot fail on a document. Every surface that prints the figure now has to print the
+    # caveat, and the 0.974 it points at is recomputed from the v2 LOMO artifact rather than quoted.
+    ("the v1 separability figure carries its screening caveat on every surface that prints it",
+     lambda: {"v1": separability()["auroc"], "v2": lomo_class_recovery()["baseline_auroc"]},
+     lambda v: abs(v["v1"] - 0.981) < 0.002 and abs(v["v2"] - 0.974) < 0.002,
+     {"README.md": "**Use the screened v2 panel: baseline separability AUROC 0.974 ± 0.014.**",
+      "huggingface/README.md":
+      "**Use the screened v2 panel: baseline separability AUROC 0.974 ± 0.014.**",
+      "docs/BIOHUB_RESEARCH_BRIEF.md": "**AUROC 0.974 +/- 0.014** on the screened v2 panel"}, []),
     ("FSI mean over the seven toxin structures", fsi_seven_toxins,
      lambda v: v["n"] == 7 and abs(v["mean"] - 1.02) < 0.005,
      {"README.md": "Mean FSI: 1.02", "huggingface/README.md": "Mean FSI: 1.02"}, []),
@@ -2013,6 +2075,10 @@ CLAIMS = [
     # "2 of 9" in the sentence that retires it, which is this repository's house style for
     # corrections, so a forbid on the bare digits would forbid explaining the change. Same treatment
     # as the pooled omission count in the annotation-provenance claim.
+    ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
+     # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
+     # entry under the same date. 13 is a floor and can only grow.
+     lambda v: v["dangling"] == {} and v["citations"] >= 3 and v["headings"] >= 13, {}, []),
     ("Cross-model FSPE flips, now that all three columns share a numbering", flip_count,
      lambda v: (v["n_rows"] == 12 and v["all_columns_present"] == 12
                 and v["flips"] == 5 and v["indeterminate"] == []
