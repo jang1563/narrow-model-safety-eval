@@ -272,7 +272,21 @@ alignment's 29.5%, with no other arm's interval reaching it. Three other arm-to-
 `docs/MECHANISM_GENERALIZATION.md` §9 did not survive the same check and were rewritten; the sixth
 2026-09-18 entry in `docs/DATA_CORRECTIONS.md` lists them.*
 
-**Three cautions that belong with any number above:**
+**Four cautions that belong with any number above**, and the first one is the one
+most detector papers omit:
+
+- 🔴 **The 95 in `flagged@95` is an in-sample specificity, and the realistic rate is about
+  8%.** The panel's negatives split **178 train / 118 calibrate / 0 test**: there is no held-out test
+  partition, so every false-positive figure in this dataset was measured on negatives the pipeline had
+  already seen. Measured out of sample against the 8,259-protein benign pool, 200 seeds, both arms
+  agreeing: at a nominal 5% the published `np.quantile` estimator delivers **7.87%** (ESM-2 650M) and
+  **7.94%** (35M), and the conformal threshold, which is the better estimator, still delivers 5.98%
+  and 6.18% because the calibration and test negatives come from different curations. Collapsing the
+  pool to one protein per distinct name **raises** it further, to 9.64% and 10.29%. This is the
+  project's own worst-scoring criterion and it is listed first in
+  [`docs/DETECTOR_CRITERIA.md`](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/DETECTOR_CRITERIA.md);
+  the full decomposition is § 2.6.1 of the mechanism-generalization write-up.
+
 
 - A probe trained on **lab-strain provenance with the hazard label ignored** still reaches AUROC
   **0.818 ± 0.012 on v2** and **0.794 ± 0.062 on v3**, and the organism label agrees with the hazard

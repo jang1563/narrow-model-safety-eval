@@ -2424,3 +2424,76 @@ the repository copy, which is the point of this entry. No result artifact is reg
 here already existed, on one surface or the other. And the underlying asymmetry is unfixed — the Hub
 remains editable in a browser, so the next out-of-band edit will be just as invisible. The check that
 would close it is a CI step diffing the live card against the repository copy, which is not written.
+
+---
+
+## 2026-09-24 (twenty-third entry) — The project's worst-scoring criterion was absent from both public surfaces, and two artifacts still called a two-arm result provisional
+
+`docs/DETECTOR_CRITERIA.md` opens by arguing that the split comes first and that the other seventeen
+criteria are downstream of it. This project scores a **fail** on that criterion and says so, in that
+document and in § 2.6.1 of `docs/MECHANISM_GENERALIZATION.md`. Neither is a document a reader meets
+first.
+
+### What a reader of the headline surfaces could see
+
+The dataset card prints a per-class recovery table whose every column is `flagged@95` or `flagged@99`,
+under the heading **"Three cautions that belong with any number above"**. The three were provenance
+leakage, amino-acid composition, and the classifier head. **The operating point itself was not among
+them.** The README did not mention the split at all.
+
+So the published position was: the 95 in `flagged@95` is a specificity measured on negatives the
+pipeline had already fitted or calibrated on, and nothing on either surface said so. The honest
+figures, 200 seeds, both arms, nominal 5%:
+
+| | canonical 650M | esm2_35M |
+|---|---|---|
+| `np.quantile`, panel-calibrated, pool-tested | **7.87%** | **7.94%** |
+| conformal, same conditions | 5.98% | 6.18% |
+| `np.quantile`, distinct names only | **9.64%** | **10.29%** |
+
+A nominal 5% budget costs about 8%, or about 10% once the pool's name redundancy stops hiding the
+easy negatives. That is now the **first of four cautions** on the card and sits in the README's
+reviewer framing, and the claims audit pins both sentences plus the § 2.6.1 table row, so removing any
+of them fails the gate.
+
+🔴 **Direction.** This correction publishes a worse number. `flagged@95` now has to be read against a
+realized false-positive rate of about 8%, so every per-class recovery figure on the card is quoted at
+an operating point looser than its label. Sixth kept correction that weakens a published claim under
+criterion 11.
+
+### The stale flag underneath it
+
+`src/49_external_test_partition.py` wrote `"single_arm_provisional": True` as a **literal**, together
+with a verdict string ending "SINGLE ARM, provisional". That was true when only `esm2_35M` had pool
+embeddings. The canonical 650M pool embeddings were computed on 2026-09-21, the script was run on
+them, and § 2.6.1 was updated to say route 2 runs on both arms — but the flag and the sentence are
+written by the script, so **both artifacts went on declaring themselves provisional** while the
+document citing them said the opposite.
+
+A status that a run cannot update is a status that is wrong as soon as the situation changes. The arm
+count is now read from disk: `external_test_partition_*.json` is globbed, the current arm is unioned
+in, and provisional means fewer than two. Both arms were re-run at 200 seeds to regenerate the
+artifacts.
+
+✅ **Every number reproduced exactly.** The re-run diff on both files is the status fields and nothing
+else — no false-positive rate, per-class recovery or confidence bound moved by any amount that shows
+at the stored precision. That was not the purpose of the re-run, but it is the strongest
+reproducibility evidence in this repository: two 200-seed runs, three days apart, on regenerated
+embeddings for one arm, byte-identical in every quantity.
+
+### The gate that could not have caught it
+
+The claim covering this decomposition began `lambda v: v is None or (...)`, so a **missing artifact
+passed vacuously**. On the claim that carries the project's worst-scoring criterion, the default was
+"absent means fine". It now requires both arms, asserts the four figures the public surfaces quote,
+and asserts that no artifact still calls itself provisional.
+
+### What was deliberately not done
+
+The published split is **not** changed: the panel keeps 178 train / 118 calibrate / 0 test, and the
+per-class table keeps `np.quantile`. Re-thresholding the published table on conformal would break
+comparability with every figure in `docs/MECHANISM_GENERALIZATION.md` and with the frozen v2 panel,
+for a gain that is already reported alongside it. Criterion 1 therefore still scores **fail**:
+measured, stated on the surfaces where it matters, and not repaired. The repair is a negative set
+large enough to carve a test partition without halving the calibration resolution, which is
+criterion 8's problem and is not solved here.

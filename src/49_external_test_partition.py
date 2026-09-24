@@ -238,15 +238,27 @@ def main():
     shift_bad = [al for al in ALPHAS
                  if out_fp[str(al)]["shift"]["conformal"] is not None
                  and out_fp[str(al)]["shift"]["conformal"]["excludes_nominal"]]
+    dest = RES / f"external_test_partition_{a.arm}.json"
+    # 🔴 The arm count is READ FROM DISK, 2026-09-24, entry twenty-three. This was a hardcoded
+    # `True` plus the words "SINGLE ARM, provisional" in the verdict string, and it stayed there
+    # after the canonical 650M pool embeddings were computed and this script was run on them. So
+    # both artifacts declared themselves provisional while the document that cites them
+    # (MECHANISM_GENERALIZATION § 2.6.1) said route 2 runs on both arms. A status that a run cannot
+    # update is a status that will be wrong as soon as the situation it describes changes.
+    arms = sorted({f.stem.replace("external_test_partition_", "")
+                   for f in RES.glob("external_test_partition_*.json")} | {a.arm})
+    provisional = len(arms) < 2
     verdict = (
         f"conformal {'HOLDS' if ctrl_ok else 'FAILS'} in the exchangeable pool-to-pool control, so "
         f"the implementation is {'sound' if ctrl_ok else 'suspect'}; under panel-to-pool distribution "
         f"shift it exceeds nominal at {[f'{x:.0%}' for x in shift_bad] or 'no budget'}. "
         "Calibration stayed at the published 118, so the per-class figures above are directly "
-        "comparable to the published table, unlike src/48's. SINGLE ARM, provisional.")
+        "comparable to the published table, unlike src/48's. "
+        + (f"SINGLE ARM ({arms[0]}), provisional under criterion 7."
+           if provisional else
+           f"Replicated across {len(arms)} arms ({', '.join(arms)}), so criterion 7 is met."))
     print(f"\nverdict: {verdict}")
 
-    dest = RES / f"external_test_partition_{a.arm}.json"
     json.dump({"model": man["model"], "arm": a.arm, "seeds": a.seeds,
                "calibration_n": n_ca, "pool_n": int(len(POOL)),
                "pool_distinct_names": int(len(ded)), "contaminant_dropped": CONTAMINANT,
@@ -256,7 +268,7 @@ def main():
                                        for al in ALPHAS},
                "per_class": res, "false_positives": out_fp,
                "conformal_holds_in_control": ctrl_ok,
-               "single_arm_provisional": True,
+               "arms_on_disk": arms, "single_arm_provisional": provisional,
                "verdict": verdict}, open(dest, "w"), indent=2)
     print(f"wrote {dest}")
 

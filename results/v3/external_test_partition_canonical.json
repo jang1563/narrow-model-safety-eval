@@ -311,6 +311,10 @@
     }
   },
   "conformal_holds_in_control": true,
-  "single_arm_provisional": true,
-  "verdict": "conformal HOLDS in the exchangeable pool-to-pool control, so the implementation is sound; under panel-to-pool distribution shift it exceeds nominal at ['5%', '1%']. Calibration stayed at the published 118, so the per-class figures above are directly comparable to the published table, unlike src/48's. SINGLE ARM, provisional."
+  "arms_on_disk": [
+    "canonical",
+    "esm2_35M"
+  ],
+  "single_arm_provisional": false,
+  "verdict": "conformal HOLDS in the exchangeable pool-to-pool control, so the implementation is sound; under panel-to-pool distribution shift it exceeds nominal at ['5%', '1%']. Calibration stayed at the published 118, so the per-class figures above are directly comparable to the published table, unlike src/48's. Replicated across 2 arms (canonical, esm2_35M), so criterion 7 is met."
 }

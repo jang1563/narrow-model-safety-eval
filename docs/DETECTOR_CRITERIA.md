@@ -166,6 +166,18 @@ So the defensible deployment figure for a nominal 5% budget here is close to
 **7%**, using the better estimator, on de-duplicated out-of-distribution
 negatives. Not 5%.
 
+🔴 **And until 2026-09-24 none of that reached a reader who did not open this
+document.** The dataset card listed three cautions under its per-class recovery
+table — provenance, composition, classifier head — and the in-sample nature of
+the operating point was not among them; the README did not mention the split at
+all. The criterion this document puts first, on the argument that the other
+seventeen are downstream of it, was the one a reader of the two headline surfaces
+could not see. It is now the first of four cautions on the card and sits in the
+README's reviewer framing, and the claims audit pins both sentences, so removing
+either fails the gate. **A limitation that is only in the appendix is a
+limitation the reader does not have**, and this project took three days to apply
+its own criterion 1 to itself.
+
 🟢 **Both arms, and the per-class half is now answered too.** The first run of
 this was on `esm2_35M` only, where `src/35_negative_scaling_curve.py` had already
 recorded the problem: beta-lactamase recovery is **already floored at 1.4%** on
@@ -636,7 +648,7 @@ Applied honestly, against its own criteria.
 
 | criterion | verdict |
 |---|---|
-| 1 the split | **Fail, and it is the worst one.** The published panel still has no test set (178/118/0) and the resolution ceiling is 0.9915. Now quantified rather than only stated: a test partition was supplied two ways, and the honest out-of-sample figure for a nominal 5% budget is about 7%. Measured, not repaired |
+| 1 the split | **Fail, and it is the worst one.** The published panel still has no test set (178/118/0) and the resolution ceiling is 0.9915. Now quantified rather than only stated: a test partition was supplied two ways, both replicate across two model arms, and the honest out-of-sample figure for a nominal 5% budget is about 7%, or about 10% de-duplicated. Measured, not repaired — and as of 2026-09-24 also **stated on the public surfaces**, which it was not: until then the figure lived in this document and in § 2.6.1 while the README and the dataset card quoted `flagged@95` with no indication that the 95 is in-sample |
 | 2 iso-FP comparisons | **Pass now, failed before.** The three-to-four fold "gain" was a budget artefact |
 | 3 per class not aggregate | **Pass** on reporting, **fail** on performance: 10% on a 32-member class |
 | 4 predicts its own failures | **Partial.** Ranks them at +0.894, over-predicts recovery by 34 points |

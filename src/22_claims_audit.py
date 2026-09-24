@@ -260,7 +260,11 @@ def external_test_partition():
             "dedup_quant_05": g(0.05, "shift_dedup", "quantile"),
             "shift_quant_05": g(0.05, "shift", "quantile"),
             "dedup_raises_fp": g(0.05, "shift_dedup", "quantile") > g(0.05, "shift", "quantile"),
-            "conformal_holds_in_control": d["conformal_holds_in_control"]}
+            "conformal_holds_in_control": d["conformal_holds_in_control"],
+            # 🔴 2026-09-24, entry twenty-three: this was a hardcoded True in src/49 and stayed True
+            # after the second arm ran, so both artifacts contradicted § 2.6.1's "both arms". It is
+            # computed from the arms on disk now, and asserted here so it cannot go stale again.
+            "provisional": d.get("single_arm_provisional")}
 
     a, b = one(arms["esm2_35M"]), one(arms["canonical"])
     return {"arms": {"esm2_35M": a, "canonical": b},
@@ -275,7 +279,11 @@ def external_test_partition():
                 for x in (a, b)),
             "dedup_raises_fp_both": all(x["dedup_raises_fp"] for x in (a, b)),
             "monotone_decomposition_both": all(
-                x["guarantee"]["0.05"] < x["shift_conf_05"] < x["dedup_conf_05"] for x in (a, b))}
+                x["guarantee"]["0.05"] < x["shift_conf_05"] < x["dedup_conf_05"] for x in (a, b)),
+            "still_provisional": [k for k, x in (("esm2_35M", a), ("canonical", b)) if x["provisional"]],
+            # the two figures the public surfaces now quote
+            "shift_quant_canonical": b["shift_quant_05"], "shift_quant_35M": a["shift_quant_05"],
+            "dedup_quant_canonical": b["dedup_quant_05"], "dedup_quant_35M": a["dedup_quant_05"]}
 
 
 def separability():
@@ -2005,7 +2013,10 @@ CLAIMS = [
     # pool embeddings exist for one arm only.
     ("where the false-positive budget goes once the test negatives come from outside the panel",
      external_test_partition,
-     lambda v: v is None or (
+     # 🔴 `v is None or ...` until 2026-09-24: a missing artifact passed the gate vacuously, which is
+     # the wrong default for the claim that carries this project's worst-scoring criterion. Both arms
+     # are required now, and the document pins below mean the public surfaces cannot drop the figure.
+     lambda v: v is not None and (
          all(x["calibration_n"] == 118 and x["pool_n"] == 8258 and x["dropped"] == "Q8X739"
              and x["seeds"] == 200
              # at m=118 conformal is reachable at BOTH budgets, unlike at m=59
@@ -2020,9 +2031,23 @@ CLAIMS = [
          # the whole decomposition replicates across both arms
          and v["ctrl_conf_on_guarantee_both"] and v["ctrl_quant_exceeds_both"]
          and v["shift_breaks_conformal_both"] and v["dedup_raises_fp_both"]
-         and v["monotone_decomposition_both"]),
+         and v["monotone_decomposition_both"]
+         and v["still_provisional"] == []
+         and abs(v["shift_quant_canonical"] - 0.0787) < 5e-4
+         and abs(v["shift_quant_35M"] - 0.0794) < 5e-4
+         and abs(v["dedup_quant_canonical"] - 0.0964) < 5e-4
+         and abs(v["dedup_quant_35M"] - 0.1029) < 5e-4),
      {"docs/DETECTOR_CRITERIA.md":
-      "4.32%   what it delivers when the negatives really are exchangeable"}, []),
+      "4.32%   what it delivers when the negatives really are exchangeable",
+      # added 2026-09-24: the in-sample nature of flagged@95 had never been stated on either public
+      # headline surface, so the project's worst-scoring criterion was invisible to anyone who read
+      # only the README or the dataset card
+      "huggingface/README.md":
+      "at a nominal 5% the published `np.quantile` estimator delivers **7.87%**",
+      "README.md": "a nominal 5% budget really costs about **7.9%**",
+      "docs/MECHANISM_GENERALIZATION.md":
+      "| panel to pool, deployment shift | 7.87% [7.57, 8.16] exceeds | 5.98% [5.73, 6.23] **exceeds** |"},
+     []),
     ("FSPE pseudoreplicated figure is labelled, not led with", fspe_protein_level,
      lambda v: True, {}, ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
     ("Embedding separability AUROC", separability,
