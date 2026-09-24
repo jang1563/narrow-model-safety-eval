@@ -51,7 +51,17 @@ def load(res, pv, tag):
     return P, N, man
 
 
-def compare(A, B, name):
+# 🔴 A single tolerance was the wrong instrument, 2026-09-24. The first run of this script
+# returned EQUIVALENT=False on a pair whose minimum row cosine is 0.99988 and whose pairwise
+# distance correlation is 0.99996: numerically distinguishable, geometrically the same object.
+# A probe fitted on either would see the same neighbourhood structure, and reporting only the
+# binary would have either blocked a valid comparison or, if the tolerance had been set loosely,
+# hidden a real difference. Both verdicts are reported now, with their thresholds named.
+COSINE_FLOOR = 0.999      # a row that rotates less than this is the same direction
+PDIST_FLOOR = 0.999       # distance structure a probe would see
+
+
+def compare(A, B, name, accs=None):
     assert A.shape == B.shape, f"{name}: shape {A.shape} vs {B.shape}"
     d = np.abs(A - B)
     num = (A * B).sum(1)
@@ -65,7 +75,11 @@ def compare(A, B, name):
     pa, pb = pdist(A), pdist(B)
     iu = np.triu_indices(len(A), 1)
     rho = float(np.corrcoef(pa[iu], pb[iu])[0, 1]) if len(A) > 2 else float("nan")
+    worst_row = int(np.argmax(d.max(1)))
     return {"rows": int(A.shape[0]), "dim": int(A.shape[1]),
+            "worst_row": worst_row,
+            "worst_row_acc": (accs[worst_row] if accs else None),
+            "worst_row_cosine": float(cos[worst_row]),
             "max_abs_diff": float(d.max()), "mean_abs_diff": float(d.mean()),
             "scale": float(np.abs(A).mean()),
             "max_abs_diff_over_scale": float(d.max() / max(np.abs(A).mean(), 1e-12)),
@@ -98,16 +112,34 @@ def main():
                                                     "mean_embedding_source", "built")},
            "candidate_env": {k: MB.get(k) for k in ("torch", "esm_version",
                                                     "mean_embedding_source", "built")},
-           "positives": compare(PA, PB, "positives"),
-           "negatives": compare(NA, NB, "negatives")}
+           "positives": compare(PA, PB, "positives",
+                                [r["acc"] for r in MA["positive_rows"]]),
+           "negatives": compare(NA, NB, "negatives",
+                                [r["acc"] for r in MA["negative_rows"]])}
     worst = max(out["positives"]["max_abs_diff"], out["negatives"]["max_abs_diff"])
     out["tolerance"] = a.tol
-    out["equivalent"] = bool(worst < a.tol)
-    out["verdict"] = ("the two runs are the same computation to within tolerance, so arrays "
-                      "from either may be compared across panels"
-                      if out["equivalent"] else
-                      "the two runs DIFFER beyond tolerance; a cross-panel comparison must use "
-                      "arrays from one source only")
+    out["cosine_floor"] = COSINE_FLOOR
+    out["pdist_floor"] = PDIST_FLOOR
+    out["numerically_identical"] = bool(worst < a.tol)
+    out["geometrically_equivalent"] = bool(
+        min(out[k]["min_row_cosine"] for k in ("positives", "negatives")) >= COSINE_FLOOR
+        and min(out[k]["pairwise_distance_corr"] for k in ("positives", "negatives"))
+        >= PDIST_FLOOR)
+    # kept for the artifacts written before the two-verdict change
+    out["equivalent"] = out["numerically_identical"]
+    if out["numerically_identical"]:
+        out["verdict"] = ("the same computation to within tolerance: arrays from either may be "
+                          "compared across panels without further qualification")
+    elif out["geometrically_equivalent"]:
+        out["verdict"] = (
+            "NOT numerically identical but geometrically equivalent: every row keeps its "
+            f"direction to better than {COSINE_FLOOR} cosine and the pairwise distance structure "
+            f"a probe sees correlates above {PDIST_FLOOR}. A recovery number computed on one may "
+            "be compared with one computed on the other, and the difference must be stated, "
+            "because a bit-level reproduction claim is not available")
+    else:
+        out["verdict"] = ("the two runs DIFFER in geometry, not only in arithmetic; a "
+                          "cross-panel comparison must use arrays from one source only")
 
     dest = res / f"embedding_source_equivalence_{a.a}_vs_{a.b}.json"
     json.dump(out, open(dest, "w"), indent=2)
@@ -117,9 +149,12 @@ def main():
               f"min cos={c['min_row_cosine']:.6f}  pdist r={c['pairwise_distance_corr']:.6f}")
     print(f"\nreference {out['reference_env']}")
     print(f"candidate {out['candidate_env']}")
-    print(f"\nEQUIVALENT={out['equivalent']}  ({out['verdict']})")
+    print(f"\nnumerically identical:   {out['numerically_identical']}  (tol {a.tol:g})")
+    print(f"geometrically equivalent: {out['geometrically_equivalent']}  "
+          f"(cos >= {COSINE_FLOOR}, pdist r >= {PDIST_FLOOR})")
+    print(f"\n{out['verdict']}")
     print(f"wrote {dest}")
-    return 0 if out["equivalent"] else 2
+    return 0 if (out["numerically_identical"] or out["geometrically_equivalent"]) else 2
 
 
 if __name__ == "__main__":

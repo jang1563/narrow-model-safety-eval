@@ -67,8 +67,32 @@ V3 = ROOT / "results" / "v3"
 FRAC, SEEDS = 0.40, 30
 SPECS = [0.95, 0.99]
 CLASSES = ["beta_lactamase", "phage_peptidoglycan_hydrolase"]
-ARMS = [("canonical 650M", ""), ("esm2_3B", "_esm2_3B"), ("esm2_150M", "_esm2_150M"),
-        ("esm2_35M", "_esm2_35M"), ("esm2_8M", "_esm2_8M")]
+SKIP_ARMS = ("smoke", "_mp")   # dry runs, and the pooling-path cross-check of src/56
+
+
+def discover_arms():
+    """Arms are whatever has an embedding pair, a manifest and its own lomo_results on v3.
+
+    🔴 2026-09-24. This was a fixed five-entry list, which was right while v3 was the ESM-2
+    ladder and wrong the moment src/02e learned --panel: a new arm would have been embedded,
+    scored by 03b, picked up by src/30 — which already discovers — and silently skipped here,
+    so the 30-seed intervals every cross-arm comparison in § 10.6.1 depends on would have been
+    computed over the old five while the table showed six. Same reasoning as src/30's docstring.
+    """
+    found = []
+    for pos in sorted(V3.glob("embeddings_positive_v3*.npy")):
+        suf = pos.name[len("embeddings_positive_v3"):-4]
+        if any(s in suf.lower() for s in SKIP_ARMS):
+            continue
+        need = [V3 / f"embeddings_negative_v3{suf}.npy",
+                V3 / f"embedding_manifest_v3{suf}.json",
+                V3 / f"lomo_results{suf}.json"]
+        if all(f.exists() for f in need):
+            found.append((suf.lstrip("_") or "canonical 650M", suf))
+        else:
+            print(f"  skipping{suf or ' (canonical)'}: missing "
+                  f"{[f.name for f in need if not f.exists()]}")
+    return found
 
 
 def recover_seeds(P, N, hi, tri, spec):
@@ -99,8 +123,10 @@ def main():
     mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v3.json"))
     cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
 
+    arms = discover_arms()
+    print(f"arms on v3: {[a for a, _ in arms]}")
     out = {c: {} for c in CLASSES}
-    for label, suf in ARMS:
+    for label, suf in arms:
         man = json.load(open(V3 / f"embedding_manifest_v3{suf}.json"))
         lomo = json.load(open(V3 / f"lomo_results{suf}.json"))["leave_one_mechanism_out"]
         P = np.load(V3 / f"embeddings_positive_v3{suf}.npy")
@@ -129,7 +155,7 @@ def main():
         hdr = (f"{'arm':<18}{'5-seed':>9}{'30-seed':>9}{'sd':>7}{'95% interval':>18}"
                f"{'0% splits':>11}{'pub in ci':>11}")
         print(hdr + "\n" + "-" * len(hdr))
-        for label, _ in ARMS:
+        for label, _ in arms:
             r = out[c][label]["0.95"]
             lo, hi_ = r["ci95"][0] * 100, r["ci95"][1] * 100
             interval = f"[{lo:.1f}, {hi_:.1f}]"
@@ -140,7 +166,7 @@ def main():
         # A1 / A2: does the canonical arm separate from 3B and 150M?
         can = out[c]["canonical 650M"]["0.95"]["ci95"]
         pairs = {}
-        for label, _ in ARMS:
+        for label, _ in arms:
             if label == "canonical 650M":
                 continue
             pairs[label] = overlap(can, out[c][label]["0.95"]["ci95"])
@@ -149,7 +175,7 @@ def main():
               f"{sep if sep else 'none'}")
 
         # every pair, so the claim is not only about the canonical arm
-        names = [lab for lab, _ in ARMS]
+        names = [lab for lab, _ in arms]
         disjoint_pairs = [(a, b) for i, a in enumerate(names) for b in names[i + 1:]
                           if not overlap(out[c][a]["0.95"]["ci95"], out[c][b]["0.95"]["ci95"])]
         n_pairs = len(names) * (len(names) - 1) // 2
@@ -185,7 +211,7 @@ def main():
 
     dest = V3 / "arm_seed_stability.json"
     json.dump({"panel": "v3", "seeds": SEEDS, "specs": SPECS, "classes": CLASSES,
-               "arms": [lab for lab, _ in ARMS], "results": out, "summary": summary,
+               "arms": [lab for lab, _ in arms], "results": out, "summary": summary,
                "distinct_from": ("03x, which runs beta-lactamase on v2's fourteen arms and is "
                                  "pinned by the audit for that result"),
                "verdict": verdict}, open(dest, "w"), indent=2)
