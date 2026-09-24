@@ -2611,7 +2611,12 @@ CLAIMS = [
                 and v["beta_not_monotone_in_capacity"]),
      {"docs/MECHANISM_GENERALIZATION.md":
       "| esm2_3B | 2560 | +0.831 | 0.0006 | −0.0030 | 4.3% → **9.3%** [5.6, 13.0] "
-      "| −0.0014 | 6.9% → **4.1%** [2.4, 5.7] | **yes** |"}, []),
+      "| −0.0014 | 6.9% → **4.1%** [2.4, 5.7] | **yes** |",
+      # 🔴 2026-09-24. The standalone summary first quoted § 10.6's fourteen-arm generality and not
+      # this section's PARTIAL, so a reader would have taken the bottom-two identification as
+      # representation-general, which this section explicitly denies. The qualifier is pinned here
+      # rather than on the § 10.6 claim because this is the claim that knows it is 2 of 5.
+      "docs/DETECTOR_EVALUATION_SUMMARY.md": '  holds in only **2 of 5**. In the other three the labelled virulence control displaces phage, the'}, []),
     ("reference set poisoning, both arms", reference_set_poisoning,
      # The assertion deliberately requires the 35M arm to be LOUD (s_p2_near == 0), so a future run
      # that made both arms quiet fails here instead of silently strengthening a claim the document

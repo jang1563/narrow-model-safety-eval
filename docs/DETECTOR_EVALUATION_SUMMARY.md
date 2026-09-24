@@ -126,9 +126,19 @@ another class minus the distance to the nearest negative.
   class size runs the other way at **−0.564**.
 - Both failing classes have a **negative** margin: their members sit closer to a benign protein than
   to any hazard class the probe was trained on.
-- The effect is representation-general: in **all 14 arms** the failing class has negative margin, the
-  correlation is significant in 13, and margin locates the failure in 12. The two misses are the CLS
-  and SaProt arms, which is a property of those representations rather than of the finding.
+- The effect is representation-general: on v2, in **all 14 arms** the failing class has negative
+  margin, the correlation is significant in 13, and margin locates the failure in 12. The two misses
+  are the CLS and SaProt arms, which is a property of those representations rather than of the
+  finding.
+- 🔴 **But the stricter version of that test comes back partial, and the distinction matters.**
+  v2 asks whether margin finds the bottom-1 of nine classes, chance 1/9. v3 asks for the bottom-**2**
+  of twelve, chance 1/66, and only **5 arms** are embedded for v3. There, negative margin for both
+  failing classes and a significant correlation (+0.796 to +0.894, every *p* ≤ 0.0016) hold in
+  **5 of 5**, and beta-lactamase is the lowest-margin class in all five — but the exact bottom-two
+  holds in only **2 of 5**. In the other three the labelled virulence control displaces phage, the
+  same displacer each time, which says the bottom of the margin ordering is where hazard and a
+  borderline control stop being distinguishable. **The ordering and the negative-margin property are
+  representation-general; the identity of the bottom-k is not.** § 10.6.1.
 
 **And it does not transfer to a miss-rate estimate.** Leave-one-class-out, margin ranks the unseen
 mechanism correctly — phage is predicted lowest and is lowest — while predicting **44.3% recovery
