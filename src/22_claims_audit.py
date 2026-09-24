@@ -1421,10 +1421,17 @@ def v3_arm_seed_stability():
     return {"seeds": d["seeds"], "n_arms": len(d["arms"]),
             "beta_disjoint_pairs": sm["beta_lactamase"]["n_disjoint_pairs"],
             "phage_disjoint_pairs": sm["phage_peptidoglycan_hydrolase"]["n_disjoint_pairs"],
+            # 🔴 These two were `== 4`, i.e. five arms minus one, baked in while v3 was the ESM-2
+            # ladder. With eight arms the literal would have read False for a reason that has
+            # nothing to do with separation. Same defect as the fixed arm list in src/41.
             "beta_canonical_separates_from_all":
-                len(sm["beta_lactamase"]["arms_disjoint_from_canonical"]) == 4,
+                len(sm["beta_lactamase"]["arms_disjoint_from_canonical"]) == len(d["arms"]) - 1,
             "phage_canonical_separates_from_all":
-                len(sm["phage_peptidoglycan_hydrolase"]["arms_disjoint_from_canonical"]) == 4,
+                len(sm["phage_peptidoglycan_hydrolase"]["arms_disjoint_from_canonical"])
+                == len(d["arms"]) - 1,
+            "phage_overlapping_canonical": sorted(
+                set(d["arms"]) - {"canonical 650M"}
+                - set(sm["phage_peptidoglycan_hydrolase"]["arms_disjoint_from_canonical"])),
             "beta_outside_ci": sorted(sm["beta_lactamase"]["published_outside_own_ci"]),
             "phage_outside_ci": sorted(sm["phage_peptidoglycan_hydrolase"]["published_outside_own_ci"]),
             "beta_top_changes": sm["beta_lactamase"]["top_arm_changes"],
@@ -2491,12 +2498,17 @@ CLAIMS = [
       "On esm2_35M the same name-disjoint run gives **+0.0, +2.9, -9.3, -25.2,"}, []),
     ("on v3 the arms genuinely separate at 30 seeds, and two 5-seed ties dissolve",
      v3_arm_seed_stability,
-     lambda v: (v["seeds"] == 30 and v["n_arms"] == 5
-                and v["beta_disjoint_pairs"] == 9 and v["phage_disjoint_pairs"] == 8
+     # 🔴 2026-09-24: eight arms. The three new ones are the whole finding of § 10.6.2, so what is
+     # asserted changes shape: the canonical arm still separates from every other arm on
+     # beta-lactamase, and on phage it does NOT, because ESM-C 600M lands on top of it — that
+     # single overlap is the dissociation, and it is pinned by name rather than by a count.
+     lambda v: (v["seeds"] == 30 and v["n_arms"] == 8
+                and v["beta_disjoint_pairs"] == 21 and v["phage_disjoint_pairs"] == 21
                 and v["beta_canonical_separates_from_all"]
-                and v["phage_canonical_separates_from_all"]
-                and v["beta_outside_ci"] == ["esm2_150M", "esm2_35M", "esm2_3B"]
-                and v["phage_outside_ci"] == ["esm2_3B", "esm2_8M"]
+                and not v["phage_canonical_separates_from_all"]
+                and v["phage_overlapping_canonical"] == ["esmc_600M"]
+                and v["beta_outside_ci"] == ["esm2_150M", "esm2_35M", "esm2_3B", "esmc_300M"]
+                and v["phage_outside_ci"] == ["esm2_3B", "esm2_8M", "esmc_300M", "esmc_600M"]
                 and not v["beta_top_changes"] and v["phage_top_changes"]
                 and v["beta_4pct_tie_dissolved"] and v["a1"]
                 and abs(v["beta_canonical_30s"] - 0.212) < 0.002
@@ -2505,7 +2517,11 @@ CLAIMS = [
                 and abs(v["phage_3B_30s"] - 0.041) < 0.002
                 and v["phage_8M_30s"] > 6 * v["phage_3B_30s"]),
      {"docs/MECHANISM_GENERALIZATION.md":
-      "**9 of the 10 arm pairs are\ndisjoint on beta-lactamase and 8 of 10 on the phage class**"}, []),
+      "**21 of the 28 arm pairs are\ndisjoint on beta-lactamase and 21 of 28 on the phage class**",
+      "docs/DETECTOR_EVALUATION_SUMMARY.md": '| **ESM-C 600M** | **40.5% [36.5, 44.5]** | 12.1% [9.4, 14.8] |'},
+     # the sentence this replaced survived the eight-arm rerun because only its numbers changed and
+     # the pin quoted the old ones; forbidding the old count stops that recurring
+     ["9 of the 10 arm pairs", "separates from\nall four others"]),
     ("the benign pool closes §10.8's gap to 30x by count and 70x by distinct name",
      pool_and_calibration_gap,
      lambda v: (v["pool_n"] == 8259 and v["distinct_names"] == 3550
@@ -2592,7 +2608,7 @@ CLAIMS = [
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **K=80** | **+16.6** [+13.6, +19.6] | **+20.7** [+15.6, +25.8] | "
       "**+2.8** [−0.7, +6.3] |"}, []),
-    ("on v3 the across-arms test is stricter and comes back partial across five arms",
+    ("on v3 the across-arms test is stricter and comes back partial across eight arms",
      v3_margin_across_arms,
      # Five arms now, not three. The three-arm version of this claim also pinned that
     # beta-lactamase recovery falls and the phage class rises monotonically with capacity;
@@ -2600,10 +2616,14 @@ CLAIMS = [
     # says so. What is pinned is what survived: every arm negative on both failures, every
     # arm significant, beta-lactamase lowest everywhere, and the bottom-two holding in a
     # minority with the labelled control as the sole displacer.
-    lambda v: (v["n_arms"] == 5 and v["k"] == 2
+    # 🔴 2026-09-24: eight arms, not five. src/02e could not see v3, so this section had been
+    # scoped to one model family by a loader rather than by a decision. esm3_1_4B is the one arm
+    # with a POSITIVE phage margin, which is why all_negative is 7 of 8, and it is also the arm
+    # that recovers phage best: margin and recovery agree on the exception. See § 10.6.2.
+    lambda v: (v["n_arms"] == 8 and v["k"] == 2
                 and abs(v["chance"] - 1 / 66) < 1e-9
                 and v["failures"] == ["beta_lactamase", "phage_peptidoglycan_hydrolase"]
-                and v["all_negative"] == 5 and v["significant"] == 5
+                and v["all_negative"] == 7 and v["significant"] == 8
                 and v["beta_lowest_everywhere"] and v["min_rho"] > 0.75
                 and v["locate"] == 2
                 and sorted(v["which_locates"]) == ["canonical", "esm2_3B"]
@@ -2616,7 +2636,9 @@ CLAIMS = [
       # this section's PARTIAL, so a reader would have taken the bottom-two identification as
       # representation-general, which this section explicitly denies. The qualifier is pinned here
       # rather than on the § 10.6 claim because this is the claim that knows it is 2 of 5.
-      "docs/DETECTOR_EVALUATION_SUMMARY.md": '  holds in only **2 of 5**. In the other three the labelled virulence control displaces phage, the'}, []),
+      "docs/DETECTOR_EVALUATION_SUMMARY.md": '  class in all eight — but the exact bottom-two holds in only **2 of 8**, and one arm, ESM-3 1.4B,'},
+     # the five-arm spellings, forbidden so the eight-arm rerun cannot be half-propagated again
+     ["2 of 5**", "only **5 arms** are embedded"]),
     ("reference set poisoning, both arms", reference_set_poisoning,
      # The assertion deliberately requires the 35M arm to be LOUD (s_p2_near == 0), so a future run
      # that made both arms quiet fails here instead of silently strengthening a claim the document

@@ -2497,3 +2497,107 @@ for a gain that is already reported alongside it. Criterion 1 therefore still sc
 measured, stated on the surfaces where it matters, and not repaired. The repair is a negative set
 large enough to carve a test partition without halving the calibration resolution, which is
 criterion 8's problem and is not solved here.
+
+---
+
+## 2026-09-24 (twenty-fourth entry) — A loader that could not see panel v3 had scoped a scientific claim to one model family, and closing it produced a double dissociation
+
+`src/02b` was given `--panel` when v3 was built. `src/02e`, which loads ESM-C and ESM-3 through
+EvolutionaryScale's SDK rather than HuggingFace, was not. So v3 could be embedded with the ESM-2
+capacity ladder and with nothing else, and **every v3 arm in this repository was an ESM-2 arm** —
+not because anyone decided the question was about ESM-2, but because the other loader could not
+reach the file.
+
+That is why this entry is not simply an added result. § 10.4 and § 10.6 describe beta-lactamase and
+phage peptidoglycan hydrolase as the classes the probe **cannot reach**, and § 10.6.1 tested that
+across "five arms", all five of them ESM-2. The word "unreachable" was doing work that the
+measurement did not support.
+
+### What the three new arms found
+
+`slurm/esmc_v3_arms.sh`, Cayuga job 3397785. At 30 seeds, 95% specificity:
+
+| arm | beta-lactamase | phage |
+|---|---|---|
+| canonical ESM-2 650M | 21.2% [16.5, 25.9] | 12.2% [10.0, 14.4] |
+| **ESM-C 600M** | **40.5% [36.5, 44.5]** | 12.1% [9.4, 14.8] |
+| **ESM-3 1.4B** | 2.9% [0.7, 5.0] | **31.7% [27.4, 36.0]** |
+| ESM-C 300M | 5.2% [2.6, 7.8] | 4.9% [3.1, 6.7] |
+
+A **double dissociation**, interval-separated in both directions: ESM-C 600M nearly doubles
+beta-lactamase and is indistinguishable from the canonical arm on phage; ESM-3 1.4B is the best arm
+on the panel for phage and is at the floor on beta-lactamase. Neither class is generally hard.
+**Recovery is joint in the representation**, which is the same shape as § 5's point about the
+positive set and § 10.4's about the operating point, with a third term.
+
+Two further things fall out, and the second costs the margin story something:
+
+- **The ESM-C 600M anomaly replicates on an independent panel and stays non-monotone in capacity:**
+  48.3% on v2 and 40.5% on v3, against 300M's 16.4% and 5.2%. Whatever it is, it is not scale.
+- **Margin does not transfer across arms for a fixed class.** ESM-C 600M has the second most
+  negative beta-lactamase margin of any arm, −0.0231, and the best beta-lactamase recovery. The
+  correlation in § 10.6.1 is across the twelve classes *within* an arm, and it is significant in
+  8 of 8; it was never a statement about one class across arms, and inside the ESM-2 ladder the two
+  moved together closely enough that the stronger reading looked available.
+  ESM-3 1.4B is the one arm with a **positive** phage margin and the best phage recovery, so margin
+  and recovery agree on the arm that breaks the pattern.
+
+### Three hardcoded counts found while doing it
+
+Each would have produced a wrong number silently rather than an error:
+
+1. `src/41_v3_arm_seed_stability.py` carried a **fixed five-entry arm list**, while `src/30` already
+   discovered arms from the filesystem. A new arm would have been embedded, scored by `03b`, picked
+   up by `src/30`, and skipped here — so the 30-seed intervals every cross-arm comparison rests on
+   would have covered the old five while the table showed eight. It discovers now.
+2. The audit's `v3_arm_seed_stability` helper asserted separation as `== 4`, five arms minus one.
+   With eight arms that literal reads False for a reason unrelated to separation. It is
+   `len(arms) - 1` now, and the phage overlap is pinned **by name** (`esmc_600M`) rather than by a
+   count, because that one overlap *is* the dissociation.
+3. `src/02e` itself wrote its output filenames with a literal `v2`.
+
+### A stale sentence whose pin kept passing, for the third time in three days
+
+§ 10.6.1's stability paragraph said "**9 of the 10 arm pairs are disjoint**" and "the canonical
+arm's interval separates from all four others on both". After the rerun the figures are 21 of 28,
+and on the phage class the canonical arm does **not** separate from all others. The claim's numeric
+assertions were updated; **the pinned sentence was not, so the gate passed on a document that now
+contradicted its own artifact.** The pin quotes a sentence, so it can only fail when the sentence
+changes, and a sentence whose numbers are stale is still the same sentence.
+
+Entry twenty-one was this defect on `Three of 12 proteins`, entry twenty-two on `13/15 below 1.0`.
+The mitigation is the same each time and is applied here: the superseded spelling goes in the forbid
+list, `"9 of the 10 arm pairs"` and `"separates from\\nall four others"`, alongside the new pin. The
+general lesson is that **updating a claim's assertions and updating the sentence it pins are two
+edits, and doing only the first is invisible.**
+
+### Environment, and a reproducibility fact worth stating plainly
+
+The v2 ESM-C arrays were built on 2026-09-05 under **esm 3.4.0 / torch 2.11.0**. That environment no
+longer exists on this cluster: the only env carrying the SDK is now esm 3.2.1 / torch 2.5.1, where
+`LogitsConfig(return_mean_embedding=True)` is rejected and `src/02e` pools the residue stack itself.
+**A published arm's environment is gone**, so those arrays cannot be reproduced bit for bit.
+
+`src/56_embedding_source_equivalence.py` re-embedded the v2 panel through the new path and compared
+it to the stored arrays: **not numerically identical** — max |Δ| 9.8e-3 against a coordinate scale of
+9.8e-3 — but **geometrically equivalent**, minimum row cosine 0.99988 and pairwise-distance
+correlation 0.99996. That is why the v2 48.3% and the v3 40.5% may be read as the same phenomenon,
+and it is stated rather than assumed. The script reports both verdicts because its first version
+reported only a single tolerance and returned "not equivalent" for a pair a probe cannot tell apart.
+
+### Direction
+
+This correction does not weaken a headline number; every recovery figure in the canonical arm is
+unchanged. It **retracts a word**. "Unreachable" appears in `docs/MECHANISM_GENERALIZATION.md`, in
+`docs/DETECTOR_CRITERIA.md` and in `docs/DETECTOR_EVALUATION_SUMMARY.md` — the last of which was
+published earlier the same day — and should be read everywhere as **"not reached by the canonical
+arm, and reached by a named other one"**. The summary and § 10.6.1 now say so; the criteria document
+inherits it through criterion 3, whose "10% on a 32-member class" is a canonical-arm figure.
+
+### What was deliberately not done
+
+The v2 panel is not re-embedded for publication: the `_mp` arrays exist only as the equivalence
+check's evidence and are excluded from the arm discovery in `src/41` and `src/30`. No published
+recovery table is re-thresholded. ProtT5 and SaProt still cannot see v3 — `src/02g` and `src/02i`
+have the same missing `--panel` that `src/02e` had — so the v3 arm count is eight and not ten, and
+that is a known gap rather than a conclusion about those two models.

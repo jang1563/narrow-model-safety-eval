@@ -11,10 +11,13 @@
   ],
   "arms": [
     "canonical 650M",
-    "esm2_3B",
     "esm2_150M",
     "esm2_35M",
-    "esm2_8M"
+    "esm2_3B",
+    "esm2_8M",
+    "esm3_1_4B",
+    "esmc_300M",
+    "esmc_600M"
   ],
   "results": {
     "beta_lactamase": {
@@ -43,33 +46,6 @@
           ],
           "zero_seeds": 21,
           "published_inside_ci": false
-        }
-      },
-      "esm2_3B": {
-        "suffix": "_esm2_3B",
-        "dim": 2560,
-        "n_members": 14,
-        "0.95": {
-          "published_5seed": 0.04285714285714286,
-          "mean_30seed": 0.09285714285714285,
-          "sd": 0.102998671103662,
-          "ci95": [
-            0.05599954176020913,
-            0.12971474395407656
-          ],
-          "zero_seeds": 12,
-          "published_inside_ci": false
-        },
-        "0.99": {
-          "published_5seed": 0.0,
-          "mean_30seed": 0.0023809523809523807,
-          "sd": 0.013041013273932521,
-          "ci95": [
-            -0.0022857142857142837,
-            0.007047619047619046
-          ],
-          "zero_seeds": 29,
-          "published_inside_ci": true
         }
       },
       "esm2_150M": {
@@ -126,6 +102,33 @@
           "published_inside_ci": true
         }
       },
+      "esm2_3B": {
+        "suffix": "_esm2_3B",
+        "dim": 2560,
+        "n_members": 14,
+        "0.95": {
+          "published_5seed": 0.04285714285714286,
+          "mean_30seed": 0.09285714285714285,
+          "sd": 0.102998671103662,
+          "ci95": [
+            0.05599954176020913,
+            0.12971474395407656
+          ],
+          "zero_seeds": 12,
+          "published_inside_ci": false
+        },
+        "0.99": {
+          "published_5seed": 0.0,
+          "mean_30seed": 0.0023809523809523807,
+          "sd": 0.013041013273932521,
+          "ci95": [
+            -0.0022857142857142837,
+            0.007047619047619046
+          ],
+          "zero_seeds": 29,
+          "published_inside_ci": true
+        }
+      },
       "esm2_8M": {
         "suffix": "_esm2_8M",
         "dim": 320,
@@ -151,6 +154,87 @@
           ],
           "zero_seeds": 30,
           "published_inside_ci": true
+        }
+      },
+      "esm3_1_4B": {
+        "suffix": "_esm3_1_4B",
+        "dim": 1536,
+        "n_members": 14,
+        "0.95": {
+          "published_5seed": 0.02857142857142857,
+          "mean_30seed": 0.02857142857142857,
+          "sd": 0.06107182467534955,
+          "ci95": [
+            0.0067171567830047185,
+            0.05042570035985242
+          ],
+          "zero_seeds": 22,
+          "published_inside_ci": true
+        },
+        "0.99": {
+          "published_5seed": 0.0,
+          "mean_30seed": 0.0047619047619047615,
+          "sd": 0.018122009407318746,
+          "ci95": [
+            -0.0017229730200386496,
+            0.011246782543848172
+          ],
+          "zero_seeds": 28,
+          "published_inside_ci": true
+        }
+      },
+      "esmc_300M": {
+        "suffix": "_esmc_300M",
+        "dim": 960,
+        "n_members": 14,
+        "0.95": {
+          "published_5seed": 0.014285714285714285,
+          "mean_30seed": 0.052380952380952375,
+          "sd": 0.07248803762927497,
+          "ci95": [
+            0.026441441253178734,
+            0.07832046350872601
+          ],
+          "zero_seeds": 17,
+          "published_inside_ci": false
+        },
+        "0.99": {
+          "published_5seed": 0.0,
+          "mean_30seed": 0.0,
+          "sd": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "zero_seeds": 30,
+          "published_inside_ci": true
+        }
+      },
+      "esmc_600M": {
+        "suffix": "_esmc_600M",
+        "dim": 1152,
+        "n_members": 14,
+        "0.95": {
+          "published_5seed": 0.41428571428571426,
+          "mean_30seed": 0.4047619047619049,
+          "sd": 0.11150138667563193,
+          "ci95": [
+            0.36486164597400983,
+            0.4446621635497999
+          ],
+          "zero_seeds": 0,
+          "published_inside_ci": true
+        },
+        "0.99": {
+          "published_5seed": 0.15714285714285714,
+          "mean_30seed": 0.1142857142857143,
+          "sd": 0.10710179837256506,
+          "ci95": [
+            0.07595982795260531,
+            0.15261160061882328
+          ],
+          "zero_seeds": 8,
+          "published_inside_ci": false
         }
       }
     },
@@ -180,33 +264,6 @@
           ],
           "zero_seeds": 23,
           "published_inside_ci": false
-        }
-      },
-      "esm2_3B": {
-        "suffix": "_esm2_3B",
-        "dim": 2560,
-        "n_members": 32,
-        "0.95": {
-          "published_5seed": 0.06875,
-          "mean_30seed": 0.040625,
-          "sd": 0.04653251319757787,
-          "ci95": [
-            0.023973554004662775,
-            0.057276445995337225
-          ],
-          "zero_seeds": 14,
-          "published_inside_ci": false
-        },
-        "0.99": {
-          "published_5seed": 0.0,
-          "mean_30seed": 0.0,
-          "sd": 0.0,
-          "ci95": [
-            0.0,
-            0.0
-          ],
-          "zero_seeds": 30,
-          "published_inside_ci": true
         }
       },
       "esm2_150M": {
@@ -263,6 +320,33 @@
           "published_inside_ci": true
         }
       },
+      "esm2_3B": {
+        "suffix": "_esm2_3B",
+        "dim": 2560,
+        "n_members": 32,
+        "0.95": {
+          "published_5seed": 0.06875,
+          "mean_30seed": 0.040625,
+          "sd": 0.04653251319757787,
+          "ci95": [
+            0.023973554004662775,
+            0.057276445995337225
+          ],
+          "zero_seeds": 14,
+          "published_inside_ci": false
+        },
+        "0.99": {
+          "published_5seed": 0.0,
+          "mean_30seed": 0.0,
+          "sd": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "zero_seeds": 30,
+          "published_inside_ci": true
+        }
+      },
       "esm2_8M": {
         "suffix": "_esm2_8M",
         "dim": 320,
@@ -289,42 +373,130 @@
           "zero_seeds": 2,
           "published_inside_ci": true
         }
+      },
+      "esm3_1_4B": {
+        "suffix": "_esm3_1_4B",
+        "dim": 1536,
+        "n_members": 32,
+        "0.95": {
+          "published_5seed": 0.3125,
+          "mean_30seed": 0.31666666666666665,
+          "sd": 0.11997814695654554,
+          "ci95": [
+            0.2737330381694304,
+            0.3596002951639029
+          ],
+          "zero_seeds": 0,
+          "published_inside_ci": true
+        },
+        "0.99": {
+          "published_5seed": 0.16875,
+          "mean_30seed": 0.134375,
+          "sd": 0.08415320465346686,
+          "ci95": [
+            0.10426116246296568,
+            0.1644888375370343
+          ],
+          "zero_seeds": 1,
+          "published_inside_ci": false
+        }
+      },
+      "esmc_300M": {
+        "suffix": "_esmc_300M",
+        "dim": 960,
+        "n_members": 32,
+        "0.95": {
+          "published_5seed": 0.025,
+          "mean_30seed": 0.04895833333333333,
+          "sd": 0.05037797151898651,
+          "ci95": [
+            0.03093080775049622,
+            0.06698585891617045
+          ],
+          "zero_seeds": 6,
+          "published_inside_ci": false
+        },
+        "0.99": {
+          "published_5seed": 0.00625,
+          "mean_30seed": 0.0010416666666666667,
+          "sd": 0.005705443307345479,
+          "ci95": [
+            -0.0009999999999999994,
+            0.003083333333333333
+          ],
+          "zero_seeds": 29,
+          "published_inside_ci": false
+        }
+      },
+      "esmc_600M": {
+        "suffix": "_esmc_600M",
+        "dim": 1152,
+        "n_members": 32,
+        "0.95": {
+          "published_5seed": 0.15,
+          "mean_30seed": 0.12083333333333333,
+          "sd": 0.074645955537865,
+          "ci95": [
+            0.09412162119925066,
+            0.147545045467416
+          ],
+          "zero_seeds": 1,
+          "published_inside_ci": false
+        },
+        "0.99": {
+          "published_5seed": 0.025,
+          "mean_30seed": 0.019791666666666666,
+          "sd": 0.023902828008033047,
+          "ci95": [
+            0.011238149515731561,
+            0.02834518381760177
+          ],
+          "zero_seeds": 15,
+          "published_inside_ci": true
+        }
       }
     }
   },
   "summary": {
     "beta_lactamase": {
       "arms_disjoint_from_canonical": [
-        "esm2_3B",
         "esm2_150M",
         "esm2_35M",
-        "esm2_8M"
+        "esm2_3B",
+        "esm2_8M",
+        "esm3_1_4B",
+        "esmc_300M",
+        "esmc_600M"
       ],
-      "n_disjoint_pairs": 9,
+      "n_disjoint_pairs": 21,
       "disjoint_pairs": [
+        [
+          "canonical 650M",
+          "esm2_150M"
+        ],
+        [
+          "canonical 650M",
+          "esm2_35M"
+        ],
         [
           "canonical 650M",
           "esm2_3B"
         ],
         [
           "canonical 650M",
-          "esm2_150M"
-        ],
-        [
-          "canonical 650M",
-          "esm2_35M"
-        ],
-        [
-          "canonical 650M",
           "esm2_8M"
         ],
         [
-          "esm2_3B",
-          "esm2_150M"
+          "canonical 650M",
+          "esm3_1_4B"
         ],
         [
-          "esm2_3B",
-          "esm2_8M"
+          "canonical 650M",
+          "esmc_300M"
+        ],
+        [
+          "canonical 650M",
+          "esmc_600M"
         ],
         [
           "esm2_150M",
@@ -332,35 +504,78 @@
         ],
         [
           "esm2_150M",
+          "esm2_3B"
+        ],
+        [
+          "esm2_150M",
           "esm2_8M"
+        ],
+        [
+          "esm2_150M",
+          "esmc_600M"
         ],
         [
           "esm2_35M",
           "esm2_8M"
+        ],
+        [
+          "esm2_35M",
+          "esmc_600M"
+        ],
+        [
+          "esm2_3B",
+          "esm2_8M"
+        ],
+        [
+          "esm2_3B",
+          "esm3_1_4B"
+        ],
+        [
+          "esm2_3B",
+          "esmc_600M"
+        ],
+        [
+          "esm2_8M",
+          "esm3_1_4B"
+        ],
+        [
+          "esm2_8M",
+          "esmc_300M"
+        ],
+        [
+          "esm2_8M",
+          "esmc_600M"
+        ],
+        [
+          "esm3_1_4B",
+          "esmc_600M"
+        ],
+        [
+          "esmc_300M",
+          "esmc_600M"
         ]
       ],
-      "top_arm_5seed": "canonical 650M",
-      "top_arm_30seed": "canonical 650M",
+      "top_arm_5seed": "esmc_600M",
+      "top_arm_30seed": "esmc_600M",
       "top_arm_changes": false,
       "published_outside_own_ci": [
-        "esm2_3B",
         "esm2_150M",
-        "esm2_35M"
+        "esm2_35M",
+        "esm2_3B",
+        "esmc_300M"
       ]
     },
     "phage_peptidoglycan_hydrolase": {
       "arms_disjoint_from_canonical": [
-        "esm2_3B",
         "esm2_150M",
         "esm2_35M",
-        "esm2_8M"
+        "esm2_3B",
+        "esm2_8M",
+        "esm3_1_4B",
+        "esmc_300M"
       ],
-      "n_disjoint_pairs": 8,
+      "n_disjoint_pairs": 21,
       "disjoint_pairs": [
-        [
-          "canonical 650M",
-          "esm2_3B"
-        ],
         [
           "canonical 650M",
           "esm2_150M"
@@ -371,15 +586,19 @@
         ],
         [
           "canonical 650M",
+          "esm2_3B"
+        ],
+        [
+          "canonical 650M",
           "esm2_8M"
         ],
         [
-          "esm2_3B",
-          "esm2_35M"
+          "canonical 650M",
+          "esm3_1_4B"
         ],
         [
-          "esm2_3B",
-          "esm2_8M"
+          "canonical 650M",
+          "esmc_300M"
         ],
         [
           "esm2_150M",
@@ -388,17 +607,71 @@
         [
           "esm2_150M",
           "esm2_8M"
+        ],
+        [
+          "esm2_150M",
+          "esm3_1_4B"
+        ],
+        [
+          "esm2_150M",
+          "esmc_600M"
+        ],
+        [
+          "esm2_35M",
+          "esm2_3B"
+        ],
+        [
+          "esm2_35M",
+          "esmc_300M"
+        ],
+        [
+          "esm2_35M",
+          "esmc_600M"
+        ],
+        [
+          "esm2_3B",
+          "esm2_8M"
+        ],
+        [
+          "esm2_3B",
+          "esm3_1_4B"
+        ],
+        [
+          "esm2_3B",
+          "esmc_600M"
+        ],
+        [
+          "esm2_8M",
+          "esmc_300M"
+        ],
+        [
+          "esm2_8M",
+          "esmc_600M"
+        ],
+        [
+          "esm3_1_4B",
+          "esmc_300M"
+        ],
+        [
+          "esm3_1_4B",
+          "esmc_600M"
+        ],
+        [
+          "esmc_300M",
+          "esmc_600M"
         ]
       ],
       "top_arm_5seed": "esm2_8M",
-      "top_arm_30seed": "esm2_35M",
+      "top_arm_30seed": "esm3_1_4B",
       "top_arm_changes": true,
       "published_outside_own_ci": [
         "esm2_3B",
-        "esm2_8M"
+        "esm2_8M",
+        "esmc_300M",
+        "esmc_600M"
       ]
     }
   },
   "distinct_from": "03x, which runs beta-lactamase on v2's fourteen arms and is pinned by the audit for that result",
-  "verdict": "A1: beta_lactamase: ['esm2_3B', 'esm2_150M', 'esm2_35M', 'esm2_8M'] separate from the canonical arm; phage_peptidoglycan_hydrolase: ['esm2_3B', 'esm2_150M', 'esm2_35M', 'esm2_8M'] separate from the canonical arm. Those differences stand as differences between arms"
+  "verdict": "A1: beta_lactamase: ['esm2_150M', 'esm2_35M', 'esm2_3B', 'esm2_8M', 'esm3_1_4B', 'esmc_300M', 'esmc_600M'] separate from the canonical arm; phage_peptidoglycan_hydrolase: ['esm2_150M', 'esm2_35M', 'esm2_3B', 'esm2_8M', 'esm3_1_4B', 'esmc_300M'] separate from the canonical arm. Those differences stand as differences between arms"
 }

@@ -1705,9 +1705,14 @@ class on v2, where the bottom-1 of nine has a per-arm chance of 1/9. v3 has **tw
 the test becomes whether the bottom-**two** of twelve are exactly those two, and the chance per arm falls
 to **1/66**. That is a much stricter question and the answer is not as clean.
 
-Five arms are embedded for v3. The three larger ones needed the GPU partition
-(`slurm/negative_scaling_650M.sh`), because the development machine ran out of memory rather than
-patience. Rows are ordered by capacity, not by result.
+**Eight arms are embedded for v3 as of 2026-09-24.** It was five until then, and all five were
+ESM-2, for a reason that is not a decision: `src/02e` was hardcoded to the v2 panel while `src/02b`
+had already been given `--panel`, so the ESM-C and ESM-3 loaders could not see v3 at all. A gap in a
+loader had scoped this section to one model family. `slurm/esmc_v3_arms.sh` closes it, and § 10.6.2
+reports what the three new arms found, which is larger than an extension of this table. The three
+larger ESM-2 arms needed the GPU partition (`slurm/negative_scaling_650M.sh`), because the
+development machine ran out of memory rather than patience. Rows are ordered by capacity within
+family, not by result.
 
 Recovery is given twice: the published protocol's 5 seeds, which the audit pins, and a 30-seed
 recomputation with a 95% interval (`src/41_v3_arm_seed_stability.py`), because every side-by-side
@@ -1720,15 +1725,23 @@ comparison below is between arms and this project has retracted three such compa
 | esm2_150M | 640 | +0.861 | 0.0003 | −0.0090 | 4.3% → **1.9%** [0.8, 3.1] | −0.0008 | 6.9% → **7.2%** [5.4, 9.0] | no |
 | esm2_35M | 480 | +0.796 | 0.0015 | −0.0172 | 1.4% → **6.9%** [3.2, 10.6] | −0.0021 | 26.9% → **27.5%** [24.6, 30.4] | no |
 | esm2_8M | 320 | +0.846 | 0.0008 | −0.0278 | 0.0% → **0.0%** [0.0, 0.0] | −0.0035 | 31.2% → **26.0%** [22.8, 29.3] | no |
+| esmc_300M | 960 | +0.808 | 0.0011 | −0.0355 | 1.4% → **5.2%** [2.6, 7.8] | −0.0037 | 2.5% → **4.9%** [3.1, 6.7] | no |
+| **esmc_600M** | 1152 | +0.856 | 0.0004 | −0.0231 | 41.4% → **40.5%** [36.5, 44.5] | −0.0006 | 15.0% → **12.1%** [9.4, 14.8] | no |
+| **esm3_1_4B** | 1536 | +0.858 | 0.0003 | −0.0071 | 2.9% → **2.9%** [0.7, 5.0] | **+0.0012** | 31.2% → **31.7%** [27.4, 36.0] | no |
 
-**What holds in all five.** Every arm has a **negative margin for both failing classes**, every arm has a
-significant positive margin-against-recovery correlation (+0.796 to +0.894, every p ≤ 0.0016), and
-**beta-lactamase is the single lowest-margin class in all five**. So §10.6's central claim, that the
-failing class sits closer to benign than to any hazard class the probe trained on, survives the move to a
-panel with two failures and holds across a **375-fold parameter range**, 8M to 3B.
+**What holds in all eight.** Every arm has a significant positive margin-against-recovery correlation
+(+0.796 to +0.894, every p ≤ 0.0015), and **beta-lactamase is the single lowest-margin class in all
+eight**. So §10.6's central claim, that the failing class sits closer to benign than to any hazard class
+the probe trained on, survives the move to a panel with two failures and holds across a **375-fold
+parameter range** within ESM-2, 8M to 3B, and across two further architectures.
 
-🔴 **What does not hold is the exact bottom-two, and it holds in two arms of five.** In 150M, 35M and 8M
-the **labelled virulence control** takes second-lowest and displaces the phage class. The displacer is the
+🔴 **One arm of eight breaks the negative-margin property**, and it is informative rather than noisy:
+`esm3_1_4B` is the only arm whose **phage margin is positive**, +0.0012, and it is also the arm that
+recovers phage best, 31.7% [27.4, 36.0]. Margin and recovery agree on the arm that breaks the pattern.
+
+🔴 **What does not hold is the exact bottom-two, and it now holds in two arms of eight.** In 150M, 35M,
+8M, and in all three new arms, the **labelled virulence control** takes second-lowest and displaces the
+phage class. The displacer is the
 same class in all three misses, which is the informative part: the control is a genuinely borderline set,
 so the bottom of the margin ordering is where hazard and the control become hard to tell apart. That is the
 same shape as §10.6's CLS and SaProt exceptions. The ordering and the negative-margin property are
@@ -1739,14 +1752,20 @@ It was written from three arms, the canonical one plus 8M and 35M, and described
 the phage class rising as the model shrinks. With 150M and 3B added there is no gradient, and the structure
 is a split, three arms with two failing classes against two arms with one.
 
-🟢 **The arms really do differ, and it took 30 seeds to say so.** At 30 seeds **9 of the 10 arm pairs are
-disjoint on beta-lactamase and 8 of 10 on the phage class**, and the canonical arm's interval separates from
-all four others on both. The direction of the claim survives: the canonical arm is genuinely the best arm
-for beta-lactamase, [16.5, 25.9] against 3B's [5.6, 13.0], and the two smallest arms are genuinely the best
-for the phage class, 26.0% and 27.5% against 4.1% for 3B, which is a **real inverse-capacity effect for one
-class** and holds with disjoint intervals.
+🟢 **The arms really do differ, and it took 30 seeds to say so.** At 30 seeds **21 of the 28 arm pairs are
+disjoint on beta-lactamase and 21 of 28 on the phage class**. On beta-lactamase the canonical arm's
+interval separates from **all seven** others; on the phage class it separates from six and **ESM-C 600M
+lands on top of it**, [9.4, 14.8] against [10.0, 14.4]. That single overlap is § 10.6.2's dissociation in
+one line: the arm that doubles beta-lactamase is indistinguishable from the canonical arm on phage.
 
-🔴 **Three of the five 5-seed figures for beta-lactamase and two for the phage class sit outside their own
+🔴 **The canonical arm is no longer the best arm for beta-lactamase, and this paragraph said it was.**
+That reading was true of the five ESM-2 arms and is false on eight: ESM-C 600M is **40.5% [36.5, 44.5]**
+against the canonical [16.5, 25.9], disjoint. Within ESM-2 the inverse-capacity effect on the phage class
+is still real and still holds with disjoint intervals — 26.0% and 27.5% for the two smallest arms against
+4.1% for 3B — but it is no longer the best explanation of the phage column, because ESM-3 1.4B tops it at
+**31.7% [27.4, 36.0]** while being at the floor on beta-lactamase.
+
+🔴 **Four of the eight 5-seed figures for beta-lactamase and four for the phage class sit outside their own
 30-seed intervals, and one coincidence dissolved.** The table's old reading had 3B and 150M tied at 4.3% on
 beta-lactamase and tied again at 6.9% on the phage class. Both ties were 3 of 70 arriving twice: at 30 seeds
 they are **9.3% and 1.9%** on beta-lactamase with disjoint intervals, a factor of five apart, and 4.1% and
@@ -2529,6 +2548,65 @@ entered on its protein name. The same reading is what excludes `O06350` LipF fro
 since its own function line says it has no activity on triacylglycerides. **The counts in that table are
 upper bounds**, and a candidate has to be defined by an EC or a stated reaction and then read entry by
 entry.
+
+
+#### 10.6.2 🔑 Neither unreachable class is unreachable. They are unreachable by ESM-2, and by different other models
+
+`slurm/esmc_v3_arms.sh`, 2026-09-24. Adding ESM-C 600M, ESM-C 300M and ESM-3 1.4B to v3 was meant to
+test one thing: ESM-C 600M is the only one of fourteen arms that recovers beta-lactamase above
+alignment on v2, and it had never been shown v3's second failing class. The answer is a **double
+dissociation**, and it is interval-separated in both directions at 30 seeds.
+
+| arm | beta-lactamase @95 | phage @95 |
+|---|---|---|
+| canonical ESM-2 650M | 21.2% [16.5, 25.9] | 12.2% [10.0, 14.4] |
+| **ESM-C 600M** | **40.5% [36.5, 44.5]** | 12.1% [9.4, 14.8] |
+| **ESM-3 1.4B** | 2.9% [0.7, 5.0] | **31.7% [27.4, 36.0]** |
+| ESM-C 300M | 5.2% [2.6, 7.8] | 4.9% [3.1, 6.7] |
+
+**ESM-C 600M nearly doubles beta-lactamase and does nothing whatever for phage**: its phage interval,
+[9.4, 14.8], sits on top of the canonical arm's [10.0, 14.4]. **ESM-3 1.4B is the best arm on the panel
+for phage and is at the floor on beta-lactamase.** The two arms' intervals are disjoint from each other
+on **both** classes, so this is not one arm being generally better.
+
+Three consequences, in increasing order of how much they cost this document.
+
+**First, "unreachable" was never a property of a class.** § 10.4 introduced beta-lactamase and phage as
+the two classes the probe cannot reach and § 10.6 showed the geometry behind it in fourteen
+representations. All of that was measured on ESM-2, or with ESM-C and ESM-3 on the **v2** panel, which
+has only one of the two classes. On a panel carrying both, each is reachable — by a different model.
+The honest statement is that recovery is a property of the **class and the representation jointly**,
+which is § 5's point about the positive set and § 10.4's about the operating point, now with the
+representation as a third joint term.
+
+**Second, the ESM-C 600M anomaly replicates on an independent panel and stays non-monotone in
+capacity.** On v2 it recovers beta-lactamase at 48.3% [43.9, 52.7] against 300M's 16.4% and 6B's 12.4%;
+on v3 it is 40.5% [36.5, 44.5] against 300M's 5.2% [2.6, 7.8]. A single model in the middle of its own
+family's capacity ladder, twice, on two panels built from different sources. Whatever it is, it is not
+scale.
+
+⚠️ The v3 ESM-C arrays were pooled by `src/02e` rather than by the SDK, because the environment that
+built the v2 arrays — esm 3.4.0 / torch 2.11.0 — no longer exists on the cluster and esm 3.2.1 rejects
+`return_mean_embedding`. `src/56_embedding_source_equivalence.py` re-embedded the **v2** panel through
+the new path and compared: **not numerically identical** (max |Δ| 9.8e-3 against a coordinate scale of
+9.8e-3) but **geometrically equivalent** — minimum row cosine 0.99988, pairwise-distance correlation
+0.99996. So the 48.3% and the 40.5% may be read as the same phenomenon on two panels, and the bit-level
+reproduction claim is not available. That check is the reason the comparison is quotable at all.
+
+**Third, margin does not transfer across arms for a fixed class, and the ESM-2 ladder could not have
+shown that.** The correlation in § 10.6.1 is computed across the twelve classes *within* an arm, and it
+is significant in 8 of 8. It is not a statement about one class across arms, and the new arms make the
+difference visible: **ESM-C 600M has the second most negative beta-lactamase margin of any arm,
+−0.0231, and the best beta-lactamase recovery, 40.5%.** Within the five-arm ESM-2 ladder margin and
+recovery moved together for that class, which made the stronger reading available without being
+supported. A low margin says a class sits close to benign *in that representation's geometry*; it does
+not say another representation cannot separate it anyway.
+
+**What this does not overturn.** The recovery figures themselves, the split results in § 2.6, the
+alignment comparison in § 7 and the negative-set results in § 10.9 are all unchanged: they are canonical-arm
+measurements and nothing here touches them. What changes is the **scope of the word unreachable**, which
+should be read as "not reached by the canonical arm, and reached by a named other one" everywhere it
+appears.
 
 
 ## 11. What this does not claim

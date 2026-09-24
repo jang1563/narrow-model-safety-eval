@@ -28,10 +28,15 @@ they should change a reader's practice:
    Embedding margin ranks the unreachable classes correctly (Spearman **+0.894**, permutation
    *p* = 0.0001, holding in 12 of 14 representations) and **mis-states the miss rate of an unseen
    class by 34 points, always optimistically**.
-4. **Whoever supplies the benign set can suppress a hazard class without touching the aggregate.**
+4. **And "unreachable" is a property of the class and the representation together, not of the
+   class.** Both classes this probe cannot reach on ESM-2 are reachable by a different model, and
+   by a *different* one each: ESM-C 600M takes beta-lactamase from 21.2% to **40.5%** and does
+   nothing for phage, while ESM-3 1.4B takes phage from 12.2% to **31.7%** and sits at the floor on
+   beta-lactamase. Both separations hold at 30 seeds with disjoint intervals.
+5. **Whoever supplies the benign set can suppress a hazard class without touching the aggregate.**
    500 genuine Swiss-Prot proteins, none forged or mislabelled, cut one class from **63.5% to 16.7%**
    while the measured false-positive rate *improved*.
-5. **A detector's own evaluation can be scored, and ours fails.** Against eighteen criteria, each
+6. **A detector's own evaluation can be scored, and ours fails.** Against eighteen criteria, each
    anchored to a place this project fell short: **three fails, three partials, one mixed**. The worst
    is the first one, the split.
 
@@ -132,19 +137,37 @@ another class minus the distance to the nearest negative.
   finding.
 - 🔴 **But the stricter version of that test comes back partial, and the distinction matters.**
   v2 asks whether margin finds the bottom-1 of nine classes, chance 1/9. v3 asks for the bottom-**2**
-  of twelve, chance 1/66, and only **5 arms** are embedded for v3. There, negative margin for both
-  failing classes and a significant correlation (+0.796 to +0.894, every *p* ≤ 0.0016) hold in
-  **5 of 5**, and beta-lactamase is the lowest-margin class in all five — but the exact bottom-two
-  holds in only **2 of 5**. In the other three the labelled virulence control displaces phage, the
-  same displacer each time, which says the bottom of the margin ordering is where hazard and a
-  borderline control stop being distinguishable. **The ordering and the negative-margin property are
-  representation-general; the identity of the bottom-k is not.** § 10.6.1.
+  of twelve, chance 1/66, over the **8 arms** now embedded for v3. There, a significant correlation
+  (+0.796 to +0.894, every *p* ≤ 0.0015) holds in **8 of 8** and beta-lactamase is the lowest-margin
+  class in all eight — but the exact bottom-two holds in only **2 of 8**, and one arm, ESM-3 1.4B,
+  has a *positive* phage margin. In the six misses the labelled virulence control displaces phage,
+  the same displacer each time, which says the bottom of the margin ordering is where hazard and a
+  borderline control stop being distinguishable. **The ordering is representation-general; the
+  identity of the bottom-k is not.** § 10.6.1.
 
 **And it does not transfer to a miss-rate estimate.** Leave-one-class-out, margin ranks the unseen
 mechanism correctly — phage is predicted lowest and is lowest — while predicting **44.3% recovery
 against a measured 10.0%**, an error of **34.3 points**. Its cross-validated MAE, 0.134, beats a
 mean-prediction baseline at 0.284, and **every error is optimistic**. So margin is a triage signal:
 it says which classes to worry about, and it will tell you the damage is smaller than it is.
+
+**Neither class is unreachable in general.** Until 2026-09-24 every v3 arm was an ESM-2 arm, because
+the ESM-C and ESM-3 loader had never been given the panel flag the ESM-2 loader already had. Closing
+that gap produced a **double dissociation** at 30 seeds:
+
+| arm | beta-lactamase @95 | phage @95 |
+|---|---|---|
+| canonical ESM-2 650M | 21.2% [16.5, 25.9] | 12.2% [10.0, 14.4] |
+| **ESM-C 600M** | **40.5% [36.5, 44.5]** | 12.1% [9.4, 14.8] |
+| **ESM-3 1.4B** | 2.9% [0.7, 5.0] | **31.7% [27.4, 36.0]** |
+
+Each class is reached by one model and missed by the other, with disjoint intervals in both
+directions, so neither is a generally hard class. Two things follow. **"Unreachable" should be read
+as "not reached by the canonical arm"** everywhere, and recovery is joint in the representation as
+well as in the positive set and the operating point. And **margin does not transfer across arms for
+a fixed class**: ESM-C 600M has the second most negative beta-lactamase margin of any arm and the
+best beta-lactamase recovery. The correlation is across classes *within* an arm; the five-arm ESM-2
+ladder made a stronger reading look available. § 10.6.2.
 
 **Benign proximity is a contributing cause, not the cause.** Removing the benign proteins nearest a
 failing class recovers **8.8 points for beta-lactamase and 7.1 for phage**, both with confidence

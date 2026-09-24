@@ -1,0 +1,52 @@
+{
+  "panel": "v2",
+  "reference": "esmc_600M",
+  "candidate": "esmc_600M_mp",
+  "reference_env": {
+    "torch": "2.11.0+cu130",
+    "esm_version": null,
+    "mean_embedding_source": null,
+    "built": "2026-09-05 11:44:54"
+  },
+  "candidate_env": {
+    "torch": "2.5.1+cu121",
+    "esm_version": "3.2.1",
+    "mean_embedding_source": "manual_pool",
+    "built": "2026-09-24 17:39:06"
+  },
+  "positives": {
+    "rows": 80,
+    "dim": 1152,
+    "worst_row": 12,
+    "worst_row_acc": "sp|P0A0L2|ETXA_STAAU",
+    "worst_row_cosine": 0.9998794198036194,
+    "max_abs_diff": 0.009802103042602539,
+    "mean_abs_diff": 9.163990762317553e-05,
+    "scale": 0.00982603244483471,
+    "max_abs_diff_over_scale": 0.9975646734237671,
+    "min_row_cosine": 0.9998794198036194,
+    "mean_row_cosine": 0.9999914169311523,
+    "pairwise_distance_corr": 0.9999649694220286
+  },
+  "negatives": {
+    "rows": 154,
+    "dim": 1152,
+    "worst_row": 20,
+    "worst_row_acc": "sp|C0SPC1|CCRZ_BACSU",
+    "worst_row_cosine": 0.9999604821205139,
+    "max_abs_diff": 0.003499060869216919,
+    "mean_abs_diff": 9.0595189249143e-05,
+    "scale": 0.009954498149454594,
+    "max_abs_diff_over_scale": 0.35150548815727234,
+    "min_row_cosine": 0.9999604821205139,
+    "mean_row_cosine": 0.9999898672103882,
+    "pairwise_distance_corr": 0.9999821578133657
+  },
+  "tolerance": 0.0001,
+  "cosine_floor": 0.999,
+  "pdist_floor": 0.999,
+  "numerically_identical": false,
+  "geometrically_equivalent": true,
+  "equivalent": false,
+  "verdict": "NOT numerically identical but geometrically equivalent: every row keeps its direction to better than 0.999 cosine and the pairwise distance structure a probe sees correlates above 0.999. A recovery number computed on one may be compared with one computed on the other, and the difference must be stated, because a bit-level reproduction claim is not available"
+}
