@@ -1,0 +1,1187 @@
+{
+  "step": "preregistration section 7 step 2, tier 2 set construction",
+  "panel_entries": 16,
+  "features_seen": 99,
+  "loss_features": 31,
+  "tolerated_features": 18,
+  "loss_substitutions": 34,
+  "loss_proteins": [
+    "P00588",
+    "P00648",
+    "P0DPI1",
+    "P13423",
+    "Q99ZW2"
+  ],
+  "substitutions_per_protein": {
+    "P00588": 1,
+    "P00648": 1,
+    "P0DPI1": 2,
+    "P13423": 29,
+    "Q99ZW2": 1
+  },
+  "largest_protein_share": 0.853,
+  "excluded_n": 50,
+  "identity_failures_n": 0,
+  "p3_threshold": "12 substitutions across at least 4 proteins",
+  "p3_runs": true,
+  "multiplicity_alpha": 0.008333333333333333,
+  "n_primary_tests": 6,
+  "kept": [
+    {
+      "acc": "P00588",
+      "pos": 180,
+      "wt": "E",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of toxicity.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P00648",
+      "pos": 149,
+      "wt": "H",
+      "alts": [
+        "Q"
+      ],
+      "text": "Loss of activity.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P02879",
+      "pos": 83,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on the toxic activity but suppresses the vascular leak syndrome.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P02879",
+      "pos": 109,
+      "wt": "L",
+      "alts": [
+        "A",
+        "M"
+      ],
+      "text": "No effect on the toxic activity or the vascular leak syndrome.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P02879",
+      "pos": 111,
+      "wt": "V",
+      "alts": [
+        "A",
+        "M"
+      ],
+      "text": "No effect on the toxic activity or the vascular leak syndrome.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P02879",
+      "pos": 132,
+      "wt": "N",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on the toxic activity but Suppresses the vascular leak syndrome.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P0DPI1",
+      "pos": 224,
+      "wt": "E",
+      "alts": [
+        "K",
+        "Q"
+      ],
+      "text": "Light chain no longer cleaves SNAP25.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bno longer\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 207,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "Abolished interaction with LF.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\babolish)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 229,
+      "wt": "R",
+      "alts": [
+        "S"
+      ],
+      "text": "Abolished interaction with LF.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\babolish)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 231,
+      "wt": "F",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of ability to bind to LF and completely non-toxic.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 231,
+      "wt": "F",
+      "alts": [
+        "S"
+      ],
+      "text": "Does not affect significantly interaction with LF, while it impairs tranlocation of LF.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (does not affect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 232,
+      "wt": "L",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of ability to bind to LF and completely non-toxic.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 234,
+      "wt": "P",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of ability to bind to LF and completely non-toxic.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 234,
+      "wt": "P",
+      "alts": [
+        "S"
+      ],
+      "text": "Does not affect significantly interaction with LF.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (does not affect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 236,
+      "wt": "I",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of ability to bind to LF and completely non-toxic.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 236,
+      "wt": "I",
+      "alts": [
+        "S"
+      ],
+      "text": "Abolished interaction with LF.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\babolish)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 240,
+      "wt": "H",
+      "alts": [
+        "A"
+      ],
+      "text": "Abolished interaction with LF.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\babolish)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 255,
+      "wt": "W",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on LF-binding ability and as toxic as the wild-type.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 265,
+      "wt": "F",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on LF-binding ability and as toxic as the wild-type.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 379,
+      "wt": "M",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 393,
+      "wt": "I",
+      "alts": [
+        "C"
+      ],
+      "text": "Loss of capability to undergo conformational changes that lead to pore formation and translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 409,
+      "wt": "T",
+      "alts": [
+        "C"
+      ],
+      "text": "Loss of capability to undergo conformational changes that lead to pore formation and translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 411,
+      "wt": "S",
+      "alts": [
+        "C"
+      ],
+      "text": "Loss of capability to undergo conformational changes that lead to pore formation and translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 422,
+      "wt": "T",
+      "alts": [
+        "C"
+      ],
+      "text": "Loss of capability to undergo conformational changes that lead to pore formation and translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 426,
+      "wt": "K",
+      "alts": [
+        "A",
+        "D"
+      ],
+      "text": "Loss of capability to undergo conformational changes that lead to pore formation and translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 428,
+      "wt": "N",
+      "alts": [
+        "C"
+      ],
+      "text": "Loss of capability to undergo conformational changes that lead to pore formation and translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 440,
+      "wt": "Y",
+      "alts": [
+        "C"
+      ],
+      "text": "Loss of capability to undergo conformational changes that lead to pore formation and translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 451,
+      "wt": "N",
+      "alts": [
+        "C"
+      ],
+      "text": "Loss of capability to undergo conformational changes that lead to pore formation and translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 454,
+      "wt": "D",
+      "alts": [
+        "A",
+        "K"
+      ],
+      "text": "Loss of capability to undergo conformational changes that lead to pore formation and translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 456,
+      "wt": "F",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of capability to undergo conformational changes that lead to pore formation and translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 456,
+      "wt": "F",
+      "alts": [
+        "C"
+      ],
+      "text": "Abolished ability for mediate LF and EF protein translocation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\babolish)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 512,
+      "wt": "Q",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of heptamerization capability.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 541,
+      "wt": "D",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of heptamerization capability.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 581,
+      "wt": "F",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of toxicity due to defective oligomerization.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 591,
+      "wt": "I",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of toxicity due to defective oligomerization.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 595,
+      "wt": "L",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of toxicity due to defective oligomerization.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 603,
+      "wt": "I",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of toxicity due to defective oligomerization.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 621,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 708,
+      "wt": "K",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on toxicity.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 711,
+      "wt": "N",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of toxicity due to decrease in cell binding.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 712,
+      "wt": "D",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of toxicity due to decrease in cell binding.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 713,
+      "wt": "K",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on toxicity.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 714,
+      "wt": "L",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on toxicity.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 717,
+      "wt": "Y",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on toxicity.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 719,
+      "wt": "S",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on toxicity.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 720,
+      "wt": "N",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on toxicity.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 721,
+      "wt": "P",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on toxicity.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 722,
+      "wt": "N",
+      "alts": [
+        "A"
+      ],
+      "text": "No effect on toxicity.",
+      "verdict": "tolerated",
+      "reason": "unambiguous tolerated (no effect)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 982,
+      "wt": "H",
+      "alts": [
+        "A"
+      ],
+      "text": "Decreased DNA cleavage. In vivo, loss of Cas9-mediated CRISPR interference in plasmid transformation.",
+      "verdict": "loss",
+      "reason": "unambiguous loss (\\bloss of\\b)",
+      "identity": "ok"
+    }
+  ],
+  "excluded": [
+    {
+      "acc": "P02879",
+      "pos": 110,
+      "wt": "D",
+      "alts": [
+        "A",
+        "E",
+        "N"
+      ],
+      "text": "Suppresses the toxic activity.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bsuppress)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P0DF97",
+      "pos": [
+        561,
+        562
+      ],
+      "text": "Loss of hemolytic activity, loss of host membrane binding, loss of cholesterol binding.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "P11140",
+      "pos": 200,
+      "wt": "N",
+      "alts": [
+        "P"
+      ],
+      "text": "46-fold less potent protein synthesis inhibition.",
+      "verdict": "excluded",
+      "reason": "stated 46-fold reduction, below the 100-fold rule",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": [
+        193,
+        196
+      ],
+      "text": "Abolished cleavage by FURIN and abolished toxin activity.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "P13423",
+      "pos": 193,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "Reduced cleavage by FURIN and reduced toxin activity.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\breduce[sd]?\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": [
+        194,
+        196
+      ],
+      "text": "Abolished cleavage by FURIN and abolished toxin activity.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "P13423",
+      "pos": [
+        194,
+        195
+      ],
+      "text": "Does not affect cleavage by FURIN and does not affect toxin activity.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "P13423",
+      "pos": 213,
+      "wt": "P",
+      "alts": [
+        "A"
+      ],
+      "text": "Decrease in the ability to bind to LF and partially toxic at high concentrations.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bpartial)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 216,
+      "wt": "L",
+      "alts": [
+        "A"
+      ],
+      "text": "Decrease in the ability to bind to LF and partially toxic at high concentrations.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bpartial)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 239,
+      "wt": "I",
+      "alts": [
+        "A"
+      ],
+      "text": "Decrease in the ability to bind to LF and partially toxic at high concentrations.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bpartial)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 265,
+      "wt": "F",
+      "alts": [
+        "S"
+      ],
+      "text": "Impaired translocation of LF.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bimpair)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 289,
+      "wt": "P",
+      "alts": [
+        "A"
+      ],
+      "text": "Reduced toxicity in combination with lethal factor. Decreased membrane insertion and translocation of LF.",
+      "verdict": "excluded",
+      "reason": "conditional phenotype (\\bin combination with\\b)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": [
+        342,
+        344
+      ],
+      "text": "Decrease in toxicity probably due to slow translocation of LF.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "P13423",
+      "pos": [
+        342,
+        343
+      ],
+      "text": "Loss of toxicity probably due to loss of capability to translocate LF.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "P13423",
+      "pos": 342,
+      "wt": "F",
+      "alts": [
+        "C"
+      ],
+      "text": "Loss of toxicity probably due to loss of capability to translocate LF.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bprobabl)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 344,
+      "wt": "D",
+      "alts": [
+        "A"
+      ],
+      "text": "Decrease in toxicity probably due to slow translocation of LF.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bprobabl)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 375,
+      "wt": "W",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of toxicity probably due to faulty membrane insertion or translocation of LF/EF into the cytosol.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bprobabl)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 381,
+      "wt": "L",
+      "alts": [
+        "A"
+      ],
+      "text": "Loss of toxicity probably due to faulty membrane insertion or translocation of LF/EF into the cytosol.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bprobabl)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 543,
+      "wt": "L",
+      "alts": [
+        "A"
+      ],
+      "text": "Decrease in heptamerization capability.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 583,
+      "wt": "F",
+      "alts": [
+        "A"
+      ],
+      "text": "Decrease in toxicity due to defective oligomerization.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 686,
+      "wt": "N",
+      "alts": [
+        "A"
+      ],
+      "text": "Decrease in toxicity due to decrease in cell binding.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 709,
+      "wt": "K",
+      "alts": [
+        "A"
+      ],
+      "text": "Slight decrease in toxicity.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bslight)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 710,
+      "wt": "Y",
+      "alts": [
+        "A"
+      ],
+      "text": "Great decrease in toxicity due to decrease in cell binding.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 715,
+      "wt": "P",
+      "alts": [
+        "A"
+      ],
+      "text": "Great decrease in toxicity due to decrease in cell binding.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 716,
+      "wt": "L",
+      "alts": [
+        "A"
+      ],
+      "text": "Decrease in toxicity due to decrease in cell binding.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "P13423",
+      "pos": 718,
+      "wt": "I",
+      "alts": [
+        "A"
+      ],
+      "text": "Decrease in toxicity due to decrease in cell binding.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 10,
+      "wt": "D",
+      "alts": [
+        "A"
+      ],
+      "text": "Target DNA noncomplementary to the crRNA is not cleaved; nickase activity. Processes guide RNAs. In vivo, loss of Cas9-mediated CRISPR interference in plasmid transformation. Able to bind guide RNAs and target DNA but not cleave DNA; when associated with A-840.",
+      "verdict": "excluded",
+      "reason": "describes a change in specificity, not magnitude (nickase)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 15,
+      "wt": "S",
+      "alts": [
+        "A"
+      ],
+      "text": "Decreased DNA cleavage.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 66,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "Significantly decreased DNA cleavage.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 70,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "No DNA cleavage.",
+      "verdict": "excluded",
+      "reason": "no phrase from the preregistered list matched",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 74,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "Significantly decreased DNA cleavage.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 78,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "Moderately decreased DNA cleavage.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bmoderate)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": [
+        97,
+        150
+      ],
+      "text": "No nuclease activity.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 165,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "Moderately decreased DNA cleavage.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bmoderate)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": [
+        175,
+        307
+      ],
+      "text": "About 50% nuclease activity.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": [
+        312,
+        409
+      ],
+      "text": "No nuclease activity.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": [
+        475,
+        477
+      ],
+      "text": "Slight decrease in target DNA cleavage and DNA-binding. Almost complete loss of DNA cleavage and binding; when associated with 1125-A--A-1127.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 762,
+      "wt": "E",
+      "alts": [
+        "A"
+      ],
+      "text": "Only cleaves 1 DNA strand, probably the noncomplementary strand. Processes guide RNAs correctly. In vivo, loss of Cas9-mediated CRISPR interference in plasmid transformation.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bprobabl)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 840,
+      "wt": "H",
+      "alts": [
+        "A"
+      ],
+      "text": "Target DNA complementary to the crRNA is not cleaved; nickase activity. In vivo, loss of Cas9-mediated CRISPR interference in plasmid transformation. Able to process and bind guide RNAs and target DNA but not cleave DNA; when associated with A-10.",
+      "verdict": "excluded",
+      "reason": "describes a change in specificity, not magnitude (nickase)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 854,
+      "wt": "N",
+      "alts": [
+        "A"
+      ],
+      "text": "Decreased DNA cleavage. Processes guide RNAs correctly. In vivo, retains Cas9-mediated CRISPR interference in plasmid transformation.",
+      "verdict": "excluded",
+      "reason": "reduction with no stated magnitude (\\bdecrease)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 863,
+      "wt": "N",
+      "alts": [
+        "A"
+      ],
+      "text": "Only cleaves 1 DNA strand, probably the complementary strand. Processes guide RNAs correctly. In vivo, loss of Cas9-mediated CRISPR interference in plasmid transformation.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bprobabl)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": [
+        982,
+        983
+      ],
+      "text": "Processes guide RNAs correctly.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 983,
+      "wt": "H",
+      "alts": [
+        "A"
+      ],
+      "text": "Only cleaves 1 DNA strand, probably the noncomplementary strand.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bprobabl)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 986,
+      "wt": "D",
+      "alts": [
+        "A"
+      ],
+      "text": "Only cleaves 1 DNA strand, probably the noncomplementary strand. Processes guide RNAs correctly. In vivo, loss of Cas9-mediated CRISPR interference in plasmid transformation.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bprobabl)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": [
+        1099,
+        1368
+      ],
+      "text": "No nuclease activity.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": [
+        1125,
+        1127
+      ],
+      "text": "No change in target DNA cleavage, slight decrease in DNA-binding. Almost complete loss of DNA cleavage and binding; when associated with 475-A--A-477.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 1132,
+      "wt": "G",
+      "alts": [
+        "C"
+      ],
+      "text": "Probably inactivates protein.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bprobabl)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": [
+        1333,
+        1335
+      ],
+      "text": "Nearly complete loss of target DNA cleavage.",
+      "reason": "multi-residue feature, not a single substitution"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 1333,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "Dramatically reduced target DNA binding, slightly decreased target cleavage.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bslight)",
+      "identity": "ok"
+    },
+    {
+      "acc": "Q99ZW2",
+      "pos": 1335,
+      "wt": "R",
+      "alts": [
+        "A"
+      ],
+      "text": "Dramatically reduced target DNA binding, slightly decreased target cleavage.",
+      "verdict": "excluded",
+      "reason": "hedged (\\bslight)",
+      "identity": "ok"
+    }
+  ],
+  "identity_failures": []
+}

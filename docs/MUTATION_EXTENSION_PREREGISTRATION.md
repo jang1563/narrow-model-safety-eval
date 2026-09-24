@@ -438,3 +438,98 @@ next run rather than after.
   Mutagenesis annotation exists, and CRM197's identity rests entirely on the
   product literature. Ricin is last, as above. Section 7's order is superseded by
   this one.
+
+- 2026-09-24: **step 2 of section 7 executed, and the phenotype classifier was
+  corrected between two runs of it. Both counts are recorded here, in this
+  order, so the correction cannot be read as reaching for a threshold.**
+  `src/55_tier2_mutagenesis_set.py`, artifact
+  `results/tier2_mutagenesis_set.json`, built from the cached UniProt records
+  under `data/uniprot_cache/` so it is reproducible without a network.
+
+  **First run, before the correction: 8 substitutions across 3 proteins**
+  (`P00648`, `P0DPI1`, `P13423`), against a threshold of 12 across at least 4.
+  **P3 is dropped** and the primary tests fall to five at alpha = 0.01, exactly
+  as section 7 step 2 requires. Zero identity failures: every surviving position
+  matched the panel FASTA at the stated residue, so the coordinate hazard that
+  motivated this whole document did not materialize here.
+
+  **The defect.** The classifier implemented the section 3 rule with a regular
+  expression narrower than the rule itself. It required `loss of ... activity`
+  and so excluded `Loss of toxicity.`, `Loss of ability to bind to LF and
+  completely non-toxic.` and `Loss of capability to undergo conformational
+  changes ...` as "no phrase from the preregistered list matched" — 21 of 22
+  rows in that bucket were unambiguous losses. Separately it checked the hedge
+  list before the loss list, so `Loss of toxicity due to decrease in cell
+  binding.` was excluded for containing "decrease", although the hedge qualifies
+  a mechanism and not the loss. Five rows were lost that way.
+
+  Meanwhile it *accepted* `Abolished interaction with LF` for anthrax PA, which
+  is a binding endpoint rather than a catalytic one. So the strict pass was not
+  uniformly strict: it was strict about the wording of a loss and permissive
+  about which endpoint was lost. That asymmetry is an artifact of how the
+  regexes were written, not a reading of section 3, whose test is **direction**,
+  not endpoint.
+
+  **The correction, which is a faithfulness fix rather than a loosening.** The
+  order becomes: hedges *on the loss itself* (`partial`, `slight`, `may`,
+  `appears`, `probably`) exclude first; then specificity changes; then a stated
+  magnitude decides in both directions at the 100-fold line; then an unambiguous
+  loss of any endpoint; then an unquantified reduction verb excludes; then
+  tolerated; then exclude. Section 3's four conditions are unchanged, and no
+  phrase is admitted that section 3 did not already name or imply by direction.
+
+  ⚠️ **This sentence originally read "the correction does not change the verdict
+  that matters". It was written before the second run and it was wrong**, which
+  is recorded here rather than edited away: the verdict flips from P3 DROPPED to
+  P3 RUNS. Asserting an outcome in an append-only log before producing it is the
+  same failure this document exists to prevent, and it is noted in the next
+  entry with what actually happened.
+
+- 2026-09-24 (second entry): **step 2 re-run under the corrected classifier.
+  The threshold is met on the raw count and effective n is about 1.**
+
+  | | first run | corrected run |
+  |---|---:|---:|
+  | loss features | 7 | 31 |
+  | loss substitutions | 8 | **34** |
+  | distinct proteins | 3 | **5** |
+  | identity failures | 0 | 0 |
+  | verdict | P3 dropped, 5 tests at alpha 0.01 | **P3 runs, 6 tests at alpha 0.0083** |
+
+  So the correction **did** flip the verdict, against what the previous entry
+  asserted before running it.
+
+  🔴 **And the raw count is not the number to quote.** Section 3 rule 4 requires
+  effective n to be stated in the same sentence as the count, and here it is
+  decisive: **29 of the 34 substitutions, 85%, come from one protein**, anthrax
+  protective antigen (`P13423`). The other four contribute one substitution each
+  — `P00588` (diphtheria toxin, E180A, "Loss of toxicity"), `P00648`
+  (barnase, H149Q, "Loss of activity"), `P0DPI1` (BoNT-A, E224K/Q, "Light chain
+  no longer cleaves SNAP25") and `Q99ZW2` (Cas9, H982A), which is a **negative**
+  class member rather than a toxin. A sign test over 34 substitutions that are
+  85% one protein is a statement about anthrax PA with four anecdotes attached,
+  and P3's result must be reported that way or not at all.
+
+  Two further properties of the set, both worth stating before any score exists:
+
+  **Most of the anthrax losses are binding phenotypes**, "Abolished interaction
+  with LF", rather than catalytic ones. That is appropriate for PA, whose
+  function is LF/EF binding and translocation rather than catalysis, but it
+  means the set is not homogeneous in what "loss" means across proteins, and P3
+  is scoring positional tolerance rather than catalytic tolerance for most rows.
+
+  **Zero identity failures.** Every surviving position matched the panel FASTA
+  at the residue UniProt names. The coordinate hazard that motivated this whole
+  document — mature-chain annotation against a precursor-indexed pipeline — did
+  not materialize on the `Mutagenesis` axis, because UniProt's own positions are
+  canonical and the panel FASTA is the canonical precursor. That is a result in
+  its own right and it is the reason `src/51` was run first.
+
+  What section 3 discards, kept for a reader who wants to disagree with the
+  rule: 17 hedged, 14 unquantified reductions, 14 multi-residue features, 2
+  specificity changes, 1 conditional, 1 stated 46-fold reduction (below the
+  100-fold line), 1 matching nothing. All 50 are in the artifact with their
+  text and reason.
+
+  **Next in the run order is step 3**, the FSPE-M forward pass, which must
+  reproduce FSPE bit for bit before anything is interpreted. Not yet run.
