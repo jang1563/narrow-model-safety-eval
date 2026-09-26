@@ -1771,11 +1771,13 @@ class on v2, where the bottom-1 of nine has a per-arm chance of 1/9. v3 has **tw
 the test becomes whether the bottom-**two** of twelve are exactly those two, and the chance per arm falls
 to **1/66**. That is a much stricter question and the answer is not as clean.
 
-**Eight arms are embedded for v3 as of 2026-09-24.** It was five until then, and all five were
+**Nine arms are embedded for v3 as of 2026-09-27.** It was five until 09-24, and all five were
 ESM-2, for a reason that is not a decision: `src/02e` was hardcoded to the v2 panel while `src/02b`
 had already been given `--panel`, so the ESM-C and ESM-3 loaders could not see v3 at all. A gap in a
-loader had scoped this section to one model family. `slurm/esmc_v3_arms.sh` closes it, and § 10.6.2
-reports what the three new arms found, which is larger than an extension of this table. The three
+loader had scoped this section to one model family. `slurm/esmc_v3_arms.sh` and `slurm/prott5_v3.sh` close it, and § 10.6.2
+reports what the four new arms found, which is larger than an extension of this table. ProtT5, the
+ninth, is the first arm here from outside the EvolutionaryScale lineage: a Rostlab T5 encoder on
+UniRef50 with span corruption, so architecture, objective and corpus all differ at once. The three
 larger ESM-2 arms needed the GPU partition (`slurm/negative_scaling_650M.sh`), because the
 development machine ran out of memory rather than patience. Rows are ordered by capacity within
 family, not by result.
@@ -1794,19 +1796,22 @@ comparison below is between arms and this project has retracted three such compa
 | esmc_300M | 960 | +0.808 | 0.0011 | −0.0355 | 1.4% → **5.2%** [2.6, 7.8] | −0.0037 | 2.5% → **4.9%** [3.1, 6.7] | no |
 | **esmc_600M** | 1152 | +0.856 | 0.0004 | −0.0231 | 41.4% → **40.5%** [36.5, 44.5] | −0.0006 | 15.0% → **12.1%** [9.4, 14.8] | no |
 | **esm3_1_4B** | 1536 | +0.858 | 0.0003 | −0.0071 | 2.9% → **2.9%** [0.7, 5.0] | **+0.0012** | 31.2% → **31.7%** [27.4, 36.0] | no |
+| **prott5_xl** | 1024 | +0.739 | 0.0041 | −0.0717 | 7.1% → **2.4%** [0.6, 4.2] | −0.0304 | 6.9% → **11.2%** [7.3, 15.2] | no |
 
-**What holds in all eight.** Every arm has a significant positive margin-against-recovery correlation
-(+0.796 to +0.894, every p ≤ 0.0015), and **beta-lactamase is the single lowest-margin class in all
-eight**. So §10.6's central claim, that the failing class sits closer to benign than to any hazard class
+**What holds in all nine.** Every arm has a significant positive margin-against-recovery correlation
+(+0.739 to +0.894, every p ≤ 0.0041), and **beta-lactamase is the single lowest-margin class in all
+nine**. ⚠️ The weakest of the nine is ProtT5 at +0.739, which is margin's class ordering at its
+weakest on the one arm outside the lineage — still significant, and worth noting rather than
+averaging away. So §10.6's central claim, that the failing class sits closer to benign than to any hazard class
 the probe trained on, survives the move to a panel with two failures and holds across a **375-fold
 parameter range** within ESM-2, 8M to 3B, and across two further architectures.
 
-🔴 **One arm of eight breaks the negative-margin property**, and it is informative rather than noisy:
+🔴 **One arm of nine breaks the negative-margin property**, and it is informative rather than noisy:
 `esm3_1_4B` is the only arm whose **phage margin is positive**, +0.0012, and it is also the arm that
 recovers phage best, 31.7% [27.4, 36.0]. Margin and recovery agree on the arm that breaks the pattern.
 
-🔴 **What does not hold is the exact bottom-two, and it now holds in two arms of eight.** In 150M, 35M,
-8M, and in all three new arms, the **labelled virulence control** takes second-lowest and displaces the
+🔴 **What does not hold is the exact bottom-two, and it now holds in two arms of nine.** In 150M, 35M,
+8M, and in all four new arms, the **labelled virulence control** takes second-lowest and displaces the
 phage class. The displacer is the
 same class in all three misses, which is the informative part: the control is a genuinely borderline set,
 so the bottom of the margin ordering is where hazard and the control become hard to tell apart. That is the
@@ -2667,6 +2672,36 @@ difference visible: **ESM-C 600M has the second most negative beta-lactamase mar
 recovery moved together for that class, which made the stronger reading available without being
 supported. A low margin says a class sits close to benign *in that representation's geometry*; it does
 not say another representation cannot separate it anyway.
+
+**Fourth: the dissociation is model-specific, not lineage-specific, and ProtT5 is how that is
+known.** Added 2026-09-27. ESM-C and ESM-3 are both EvolutionaryScale models, so a reading where
+"different lineages see different hazard classes" was available and would have been wrong. ProtT5 —
+Rostlab, T5 encoder, UniRef50, span corruption — reaches **neither** class:
+
+| arm | beta-lactamase @95, 30 seeds | phage @95, 30 seeds |
+|---|---|---|
+| canonical ESM-2 650M | 21.2% [16.5, 25.9] | 12.2% [10.0, 14.4] |
+| ESM-C 600M | **40.5% [36.5, 44.5]** | 12.1% [9.4, 14.8] |
+| ESM-3 1.4B | 2.9% [0.7, 5.0] | **31.7% [27.4, 36.0]** |
+| **ProtT5 XL** | **2.4% [0.6, 4.2]** | **11.2% [7.3, 15.2]** |
+
+Its beta-lactamase interval is disjoint from the canonical arm's and sits near the floor, 23 of 30
+splits at exactly 0%; its phage interval **overlaps** the canonical arm's, so it is indistinguishable
+there. The arm itself is healthy — bacteriocin 93%, Cry 99%, clostridial and RIP 100%, T3SS 80% — so
+this is not a broken embedding. **Changing architecture, objective and corpus at once buys nothing on
+either failing class.**
+
+So each class is reached by a *particular model*, not by a family and not by leaving a family:
+beta-lactamase by ESM-C 600M alone out of nine, phage by ESM-3 1.4B and the two smallest ESM-2 arms.
+Whatever ESM-C 600M has, ESM-C 300M does not and ProtT5 does not; whatever ESM-3 has, its lineage
+siblings do not. **"Reachable by some representation" is true of both classes and "reachable by
+representations like X" is true of neither**, which is a weaker and more useful statement than the
+one the first three arms made available.
+
+⚠️ **Both of ProtT5's published 5-seed figures fall outside their own 30-seed intervals**, 7.1%
+against [0.6, 4.2] on beta-lactamase and 6.9% against [7.3, 15.2] on phage. That is the fourth and
+fifth instance of the 5-seed fragility in this document, and it is why § 10.6.1's table reports both
+seed counts for every arm.
 
 **What this does not overturn.** The recovery figures themselves, the split results in § 2.6, the
 alignment comparison in § 7 and the negative-set results in § 10.9 are all unchanged: they are canonical-arm

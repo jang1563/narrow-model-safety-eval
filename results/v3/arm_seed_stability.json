@@ -17,7 +17,8 @@
     "esm2_8M",
     "esm3_1_4B",
     "esmc_300M",
-    "esmc_600M"
+    "esmc_600M",
+    "prott5_xl"
   ],
   "results": {
     "beta_lactamase": {
@@ -235,6 +236,33 @@
           ],
           "zero_seeds": 8,
           "published_inside_ci": false
+        }
+      },
+      "prott5_xl": {
+        "suffix": "_prott5_xl",
+        "dim": 1024,
+        "n_members": 14,
+        "0.95": {
+          "published_5seed": 0.07142857142857142,
+          "mean_30seed": 0.023809523809523805,
+          "sd": 0.050797071587054245,
+          "ci95": [
+            0.005632025193413357,
+            0.04198702242563425
+          ],
+          "zero_seeds": 23,
+          "published_inside_ci": false
+        },
+        "0.99": {
+          "published_5seed": 0.0,
+          "mean_30seed": 0.0,
+          "sd": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "zero_seeds": 30,
+          "published_inside_ci": true
         }
       }
     },
@@ -454,6 +482,33 @@
           "zero_seeds": 15,
           "published_inside_ci": true
         }
+      },
+      "prott5_xl": {
+        "suffix": "_prott5_xl",
+        "dim": 1024,
+        "n_members": 32,
+        "0.95": {
+          "published_5seed": 0.06875,
+          "mean_30seed": 0.1125,
+          "sd": 0.11059205870348857,
+          "ci95": [
+            0.07292514004788034,
+            0.15207485995211967
+          ],
+          "zero_seeds": 8,
+          "published_inside_ci": false
+        },
+        "0.99": {
+          "published_5seed": 0.00625,
+          "mean_30seed": 0.010416666666666666,
+          "sd": 0.026380695441061117,
+          "ci95": [
+            0.0009764560425146573,
+            0.019856877290818677
+          ],
+          "zero_seeds": 24,
+          "published_inside_ci": true
+        }
       }
     }
   },
@@ -466,9 +521,10 @@
         "esm2_8M",
         "esm3_1_4B",
         "esmc_300M",
-        "esmc_600M"
+        "esmc_600M",
+        "prott5_xl"
       ],
-      "n_disjoint_pairs": 21,
+      "n_disjoint_pairs": 25,
       "disjoint_pairs": [
         [
           "canonical 650M",
@@ -499,6 +555,10 @@
           "esmc_600M"
         ],
         [
+          "canonical 650M",
+          "prott5_xl"
+        ],
+        [
           "esm2_150M",
           "esm2_35M"
         ],
@@ -535,6 +595,10 @@
           "esmc_600M"
         ],
         [
+          "esm2_3B",
+          "prott5_xl"
+        ],
+        [
           "esm2_8M",
           "esm3_1_4B"
         ],
@@ -547,12 +611,20 @@
           "esmc_600M"
         ],
         [
+          "esm2_8M",
+          "prott5_xl"
+        ],
+        [
           "esm3_1_4B",
           "esmc_600M"
         ],
         [
           "esmc_300M",
           "esmc_600M"
+        ],
+        [
+          "esmc_600M",
+          "prott5_xl"
         ]
       ],
       "top_arm_5seed": "esmc_600M",
@@ -562,7 +634,8 @@
         "esm2_150M",
         "esm2_35M",
         "esm2_3B",
-        "esmc_300M"
+        "esmc_300M",
+        "prott5_xl"
       ]
     },
     "phage_peptidoglycan_hydrolase": {
@@ -574,7 +647,7 @@
         "esm3_1_4B",
         "esmc_300M"
       ],
-      "n_disjoint_pairs": 21,
+      "n_disjoint_pairs": 26,
       "disjoint_pairs": [
         [
           "canonical 650M",
@@ -629,6 +702,10 @@
           "esmc_600M"
         ],
         [
+          "esm2_35M",
+          "prott5_xl"
+        ],
+        [
           "esm2_3B",
           "esm2_8M"
         ],
@@ -641,6 +718,10 @@
           "esmc_600M"
         ],
         [
+          "esm2_3B",
+          "prott5_xl"
+        ],
+        [
           "esm2_8M",
           "esmc_300M"
         ],
@@ -649,16 +730,28 @@
           "esmc_600M"
         ],
         [
+          "esm2_8M",
+          "prott5_xl"
+        ],
+        [
           "esm3_1_4B",
           "esmc_300M"
         ],
         [
           "esm3_1_4B",
           "esmc_600M"
+        ],
+        [
+          "esm3_1_4B",
+          "prott5_xl"
         ],
         [
           "esmc_300M",
           "esmc_600M"
+        ],
+        [
+          "esmc_300M",
+          "prott5_xl"
         ]
       ],
       "top_arm_5seed": "esm2_8M",
@@ -668,10 +761,11 @@
         "esm2_3B",
         "esm2_8M",
         "esmc_300M",
-        "esmc_600M"
+        "esmc_600M",
+        "prott5_xl"
       ]
     }
   },
   "distinct_from": "03x, which runs beta-lactamase on v2's fourteen arms and is pinned by the audit for that result",
-  "verdict": "A1: beta_lactamase: ['esm2_150M', 'esm2_35M', 'esm2_3B', 'esm2_8M', 'esm3_1_4B', 'esmc_300M', 'esmc_600M'] separate from the canonical arm; phage_peptidoglycan_hydrolase: ['esm2_150M', 'esm2_35M', 'esm2_3B', 'esm2_8M', 'esm3_1_4B', 'esmc_300M'] separate from the canonical arm. Those differences stand as differences between arms"
+  "verdict": "A1: beta_lactamase: ['esm2_150M', 'esm2_35M', 'esm2_3B', 'esm2_8M', 'esm3_1_4B', 'esmc_300M', 'esmc_600M', 'prott5_xl'] separate from the canonical arm; phage_peptidoglycan_hydrolase: ['esm2_150M', 'esm2_35M', 'esm2_3B', 'esm2_8M', 'esm3_1_4B', 'esmc_300M'] separate from the canonical arm. Those differences stand as differences between arms"
 }

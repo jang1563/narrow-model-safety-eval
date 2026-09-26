@@ -137,9 +137,9 @@ another class minus the distance to the nearest negative.
   finding.
 - 🔴 **But the stricter version of that test comes back partial, and the distinction matters.**
   v2 asks whether margin finds the bottom-1 of nine classes, chance 1/9. v3 asks for the bottom-**2**
-  of twelve, chance 1/66, over the **8 arms** now embedded for v3. There, a significant correlation
-  (+0.796 to +0.894, every *p* ≤ 0.0015) holds in **8 of 8** and beta-lactamase is the lowest-margin
-  class in all eight — but the exact bottom-two holds in only **2 of 8**, and one arm, ESM-3 1.4B,
+  of twelve, chance 1/66, over the **9 arms** now embedded for v3. There, a significant correlation
+  (+0.739 to +0.894, every *p* ≤ 0.0041) holds in **9 of 9** and beta-lactamase is the lowest-margin
+  class in all nine — but the exact bottom-two holds in only **2 of 9**, and one arm, ESM-3 1.4B,
   has a *positive* phage margin. In the six misses the labelled virulence control displaces phage,
   the same displacer each time, which says the bottom of the margin ordering is where hazard and a
   borderline control stop being distinguishable. **The ordering is representation-general; the
@@ -160,9 +160,15 @@ that gap produced a **double dissociation** at 30 seeds:
 | canonical ESM-2 650M | 21.2% [16.5, 25.9] | 12.2% [10.0, 14.4] |
 | **ESM-C 600M** | **40.5% [36.5, 44.5]** | 12.1% [9.4, 14.8] |
 | **ESM-3 1.4B** | 2.9% [0.7, 5.0] | **31.7% [27.4, 36.0]** |
+| ProtT5 XL, outside the lineage | 2.4% [0.6, 4.2] | 11.2% [7.3, 15.2] |
 
 Each class is reached by one model and missed by the other, with disjoint intervals in both
-directions, so neither is a generally hard class. Two things follow. **"Unreachable" should be read
+directions, so neither is a generally hard class. And it is a property of the **model**, not of the
+lineage: ProtT5 — a Rostlab T5 encoder on UniRef50 with span corruption, so a different
+architecture, objective and corpus at once — reaches **neither**, while scoring 93% to 100% on five
+other classes. Changing everything about the model buys nothing on either failure, so "reachable by
+some representation" is true of both classes and "reachable by representations like X" is true of
+neither. Two things follow. **"Unreachable" should be read
 as "not reached by the canonical arm"** everywhere, and recovery is joint in the representation as
 well as in the positive set and the operating point. And **margin does not transfer across arms for
 a fixed class**: ESM-C 600M has the second most negative beta-lactamase margin of any arm and the

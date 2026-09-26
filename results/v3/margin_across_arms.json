@@ -153,6 +153,24 @@
         "phage_peptidoglycan_hydrolase": -0.0005676727741956711,
         "beta_lactamase": -0.023084167391061783
       }
+    },
+    "prott5_xl": {
+      "suffix": "_prott5_xl",
+      "dim": 1024,
+      "rho": 0.7394549559641986,
+      "perm_p": 0.00405,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": false,
+      "bottom_k": [
+        "beta_lactamase",
+        "virulence_associated_non_toxin"
+      ],
+      "n_classes": 12,
+      "mean_pooled": true,
+      "failure_margins": {
+        "phage_peptidoglycan_hydrolase": -0.03044131025671959,
+        "beta_lactamase": -0.07170045375823975
+      }
     }
   },
   "P1": {
@@ -160,7 +178,7 @@
       "canonical",
       "esm2_3B"
     ],
-    "n_arms": 8,
+    "n_arms": 9,
     "majority": false
   },
   "P2": {
@@ -172,7 +190,8 @@
       "esm2_8M",
       "esm3_1_4B",
       "esmc_300M",
-      "esmc_600M"
+      "esmc_600M",
+      "prott5_xl"
     ],
     "majority": true
   },
@@ -183,8 +202,9 @@
     "esm2_3B",
     "esm2_8M",
     "esmc_300M",
-    "esmc_600M"
+    "esmc_600M",
+    "prott5_xl"
   ],
   "chance_per_arm": 0.015151515151515152,
-  "verdict": "PARTIAL: 2/8 arms locate the failure and 8/8 have a significant rho, so one preregistered majority holds and the other does not"
+  "verdict": "PARTIAL: 2/9 arms locate the failure and 9/9 have a significant rho, so one preregistered majority holds and the other does not"
 }

@@ -2748,3 +2748,80 @@ adds is a stated limit on how precisely a single per-protein ratio can be read.
 is nothing to regenerate. No background is re-sampled for publication. The variance is characterised
 at one redraw rather than many, which is enough to establish that it exceeds the flanking effect and
 not enough to state its width; doing that properly is an open item and is named as one.
+
+---
+
+## 2026-09-27 (twenty-seventh entry) — The dissociation is model-specific, not lineage-specific, and the arm that shows it also cost an undeclared dependency and a stale assertion floor
+
+Entry twenty-four reported that the two classes ESM-2 misses on v3 are each reached by a different
+model: ESM-C 600M takes beta-lactamase to 40.5%, ESM-3 1.4B takes phage to 31.7%, neither takes both.
+Both are EvolutionaryScale models, so a reading was available in which **different lineages see
+different hazard classes**. That reading is now tested and wrong.
+
+### ProtT5 reaches neither
+
+`slurm/prott5_v3.sh`, Cayuga 3399923. ProtT5 XL is a Rostlab T5 encoder trained on UniRef50 with
+span corruption, so architecture, objective and corpus all differ from the ESM family at once. At 30
+seeds, 95% specificity:
+
+| arm | beta-lactamase | phage |
+|---|---|---|
+| canonical ESM-2 650M | 21.2% [16.5, 25.9] | 12.2% [10.0, 14.4] |
+| ESM-C 600M | **40.5% [36.5, 44.5]** | 12.1% [9.4, 14.8] |
+| ESM-3 1.4B | 2.9% [0.7, 5.0] | **31.7% [27.4, 36.0]** |
+| **ProtT5 XL** | **2.4% [0.6, 4.2]** | **11.2% [7.3, 15.2]** |
+
+Beta-lactamase is at the floor, 23 of 30 splits at exactly 0%, with an interval disjoint from the
+canonical arm's. Phage **overlaps** the canonical arm, so it is indistinguishable there. The arm is
+not broken: bacteriocin 93%, Cry 99%, clostridial and RIP 100%, T3SS 80%.
+
+So each class is reached by a **particular model** rather than by a family or by leaving one.
+Whatever ESM-C 600M has, ESM-C 300M does not (5.2%) and ProtT5 does not; whatever ESM-3 has, its own
+lineage siblings do not. **"Reachable by some representation" is true of both classes and "reachable
+by representations like X" is true of neither** — weaker than what three arms made available, and
+more useful, because it removes lineage as the organising variable.
+
+⚠️ **Both of ProtT5's 5-seed figures fall outside their own 30-seed intervals**: 7.1% against
+[0.6, 4.2] and 6.9% against [7.3, 15.2]. Fourth and fifth instance of that in this project.
+
+### Three defects found on the way
+
+**An undeclared dependency that a shipped script imports.** The first submission died on
+`T5Tokenizer requires the SentencePiece library`. `sentencepiece` appears in neither
+`pyproject.toml` nor `requirements.txt`, yet `src/02g` cannot construct its tokenizer without it.
+The v2 ProtT5 arm was built on 2026-09-05 in an environment that happened to have it. It is declared
+now.
+
+🔴 **That is the second published arm whose build environment has since vanished.** Entry
+twenty-four recorded that the v2 ESM-C arrays were built under esm 3.4.0 / torch 2.11.0 and that no
+environment on the cluster has that any more. Now the v2 ProtT5 arm turns out to have been built with
+a library the environment no longer carries. Two arms, two environments, both gone, both discovered
+by trying to extend the arm rather than by any check. **The repository has no record of what
+environment produced any published array beyond a torch version string in a manifest**, and that is
+an open weakness rather than a fixed one.
+
+**An assertion floor that encoded the panel it was written on.** The audit asserted
+`min_rho > 0.75` for the across-arms margin correlation, written when the weakest of five ESM-2 arms
+was +0.796. ProtT5 is **+0.739** — still significant at p = 0.0041, and below the floor. The floor
+would have failed for a correct reason stated wrongly, so it is replaced by pinning the weakest arm's
+value directly and letting `significant == 9` carry the claim that every arm's ordering holds. Same
+species as the `== 4` separation literal in entry twenty-four: a number baked in from the panel
+present when the line was written.
+
+⚠️ **And margin's class ordering is weakest on the one arm outside the lineage.** +0.739 against
++0.796 to +0.894 for the eight ESM arms. Still significant, and not averaged away: it is the mildest
+available caveat on § 10.6's generality claim and it is stated in § 10.6.1 rather than left in an
+artifact.
+
+### What was not done, and why
+
+**SaProt is still not on v3, deliberately.** `structure_3di_v3.json` carries real Foldseek strings
+for the 231 v2 members and the `no_structure` mask for the 214 that v3 added, so 48.1% of that panel
+would be scored sequence-only — including the entire phage class, which is the class in question.
+`src/02i` now computes that fraction itself and refuses above 5%, negative-tested at 48.1% and
+exiting before the model loads. The prerequisite is fetching AlphaFold structures for those 214 and
+running Foldseek, which needs the Linux binary on the HPC.
+
+That file's own `stats` field said `no_structure: 3` against a real 214, inherited from v2 when
+`src/27` built it. Recomputed in place with a maintenance note recording what it said, and `02i`
+computes the fraction rather than trusting the field.
