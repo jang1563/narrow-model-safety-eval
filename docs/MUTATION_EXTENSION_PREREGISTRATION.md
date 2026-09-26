@@ -98,7 +98,11 @@ FSPE-M = mean s(i) over annotated catalytic sites
 
 Background is defined exactly as FSPE defines it: all residues not annotated as
 catalytic, excluding the two flanking positions on each side of every
-functional site. This is deliberate. Reusing the existing background definition
+functional site. ⚠️ **See the 2026-09-27 amendment: FSPE does not in fact
+exclude the flanking positions, so "exactly as FSPE defines it" was ambiguous
+between this sentence and the code. It is resolved in favour of the code, with
+the measurement that justifies it. This sentence is left as written because the
+document is append-only.** This is deliberate. Reusing the existing background definition
 means FSPE-M and FSPE differ in the reduction only, so a difference between
 them cannot be a difference in position selection.
 
@@ -533,3 +537,61 @@ next run rather than after.
 
   **Next in the run order is step 3**, the FSPE-M forward pass, which must
   reproduce FSPE bit for bit before anything is interpreted. Not yet run.
+
+- 2026-09-27: **step 3 of section 7 executed and its gate PASSED, and section 2.1's
+  background definition is resolved in favour of the code.**
+  `src/57_fspe_background_ablation.py`, artifact
+  `results/fspe_background_ablation.json`.
+
+  **The gate.** Step 3 requires that FSPE be reproduced bit for bit from the same
+  run before anything is interpreted, because a changed entropy would mean
+  something else moved. It reproduces: all 15 proteins agree with
+  `results/fspe_results.json` to 1e-6 on `fspe_functional`,
+  `fspe_nonfunctional` and `fspe_ratio`, with zero drifted fields. The masking
+  code is `src/04`'s own, loaded through `importlib`, so this compares against
+  the pipeline that produced the published numbers rather than against a
+  re-implementation.
+
+  🔴 **The ambiguity that had to be settled first.** Section 2.1 fixes FSPE-M's
+  background as "exactly as FSPE defines it: all residues not annotated as
+  catalytic, excluding the two flanking positions on each side of every
+  functional site". **FSPE does not exclude them.** No code in this repository
+  ever has; `src/04` samples from `all_positions - func_positions`. So that
+  sentence pointed at two different backgrounds, and which one FSPE-M inherits
+  had to be decided before FSPE-M was computed rather than after.
+
+  **Resolved: FSPE-M uses the background `src/04` builds**, the one without the
+  flanking exclusion. Section 2.1's stated *reason* decides it — "reusing the
+  existing background definition means FSPE-M and FSPE differ in the reduction
+  only, so a difference between them cannot be a difference in position
+  selection" — and that reason is served by the code's background, not by the
+  prose. The prose sentence is left in place with a pointer, because this
+  document is append-only.
+
+  **Measured before deciding, in three arms:**
+
+  | arm | 12/14 | sign *p* | perm *p* |
+  |---|---|---|---|
+  | published, what `src/04` samples | 12/14 | 0.0065 | 0.00015 |
+  | same draw minus its flanking members | 12/14 | 0.0065 | 0.00015 |
+  | the documented metric, built properly | 12/14 | 0.0065 | 0.00055 |
+
+  The flanking contamination touches 6 of 15 proteins through 9 positions and
+  moves a ratio by at most 0.031. Nothing crosses 1.0 in any arm. So the choice
+  above costs nothing, which is why it could be made on the merits of section
+  2.1's reason rather than on which number came out better.
+
+  ⚠️ **One finding here bounds what tier 1 can claim, and it is larger than the
+  defect that prompted the check.** Redrawing the 20 background positions moves
+  per-protein ratios by up to **0.345**, and on the 9 proteins with no flanking
+  positions to remove — where the redraw is the only change — by 0.097 on
+  average. `P13423` goes 0.6499 to 0.9950. **FSPE-M inherits that background and
+  therefore that variance.** P1 is a sign test over 14 protein-level ratios, so
+  a background draw that moves a ratio across 1.0 moves P1's count by one.
+  Nothing in section 4 anticipated this, and P1's result must be reported with
+  the draw sensitivity stated or computed over several draws. That is an
+  amendment to how P1 is *reported*, not to its threshold or its criterion,
+  which stay as frozen.
+
+  **Next: step 4**, P5's label-shuffled arm, which must return within 0.05 of 0.5
+  before anything else is interpreted. Not yet run.

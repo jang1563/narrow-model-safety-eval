@@ -2666,3 +2666,85 @@ external-validation record, for a result now reported in a parallel column besid
 call sites in 03b/03e/03f/03h/03j/15e are unchanged for the same reason. What is removed is the option
 of quoting a recovery figure without its realized rate: § 2.6.2 carries the table, the claims audit
 asserts the realized rates and the one-directional cost, and the public summary states both.
+
+---
+
+## 2026-09-27 (twenty-sixth entry) — Three documents described a background no code builds, and measuring it found a larger problem than the one being measured
+
+`docs/ARCHITECTURE.md`, `docs/EVALUATION_REPORT.md` and
+`docs/MUTATION_EXTENSION_PREREGISTRATION.md` all stated that FSPE's background excludes the two
+flanking positions on each side of every functional site. **No code in this repository has ever
+implemented that.** `src/04` samples 20 positions from `all_positions - func_positions` and nothing
+else. The defect surfaced while implementing FSPE-M, because the preregistration fixes FSPE-M's
+background as "exactly as FSPE defines it" and that phrase pointed at two different backgrounds.
+
+### Measured before anything was changed
+
+`src/57_fspe_background_ablation.py` computes three backgrounds over one forward pass per distinct
+position. The `published` arm reproduces `results/fspe_results.json` to 1e-6 on every field for all
+15 proteins, zero drift, using `src/04`'s own masking code loaded through `importlib` — so the arms
+differ only in position selection, and that check is simultaneously step 3 of the
+preregistration's run order.
+
+With `src/21`'s SEB exclusion applied, as the published figure applies it:
+
+| arm | ratios below 1 | sign test *p* | permutation *p* |
+|---|---|---|---|
+| `published`, what `src/04` samples | **12/14** | **0.0065** | 0.00015 |
+| same draw minus its flanking members | **12/14** | **0.0065** | 0.00015 |
+| the documented metric, built properly | **12/14** | **0.0065** | 0.00055 |
+
+**The headline does not depend on the definition.** The contamination is real and small: 6 of 15
+proteins, 9 positions, at most **0.031** on a per-protein ratio and 0.012 on average, and nothing
+crosses 1.0. Proteins with no flanking positions move by exactly zero, which is how the isolation
+is known to work.
+
+### 🔑 The finding that was not being looked for
+
+Redrawing the background — 20 fresh positions from a candidate list that differs only by the
+flanking exclusion — moves ratios by up to **0.345**. On the 9 proteins with **no flanking positions
+to remove**, where the redraw is the only thing that changes, it moves them by up to 0.345 and
+**0.097 on average**:
+
+```
+P13423   0.6499 -> 0.9950     to within 0.005 of the threshold
+P11140   1.0726 -> 1.3732
+P02879   1.2296 -> 1.3707
+```
+
+So **the per-protein FSPE ratio carries an order of magnitude more sampling variance at 20
+background positions than the documentation defect that prompted the check**, and every per-protein
+ratio this project has published is a single draw. The protein-level tests survive it on this panel
+because the variance does not flip signs, but `P13423` at 0.995 shows how little margin some rows
+have.
+
+⚠️ **A per-protein FSPE ratio should be read as one draw from a distribution whose width has not
+been characterised.** That is now stated in § 3.1.1 of the evaluation report rather than left
+implicit. The repair is to average over several draws, or to use all non-functional positions
+instead of a sample; neither is done here and neither changes the protein-level result.
+
+### The decision, and why it could be made on the merits
+
+**The code's background is kept and the three documents are corrected to describe it.** Switching to
+the documented version would not move the headline, would break comparability with every published
+per-protein value, and would differ from the published arm mostly through the sampling variance
+above rather than through the exclusion it is named for — importing fresh noise for no measured gain.
+
+Because the choice costs nothing either way, it was settled on the preregistration's own stated
+reason instead: section 2.1 wants FSPE-M and FSPE to "differ in the reduction only, so a difference
+between them cannot be a difference in position selection", and that is served by the background the
+code builds. The preregistration's prose sentence is left in place with a pointer, since the
+document is append-only; the other two documents are corrected in place with the measurement named.
+
+### Direction
+
+Neither weakens nor strengthens a published figure: 12/14 at p = 0.0065 under every background
+tested. What it removes is a claim the documents were making about how the metric works, and what it
+adds is a stated limit on how precisely a single per-protein ratio can be read.
+
+### What was deliberately not done
+
+`results/fspe_results.json` is not regenerated — the published arm reproduces it exactly, so there
+is nothing to regenerate. No background is re-sampled for publication. The variance is characterised
+at one redraw rather than many, which is enough to establish that it exceeds the flanking effect and
+not enough to state its width; doing that properly is an open item and is named as one.

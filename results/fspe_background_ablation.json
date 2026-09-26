@@ -1,0 +1,441 @@
+{
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "device": "mps",
+  "flank_radius": 2,
+  "n_background": 20,
+  "seed": 42,
+  "n_permutations": 20000,
+  "reproduces_published": true,
+  "drift": [],
+  "note": "the published arm is what src/04 samples today; resample_excluded is what ARCHITECTURE.md line 73, EVALUATION_REPORT.md line 70 and the mutation preregistration section 2.1 describe; drop_flanking isolates the contamination by keeping the same draw",
+  "protein_level": {
+    "published": {
+      "n_proteins": 15,
+      "n_ratio_below_1": 13,
+      "sign_test_one_sided_p": 0.003692626953125,
+      "mean_log_ratio": -1.849778105095068,
+      "permutation_p": 0.0002
+    },
+    "drop_flanking": {
+      "n_proteins": 15,
+      "n_ratio_below_1": 13,
+      "sign_test_one_sided_p": 0.003692626953125,
+      "mean_log_ratio": -1.85536708394461,
+      "permutation_p": 0.00015
+    },
+    "resample_excluded": {
+      "n_proteins": 15,
+      "n_ratio_below_1": 13,
+      "sign_test_one_sided_p": 0.003692626953125,
+      "mean_log_ratio": -1.7908948942028193,
+      "permutation_p": 0.001
+    }
+  },
+  "per_protein": [
+    {
+      "uniprot_id": "P02879",
+      "sequence_length": 576,
+      "n_functional_sites": 5,
+      "precursor_offset": 35,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [],
+      "fspe_functional": 2.7946946144104006,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.2729324873536827,
+          "fspe_ratio": 1.2295546084011462
+        },
+        "drop_flanking": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.2729324873536827,
+          "fspe_ratio": 1.2295546084011462
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.0388844180852175,
+          "fspe_ratio": 1.3706979118683877
+        }
+      }
+    },
+    {
+      "uniprot_id": "P01555",
+      "sequence_length": 258,
+      "n_functional_sites": 8,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [
+        28
+      ],
+      "fspe_functional": 1.0197366126812994,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.9441413078457117,
+          "fspe_ratio": 0.5245177439346022
+        },
+        "drop_flanking": {
+          "n_background": 19,
+          "fspe_nonfunctional": 2.040551693815934,
+          "fspe_ratio": 0.49973574096245554
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.9672870591282845,
+          "fspe_ratio": 0.5183466276310231
+        }
+      }
+    },
+    {
+      "uniprot_id": "P0DPI1",
+      "sequence_length": 1022,
+      "n_functional_sites": 4,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [],
+      "fspe_functional": 0.06711270241066813,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.484159731864929,
+          "fspe_ratio": 0.02701625887812163
+        },
+        "drop_flanking": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.484159731864929,
+          "fspe_ratio": 0.02701625887812163
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.427785685658455,
+          "fspe_ratio": 0.027643586008073064
+        }
+      }
+    },
+    {
+      "uniprot_id": "P01552",
+      "sequence_length": 266,
+      "n_functional_sites": 9,
+      "precursor_offset": 0,
+      "numbering_flagged": true,
+      "flanking_in_published_sample": [
+        26,
+        86
+      ],
+      "fspe_functional": 2.5411471260918512,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.6592505276203156,
+          "fspe_ratio": 0.9555877115368474
+        },
+        "drop_flanking": {
+          "n_background": 18,
+          "fspe_nonfunctional": 2.7475309901767306,
+          "fspe_ratio": 0.9248838812654834
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.676112401485443,
+          "fspe_ratio": 0.949566664195915
+        }
+      }
+    },
+    {
+      "uniprot_id": "P13423",
+      "sequence_length": 764,
+      "n_functional_sites": 4,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [],
+      "fspe_functional": 1.2478652596473694,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.9199643015861512,
+          "fspe_ratio": 0.6499419070534089
+        },
+        "drop_flanking": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.9199643015861512,
+          "fspe_ratio": 0.6499419070534089
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.2541705139447004,
+          "fspe_ratio": 0.9949725701352209
+        }
+      }
+    },
+    {
+      "uniprot_id": "P11140",
+      "sequence_length": 528,
+      "n_functional_sites": 5,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [],
+      "fspe_functional": 2.7688095569610596,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.5815138086676597,
+          "fspe_ratio": 1.0725526811689088
+        },
+        "drop_flanking": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.5815138086676597,
+          "fspe_ratio": 1.0725526811689088
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.016391813987866,
+          "fspe_ratio": 1.3731505641679427
+        }
+      }
+    },
+    {
+      "uniprot_id": "P04958",
+      "sequence_length": 1022,
+      "n_functional_sites": 4,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [],
+      "fspe_functional": 0.36226051300764084,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.4999202847480775,
+          "fspe_ratio": 0.14490882578047748
+        },
+        "drop_flanking": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.4999202847480775,
+          "fspe_ratio": 0.14490882578047748
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.454518920183182,
+          "fspe_ratio": 0.14758921189354904
+        }
+      }
+    },
+    {
+      "uniprot_id": "O34208",
+      "sequence_length": 687,
+      "n_functional_sites": 2,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [],
+      "fspe_functional": 0.0038637389661744237,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.251548719406128,
+          "fspe_ratio": 0.0017160361367590258
+        },
+        "drop_flanking": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.251548719406128,
+          "fspe_ratio": 0.0017160361367590258
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.184789997339249,
+          "fspe_ratio": 0.0017684715560213505
+        }
+      }
+    },
+    {
+      "uniprot_id": "Q51451",
+      "sequence_length": 453,
+      "n_functional_sites": 5,
+      "precursor_offset": 0,
+      "numbering_flagged": true,
+      "flanking_in_published_sample": [],
+      "fspe_functional": 1.4813923264853657,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.238480108976364,
+          "fspe_ratio": 0.6617848961645644
+        },
+        "drop_flanking": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.238480108976364,
+          "fspe_ratio": 0.6617848961645644
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.179696226119995,
+          "fspe_ratio": 0.6796324683840661
+        }
+      }
+    },
+    {
+      "uniprot_id": "P15273",
+      "sequence_length": 468,
+      "n_functional_sites": 5,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [
+        400
+      ],
+      "fspe_functional": 0.0539235757663846,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.203876020014286,
+          "fspe_ratio": 0.024467608557234115
+        },
+        "drop_flanking": {
+          "n_background": 19,
+          "fspe_nonfunctional": 2.2458761130508624,
+          "fspe_ratio": 0.024010040203479112
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.241896578669548,
+          "fspe_ratio": 0.024052659823579157
+        }
+      }
+    },
+    {
+      "uniprot_id": "P00648",
+      "sequence_length": 157,
+      "n_functional_sites": 5,
+      "precursor_offset": 47,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [
+        128,
+        131
+      ],
+      "fspe_functional": 0.08277805149555206,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.6216921662911772,
+          "fspe_ratio": 0.05104424453431635
+        },
+        "drop_flanking": {
+          "n_background": 18,
+          "fspe_nonfunctional": 1.6001510725667079,
+          "fspe_ratio": 0.05173139768782749
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.9428839154541493,
+          "fspe_ratio": 0.04260576292650129
+        }
+      }
+    },
+    {
+      "uniprot_id": "P04419",
+      "sequence_length": 581,
+      "n_functional_sites": 3,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [
+        550,
+        576
+      ],
+      "fspe_functional": 0.2818901961048444,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.0431454569101333,
+          "fspe_ratio": 0.1379687359759248
+        },
+        "drop_flanking": {
+          "n_background": 18,
+          "fspe_nonfunctional": 2.0827617943286896,
+          "fspe_ratio": 0.13534442434676142
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.9477655857801437,
+          "fspe_ratio": 0.1447249084606545
+        }
+      }
+    },
+    {
+      "uniprot_id": "Q99ZW2",
+      "sequence_length": 1022,
+      "n_functional_sites": 7,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [],
+      "fspe_functional": 0.015049262171877282,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.5879347452893853,
+          "fspe_ratio": 0.009477254790551675
+        },
+        "drop_flanking": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.5879347452893853,
+          "fspe_ratio": 0.009477254790551675
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.5180939488112926,
+          "fspe_ratio": 0.00991326141814955
+        }
+      }
+    },
+    {
+      "uniprot_id": "P00588",
+      "sequence_length": 567,
+      "n_functional_sites": 3,
+      "precursor_offset": 32,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [],
+      "fspe_functional": 1.4411081572373707,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.5664143323898316,
+          "fspe_ratio": 0.5615259153791502
+        },
+        "drop_flanking": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.5664143323898316,
+          "fspe_ratio": 0.5615259153791502
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.3124901980161665,
+          "fspe_ratio": 0.6231845473220449
+        }
+      }
+    },
+    {
+      "uniprot_id": "P0DF97",
+      "sequence_length": 571,
+      "n_functional_sites": 5,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [
+        538
+      ],
+      "fspe_functional": 0.8991468191146851,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.7679231494665146,
+          "fspe_ratio": 0.5085893124856756
+        },
+        "drop_flanking": {
+          "n_background": 19,
+          "fspe_nonfunctional": 1.7295681645995693,
+          "fspe_ratio": 0.5198678129710234
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.7282759517431259,
+          "fspe_ratio": 0.5202565123976947
+        }
+      }
+    }
+  ]
+}

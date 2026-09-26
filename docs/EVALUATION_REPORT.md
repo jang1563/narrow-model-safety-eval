@@ -67,13 +67,75 @@ The framework operates at three successive levels of the dual-use risk pipeline.
 
 ### 3.1 FSPE — Functional Site Prediction Entropy (representation level)
 
-For ESM-2 masked-token distributions, per-residue Shannon entropy is averaged over annotated catalytic residues and over a background of non-functional residues (excluding ±2 flanking positions). The ratio
+For ESM-2 masked-token distributions, per-residue Shannon entropy is averaged over annotated catalytic residues and over a background of 20 non-functional residues sampled with a fixed seed (🔴 **corrected 2026-09-27**: this said the background excludes ±2 flanking positions, which no code implements; § 3.1.1 measures what that cost). The ratio
 
 ```
 FSPE = mean H(functional) / mean H(background)
 ```
 
 is **< 1.0** when the model is *specifically* more confident at functional positions. Per-protein significance is tested with a one-sided Mann–Whitney U; with 3–9 catalytic residues per protein individual tests are underpowered. The better-powered test is therefore run **at the protein level** (sign test and sign-flip permutation over the 15 per-protein ratios). A residue-pooled Mann–Whitney is also computed, but residues within a protein are not independent, so it is pseudoreplicated and is kept only as a descriptive statistic.
+
+#### 3.1.1 What the background definition is worth, measured
+
+`src/57_fspe_background_ablation.py`, 2026-09-27. Three documents in this repository described a
+background that excludes the two flanking positions on each side of every functional site, and no
+code has ever implemented one. Rather than assume the direction of the error, all three backgrounds
+were computed on one forward pass per distinct position:
+
+| arm | what it is |
+|---|---|
+| `published` | what `src/04` samples: `RandomState(42)`, 20 draws, no exclusion |
+| `drop_flanking` | that same draw minus its flanking members — isolates the contamination, because the draw is identical |
+| `resample_excluded` | the documented metric built properly: 20 draws from candidates excluding functional positions and their ±2 neighbours |
+
+**The reproduction gate passed first.** The `published` arm reproduces `results/fspe_results.json`
+to 1e-6 on `fspe_functional`, `fspe_nonfunctional` and `fspe_ratio` for all 15 proteins, so the arms
+differ only in which background positions were used. That check is also step 3 of
+`MUTATION_EXTENSION_PREREGISTRATION.md`'s run order, which requires FSPE to reproduce before the
+mutation axis is touched.
+
+**The headline does not depend on it.** With `src/21`'s SEB exclusion applied, as the published
+figure is:
+
+| arm | ratios below 1 | sign test *p* | permutation *p* |
+|---|---|---|---|
+| `published` | **12/14** | **0.0065** | 0.00015 |
+| `drop_flanking` | **12/14** | **0.0065** | 0.00015 |
+| `resample_excluded` | **12/14** | **0.0065** | 0.00055 |
+
+No protein crosses 1.0 in any arm. The contamination is real and small: it touches 6 of 15 proteins
+through 9 positions, moves the per-protein ratio by at most **0.031** and by 0.012 on average, and
+leaves every protein on the same side of 1.0. Proteins with no flanking contamination move by
+**exactly zero**, which is the check that the isolation works.
+
+🔑 **The larger finding is the one this was not looking for.** Redrawing the background — 20 fresh
+positions from a candidate list that differs only by the flanking exclusion — moves ratios by up to
+**0.345**, and on the 9 proteins that have *no* flanking positions to remove, where the redraw is
+the only thing changing, by up to 0.345 and **0.097 on average**:
+
+```
+P13423   0.6499 -> 0.9950     (+0.345, to within 0.005 of the threshold)
+P11140   1.0726 -> 1.3732     (+0.301)
+P02879   1.2296 -> 1.3707     (+0.141)
+```
+
+So **the per-protein FSPE ratio has an order of magnitude more sampling variance at 20 background
+positions than the documentation defect that prompted the check**, and every per-protein ratio in
+this report is a single draw. The protein-level tests survive it here because the variance does not
+flip signs on this panel, but P13423 landing at 0.995 under one redraw shows how little margin some
+rows have. ⚠️ **A per-protein FSPE ratio should be read as one draw from a distribution whose width
+has not been characterised.** The honest repair is to average over several background draws, or to
+use all non-functional positions instead of a sample; neither is done here, and neither changes the
+protein-level result.
+
+**Why the code's definition was kept rather than the documents'.** Switching to
+`resample_excluded` would not move the headline, would break comparability with every published
+per-protein value, and — because it draws a different 20 positions — would differ from the published
+arm mostly through the sampling variance above rather than through the exclusion it is named for.
+Adopting it would import fresh noise for no measured gain. Entry twenty-six of
+`docs/DATA_CORRECTIONS.md` carries the decision.
+
+---
 
 ### 3.2 FSI — Functional Specificity Index (design level)
 

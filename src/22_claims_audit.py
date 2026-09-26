@@ -437,6 +437,56 @@ def conformal_operating_point():
     return out
 
 
+def fspe_background_ablation():
+    """FSPE's background three ways, and the sampling variance that fell out of asking.
+
+    🔴 Added 2026-09-27. Three documents described a background excluding the +/-2 flanking
+    positions around each functional site and no code ever built one. What is asserted here is the
+    part that decides how a per-protein FSPE ratio may be read: that the published arm reproduces
+    the published artifact, that the headline is identical under all three backgrounds, and that
+    redrawing the background moves ratios by an order of magnitude more than the flanking defect
+    does. The last one is the finding; the first is what makes it attributable.
+    """
+    d = j("fspe_background_ablation.json")
+    if d is None:
+        return None
+    sites = json.load(open(ROOT / "data/annotations/functional_sites.json"))
+    excl = {a for a in sites if not a.startswith("_")
+            and sites[a]["functional_sites"].get("fspe_excluded")}
+    rows = d["per_protein"]
+
+    def arm(name):
+        return {x["uniprot_id"]: x["arms"][name]["fspe_ratio"] for x in rows}
+
+    pub, drop, res = arm("published"), arm("drop_flanking"), arm("resample_excluded")
+    affected = [x["uniprot_id"] for x in rows if x["flanking_in_published_sample"]]
+    n_flank = sum(len(x["flanking_in_published_sample"]) for x in rows)
+    clean = [a for a in pub if a not in affected]
+
+    def below(a, ex=True):
+        return sum(1 for k, v in a.items() if (k not in excl or not ex) and v < 1.0)
+
+    def n(a, ex=True):
+        return sum(1 for k in a if k not in excl or not ex)
+
+    return {
+        "reproduces_published": d["reproduces_published"], "n_drift": len(d["drift"]),
+        "n_proteins": len(rows), "n_affected": len(affected), "n_flanking_positions": n_flank,
+        # the headline, with src/21's exclusion applied as the published figure applies it
+        "excluded_counts": {k: f"{below(a)}/{n(a)}" for k, a in
+                            (("published", pub), ("drop", drop), ("resample", res))},
+        # effect 1: the contamination, isolated. Unaffected proteins must not move at all.
+        "max_drop_delta": max(abs(drop[a] - pub[a]) for a in affected),
+        "unaffected_move_by_zero": all(drop[a] == pub[a] for a in clean),
+        "crossings_drop": sum(1 for a in pub if (pub[a] < 1) != (drop[a] < 1)),
+        # effect 2: redrawing the background, measured where there is no flanking to remove
+        "max_resample_delta": max(abs(res[a] - pub[a]) for a in pub),
+        "mean_resample_delta_on_clean": sum(abs(res[a] - pub[a]) for a in clean) / len(clean),
+        "crossings_resample": sum(1 for a in pub if (pub[a] < 1) != (res[a] < 1)),
+        "closest_to_one_after_resample": max(res.values(), key=lambda v: v if v < 1 else 0),
+    }
+
+
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
 
@@ -2188,6 +2238,28 @@ CLAIMS = [
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **v2**, canonical | 61 | 3 | 4.84% | **6.56%** | 4.92% |",
       "docs/DETECTOR_EVALUATION_SUMMARY.md": '| v2, the frozen panel | 5% | **6.56%** | 7 of 13 | **0** | **−8.8 pt** |'}, []),
+    ("FSPE's background three ways: the headline is identical and the draw is not",
+     fspe_background_ablation,
+     lambda v: v is None or (
+         # the gate that makes the rest attributable, and step 3 of the mutation preregistration
+         v["reproduces_published"] and v["n_drift"] == 0 and v["n_proteins"] == 15
+         # the documented-but-unimplemented exclusion touches 6 proteins through 9 positions
+         and v["n_affected"] == 6 and v["n_flanking_positions"] == 9
+         # and changes no headline: 12/14 under all three backgrounds
+         and set(v["excluded_counts"].values()) == {"12/14"}
+         # effect 1 is small and isolated
+         and v["max_drop_delta"] < 0.035 and v["unaffected_move_by_zero"]
+         and v["crossings_drop"] == 0 and v["crossings_resample"] == 0
+         # effect 2, the finding: redrawing moves ratios an order of magnitude further, measured
+         # where there is no flanking to remove, and takes one protein to within 0.005 of 1.0
+         and v["max_resample_delta"] > 0.30
+         and v["mean_resample_delta_on_clean"] > 8 * (v["max_drop_delta"] / 3)
+         and v["closest_to_one_after_resample"] > 0.99),
+     {"docs/EVALUATION_REPORT.md":
+      "P13423   0.6499 -> 0.9950     (+0.345, to within 0.005 of the threshold)"},
+     # the three sentences that said the background excludes the flanking positions
+     ["excluding ±2 flanking residues\naround each functional site",
+      "non-functional residues (excluding\n±2 flanking positions)"]),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.

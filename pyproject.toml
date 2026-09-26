@@ -32,6 +32,12 @@ dependencies = [
     "pandas>=2.0.0",
     "requests>=2.31.0",
     "prody>=2.4.0",
+    # 🔴 Undeclared until 2026-09-27. src/02g_prott5_embed.py cannot even construct its tokenizer
+    # without it, and the v2 ProtT5 arm was built on 2026-09-05 in an environment that happened to
+    # have it. When the v3 run was submitted the cluster env no longer did, and the job died on
+    # `T5Tokenizer requires the SentencePiece library`. A dependency that a shipped script imports
+    # indirectly is still a dependency.
+    "sentencepiece>=0.1.99",
 ]
 
 [project.optional-dependencies]

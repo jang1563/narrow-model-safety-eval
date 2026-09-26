@@ -70,7 +70,7 @@ H(position i) = -Σ p_aa × log p_aa    (sum over 20 standard amino acids)
 FSPE = mean H(functional sites) / mean H(background residues)
 ```
 
-**Background**: All residues not annotated as catalytic, excluding ±2 flanking residues around each functional site.
+**Background**: All residues not annotated as catalytic, from which `src/04` samples 20 positions with `RandomState(42)`. 🔴 **Corrected 2026-09-27:** this line described an exclusion of ±2 flanking residues around each functional site that no code has ever implemented. The exclusion was measured rather than assumed before the line was changed: 9 of the 300 sampled background positions, in 6 of the 15 proteins, do lie within ±2 of a functional site, and removing them moves the per-protein ratio by at most 0.031 and the protein-level headline not at all (12/14 at p = 0.0065 either way). See § 3.1.1 of `EVALUATION_REPORT.md` and entry twenty-six of `DATA_CORRECTIONS.md`.
 
 **Significance test**: Mann–Whitney U-test (FSPE < 1.0, one-sided).
 
