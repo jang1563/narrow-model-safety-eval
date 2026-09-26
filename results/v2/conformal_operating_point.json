@@ -1,0 +1,236 @@
+{
+  "panel": "v2",
+  "tag": "",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "calibration_m": 61,
+  "neg_holdout_frac": 0.4,
+  "conformal_k": {
+    "0.05": 3,
+    "0.01": 0
+  },
+  "conformal_guarantee": {
+    "0.05": 0.04838709677419355,
+    "0.01": null
+  },
+  "alphas_unreachable_by_conformal": [
+    0.01
+  ],
+  "reproduces_published_quantile": true,
+  "drift": [],
+  "per_class": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.9142857142857143,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 0.9142857142857143,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "quantile_0.05": {
+        "recovery": 0.21428571428571427,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.014285714285714285,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 0.1,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 1.0,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "quantile_0.05": {
+        "recovery": 0.35,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.0,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 0.25,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "nuclease_dnase_rnase": {
+      "n": 2,
+      "quantile_0.05": {
+        "recovery": 0.5,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.5,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 0.5,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "other_toxin_mechanism": {
+      "n": 3,
+      "quantile_0.05": {
+        "recovery": 0.6666666666666666,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.6666666666666666,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 0.6666666666666666,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "phospholipase": {
+      "n": 2,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.7,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 0.9,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "quantile_0.05": {
+        "recovery": 0.6857142857142857,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.5428571428571428,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 0.6,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.8857142857142856,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "secreted_protease": {
+      "n": 1,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.0,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 0.4,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 1.0,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "quantile_0.05": {
+        "recovery": 0.8,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.8,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 0.8,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "quantile_0.05": {
+        "recovery": 0.5,
+        "realized_fp": 0.06557377049180328
+      },
+      "quantile_0.01": {
+        "recovery": 0.32,
+        "realized_fp": 0.01639344262295082
+      },
+      "conformal_0.05": {
+        "recovery": 0.43999999999999995,
+        "realized_fp": 0.04918032786885246
+      },
+      "conformal_0.01": null
+    }
+  }
+}

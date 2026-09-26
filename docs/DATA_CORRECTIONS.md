@@ -2601,3 +2601,68 @@ check's evidence and are excluded from the arm discovery in `src/41` and `src/30
 recovery table is re-thresholded. ProtT5 and SaProt still cannot see v3 — `src/02g` and `src/02i`
 have the same missing `--panel` that `src/02e` had — so the v3 arm count is eight and not ten, and
 that is a known gap rather than a conclusion about those two models.
+
+---
+
+## 2026-09-26 (twenty-fifth entry) — The threshold estimator was validated on 2026-09-20 and applied on 2026-09-26, and applying it costs recovery in every class and gains it in none
+
+Not a defect found, a defect **closed**, and the size of what it was hiding is the entry.
+
+`src/45_negative_test_set_audit.py` established on 2026-09-20 that the published `np.quantile`
+threshold does not return its own nominal rate out of sample. `src/48` and `src/49` confirmed the
+conformal alternative on two routes and two arms on 09-21. Every one of those runs was a side
+analysis. **The per-class table that this repository actually publishes kept `np.quantile`** — `03b`
+line 93 and the same call in 03e, 03f, 03h, 03j and 15e — for six days after the estimator was known
+to be wrong, because nothing connected the finding to the table.
+
+### What applying it shows
+
+`src/58_conformal_operating_point.py` recomputes the table at both estimators on identical folds,
+models and scores. Its own quantile column reproduces `lomo_results.json` **exactly** on all four arms
+tested, which is the gate that makes the comparison attributable to the threshold rule.
+
+| run | budget | realized FP, `np.quantile` | realized FP, conformal | classes | dropped | rose | mean change |
+|---|---|---:|---:|---:|---:|---:|---:|
+| v2 canonical | 5% | **6.56%** | 4.92% | 13 | 7 | **0** | **−8.8 pt** |
+| v3 canonical | 5% | 5.08% | 4.24% | 16 | 7 | **0** | −2.1 pt |
+| v3 canonical | 1% | **1.69%** | 0.85% | 16 | **14** | **0** | **−15.4 pt** |
+| v3 ESM-C 600M | 1% | 1.69% | 0.85% | 16 | 14 | **0** | −14.7 pt |
+| v3 ESM-3 1.4B | 1% | 1.69% | 0.85% | 16 | 11 | **0** | −12.0 pt |
+
+**Not one class, in any run, at either budget, gains recovery under the guaranteed threshold.** The
+published estimator inflates recovery uniformly, and the inflation grows as the budget tightens:
+−2.1 points at a nominal 5% against −15.4 at a nominal 1% on the same arm.
+
+That inverts how the two columns should be read. `flagged@99` is the strictest budget in this
+repository and therefore looks like the most conservative figure; it is in fact the figure that
+depends most on an estimator known to overshoot. **Read `flagged@95` as recovery at a realized 5.1%
+to 6.6%, and `flagged@99` at a realized 1.7%.**
+
+🔴 **And on the frozen v2 panel the `@99` column cannot be computed with a guarantee at all.** At
+m = 61 calibration negatives and α = 0.01, `floor((m+1)·α)` is **zero**: there is no k-th largest
+score to return, so conformal declines. `np.quantile` returns a number anyway. Every `@99` figure on
+the panel that carries every published result is an ungrounded threshold — not a wrong number, a
+number with no finite-sample statement behind it. This is § 2.6's resolution ceiling arriving in the
+column that quotes the strictest budget.
+
+### Two figures that move enough to restate
+
+**Beta-lactamase on the canonical v2 arm: 21% at a realized 6.56%, 10% at a guaranteed 4.84%.** The
+class this repository describes as almost entirely missed is missed about twice as badly at an honest
+operating point. At a nominal 1% on v3 the same class goes 7% to **0%**.
+
+### What it does not overturn
+
+🟢 **Entry twenty-four's dissociation survives, and sharpens.** At the guaranteed 4.24%: ESM-C 600M
+recovers beta-lactamase at **30%** against the canonical arm's 16% and ESM-3's 1%; ESM-3 1.4B recovers
+phage at **28%** against ESM-C's 9%. Roughly double and level-with, in both directions, exactly as at
+the published threshold. That finding is one day old and this is the check it needed.
+
+### What was deliberately not done
+
+The published tables **keep** `np.quantile`. Re-thresholding them would invalidate every
+cross-reference in `docs/MECHANISM_GENERALIZATION.md`, the frozen v2 panel's comparability, and the
+external-validation record, for a result now reported in a parallel column beside them. The estimator
+call sites in 03b/03e/03f/03h/03j/15e are unchanged for the same reason. What is removed is the option
+of quoting a recovery figure without its realized rate: § 2.6.2 carries the table, the claims audit
+asserts the realized rates and the one-directional cost, and the public summary states both.

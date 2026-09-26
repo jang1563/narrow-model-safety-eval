@@ -227,7 +227,28 @@ Two things fall out that the earlier analysis could not see. First, `np.quantile
 the pool to one protein per distinct name **raises** the measured false-positive rate: the duplicated
 entries are the easy ones. **Effective n does not only widen intervals, it moves point estimates.**
 
-**(d) The panel cannot calibrate a deployable threshold at all.** Its 296 negatives resolve a
+**(d) Applied to the table anyone reads, the estimator costs recovery in every class and gains it
+in none.** All of the above was a property of the estimator; none of it had been applied to the
+per-class figures. Recomputing them at both thresholds on identical folds:
+
+| run | budget | realized FP, `np.quantile` | classes dropped | rose | mean change |
+|---|---|---:|---:|---:|---:|
+| v2, the frozen panel | 5% | **6.56%** | 7 of 13 | **0** | **−8.8 pt** |
+| v3 | 5% | 5.08% | 7 of 16 | **0** | −2.1 pt |
+| v3 | 1% | **1.69%** | 14 of 16 | **0** | **−15.4 pt** |
+
+**Not one class in any run gains recovery under a guaranteed threshold**, and the tighter the budget
+the more the published estimator inflates: −2.1 points at a nominal 5% against −15.4 at a nominal 1%
+on the same arm. The strictest column is the one that depends most on the estimator, which is the
+opposite of how a strict column is read. Beta-lactamase on the frozen panel is **21% at a realized
+6.56% and 10% at a guaranteed 4.84%.**
+
+🔴 **And on the frozen panel the strictest column cannot be computed with a guarantee at all.** At
+m = 61 calibration negatives and a nominal 1%, `floor((m+1)·α)` is **zero**: there is no k-th largest
+score to take. `np.quantile` returns a number anyway. Every `flagged@99` figure on the panel that
+carries every published result is a threshold with no finite-sample guarantee behind it.
+
+**(e) The panel cannot calibrate a deployable threshold at all.** Its 296 negatives resolve a
 false-positive rate no finer than 1/296; reaching 1e-4 would need **250,003** of them. At a deployment
 prevalence of 1 in 1,000 and the strictest specification the panel can express, the arithmetic is
 **175 alerts, about 5 of them real, and about 4 hazards passing**. That is the honest operating

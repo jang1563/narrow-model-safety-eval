@@ -1,0 +1,330 @@
+{
+  "panel": "v3",
+  "tag": "",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "calibration_m": 118,
+  "neg_holdout_frac": 0.4,
+  "conformal_k": {
+    "0.05": 5,
+    "0.01": 1
+  },
+  "conformal_guarantee": {
+    "0.05": 0.04201680672268908,
+    "0.01": 0.008403361344537815
+  },
+  "alphas_unreachable_by_conformal": [],
+  "reproduces_published_quantile": true,
+  "drift": [],
+  "per_class": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.9428571428571428,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.8,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "bacteriocin": {
+      "n": 15,
+      "quantile_0.05": {
+        "recovery": 0.8399999999999999,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.8133333333333332,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.8399999999999999,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.7733333333333332,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "quantile_0.05": {
+        "recovery": 0.1857142857142857,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.07142857142857142,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.1571428571428571,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.0,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 1.0,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 1.0,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "quantile_0.05": {
+        "recovery": 0.75,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.75,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.75,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.7,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "cry_insecticidal": {
+      "n": 22,
+      "quantile_0.05": {
+        "recovery": 0.8727272727272727,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.40909090909090906,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.8181818181818181,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.1909090909090909,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "nuclease_dnase_rnase": {
+      "n": 2,
+      "quantile_0.05": {
+        "recovery": 0.5,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.5,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.5,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.5,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "other_toxin_mechanism": {
+      "n": 3,
+      "quantile_0.05": {
+        "recovery": 0.6666666666666666,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.6666666666666666,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.6666666666666666,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.5999999999999999,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "phage_peptidoglycan_hydrolase": {
+      "n": 32,
+      "quantile_0.05": {
+        "recovery": 0.1,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.025,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.075,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.0125,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "phospholipase": {
+      "n": 2,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.5,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.1,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.6571428571428571,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.9714285714285715,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.3142857142857143,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "quantile_0.05": {
+        "recovery": 0.9428571428571428,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.7142857142857143,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.8857142857142858,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.4285714285714285,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "secreted_protease": {
+      "n": 1,
+      "quantile_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.8,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 1.0,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.4,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "quantile_0.05": {
+        "recovery": 0.9142857142857143,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.3714285714285714,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.8857142857142858,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.2571428571428571,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "quantile_0.05": {
+        "recovery": 0.8,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.7,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.8,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.4800000000000001,
+        "realized_fp": 0.00847457627118644
+      }
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "quantile_0.05": {
+        "recovery": 0.34,
+        "realized_fp": 0.05084745762711864
+      },
+      "quantile_0.01": {
+        "recovery": 0.12,
+        "realized_fp": 0.01694915254237288
+      },
+      "conformal_0.05": {
+        "recovery": 0.21999999999999997,
+        "realized_fp": 0.0423728813559322
+      },
+      "conformal_0.01": {
+        "recovery": 0.02,
+        "realized_fp": 0.00847457627118644
+      }
+    }
+  }
+}

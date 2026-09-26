@@ -442,6 +442,72 @@ granularity at α=10⁻⁴ needs m ≥ 99,999 calibration points, which is **249
 derivations, one number, and now with the reason attached: the calibration set size fixes the **granularity
 of the achievable operating points**, not merely the precision of one.
 
+#### 2.6.2 🔑 The estimator applied at last, and every class is quoted at a looser budget than its label
+
+`src/58_conformal_operating_point.py`, 2026-09-26. § 2.6 found that `np.quantile` does not return its
+own nominal rate, § 2.6.1 found the conformal threshold does, and **nothing applied it**. Every
+recovery figure above still comes from `np.quantile`. This section recomputes the per-class table at
+both estimators on identical folds, models and scores, so the estimator is the only thing that
+differs. The published table is not replaced: doing so would break comparability with every number in
+this document and with the frozen v2 panel, and the difference is visible in a parallel column.
+
+**The gate that runs first.** The script re-implements `03b`'s fold, so its own `np.quantile` column
+is checked against `lomo_results.json` class by class before any conformal number is printed. It
+reproduces **exactly**, on all four arms tested, so every difference below is attributable to the
+threshold rule.
+
+| panel / arm | m | k at 5% | guarantee | realized FP, `np.quantile` | realized FP, conformal |
+|---|---:|---:|---:|---:|---:|
+| **v2**, canonical | 61 | 3 | 4.84% | **6.56%** | 4.92% |
+| **v3**, canonical | 118 | 5 | 4.20% | **5.08%** | 4.24% |
+| v3, at a nominal **1%** | 118 | 1 | 0.84% | **1.69%** | 0.85% |
+
+🔴 **On the frozen v2 panel the published `flagged@99` column has no conformal counterpart at all.**
+At m = 61 and α = 0.01, `floor((m+1)α)` is **zero**: there is no k-th largest score to take, so the
+guarantee is unreachable and the estimator declines. `np.quantile` returns a number there anyway.
+Every `@99` figure on the panel that carries every published result is therefore a threshold with no
+finite-sample guarantee behind it — not a wrong number, an ungrounded one.
+
+**The cost, measured, and it is one-directional:**
+
+| run | budget | classes | dropped | rose | mean change | worst |
+|---|---|---:|---:|---:|---:|---|
+| v2 canonical | 5% | 13 | 7 | **0** | **−8.8 pt** | secreted_protease −60.0 (n = 1) |
+| v3 canonical | 5% | 16 | 7 | **0** | −2.1 pt | virulence control −12.0 |
+| v3 canonical | 1% | 16 | **14** | **0** | **−15.4 pt** | phospholipase −40.0 |
+| v3 ESM-C 600M | 1% | 16 | 14 | **0** | −14.7 pt | phospholipase −40.0 |
+| v3 ESM-3 1.4B | 1% | 16 | 11 | **0** | −12.0 pt | superantigen −42.9 |
+
+**Not one class in any run gains recovery under the guaranteed threshold.** The published estimator
+inflates recovery uniformly, and the tighter the budget the more it inflates: −2.1 points at a nominal
+5% on v3 against **−15.4 at a nominal 1%** on the same arm. So the strictest column in this document
+is the one whose numbers depend most on the estimator, which is the opposite of how a strict column is
+usually read. Read `flagged@95` as recovery at a realized 5.1% to 6.6% and `flagged@99` at a realized
+1.7%.
+
+Two specific figures move enough to restate. **Beta-lactamase on the canonical v2 arm is 21% at a
+realized 6.56% and 10% at a guaranteed 4.84%** — the class the document calls almost entirely missed
+is missed roughly twice as badly at an honest operating point. And the same class at a nominal 1% on
+v3 goes from 7% to **0%**.
+
+🟢 **§ 10.6.2's dissociation survives the change, and sharpens.** At the guaranteed 4.24%:
+
+| arm | beta-lactamase | phage |
+|---|---|---|
+| canonical ESM-2 650M | 16% | 8% |
+| **ESM-C 600M** | **30%** | 9% |
+| **ESM-3 1.4B** | 1% | **28%** |
+
+ESM-C 600M is still roughly double the canonical arm on beta-lactamase and still level with it on
+phage; ESM-3 1.4B is still the phage arm and still at the floor on beta-lactamase. So that finding is
+not an artefact of the threshold rule, which is the check it needed.
+
+**What is still not done.** The published tables keep `np.quantile`, because re-thresholding them
+would break every cross-reference in this document for a result already reported beside them. What
+this section removes is the option of quoting a recovery figure without its realized rate.
+
+---
+
 ## 3. Result: recovery is class-dependent and spans the full range
 
 ESM-2 650M, mean pooling, 5 seeds. `results/v2/lomo_results.json`, `src/03b_leave_one_mechanism_out.py`.

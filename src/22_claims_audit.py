@@ -392,6 +392,51 @@ def cited_entries_exist():
             "scanned": len(scanned)}
 
 
+def conformal_operating_point():
+    """The per-class table at a guaranteed threshold, beside the published one, from the artifacts.
+
+    🔴 Added 2026-09-26. § 2.6 established that `np.quantile` misses its nominal rate and § 2.6.1
+    that conformal holds; neither was applied to the table anyone reads until src/58. What is
+    asserted here is the part that decides how every recovery figure in this repository must be
+    read: the realized false-positive rates, the one-directional cost of moving to a guaranteed
+    threshold, and the fact that the frozen v2 panel cannot express a nominal 1% budget at all.
+
+    The reproduction flag is asserted too. src/58 re-implements 03b's fold, so if its quantile
+    column stopped reproducing lomo_results.json the conformal column would be measuring two things
+    and every number below would be void.
+    """
+    out = {}
+    for panel, tag in (("v2", ""), ("v3", ""), ("v3", "_esmc_600M"), ("v3", "_esm3_1_4B")):
+        d = j(f"{panel}/conformal_operating_point{tag}.json")
+        if d is None:
+            continue
+        pc = d["per_class"]
+        cell = {"m": d["calibration_m"], "reproduces": d["reproduces_published_quantile"],
+                "k": {a: v for a, v in d["conformal_k"].items()},
+                "unreachable": d["alphas_unreachable_by_conformal"]}
+        for al in ("0.05", "0.01"):
+            rows = [(c, v[f"quantile_{al}"], v[f"conformal_{al}"]) for c, v in pc.items()
+                    if v.get(f"quantile_{al}") and v.get(f"conformal_{al}")]
+            if not rows:
+                cell[al] = None
+                continue
+            deltas = [(cf["recovery"] - q["recovery"]) * 100 for _, q, cf in rows]
+            cell[al] = {"n_classes": len(rows),
+                        "n_dropped": sum(1 for x in deltas if x < -0.05),
+                        "n_rose": sum(1 for x in deltas if x > 0.05),
+                        "mean_delta_pts": sum(deltas) / len(deltas),
+                        "fp_quantile": rows[0][1]["realized_fp"],
+                        "fp_conformal": rows[0][2]["realized_fp"]}
+        cell["beta_q"] = (pc.get("beta_lactamase", {}).get("quantile_0.05") or {}).get("recovery")
+        cell["beta_c"] = (pc.get("beta_lactamase", {}).get("conformal_0.05") or {}).get("recovery")
+        cell["phage_q"] = (pc.get("phage_peptidoglycan_hydrolase", {})
+                           .get("quantile_0.05") or {}).get("recovery")
+        cell["phage_c"] = (pc.get("phage_peptidoglycan_hydrolase", {})
+                           .get("conformal_0.05") or {}).get("recovery")
+        out[f"{panel}{tag}"] = cell
+    return out
+
+
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
 
@@ -2112,6 +2157,37 @@ CLAIMS = [
     # "2 of 9" in the sentence that retires it, which is this repository's house style for
     # corrections, so a forbid on the bare digits would forbid explaining the change. Same treatment
     # as the pooled omission count in the annotation-provenance claim.
+    ("the guaranteed threshold applied to the per-class table, and it only ever costs recovery",
+     conformal_operating_point,
+     lambda v: (
+         len(v) == 4 and all(x["reproduces"] for x in v.values())
+         # not one class in any run gains recovery under the guaranteed threshold
+         and all(x[al]["n_rose"] == 0 for x in v.values() for al in ("0.05", "0.01") if x[al])
+         # the frozen v2 panel cannot express a nominal 1% budget: k = 0 at m = 61
+         and v["v2"]["m"] == 61 and v["v2"]["k"]["0.01"] == 0
+         and v["v2"]["unreachable"] == [0.01] and v["v2"]["0.01"] is None
+         and v["v3"]["m"] == 118 and v["v3"]["k"]["0.01"] == 1 and v["v3"]["unreachable"] == []
+         # the realized rates the documents now have to quote alongside every recovery figure
+         and abs(v["v2"]["0.05"]["fp_quantile"] - 0.0656) < 5e-4
+         and abs(v["v2"]["0.05"]["fp_conformal"] - 0.0492) < 5e-4
+         and abs(v["v3"]["0.05"]["fp_quantile"] - 0.0508) < 5e-4
+         and abs(v["v3"]["0.01"]["fp_quantile"] - 0.0169) < 5e-4
+         # the cost grows as the budget tightens, on the same arm
+         and abs(v["v2"]["0.05"]["mean_delta_pts"] + 8.8) < 0.2
+         and abs(v["v3"]["0.05"]["mean_delta_pts"] + 2.1) < 0.2
+         and abs(v["v3"]["0.01"]["mean_delta_pts"] + 15.4) < 0.2
+         and v["v3"]["0.01"]["n_dropped"] == 14
+         # § 10.6.2's dissociation survives the estimator change
+         and abs(v["v2"]["beta_q"] - 0.2143) < 0.002 and abs(v["v2"]["beta_c"] - 0.10) < 0.002
+         and abs(v["v3_esmc_600M"]["beta_c"] - 0.30) < 0.005
+         and abs(v["v3"]["beta_c"] - 0.16) < 0.005
+         # exact values, not display-rounded ones: 0.275 against a 0.28 pin at tolerance 0.005
+         # fails on equality, which is a silly way to lose a real assertion
+         and abs(v["v3_esm3_1_4B"]["phage_c"] - 0.275) < 0.002
+         and abs(v["v3_esmc_600M"]["phage_c"] - 0.0875) < 0.002),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "| **v2**, canonical | 61 | 3 | 4.84% | **6.56%** | 4.92% |",
+      "docs/DETECTOR_EVALUATION_SUMMARY.md": '| v2, the frozen panel | 5% | **6.56%** | 7 of 13 | **0** | **−8.8 pt** |'}, []),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.
