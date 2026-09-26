@@ -6,7 +6,7 @@
   "stats": {
     "matched": 231,
     "length_mismatch": 0,
-    "no_structure": 3
+    "no_structure": 214
   },
   "proteins": {
     "sp|O31506|YEEF_BACSU": {
@@ -3126,6 +3126,7 @@
     }
   },
   "maintenance_notes": [
-    "2026-09-18: 211 members from src/27 carry the no_structure mask. foldseek is fetched as a Linux binary by 02h_saprot_prepare.py and the existing 3Di strings were produced on the HPC, so the SaProt arm is NOT evaluated on the three new classes until structures are fetched. Every other arm is unaffected."
+    "2026-09-18: 211 members from src/27 carry the no_structure mask. foldseek is fetched as a Linux binary by 02h_saprot_prepare.py and the existing 3Di strings were produced on the HPC, so the SaProt arm is NOT evaluated on the three new classes until structures are fetched. Every other arm is unaffected.",
+    "2026-09-27: stats recomputed from the entries. It read {'matched': 231, 'length_mismatch': 0, 'no_structure': 3} , inherited from structure_3di_v2.json when src/27 built this file, while the real distribution over 445 entries is {'matched': 231, 'length_mismatch': 0, 'no_structure': 214}. The v3-only members carry the no_structure mask, so the SaProt arm is not evaluable on v3 until structures are fetched; 02i now computes the masked fraction itself and refuses above 5% rather than trusting this field."
   ]
 }

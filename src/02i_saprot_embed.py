@@ -27,6 +27,27 @@ The token count is asserted against the sequence length. SaProt's vocabulary is
 splitting would halve the effective sequence and quietly produce garbage
 embeddings rather than an error.
 
+The panel is a runtime choice, added 2026-09-27, and v3 is NOT runnable yet
+-------------------------------------------------------------------------
+This script was hardcoded to v2 while 02b already had --panel, the same gap 02e had. --panel is
+added here for the same reason, but unlike ProtT5 this arm cannot be run on v3 today, and the
+reason is worth stating rather than discovering:
+
+`structure_3di_v3.json` carries real Foldseek 3Di strings for the 231 v2 members and the
+`no_structure` mask for the **214 members v3 added**, because src/27 built the file by inheriting
+v2's entries and masking the new ones. Its own maintenance note says so. SaProt reads an amino acid
+AND a structure token at every position, so a masked member is scored sequence-only: a v3 run today
+would report a SaProt arm whose entire phage class had no structure, and "SaProt does not reach
+phage" would be a statement about missing structures rather than about the model.
+
+That is now enforced rather than remembered. The masked fraction is computed from the annotation
+itself and the run refuses above 5%, which is 48.1% on v3 today. The prerequisite is fetching
+AlphaFold structures for those 214 and running them through Foldseek, which `02h_saprot_prepare.py`
+does and which needs the Linux binary on the HPC.
+
+⚠️ The fraction is computed, not read from `tri["stats"]`, because that field in the v3 file was
+inherited from v2 and says `no_structure: 3` against a real 214.
+
 Usage:
     python src/02i_saprot_embed.py --tag saprot_650M
 """
@@ -34,6 +55,7 @@ Usage:
 import argparse
 import hashlib
 import json
+import sys
 import time
 from pathlib import Path
 
@@ -42,8 +64,8 @@ import torch
 from transformers import AutoModel, AutoTokenizer
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "results" / "v2"
-TRI = ROOT / "data" / "annotations" / "structure_3di_v2.json"
+RES_ROOT = ROOT / "results"          # the panel picks the subdirectory at runtime
+ANN = ROOT / "data" / "annotations"  # and the 3Di file, which is per panel
 MAX_LEN = 1022
 MODEL = "westlake-repl/SaProt_650M_AF2"
 
@@ -100,16 +122,54 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", default="saprot_650M")
     ap.add_argument("--batch_size", type=int, default=4)
+    ap.add_argument(
+        "--panel",
+        default="v2",
+        choices=["v2", "v3"],
+        help="Panel version. v2 is the frozen 80/154 panel every published number rests "
+        "on; v3 is 149/296. Switches the input FASTA, the 3Di annotation and the output "
+        "directory together, so a v3 embedding cannot land on a v2 filename.",
+    )
+    ap.add_argument(
+        "--allow-masked",
+        type=float,
+        default=0.05,
+        help="Maximum fraction of panel members allowed to carry the no_structure mask. "
+        "SaProt reads amino acid AND structure per position, so a masked member is scored "
+        "sequence-only and is not really a SaProt observation. Above this fraction the run "
+        "refuses; see the docstring.",
+    )
     a = ap.parse_args()
 
     dev = "cuda" if torch.cuda.is_available() else "cpu"
+    pv = a.panel
+    OUT = RES_ROOT / pv
     OUT.mkdir(parents=True, exist_ok=True)
-    tri = json.load(open(TRI))
-    print(f"3Di annotation: {tri['stats']}")
-    pos = read_fasta(ROOT / "data/sequences/toxins_positive_v2.fasta")
-    neg = read_fasta(ROOT / "data/sequences/benign_negatives_v2.fasta")
+    tri = json.load(open(ANN / f"structure_3di_{pv}.json"))
+    pos = read_fasta(ROOT / f"data/sequences/toxins_positive_{pv}.fasta")
+    neg = read_fasta(ROOT / f"data/sequences/benign_negatives_{pv}.fasta")
     ann = tri["proteins"]
-    print(f"model={MODEL}  device={dev}  {len(pos)} pos / {len(neg)} neg", flush=True)
+    print(f"panel={pv}  model={MODEL}  device={dev}  {len(pos)} pos / {len(neg)} neg", flush=True)
+    assert len({r[0] for r in pos}) == len(pos), "duplicate accession in positives"
+    assert len({r[0] for r in neg}) == len(neg), "duplicate accession in negatives"
+    assert not ({r[0] for r in pos} & {r[0] for r in neg}), "accession in BOTH label sets"
+
+    # 🔴 The masked fraction is COMPUTED here, not read from tri["stats"], 2026-09-27. The stats
+    # block in structure_3di_v3.json was inherited from v2 by src/27 and says no_structure: 3
+    # while the real distribution is 214 of 445. A run that trusted that field would have
+    # reported a SaProt arm whose entire phage class was scored without structure.
+    masked = [f for f, _ in pos + neg if ann.get(f, {}).get("status") != "ok"]
+    frac = len(masked) / max(len(pos) + len(neg), 1)
+    print(f"3Di coverage: {len(pos) + len(neg) - len(masked)} with structure, "
+          f"{len(masked)} masked ({frac:.1%})")
+    if frac > a.allow_masked:
+        print(f"XX {frac:.1%} of this panel carries the no_structure mask, above the "
+              f"{a.allow_masked:.0%} limit. SaProt's structure channel would be absent for those "
+              f"members, so a per-class result on them would be a statement about missing "
+              f"structures rather than about the model. Fetch the structures first "
+              f"(src/02h_saprot_prepare.py, which needs Foldseek on Linux), or pass "
+              f"--allow-masked to override deliberately.")
+        return 2
 
     tok = AutoTokenizer.from_pretrained(MODEL)
     model = AutoModel.from_pretrained(MODEL).to(dev).eval()
@@ -120,11 +180,12 @@ def main():
     N = embed(neg, ann, model, tok, dev, a.batch_size)
     assert P.shape[0] == len(pos) and N.shape[0] == len(neg), "row count mismatch"
 
-    np.save(OUT / f"embeddings_positive_v2_{a.tag}.npy", P)
-    np.save(OUT / f"embeddings_negative_v2_{a.tag}.npy", N)
+    np.save(OUT / f"embeddings_positive_{pv}_{a.tag}.npy", P)
+    np.save(OUT / f"embeddings_negative_{pv}_{a.tag}.npy", N)
     n_struct = sum(1 for f, _ in pos + neg if ann[f]["status"] == "ok")
     man = {
-        "model": MODEL, "device": dev, "dry_run_tag": a.tag, "max_len": MAX_LEN,
+        "model": MODEL, "panel": pv, "device": dev, "dry_run_tag": a.tag,
+        "max_len": MAX_LEN,
         "built": time.strftime("%Y-%m-%d %H:%M:%S"),
         "embedding_dim": int(P.shape[1]),
         "structures_used": n_struct, "structures_masked": len(pos) + len(neg) - n_struct,
@@ -139,9 +200,9 @@ def main():
              "sha256": hashlib.sha256(r[1].encode()).hexdigest()[:16]}
             for i, r in enumerate(neg)],
     }
-    json.dump(man, open(OUT / f"embedding_manifest_v2_{a.tag}.json", "w"), indent=2)
+    json.dump(man, open(OUT / f"embedding_manifest_{pv}_{a.tag}.json", "w"), indent=2)
     print(f"wrote {P.shape} and {N.shape}, {n_struct} with real structure")
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

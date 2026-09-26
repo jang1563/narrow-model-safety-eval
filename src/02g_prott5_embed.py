@@ -23,8 +23,17 @@ covers residues only, matching 02b and 02e.
 Truncation is the same 1022 used everywhere else, so the model is the only thing
 that changes.
 
+The panel is a runtime choice, added 2026-09-27
+-----------------------------------------------
+This script was hardcoded to v2 while 02b already had --panel, which is why every v3 arm in this
+repository is an ESM arm. § 10.6.2 found that the two classes ESM-2 misses are each reached by a
+different EvolutionaryScale model; ProtT5 is the first chance to ask that question outside that
+lineage. --panel switches the input FASTA and the output directory together, as in 02b, so a v3
+embedding cannot land on a v2 filename.
+
 Usage:
-    python src/02g_prott5_embed.py --tag prott5_xl
+    python src/02g_prott5_embed.py --tag prott5_xl --panel v2
+    python src/02g_prott5_embed.py --tag prott5_xl --panel v3
 """
 
 import argparse
@@ -39,7 +48,7 @@ import torch
 from transformers import T5EncoderModel, T5Tokenizer
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "results" / "v2"
+RES_ROOT = ROOT / "results"          # the panel picks the subdirectory at runtime
 MAX_LEN = 1022
 MODEL = "Rostlab/prot_t5_xl_half_uniref50-enc"
 
@@ -80,13 +89,28 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", default="prott5_xl")
     ap.add_argument("--batch_size", type=int, default=4)
+    ap.add_argument(
+        "--panel",
+        default="v2",
+        choices=["v2", "v3"],
+        help="Panel version. v2 is the frozen 80/154 panel every published number rests "
+        "on; v3 is 149/296. Switches the input FASTA and the output directory together, "
+        "so a v3 embedding cannot land on a v2 filename.",
+    )
     a = ap.parse_args()
 
     dev = "cuda" if torch.cuda.is_available() else "cpu"
+    pv = a.panel
+    OUT = RES_ROOT / pv
     OUT.mkdir(parents=True, exist_ok=True)
-    pos = read_fasta(ROOT / "data/sequences/toxins_positive_v2.fasta")
-    neg = read_fasta(ROOT / "data/sequences/benign_negatives_v2.fasta")
-    print(f"model={MODEL}  device={dev}  {len(pos)} pos / {len(neg)} neg", flush=True)
+    pos = read_fasta(ROOT / f"data/sequences/toxins_positive_{pv}.fasta")
+    neg = read_fasta(ROOT / f"data/sequences/benign_negatives_{pv}.fasta")
+    print(f"panel={pv}  model={MODEL}  device={dev}  {len(pos)} pos / {len(neg)} neg", flush=True)
+    # 02b has carried these two since the v2 build; a duplicated accession would otherwise
+    # produce a row-misaligned array rather than an error.
+    assert len({r[0] for r in pos}) == len(pos), "duplicate accession in positives"
+    assert len({r[0] for r in neg}) == len(neg), "duplicate accession in negatives"
+    assert not ({r[0] for r in pos} & {r[0] for r in neg}), "accession in BOTH label sets"
 
     tok = T5Tokenizer.from_pretrained(MODEL, do_lower_case=False, legacy=True)
     model = T5EncoderModel.from_pretrained(MODEL).to(dev).eval()
@@ -100,10 +124,11 @@ def main():
     assert P.shape[0] == len(pos) and N.shape[0] == len(neg), "row count mismatch"
     assert P.shape[1] == N.shape[1], "embedding dim mismatch"
 
-    np.save(OUT / f"embeddings_positive_v2_{a.tag}.npy", P)
-    np.save(OUT / f"embeddings_negative_v2_{a.tag}.npy", N)
+    np.save(OUT / f"embeddings_positive_{pv}_{a.tag}.npy", P)
+    np.save(OUT / f"embeddings_negative_{pv}_{a.tag}.npy", N)
     man = {
-        "model": MODEL, "device": dev, "dry_run_tag": a.tag, "max_len": MAX_LEN,
+        "model": MODEL, "panel": pv, "device": dev, "dry_run_tag": a.tag,
+        "max_len": MAX_LEN,
         "built": time.strftime("%Y-%m-%d %H:%M:%S"),
         "embedding_dim": int(P.shape[1]),
         "note": "mean pooled over residue positions only, </s> excluded; "
@@ -117,7 +142,7 @@ def main():
              "sha256": hashlib.sha256(r[1].encode()).hexdigest()[:16]}
             for i, r in enumerate(neg)],
     }
-    json.dump(man, open(OUT / f"embedding_manifest_v2_{a.tag}.json", "w"), indent=2)
+    json.dump(man, open(OUT / f"embedding_manifest_{pv}_{a.tag}.json", "w"), indent=2)
     print(f"wrote {P.shape} and {N.shape}")
 
 
