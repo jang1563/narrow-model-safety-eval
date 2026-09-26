@@ -1,0 +1,282 @@
+{
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "device": "mps",
+  "flank_radius": 2,
+  "n_background": 20,
+  "seed": 42,
+  "n_permutations": 20000,
+  "reproduces_published": false,
+  "drift": [
+    {
+      "acc": "P01555",
+      "field": "fspe_functional",
+      "recomputed": 1.6492420732975006,
+      "published": 1.0197366126812994,
+      "delta": 0.6295054606162012
+    },
+    {
+      "acc": "P01555",
+      "field": "fspe_nonfunctional",
+      "recomputed": 1.7878049254417419,
+      "published": 1.9441413078457117,
+      "delta": -0.15633638240396985
+    },
+    {
+      "acc": "P01555",
+      "field": "fspe_ratio",
+      "recomputed": 0.922495541782891,
+      "published": 0.5245177439346022,
+      "delta": 0.3979777978482888
+    },
+    {
+      "acc": "P01552",
+      "field": "fspe_functional",
+      "recomputed": 2.247406800587972,
+      "published": 2.5411471260918512,
+      "delta": -0.2937403255038791
+    },
+    {
+      "acc": "P01552",
+      "field": "fspe_nonfunctional",
+      "recomputed": 2.0134625256061556,
+      "published": 2.6592505276203156,
+      "delta": -0.64578800201416
+    },
+    {
+      "acc": "P01552",
+      "field": "fspe_ratio",
+      "recomputed": 1.1161900318514184,
+      "published": 0.9555877115368474,
+      "delta": 0.160602320314571
+    },
+    {
+      "acc": "P00648",
+      "field": "fspe_functional",
+      "recomputed": 2.6298441886901855,
+      "published": 0.08277805149555206,
+      "delta": 2.5470661371946335
+    },
+    {
+      "acc": "P00648",
+      "field": "fspe_nonfunctional",
+      "recomputed": 1.9536734342575073,
+      "published": 1.6216921662911772,
+      "delta": 0.3319812679663301
+    },
+    {
+      "acc": "P00648",
+      "field": "fspe_ratio",
+      "recomputed": 1.3461022413347483,
+      "published": 0.05104424453431635,
+      "delta": 1.2950579968004319
+    },
+    {
+      "acc": "Q99ZW2",
+      "field": "fspe_functional",
+      "recomputed": 1.7520263195037842,
+      "published": 0.015049262171877282,
+      "delta": 1.736977057331907
+    },
+    {
+      "acc": "Q99ZW2",
+      "field": "fspe_nonfunctional",
+      "recomputed": 1.8541115045547485,
+      "published": 1.5879347452893853,
+      "delta": 0.2661767592653632
+    },
+    {
+      "acc": "Q99ZW2",
+      "field": "fspe_ratio",
+      "recomputed": 0.9449411835263493,
+      "published": 0.009477254790551675,
+      "delta": 0.9354639287357975
+    },
+    {
+      "acc": "P00588",
+      "field": "fspe_functional",
+      "recomputed": 2.801562547683716,
+      "published": 1.4411081572373707,
+      "delta": 1.360454390446345
+    },
+    {
+      "acc": "P00588",
+      "field": "fspe_nonfunctional",
+      "recomputed": 2.088197720050812,
+      "published": 2.5664143323898316,
+      "delta": -0.4782166123390197
+    },
+    {
+      "acc": "P00588",
+      "field": "fspe_ratio",
+      "recomputed": 1.3416174727053842,
+      "published": 0.5615259153791502,
+      "delta": 0.780091557326234
+    }
+  ],
+  "note": "the published arm is what src/04 samples today; resample_excluded is what ARCHITECTURE.md line 73, EVALUATION_REPORT.md line 70 and the mutation preregistration section 2.1 describe; drop_flanking isolates the contamination by keeping the same draw",
+  "protein_level": {
+    "published": {
+      "n_proteins": 5,
+      "n_ratio_below_1": 2,
+      "sign_test_one_sided_p": 0.8125,
+      "mean_log_ratio": 0.11274098858669009,
+      "permutation_p": 0.8713
+    },
+    "drop_flanking": {
+      "n_proteins": 5,
+      "n_ratio_below_1": 2,
+      "sign_test_one_sided_p": 0.8125,
+      "mean_log_ratio": 0.11978268033068758,
+      "permutation_p": 0.8713
+    },
+    "resample_excluded": {
+      "n_proteins": 5,
+      "n_ratio_below_1": 2,
+      "sign_test_one_sided_p": 0.8125,
+      "mean_log_ratio": 0.12964742843112398,
+      "permutation_p": 0.8419
+    }
+  },
+  "per_protein": [
+    {
+      "uniprot_id": "P01555",
+      "sequence_length": 151,
+      "n_functional_sites": 8,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [],
+      "fspe_functional": 1.6492420732975006,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.7878049254417419,
+          "fspe_ratio": 0.922495541782891
+        },
+        "drop_flanking": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.7878049254417419,
+          "fspe_ratio": 0.922495541782891
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.7875143229961394,
+          "fspe_ratio": 0.9226455151045313
+        }
+      }
+    },
+    {
+      "uniprot_id": "P01552",
+      "sequence_length": 90,
+      "n_functional_sites": 6,
+      "precursor_offset": 0,
+      "numbering_flagged": true,
+      "flanking_in_published_sample": [
+        23,
+        42,
+        46
+      ],
+      "fspe_functional": 2.247406800587972,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.0134625256061556,
+          "fspe_ratio": 1.1161900318514184
+        },
+        "drop_flanking": {
+          "n_background": 17,
+          "fspe_nonfunctional": 1.986190206864301,
+          "fspe_ratio": 1.1315164040286287
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.0623366713523863,
+          "fspe_ratio": 1.0897380780773418
+        }
+      }
+    },
+    {
+      "uniprot_id": "P00648",
+      "sequence_length": 81,
+      "n_functional_sites": 1,
+      "precursor_offset": 47,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [
+        74
+      ],
+      "fspe_functional": 2.6298441886901855,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.9536734342575073,
+          "fspe_ratio": 1.3461022413347483
+        },
+        "drop_flanking": {
+          "n_background": 19,
+          "fspe_nonfunctional": 1.9289510877508866,
+          "fspe_ratio": 1.3633545222530885
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.8424253702163695,
+          "fspe_ratio": 1.427381662890011
+        }
+      }
+    },
+    {
+      "uniprot_id": "Q99ZW2",
+      "sequence_length": 127,
+      "n_functional_sites": 1,
+      "precursor_offset": 0,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [
+        11
+      ],
+      "fspe_functional": 1.7520263195037842,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.8541115045547485,
+          "fspe_ratio": 0.9449411835263493
+        },
+        "drop_flanking": {
+          "n_background": 19,
+          "fspe_nonfunctional": 1.871449395229942,
+          "fspe_ratio": 0.9361868528048098
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.9243473768234254,
+          "fspe_ratio": 0.9104522086838103
+        }
+      }
+    },
+    {
+      "uniprot_id": "P00588",
+      "sequence_length": 75,
+      "n_functional_sites": 1,
+      "precursor_offset": 32,
+      "numbering_flagged": false,
+      "flanking_in_published_sample": [
+        50
+      ],
+      "fspe_functional": 2.801562547683716,
+      "arms": {
+        "published": {
+          "n_background": 20,
+          "fspe_nonfunctional": 2.088197720050812,
+          "fspe_ratio": 1.3416174727053842
+        },
+        "drop_flanking": {
+          "n_background": 19,
+          "fspe_nonfunctional": 2.0506522028069747,
+          "fspe_ratio": 1.3661812294882962
+        },
+        "resample_excluded": {
+          "n_background": 20,
+          "fspe_nonfunctional": 1.9143827736377717,
+          "fspe_ratio": 1.4634286237125382
+        }
+      }
+    }
+  ]
+}

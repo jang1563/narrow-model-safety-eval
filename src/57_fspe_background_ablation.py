@@ -156,9 +156,24 @@ def main():
 
     sites_all = load_functional_sites()
     seqs = {}
-    for sid, seq, _ in load_positive_sequences():
+    # 🔴 `load_fasta` returns (id, DESCRIPTION, sequence). The first version of this loop unpacked
+    # it as `sid, seq, _`, so every "sequence" was the FASTA description line. Ricin's description
+    # is exactly 64 characters, so its functional positions at 115-246 fell out of range and the
+    # protein was SKIPPED, while proteins whose positions happened to fit inside their description
+    # were scored on English text. Two proteins into the run before it was visible.
+    for sid, _desc, seq in load_positive_sequences():
         parts = sid.split("|")
         seqs[parts[1] if len(parts) >= 2 else sid] = seq
+
+    # A sequence that is not a sequence is the failure above, and it is cheap to refuse at the
+    # source rather than to notice downstream as a skip.
+    AA = set("ACDEFGHIKLMNPQRSTVWYBXZUO")
+    bad = {a: sorted(set(s) - AA) for a, s in seqs.items() if set(s) - AA}
+    if bad:
+        print("XX non-amino-acid characters in the loaded sequences, so the FASTA parse is wrong:")
+        for a, ch in list(bad.items())[:5]:
+            print(f"   {a}: {ch[:12]}")
+        return 2
 
     pub_prev = {x.get("uniprot_id") or x.get("accession"): x
                 for x in json.load(open(PUBLISHED))["per_protein"]}
@@ -180,9 +195,21 @@ def main():
         seq = truncate_sequence(seqs[acc], mod04.MAX_SEQ_LEN)
         resolved = sequence_functional_positions(acc, seqs[acc], sites, verbose=False)
         func0 = sorted({p - 1 for p in resolved["positions"] if 0 <= p - 1 < len(seq)})
-        if not func0:
-            print(f"--- {acc}: no valid functional positions, skipped")
-            continue
+        if len(func0) != len(resolved["positions"]):
+            # On this panel every annotated position is in range. A position falling outside the
+            # sequence therefore means the sequence is wrong, not that the annotation is, and
+            # skipping would hide it from the reproduction gate at the end.
+            print(f"XX {acc}: {len(resolved['positions']) - len(func0)} of "
+                  f"{len(resolved['positions'])} annotated positions fall outside a "
+                  f"{len(seq)}-residue sequence. That is a loading defect, not a skip.")
+            return 2
+
+        prev_len = (pub_prev.get(acc) or {}).get("sequence_length")
+        if prev_len is not None and prev_len != len(seq):
+            print(f"XX {acc}: sequence is {len(seq)} residues here and {prev_len} in "
+                  f"results/fspe_results.json. The background sample depends on the length, so "
+                  f"every arm would be drawn from the wrong range.")
+            return 2
 
         bg, dropped = background_sets(len(seq), func0)
         need = sorted(set(func0) | {p for s in bg.values() for p in s})
