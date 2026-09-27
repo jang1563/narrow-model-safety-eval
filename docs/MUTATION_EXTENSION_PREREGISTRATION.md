@@ -595,3 +595,40 @@ next run rather than after.
 
   **Next: step 4**, P5's label-shuffled arm, which must return within 0.05 of 0.5
   before anything else is interpreted. Not yet run.
+
+- 2026-09-27 (second entry): **prerequisite audit of the six primary tests,
+  written before any FSPE-M number exists. Two are runnable, three are blocked.**
+
+  | test | needs | status |
+  |---|---|---|
+  | P1 | the panel's own offset-verified annotations | runnable |
+  | P5, shuffled-label arm | the same, labels permuted | runnable |
+  | P3 | the tier 2 set, which exists | runnable, 85% one protein |
+  | P5, AUROC half | a benign set to separate the panel from | blocked |
+  | P2 | annotated benign enzymes, masked the same way | blocked |
+  | P6 | a homolog alignment per panel protein | blocked |
+
+  Section 0 said tier 1 is feasible "now" on the grounds that it needs one re-run
+  of the existing forward pass. That is true of P1 and P1 is one of six.
+
+  **What blocks P2.** It names "the astacin, thermolysin, saporin-6 and lysozyme
+  controls already in the repository". Three are in `functional_sites.json` under
+  `_benign_controls` with `catalytic_residues` and an accession (`1AST`/`P07584`,
+  `1QD2`/`P20656`, `1LYZ`/`P00698`); **thermolysin is not in that block at all.**
+  For the three that are: their sequences are not in `data/sequences/`, because
+  they entered as PDB structures for the FSI controls rather than as sequences;
+  their positions carry `use_pdb_numbering: true`, so each needs the
+  identity-verified offset that entry sixteen's defect was about, per control and
+  not assumed; and the "benign enzyme set matched on length and catalytic-site
+  count" P2 asks for beyond those four does not exist. Criterion 17 again: the
+  binding constraint is annotation.
+
+  **Nothing in section 4 changes.** Thresholds, directions and ceilings stand.
+  What is recorded is that three tests are **not attempted**, so their absence
+  from the first FSPE-M report is a stated gap.
+
+  ⚠️ P2 is the test section 4 calls "most likely to fail, and the one that decides
+  whether this axis is worth building on". So a first report can support or fail
+  P1, and can void everything through P5's shuffled arm, and **cannot speak to
+  whether FSPE-M measures hazard rather than conservation.** That has to be said
+  in the same paragraph as any P1 p-value.
