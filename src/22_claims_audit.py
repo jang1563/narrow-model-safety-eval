@@ -2451,7 +2451,8 @@ CLAIMS = [
          and abs(v["median_ala"] - 61.1) < 0.2 and v["median_cys"] < 1.0
          and v["scan_share"] > 0.75 and v["top_share"] > 0.8),
      {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
-      "**79% of the set is alanine or cysteine scanning**"}, []),
+      "**79% of the set is alanine or cysteine scanning**",
+      "docs/EVALUATION_REPORT.md": "median\npercentile **61.1** among the 19 alternatives"}, []),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.

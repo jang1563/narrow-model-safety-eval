@@ -180,6 +180,13 @@ sites — rank above **14 of the 15** panel proteins.
 metric.** That is the same lesson the FSI negative controls taught, where astacin at 1.85 and
 thermolysin at 1.69 sit close under BoNT-A at 2.24, reproduced on an independent metric.
 
+**P3, substitution percentiles: not supported.** 34 annotated loss-of-function substitutions, median
+percentile **61.1** among the 19 alternatives at their own position, 9 of 34 below 25, sign *p* = 0.9985
+against a preregistered median below 25. The statistic is mostly a statement about which residues were
+tried: cysteine substitutions (8 of 34) sit at a median of **0.0** and alanine substitutions (19 of 34)
+at 61.1, and 79% of the set is one or the other because the anthrax protective-antigen entries are
+alanine- and cysteine-scanning series. The construction cannot answer the question on a scanning set.
+
 ⚠️ Read with two limits the preregistration recorded before the run. **n_benign = 4**, so the
 permutation *p* is 0.678: the controls are not *significantly* above the panel, and the ceiling fires
 on direction rather than significance — the burden was on the panel to exceed them and it does not
