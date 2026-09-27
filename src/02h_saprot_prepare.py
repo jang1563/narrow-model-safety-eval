@@ -39,6 +39,7 @@ Usage:
 import argparse
 import concurrent.futures as cf
 import json
+import sys
 import subprocess
 import tarfile
 import time
@@ -46,7 +47,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "data" / "annotations" / "structure_3di_v2.json"
+ANN = ROOT / "data" / "annotations"   # the panel picks the output file at runtime
 FOLDSEEK_URL = "https://mmseqs.com/foldseek/foldseek-linux-avx2.tar.gz"
 AFDB = "https://alphafold.ebi.ac.uk/files/AF-{acc}-F1-model_v6.cif"
 
@@ -127,12 +128,23 @@ def run_3di(exe, sdir, work):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--workdir", default=str(ROOT / ".saprot_work"))
+    ap.add_argument(
+        "--panel",
+        default="v2",
+        choices=["v2", "v3"],
+        help="Panel version. Switches the input FASTA and the output annotation together. v3's "
+        "members were masked as no_structure by src/27 because foldseek is a Linux binary and the "
+        "existing 3Di strings were produced on the HPC; running this with --panel v3 there is what "
+        "replaces the mask with real structure.",
+    )
     a = ap.parse_args()
     work = Path(a.workdir)
     work.mkdir(parents=True, exist_ok=True)
+    pv = a.panel
+    OUT = ANN / f"structure_3di_{pv}.json"
 
-    pos = read_fasta(ROOT / "data/sequences/toxins_positive_v2.fasta")
-    neg = read_fasta(ROOT / "data/sequences/benign_negatives_v2.fasta")
+    pos = read_fasta(ROOT / f"data/sequences/toxins_positive_{pv}.fasta")
+    neg = read_fasta(ROOT / f"data/sequences/benign_negatives_{pv}.fasta")
     recs = [(f, s, "positive") for f, s in pos] + [(f, s, "negative") for f, s in neg]
     accs = [f.split("|")[1] for f, _, _ in recs]
 
@@ -158,17 +170,46 @@ def main():
         ann[fid] = {"acc": acc, "side": side, "len": len(seq),
                     "threedi": td, "status": status}
 
+    # 🔴 Reproduction check, 2026-09-27. v3's file was built by src/27 inheriting v2's 231 real
+    # strings and masking the rest, so a v3 rebuild recomputes those 231 from AFDB and foldseek. If
+    # any of them comes back different, the source or the tool has moved and every 3Di number in the
+    # repository is in question -- so it is compared rather than overwritten silently.
+    prior, changed = {}, []
+    if OUT.exists():
+        prior = json.load(open(OUT)).get("proteins", {})
+    for fid, rec in ann.items():
+        old_rec = prior.get(fid)
+        if old_rec and old_rec.get("status") == "ok" and rec["status"] == "ok" \
+                and old_rec["threedi"] != rec["threedi"]:
+            changed.append(fid.split("|")[1])
+
     payload = {"built": time.strftime("%Y-%m-%d %H:%M:%S"),
+               "panel": pv,
                "source": "AlphaFold DB v6 cif + foldseek structureto3didescriptor",
                "afdb_url_template": AFDB,
+               "reproduction": {
+                   "previously_ok_entries": sum(1 for r in prior.values()
+                                                if r.get("status") == "ok"),
+                   "changed_threedi": sorted(changed),
+                   "note": ("entries that were already status ok and whose 3Di string changed on "
+                            "this rebuild; a non-empty list means AFDB or foldseek moved under the "
+                            "published strings")},
                "note": "positions without usable structure carry the SaProt mask '#', "
                        "which makes those proteins sequence-only rather than dropped",
                "stats": stats, "proteins": ann}
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    json.dump(payload, open(OUT, "w"))
+    json.dump(payload, open(OUT, "w"), indent=2)
     print(f"\n{stats}")
+    if changed:
+        print(f"XX {len(changed)} previously-ok entries changed their 3Di string: {changed[:8]}")
+        print("   AFDB or foldseek has moved under the published strings. Do not use this file")
+        print("   until that is explained.")
+    else:
+        print(f"OK every previously-ok entry reproduced its 3Di string "
+              f"({payload['reproduction']['previously_ok_entries']} checked)")
     print(f"wrote {OUT}")
+    return 2 if changed else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
