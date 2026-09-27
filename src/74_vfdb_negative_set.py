@@ -51,9 +51,15 @@ OUT_RES = ROOT / "results" / "vfdb_negative_set.json"
 STANDARD = set("ACDEFGHIKLMNPQRSTVWY")
 MIN_LEN, MAX_LEN = 50, 1022      # 1022 is src/02b's truncation limit
 
+# 🔑 `vf` captured 2026-09-27 for amendment 5. VFDB groups orthologs of one virulence factor across
+# organisms under a single VF#### id, which is the natural redundancy unit — the analogue of the
+# "distinct protein name" § 10.9 used to turn the pool's 8,259 records into 3,550 and its 7.87%
+# out-of-sample rate into 9.64%. The first version of this script recorded only VFG ids, so A1's
+# negative set had a raw n and no effective n.
 HEADER = re.compile(
     r"^>(?P<vfg>VFG\d+)(?:\([^)]*\))?\s*(?:\([^)]*\)\s*)?.*?"
-    r"\[[^\[\]]*?\(VF\d+\)\s*-\s*(?P<cat>[^\[\]]*?)\(VFC\d+\)\]\s*\[(?P<org>[^\[\]]+)\]\s*$")
+    r"\[[^\[\]]*?\((?P<vf>VF\d+)\)\s*-\s*(?P<cat>[^\[\]]*?)\(VFC\d+\)\]\s*"
+    r"\[(?P<org>[^\[\]]+)\]\s*$")
 
 
 def read_fasta(path):
@@ -104,7 +110,8 @@ def main():
             rejected.append({"vfg": vfg, "rule": "duplicate",
                              "reason": f"identical sequence already kept as {cand[s]['vfg']}"})
             continue
-        cand[s] = {"vfg": vfg, "category": cat, "organism": d["org"].strip(), "len": len(s)}
+        cand[s] = {"vfg": vfg, "vf": d["vf"], "category": cat,
+                   "organism": d["org"].strip(), "len": len(s)}
     print(f"after category, length, alphabet and duplicate filters: {len(cand)} candidates "
           f"({len(rejected)} rejected)")
 
@@ -140,6 +147,14 @@ def main():
     import collections
     cats = collections.Counter(a["category"] for a in admitted)
     rc = collections.Counter(str(r["rule"]) for r in rejected)
+    # the effective n, one representative per VF group, reported beside the raw n
+    vf_groups = collections.Counter(a["vf"] for a in admitted)
+    first_of_vf, dedup = set(), []
+    for a_ in admitted:
+        if a_["vf"] not in first_of_vf:
+            first_of_vf.add(a_["vf"])
+            dedup.append(a_["vfg"])
+    genera = collections.Counter(a["organism"].split()[0] for a in admitted)
     OUT_RES.write_text(json.dumps({
         "built": time.strftime("%Y-%m-%d %H:%M:%S"),
         "purpose": "study A1 of docs/NEGATIVE_EXPANSION_PREREGISTRATION.md: hard negatives. Supplies "
@@ -148,6 +163,15 @@ def main():
         "similarity_bound": bound, "aligner": "Bio.Align.PairwiseAligner local BLOSUM62 -11/-1, "
                                               "score/sqrt(self_i*self_j), as 02d/27/42",
         "n_admitted": len(admitted), "n_rejected": len(rejected),
+        "effective_n": {
+            "raw_records": len(admitted),
+            "distinct_vf_groups": len(vf_groups),
+            "redundancy_factor": round(len(admitted) / len(vf_groups), 3),
+            "representatives": dedup,
+            "largest_groups": vf_groups.most_common(8),
+            "distinct_genera": len(genera),
+            "note": "one representative per VFDB VF#### id, the analogue of the distinct-name count "
+                    "section 10.9 applies to the benign pool. A1-1 to A1-3 report both rates."},
         "rejected_counts": dict(sorted(rc.items())),
         "categories": dict(cats.most_common()),
         "max_similarity_reached": max(a["max_similarity_to_panel_positive"] for a in admitted),
@@ -164,6 +188,9 @@ def main():
           f"{max(a['max_similarity_to_panel_positive'] for a in admitted):.4f}")
     print(f"rejections by rule: {dict(sorted(rc.items()))}")
     print(f"categories: {dict(cats.most_common(6))}")
+    print(f"effective n: {len(admitted)} raw -> {len(vf_groups)} distinct VF groups "
+          f"(redundancy factor {len(admitted) / len(vf_groups):.3f}), {len(genera)} genera")
+    print(f"  largest groups: {vf_groups.most_common(5)}")
     print(f"wrote {OUT_FASTA.relative_to(ROOT)} and {OUT_RES.relative_to(ROOT)}")
 
 

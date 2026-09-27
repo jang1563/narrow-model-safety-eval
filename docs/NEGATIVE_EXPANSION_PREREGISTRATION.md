@@ -265,6 +265,32 @@ redundancy unit for a database that lists one representative gene per virulence 
 both rates, raw and per distinct unit, exactly as § 2.6.1 does for the pool. Stated now because quoting
 the raw rate first and the corrected one later is how a number escapes.
 
+🔴 **Measured the same day, and it is three times worse than the pool's.** `src/74` rerun with the
+grouping — reproducing all 4,218 admissions and every rejection count exactly, which is its own check:
+
+| | raw records | distinct units | redundancy factor |
+|---|---:|---:|---:|
+| benign pool (§ 10.9) | 8,259 | 3,407 distinct names | **2.42** |
+| **A1, VFDB setA non-toxin** | **4,218** | **565 VF groups** | **7.47** |
+
+**A1's effective *n* is 565, not 4,218.** Group sizes run from 271 down: `VF0798` alone is **271
+*Legionella* Dot/Icm effectors**, 6.4% of the set from one virulence factor in one genus; the ten largest
+groups hold **19.9%** of all records; the median group is 2 and 273 groups are singletons.
+
+⚠️ **And collapsing changes the set's composition, not just its size**, which is more than § 10.9's
+distinct-name correction had to deal with:
+
+| category | raw | per VF group |
+|---|---:|---:|
+| Effector delivery system | 1,691 (40%) | 91 (16%) |
+| Adherence | 607 (14%) | **142 (25%)** |
+| Motility | 595 (14%) | 16 (3%) |
+
+The raw set is dominated by secretion-system effectors, which VFDB annotates per strain, and the
+deduplicated set by adherence factors. 🔴 **So the raw and per-group rates are not the same measurement at
+two resolutions — they are rates on two differently composed negative sets**, and A1 must say which
+composition each number belongs to rather than presenting one as a correction of the other.
+
 
 ### Amendment 6 — 2026-09-27: the repair, and what it shows about which side was binding
 

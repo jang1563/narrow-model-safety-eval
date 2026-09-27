@@ -700,6 +700,34 @@ def a2_annotation_matched():
     }
 
 
+def a1_negative_set():
+    """A1's hard negative set, and the effective n that amendment 5 required before any rate is quoted.
+
+    \U0001f534 The raw 4,218 is the number a summary would carry. It is pinned here beside the 565 VF
+    groups and the 7.47 redundancy factor, because the pool's own correction (2.42) moved its rate by
+    1.8 points and A1's redundancy is three times larger. The category shares are pinned too: the raw
+    and per-group sets are composed differently, so they are not one rate at two resolutions.
+    """
+    d = j("../results/vfdb_negative_set.json")
+    if d is None or "effective_n" not in d:
+        return None
+    e = d["effective_n"]
+    cats = d["categories"]
+    biggest = e["largest_groups"][0]
+    return {
+        "n_admitted": d["n_admitted"],
+        "rejected": {str(k): v for k, v in d["rejected_counts"].items()},
+        "max_similarity": round(d["max_similarity_reached"], 4),
+        "raw": e["raw_records"], "groups": e["distinct_vf_groups"],
+        "redundancy": e["redundancy_factor"], "genera": e["distinct_genera"],
+        "largest_group": [biggest[0], biggest[1]],
+        "n_representatives": len(e["representatives"]),
+        "top_category_raw": max(cats, key=cats.get),
+        "effector_raw": cats.get("Effector delivery system"),
+        "adherence_raw": cats.get("Adherence"),
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -2942,6 +2970,26 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("A1's hard negative set is 4,218 records but 565 distinct virulence factors",
+     a1_negative_set,
+     lambda v: v is None or (
+         v["n_admitted"] == 4218 and v["raw"] == 4218
+         # the effective n, and a redundancy three times the pool's 2.42
+         and v["groups"] == 565 and v["redundancy"] > 7.0
+         and v["n_representatives"] == v["groups"]
+         # one virulence factor in one genus is 6% of the raw set
+         and v["largest_group"][0] == "VF0798" and v["largest_group"][1] == 271
+         # every admitted record is below the frozen 0.282 bound, with room to spare
+         and v["max_similarity"] < 0.28
+         # the two rules that bound, unchanged across the rerun that added the grouping
+         and v["rejected"]["category"] == 248 and v["rejected"]["4"] == 41
+         and v["rejected"]["1"] == 12
+         # raw composition is effector-dominated; the dedup set is not
+         and v["top_category_raw"] == "Effector delivery system"
+         and v["effector_raw"] == 1691 and v["adherence_raw"] == 607
+         and v["genera"] == 38),
+     {"docs/NEGATIVE_EXPANSION_PREREGISTRATION.md":
+      "**A1's effective *n* is 565, not 4,218.**"}, []),
     ("A2's gap halves and loses significance once both sides are annotated the same way",
      a2_annotation_matched,
      lambda v: v is None or (
