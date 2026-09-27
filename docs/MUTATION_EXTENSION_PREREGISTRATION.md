@@ -886,3 +886,59 @@ next run rather than after.
   measure of positional constraint, and saying so is not a consolation: a metric
   with a clear construct and a failed hazard claim is more useful than one whose
   construct was never tested.
+
+- 2026-09-27 (seventh entry): **P3 RESULT. Not supported, and the statistic is
+  confounded by which residue the experimenters substituted.**
+  `src/63_fspe_m_p3.py`, artifact `results/fspe_m_p3.json`. No threshold changed.
+
+  **P3 as frozen.** 34 tier 2 substitutions, each scored as its percentile among the
+  19 non-wild-type residues at its own position (low = disfavoured). Supported if
+  the median is below 25 with a sign test at p < 0.0083.
+
+  | | |
+  |---|---|
+  | substitutions scored | 34 |
+  | **median percentile** | **61.1** |
+  | below 25 | 9 of 34, sign p = **0.9985** |
+  | verdict | **NOT SUPPORTED** |
+  | ceiling (median < 5) | not triggered |
+
+  Every protein's own median is also above 25: `P00588` 83.3, `P0DPI1` 83.3,
+  `P00648` 61.1, `P13423` 55.6, `Q99ZW2` 44.4. **The model does not rank annotated
+  loss-of-function substitutions as disfavoured.**
+
+  🔴 **The number is mostly a statement about which amino acids were tried.**
+  Splitting the 34 by the substituted residue:
+
+  | substituted residue | n | median percentile |
+  |---|---:|---:|
+  | alanine | 19 | **61.1** |
+  | cysteine | 8 | **0.0** |
+  | everything else | 7 | 83.3 |
+
+  **79% of the set is alanine or cysteine scanning**, and the two sit at opposite
+  ends of the model's ranking for reasons unrelated to function: cysteine is
+  strongly disfavoured at almost any position (five of the eight are at the 0th
+  percentile), and alanine is the model's typical mild substitute. The anthrax
+  protective-antigen entries, 29 of the 34, are largely alanine-scanning and
+  cysteine-scanning series, so the percentile mostly reports how the model ranks
+  Cys against Ala as a substitute, not how it ranks a loss-of-function change
+  against its neighbours. The median of 61.1 is dominated by the alanine group and
+  a median below 25 would have required the cysteine group to dominate instead.
+
+  **What this does and does not say.** It does not show the model is blind to
+  function: the design gives no way to separate that from the residue-identity
+  effect, and the cysteine group being at zero is at least consistent with the
+  model penalising some changes hard. It shows the **P3 construction cannot answer
+  the question on this set**, because the set is a scanning series and the
+  statistic is not residue-matched. A residue-matched comparison, alanine
+  against alanine at the same position among annotated-tolerated substitutions,
+  would be the honest version, and the tier 2 set has 18 tolerated features that
+  could supply it. That is a different test from P3 and is **not run here**: adding
+  it after seeing this result would be a new hypothesis chosen for its outcome.
+
+  ⚠️ Effective n is 5 proteins with 85% from one, as recorded in the second
+  amendment, and it applies here in full.
+
+  **P3 stays reported as not supported**, with the confound stated in the same
+  paragraph as the verdict. P4 remains a descriptive table and P6 is unrun.

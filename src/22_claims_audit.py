@@ -588,6 +588,32 @@ def fspe_m():
     }
 
 
+def fspe_m_p3():
+    """P3's outcome, and the residue-identity confound that decides how it may be read.
+
+    Added 2026-09-27. Asserts the frozen verdict, and the split by substituted residue that shows
+    the statistic is dominated by scanning design: cysteine at the bottom of the ranking, alanine
+    in the middle, 79% of the set one or the other.
+    """
+    d = j("../results/fspe_m_p3.json")
+    if d is None:
+        return None
+    rows = [r for r in d["rows"] if r.get("percentile") is not None]
+    def med(sel):
+        v = sorted(r["percentile"] for r in rows if sel(r))
+        return v[len(v) // 2] if len(v) % 2 else (v[len(v) // 2 - 1] + v[len(v) // 2]) / 2
+    ala = [r for r in rows if r["alt"] == "A"]
+    cys = [r for r in rows if r["alt"] == "C"]
+    return {"n": d["n_scored"], "median": d["median_percentile"],
+            "k_below_25": d["sign_test"]["k_below_25"], "sign_p": d["sign_test"]["p"],
+            "supported": d["supported"], "ceiling": d["ceiling_triggered"],
+            "n_ala": len(ala), "n_cys": len(cys),
+            "median_ala": med(lambda r: r["alt"] == "A"),
+            "median_cys": med(lambda r: r["alt"] == "C"),
+            "scan_share": (len(ala) + len(cys)) / len(rows),
+            "top_share": d["largest_protein_share"]}
+
+
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
 
@@ -2415,6 +2441,17 @@ CLAIMS = [
      {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
       "**So the verdict, as the preregistration fixed it in advance: dFSPE-M measures",
       "docs/EVALUATION_REPORT.md": "| benign controls, n = 4 | **+5.26** |"}, []),
+    ("P3 is not supported, and the statistic is dominated by which residue was substituted",
+     fspe_m_p3,
+     lambda v: v is None or (
+         v["n"] == 34 and abs(v["median"] - 61.1) < 0.2
+         and v["k_below_25"] == 9 and v["sign_p"] > 0.99
+         and not v["supported"] and not v["ceiling"]
+         and v["n_ala"] == 19 and v["n_cys"] == 8
+         and abs(v["median_ala"] - 61.1) < 0.2 and v["median_cys"] < 1.0
+         and v["scan_share"] > 0.75 and v["top_share"] > 0.8),
+     {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
+      "**79% of the set is alanine or cysteine scanning**"}, []),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.
