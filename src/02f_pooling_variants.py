@@ -24,6 +24,23 @@ not the representation, and every recovery number in this log is understating wh
 the model retains. If none of the three helps, mean pooling is exonerated and the
 information is genuinely absent from the residue stack the probe sees.
 
+🔴 Note appended 2026-09-27, entry thirty-seven of docs/DATA_CORRECTIONS.md. The
+original text above is left as written. **Its second branch does not follow, and
+§ 9's "Pooling is not the fix" inherited the overreach.** Per-dimension max takes
+an independent maximum in each of 1,280 dimensions, so dimension 5's value can
+come from residue 12 and dimension 6's from residue 300: it does not preserve a
+local signal, it destroys residue COHERENCE, which is why it came out worst of the
+three (1.9% at 30 seeds) rather than best. Mean and CLS are both whole-protein
+summaries. So what these three refute is three incoherent or global reductions,
+NOT the residue stack. Nothing here has tested a reduction that keeps residues
+coherent — a top-k mean along a learned direction, attention pooling, or any
+architecture that consumes the L x d stack. See § 9.1.1.
+
+Also: the docstring above says Smith-Waterman beats the probe "31% against 21%".
+The audited figure is 30%, and 29.5% at 30 seeds (§ 7). Left in place with the
+correct number recorded here rather than edited, since the run was launched on the
+text as written.
+
 Outputs use the standard tagged names so 03b, 03e-03j read them with --tag.
 
 Usage:

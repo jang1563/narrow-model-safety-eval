@@ -1096,6 +1096,59 @@ arriving from a third direction: the head, the panel, and the negative set all m
 the threshold.** And beta-lactamase reaches 21% with the best of four heads, so the head is not what
 rescues it either — §9 shows what does.
 
+#### 9.1.1 🔴 "Pooling is not the fix" is stated more broadly than the evidence supports, and it is why no architecture here has seen more than one vector per protein
+
+Added 2026-09-27, asked directly: what about CNNs, LSTMs, architectures of that kind?
+
+**The answer starts with a distinction this document has not drawn.** § 9.1's four heads — logistic,
+SVM-RBF, random forest, k-NN — all consume a **single pooled vector per protein**. A CNN or an LSTM is
+not a fifth head: it consumes the **L × d residue stack**, which is information every number in this
+document discards before the classifier sees it. 🔴 **No architecture anywhere in this project has ever
+seen more than one vector per protein.**
+
+**§ 9 does address pooling, and its own framing is the problem.** `src/02f_pooling_variants.py` was
+written to ask exactly this — its docstring reads *"does mean pooling throw away the class it cannot
+catch?"* — and it tested three reductions: mean **15.7%** [11.2, 20.2], CLS **16.4%** [10.6, 22.2], max
+**1.9%** [0.6, 3.2] at 30 seeds. It then states the disjunction: *"If none of the three helps, mean
+pooling is exonerated and the information is genuinely absent from the residue stack the probe sees."*
+
+⚠️ **That second branch does not follow, and § 9's heading inherits the overreach.** Per-dimension max
+takes an independent maximum in each of 1,280 dimensions, so dimension 5's value can come from residue 12
+and dimension 6's from residue 300. **It does not preserve a local signal; it destroys residue
+coherence**, which is why it is the worst of the three rather than the one that should have worked. Mean
+and CLS are both whole-protein summaries. So what has been refuted is **three incoherent or global
+reductions**, not the residue stack. "The information is genuinely absent" has not been tested.
+
+🔑 **And three pieces of evidence in this document say the residue-level signal is there.** FSPE is a
+per-residue masked-entropy measurement and it resolves catalytic sites (§ 3.1 of the evaluation report).
+Smith-Waterman — an inherently **positional, local** method — is the one baseline that beats the probe on
+beta-lactamase, **30% against 21%**, while `phmmer` gets 5% and `jackhmmer` 0%, so the advantage is
+specific to graded local similarity. And beta-lactamases are a family defined by a conserved active-site
+motif in a conserved fold, which is the shape of signal a whole-protein average is worst at keeping.
+
+**What that implies about the order to do things in**, which is the opposite of starting with a CNN:
+
+| step | what it tests | cost | why it comes first |
+|---|---|---|---|
+| **residue-coherent pooling** — top-*k* mean over residues ranked by a within-fold learned direction, and single-query attention pooling | does the signal survive **any** coherent reduction? | one embedding pass keeping `L × d`, then the existing probe | decisive and almost free. If beta-lactamase does not move here, a CNN is very unlikely to move it and the gap is data or representation, not architecture |
+| **1D CNN** over a projected residue stack (`1280 → 32`, conv width 5–15, max over positions) | is the signal a **local motif**? | a trained net | this is literally a motif detector, and it is the hypothesis the Smith-Waterman result points at |
+| **LSTM** | is the signal **sequential order**? | more parameters again | ⚠️ **the weakest motivation of the three.** Nothing here suggests long-range order carries the discrimination; the hypothesis is locality. DTVF pairs LSTM with CNN, and does it on **3,000+** training VFs |
+
+🔴 **Every one of these is gated on n, and that gate is the real reason to sequence it after the data
+work.** The panel is **149 positives / 296 negatives**. DTVF trains on DeepVF's 3,000 VFs and 4,334
+non-VFs; DeepVIC on a **53,528**-sequence training set. A convolutional or recurrent net over a 1,280-dim
+residue stack fitted on 149 positives is not a weaker version of those — it is a different regime, and
+the honest prior is that it memorises. **Study A1 and study B of `docs/VFDB_CLASS_AXIS_DESIGN.md` § 5 are
+the prerequisites for the CNN, not alternatives to it.**
+
+⚠️ **Two standing constraints any per-residue architecture has to answer to.** § 8's mechanism: under a
+fixed false-positive budget, capacity that raises the **negatives'** scores costs threshold headroom, so
+a gain in recovery is not a gain unless the calibrated FPR holds. And § 2.3's provenance probe already
+reaches **AUROC 0.818** on hazard from lab-strain provenance alone — **local features make that confound
+easier to exploit, not harder**, since organism-specific sequence idiosyncrasy is exactly what a motif
+detector can latch onto. Any residue-level result has to clear the provenance, localization and
+target-host controls before it means anything.
+
 ### 9.2 Strictness: where each class stops being recoverable
 
 `src/03f_coverage_strictness.py` sweeps the false-positive budget and reports **s90**, the strictest

@@ -89,6 +89,11 @@ from utils import (  # noqa: E402
 OUT = ROOT / "results" / "fspe_m.json"
 CONTROLS = ROOT / "data" / "annotations" / "benign_control_sites.json"
 CONTROL_FASTA = ROOT / "data" / "sequences" / "benign_controls.fasta"
+# Study A2 of docs/NEGATIVE_EXPANSION_PREREGISTRATION.md, added 2026-09-27. The frozen four stay the
+# default so the published run reproduces unchanged; --controls a2 writes a SEPARATE artifact.
+CONTROLS_A2 = ROOT / "data" / "annotations" / "benign_enzyme_sites.json"
+CONTROL_FASTA_A2 = ROOT / "data" / "sequences" / "benign_enzymes.fasta"
+OUT_A2 = ROOT / "results" / "fspe_m_a2.json"
 TIER2 = ROOT / "results" / "tier2_mutagenesis_set.json"
 N_BG, SEED, N_PERM = 20, 42, 20000
 ALPHA = 0.05 / 6          # section 4's threshold, six primary tests
@@ -194,6 +199,10 @@ def main():
     ap.add_argument("--model", default=None)
     ap.add_argument("--device", default=None)
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--controls", default="frozen4", choices=["frozen4", "a2"],
+                    help="which benign control set. frozen4 is the four src/61 verified and is what "
+                         "every published P2 number uses; a2 is the 60-enzyme set src/68 built, "
+                         "written to results/fspe_m_a2.json so neither overwrites the other.")
     a = ap.parse_args()
 
     import torch
@@ -239,8 +248,17 @@ def main():
                       "fspe_excluded": bool(fs.get("fspe_excluded"))})
 
     # ---- the benign controls ----------------------------------------------------------------
-    controls, cv = [], json.load(open(CONTROLS))["verified"]
-    cseq = read_fasta(CONTROL_FASTA)
+    if a.controls == "a2":
+        # src/68's schema: keyed by accession, positions already in UniProt coordinates (offset 0),
+        # so there is no PDB numbering to carry. Normalised into the frozen four's shape rather than
+        # branching the scoring loop, which must stay identical across control sets.
+        cv = {k: {"uniprot": k, "name": v["name"], "positions": v["catalytic_residues"]}
+              for k, v in json.load(open(CONTROLS_A2))["proteins"].items()}
+        cseq = read_fasta(CONTROL_FASTA_A2)
+    else:
+        cv = json.load(open(CONTROLS))["verified"]
+        cseq = read_fasta(CONTROL_FASTA)
+    controls = []
     for key in sorted(cv):
         v = cv[key]
         acc = v["uniprot"]
@@ -300,8 +318,13 @@ def main():
                       "mean dFSPE-M measures evolutionary constraint and not hazard"),
           "n_toxin": len(tox), "n_benign": len(ben),
           "auroc": auroc(tox, ben),
-          "n_benign_caveat": ("section 4 asks for a matched benign enzyme set beyond these four "
-                              "and it does not exist, so this runs at n = 4")}
+          "control_set": a.controls,
+          "n_benign_caveat": (
+              "section 4 asks for a matched benign enzyme set beyond these four and it does not "
+              "exist, so this runs at n = 4" if a.controls == "frozen4" else
+              "study A2's 60-enzyme set (src/68). Section 4's AUROC half becomes testable here: "
+              "A2-2 asks for AUROC >= 0.70 with its interval clear of 0.50, A2-3 for a shuffled "
+              "AUROC inside [0.40, 0.60]")}
     if tox and ben:
         obs = float(np.mean(tox) - np.mean(ben))
         pool = np.array(tox + ben, float)
@@ -311,6 +334,18 @@ def main():
             q = rng2.permutation(pool)
             null.append(q[:len(tox)].mean() - q[len(tox):].mean())
         p2["permutation_p"] = float((np.array(null) >= obs).mean())
+        # A2-2 of docs/NEGATIVE_EXPANSION_PREREGISTRATION.md asks whether the AUROC's interval is
+        # clear of 0.50, which needs a resampling interval and not just the point estimate. Both
+        # arms are resampled independently, so this is the interval on the statistic as computed.
+        rng3 = np.random.default_rng(2)
+        ta, ba = np.array(tox, float), np.array(ben, float)
+        boot = [auroc(list(rng3.choice(ta, len(ta), replace=True)),
+                      list(rng3.choice(ba, len(ba), replace=True))) for _ in range(2000)]
+        boot = sorted(x for x in boot if x is not None)
+        p2["auroc_ci95"] = ([round(boot[int(0.025 * len(boot))], 4),
+                             round(boot[int(0.975 * len(boot)) - 1], 4)] if boot else None)
+        p2["auroc_interval_clear_of_half"] = bool(
+            p2["auroc_ci95"] and (p2["auroc_ci95"][0] > 0.5 or p2["auroc_ci95"][1] < 0.5))
 
     res = {
         "built": time.strftime("%Y-%m-%d %H:%M:%S"), "model": model_name, "device": dev,
@@ -337,15 +372,16 @@ def main():
             "FSPE-M inherits src/04's background, whose per-protein sampling variance src/57 "
             "measured at up to 0.345 on a redraw. P1 is a sign test, so a draw that moves a ratio "
             "across 1.0 moves its count by one.",
-            "P2 runs at n = 4 controls.",
+            f"P2 runs against the {a.controls} control set.",
         ],
         "panel": panel, "controls": controls, "shuffled": shuffled,
     }
     if TIER2.exists():
         res["P3_input"] = {"note": "tier 2 set present; P3 is computed by a separate pass",
                            "n_substitutions": json.load(open(TIER2))["loss_substitutions"]}
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    json.dump(res, open(OUT, "w"), indent=2)
+    out = OUT_A2 if a.controls == "a2" else OUT
+    out.parent.mkdir(parents=True, exist_ok=True)
+    json.dump(res, open(out, "w"), indent=2)
 
     print()
     print(f"P5 GATE: shuffled mean dFSPE-M "
@@ -372,8 +408,11 @@ def main():
         print(f"P2 toxin {p2['toxin_mean']:.4f} - benign {p2['benign_mean']:.4f} = "
               f"{p2['difference']:+.4f} (floor VOID), AUROC {p2['auroc']:.3f}, "
               f"perm p {p2.get('permutation_p', float('nan')):.4f}  (n_benign = {p2['n_benign']})")
+        if p2.get("auroc_ci95"):
+            print(f"   AUROC 95% CI {p2['auroc_ci95']} -> "
+                  f"{'clear of 0.50' if p2['auroc_interval_clear_of_half'] else 'covers 0.50'}")
     print("P6 NOT RUN: no homolog alignment exists")
-    print(f"\nwrote {OUT}")
+    print(f"\nwrote {out}")
     return 0 if gate_ok else 2
 
 

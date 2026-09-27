@@ -3475,3 +3475,70 @@ VFDB categories at 0.838 accuracy.** A category router feeding per-family expert
 downstream of study B rather than available now, and its honest error budget is the router's **16%
 misroute rate compounded with each expert's own miss rate**. That compounding is the first thing to
 measure and has not been.
+
+---
+
+## 2026-09-27 (thirty-seventh entry) — A refutation that covers less than the heading it licensed: no architecture here has seen more than one vector per protein
+
+Asked about CNNs and LSTMs. Answering it required noticing that § 9's **"Pooling is not the fix"** is a
+broader claim than the experiment under it supports, and that the overreach is why an entire class of
+architecture has never been tried.
+
+### 🔴 What the pooling experiment actually refuted
+
+`src/02f_pooling_variants.py` asked the right question — its docstring is literally *"does mean pooling
+throw away the class it cannot catch?"* — and tested three reductions on beta-lactamase, 30 seeds:
+
+| reduction | recovery at 95% specificity |
+|---|---|
+| mean, the incumbent | **15.7%** [11.2, 20.2] |
+| CLS | **16.4%** [10.6, 22.2] |
+| **max, per dimension** | **1.9%** [0.6, 3.2] |
+
+Its stated disjunction: *"If none of the three helps, mean pooling is exonerated and the information is
+genuinely absent from the residue stack the probe sees."*
+
+⚠️ **The second branch does not follow.** Per-dimension max takes an independent maximum in each of 1,280
+dimensions, so dimension 5's value can come from residue 12 and dimension 6's from residue 300. **It does
+not preserve a local signal — it destroys residue coherence**, which is why it landed worst of the three
+rather than best. Mean and CLS are both whole-protein summaries. So three incoherent or global reductions
+were refuted, and the residue stack was not tested at all.
+
+🔴 **And the consequence is structural, not verbal: no architecture in this project has ever seen more
+than one vector per protein.** § 9.1's four heads — logistic, SVM-RBF, random forest, k-NN — all consume
+the pooled vector. A CNN or LSTM is not a fifth head; it consumes the `L × d` stack that every number here
+discards before the classifier starts. The overreach made that look already-answered.
+
+### 🔑 Three things in this repository say the residue-level signal is present
+
+FSPE is a per-residue masked-entropy measurement and it resolves catalytic sites. **Smith-Waterman — an
+inherently positional, local method — is the one baseline that beats the probe on beta-lactamase, 30%
+against 21%**, while `phmmer` reaches 5% and `jackhmmer` 0%, so the advantage is specific to graded local
+similarity rather than to homology search in general. And beta-lactamases are defined by a conserved
+active-site motif in a conserved fold, which is the shape of signal a whole-protein average is worst at
+keeping.
+
+### The order this implies, which is not "start with a CNN"
+
+New § 9.1.1. **Residue-coherent pooling first** — top-*k* mean over residues ranked by a within-fold
+learned direction, and single-query attention pooling — because it needs one embedding pass that keeps
+`L × d` plus the existing probe, and it is decisive either way: if beta-lactamase does not move under a
+coherent reduction, a CNN is very unlikely to move it. **Then a 1D CNN** over a projected stack, which is
+literally the motif detector the Smith-Waterman result points at. **LSTM last and least motivated** —
+nothing here suggests long-range order carries the discrimination.
+
+🔴 **All three are gated on n.** The panel is 149 positives / 296 negatives; DTVF trains on DeepVF's 3,000
+VFs and 4,334 non-VFs, DeepVIC on 53,528 sequences. A convolutional net over a 1,280-dim residue stack
+fitted on 149 positives is a different regime, not a smaller version of theirs, and the honest prior is
+memorisation. **Studies A1 and B are prerequisites for the CNN, not alternatives to it.**
+
+⚠️ Two constraints recorded with it. § 8's mechanism — under a fixed false-positive budget, capacity that
+raises the **negatives'** scores costs threshold headroom — so recovery gains are not gains unless the
+calibrated FPR holds. And § 2.3's provenance probe already reaches AUROC 0.818 from lab-strain provenance
+alone: **local features make that confound easier to exploit, not harder**, because organism-specific
+sequence idiosyncrasy is exactly what a motif detector latches onto.
+
+⚠️ One stale number found while reading: `src/02f`'s docstring says Smith-Waterman beats the probe "31%
+against 21%". The audited figure is 30%, 29.5% at 30 seeds. Both the overreach and the number are recorded
+as an appended note in that file rather than edited into it, because the run was launched on the text as
+written.
