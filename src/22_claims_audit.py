@@ -627,6 +627,40 @@ def fspe_m_p5_composition():
             "indeterminate": d["verdict"].startswith("INDETERMINATE")}
 
 
+def fspe_m_p6():
+    """P6: the alignment baseline, its indeterminate frozen half, and what it reproduces.
+
+    Added 2026-09-27. The load-bearing assertions are the descriptive ones: the alignment agrees with
+    the model on direction and not magnitude, reproduces P1's direction at a weaker p, and reproduces
+    P2's failure with a wider gap. Those are what section 4's own sentence about alignments asks for,
+    and unlike its AUROC threshold they are not inside the noise at n_control = 4.
+    """
+    d = j("../results/fspe_m_p6_pssm.json")
+    if d is None:
+        return None
+    ok = [r for r in d["rows"] if r.get("dpssm") is not None]
+    pan = [r for r in ok if r["panel"] == 1]
+    ctl = [r for r in ok if r["panel"] == 0]
+    mean = lambda g, k: sum(r[k] for r in g) / len(g)  # noqa: E731
+    ag = d["descriptive_agreement"]
+    shallow = sorted(r["acc"] for r in pan if r["dpssm"] <= 0)
+    return {
+        "n_scored": d["n_scored"], "n_panel": len(pan), "n_control": len(ctl),
+        "auroc_dfspe_m": d["auroc_dfspe_m"], "auroc_pssm": d["auroc_pssm"],
+        "difference": d["difference"], "null_sd": d["null_auroc_sd"],
+        "inside_noise": d["margin_inside_noise"],
+        "pearson": ag["pearson"], "spearman": ag["spearman"],
+        "pssm_p1": (ag["pssm_p1_k_above_0"], ag["pssm_p1_n"]), "pssm_p1_p": ag["pssm_p1_sign_p"],
+        # the alignment fails P2's comparison in the same direction and by more
+        "pssm_panel_mean": mean(pan, "dpssm"), "pssm_control_mean": mean(ctl, "dpssm"),
+        "pssm_gap": mean(pan, "dpssm") - mean(ctl, "dpssm"),
+        "dfspe_gap": mean(pan, "dfspe_m") - mean(ctl, "dfspe_m"),
+        "nonpositive_panel": shallow,
+        "min_depth": min(r["mean_column_depth"] for r in ok),
+        "max_depth": max(r["mean_column_depth"] for r in ok),
+    }
+
+
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
 
@@ -2478,6 +2512,27 @@ CLAIMS = [
          and v["inside_noise"] and v["indeterminate"]),
      {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
       "The required margin is **one fifth of the sampling noise**"}, []),
+    ("P6: the alignment agrees on direction, not magnitude, and fails P2 the same way",
+     fspe_m_p6,
+     lambda v: v is None or (
+         v["n_scored"] == 19 and v["n_panel"] == 15 and v["n_control"] == 4
+         # the frozen AUROC half: the difference exceeds the margin AND equals the noise
+         and abs(v["difference"] - 0.1667) < 0.002 and abs(v["null_sd"] - 0.1667) < 0.002
+         and v["inside_noise"]
+         # direction agrees, magnitude does not
+         and 0.30 < v["pearson"] < 0.42 and 0.30 < v["spearman"] < 0.42
+         # the alignment's own P1 is the same direction at a weaker p than the model's 13/15
+         and v["pssm_p1"] == (12, 15) and abs(v["pssm_p1_p"] - 0.0176) < 1e-3
+         # and it fails P2's comparison in the same direction, by more
+         and v["pssm_gap"] < 0 and v["dfspe_gap"] < 0 and v["pssm_gap"] < v["dfspe_gap"]
+         # recruitment depth varies enough that the three non-positive rows are near-unmeasured
+         and v["nonpositive_panel"] == ["P00588", "P01552", "P13423"]
+         and v["min_depth"] <= 3),
+     {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
+      "**An alignment shows the same constraint signal at catalytic sites and the",
+      "docs/EVALUATION_REPORT.md": "its own P1 is 12 of 15 above zero at *p* = 0.0176"},
+     # the sentence the report carried while P6 was unrun
+     ["P6, the alignment baseline that would settle whether a PSSM does this as well, is unrun"]),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.

@@ -976,3 +976,64 @@ next run rather than after.
   alignment per panel protein needs a sequence database that is not present locally or
   on the cluster. HMMER is installed locally, so the tooling is there and the data is
   not.
+
+- 2026-09-27 (ninth entry): **P6 RESULT. Its frozen AUROC comparison is
+  indeterminate for the third time; its descriptive half says the alignment
+  reproduces the direction and not the magnitude, and reproduces P2's failure.**
+  `src/65_fspe_m_p6_pssm.py`, artifact `results/fspe_m_p6_pssm.json`. No threshold
+  changed. The last unrun primary test is now run.
+
+  **Method.** `jackhmmer`, 3 iterations, against Swiss-Prot (575,748 sequences), per
+  query. From the recruited alignment, per query position: add-0.5 pseudocounted
+  column frequencies, then the **same reduction** as dFSPE-M —
+  `log f(w) − log mean f(other)`, averaged over catalytic minus averaged over
+  background — on the **same position sets**, regenerated deterministically and
+  asserted against `src/62`'s own counts so a mismatch is an error rather than a
+  quietly different comparison.
+
+  ### The frozen half
+
+  | | AUROC |
+  |---|---:|
+  | dFSPE-M, panel vs control | 0.3833 |
+  | dPSSM, panel vs control | 0.2167 |
+  | difference | **+0.1667** |
+  | required margin | +0.05 |
+  | null sd at n_control = 4 | **0.1667** |
+
+  The difference exceeds the margin **and equals the noise**, to three decimals. So
+  it is reported without a pass or fail, on the same grounds as step 4's AUROC half
+  and P5's composition half. **Three of the four AUROC-based thresholds in section 4
+  turn out to be unusable at n_benign = 4**, and that is one finding about the
+  preregistration rather than three about the data: section 4 set every one of them
+  on the 234-protein panel's scale and never restated them for a four-control
+  comparison.
+
+  ### The descriptive half, which is what section 4's own sentence asks for
+
+  Over the 19 proteins, dPSSM against dFSPE-M: **Pearson 0.357, Spearman 0.353.** So
+  the two agree on direction and disagree substantially on magnitude — the alignment
+  is not a proxy for the model, and the model is not a proxy for the alignment.
+
+  🔑 **But the alignment reproduces both of the axis's results.** Its own P1 is
+  **12 of 15 above zero, sign p = 0.0176** — the same direction as dFSPE-M's 13 of
+  15, at a weaker p. And on P2's comparison it fails the same way and **harder: panel mean **+1.46** against controls **+2.96**, a gap of −1.50 where dFSPE-M's
+  was −1.22. **An alignment shows the same constraint signal at catalytic sites and the
+  same inability to separate hazard from benign.**
+
+  ⚠️ Read with the depth column, which is the honest caveat here. Recruitment varies
+  from 4 rows to 276, and the three panel proteins whose dPSSM is at or below zero —
+  `P01552`, `P13423`, `P00588` — have mean column depths of 37, **2** and **3**. At
+  depth 2 a pseudocounted frequency is mostly pseudocount, so those three rows are
+  closer to no measurement than to a measurement of zero. A version that required a
+  minimum depth would be a different test and is not run.
+
+  ### What the axis adds up to
+
+  Section 4: *"If the PSSM matches FSPE-M, the honest report is that a multiple
+  sequence alignment does this as well as a protein language model, and that is a
+  publishable and more useful result than a marginal win for the model."* It does not
+  match on magnitude, and it **matches on both verdicts**: constraint at catalytic
+  sites, and no separation of hazard from benign. On the question section 0 posed —
+  whether the extension was worth making — that is the answer arriving twice by
+  independent routes.

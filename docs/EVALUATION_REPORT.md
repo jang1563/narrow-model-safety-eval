@@ -192,7 +192,14 @@ permutation *p* is 0.678: the controls are not *significantly* above the panel, 
 on direction rather than significance — the burden was on the panel to exceed them and it does not
 exceed them at all. And dFSPE-M inherits FSPE's background, whose per-protein sampling variance
 § 3.1.1 measures at up to 0.345 on a redraw, so P1 is a sign test over quantities each of which is
-one draw. **P6, the alignment baseline that would settle whether a PSSM does this as well, is unrun.**
+one draw. **P6, the alignment baseline: an alignment reproduces both verdicts.** A position-specific scoring
+matrix from a `jackhmmer` search of Swiss-Prot, reduced identically on the same positions, agrees with
+the model on **direction and not magnitude** (Pearson 0.357 over 19 proteins) and reproduces both
+results: its own P1 is 12 of 15 above zero at *p* = 0.0176, and on P2's comparison it fails in the
+same direction and by more, panel +1.46 against controls +2.96. The preregistration's own words apply:
+*"a multiple sequence alignment does this as well as a protein language model"*. ⚠️ Recruitment depth
+varies from 4 rows to 276 and the three panel proteins at or below zero have mean column depths of 37,
+2 and 3, so those rows are closer to unmeasured than to measured.
 
 ---
 
