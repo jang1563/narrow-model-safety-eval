@@ -1,0 +1,321 @@
+{
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "arm": "mean_res",
+  "seeds": 200,
+  "calibration_n": 118,
+  "pool_n": 8258,
+  "pool_distinct_names": 3407,
+  "contaminant_dropped": "Q8X739",
+  "conformal_k": {
+    "0.05": 5,
+    "0.01": 1
+  },
+  "conformal_guarantee": {
+    "0.05": 0.04201680672268908,
+    "0.01": 0.008403361344537815
+  },
+  "per_class": {
+    "adp_ribosyl_ab_toxin": {
+      "n": 7,
+      "alpha_0.05": {
+        "quantile_mean": 0.9978571428571429,
+        "conformal_mean": 0.9892857142857143,
+        "delta_pts": -0.8571428571428563
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.9371428571428573,
+        "conformal_mean": 0.79,
+        "delta_pts": -14.714285714285724
+      }
+    },
+    "bacteriocin": {
+      "n": 15,
+      "alpha_0.05": {
+        "quantile_mean": 0.8663333333333335,
+        "conformal_mean": 0.8490000000000002,
+        "delta_pts": -1.7333333333333312
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.8136666666666668,
+        "conformal_mean": 0.7876666666666668,
+        "delta_pts": -2.599999999999991
+      }
+    },
+    "beta_lactamase": {
+      "n": 14,
+      "alpha_0.05": {
+        "quantile_mean": 0.20678571428571424,
+        "conformal_mean": 0.13928571428571426,
+        "delta_pts": -6.749999999999997
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.040357142857142855,
+        "conformal_mean": 0.008214285714285714,
+        "delta_pts": -3.214285714285714
+      }
+    },
+    "clostridial_neurotoxin": {
+      "n": 6,
+      "alpha_0.05": {
+        "quantile_mean": 1.0,
+        "conformal_mean": 1.0,
+        "delta_pts": 0.0
+      },
+      "alpha_0.01": {
+        "quantile_mean": 1.0,
+        "conformal_mean": 0.9991666666666668,
+        "delta_pts": -0.08333333333332416
+      }
+    },
+    "contact_dependent_inhibition": {
+      "n": 4,
+      "alpha_0.05": {
+        "quantile_mean": 0.74,
+        "conformal_mean": 0.72625,
+        "delta_pts": -1.375000000000004
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.69375,
+        "conformal_mean": 0.6325,
+        "delta_pts": -6.125000000000003
+      }
+    },
+    "cry_insecticidal": {
+      "n": 22,
+      "alpha_0.05": {
+        "quantile_mean": 0.8179545454545454,
+        "conformal_mean": 0.7240909090909091,
+        "delta_pts": -9.386363636363626
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.4354545454545455,
+        "conformal_mean": 0.22045454545454543,
+        "delta_pts": -21.500000000000004
+      }
+    },
+    "phage_peptidoglycan_hydrolase": {
+      "n": 32,
+      "alpha_0.05": {
+        "quantile_mean": 0.12140625,
+        "conformal_mean": 0.07265625,
+        "delta_pts": -4.874999999999999
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.01390625,
+        "conformal_mean": 0.00296875,
+        "delta_pts": -1.09375
+      }
+    },
+    "pore_forming_cytolysin": {
+      "n": 7,
+      "alpha_0.05": {
+        "quantile_mean": 0.9785714285714286,
+        "conformal_mean": 0.9235714285714286,
+        "delta_pts": -5.500000000000005
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.67,
+        "conformal_mean": 0.3192857142857143,
+        "delta_pts": -35.07142857142858
+      }
+    },
+    "rip_rrna_glycosidase": {
+      "n": 7,
+      "alpha_0.05": {
+        "quantile_mean": 0.9578571428571427,
+        "conformal_mean": 0.8921428571428571,
+        "delta_pts": -6.571428571428561
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.7228571428571428,
+        "conformal_mean": 0.4842857142857143,
+        "delta_pts": -23.857142857142843
+      }
+    },
+    "superantigen_enterotoxin": {
+      "n": 7,
+      "alpha_0.05": {
+        "quantile_mean": 0.967857142857143,
+        "conformal_mean": 0.9,
+        "delta_pts": -6.785714285714295
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.6264285714285713,
+        "conformal_mean": 0.3592857142857143,
+        "delta_pts": -26.7142857142857
+      }
+    },
+    "t3ss_effector_apparatus": {
+      "n": 10,
+      "alpha_0.05": {
+        "quantile_mean": 0.795,
+        "conformal_mean": 0.779,
+        "delta_pts": -1.6000000000000014
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.703,
+        "conformal_mean": 0.55,
+        "delta_pts": -15.299999999999992
+      }
+    },
+    "virulence_associated_non_toxin": {
+      "n": 10,
+      "alpha_0.05": {
+        "quantile_mean": 0.33149999999999996,
+        "conformal_mean": 0.22750000000000004,
+        "delta_pts": -10.399999999999993
+      },
+      "alpha_0.01": {
+        "quantile_mean": 0.139,
+        "conformal_mean": 0.08899999999999998,
+        "delta_pts": -5.000000000000003
+      }
+    }
+  },
+  "false_positives": {
+    "0.05": {
+      "control": {
+        "quantile": {
+          "mean": 0.058755937755937765,
+          "ci": [
+            0.05592547713725547,
+            0.06158639837462006
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": 0.8755937755937762,
+          "excludes_nominal": true
+        },
+        "conformal": {
+          "mean": 0.04320664414414414,
+          "ci": [
+            0.04073623114575575,
+            0.045677057142532534
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": -0.6793355855855859,
+          "excludes_nominal": false
+        }
+      },
+      "shift": {
+        "quantile": {
+          "mean": 0.07847491321546783,
+          "ci": [
+            0.07555797068992377,
+            0.08139185574101189
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": 2.8474913215467827,
+          "excludes_nominal": true
+        },
+        "conformal": {
+          "mean": 0.05964256882215226,
+          "ci": [
+            0.057143439381543974,
+            0.06214169826276055
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": 0.964256882215226,
+          "excludes_nominal": true
+        }
+      },
+      "shift_dedup": {
+        "quantile": {
+          "mean": 0.0961620682907739,
+          "ci": [
+            0.09223581729873563,
+            0.10008831928281216
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": 4.616206829077389,
+          "excludes_nominal": true
+        },
+        "conformal": {
+          "mean": 0.07123397906271402,
+          "ci": [
+            0.06791633928044147,
+            0.07455161884498657
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": 2.1233979062714017,
+          "excludes_nominal": true
+        }
+      }
+    },
+    "0.01": {
+      "control": {
+        "quantile": {
+          "mean": 0.01988503276003276,
+          "ci": [
+            0.0180767238526482,
+            0.021693341667417317
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": 0.9885032760032759,
+          "excludes_nominal": true
+        },
+        "conformal": {
+          "mean": 0.008344645782145782,
+          "ci": [
+            0.007155740662071754,
+            0.00953355090221981
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": -0.16553542178542185,
+          "excludes_nominal": false
+        }
+      },
+      "shift": {
+        "quantile": {
+          "mean": 0.03171480180834746,
+          "ci": [
+            0.03006369537659827,
+            0.03336590824009665
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": 2.1714801808347457,
+          "excludes_nominal": true
+        },
+        "conformal": {
+          "mean": 0.01724312787599903,
+          "ci": [
+            0.0157568256756558,
+            0.01872943007634226
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": 0.724312787599903,
+          "excludes_nominal": true
+        }
+      },
+      "shift_dedup": {
+        "quantile": {
+          "mean": 0.03607560414832208,
+          "ci": [
+            0.03407630018119269,
+            0.03807490811545147
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": 2.607560414832208,
+          "excludes_nominal": true
+        },
+        "conformal": {
+          "mean": 0.0196612366696018,
+          "ci": [
+            0.01801364126131203,
+            0.021308832077891568
+          ],
+          "n_seeds": 200,
+          "overshoot_pts": 0.9661236669601799,
+          "excludes_nominal": true
+        }
+      }
+    }
+  },
+  "conformal_holds_in_control": true,
+  "arms_on_disk": [
+    "canonical",
+    "esm2_35M",
+    "mean_res"
+  ],
+  "single_arm_provisional": false,
+  "verdict": "conformal HOLDS in the exchangeable pool-to-pool control, so the implementation is sound; under panel-to-pool distribution shift it exceeds nominal at ['5%', '1%']. Calibration stayed at the published 118, so the per-class figures above are directly comparable to the published table, unlike src/48's. Replicated across 3 arms (canonical, esm2_35M, mean_res), so criterion 7 is met."
+}

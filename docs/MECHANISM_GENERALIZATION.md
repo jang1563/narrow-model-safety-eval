@@ -1407,6 +1407,66 @@ it from a single-arm effect**, and § 10.6's rule exists to stop exactly that. W
 first half: margin's ordering holds across fifteen reductions as well as fourteen arms, which is about
 the *diagnosis* and not about a fix.
 
+#### 9.1.5 🔑 The test § 8 needed, run: its mechanism is real, small, and specific to the reduction that gains
+
+`src/76_pool_reduction_embed.py` (165 min, 8,259 proteins, gate 4.05e-05 against the published pool
+embedding) and `src/49` on four arms. This answers the question § 9.1.2's retraction left open, and it
+answers the **prediction frozen there before the embedding finished** — which turns out to be half right,
+and right for the wrong reason.
+
+| calibrate on the panel's 118, test on the 8,258-protein pool, nominal 5%, 200 seeds | `np.quantile` | conformal | by distinct name |
+|---|---|---|---|
+| canonical, as published in § 2.6.1 | 7.867% [7.57, 8.16] | 5.978% [5.73, 6.23] | 9.640% |
+| **`mean_res`**, the control | **7.847% [7.56, 8.14]** | **5.964% [5.71, 6.21]** | **9.616%** |
+| **`win_best25`** | 8.000% [7.76, 8.24] | **6.479% [6.27, 6.69]** | 9.374% |
+| `win_best9` | **5.746% [5.53, 5.96]** | **4.300% [4.13, 4.47]** | **6.554%** |
+| `win_max9` | 7.193% [6.90, 7.48] | 5.436% [5.18, 5.69] | 8.806% |
+
+🟢 **The control is sound.** `mean_res` reproduces the published canonical arm to within **0.02 points**
+on all three figures, which also retires the two-means worry of § 9.1.4 for out-of-sample rates: whether
+`<cls>` and `<eos>` are averaged in makes no difference here either.
+
+##### 🔑 The frozen prediction, scored
+
+It said `win_best25`'s rate would be **worse**, for two reasons. **The first is confirmed and the second
+is refuted.**
+
+🟢 **§ 8's mechanism is real.** `win_best25` is worse on the conformal estimator — **5.964% → 6.479%,
++0.52 points, intervals disjoint** — indistinguishable on `np.quantile` (+0.15, overlapping) and slightly
+better by distinct name (−0.24). So the effect exists, it is **small**, and it is **estimator-dependent**.
+
+🔴 **The second reason was wrong.** I argued that a representation separating less well in panel would
+overshoot a nominal budget by more. It does not: `win_best9` has the **lowest** in-panel AUROC of the four
+(**0.9470**) and the **best** out-of-sample calibration by a wide margin (−2.10, −1.66, −3.06 points, all
+disjoint), while `win_max9` has the **highest** (0.9735) and also beats the control. **In-panel
+separability does not predict out-of-sample overshoot, and can run the opposite way.**
+
+##### 🔴 And the two arms that "improve" the rate have not improved the screen
+
+This is the part that matters, and it would have been easy to report as a win on the project's
+worst-scoring criterion. In § 10.8's own deployment terms — 10,000 sequences, a hazard rate of one in a
+thousand, recall taken from the v3 panel mean:
+
+| | conformal FPR | v3 recall | alerts | real hits | **precision** |
+|---|---|---|---|---|---|
+| `mean_res` | 5.96% | 73.1% | 603 | 7.3 | **1.2%** |
+| `win_best25` | 6.48% | 63.1% | 654 | 6.3 | **1.0%** |
+| `win_best9` | 4.30% | 54.0% | 435 | 5.4 | **1.2%** |
+| `win_max9` | 5.44% | 69.5% | 550 | 6.9 | **1.3%** |
+
+🔴 **Precision is flat at 1.0 to 1.3% across all four.** `win_best9` buys its 1.7-point FPR improvement
+with **19 points of recall** — 603 alerts and 7.3 real hits become 435 and 5.4. That is a move **along the
+same ROC curve**, not a better one, and the same effect is available by raising the threshold on
+`mean_res`. **A reduction that lowers the false-positive rate and the recovery together has not improved
+calibration.**
+
+🔑 **Which leaves one coherent reading, and it is § 8's.** `win_best25` is the **only** arm whose
+out-of-sample rate rises, and it is the **only** one that raises recovery on the two classes the probe
+fails (§ 9.1.3). It bought recovery and paid in the negatives' scores, which is § 8's mechanism stated
+exactly. The bill, in deployment terms: **+51 alerts per 10,000 screened and precision 1.2% → 1.0%**,
+against +19.5 points on beta-lactamase and +15.0 on the phage class. ⚠️ Both sides of that trade are on
+ESM-2 650M only (§ 9.1.4), so it is not a recommendation.
+
 ### 9.2 Strictness: where each class stops being recoverable
 
 `src/03f_coverage_strictness.py` sweeps the false-positive budget and reports **s90**, the strictest

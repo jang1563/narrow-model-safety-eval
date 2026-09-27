@@ -4076,3 +4076,73 @@ precision is set by the **smaller** group, which is the panel and cannot grow. *
 both aimed at n_benign, both limited by n_panel.** What either would actually need is more panel proteins
 carrying uniform, UniProt-confirmed catalytic annotation — one resource, two blocked tests, and it was
 never the thing being bought.
+
+---
+
+## 2026-09-28 (forty-fifth entry) — The test § 8 needed: its mechanism is real, my reason for expecting it was wrong, and two "improvements" are not improvements
+
+Entry forty-three retracted the claim that § 8's fixed-budget objection had been answered, because the
+figure cited (0.0656) is 4/61 by construction. § 9.1.2 then froze a prediction before the pool embedding
+finished — commit `84dca68` carries the timestamp — and this is it scored.
+
+`src/76` embedded all 8,259 pool proteins under four reductions in 165 minutes, gate **4.05e-05** against
+the published pool embedding (tolerance 5e-5, so it cleared and not by much — float32 accumulation across
+runs, recorded because it is close). `src/49` then measured the rate on each with the published
+118-negative calibration split.
+
+| nominal 5%, 200 seeds | `np.quantile` | conformal | by distinct name |
+|---|---|---|---|
+| canonical, § 2.6.1 as published | 7.867% | 5.978% | 9.640% |
+| **`mean_res`**, the control | **7.847%** | **5.964%** | **9.616%** |
+| **`win_best25`** | 8.000% | **6.479%** | 9.374% |
+| `win_best9` | 5.746% | 4.300% | 6.554% |
+| `win_max9` | 7.193% | 5.436% | 8.806% |
+
+🟢 The control reproduces the published arm to **0.02 points** on all three, which also retires § 9.1.4's
+two-means worry for out-of-sample rates.
+
+### 🟢 Half the prediction holds — § 8's mechanism is real
+
+`win_best25` is worse on the conformal estimator, **5.964% → 6.479%, +0.52 points, intervals disjoint**.
+Indistinguishable on `np.quantile` (+0.15, overlapping) and slightly better by distinct name (−0.24). So
+the effect **exists, is small, and is estimator-dependent** — which is exactly why 0.0656 could not have
+shown it and why the retraction was right.
+
+### 🔴 The other half is refuted, and it was my reasoning, not the data
+
+I predicted the rise partly because *"a representation that separates less well overshoots a nominal
+budget by more."* It does not. `win_best9` has the **lowest** in-panel AUROC of the four (0.9470) and the
+**best** out-of-sample calibration by a wide margin (−2.10, −1.66, −3.06 points, all disjoint);
+`win_max9` has the **highest** (0.9735) and also beats the control. **In-panel separability does not order
+the out-of-sample rates at all.** Pinned as such in claim 90, so the refuted reason cannot quietly return.
+
+### 🔴 And the two lower rates are not improvements, which was the easy mistake here
+
+`win_best9` cutting the out-of-sample rate from 5.96% to 4.30% on the project's **worst-scoring
+criterion** is exactly the shape of thing that gets reported as a win. It is not one. In § 10.8's own
+deployment terms — 10,000 screened, one hazard in a thousand, recall from the v3 panel mean:
+
+| | conformal FPR | v3 recall | alerts | real hits | **precision** |
+|---|---|---|---|---|---|
+| `mean_res` | 5.96% | 73.1% | 603 | 7.3 | **1.21%** |
+| `win_best25` | 6.48% | 63.1% | 654 | 6.3 | **0.97%** |
+| `win_best9` | 4.30% | 54.0% | 435 | 5.4 | **1.24%** |
+| `win_max9` | 5.44% | 69.5% | 550 | 6.9 | **1.26%** |
+
+🔴 **Precision is flat at 0.97 to 1.26% across all four.** `win_best9` buys 1.7 points of FPR with **19
+points of recall**: 603 alerts and 7.3 real hits become 435 and 5.4. That is a move **along the same ROC
+curve**, obtainable by raising the threshold on `mean_res` and requiring no new reduction at all. **A
+change that lowers the false-positive rate and the recovery together has not improved calibration**, and
+reporting it as a repair of criterion 1 would have been wrong in the same way the 0.0656 claim was wrong:
+a number that cannot distinguish what it is being used to distinguish.
+
+### 🔑 What survives is § 8's reading, and it is coherent
+
+`win_best25` is the **only** arm whose out-of-sample rate rises, and the **only** one that raises recovery
+on the two classes the probe fails. It bought recovery and paid in the negatives' scores — § 8's mechanism
+stated exactly, now measured rather than asserted. The bill: **+51 alerts per 10,000 screened, precision
+1.21% → 0.97%**, against +19.5 points on beta-lactamase and +15.0 on the phage class.
+
+⚠️ Both sides of that trade are ESM-2 650M only (§ 9.1.4), so it remains a measurement and not a
+recommendation. And the flat precision column is the honest summary of this whole line of work: **four
+reductions, three panels, two arms, and no configuration yet moves the screen's precision.**

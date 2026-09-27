@@ -728,6 +728,66 @@ def a1_negative_set():
     }
 
 
+def out_of_sample_reductions():
+    """The out-of-sample rate for the reductions: section 8's mechanism, measured at last.
+
+    \U0001f534 Three things are pinned together because any one alone misleads. win_best25's rate IS
+    worse on the conformal estimator, which is section 8's mechanism. Two other reductions have LOWER
+    rates and that is not an improvement — their recall falls with them and precision is flat, so they
+    moved along the same ROC curve. And in-panel separability does not order the out-of-sample rates,
+    which refutes the second half of the prediction frozen in section 9.1.2.
+    """
+    R = "../results/v3/"
+    arms = ("canonical", "mean_res", "win_best25", "win_best9", "win_max9")
+    fp, au, rec = {}, {}, {}
+    for arm in arms:
+        d = j(f"{R}external_test_partition_{arm}.json")
+        if d is None:
+            return None
+        b = d["false_positives"]["0.05"]
+        fp[arm] = {"q": b["shift"]["quantile"], "c": b["shift"]["conformal"],
+                   "d": b["shift_dedup"]["quantile"]}
+        lf = j(f"{R}lomo_results.json") if arm == "canonical" else \
+            j(f"{R}lomo_results_esm2_650M_{arm}.json")
+        if lf is None:
+            return None
+        au[arm] = round(lf["baseline_auroc"][0], 4)
+        v = [x["flagged_95_mean"] for x in lf["leave_one_mechanism_out"].values()
+             if x.get("flagged_95_mean") is not None]
+        rec[arm] = round(sum(v) / len(v), 4)
+
+    def disjoint(a, b, k):
+        x, y = fp[a][k], fp[b][k]
+        return bool(y["ci"][0] > x["ci"][1] or x["ci"][0] > y["ci"][1])
+
+    # section 10.8's deployment arithmetic: 10,000 screened, one hazard in a thousand
+    def precision(arm):
+        hz, real = 10.0, 10.0 * rec[arm]
+        return round(real / (real + (10000 - hz) * fp[arm]["c"]["mean"]), 4)
+
+    return {
+        # the control reproduces the published arm, so the comparison has a floor
+        "control_vs_published": {k: round(abs(fp["mean_res"][k]["mean"]
+                                             - fp["canonical"][k]["mean"]), 5)
+                                 for k in ("q", "c", "d")},
+        "conformal": {a: round(fp[a]["c"]["mean"], 5) for a in arms},
+        "quantile": {a: round(fp[a]["q"]["mean"], 5) for a in arms},
+        "win25_conformal_worse": fp["win_best25"]["c"]["mean"] > fp["mean_res"]["c"]["mean"],
+        "win25_conformal_disjoint": disjoint("mean_res", "win_best25", "c"),
+        "win25_quantile_disjoint": disjoint("mean_res", "win_best25", "q"),
+        # the arms whose rate is LOWER than the control's, which is not an improvement
+        "lower_than_control": sorted(a for a in ("win_best25", "win_best9", "win_max9")
+                                     if fp[a]["c"]["mean"] < fp["mean_res"]["c"]["mean"]),
+        "auroc": au, "recall": rec,
+        "precision": {a: precision(a) for a in arms},
+        # in-panel AUROC does not order the out-of-sample rates
+        "auroc_orders_fpr": (sorted(("mean_res", "win_best25", "win_best9", "win_max9"),
+                                    key=lambda a: -au[a])
+                             == sorted(("mean_res", "win_best25", "win_best9", "win_max9"),
+                                       key=lambda a: fp[a]["c"]["mean"])),
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -2970,6 +3030,25 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("section 8's mechanism is real for the reduction that gains, and the lower rates are not gains",
+     out_of_sample_reductions,
+     lambda v: v is None or (
+         # the control reproduces the published canonical arm on all three figures
+         all(x < 3e-4 for x in v["control_vs_published"].values())
+         # win_best25's conformal rate is worse and the intervals are disjoint; quantile is not
+         and v["win25_conformal_worse"] and v["win25_conformal_disjoint"]
+         and not v["win25_quantile_disjoint"]
+         and v["conformal"]["win_best25"] > 0.064 and v["conformal"]["mean_res"] < 0.060
+         # two arms have LOWER rates, and precision is flat across all of them, so nothing improved
+         and v["lower_than_control"] == ["win_best9", "win_max9"]
+         and max(v["precision"].values()) - min(v["precision"].values()) < 0.005
+         # win_best9 pays for its lower rate in recall
+         and v["recall"]["win_best9"] < v["recall"]["mean_res"] - 0.15
+         # and in-panel AUROC does not order the out-of-sample rates, refuting the frozen reason
+         and not v["auroc_orders_fpr"]
+         and v["auroc"]["win_best9"] < v["auroc"]["mean_res"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "🔴 **Precision is flat at 1.0 to 1.3% across all four.**"}, []),
     ("A1's hard negative set is 4,218 records but 565 distinct virulence factors",
      a1_negative_set,
      lambda v: v is None or (
