@@ -3187,3 +3187,72 @@ No published figure changes: recovery, margin and every interval are untouched. 
 is reported alongside margin rather than replacing any comparison, and § 9's baseline list is extended
 rather than rewritten. Reproducing the paper's perplexity-aligned axis, and asking the same question of
 FSPE, are named and not attempted.
+
+---
+
+## 2026-09-27 (thirty-third entry) — A benchmark attributed to the wrong paper, and three papers the survey did not have
+
+Prompted by an instruction not to judge prior work from keywords or summaries. Acting on it meant reading
+the primary sources for the external numbers this project compares itself against, and the first one
+checked was wrong.
+
+### 🔴 The correction
+
+§ 11 of `docs/MECHANISM_GENERALIZATION.md` said, for as long as the sentence existed:
+
+> DTVF (ProtT5 + LSTM/CNN) reports AUROC 0.92 on the standard 576/576 virulence benchmark.
+
+| | what the paper actually says |
+|---|---|
+| **AUROC 0.92** | ✅ DTVF reports **0.9208** ([Genes 15(9) 1170, 2024](https://pmc.ncbi.nlm.nih.gov/articles/PMC11430887/)) |
+| **576/576** | ❌ **DeepVF's** partition ([BiB 22(3) bbaa125, 2021](https://academic.oup.com/bib/article/22/3/bbaa125/5864586)): "576 VFs and 576 non-VFs were randomly selected as the independent test dataset" |
+| **the join** | DTVF reuses DeepVF's 3,576 / 4,910 pool and cites it as ref [9], but reports on "an independent test set" and **never states its split** |
+
+So the sentence was an inference presented as a citation. It is a reasonable inference — same pool, same
+reference — and that is exactly why it survived: **a plausible join between two true facts reads like a
+fact.** § 11 now names DeepVF as the partition's author, gives its own AUC 0.896, gives DTVF's 0.9208, and
+says in the text that the split is an inference.
+
+⚠️ **Nothing in this repository could have caught this.** Every one of the other 80 claims recomputes a
+number from an artifact; an external citation has no artifact, so the audit gate had no purchase on it.
+Claim 81 (`external_baseline_numbers`) now pins each figure to the paper it was read from and forbids the
+old sentence in both spellings. It still cannot verify a citation against its source — only a reader can —
+but it can stop the three papers' numbers from re-merging.
+
+### 🔑 And the comparison got harder, which is the right direction
+
+**DeepVIC** ([Bioinformatics Advances 6(1) vbag237, 2026](https://academic.oup.com/bioinformaticsadvances/article/6/1/vbag237/8762933))
+reports **AUROC 0.954** on a 13,384-sequence holdout from **33,456 VFs**. § 11's "not a better classifier"
+disclaimer was pointing at a four-year-old number when a larger and better one existed, so the disclaimer
+was true but weak. It now cites all three.
+
+### What reading the sources turned up that the survey did not have
+
+Three entries added to `research/05_v2_related_work_survey.md`, § 2.4 and § 5.0:
+
+- 🔑 **DeepVIC carries an external class axis: 14 VFDB categories over 12,989 annotated VFs**, against this
+  project's eleven-to-twelve hand-curated classes — the binding limitation § 1.1b-ter names. And it runs
+  **no leave-one-category-out evaluation**; its generalization check is recall on two organism-specific
+  positive-only sets (71.4%, 45/63). The largest virulence-factor classifier published has the class axis
+  this project needs and does not ask the class-level question. Its repository is MIT inference code with
+  **no data, labels or weights**, so the axis comes from VFDB directly (`setA_pro` 1.3 MB gzipped,
+  `VFs.xls` for the categories, last updated 2026-09-25, no license stated).
+- **VFUSE** ([arXiv 2606.10080](https://arxiv.org/html/2606.10080), June 2026), and its earlier form
+  **SAEBER** (Apart Research hackathon, April 2026, same author): Matryoshka BatchTopK SAEs on
+  RFDiffusion3 / RoseTTAFold3 activations to audit a protein *design* model for hazard features. AUROC
+  **0.877 ± 0.025** random split, **0.817 ± 0.102** homology-clustered. This is the nearest neighbour in
+  intent found so far — and its control is member-level homology clustering, not a held-out mechanism
+  class, on n = 275 pairs. The class-level question stays unoccupied.
+- ⚠️ **VFUSE draws its positives from SafeProtein with no route to them.** No data-availability statement,
+  `github.com/jigang-fan/SafeProtein` still 404. Three incompatible n now exist for one unreleased
+  dataset: the paper's **429**, VFUSE's **275 pairs**, and the **66** identities this project recovered
+  from the paper's text.
+
+### The part that generalises past this entry
+
+§ 10.6.2, § 10.6.3 and § 2.6.2 still carry **zero** citations between them, and
+`docs/DETECTOR_EVALUATION_SUMMARY.md` carries none at all. Entry thirty-two found a paper that produced a
+real test of a headline result; this entry found a misattributed benchmark and a class axis that answers
+the project's own stated limitation. Both came from the same activity, and neither came from introspection.
+**Reading the literature has been the highest-yield thing done in the last two days, and the survey is
+still not on the audited surface.**

@@ -345,6 +345,46 @@ correctly elsewhere: FHS is an **exploratory** metric using a **locally trained*
 
 ---
 
+### 2.4 🔴 VFUSE / SAEBER — SAEs for virulence features, the nearest neighbour in intent, found 2026-09-27
+
+| | |
+|---|---|
+| **arXiv** | [2606.10080](https://arxiv.org/html/2606.10080), 8 June 2026, cs.LG |
+| **Earlier form** | ["SAEBER: Sparse Autoencoders for Biological Entity Risk"](https://www.lesswrong.com/posts/k2XgqjuQyuawQF2bi/saeber-sparse-autoencoders-for-biological-entity-risk-1), 28 April 2026, Apart Research AIxBIO hackathon — same author, same setup |
+
+**What it does.** Matryoshka BatchTopK SAEs (dictionary 12,288 = 16× expansion, K = 80) on
+**diffusion-transformer** activations — RFDiffusion3 blocks 6/8/12 and RoseTTAFold3 blocks 12/16 — to
+audit a protein *design* model for hazard-associated features, with a catalog of those features and SAE
+checkpoints released.
+
+**Numbers.** RFD3 block 12: AUROC **0.877 ± 0.025** on a random split, **0.817 ± 0.102** under
+homology-clustered CV (mmseqs2, 30% identity); best single feature 0.840 at q < 10⁻¹³; SAE over raw
+activations **+0.054** at that block.
+
+🔑 **Why this is the nearest neighbour in intent and still not the same study.** It is the same question —
+is hazard linearly readable inside a protein model's internals — asked of **structure-generative
+diffusion transformers** where this project asks it of **sequence encoders**, and answered with **SAE
+features** where this project uses embedding probes. § 2.1 of this survey records InterPLM-style SAE work
+as planned for v2 and not shipped; this is the paper that shipped that idea in the hazard direction, on
+different models.
+
+🔑 **What it does not do is the class-level question.** Its generalization control is homology clustering
+at 30% identity — a *member*-level split, the same family of control as § 10.3's — not a held-out
+mechanism class. Its n is **275 length-matched pairs** (220 train / 55 test), and the honest
+homology-clustered interval is ±0.102, four times the random-split spread. So leave-one-mechanism-out at
+class level, margin as a pre-hoc predictor of which class fails, and the prediction/repair dissociation
+remain unoccupied.
+
+⚠️ **And it draws its positives from SafeProtein, with no route to them.** "We draw virulent sequences
+from SafeProtein (Fan et al., 2025)" is the whole of the sourcing, there is no data-availability
+statement, and `github.com/jigang-fan/SafeProtein` is still 404 — see § 1.1 and
+`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md`. This is now the **second** group reporting results on an
+unreleased benchmark: they state 275 pairs where the paper claims 429 proteins, and this project
+recovered 66 identities from the paper's text. Three different n from one unpublished dataset is itself
+worth recording.
+
+---
+
 ## 3. Provenance, Watermarking & Traceability
 
 ### 3.1 FoldMark (bioRxiv 2024 → PMC 2025)
@@ -421,6 +461,41 @@ correctly elsewhere: FHS is an **exploratory** metric using a **locally trained*
 ---
 
 ## 5. Toxin Classification & Hazard Screening (Sequence-Level)
+
+### 5.0 🔴 The virulence-factor classifier line, read properly — DeepVF → DTVF → DeepVIC, 2026-09-27
+
+This section did not exist while `docs/MECHANISM_GENERALIZATION.md` § 11 was citing one member of it, and
+that is how the citation drifted. Added after reading all three papers rather than their abstracts.
+
+| | dataset | held-out test | number | class axis |
+|---|---|---|---|---|
+| **DeepVF** ([BiB 22(3) bbaa125, 2021](https://academic.oup.com/bib/article/22/3/bbaa125/5864586)) | 3,576 VFs / 4,910 non-VFs | **576 VFs / 576 non-VFs** | AUC **0.896** | none |
+| **DTVF** ([Genes 15(9) 1170, 2024](https://pmc.ncbi.nlm.nih.gov/articles/PMC11430887/)) | reuses DeepVF's pool, cites it as ref [9] | "an independent test set", **split not stated** | AUROC **0.9208** | none |
+| **DeepVIC** ([Bioinform. Adv. 6(1) vbag237, 2026](https://academic.oup.com/bioinformaticsadvances/article/6/1/vbag237/8762933)) | **33,456 VFs** from PATRIC / VICTORS / VFDB / UniProtKB | 13,384 sequences | AUROC **0.954** | **14 VFDB categories, 12,989 annotated VFs** |
+
+⚠️ **The 576/576 attribution.** DeepVF built that partition; DTVF reports 0.9208 on "an independent test
+set" and never says it is DeepVF's, though it does state the shared 3,576/4,910 pool and cite DeepVF for
+it. So "DTVF gets 0.92 on the 576/576 benchmark" is an inference. It is a reasonable one and it was
+written in this repository as a fact for as long as the sentence existed. Corrected 2026-09-27,
+corrections entry thirty-three.
+
+🔑 **DeepVIC is the most useful paper in this survey for what to do next, and not because of its AUROC.**
+It carries **14 VFDB categories over 12,989 annotated VFs** — an *external, published class axis* at
+larger class count than this project's eleven-to-twelve, which is the binding limitation named in
+§ 1.1b-ter. And it runs **no leave-one-category-out evaluation**: its generalization test is recall on two
+organism-specific positive-only sets (71.4%, 45/63 on *Lactococcus*). So the largest and newest
+virulence-factor classifier has the class axis this project needs and does not ask the class-level
+question this project exists to ask.
+
+⚠️ **Its data is not in its repository.** [github.com/ansontwk/DeepVIC](https://github.com/ansontwk/DeepVIC)
+is MIT-licensed inference code — scripts, a GUI, one example FASTA, and instructions to supply your own
+ProtBert-BFD and UniRef50 — with no sequences, no labels and no weights. The class axis is therefore
+reachable through **VFDB directly** ([mgc.ac.cn/VFs](http://www.mgc.ac.cn/VFs/download.htm), `setA_pro`
+1.3 MB gzipped for experimentally verified VFs, `setB_pro` 5.4 MB for the full set, `VFs.xls` carrying the
+category assignments, last updated 2026-09-25, **no license stated on the download page**) rather than
+through their release.
+
+---
 
 ### 5.1 BioLMTox — Fine-Tuned ESM-2 Toxin Classifier (bioRxiv 2024)
 

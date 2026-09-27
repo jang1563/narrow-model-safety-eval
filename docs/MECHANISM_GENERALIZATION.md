@@ -2830,9 +2830,19 @@ baseline, is worse than no baseline.
 
 ## 11. What this does not claim
 
-- **Not a better classifier.** DTVF (ProtT5 + LSTM/CNN) reports AUROC 0.92 on the standard 576/576
-  virulence benchmark. The numbers here are on a self-built panel and are **not comparable**; presenting
-  them as a win would be wrong.
+- **Not a better classifier**, and the comparison is to larger numbers than this section used to quote.
+  🔴 *Corrected 2026-09-27 after reading the primary sources; entry thirty-three of
+  `docs/DATA_CORRECTIONS.md`.* **DeepVF** ([Briefings in Bioinformatics 22(3) bbaa125,
+  2021](https://academic.oup.com/bib/article/22/3/bbaa125/5864586)) built the standard virulence-factor
+  benchmark — 3,576 VFs and 4,910 non-VFs, of which **576 VFs and 576 non-VFs** are held out as the
+  independent test set — and reports **AUC 0.896** on it. **DTVF** ([Genes 15(9) 1170,
+  2024](https://pmc.ncbi.nlm.nih.gov/articles/PMC11430887/), ProtT5 + LSTM/CNN) reuses that dataset and
+  reports **AUROC 0.9208**; it states the shared 3,576/4,910 pool and cites DeepVF for it, but **never
+  states its own split**, so "0.92 on the 576/576 benchmark" is an inference from DeepVF's construction
+  and is written here as one. Larger still: **DeepVIC** ([Bioinformatics Advances 6(1) vbag237,
+  2026](https://academic.oup.com/bioinformaticsadvances/article/6/1/vbag237/8762933)) reports **AUROC
+  0.954** on a 13,384-sequence holdout drawn from 33,456 VFs. The numbers here are on a self-built panel
+  of 234 and are **not comparable** to any of those; presenting them as a win would be wrong.
 - **Not novel on homology control.** Homology-clustered evaluation is established practice.
 - **Not a competence boundary, and the shape of the failure has changed.** §10.3 is the record of the
   **member**-level claim being preregistered, frozen and failing on two external panels. The **class**-level

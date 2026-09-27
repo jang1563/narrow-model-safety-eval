@@ -357,6 +357,41 @@ def flip_count():
             "esm2_corrected_rows": sorted(moved), "stale_columns": stale,
             "indeterminate": []}
 
+def external_baseline_numbers():
+    """The three external classifier numbers § 11 compares against, read back out of the document.
+
+    🔴 Added 2026-09-27, entry thirty-three. Every other claim in this file recomputes a number
+    from an artifact, which is exactly why the external ones drifted unnoticed: nothing in the
+    pipeline produces them, so nothing checks them. § 11 attributed "AUROC 0.92 on the standard
+    576/576 virulence benchmark" to DTVF for as long as the sentence existed. 0.92 is DTVF's
+    (0.9208); the 576/576 partition is DeepVF's, and DTVF never states its own split. The two were
+    joined because DTVF reuses DeepVF's 3,576/4,910 pool, which is a sound inference and was written
+    as a fact.
+
+    This cannot verify a citation against its source — only a reader can do that, and one did. What
+    it pins is that the numbers, the partition and the tool each stay attached to the paper they were
+    read from, so a later edit cannot re-merge them.
+    """
+    import re
+    text = (ROOT / "docs/MECHANISM_GENERALIZATION.md").read_text()
+    head = text.split("## 11. What this does not claim", 1)[1].split("\n- **Not novel", 1)[0]
+    flat = " ".join(head.split())
+    return {
+        # tool -> the figure § 11 attributes to it
+        "deepvf_auc": float(re.search(r"\*\*DeepVF\*\*.*?\*\*AUC (0\.\d+)\*\*", head, re.S).group(1)),
+        "dtvf_auroc": float(re.search(r"\*\*DTVF\*\*.*?\*\*AUROC (0\.\d+)\*\*", head, re.S).group(1)),
+        "deepvic_auroc": float(re.search(r"\*\*DeepVIC\*\*.*?\*\*AUROC\n?\s*(0\.\d+)\*\*", head, re.S).group(1)),
+        # the shared benchmark, named where it was actually built
+        "benchmark_pool": re.search(r"(3,576) VFs and (4,910) non-VFs", head).groups(),
+        "held_out": re.search(r"\*\*(576) VFs and (576) non-VFs\*\*", head).groups(),
+        "deepvic_holdout": re.search(r"(13,384)-sequence holdout drawn from (33,456)", head).groups(),
+        # the inference is labelled as one rather than asserted; flat() so a reflow of the
+        # paragraph cannot silently turn either check off
+        "split_inference_flagged": "**never states its own split**" in flat,
+        "panel_size_stated": "self-built panel of 234" in flat,
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -2598,6 +2633,18 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("the external classifier numbers stay attached to the papers they were read from",
+     external_baseline_numbers,
+     lambda v: (v["deepvf_auc"] == 0.896 and v["dtvf_auroc"] == 0.9208
+                and v["deepvic_auroc"] == 0.954
+                and v["benchmark_pool"] == ("3,576", "4,910") and v["held_out"] == ("576", "576")
+                and v["deepvic_holdout"] == ("13,384", "33,456")
+                and v["split_inference_flagged"] and v["panel_size_stated"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "so \"0.92 on the 576/576 benchmark\" is an inference from DeepVF's construction"},
+     # the sentence that attributed DeepVF's partition to DTVF, in both spellings it could take
+     ["DTVF (ProtT5 + LSTM/CNN) reports AUROC 0.92 on the standard 576/576",
+      "DTVF reports AUROC 0.92 on the standard 576/576"]),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.
