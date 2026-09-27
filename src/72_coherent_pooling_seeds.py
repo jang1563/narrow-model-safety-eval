@@ -45,6 +45,7 @@ def load_03x():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--panel", default="v2", choices=["v2", "v3"])
+    ap.add_argument("--arm", default="esm2_650M", choices=["esm2_650M", "esm2_35M", "esm2_150M"])
     ap.add_argument("--class", dest="cls_main", default="beta_lactamase",
                     help="the class the 14-reduction grid is compared on")
     ap.add_argument("--classes", default="",
@@ -72,7 +73,7 @@ def main():
     print("-" * len(hdr))
     out = {}
     for tag in TAGS:
-        suf = f"_esm2_650M_{tag}"
+        suf = f"_{a.arm}_{tag}"
         P = np.load(V2 / f"embeddings_positive_{a.panel}{suf}.npy")
         N = np.load(V2 / f"embeddings_negative_{a.panel}{suf}.npy")
         man = json.loads((V2 / f"embedding_manifest_{a.panel}{suf}.json").read_text())
@@ -122,7 +123,7 @@ def main():
     for cname in cost_classes:
         cost[cname] = {}
         for tag in ("mean_res", "win_best25"):
-            suf = f"_esm2_650M_{tag}"
+            suf = f"_{a.arm}_{tag}"
             P = np.load(V2 / f"embeddings_positive_{a.panel}{suf}.npy")
             N = np.load(V2 / f"embeddings_negative_{a.panel}{suf}.npy")
             man = json.loads((V2 / f"embedding_manifest_{a.panel}{suf}.json").read_text())
@@ -153,13 +154,16 @@ def main():
                                  "is the opposite of what section 9.1.1 warned about for local "
                                  "features"}
     res["panel"] = a.panel
-    (V2 / "coherent_pooling_seeds.json").write_text(json.dumps(res, indent=2) + "\n")
+    res["arm"] = a.arm
+    dest = V2 / ("coherent_pooling_seeds.json" if a.arm == "esm2_650M"
+                 else f"coherent_pooling_seeds_{a.arm}.json")
+    dest.write_text(json.dumps(res, indent=2) + "\n")
     print(f"\ncontrol mean_res: {ctl['mean_30seed'] * 100:.1f}% "
           f"[{ctl['ci95'][0] * 100:.1f}, {ctl['ci95'][1] * 100:.1f}]")
     print(f"beat it at 5 seeds: {res['beat_control_at_5_seeds']}")
     print(f"beat it at 30 seeds: {res['beat_control_at_30_seeds']}")
     print(f"and with an interval clear of the control's: {res['intervals_clear_of_control']}")
-    print(f"\nwrote {(V2 / 'coherent_pooling_seeds.json').relative_to(ROOT)}")
+    print(f"\nwrote {dest.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

@@ -3793,3 +3793,74 @@ the panel and the negative set differ.
 artifact, where it is **0.0595** — which is not a gate failure but beta-lactamase's own 5-versus-30-seed
 gap. The gate is only meaningful against `src/03b`'s five-seed run. Reading it from the wrong file would
 have pinned a number that means something else while still passing.
+
+---
+
+## 2026-09-27 (forty-first entry) — The window's gain is one arm. Its cost is every arm. And margin explains the cost, not the gain.
+
+Entry thirty-nine bounded the window result "v2 only, 650M only, label-free only". Entry forty closed the
+first and third. This closes the second, and it is the one that mattered.
+
+### 🔴 The gain does not survive a change of representation
+
+`src/69 --model` and `src/70 --arm` put the same fourteen reductions on **`esm2_35M`**, gated the same way
+(residue-only mean against the published `esm2_35M` artifact, 4.05e-06).
+
+| beta-lactamase, 30 seeds | ESM-2 **650M** | ESM-2 **35M** |
+|---|---|---|
+| `mean_res`, control | 15.5% [11.0, 19.9] | 16.9% [10.0, 23.8] |
+| **`win_best25`** | **35.0% [31.6, 38.4]** | **7.4% [4.7, 10.0]** |
+| best on that arm | `win_best25` | `win_max15` 21.7% [15.8, 27.5] |
+| intervals clear of the control | **1 of 14** | **0 of 14** |
+
+🔴 **On the 35M arm the reduction costs beta-lactamase 9.5 points and nothing clears its control.** The two
+controls are comparable — 16.9% against 15.5% — so this is not a dead representation, it is the same class
+at the same difficulty with the reduction failing to help. **What entry forty replicated was the panel: v2
+and v3 are both the 650M arm.** The representation had not been varied, and the write-up said so as a
+bound rather than a result, which is the only reason this is a closure and not a retraction.
+
+🔴 **The cost is general.** `win_best25` takes superantigen_enterotoxin 100% → **56.2%** (650M/v2),
+95.2% → **69.5%** (650M/v3) and 100% → **54.8%** (35M/v2), all three interval-disjoint. **The reduction
+reliably destroys the saturated classes everywhere and reliably helps on one arm.**
+
+⚠️ **This is the second time the same rule caught the same shape of thing.** § 10.6.4's typicality baseline
+reached −0.746 at *p* = 0.0034 on the canonical arm and **+0.021 at *p* = 0.53 on `esm2_35M`**. Twice now
+an interval-clean effect on ESM-2 650M has vanished on the second arm. **The rule that every geometric
+claim runs across representations is doing more work here than any single finding it has produced** — and
+both times it was the cheapest arm in the project that did the work.
+
+### Margin was the obvious mechanism and it explains the losses only
+
+`src/30 --reductions` — the same margin code that produced § 10.6.1's arm table, pointed at the
+reductions, writing its own artifact rather than a second implementation.
+
+🟢 **Margin's ordering survives re-pooling, which strengthens § 10.4.** Across fifteen reductions of one
+arm, Spearman(margin, recovery) runs **+0.536 to +0.941**, **14 of 15** significant at *p* < 0.05, and
+**12 of 15** put beta-lactamase at the margin floor. § 10.6 established that across fourteen model
+**arms**; it now also holds across fifteen **reductions** of a single arm — a second, different kind of
+variation.
+
+🔴 **But the gain is not a margin effect.** Change in beta-lactamase's margin against change in its
+30-seed recovery, over the fifteen reductions: Spearman **+0.270, permutation *p* = 0.166** — **not a
+result**. The pattern is asymmetric rather than absent: every reduction that drives the margin more than
+0.019 below the control's loses 9 to 15 points, while `win_best25` gains 19.5 with a margin change of
+**−0.0009**. **Preserving the margin is necessary for the gain and does not produce it**, since
+`win_max9` and `win_max15` also leave the margin intact and still lose 6.9 and 8.3 points.
+
+⚠️ Also worth recording: under `win_best5`, `win_best9` and `win_best25` beta-lactamase is **no longer the
+lowest-margin class** — the labelled virulence control is. That looked like the mechanism for about a
+minute. It is not: `win_best5` moves beta-lactamase off the margin floor and still loses 11.7 points.
+
+### A namespace collision I created, and the published pipeline it would have broken
+
+🔴 `src/70` writes `embeddings_<role>_<panel>_<tag>.npy` into the same directory as the model arms, and
+`src/30`'s `discover_arms` globs exactly that pattern. **The next run of `src/30` would have turned
+§ 10.6.1's ten-arm table into twenty-five**, silently, by counting fifteen re-poolings of one arm as
+fifteen arms. This is the same arm-versus-reduction distinction entry thirty-nine had to put back into the
+"only arm that clears alignment" sentence, arriving a second time through a glob.
+
+Excluded by prefix in both `src/30` and `src/41`, and **the published artifact was re-derived to confirm
+nothing moved**: 14 arms, identical verdict, identical per-arm numbers. The one difference is that
+`arms_embedded_but_unscored` gained `_esmc_600M_mp` — a real embedding pair with no `lomo_results`,
+produced by `src/56` after `src/30` last ran, and correctly reported. **Nothing was wrong; the list was
+simply stale, which is its own small argument for re-deriving artifacts rather than trusting them.**

@@ -69,6 +69,12 @@ NON_MEAN = {"_esm2_650M_max", "_esm2_650M_cls"}
 # smoke arm is a 150M sanity run; globbing for arms picked it up and turned the published
 # 12-of-14 into 12-of-15 until it was excluded, which the claims audit caught.
 SKIP_ARMS = ("smoke",)
+# 🔴 Added 2026-09-27 with src/70's reductions. Those write embeddings_<role>_<panel>_<tag>.npy
+# into the same directory as the model arms, so globbing for arms picked up fifteen re-poolings of
+# the ESM-2 650M arm and would have turned this table's ten arms into twenty-five. They are
+# REDUCTIONS of an arm, not arms — the same distinction § 9.1.2 had to put back into the
+# "only arm that clears alignment" sentence. Excluded by their own prefixes, which src/70 owns.
+REDUCTION_PREFIXES = ("_esm2_650M_dev_", "_esm2_650M_win_", "_esm2_650M_mean_res")
 
 
 def discover_arms(res, pv):
@@ -80,6 +86,8 @@ def discover_arms(res, pv):
     for pos in sorted(res.glob(f"embeddings_positive_{pv}*.npy")):
         suf = pos.name[len(f"embeddings_positive_{pv}"):-4]
         if any(s in suf.lower() for s in SKIP_ARMS):
+            continue
+        if any(suf.startswith(r) for r in REDUCTION_PREFIXES):
             continue
         need = [res / f"embeddings_negative_{pv}{suf}.npy",
                 res / f"embedding_manifest_{pv}{suf}.json",
@@ -111,13 +119,29 @@ def _spearman(x, y):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--panel", default="v2", choices=["v2", "v3"])
-    pv = ap.parse_args().panel
+    # 🔑 Added 2026-09-27. § 9.1.2 and § 9.1.3 found that a 25-residue-window reduction moves both
+    # unflaggable classes and costs the saturated ones, with no mechanism. Margin is this project's
+    # account of WHY a class fails, so the direct question is whether the reduction changes the
+    # margin. Same code path, same statistic, different arm set, separate artifact — reimplementing
+    # the margin computation next door is exactly how two versions of one number appear.
+    ap.add_argument("--reductions", action="store_true",
+                    help="score src/70's pooling reductions INSTEAD of the model arms, writing "
+                         "margin_across_reductions.json")
+    a = ap.parse_args()
+    pv = a.panel
     RES = RES_ROOT / pv
     mech = json.load(open(ROOT / f"data/annotations/mechanism_classes_{pv}.json"))
     cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
     rng = np.random.default_rng(0)
 
     ARMS, missing = discover_arms(RES, pv)
+    if a.reductions:
+        allsuf = [pos.name[len(f"embeddings_positive_{pv}"):-4]
+                  for pos in sorted(RES.glob(f"embeddings_positive_{pv}*.npy"))]
+        ARMS = [s for s in allsuf if any(s.startswith(r) for r in REDUCTION_PREFIXES)
+                and (RES / f"lomo_results{s}.json").exists()]
+        missing = [s for s in allsuf if any(s.startswith(r) for r in REDUCTION_PREFIXES)
+                   and not (RES / f"lomo_results{s}.json").exists()]
     base = json.load(open(RES / "lomo_results.json"))["leave_one_mechanism_out"]
     failures = sorted((c for c in base
                        if base[c]["flagged_95_mean"] < FAIL_AT and c != CONTROL_CLASS),
@@ -204,7 +228,8 @@ def main():
                    f"and its geometric phrasing has to be narrowed")
     print(f"\nverdict: {verdict}")
 
-    dest = RES / "margin_across_arms.json"
+    dest = RES / ("margin_across_reductions.json" if a.reductions
+                  else "margin_across_arms.json")
     json.dump({"panel": pv, "failure_classes": failures, "k": k, "perms": PERMS,
                "arms_embedded_but_unscored": missing,
                "note": ("v2 has one failure class, so per-arm chance is 1/9. v3's pair cannot "

@@ -127,6 +127,9 @@ def selftest():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--panel", default="v2", choices=["v2", "v3"])
+    # 🔑 --arm added 2026-09-27: the third bound entry thirty-nine left open. The tags carry the arm
+    # name, so esm2_35M's reductions can never be confused with the 650M ones src/03b already scored.
+    ap.add_argument("--arm", default="esm2_650M", choices=["esm2_650M", "esm2_35M", "esm2_150M"])
     ap.add_argument("--selftest", action="store_true",
                     help="run the planted-motif positive control and exit")
     ap.add_argument("--supervised", action="store_true",
@@ -137,16 +140,17 @@ def main():
     if a.selftest:
         return selftest()
     out = ROOT / "results" / a.panel
-    idx_path = out / f"residue_stack_index_{a.panel}.json"
+    sfx = "" if a.arm == "esm2_650M" else f"_{a.arm}"
+    idx_path = out / f"residue_stack_index_{a.panel}{sfx}.json"
     if not idx_path.exists():
         raise SystemExit(f"{idx_path} missing; run python src/69_residue_stack_embed.py "
-                         f"--panel {a.panel}")
+                         f"--panel {a.panel}" + (f" --model <{a.arm}>" if sfx else ""))
     if a.supervised:
         raise SystemExit("--supervised is declared in the docstring and not implemented; it needs a "
                          "per-class gate and is a separate run, not a flag flipped in passing")
 
     meta = json.loads(idx_path.read_text())
-    stack = np.load(out / f"residue_stack_{a.panel}.npy", mmap_mode="r")
+    stack = np.load(out / f"residue_stack_{a.panel}{sfx}.npy", mmap_mode="r")
     print(f"stack {stack.shape} {stack.dtype}, {meta['total_residues']} residues")
 
     pooled = {}
@@ -168,12 +172,13 @@ def main():
     # the stack, which is the FASTA order src/02b and src/03b use.
     written = []
     for name in names:
-        tag = f"esm2_650M_{name}"
+        tag = f"{a.arm}_{name}"
         for role in ("positive", "negative"):
             arr = np.vstack(pooled[(role, name)]).astype(np.float32)
             np.save(out / f"embeddings_{role}_{a.panel}_{tag}.npy", arr)
         (out / f"embedding_manifest_{a.panel}_{tag}.json").write_text(json.dumps({
             "model": meta["model"], "device": meta["device"], "dry_run_tag": tag,
+            "arm": a.arm,
             "pooling": name, "built": time.strftime("%Y-%m-%d %H:%M:%S"),
             "embedding_dim": int(stack.shape[1]), "max_len": meta["max_len"],
             "note": f"reduction '{name}' of residue_stack_{a.panel}.npy; every tag comes from the "
@@ -189,16 +194,19 @@ def main():
     # different feature matrix than the one the published number used
     gate = {}
     for role in ("positive", "negative"):
-        pub = out / (f"embeddings_{role}_v2_esm2_650M_mean.npy" if a.panel == "v2"
-                     else f"embeddings_{role}_v3.npy")
+        # the published artifact for THIS arm; only the canonical 650M has an explicit
+        # residue-only mean to compare against, the rest have the include-specials canonical run
+        pub = out / (f"embeddings_{role}_v2_esm2_650M_mean.npy"
+                     if (a.panel == "v2" and a.arm == "esm2_650M")
+                     else f"embeddings_{role}_{a.panel}{sfx}.npy")
         if pub.exists():
             p = np.load(pub)
             mine = np.vstack(pooled[(role, "mean_res")]).astype(np.float32)
             gate[role] = {"max_abs_delta": float(np.abs(p - mine).max()),
                           "against": pub.name, "shape_ok": p.shape == mine.shape}
-    (out / f"coherent_pooling_manifest_{a.panel}.json").write_text(json.dumps({
-        "built": time.strftime("%Y-%m-%d %H:%M:%S"), "panel": a.panel,
-        "source": f"residue_stack_{a.panel}.npy",
+    (out / f"coherent_pooling_manifest_{a.panel}{sfx}.json").write_text(json.dumps({
+        "built": time.strftime("%Y-%m-%d %H:%M:%S"), "panel": a.panel, "arm": a.arm,
+        "source": f"residue_stack_{a.panel}{sfx}.npy",
         "reductions": names, "n_grid_points": len(names) - 1,
         "mean_res_gate": gate,
         "decision_rule": ("fixed before the run: a reduction counts as movement only if "

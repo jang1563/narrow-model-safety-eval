@@ -291,8 +291,10 @@ something specific to beta-lactamase, and the phenomenon is not specific to it. 
 [43.9, 52.7]**, and across all 14 model arms it is still the **only** one whose interval clears
 alignment's 29.5%, with no other arm's interval reaching it. *(Added 2026-09-27: a re-pooling of the
 ESM-2 650M arm — the most-deviant 25-residue window instead of the whole-protein mean — also clears it,
-at 35.0% [31.6, 38.4], but it costs 43.8 points on superantigens and 9.5 on the panel mean. See § 9.1.2
-of the mechanism-generalization write-up.)* Three other arm-to-arm comparisons in
+at 35.0% [31.6, 38.4], but it costs 43.8 points on superantigens and 9.5 on the panel mean — and the
+gain is **specific to that arm**: on ESM-2 35M the same reduction costs beta-lactamase 9.5 points and no
+reduction clears its own control, while the superantigen cost replicates at −45.2. See §§ 9.1.2–9.1.4 of
+the mechanism-generalization write-up.)* Three other arm-to-arm comparisons in
 `docs/MECHANISM_GENERALIZATION.md` §9 did not survive the same check and were rewritten; the sixth
 2026-09-18 entry in `docs/DATA_CORRECTIONS.md` lists them.*
 

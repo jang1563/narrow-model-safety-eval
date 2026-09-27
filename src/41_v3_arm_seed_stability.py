@@ -68,6 +68,12 @@ FRAC, SEEDS = 0.40, 30
 SPECS = [0.95, 0.99]
 CLASSES = ["beta_lactamase", "phage_peptidoglycan_hydrolase"]
 SKIP_ARMS = ("smoke", "_mp")   # dry runs, and the pooling-path cross-check of src/56
+# 🔴 Added 2026-09-27 with src/70's reductions. Those write embeddings_<role>_<panel>_<tag>.npy
+# into the same directory as the model arms, so globbing for arms picked up fifteen re-poolings of
+# the ESM-2 650M arm and would have turned this table's ten arms into twenty-five. They are
+# REDUCTIONS of an arm, not arms — the same distinction § 9.1.2 had to put back into the
+# "only arm that clears alignment" sentence. Excluded by their own prefixes, which src/70 owns.
+REDUCTION_PREFIXES = ("_esm2_650M_dev_", "_esm2_650M_win_", "_esm2_650M_mean_res")
 
 
 def discover_arms():
@@ -83,6 +89,8 @@ def discover_arms():
     for pos in sorted(V3.glob("embeddings_positive_v3*.npy")):
         suf = pos.name[len("embeddings_positive_v3"):-4]
         if any(s in suf.lower() for s in SKIP_ARMS):
+            continue
+        if any(suf.startswith(r) for r in REDUCTION_PREFIXES):
             continue
         need = [V3 / f"embeddings_negative_v3{suf}.npy",
                 V3 / f"embedding_manifest_v3{suf}.json",

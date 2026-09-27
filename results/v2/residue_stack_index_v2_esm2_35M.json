@@ -1,0 +1,1681 @@
+{
+  "built": "2026-09-27 19:32:14",
+  "model": "facebook/esm2_t12_35M_UR50D",
+  "arm": "esm2_35M",
+  "device": "mps",
+  "panel": "v2",
+  "dtype": "float16",
+  "dim": 480,
+  "total_residues": 107035,
+  "max_len": 1022,
+  "pooling": "residues only; <cls> and <eos> dropped, padding excluded",
+  "gate": {
+    "positive": {
+      "n": 80,
+      "n_truncated": 8,
+      "gates": {
+        "embeddings_positive_v2_esm2_35M.npy": {
+          "max_abs_delta_residue_only": 0.015984535217285156,
+          "max_abs_delta_include_specials": 1.9073486328125e-06,
+          "max_abs_delta_from_stored_float16": 0.01605081558227539
+        }
+      }
+    },
+    "negative": {
+      "n": 154,
+      "n_truncated": 9,
+      "gates": {
+        "embeddings_negative_v2_esm2_35M.npy": {
+          "max_abs_delta_residue_only": 0.017687179148197174,
+          "max_abs_delta_include_specials": 4.0531158447265625e-06,
+          "max_abs_delta_from_stored_float16": 0.017693519592285156
+        }
+      }
+    }
+  },
+  "note": "row ranges are [offset, offset + n_res) into residue_stack_<panel>.npy, in the FASTA order src/02b and src/03b use, positives then negatives",
+  "rows": {
+    "positive": [
+      {
+        "id": "sp|O31506|YEEF_BACSU",
+        "role": "positive",
+        "offset": 0,
+        "n_res": 669,
+        "seq_len": 669
+      },
+      {
+        "id": "sp|O34344|SDPC_BACSU",
+        "role": "positive",
+        "offset": 669,
+        "n_res": 203,
+        "seq_len": 203
+      },
+      {
+        "id": "sp|P77335|HLYE_ECOLI",
+        "role": "positive",
+        "offset": 872,
+        "n_res": 303,
+        "seq_len": 303
+      },
+      {
+        "id": "sp|A0A0H2US87|OSPC3_SHIFL",
+        "role": "positive",
+        "offset": 1175,
+        "n_res": 484,
+        "seq_len": 484
+      },
+      {
+        "id": "sp|B3BM80|CDIA4_ECO5C",
+        "role": "positive",
+        "offset": 1659,
+        "n_res": 377,
+        "seq_len": 377
+      },
+      {
+        "id": "sp|B7UI21|NLEB1_ECO27",
+        "role": "positive",
+        "offset": 2036,
+        "n_res": 329,
+        "seq_len": 329
+      },
+      {
+        "id": "sp|B7UI22|NLEE_ECO27",
+        "role": "positive",
+        "offset": 2365,
+        "n_res": 224,
+        "seq_len": 224
+      },
+      {
+        "id": "sp|P09616|HLA_STAAU",
+        "role": "positive",
+        "offset": 2589,
+        "n_res": 319,
+        "seq_len": 319
+      },
+      {
+        "id": "sp|P0C0J0|SPEB_STRPY",
+        "role": "positive",
+        "offset": 2908,
+        "n_res": 398,
+        "seq_len": 398
+      },
+      {
+        "id": "sp|P40136|CYAA_BACAN",
+        "role": "positive",
+        "offset": 3306,
+        "n_res": 800,
+        "seq_len": 800
+      },
+      {
+        "id": "sp|Q7NWF2|COPC_CHRVO",
+        "role": "positive",
+        "offset": 4106,
+        "n_res": 487,
+        "seq_len": 487
+      },
+      {
+        "id": "sp|O05442|CPNT_MYCTU",
+        "role": "positive",
+        "offset": 4593,
+        "n_res": 846,
+        "seq_len": 846
+      },
+      {
+        "id": "sp|P0A0L2|ETXA_STAAU",
+        "role": "positive",
+        "offset": 5439,
+        "n_res": 257,
+        "seq_len": 257
+      },
+      {
+        "id": "sp|P13128|TACY_LISMO",
+        "role": "positive",
+        "offset": 5696,
+        "n_res": 529,
+        "seq_len": 529
+      },
+      {
+        "id": "sp|P13423|PAG_BACAN",
+        "role": "positive",
+        "offset": 6225,
+        "n_res": 764,
+        "seq_len": 764
+      },
+      {
+        "id": "sp|P34071|ENTC2_STAAU",
+        "role": "positive",
+        "offset": 6989,
+        "n_res": 266,
+        "seq_len": 266
+      },
+      {
+        "id": "sp|P9WJ63|TLYA_MYCTU",
+        "role": "positive",
+        "offset": 7255,
+        "n_res": 268,
+        "seq_len": 268
+      },
+      {
+        "id": "sp|Q8XBX8|NLEB1_ECO57",
+        "role": "positive",
+        "offset": 7523,
+        "n_res": 329,
+        "seq_len": 329
+      },
+      {
+        "id": "sp|Q9FBI2|STXA_SHIDY",
+        "role": "positive",
+        "offset": 7852,
+        "n_res": 315,
+        "seq_len": 315
+      },
+      {
+        "id": "sp|P0DPI1|BXA1_CLOBH",
+        "role": "positive",
+        "offset": 8167,
+        "n_res": 1022,
+        "seq_len": 1296
+      },
+      {
+        "id": "sp|P11078|MU1_REOVD",
+        "role": "positive",
+        "offset": 9189,
+        "n_res": 708,
+        "seq_len": 708
+      },
+      {
+        "id": "sp|P01555|CHTA_VIBCH",
+        "role": "positive",
+        "offset": 9897,
+        "n_res": 258,
+        "seq_len": 258
+      },
+      {
+        "id": "sp|P02879|RICI_RICCO",
+        "role": "positive",
+        "offset": 10155,
+        "n_res": 576,
+        "seq_len": 576
+      },
+      {
+        "id": "sp|P10844|BXB_CLOBO",
+        "role": "positive",
+        "offset": 10731,
+        "n_res": 1022,
+        "seq_len": 1291
+      },
+      {
+        "id": "sp|Q45894|BXA2_CLOBJ",
+        "role": "positive",
+        "offset": 11753,
+        "n_res": 1022,
+        "seq_len": 1296
+      },
+      {
+        "id": "sp|P01552|ETXB_STAAU",
+        "role": "positive",
+        "offset": 12775,
+        "n_res": 266,
+        "seq_len": 266
+      },
+      {
+        "id": "sp|P01553|ENTC1_STAAU",
+        "role": "positive",
+        "offset": 13041,
+        "n_res": 266,
+        "seq_len": 266
+      },
+      {
+        "id": "sp|A0A0H3JPC6|TARS_STAAM",
+        "role": "positive",
+        "offset": 13307,
+        "n_res": 573,
+        "seq_len": 573
+      },
+      {
+        "id": "sp|A0A3Q0NBH7|PGDA_LISMG",
+        "role": "positive",
+        "offset": 13880,
+        "n_res": 466,
+        "seq_len": 466
+      },
+      {
+        "id": "sp|A1JUB7|YADA_YERE8",
+        "role": "positive",
+        "offset": 14346,
+        "n_res": 422,
+        "seq_len": 422
+      },
+      {
+        "id": "sp|A6QIG7|CHIPS_STAAE",
+        "role": "positive",
+        "offset": 14768,
+        "n_res": 149,
+        "seq_len": 149
+      },
+      {
+        "id": "sp|B6A876|CHI1_YERET",
+        "role": "positive",
+        "offset": 14917,
+        "n_res": 542,
+        "seq_len": 542
+      },
+      {
+        "id": "sp|D0ZKX9|RSEP_SALT1",
+        "role": "positive",
+        "offset": 15459,
+        "n_res": 450,
+        "seq_len": 450
+      },
+      {
+        "id": "sp|D0ZV89|PHOQ_SALT1",
+        "role": "positive",
+        "offset": 15909,
+        "n_res": 487,
+        "seq_len": 487
+      },
+      {
+        "id": "sp|G3XDA8|PSTS_PSEAE",
+        "role": "positive",
+        "offset": 16396,
+        "n_res": 323,
+        "seq_len": 323
+      },
+      {
+        "id": "sp|O52623|SOPE_SALTM",
+        "role": "positive",
+        "offset": 16719,
+        "n_res": 240,
+        "seq_len": 240
+      },
+      {
+        "id": "sp|O84947|SCTE2_SALTY",
+        "role": "positive",
+        "offset": 16959,
+        "n_res": 484,
+        "seq_len": 484
+      },
+      {
+        "id": "sp|P06736|HLYC_ECOLX",
+        "role": "positive",
+        "offset": 17443,
+        "n_res": 170,
+        "seq_len": 170
+      },
+      {
+        "id": "sp|P09776|VIRB2_AGRTU",
+        "role": "positive",
+        "offset": 17613,
+        "n_res": 121,
+        "seq_len": 121
+      },
+      {
+        "id": "sp|P0A1B9|SCTN1_SALTY",
+        "role": "positive",
+        "offset": 17734,
+        "n_res": 431,
+        "seq_len": 431
+      },
+      {
+        "id": "sp|P0A1C1|SCTN_SHIFL",
+        "role": "positive",
+        "offset": 18165,
+        "n_res": 430,
+        "seq_len": 430
+      },
+      {
+        "id": "sp|P0A2M9|SPVC_SALTY",
+        "role": "positive",
+        "offset": 18595,
+        "n_res": 241,
+        "seq_len": 241
+      },
+      {
+        "id": "sp|P00811|AMPC_ECOLI",
+        "role": "positive",
+        "offset": 18836,
+        "n_res": 377,
+        "seq_len": 377
+      },
+      {
+        "id": "sp|Q7WYA8|BLAB_PSEAI",
+        "role": "positive",
+        "offset": 19213,
+        "n_res": 246,
+        "seq_len": 246
+      },
+      {
+        "id": "sp|P9WKD3|BLAC_MYCTU",
+        "role": "positive",
+        "offset": 19459,
+        "n_res": 307,
+        "seq_len": 307
+      },
+      {
+        "id": "sp|P26918|BLAB_AERHY",
+        "role": "positive",
+        "offset": 19766,
+        "n_res": 254,
+        "seq_len": 254
+      },
+      {
+        "id": "sp|P14488|BLAB_BACCE",
+        "role": "positive",
+        "offset": 20020,
+        "n_res": 256,
+        "seq_len": 256
+      },
+      {
+        "id": "sp|P04190|BLA2_BACCE",
+        "role": "positive",
+        "offset": 20276,
+        "n_res": 257,
+        "seq_len": 257
+      },
+      {
+        "id": "sp|P14489|BLO10_PSEAI",
+        "role": "positive",
+        "offset": 20533,
+        "n_res": 266,
+        "seq_len": 266
+      },
+      {
+        "id": "sp|C7C422|BLAN1_KLEPN",
+        "role": "positive",
+        "offset": 20799,
+        "n_res": 270,
+        "seq_len": 270
+      },
+      {
+        "id": "sp|P05364|AMPC_ENTCL",
+        "role": "positive",
+        "offset": 21069,
+        "n_res": 381,
+        "seq_len": 381
+      },
+      {
+        "id": "sp|P52700|BLA1_STEMA",
+        "role": "positive",
+        "offset": 21450,
+        "n_res": 290,
+        "seq_len": 290
+      },
+      {
+        "id": "sp|O87489|BLAV1_PSEAI",
+        "role": "positive",
+        "offset": 21740,
+        "n_res": 299,
+        "seq_len": 299
+      },
+      {
+        "id": "sp|P05193|AMPC_CITFR",
+        "role": "positive",
+        "offset": 22039,
+        "n_res": 381,
+        "seq_len": 381
+      },
+      {
+        "id": "sp|P52699|BLBI1_SERMA",
+        "role": "positive",
+        "offset": 22420,
+        "n_res": 246,
+        "seq_len": 246
+      },
+      {
+        "id": "sp|Q9KJY7|BLAG1_KLEPN",
+        "role": "positive",
+        "offset": 22666,
+        "n_res": 287,
+        "seq_len": 287
+      },
+      {
+        "id": "sp|P00588|DTX_CORBE",
+        "role": "positive",
+        "offset": 22953,
+        "n_res": 567,
+        "seq_len": 567
+      },
+      {
+        "id": "sp|P04958|TETX_CLOTE",
+        "role": "positive",
+        "offset": 23520,
+        "n_res": 1022,
+        "seq_len": 1315
+      },
+      {
+        "id": "sp|P11140|ABRA_ABRPR",
+        "role": "positive",
+        "offset": 24542,
+        "n_res": 528,
+        "seq_len": 528
+      },
+      {
+        "id": "sp|P55981|VACA_HELPY",
+        "role": "positive",
+        "offset": 25070,
+        "n_res": 1022,
+        "seq_len": 1290
+      },
+      {
+        "id": "sp|P0DF97|TACY_STRPQ",
+        "role": "positive",
+        "offset": 26092,
+        "n_res": 571,
+        "seq_len": 571
+      },
+      {
+        "id": "sp|P00648|RNBR_BACAM",
+        "role": "positive",
+        "offset": 26663,
+        "n_res": 157,
+        "seq_len": 157
+      },
+      {
+        "id": "sp|P04419|CEA2_ECOLX",
+        "role": "positive",
+        "offset": 26820,
+        "n_res": 581,
+        "seq_len": 581
+      },
+      {
+        "id": "sp|P15273|YOPH_YEREN",
+        "role": "positive",
+        "offset": 27401,
+        "n_res": 468,
+        "seq_len": 468
+      },
+      {
+        "id": "tr|O34208|O34208_PSEAI",
+        "role": "positive",
+        "offset": 27869,
+        "n_res": 687,
+        "seq_len": 687
+      },
+      {
+        "id": "tr|Q51451|Q51451_PSEAI",
+        "role": "positive",
+        "offset": 28556,
+        "n_res": 453,
+        "seq_len": 453
+      },
+      {
+        "id": "sp|Q5EK40|CHXA_VIBCL",
+        "role": "positive",
+        "offset": 29009,
+        "n_res": 666,
+        "seq_len": 666
+      },
+      {
+        "id": "sp|P11439|TOXA_PSEAE",
+        "role": "positive",
+        "offset": 29675,
+        "n_res": 638,
+        "seq_len": 638
+      },
+      {
+        "id": "sp|P75409|CARDS_MYCPN",
+        "role": "positive",
+        "offset": 30313,
+        "n_res": 591,
+        "seq_len": 591
+      },
+      {
+        "id": "sp|P04977|TOX1_BORPE",
+        "role": "positive",
+        "offset": 30904,
+        "n_res": 269,
+        "seq_len": 269
+      },
+      {
+        "id": "sp|H9T8G6|CDIA9_BURPE",
+        "role": "positive",
+        "offset": 31173,
+        "n_res": 1022,
+        "seq_len": 1307
+      },
+      {
+        "id": "sp|Q6EH50|RIP4_PHYHE",
+        "role": "positive",
+        "offset": 32195,
+        "n_res": 312,
+        "seq_len": 312
+      },
+      {
+        "id": "sp|P33186|RIPG_SURMU",
+        "role": "positive",
+        "offset": 32507,
+        "n_res": 316,
+        "seq_len": 316
+      },
+      {
+        "id": "sp|Q9M653|RIPT_POLML",
+        "role": "positive",
+        "offset": 32823,
+        "n_res": 603,
+        "seq_len": 603
+      },
+      {
+        "id": "sp|P85101|RIPLY_SILCH",
+        "role": "positive",
+        "offset": 33426,
+        "n_res": 234,
+        "seq_len": 234
+      },
+      {
+        "id": "sp|P18640|BXC_CBCP",
+        "role": "positive",
+        "offset": 33660,
+        "n_res": 1022,
+        "seq_len": 1291
+      },
+      {
+        "id": "sp|P0DPK1|BXX_CLOBO",
+        "role": "positive",
+        "offset": 34682,
+        "n_res": 1022,
+        "seq_len": 1306
+      },
+      {
+        "id": "sp|P0DG09|SPEG_STRPQ",
+        "role": "positive",
+        "offset": 35704,
+        "n_res": 234,
+        "seq_len": 234
+      },
+      {
+        "id": "sp|P06886|TSST_STAAU",
+        "role": "positive",
+        "offset": 35938,
+        "n_res": 234,
+        "seq_len": 234
+      },
+      {
+        "id": "sp|P0A0M0|ETXH_STAAU",
+        "role": "positive",
+        "offset": 36172,
+        "n_res": 241,
+        "seq_len": 241
+      }
+    ],
+    "negative": [
+      {
+        "id": "sp|O05512|MANB_BACSU",
+        "role": "negative",
+        "offset": 36413,
+        "n_res": 362,
+        "seq_len": 362
+      },
+      {
+        "id": "sp|O34952|LTAS2_BACSU",
+        "role": "negative",
+        "offset": 36775,
+        "n_res": 649,
+        "seq_len": 649
+      },
+      {
+        "id": "sp|P29141|SUBV_BACSU",
+        "role": "negative",
+        "offset": 37424,
+        "n_res": 806,
+        "seq_len": 806
+      },
+      {
+        "id": "sp|P39848|LYTD_BACSU",
+        "role": "negative",
+        "offset": 38230,
+        "n_res": 880,
+        "seq_len": 880
+      },
+      {
+        "id": "sp|P42293|EABN2_BACSU",
+        "role": "negative",
+        "offset": 39110,
+        "n_res": 469,
+        "seq_len": 469
+      },
+      {
+        "id": "sp|Q06320|CWLC_BACSU",
+        "role": "negative",
+        "offset": 39579,
+        "n_res": 255,
+        "seq_len": 255
+      },
+      {
+        "id": "sp|Q797B3|LTAS1_BACSU",
+        "role": "negative",
+        "offset": 39834,
+        "n_res": 639,
+        "seq_len": 639
+      },
+      {
+        "id": "sp|P04189|SUBT_BACSU",
+        "role": "negative",
+        "offset": 40473,
+        "n_res": 381,
+        "seq_len": 381
+      },
+      {
+        "id": "sp|P04737|PIL1_ECOLI",
+        "role": "negative",
+        "offset": 40854,
+        "n_res": 121,
+        "seq_len": 121
+      },
+      {
+        "id": "sp|P25152|BSAP_BACSU",
+        "role": "negative",
+        "offset": 40975,
+        "n_res": 455,
+        "seq_len": 455
+      },
+      {
+        "id": "sp|P37965|GLPQ_BACSU",
+        "role": "negative",
+        "offset": 41430,
+        "n_res": 293,
+        "seq_len": 293
+      },
+      {
+        "id": "sp|P39597|EFEB_BACSU",
+        "role": "negative",
+        "offset": 41723,
+        "n_res": 416,
+        "seq_len": 416
+      },
+      {
+        "id": "sp|P94522|EABN1_BACSU",
+        "role": "negative",
+        "offset": 42139,
+        "n_res": 323,
+        "seq_len": 323
+      },
+      {
+        "id": "sp|P96740|PGDS_BACSU",
+        "role": "negative",
+        "offset": 42462,
+        "n_res": 413,
+        "seq_len": 413
+      },
+      {
+        "id": "sp|Q79F14|ESTB_BACSU",
+        "role": "negative",
+        "offset": 42875,
+        "n_res": 210,
+        "seq_len": 210
+      },
+      {
+        "id": "sp|O31527|YESX_BACSU",
+        "role": "negative",
+        "offset": 43085,
+        "n_res": 612,
+        "seq_len": 612
+      },
+      {
+        "id": "sp|P05655|LSC_BACSU",
+        "role": "negative",
+        "offset": 43697,
+        "n_res": 473,
+        "seq_len": 473
+      },
+      {
+        "id": "sp|P0A6P9|ENO_ECOLI",
+        "role": "negative",
+        "offset": 44170,
+        "n_res": 432,
+        "seq_len": 432
+      },
+      {
+        "id": "sp|P16396|SUBE_BACSU",
+        "role": "negative",
+        "offset": 44602,
+        "n_res": 645,
+        "seq_len": 645
+      },
+      {
+        "id": "sp|P19582|DHOM_BACSU",
+        "role": "negative",
+        "offset": 45247,
+        "n_res": 433,
+        "seq_len": 433
+      },
+      {
+        "id": "sp|C0SPC1|CCRZ_BACSU",
+        "role": "negative",
+        "offset": 45680,
+        "n_res": 269,
+        "seq_len": 269
+      },
+      {
+        "id": "sp|O06724|YISK_BACSU",
+        "role": "negative",
+        "offset": 45949,
+        "n_res": 301,
+        "seq_len": 301
+      },
+      {
+        "id": "sp|O31616|GLYOX_BACSU",
+        "role": "negative",
+        "offset": 46250,
+        "n_res": 369,
+        "seq_len": 369
+      },
+      {
+        "id": "sp|O31775|YMDB_BACSU",
+        "role": "negative",
+        "offset": 46619,
+        "n_res": 264,
+        "seq_len": 264
+      },
+      {
+        "id": "sp|O34481|RECD2_BACSU",
+        "role": "negative",
+        "offset": 46883,
+        "n_res": 798,
+        "seq_len": 798
+      },
+      {
+        "id": "sp|O34580|PCRA_BACSU",
+        "role": "negative",
+        "offset": 47681,
+        "n_res": 739,
+        "seq_len": 739
+      },
+      {
+        "id": "sp|O34714|OXDC_BACSU",
+        "role": "negative",
+        "offset": 48420,
+        "n_res": 385,
+        "seq_len": 385
+      },
+      {
+        "id": "sp|O34942|RECG_BACSU",
+        "role": "negative",
+        "offset": 48805,
+        "n_res": 682,
+        "seq_len": 682
+      },
+      {
+        "id": "sp|P00509|AAT_ECOLI",
+        "role": "negative",
+        "offset": 49487,
+        "n_res": 396,
+        "seq_len": 396
+      },
+      {
+        "id": "sp|P00946|MANA_ECOLI",
+        "role": "negative",
+        "offset": 49883,
+        "n_res": 391,
+        "seq_len": 391
+      },
+      {
+        "id": "sp|P04805|SYE_ECOLI",
+        "role": "negative",
+        "offset": 50274,
+        "n_res": 471,
+        "seq_len": 471
+      },
+      {
+        "id": "sp|P04982|RBSD_ECOLI",
+        "role": "negative",
+        "offset": 50745,
+        "n_res": 139,
+        "seq_len": 139
+      },
+      {
+        "id": "sp|P05824|RECN_ECOLI",
+        "role": "negative",
+        "offset": 50884,
+        "n_res": 553,
+        "seq_len": 553
+      },
+      {
+        "id": "sp|P06567|DNAI_BACSU",
+        "role": "negative",
+        "offset": 51437,
+        "n_res": 311,
+        "seq_len": 311
+      },
+      {
+        "id": "sp|P06616|ERA_ECOLI",
+        "role": "negative",
+        "offset": 51748,
+        "n_res": 301,
+        "seq_len": 301
+      },
+      {
+        "id": "sp|P12041|PURQ_BACSU",
+        "role": "negative",
+        "offset": 52049,
+        "n_res": 227,
+        "seq_len": 227
+      },
+      {
+        "id": "sp|P17618|RIBD_BACSU",
+        "role": "negative",
+        "offset": 52276,
+        "n_res": 361,
+        "seq_len": 361
+      },
+      {
+        "id": "sp|P25052|TENA_BACSU",
+        "role": "negative",
+        "offset": 52637,
+        "n_res": 236,
+        "seq_len": 236
+      },
+      {
+        "id": "sp|P31658|HCHA_ECOLI",
+        "role": "negative",
+        "offset": 52873,
+        "n_res": 283,
+        "seq_len": 283
+      },
+      {
+        "id": "sp|P36548|AMIA_ECOLI",
+        "role": "negative",
+        "offset": 53156,
+        "n_res": 289,
+        "seq_len": 289
+      },
+      {
+        "id": "sp|P37794|CHBG_ECOLI",
+        "role": "negative",
+        "offset": 53445,
+        "n_res": 249,
+        "seq_len": 249
+      },
+      {
+        "id": "sp|Q46806|PHYDA_ECOLI",
+        "role": "negative",
+        "offset": 53694,
+        "n_res": 461,
+        "seq_len": 461
+      },
+      {
+        "id": "sp|O35000|NAGB_BACSU",
+        "role": "negative",
+        "offset": 54155,
+        "n_res": 242,
+        "seq_len": 242
+      },
+      {
+        "id": "sp|P0A6T5|GCH1_ECOLI",
+        "role": "negative",
+        "offset": 54397,
+        "n_res": 222,
+        "seq_len": 222
+      },
+      {
+        "id": "sp|P0A759|NAGB_ECOLI",
+        "role": "negative",
+        "offset": 54619,
+        "n_res": 266,
+        "seq_len": 266
+      },
+      {
+        "id": "sp|P0A962|ASPG1_ECOLI",
+        "role": "negative",
+        "offset": 54885,
+        "n_res": 338,
+        "seq_len": 338
+      },
+      {
+        "id": "sp|P0AC00|FRLB_ECOLI",
+        "role": "negative",
+        "offset": 55223,
+        "n_res": 340,
+        "seq_len": 340
+      },
+      {
+        "id": "sp|P0AED7|DAPE_ECOLI",
+        "role": "negative",
+        "offset": 55563,
+        "n_res": 375,
+        "seq_len": 375
+      },
+      {
+        "id": "sp|P77425|ALLC_ECOLI",
+        "role": "negative",
+        "offset": 55938,
+        "n_res": 411,
+        "seq_len": 411
+      },
+      {
+        "id": "sp|Q99ZW2|CAS9_STRP1",
+        "role": "negative",
+        "offset": 56349,
+        "n_res": 1022,
+        "seq_len": 1368
+      },
+      {
+        "id": "sp|P0A0M5|TYSY_STAAU",
+        "role": "negative",
+        "offset": 57371,
+        "n_res": 318,
+        "seq_len": 318
+      },
+      {
+        "id": "sp|P0A017|DYR_STAAU",
+        "role": "negative",
+        "offset": 57689,
+        "n_res": 159,
+        "seq_len": 159
+      },
+      {
+        "id": "sp|P9WFV9|SYE_MYCTU",
+        "role": "negative",
+        "offset": 57848,
+        "n_res": 490,
+        "seq_len": 490
+      },
+      {
+        "id": "sp|O69689|ASPAT_MYCTU",
+        "role": "negative",
+        "offset": 58338,
+        "n_res": 435,
+        "seq_len": 435
+      },
+      {
+        "id": "sp|P9WN57|GCH1_MYCTU",
+        "role": "negative",
+        "offset": 58773,
+        "n_res": 202,
+        "seq_len": 202
+      },
+      {
+        "id": "sp|P9WPH1|RIBD_MYCTU",
+        "role": "negative",
+        "offset": 58975,
+        "n_res": 339,
+        "seq_len": 339
+      },
+      {
+        "id": "sp|P0A2K3|SYE_SALTY",
+        "role": "negative",
+        "offset": 59314,
+        "n_res": 471,
+        "seq_len": 471
+      },
+      {
+        "id": "sp|P58661|AAT_SALTY",
+        "role": "negative",
+        "offset": 59785,
+        "n_res": 396,
+        "seq_len": 396
+      },
+      {
+        "id": "sp|P64209|GCH1_SALTY",
+        "role": "negative",
+        "offset": 60181,
+        "n_res": 222,
+        "seq_len": 222
+      },
+      {
+        "id": "sp|Q8ZQX7|NAGB_SALTY",
+        "role": "negative",
+        "offset": 60403,
+        "n_res": 266,
+        "seq_len": 266
+      },
+      {
+        "id": "sp|Q83K84|SYE_SHIFL",
+        "role": "negative",
+        "offset": 60669,
+        "n_res": 471,
+        "seq_len": 471
+      },
+      {
+        "id": "sp|P59688|NAGB_SHIFL",
+        "role": "negative",
+        "offset": 61140,
+        "n_res": 266,
+        "seq_len": 266
+      },
+      {
+        "id": "sp|Q83KZ1|MANA_SHIFL",
+        "role": "negative",
+        "offset": 61406,
+        "n_res": 391,
+        "seq_len": 391
+      },
+      {
+        "id": "sp|Q81VV3|SYE_BACAN",
+        "role": "negative",
+        "offset": 61797,
+        "n_res": 485,
+        "seq_len": 485
+      },
+      {
+        "id": "sp|Q81SW2|GCH1_BACAN",
+        "role": "negative",
+        "offset": 62282,
+        "n_res": 189,
+        "seq_len": 189
+      },
+      {
+        "id": "sp|Q81MH5|NAGB_BACAN",
+        "role": "negative",
+        "offset": 62471,
+        "n_res": 262,
+        "seq_len": 262
+      },
+      {
+        "id": "sp|Q81R23|TYSY_BACAN",
+        "role": "negative",
+        "offset": 62733,
+        "n_res": 318,
+        "seq_len": 318
+      },
+      {
+        "id": "sp|O85746|TYRB_KLEPN",
+        "role": "negative",
+        "offset": 63051,
+        "n_res": 397,
+        "seq_len": 397
+      },
+      {
+        "id": "sp|P0C0C1|GCH1_STRPY",
+        "role": "negative",
+        "offset": 63448,
+        "n_res": 194,
+        "seq_len": 194
+      },
+      {
+        "id": "sp|P0A0K8|GYRB_STAAU",
+        "role": "negative",
+        "offset": 63642,
+        "n_res": 644,
+        "seq_len": 644
+      },
+      {
+        "id": "sp|P68845|RECA_STAAU",
+        "role": "negative",
+        "offset": 64286,
+        "n_res": 347,
+        "seq_len": 347
+      },
+      {
+        "id": "sp|P24497|AROA_KLEPN",
+        "role": "negative",
+        "offset": 64633,
+        "n_res": 427,
+        "seq_len": 427
+      },
+      {
+        "id": "sp|P0C0H6|IMDH_STRPY",
+        "role": "negative",
+        "offset": 65060,
+        "n_res": 493,
+        "seq_len": 493
+      },
+      {
+        "id": "sp|P0C0G0|DHPS_STRPY",
+        "role": "negative",
+        "offset": 65553,
+        "n_res": 266,
+        "seq_len": 266
+      },
+      {
+        "id": "sp|P0DJP0|RECA_LISMO",
+        "role": "negative",
+        "offset": 65819,
+        "n_res": 348,
+        "seq_len": 348
+      },
+      {
+        "id": "sp|Q9RLT9|RPOB_LISMO",
+        "role": "negative",
+        "offset": 66167,
+        "n_res": 1022,
+        "seq_len": 1184
+      },
+      {
+        "id": "sp|Q8Y5N8|SYI_LISMO",
+        "role": "negative",
+        "offset": 67189,
+        "n_res": 921,
+        "seq_len": 921
+      },
+      {
+        "id": "sp|Q9KVX3|GYRB_VIBCH",
+        "role": "negative",
+        "offset": 68110,
+        "n_res": 805,
+        "seq_len": 805
+      },
+      {
+        "id": "sp|P45383|RECA_VIBCH",
+        "role": "negative",
+        "offset": 68915,
+        "n_res": 354,
+        "seq_len": 354
+      },
+      {
+        "id": "sp|Q9KV30|RPOB_VIBCH",
+        "role": "negative",
+        "offset": 69269,
+        "n_res": 1022,
+        "seq_len": 1341
+      },
+      {
+        "id": "sp|Q9I7C2|GYRB_PSEAE",
+        "role": "negative",
+        "offset": 70291,
+        "n_res": 806,
+        "seq_len": 806
+      },
+      {
+        "id": "sp|P08280|RECA_PSEAE",
+        "role": "negative",
+        "offset": 71097,
+        "n_res": 346,
+        "seq_len": 346
+      },
+      {
+        "id": "sp|Q51561|RPOB_PSEAE",
+        "role": "negative",
+        "offset": 71443,
+        "n_res": 1022,
+        "seq_len": 1357
+      },
+      {
+        "id": "sp|Q9HVM4|SYI_PSEAE",
+        "role": "negative",
+        "offset": 72465,
+        "n_res": 943,
+        "seq_len": 943
+      },
+      {
+        "id": "sp|Q9HXZ4|PYRG_PSEAE",
+        "role": "negative",
+        "offset": 73408,
+        "n_res": 542,
+        "seq_len": 542
+      },
+      {
+        "id": "sp|Q81A16|RECA_BACCR",
+        "role": "negative",
+        "offset": 73950,
+        "n_res": 343,
+        "seq_len": 343
+      },
+      {
+        "id": "sp|Q81J48|RPOB_BACCR",
+        "role": "negative",
+        "offset": 74293,
+        "n_res": 1022,
+        "seq_len": 1177
+      },
+      {
+        "id": "sp|Q814T2|PYRG_BACCR",
+        "role": "negative",
+        "offset": 75315,
+        "n_res": 535,
+        "seq_len": 535
+      },
+      {
+        "id": "sp|A5I7L4|RPOB_CLOBH",
+        "role": "negative",
+        "offset": 75850,
+        "n_res": 1022,
+        "seq_len": 1232
+      },
+      {
+        "id": "sp|A5I526|GLYA_CLOBH",
+        "role": "negative",
+        "offset": 76872,
+        "n_res": 413,
+        "seq_len": 413
+      },
+      {
+        "id": "sp|A5I7Y9|PURA_CLOBH",
+        "role": "negative",
+        "offset": 77285,
+        "n_res": 428,
+        "seq_len": 428
+      },
+      {
+        "id": "sp|P0AES8|GYRB_SHIFL",
+        "role": "negative",
+        "offset": 77713,
+        "n_res": 804,
+        "seq_len": 804
+      },
+      {
+        "id": "sp|P17479|RECA_SERMA",
+        "role": "negative",
+        "offset": 78517,
+        "n_res": 354,
+        "seq_len": 354
+      },
+      {
+        "id": "sp|A1JK01|RECA_YERE8",
+        "role": "negative",
+        "offset": 78871,
+        "n_res": 354,
+        "seq_len": 354
+      },
+      {
+        "id": "sp|Q7NXL9|RECA_CHRVO",
+        "role": "negative",
+        "offset": 79225,
+        "n_res": 350,
+        "seq_len": 350
+      },
+      {
+        "id": "sp|A0KPG3|RECA_AERHH",
+        "role": "negative",
+        "offset": 79575,
+        "n_res": 354,
+        "seq_len": 354
+      },
+      {
+        "id": "sp|P33038|MURA_ENTCC",
+        "role": "negative",
+        "offset": 79929,
+        "n_res": 419,
+        "seq_len": 419
+      },
+      {
+        "id": "sp|B2FL31|RECA_STRMK",
+        "role": "negative",
+        "offset": 80348,
+        "n_res": 345,
+        "seq_len": 345
+      },
+      {
+        "id": "sp|Q895I5|RECA_CLOTE",
+        "role": "negative",
+        "offset": 80693,
+        "n_res": 350,
+        "seq_len": 350
+      },
+      {
+        "id": "sp|P55992|GYRB_HELPY",
+        "role": "negative",
+        "offset": 81043,
+        "n_res": 773,
+        "seq_len": 773
+      },
+      {
+        "id": "sp|P40600|LIPE_AERHY",
+        "role": "negative",
+        "offset": 81816,
+        "n_res": 684,
+        "seq_len": 684
+      },
+      {
+        "id": "sp|A0KLG5|BSR_AERHH",
+        "role": "negative",
+        "offset": 82500,
+        "n_res": 408,
+        "seq_len": 408
+      },
+      {
+        "id": "sp|P94217|SLAP2_BACAN",
+        "role": "negative",
+        "offset": 82908,
+        "n_res": 862,
+        "seq_len": 862
+      },
+      {
+        "id": "sp|Q81JH1|YIDC2_BACAN",
+        "role": "negative",
+        "offset": 83770,
+        "n_res": 255,
+        "seq_len": 255
+      },
+      {
+        "id": "sp|P0A3V1|SLEB_BACCE",
+        "role": "negative",
+        "offset": 84025,
+        "n_res": 259,
+        "seq_len": 259
+      },
+      {
+        "id": "sp|P36924|AMYB_BACCE",
+        "role": "negative",
+        "offset": 84284,
+        "n_res": 546,
+        "seq_len": 546
+      },
+      {
+        "id": "sp|Q7NZY0|MSRP_CHRVO",
+        "role": "negative",
+        "offset": 84830,
+        "n_res": 305,
+        "seq_len": 305
+      },
+      {
+        "id": "sp|Q7NQB0|SURA_CHRVO",
+        "role": "negative",
+        "offset": 85135,
+        "n_res": 429,
+        "seq_len": 429
+      },
+      {
+        "id": "sp|C3KW94|PRSA_CLOB6",
+        "role": "negative",
+        "offset": 85564,
+        "n_res": 336,
+        "seq_len": 336
+      },
+      {
+        "id": "sp|B1IGZ5|PRSA_CLOBK",
+        "role": "negative",
+        "offset": 85900,
+        "n_res": 336,
+        "seq_len": 336
+      },
+      {
+        "id": "sp|Q899I2|PRSA_CLOTE",
+        "role": "negative",
+        "offset": 86236,
+        "n_res": 339,
+        "seq_len": 339
+      },
+      {
+        "id": "sp|Q897L1|CBIM_CLOTE",
+        "role": "negative",
+        "offset": 86575,
+        "n_res": 241,
+        "seq_len": 241
+      },
+      {
+        "id": "sp|D6DRS2|PAGP_ENTCL",
+        "role": "negative",
+        "offset": 86816,
+        "n_res": 191,
+        "seq_len": 191
+      },
+      {
+        "id": "sp|Q47490|PHOE_ENTCL",
+        "role": "negative",
+        "offset": 87007,
+        "n_res": 350,
+        "seq_len": 350
+      },
+      {
+        "id": "sp|O25825|CY553_HELPY",
+        "role": "negative",
+        "offset": 87357,
+        "n_res": 96,
+        "seq_len": 96
+      },
+      {
+        "id": "sp|O26091|RLPA_HELPY",
+        "role": "negative",
+        "offset": 87453,
+        "n_res": 315,
+        "seq_len": 315
+      },
+      {
+        "id": "sp|P15644|GSPD_KLEPN",
+        "role": "negative",
+        "offset": 87768,
+        "n_res": 660,
+        "seq_len": 660
+      },
+      {
+        "id": "sp|P24017|OMPA_KLEPN",
+        "role": "negative",
+        "offset": 88428,
+        "n_res": 344,
+        "seq_len": 344
+      },
+      {
+        "id": "sp|Q8Y585|HBP1_LISMO",
+        "role": "negative",
+        "offset": 88772,
+        "n_res": 207,
+        "seq_len": 207
+      },
+      {
+        "id": "sp|Q9RR44|GBUC_LISM4",
+        "role": "negative",
+        "offset": 88979,
+        "n_res": 300,
+        "seq_len": 300
+      },
+      {
+        "id": "sp|A0A089QRB9|MSL3_MYCTU",
+        "role": "negative",
+        "offset": 89279,
+        "n_res": 1022,
+        "seq_len": 2085
+      },
+      {
+        "id": "sp|I6Y4D2|PEPAM_MYCTU",
+        "role": "negative",
+        "offset": 90301,
+        "n_res": 241,
+        "seq_len": 241
+      },
+      {
+        "id": "sp|Q8RNT4|LOX_PSEAI",
+        "role": "negative",
+        "offset": 90542,
+        "n_res": 685,
+        "seq_len": 685
+      },
+      {
+        "id": "sp|S0HPF7|PILY1_PSEAW",
+        "role": "negative",
+        "offset": 91227,
+        "n_res": 1022,
+        "seq_len": 1163
+      },
+      {
+        "id": "sp|Q540U1|APHA_SALTM",
+        "role": "negative",
+        "offset": 92249,
+        "n_res": 237,
+        "seq_len": 237
+      },
+      {
+        "id": "sp|P06202|OPPA_SALTY",
+        "role": "negative",
+        "offset": 92486,
+        "n_res": 543,
+        "seq_len": 543
+      },
+      {
+        "id": "sp|Q54468|CHB_SERMA",
+        "role": "negative",
+        "offset": 93029,
+        "n_res": 885,
+        "seq_len": 885
+      },
+      {
+        "id": "sp|P9WEM3|LP10_SERMA",
+        "role": "negative",
+        "offset": 93914,
+        "n_res": 197,
+        "seq_len": 197
+      },
+      {
+        "id": "sp|A0A2S4N3N0|OMPA_SHIFL",
+        "role": "negative",
+        "offset": 94111,
+        "n_res": 348,
+        "seq_len": 348
+      },
+      {
+        "id": "sp|Q83QV0|NAPA_SHIFL",
+        "role": "negative",
+        "offset": 94459,
+        "n_res": 828,
+        "seq_len": 828
+      },
+      {
+        "id": "sp|P0C5Z8|ATL_STAAU",
+        "role": "negative",
+        "offset": 95287,
+        "n_res": 1022,
+        "seq_len": 1255
+      },
+      {
+        "id": "sp|Q2FZE6|ISDE_STAA8",
+        "role": "negative",
+        "offset": 96309,
+        "n_res": 292,
+        "seq_len": 292
+      },
+      {
+        "id": "sp|B2FHL8|PL_STRMK",
+        "role": "negative",
+        "offset": 96601,
+        "n_res": 331,
+        "seq_len": 331
+      },
+      {
+        "id": "sp|B2FSW8|EALGL_STRMK",
+        "role": "negative",
+        "offset": 96932,
+        "n_res": 742,
+        "seq_len": 742
+      },
+      {
+        "id": "sp|Q9A1S2|PILIN_STRP1",
+        "role": "negative",
+        "offset": 97674,
+        "n_res": 340,
+        "seq_len": 340
+      },
+      {
+        "id": "sp|P49054|PAM_STRPY",
+        "role": "negative",
+        "offset": 98014,
+        "n_res": 388,
+        "seq_len": 388
+      },
+      {
+        "id": "sp|P45779|GSPD_VIBCH",
+        "role": "negative",
+        "offset": 98402,
+        "n_res": 674,
+        "seq_len": 674
+      },
+      {
+        "id": "sp|Q9KSE5|BSR_VIBCH",
+        "role": "negative",
+        "offset": 99076,
+        "n_res": 407,
+        "seq_len": 407
+      },
+      {
+        "id": "sp|A1JL26|NAPA_YERE8",
+        "role": "negative",
+        "offset": 99483,
+        "n_res": 831,
+        "seq_len": 831
+      },
+      {
+        "id": "sp|P31499|HEMR_YEREN",
+        "role": "negative",
+        "offset": 100314,
+        "n_res": 687,
+        "seq_len": 687
+      },
+      {
+        "id": "sp|P0A4F8|OCCT_AGRTU",
+        "role": "negative",
+        "offset": 101001,
+        "n_res": 276,
+        "seq_len": 276
+      },
+      {
+        "id": "sp|P54910|TRBE_AGRTU",
+        "role": "negative",
+        "offset": 101277,
+        "n_res": 820,
+        "seq_len": 820
+      },
+      {
+        "id": "sp|P00782|SUBT_BACAM",
+        "role": "negative",
+        "offset": 102097,
+        "n_res": 382,
+        "seq_len": 382
+      },
+      {
+        "id": "sp|P00692|AMY_BACAM",
+        "role": "negative",
+        "offset": 102479,
+        "n_res": 514,
+        "seq_len": 514
+      },
+      {
+        "id": "sp|P16450|GERD_BACSU",
+        "role": "negative",
+        "offset": 102993,
+        "n_res": 185,
+        "seq_len": 185
+      },
+      {
+        "id": "sp|P24327|PRSA_BACSU",
+        "role": "negative",
+        "offset": 103178,
+        "n_res": 292,
+        "seq_len": 292
+      },
+      {
+        "id": "sp|Q46045|MBHS_CITFR",
+        "role": "negative",
+        "offset": 103470,
+        "n_res": 375,
+        "seq_len": 375
+      },
+      {
+        "id": "sp|Q01605|PHOE_CITFR",
+        "role": "negative",
+        "offset": 103845,
+        "n_res": 351,
+        "seq_len": 351
+      },
+      {
+        "id": "sp|P02925|RBSB_ECOLI",
+        "role": "negative",
+        "offset": 104196,
+        "n_res": 296,
+        "seq_len": 296
+      },
+      {
+        "id": "sp|P05825|FEPA_ECOLI",
+        "role": "negative",
+        "offset": 104492,
+        "n_res": 746,
+        "seq_len": 746
+      },
+      {
+        "id": "sp|O65039|CYSEP_RICCO",
+        "role": "negative",
+        "offset": 105238,
+        "n_res": 360,
+        "seq_len": 360
+      },
+      {
+        "id": "sp|P01089|2SS_RICCO",
+        "role": "negative",
+        "offset": 105598,
+        "n_res": 258,
+        "seq_len": 258
+      },
+      {
+        "id": "sp|Q32I06|NAPA_SHIDS",
+        "role": "negative",
+        "offset": 105856,
+        "n_res": 828,
+        "seq_len": 828
+      },
+      {
+        "id": "sp|P02935|OMPA_SHIDY",
+        "role": "negative",
+        "offset": 106684,
+        "n_res": 351,
+        "seq_len": 351
+      }
+    ]
+  }
+}

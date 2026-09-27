@@ -10,7 +10,8 @@
     "_esm2_650M_L18",
     "_esm2_650M_L24",
     "_esm2_650M_L30",
-    "_esm2_650M_L6"
+    "_esm2_650M_L6",
+    "_esmc_600M_mp"
   ],
   "note": "v2 has one failure class, so per-arm chance is 1/9. v3's pair cannot be used here: only the canonical arm is embedded for v3",
   "distinct_from": "03k_margin_holdout, which tests whether low-margin MEMBERS are recovered less and is already pinned across 14 arms",

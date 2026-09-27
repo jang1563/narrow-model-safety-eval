@@ -1,0 +1,309 @@
+{
+  "panel": "v2",
+  "failure_classes": [
+    "beta_lactamase"
+  ],
+  "k": 1,
+  "perms": 20000,
+  "arms_embedded_but_unscored": [],
+  "note": "v2 has one failure class, so per-arm chance is 1/9. v3's pair cannot be used here: only the canonical arm is embedded for v3",
+  "distinct_from": "03k_margin_holdout, which tests whether low-margin MEMBERS are recovered less and is already pinned across 14 arms",
+  "arms": {
+    "esm2_650M_dev_attn1": {
+      "suffix": "_esm2_650M_dev_attn1",
+      "dim": 1280,
+      "rho": 0.7531446678801508,
+      "perm_p": 0.01075,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.018662670627236366
+      }
+    },
+    "esm2_650M_dev_attn16": {
+      "suffix": "_esm2_650M_dev_attn16",
+      "dim": 1280,
+      "rho": 0.8499999999999999,
+      "perm_p": 0.00255,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.046971652656793594
+      }
+    },
+    "esm2_650M_dev_attn4": {
+      "suffix": "_esm2_650M_dev_attn4",
+      "dim": 1280,
+      "rho": 0.6945667492672501,
+      "perm_p": 0.02175,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.03741607442498207
+      }
+    },
+    "esm2_650M_dev_topk1": {
+      "suffix": "_esm2_650M_dev_topk1",
+      "dim": 1280,
+      "rho": 0.9,
+      "perm_p": 0.001,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.04071754217147827
+      }
+    },
+    "esm2_650M_dev_topk10": {
+      "suffix": "_esm2_650M_dev_topk10",
+      "dim": 1280,
+      "rho": 0.7531446678801508,
+      "perm_p": 0.0125,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.03384954854846001
+      }
+    },
+    "esm2_650M_dev_topk20": {
+      "suffix": "_esm2_650M_dev_topk20",
+      "dim": 1280,
+      "rho": 0.7866177642303797,
+      "perm_p": 0.00795,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.047632791101932526
+      }
+    },
+    "esm2_650M_dev_topk5": {
+      "suffix": "_esm2_650M_dev_topk5",
+      "dim": 1280,
+      "rho": 0.7166666666666667,
+      "perm_p": 0.01915,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.028298377990722656
+      }
+    },
+    "esm2_650M_dev_topk50": {
+      "suffix": "_esm2_650M_dev_topk50",
+      "dim": 1280,
+      "rho": 0.6861984751796929,
+      "perm_p": 0.02225,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.035843465477228165
+      }
+    },
+    "esm2_650M_mean_res": {
+      "suffix": "_esm2_650M_mean_res",
+      "dim": 1280,
+      "rho": 0.9400193421607684,
+      "perm_p": 0.00025,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.008651269599795341
+      }
+    },
+    "esm2_650M_win_best15": {
+      "suffix": "_esm2_650M_win_best15",
+      "dim": 1280,
+      "rho": 0.94120970363394,
+      "perm_p": 0.0002,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.03965643420815468
+      }
+    },
+    "esm2_650M_win_best25": {
+      "suffix": "_esm2_650M_win_best25",
+      "dim": 1280,
+      "rho": 0.7999999999999999,
+      "perm_p": 0.00655,
+      "lowest_margin_class": "virulence_associated_non_toxin",
+      "locates_failure": false,
+      "bottom_k": [
+        "virulence_associated_non_toxin"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.009549851529300213
+      }
+    },
+    "esm2_650M_win_best5": {
+      "suffix": "_esm2_650M_win_best5",
+      "dim": 1280,
+      "rho": 0.5355695416036628,
+      "perm_p": 0.0688,
+      "lowest_margin_class": "virulence_associated_non_toxin",
+      "locates_failure": false,
+      "bottom_k": [
+        "virulence_associated_non_toxin"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.04164629802107811
+      }
+    },
+    "esm2_650M_win_best9": {
+      "suffix": "_esm2_650M_win_best9",
+      "dim": 1280,
+      "rho": 0.8645309671165332,
+      "perm_p": 0.00245,
+      "lowest_margin_class": "virulence_associated_non_toxin",
+      "locates_failure": false,
+      "bottom_k": [
+        "virulence_associated_non_toxin"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.03782714530825615
+      }
+    },
+    "esm2_650M_win_max15": {
+      "suffix": "_esm2_650M_win_max15",
+      "dim": 1280,
+      "rho": 0.8529805141829194,
+      "perm_p": 0.00345,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.007807258982211351
+      }
+    },
+    "esm2_650M_win_max9": {
+      "suffix": "_esm2_650M_win_max9",
+      "dim": 1280,
+      "rho": 0.8529805141829194,
+      "perm_p": 0.003,
+      "lowest_margin_class": "beta_lactamase",
+      "locates_failure": true,
+      "bottom_k": [
+        "beta_lactamase"
+      ],
+      "n_classes": 9,
+      "mean_pooled": true,
+      "failure_margins": {
+        "beta_lactamase": -0.00843337643891573
+      }
+    }
+  },
+  "P1": {
+    "arms_locating_failure": [
+      "esm2_650M_dev_attn1",
+      "esm2_650M_dev_attn16",
+      "esm2_650M_dev_attn4",
+      "esm2_650M_dev_topk1",
+      "esm2_650M_dev_topk10",
+      "esm2_650M_dev_topk20",
+      "esm2_650M_dev_topk5",
+      "esm2_650M_dev_topk50",
+      "esm2_650M_mean_res",
+      "esm2_650M_win_best15",
+      "esm2_650M_win_max15",
+      "esm2_650M_win_max9"
+    ],
+    "n_arms": 15,
+    "majority": true
+  },
+  "P2": {
+    "arms_significant": [
+      "esm2_650M_dev_attn1",
+      "esm2_650M_dev_attn16",
+      "esm2_650M_dev_attn4",
+      "esm2_650M_dev_topk1",
+      "esm2_650M_dev_topk10",
+      "esm2_650M_dev_topk20",
+      "esm2_650M_dev_topk5",
+      "esm2_650M_dev_topk50",
+      "esm2_650M_mean_res",
+      "esm2_650M_win_best15",
+      "esm2_650M_win_best25",
+      "esm2_650M_win_best9",
+      "esm2_650M_win_max15",
+      "esm2_650M_win_max9"
+    ],
+    "majority": true
+  },
+  "arms_with_all_failure_margins_negative": [
+    "esm2_650M_dev_attn1",
+    "esm2_650M_dev_attn16",
+    "esm2_650M_dev_attn4",
+    "esm2_650M_dev_topk1",
+    "esm2_650M_dev_topk10",
+    "esm2_650M_dev_topk20",
+    "esm2_650M_dev_topk5",
+    "esm2_650M_dev_topk50",
+    "esm2_650M_mean_res",
+    "esm2_650M_win_best15",
+    "esm2_650M_win_best25",
+    "esm2_650M_win_best5",
+    "esm2_650M_win_best9",
+    "esm2_650M_win_max15",
+    "esm2_650M_win_max9"
+  ],
+  "chance_per_arm": 0.1111111111111111,
+  "verdict": "SUPPORTED: 12/15 arms put the failure class(es) at the bottom and 14/15 have a significant positive rank correlation, so the mechanism is representation-general rather than a property of one model"
+}

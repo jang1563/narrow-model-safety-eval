@@ -45,6 +45,11 @@ ROOT = Path(__file__).resolve().parent.parent
 SEQ = ROOT / "data" / "sequences"
 MAX_LEN = 1022            # src/02b's, unchanged
 MODEL = "facebook/esm2_t33_650M_UR50D"
+# 🔑 --model added 2026-09-27 for the third bound entry thirty-nine left open: § 10.6's standing rule
+# is that a geometric claim runs across representations, and the window result was one arm.
+ARM_OF = {"facebook/esm2_t33_650M_UR50D": "esm2_650M",
+          "facebook/esm2_t12_35M_UR50D": "esm2_35M",
+          "facebook/esm2_t30_150M_UR50D": "esm2_150M"}
 TOL = 2e-3                # float16 storage over ~1e-1 magnitudes; a real defect is far larger
 
 FASTA = {
@@ -80,14 +85,18 @@ def main():
     ap.add_argument("--panel", default="v2", choices=["v2", "v3"])
     ap.add_argument("--batch_size", type=int, default=4)
     ap.add_argument("--device", default=None)
+    ap.add_argument("--model", default=MODEL, choices=sorted(ARM_OF))
     a = ap.parse_args()
     out = ROOT / "results" / a.panel
+    arm = ARM_OF[a.model]
+    # the canonical arm keeps the unsuffixed filenames so nothing already written moves
+    sfx = "" if arm == "esm2_650M" else f"_{arm}"
 
     dev = a.device or ("cuda" if torch.cuda.is_available() else
                        "mps" if torch.backends.mps.is_available() else "cpu")
-    print(f"model={MODEL}  device={dev}  panel={a.panel}  max_len={MAX_LEN}")
-    tok = AutoTokenizer.from_pretrained(MODEL)
-    model = AutoModel.from_pretrained(MODEL).to(dev).eval()
+    print(f"model={a.model}  arm={arm}  device={dev}  panel={a.panel}  max_len={MAX_LEN}")
+    tok = AutoTokenizer.from_pretrained(a.model)
+    model = AutoModel.from_pretrained(a.model).to(dev).eval()
 
     index, blocks, report = {}, [], {}
     for role, fn in FASTA[a.panel].items():
@@ -128,7 +137,9 @@ def main():
         # the mean recomputed FROM the stored float16 stack, which is what downstream will read
         mstore = np.vstack([s.astype(np.float32).mean(0) for s in stacks])
         gates = {}
-        for name in GATE[a.panel][role]:
+        names = ([f"embeddings_{role}_{a.panel}{sfx}.npy"] if sfx
+                 else GATE[a.panel][role])
+        for name in names:
             f = out / name
             if not f.exists():
                 continue
@@ -166,9 +177,9 @@ def main():
         index[role] = rows
 
     stack = np.vstack(blocks)
-    np.save(out / f"residue_stack_{a.panel}.npy", stack)
-    (out / f"residue_stack_index_{a.panel}.json").write_text(json.dumps({
-        "built": time.strftime("%Y-%m-%d %H:%M:%S"), "model": MODEL, "device": dev,
+    np.save(out / f"residue_stack_{a.panel}{sfx}.npy", stack)
+    (out / f"residue_stack_index_{a.panel}{sfx}.json").write_text(json.dumps({
+        "built": time.strftime("%Y-%m-%d %H:%M:%S"), "model": a.model, "arm": arm, "device": dev,
         "panel": a.panel, "dtype": "float16", "dim": int(stack.shape[1]),
         "total_residues": int(stack.shape[0]), "max_len": MAX_LEN,
         "pooling": "residues only; <cls> and <eos> dropped, padding excluded",
@@ -177,7 +188,7 @@ def main():
                 "FASTA order src/02b and src/03b use, positives then negatives",
         "rows": index,
     }, indent=2) + "\n")
-    print(f"\nwrote residue_stack_{a.panel}.npy  {stack.shape}  "
+    print(f"\nwrote residue_stack_{a.panel}{sfx}.npy  {stack.shape}  "
           f"{stack.nbytes / 1e6:.0f} MB  and its index")
 
 

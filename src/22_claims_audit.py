@@ -598,6 +598,47 @@ def locality_across_panels():
     }
 
 
+def window_gain_is_one_arm():
+    """The window's gain is ESM-2 650M only; its cost is not. And margin explains the cost, not the gain.
+
+    \U0001f534 This is the claim most likely to be softened by a later edit, because it is the negative
+    that bounds the positive one two claims above it. Three things are pinned: the 35M arm shows no
+    reduction clearing its control, the superantigen cost replicates on every arm and panel tried, and
+    the margin-change-versus-recovery-change correlation is NOT significant, so margin is not the
+    mechanism for the gain.
+    """
+    a = j("../results/v2/coherent_pooling_seeds.json")
+    b = j("../results/v2/coherent_pooling_seeds_esm2_35M.json")
+    c = j("../results/v3/coherent_pooling_seeds.json")
+    mr = j("../results/v2/margin_across_reductions.json")
+    if None in (a, b, c, mr):
+        return None
+    def cost(d):
+        return d["cost_at_30_seeds"].get("superantigen_enterotoxin")
+
+    arms = mr["arms"]
+    rhos = [v["rho"] for v in arms.values()]
+    sig = [k for k, v in arms.items() if v["rho"] > 0 and v["perm_p"] < 0.05]
+    floor = [k for k, v in arms.items() if v["lowest_margin_class"] == "beta_lactamase"]
+    return {
+        "n_reductions": len(arms),
+        # the gain, arm by arm
+        "blact_650M_ctl": round(a["reductions"]["mean_res"]["mean_30seed"], 4),
+        "blact_650M_win": round(a["reductions"]["win_best25"]["mean_30seed"], 4),
+        "blact_35M_ctl": round(b["reductions"]["mean_res"]["mean_30seed"], 4),
+        "blact_35M_win": round(b["reductions"]["win_best25"]["mean_30seed"], 4),
+        "clear_650M": a["intervals_clear_of_control"],
+        "clear_35M": b["intervals_clear_of_control"],
+        # the cost, everywhere
+        "superantigen_cost": {k: (round(v["delta_30seed"], 3), v["intervals_disjoint"])
+                              for k, v in (("650M_v2", cost(a)), ("35M_v2", cost(b)),
+                                           ("650M_v3", cost(c))) if v},
+        # margin's ordering survives re-pooling, which is the positive half
+        "rho_min": round(min(rhos), 3), "rho_max": round(max(rhos), 3),
+        "n_significant": len(sig), "n_blact_at_floor": len(floor),
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -2840,6 +2881,24 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("the window's gain is one arm; its cost and margin's ordering are not",
+     window_gain_is_one_arm,
+     lambda v: v is None or (
+         v["n_reductions"] == 15
+         # 650M gains, 35M loses, and the two controls are comparable so it is not a dead arm
+         and v["blact_650M_win"] - v["blact_650M_ctl"] > 0.15
+         and v["blact_35M_win"] < v["blact_35M_ctl"]
+         and abs(v["blact_35M_ctl"] - v["blact_650M_ctl"]) < 0.05
+         and v["clear_650M"] == ["win_best25"] and v["clear_35M"] == []
+         # the superantigen cost replicates on every arm and panel tried, all interval-disjoint
+         and len(v["superantigen_cost"]) == 3
+         and all(d < -0.25 and disj for d, disj in v["superantigen_cost"].values())
+         # margin's ordering survives re-pooling: the positive half of this claim
+         and v["rho_min"] > 0.5 and v["n_significant"] == 14 and v["n_blact_at_floor"] == 12),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "🔴 **The gain is representation-specific.**"},
+     # the sentences that stated the gain before the second arm existed
+     ["a coherent\n25-residue window reduction reaches **35.0% [31.6, 38.4]**, entirely above alignment's 29.5%. The\nheading survives on a different fact"]),
     ("locality helps both failures; supervision helps the panel and not beta-lactamase",
      locality_across_panels,
      lambda v: v is None or (

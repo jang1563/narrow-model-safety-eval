@@ -1,0 +1,54 @@
+{
+  "built": "2026-09-27 19:32:33",
+  "panel": "v2",
+  "arm": "esm2_35M",
+  "source": "residue_stack_v2_esm2_35M.npy",
+  "reductions": [
+    "dev_attn1",
+    "dev_attn16",
+    "dev_attn4",
+    "dev_topk1",
+    "dev_topk10",
+    "dev_topk20",
+    "dev_topk5",
+    "dev_topk50",
+    "mean_res",
+    "win_best15",
+    "win_best25",
+    "win_best5",
+    "win_best9",
+    "win_max15",
+    "win_max9"
+  ],
+  "n_grid_points": 14,
+  "mean_res_gate": {
+    "positive": {
+      "max_abs_delta": 0.01605081558227539,
+      "against": "embeddings_positive_v2_esm2_35M.npy",
+      "shape_ok": true
+    },
+    "negative": {
+      "max_abs_delta": 0.017693519592285156,
+      "against": "embeddings_negative_v2_esm2_35M.npy",
+      "shape_ok": true
+    }
+  },
+  "decision_rule": "fixed before the run: a reduction counts as movement only if beta-lactamase's 5-seed recovery exceeds mean_res's, and then only as a screen requiring 30 seeds plus the provenance, localization and target-host controls. 14 grid points, so an uncorrected best-of-14 is expected to beat the control by chance.",
+  "tags": [
+    "esm2_35M_dev_attn1",
+    "esm2_35M_dev_attn16",
+    "esm2_35M_dev_attn4",
+    "esm2_35M_dev_topk1",
+    "esm2_35M_dev_topk10",
+    "esm2_35M_dev_topk20",
+    "esm2_35M_dev_topk5",
+    "esm2_35M_dev_topk50",
+    "esm2_35M_mean_res",
+    "esm2_35M_win_best15",
+    "esm2_35M_win_best25",
+    "esm2_35M_win_best5",
+    "esm2_35M_win_best9",
+    "esm2_35M_win_max15",
+    "esm2_35M_win_max9"
+  ]
+}

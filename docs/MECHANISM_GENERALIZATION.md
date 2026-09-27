@@ -1019,8 +1019,10 @@ against 3B). Scaling redistributes which classes carry the fragility rather than
 published ordering between them was seed noise. Max stays far below both. 🔴 **"No pooling choice comes
 near alignment" was the sentence here until 2026-09-27, and § 9.1.2 falsifies it**: a coherent
 25-residue window reduction reaches **35.0% [31.6, 38.4]**, entirely above alignment's 29.5%. The
-heading survives on a different fact — that reduction costs 43.8 points on superantigens and 9.5 on the
-panel mean, so it reallocates recovery rather than adding any.
+heading survives on two different facts — that reduction costs 43.8 points on superantigens and 9.5 on
+the panel mean, so it reallocates recovery rather than adding any, and 🔴 **its gain does not survive a
+change of representation at all**: on `esm2_35M` it costs beta-lactamase 9.5 points and nothing on that
+arm clears its control (§ 9.1.4).
 
 **Structure is not the fix.** SaProt with real AlphaFold structures for 231 of 234 panel proteins reaches
 10%, below plain ESM-2.
@@ -1181,6 +1183,8 @@ the protein's own mean:
 
 🔑 **[31.6, 38.4] is the first pooling choice in this project whose whole interval clears alignment's
 29.5% on beta-lactamase**, and 0 of its 30 seeds recover the class at zero against the control's 7.
+🔴 *On ESM-2 650M only: § 9.1.4 puts the same reduction on `esm2_35M`, where it costs 9.5 points instead
+and no reduction clears its control. Read every number in this subsection as one-arm.*
 § 9's sentence *"no pooling choice comes near alignment"* was true of mean, CLS and max and is false in
 general.
 
@@ -1237,7 +1241,8 @@ so it sees neither the class it will be tested on nor the negatives that will se
 | **phage_peptidoglycan_hydrolase, v3** | 12.3% [10.0, 14.5] | **27.3% [23.3, 31.3]** | **+15.0** |
 
 🔑 **Every one of those intervals is disjoint from its control, and the two classes are the project's two
-documented failures.** § 10.4's margin statistic identifies both before training; a label-free 25-residue
+documented failures.** ⚠️ *v2 and v3 are both the ESM-2 650M arm, so this is a panel replication and not
+a representation one; § 9.1.4 varies the representation and the gain does not survive it.* § 10.4's margin statistic identifies both before training; a label-free 25-residue
 window moves both by 15 to 20 points. And on the phage class it is not a lone grid point: **five of the
 fourteen reductions have intervals clear of the control** — `win_best5` 27.8% [24.7, 30.9], `win_best25`,
 `win_best15`, `win_best9`, `dev_topk5` — against **one of fourteen** on v2's beta-lactamase.
@@ -1286,6 +1291,59 @@ locality, one of them needs it **label-free** because supervision trained on the
 and the families already at 100% are damaged by the locality that helps the others. A single global
 choice — mean, window, or a CNN's learned filters — cannot be right for all of them at a fixed
 false-positive budget.
+
+#### 9.1.4 🔴 The window's gain does not survive a change of representation, and its cost does
+
+The third bound § 9.1.2 left open was "ESM-2 650M only". § 10.6's standing rule is that a geometric
+claim runs across representations, and it is the rule that decides this one. `src/69 --model` and
+`src/70 --arm` put the same fourteen reductions on **`esm2_35M`**, v2, gated the same way (its
+residue-only mean agrees with the published `esm2_35M` artifact to 4.05e-06).
+
+| beta-lactamase, 30 seeds | ESM-2 **650M** | ESM-2 **35M** |
+|---|---|---|
+| `mean_res`, the control | 15.5% [11.0, 19.9] | 16.9% [10.0, 23.8] |
+| **`win_best25`** | **35.0% [31.6, 38.4]** | **7.4% [4.7, 10.0]** |
+| best reduction on that arm | `win_best25` | `win_max15` 21.7% [15.8, 27.5] |
+| reductions with an interval clear of the control | **1 of 14** | **0 of 14** |
+
+🔴 **The gain is representation-specific.** On the 35M arm `win_best25` does not help beta-lactamase, it
+costs **9.5 points**, and **nothing on that arm has an interval clear of its control** — while the two
+controls are themselves comparable (16.9% against 15.5%), so this is not a case of a hopeless
+representation. What replicated in § 9.1.3 was the **panel** (v2 and v3 are both the 650M arm); the
+representation had not been varied.
+
+🔴 **The cost, by contrast, is general.** `win_best25` takes superantigen_enterotoxin from 100% to
+**56.2%** on 650M/v2, 95.2% to **69.5%** on 650M/v3, and 100% to **54.8%** on 35M/v2 — all three
+interval-disjoint. So the reduction reliably destroys the saturated classes on every arm and panel tried,
+and reliably helps only on one arm.
+
+⚠️ **This is the second time the same rule has caught the same shape of thing.** § 10.6.4's typicality
+baseline reached −0.746 at *p* = 0.0034 on the canonical arm and **+0.021 at *p* = 0.53 on `esm2_35M`**.
+Both times a real, interval-clean effect on ESM-2 650M vanished on the second arm. **The rule that every
+geometric claim runs across representations is doing more work in this project than any single finding it
+has produced.**
+
+##### And margin does not explain the gain either, which was the obvious candidate
+
+`src/30 --reductions` scores the fifteen reductions with the same margin code that produced § 10.6.1's
+arm table, writing its own artifact. Two results:
+
+🟢 **Margin's relation to recovery survives re-pooling.** Across the fifteen reductions of one arm,
+Spearman(margin, recovery) runs **+0.536 to +0.941** with **14 of 15** significant at *p* < 0.05, and
+**12 of 15** put beta-lactamase at the margin floor. § 10.6 established that ordering across fourteen
+model **arms**; it also holds across fifteen **reductions** of a single arm, which is a second and
+different kind of variation.
+
+🔴 **But the gain is not a margin effect.** Regressing the change in beta-lactamase's margin against the
+change in its recovery over the fifteen reductions gives Spearman **+0.270 at permutation *p* = 0.166** —
+**not a result**. The pattern is asymmetric rather than absent: every reduction that drives the margin
+more than 0.019 below the control's loses 9 to 15 points, while `win_best25` gains 19.5 with a margin
+change of **−0.0009**, essentially none. **Preserving the margin is necessary for the gain and does not
+produce it** — `win_max9` and `win_max15` also leave the margin intact and still lose 6.9 and 8.3.
+
+⚠️ So margin explains the **losses** and not the gain, and the mechanism for the gain remains what
+§ 9.1.2 said it was: unexplained, with length ruled out, catalytic-site proximity weak (9 of 14,
+*p* ≈ 0.21), and unavailable on the class that gained.
 
 ### 9.2 Strictness: where each class stops being recoverable
 
