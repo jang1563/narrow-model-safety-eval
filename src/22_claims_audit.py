@@ -551,6 +551,43 @@ def benign_control_sites():
     }
 
 
+def fspe_m():
+    """The mutation axis's preregistered outcome, from its artifact.
+
+    🔴 Added 2026-09-27. P1 is supported and P2 fails on the ceiling section 4 wrote for it, so the
+    claim asserts both, plus the two facts that make the pair readable: the exception set is FSPE's
+    own, and the benign controls out-rank almost the whole panel. It also asserts the gate's leakage
+    half rather than the composite verdict, because the AUROC half was shown to have no power at
+    n_benign = 4 and must not be allowed to void or bless the study.
+    """
+    d = j("../results/fspe_m.json")
+    if d is None:
+        return None
+    panel = {r["acc"]: r["dfspe_m"] for r in d["panel"] if r["dfspe_m"] is not None}
+    ctrl = {c["name"]: c["dfspe_m"] for c in d["controls"] if c["dfspe_m"] is not None}
+    g, p1, p2 = d["P5_gate"], d["P1"], d["P2"]
+    best_ctrl = max(ctrl.values())
+    return {
+        "gate_centred": g["centred_on_zero"],
+        "gate_mean_over_se": abs(g["shuffled_mean_dfspe_m"]) /
+                             (g["shuffled_sd"] / (len(d["panel"]) + len(d["controls"])) ** 0.5),
+        "gate_auroc_reported_not_gating": g["shuffled_auroc"],
+        "p1_k": p1["all"]["k_above_0"], "p1_n": p1["all"]["n"], "p1_p": p1["all"]["sign_p"],
+        "p1_supported": p1["supported"],
+        "p1_excl": (p1["seb_excluded"]["k_above_0"], p1["seb_excluded"]["n"]),
+        # the exception set, which is FSPE's own type-2 RIP pair
+        "below_zero": sorted(k for k, v in panel.items() if v <= 0),
+        "p2_panel_mean": p2["toxin_mean"], "p2_benign_mean": p2["benign_mean"],
+        "p2_difference": p2["difference"], "p2_auroc": p2["auroc"],
+        "p2_perm_p": p2["permutation_p"],
+        "p2_ceiling_fires": p2["benign_mean"] >= p2["toxin_mean"],
+        "p2_n_benign": p2["n_benign"],
+        "panel_below_best_control": sum(1 for v in panel.values() if v < best_ctrl),
+        "n_panel": len(panel),
+        "p6_unrun": d["P6"].startswith("NOT RUN"),
+    }
+
+
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
 
@@ -2359,6 +2396,25 @@ CLAIMS = [
      # audited surface: it has to be able to quote figures the gate forbids elsewhere
      {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
       "| thermolysin `1LNF` | P00800 | +0 | 374, 375, 378, 398, 463 | HEHEH |"}, []),
+    ("the mutation axis: P1 supported, P2 failed on its own ceiling", fspe_m,
+     lambda v: v is None or (
+         # step 4's gate, leakage half only: the AUROC half has no power at n_benign = 4
+         v["gate_centred"] and v["gate_mean_over_se"] < 2.0
+         # P1 supported at the frozen threshold
+         and v["p1_k"] == 13 and v["p1_n"] == 15 and abs(v["p1_p"] - 0.0037) < 1e-4
+         and v["p1_supported"] and v["p1_excl"] == (12, 14)
+         # and its exceptions are FSPE's own type-2 RIP pair, on a different reduction
+         and v["below_zero"] == ["P02879", "P11140"]
+         # P2 fails on direction, which is what the ceiling tests
+         and v["p2_ceiling_fires"] and v["p2_difference"] < 0
+         and abs(v["p2_panel_mean"] - 4.32) < 0.02 and abs(v["p2_benign_mean"] - 5.26) < 0.02
+         and v["p2_auroc"] < 0.5 and v["p2_n_benign"] == 4
+         # the benign controls out-rank almost the whole panel
+         and v["panel_below_best_control"] == 14 and v["n_panel"] == 15
+         and v["p6_unrun"]),
+     {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
+      "**So the verdict, as the preregistration fixed it in advance: dFSPE-M measures",
+      "docs/EVALUATION_REPORT.md": "| benign controls, n = 4 | **+5.26** |"}, []),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.

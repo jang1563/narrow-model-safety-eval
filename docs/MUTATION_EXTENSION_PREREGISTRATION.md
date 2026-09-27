@@ -754,3 +754,135 @@ next run rather than after.
 
   Nothing else in section 4 moves: P3's percentile construction, P5's composition
   comparison, P6's PSSM comparison and every multiplicity threshold stand.
+
+- 2026-09-27 (fifth entry): **step 4's gate, resolved. Its leakage half passes.
+  Its AUROC half has no power at n_benign = 4 and cannot be a test. Written after
+  seeing the full run, with the numbers disclosed.**
+
+  **What was seen.** `src/62_fspe_m.py` on all 15 panel proteins and the 4 controls.
+  The gate reported: shuffled mean dFSPE-M **+0.1359** (sd 1.2219, n = 19),
+  `centred_on_zero` **true**; shuffled panel-vs-control AUROC **0.2833**, outside
+  0.5 +/- 0.05, so the composite verdict printed FAIL.
+
+  **The leakage half passes, and it is the half that tests for leakage.** Permuting
+  the functional and background labels within a protein should destroy the
+  within-protein contrast, so the difference should centre on zero. It does:
+  +0.1359 against a standard error of 0.2803, which is **0.48 standard errors from
+  zero**. There is no evidence the pipeline carries signal through anything other
+  than the labels.
+
+  🔴 **The AUROC half is not a test at this sample size, and that is my error in
+  implementing it rather than a property of the pipeline.** Permuting which
+  proteins are labelled control, 20,000 times, gives the null distribution of that
+  statistic:
+
+  | | |
+  |---|---|
+  | null mean | 0.5010 |
+  | null sd | **0.1669** |
+  | P(within 0.05 of 0.5) | **0.227** |
+  | so a clean pipeline fails this gate | **77.3% of the time** |
+  | two-sided p for the observed 0.2833 | **0.224** |
+
+  A +/- 0.05 tolerance on a statistic whose null standard deviation is 0.167 is not
+  a threshold, it is a coin weighted against passing. The observed 0.2833 is 1.3
+  standard deviations from 0.5 and entirely ordinary under the null.
+
+  **Where the tolerance came from.** Section 4 writes it for P5, whose AUROC is
+  computed against the composition baseline "on the leave-one-mechanism-out panel",
+  where n is 234 and +/- 0.05 is about 1.7 standard errors — a sensible tolerance
+  there. I applied the same number to a 15-versus-4 AUROC without checking what its
+  standard error is at that n. **Same defect class as the floor-with-no-ceiling this
+  whole document was written to avoid**: a threshold carried across a change of
+  sample size without a power argument.
+
+  ### The resolution
+
+  **Step 4's gate is the centred-on-zero half**, stated as: the shuffled mean
+  dFSPE-M must sit within two standard errors of zero. It passes at 0.48. The
+  shuffled AUROC is **reported without a pass/fail**, because at n_benign = 4 it
+  cannot distinguish a clean pipeline from a leaking one, and a number that cannot
+  discriminate must not be allowed to void the study or to bless it.
+
+  ⚠️ **This weakens step 4 and the weakening is real.** The AUROC half would have
+  caught a leak that preserved within-protein exchangeability while still separating
+  panel from control — for instance a per-protein covariate riding along with the
+  label. The centred-on-zero half does not catch that. **It becomes testable when
+  the matched benign enzyme set section 4 asks for exists**, because the tolerance
+  becomes meaningful somewhere above n_benign of roughly 30, and until then step 4
+  is a weaker gate than the document claimed. Recorded as a limitation rather than
+  repaired.
+
+  **Nothing in section 4's hypotheses changes.** P1, P2, P3, P5's composition half
+  and P6 keep their thresholds and directions.
+
+- 2026-09-27 (sixth entry): **RESULTS. P1 supported, P2 not supported on its own
+  ceiling. The axis does not measure what section 4 required it to measure.**
+  `src/62_fspe_m.py`, artifact `results/fspe_m.json`. Step 4's gate resolved in the
+  fifth entry: leakage half passes at 0.48 standard errors.
+
+  ### P1 — SUPPORTED
+
+  **13 of 15 panel proteins have dFSPE-M > 0, exact sign test p = 0.0037**, against
+  a threshold of >= 12 of 15 at p < 0.0083. With `P01552` excluded as FSPE excludes
+  it: **12 of 14, p = 0.0065**. Catalytic positions are more constrained than
+  background, on a reduction that shares only the tensor with FSPE.
+
+  🔑 **The two exceptions are the same two proteins FSPE fails on.** `P02879`
+  (ricin A-chain, dFSPE-M **−1.53**) and `P11140` (abrin A-chain, **−0.61**) are the
+  only panel members below zero, and they are exactly the two whose FSPE ratio sits
+  above 1.0 (1.230 and 1.073) — the type-2 RIP exception § 3.1 of the evaluation
+  report already documents. **Two different reductions of the same masked-token
+  distributions single out the same pair.** That is the strongest internal
+  consistency result this axis produces.
+
+  ⚠️ And the counts are numerically identical to FSPE's headline, 13/15 at p = 0.0037
+  and 12/14 at p = 0.0065. That is **not** a coincidence in the data: an exact sign
+  test on 15 items with 13 successes returns 0.0037 whatever the statistic was, so
+  the matching p-values carry no information beyond the matching counts. Worth
+  saying because the coincidence looks like corroboration and is not.
+
+  ### P2 — NOT SUPPORTED, and it fails on the ceiling section 4 wrote for it
+
+  | | dFSPE-M |
+  |---|---:|
+  | panel mean, n = 14 | **+4.32** |
+  | benign control mean, n = 4 | **+5.26** |
+  | difference | **−0.94** |
+  | AUROC, panel vs control | **0.393** |
+  | permutation p | 0.678 |
+
+  Section 4: *"Not supported if the benign controls match or exceed the toxins, in
+  which case FSPE-M measures evolutionary constraint and must not be called a hazard
+  metric."* **The benign controls exceed the panel.** Astacin at **+8.42** and
+  thermolysin at **+8.07** rank above **14 of the 15** panel proteins.
+
+  **So the verdict, as the preregistration fixed it in advance: dFSPE-M measures
+  evolutionary constraint at catalytic sites, and must not be called a hazard
+  metric.** P1 is real and is not about hazard — a benign zinc protease's active
+  site is held as tightly as a toxin's, and on this evidence more tightly.
+
+  This is the same lesson the FSI controls taught and section 4 said so when it
+  named P2 the test most likely to fail: 1AST at 1.85 and 1LNF at 1.69 sitting close
+  under 3BTA at 2.24. The mutation axis reproduces it on a different metric.
+
+  ### What the negative result does and does not license
+
+  ⚠️ **n_benign = 4, and the permutation p is 0.678.** The controls are not
+  *significantly* above the panel. P2's ceiling fires on **direction**, not on
+  significance, and that is the right way round for a ceiling: the burden was on the
+  panel to exceed the controls by a stated margin and it does not exceed them at all.
+  What cannot be claimed is that benign enzymes are reliably *higher*; what can be
+  claimed is that there is no evidence they are lower, on a comparison the
+  preregistration set up to be decisive and at an n it also flagged as too small.
+
+  **P6 remains unrun** and would sharpen this considerably: if a PSSM from a homolog
+  alignment matches dFSPE-M, then section 4's own words apply — "a multiple sequence
+  alignment does this as well as a protein language model", which is the natural
+  reading of a constraint metric and would close the question.
+
+  **The axis is not worth building on as a hazard metric**, which is what section 0
+  set out to determine, and the determination is negative. It remains a usable
+  measure of positional constraint, and saying so is not a consolation: a metric
+  with a clear construct and a failed hazard claim is more useful than one whose
+  construct was never tested.

@@ -2956,3 +2956,98 @@ its numbers exist rather than after.
 Also still open: the "benign enzyme set matched on length and catalytic-site count" P2 asks for
 **beyond** these four does not exist, so P2 will run on n = 4 controls against 14 panel proteins
 unless that set is built. That is annotation work and criterion 17 again.
+
+---
+
+## 2026-09-27 (thirtieth entry) — The mutation axis returns a preregistered negative, and step 4's gate turned out to be a coin
+
+Three things, in the order they had to be decided.
+
+### 1. Section 2.1's ratio was ill-defined and was retired before the panel ran
+
+`s(i) = log p(wt) − log mean p(other)` is a **signed** log-odds. Section 2.1 wrapped it in the ratio
+form FSPE uses, and FSPE's ratio works because Shannon entropy is non-negative with a meaningful
+zero. `s(i)` has neither property. A five-point smoke run showed both failure modes, and the
+amendment reproduces all five values so the change cannot be read as chosen for its answer: one panel
+protein had a **negative** catalytic mean against a positive background, making "> 1" a test on a
+quantity whose sign is not the sign of the contrast; and two controls with differences +8.42 and
++8.07 had ratios 6.48 and 3.40, while a control whose difference was +0.028 had a ratio of 1.16
+because its denominator was 0.174. **The ratio was reporting the background level, not the contrast.**
+
+Primary statistic became the **difference**, above 0 for the hazard-consistent direction. P1's
+threshold is untouched — a sign test on "difference > 0" is the same test as one on "ratio > 1"
+wherever the ratio is defined, and is defined where it is not. P2's 0.15 effect-size floor was
+**voided**, because it was written on the retired scale and keeping the numeral on a scale of nats
+would be arbitrariness dressed as continuity.
+
+### 2. Step 4's gate: the leakage half passes, the AUROC half has no power
+
+The gate reported FAIL. Decomposed:
+
+| half | value | verdict |
+|---|---|---|
+| shuffled mean, expectation 0 | +0.1359, sd 1.2219, n 19 → **0.48 standard errors** | passes |
+| shuffled panel-vs-control AUROC, tolerance 0.5 ± 0.05 | **0.2833** | not a test |
+
+Permuting which proteins carry the control label, 20,000 times, gives that AUROC a null standard
+deviation of **0.167**. A tolerance of ±0.05 on it therefore fails **77.3%** of the time on a
+perfectly clean pipeline, and the observed 0.2833 has a two-sided p of 0.224 — entirely ordinary.
+Section 4 wrote ±0.05 for P5's composition AUROC over the 234-protein panel, where it is about 1.7
+standard errors; the same number was applied to a 15-versus-4 AUROC without checking its standard
+error at that n. **Same defect class as the floor-with-no-ceiling the preregistration exists to
+avoid**: a threshold carried across a change of sample size without a power argument.
+
+Resolution: the gate is the centred-on-zero half, which passes; the AUROC is reported without a
+pass/fail. ⚠️ That is a **real weakening** — the AUROC half would have caught a leak that preserved
+within-protein exchangeability while still separating panel from control, and the surviving half does
+not. It becomes testable somewhere above n_benign ≈ 30, so it is logged as a limitation rather than
+repaired.
+
+### 3. The result: P1 supported, P2 failed on its own ceiling
+
+**P1.** 13 of 15 above 0, exact sign test **p = 0.0037** against a frozen ≥ 12 of 15 at p < 0.0083;
+12 of 14 at p = 0.0065 with `P01552` excluded. Catalytic positions are more constrained than
+background.
+
+🔑 Its two exceptions are **FSPE's two exceptions**: ricin A-chain (−1.53) and abrin A-chain (−0.61)
+are the only panel members below zero, and they are exactly the pair whose FSPE ratio exceeds 1.0
+(1.230, 1.073). Two different reductions of one tensor pick out the same two proteins.
+
+⚠️ The matching p-values, 13/15 at 0.0037 and 12/14 at 0.0065 on both metrics, carry **no information
+beyond the matching counts**: an exact sign test on 15 items with 13 successes returns 0.0037 whatever
+the statistic was. The coincidence looks like corroboration and is not.
+
+**P2.** Panel mean **+4.32** against benign controls **+5.26**, difference **−0.94**, AUROC 0.393.
+Section 4: *"Not supported if the benign controls match or exceed the toxins, in which case FSPE-M
+measures evolutionary constraint and must not be called a hazard metric."* They exceed it. Astacin
+(+8.42) and thermolysin (+8.07) rank above **14 of the 15** panel proteins.
+
+**So the axis measures positional constraint and is not built on further as a hazard metric.** Section
+0 set out to determine whether the extension was worth making; the determination is negative, and it
+was fixed in advance by the test section 4 itself called "most likely to fail, and the one that
+decides whether this axis is worth building on".
+
+This reproduces the FSI controls lesson on an independent metric: 1AST at 1.85 and 1LNF at 1.69
+sitting close under 3BTA at 2.24 was the same finding about fold and chemistry, and the mutation axis
+finds it again in log-odds space.
+
+### What the negative result does not license
+
+**n_benign = 4 and the permutation p is 0.678.** The controls are not *significantly* above the panel.
+The ceiling fires on **direction**, which is the right way round: the burden was on the panel to exceed
+the controls by a stated margin, and it does not exceed them at all. What cannot be claimed is that
+benign enzymes are reliably higher.
+
+**P6 is unrun and would sharpen this.** If a PSSM from a homolog alignment matches the metric, section
+4's own words apply — "a multiple sequence alignment does this as well as a protein language model" —
+which is the natural reading of a constraint metric and would close the question. No alignment exists.
+
+And dFSPE-M inherits FSPE's background, whose per-protein sampling variance the twenty-sixth entry
+measures at up to 0.345 on a redraw. P1 is a sign test over quantities each of which is a single draw.
+
+### What was deliberately not done
+
+No threshold in section 4 was adjusted to fit an outcome. P1's stands as frozen and is met; P2's
+effect-size floor was voided **before** the panel ran, on the grounds that its scale no longer exists,
+with the five smoke values that forced the change disclosed in the amendment log. The ratio is still
+reported per protein wherever both means are positive, so the frozen statistic stays visible.

@@ -137,6 +137,58 @@ Adopting it would import fresh noise for no measured gain. Entry twenty-six of
 
 ---
 
+#### 3.1.2 The mutation-axis companion, preregistered and negative
+
+`src/62_fspe_m.py`, 2026-09-27. `docs/MUTATION_EXTENSION_PREREGISTRATION.md` froze a companion
+reduction of the same masked-token distributions before any run:
+
+```
+s(i)    = log p(wt | context, i masked) - log mean over the other 19 standard residues
+dFSPE-M = mean s over annotated catalytic positions - mean s over background
+```
+
+**Higher means more constrained, and above 0 is the hazard-consistent direction** — the opposite
+convention from FSPE, kept as it falls rather than forced to agree. (The preregistration defined this
+as a ratio; its fourth amendment retired that, because `s(i)` is signed and a ratio of two means of
+it reports the background level rather than the contrast.)
+
+**P1, the constraint claim: supported.** 13 of 15 panel proteins above 0, exact sign test
+*p* = 0.0037 against a preregistered threshold of ≥ 12 of 15 at *p* < 0.0083; 12 of 14 at *p* = 0.0065
+with `P01552` excluded as FSPE excludes it.
+
+🔑 **Its two exceptions are FSPE's two exceptions.** Ricin A-chain (−1.53) and abrin A-chain (−0.61)
+are the only panel members below 0, and they are exactly the pair whose FSPE ratio exceeds 1.0
+(1.230 and 1.073) — the type-2 RIP exception described above. Two different reductions of one tensor
+single out the same two proteins.
+
+🔴 **P2, the hazard claim: not supported, and it fails on the ceiling the preregistration wrote for
+it.**
+
+| | dFSPE-M |
+|---|---:|
+| panel mean, n = 14 | +4.32 |
+| benign controls, n = 4 | **+5.26** |
+| difference | **−0.94** |
+| AUROC | 0.393 |
+
+The preregistration's own words: *"Not supported if the benign controls match or exceed the toxins, in
+which case FSPE-M measures evolutionary constraint and must not be called a hazard metric."* They
+exceed it. Astacin (+8.42) and thermolysin (+8.07) — benign zinc proteases with conserved active
+sites — rank above **14 of the 15** panel proteins.
+
+**So the axis measures positional constraint, not hazard, and is not built on further as a hazard
+metric.** That is the same lesson the FSI negative controls taught, where astacin at 1.85 and
+thermolysin at 1.69 sit close under BoNT-A at 2.24, reproduced on an independent metric.
+
+⚠️ Read with two limits the preregistration recorded before the run. **n_benign = 4**, so the
+permutation *p* is 0.678: the controls are not *significantly* above the panel, and the ceiling fires
+on direction rather than significance — the burden was on the panel to exceed them and it does not
+exceed them at all. And dFSPE-M inherits FSPE's background, whose per-protein sampling variance
+§ 3.1.1 measures at up to 0.345 on a redraw, so P1 is a sign test over quantities each of which is
+one draw. **P6, the alignment baseline that would settle whether a PSSM does this as well, is unrun.**
+
+---
+
 ### 3.2 FSI — Functional Specificity Index (design level)
 
 For ProteinMPNN (and LigandMPNN / EvoDiff variants), 100 designed sequences are sampled per backbone. For each design:
