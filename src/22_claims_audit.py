@@ -53,7 +53,13 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-24 with the document itself. It is a standalone summary written to be read
           # instead of the long documents, which makes it the surface most likely to be quoted and
           # the one where a stale figure would travel furthest.
-          "docs/DETECTOR_EVALUATION_SUMMARY.md"]
+          "docs/DETECTOR_EVALUATION_SUMMARY.md",
+          # Added 2026-09-27 with the document itself. It is the design note for the next phase, so
+          # every number in it is one a later decision would rest on, and its first draft already
+          # carried a stale figure: it put the species axis at n = 7 from v2's annotation when
+          # v3's has 52 bacteria and 22 insect and the holdout had already been run. Adding it is
+          # the check that would have caught that.
+          "docs/VFDB_CLASS_AXIS_DESIGN.md"]
 
 
 def j(p):
@@ -389,6 +395,36 @@ def external_baseline_numbers():
         # paragraph cannot silently turn either check off
         "split_inference_flagged": "**never states its own split**" in flat,
         "panel_size_stated": "self-built panel of 234" in flat,
+    }
+
+
+def vfdb_axis():
+    """VFDB's own category and host structure, as the design note quotes it.
+
+    \U0001f534 Added 2026-09-27. Unlike every other claim here, the source is a network download
+    whose raw files are deliberately not committed (no license stated, 19 MB), so this recomputes
+    from `results/vfdb_ingest.json` rather than from sequence. Regenerating that summary needs
+    `python src/67_vfdb_ingest.py --download`. What it pins is that the two numbers the next design
+    decision turns on cannot drift in the document: Exotoxin is a few per cent of VFDB, and the
+    plant and insect host contrast exists only in the full set.
+    """
+    d = j("../results/vfdb_ingest.json")
+    if d is None:
+        return None
+    a, b = d["setA"], d["setB"]
+    return {
+        "n": {"setA": a["n_records"], "setB": b["n_records"]},
+        "n_categories": {"setA": a["n_categories"], "setB": b["n_categories"]},
+        "categories_ge_20": {"setA": len(a["categories_ge_20"]), "setB": len(b["categories_ge_20"])},
+        "exotoxin": {"setA": a["exotoxin"], "setB": b["exotoxin"]},
+        "exotoxin_frac": {"setA": a["exotoxin_frac"], "setB": b["exotoxin_frac"]},
+        "non_toxin": {"setA": a["non_toxin_virulence"], "setB": b["non_toxin_virulence"]},
+        # setA is the experimentally verified core and has no plant or insect pathogen in it
+        "host": {"setA": a["hosts"], "setB": b["hosts"]},
+        "setA_non_human": a["host_non_human"],
+        "setB_non_human": b["host_non_human"],
+        "exotoxin_by_host_setB": b["exotoxin_by_host"],
+        "effector_largest": max(b["categories"], key=b["categories"].get),
     }
 
 
@@ -2633,6 +2669,26 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("VFDB's Exotoxin category is a few per cent of it, and the host contrast is setB-only",
+     vfdb_axis,
+     lambda v: v is None or (
+         v["n"] == {"setA": 4755, "setB": 30215}
+         and v["n_categories"] == {"setA": 14, "setB": 14}
+         # fourteen categories at holdout-usable size beats the panel's eleven to twelve
+         and v["categories_ge_20"]["setB"] == 14 and v["categories_ge_20"]["setA"] == 12
+         # the distinction the v2/v3 panel assumes away: toxin is one category of fourteen
+         and v["exotoxin"] == {"setA": 248, "setB": 1218}
+         and v["exotoxin_frac"]["setA"] < 0.06 and v["exotoxin_frac"]["setB"] < 0.05
+         and v["non_toxin"] == {"setA": 4507, "setB": 28997}
+         # setA, the experimentally verified core, holds no plant or insect pathogen at all
+         and v["setA_non_human"] == 0 and v["setB_non_human"] == 1604
+         and v["host"]["setB"]["plant"] == 1093 and v["host"]["setB"]["insect"] == 511
+         # and the two axes cross, which is what makes the host question answerable
+         and v["exotoxin_by_host_setB"]["insect"] == 181
+         and v["exotoxin_by_host_setB"]["plant"] == 61
+         and v["effector_largest"] == "Effector delivery system"),
+     {"docs/VFDB_CLASS_AXIS_DESIGN.md":
+      "🔴 **The host contrast is a setB-only property.**"}, []),
     ("the external classifier numbers stay attached to the papers they were read from",
      external_baseline_numbers,
      lambda v: (v["deepvf_auc"] == 0.896 and v["dtvf_auroc"] == 0.9208

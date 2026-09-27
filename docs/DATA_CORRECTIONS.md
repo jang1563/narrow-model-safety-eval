@@ -3256,3 +3256,95 @@ real test of a headline result; this entry found a misattributed benchmark and a
 the project's own stated limitation. Both came from the same activity, and neither came from introspection.
 **Reading the literature has been the highest-yield thing done in the last two days, and the survey is
 still not on the audited surface.**
+
+---
+
+## 2026-09-27 (thirty-fourth entry) — Two questions about what the hazard label means, and a stale answer to the second one
+
+Asked directly: virulence and toxicity are not the same thing, and acting on a human is not the same
+as acting on another species — are those distinguished, and does this project cover them? Both are
+measurable rather than arguable, and answering them produced one correction to something written
+minutes earlier in this session.
+
+### 🔴 The correction: I put the species axis at n = 7, from the wrong panel
+
+The first draft of `docs/VFDB_CLASS_AXIS_DESIGN.md` § 4 read the **v2** annotation —
+`plant 1, bacteria 5, other_nonanimal 1` — and concluded that "the species axis rests on one
+plant-target protein and five bacteria-target ones", then reasoned from there that § 2.4.1's
+always-say-animal null was probably an n artifact and that rerunning it on v3 was available work.
+
+**`data/annotations/target_host_v3.json` has 149 positives: bacteria 52, animal 51, insect 22, small
+molecule 15, plant 1.** And the holdout has already been run on it, and is already in
+`docs/MECHANISM_GENERALIZATION.md` at § 2.5:
+
+| | v2, 9 classes | v3, 11 classes |
+|---|---|---|
+| balanced class-level accuracy | 0.500, the majority baseline | **0.804** (animal 0.86, non-animal 0.75) |
+| class-level permutation *p* | 0.21 | **0.0150** |
+| null draws reaching a perfect score | 8% | **0%** |
+
+By the preregistered rule: **SUPPORTED**. So the work I proposed was done, the diagnosis I
+independently arrived at was the one already recorded, and the n I quoted was three panels out of
+date. ⚠️ **The pattern is the one this log keeps recording: a number read from the nearest file rather
+than the current one.** `target_host_v2.json` and `target_host_v3.json` sit in the same directory, and
+the v2 file is the one every `src/03*` script names in its docstring.
+
+§ 4 is rewritten. `docs/VFDB_CLASS_AXIS_DESIGN.md` is now on the audited surface, which is the check
+that would have caught it.
+
+### The answers, from the artifacts
+
+**Virulence ≠ toxicity, and the panel already treats it as a label rather than an assumption.**
+`virulence_associated_non_toxin` is a labelled control class: v2 50%@95 / 32%@99 / AUROC 0.844, v3
+**34% / 12% / 0.820**, against 100%@95 for four toxin classes. A probe trained on toxins does not
+transfer to virulence factors that are not toxins. n = 10.
+
+🔑 **VFDB's own ontology puts a number on how large that distinction is.** `src/67_vfdb_ingest.py`,
+downloaded 2026-09-27: **Exotoxin is 248 of 4,755 verified records (5.2%) and 1,218 of 30,215 full
+records (4.0%)** — one category of fourteen. The largest is Effector delivery system at 8,804. So on a
+VFDB-derived axis the non-toxin control becomes 95% of the data, which is a construct change and not a
+scale-up.
+
+**Target host is annotated at species level, survives class holdout on v3, and does not predict
+which class fails.** Recovery by target: insect Cry **87.3%**, bacteriocin 84.0%, CDI 75.0%, phage
+peptidoglycan hydrolase **10.0%**, beta-lactamase **18.6%**, animal classes 80 to 100%.
+
+🔑 **Both documented failures act on something other than an animal, and acting on something other
+than an animal does not predict failure.** An insect-targeting Cry toxin is as detectable as a
+mammalian neurotoxin; a phage lysin is not. Target host is not the axis the failures lie on — margin
+is (§ 10.4). This is a sharper statement than § 2.4's 0.994-animal versus 0.898-non-animal, whose
+non-animal side is 15 small-molecule and 4 regulatory proteins out of 22.
+
+⚠️ **The one host with no support is plant, at n = 1** — the *Agrobacterium* T-pilus subunit, sitting
+inside the mixed virulence control rather than in a class of its own. setB has **1,093**. So the gap
+is plant specifically, not "other species" generally.
+
+### What the download establishes for the next phase
+
+| | records | categories ≥ 20 | Exotoxin | plant | insect |
+|---|---:|---:|---:|---:|---:|
+| **setA**, verified | 4,755 | 12 | 248 | **0** | **0** |
+| **setB**, full | 30,215 | **14** | 1,218 | **1,093** | **511** |
+
+🔴 **The host contrast is a setB-only property**: not one plant or insect pathogen appears in the
+4,755 experimentally verified records. Asking the species question means accepting predicted VFs.
+
+🔑 **And the axes cross.** Exotoxin by host in setB: **759 mammal, 181 insect, 61 plant** — Cry
+toxins, *Photorhabdus* and *Xenorhabdus* toxin complexes, phytotoxins. That is a matched
+toxin-versus-toxin, host-versus-host contrast, which neither this panel nor any paper in the survey
+runs, and it is the design the two questions above point at.
+
+⚠️ Two limits recorded before any probe is trained. VFDB's organism field names the **producing
+pathogen, not the target**, and § 2.4 already records that these come apart — six of seven RIPs are
+plant-produced and act on animal ribosomes. And **genus is the wrong resolution**: *Pseudomonas* holds
+*aeruginosa* (935, human) beside *syringae* (681, plant) and *entomophila* (139, insect), *Bacillus*
+holds *anthracis* beside *thuringiensis*. `src/67` assigns at species level from an explicit table and
+leaves 5,635 setB records **unassigned** rather than defaulting them to the majority, because
+defaulting to "animal" is the exact failure § 2.4.1 found in the probe.
+
+Raw downloads are not committed: no license is stated on the download page, the full protein set is
+19 MB, and `--download` reproduces both. Two parser failures worth keeping: one setB header
+(`VFG042213`, a *Mesorhizobium loti* nodulation protein — VFDB contains symbiosis factors, not only
+virulence) carries no accession block and tripped the deliberate hard failure on unparsed headers; and
+the non-greedy category group kept its trailing space, so `"Exotoxin " != "Exotoxin"` reported **0
+exotoxins out of 248** while still counting fourteen categories.

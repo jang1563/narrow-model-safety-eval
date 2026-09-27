@@ -1,0 +1,117 @@
+{
+  "source": "VFDB, https://www.mgc.ac.cn/VFs/download.htm",
+  "license": "none stated on the download page",
+  "note": "raw files are not committed; rerun with --download to reproduce",
+  "setA": {
+    "n_records": 4755,
+    "n_categories": 14,
+    "n_vf_ids": 746,
+    "n_genera": 38,
+    "n_species": 73,
+    "categories": {
+      "Effector delivery system": 1814,
+      "Immune modulation": 679,
+      "Adherence": 679,
+      "Motility": 608,
+      "Nutritional/Metabolic factor": 350,
+      "Exotoxin": 248,
+      "Enzyme": 105,
+      "Biofilm": 94,
+      "Invasion": 57,
+      "Regulation": 45,
+      "Others": 32,
+      "Stress survival": 26,
+      "Antimicrobial activity/Competitive advantage": 10,
+      "Post-translational modification": 8
+    },
+    "exotoxin": 248,
+    "exotoxin_frac": 0.0522,
+    "non_toxin_virulence": 4507,
+    "hosts": {
+      "human_or_mammal": 3640,
+      "unassigned": 1115
+    },
+    "host_non_human": 0,
+    "host_unassigned_frac": 0.2345,
+    "categories_ge_20": [
+      "Adherence",
+      "Biofilm",
+      "Effector delivery system",
+      "Enzyme",
+      "Exotoxin",
+      "Immune modulation",
+      "Invasion",
+      "Motility",
+      "Nutritional/Metabolic factor",
+      "Others",
+      "Regulation",
+      "Stress survival"
+    ],
+    "exotoxin_by_host": {
+      "human_or_mammal": 195,
+      "unassigned": 53
+    },
+    "sha256": "12fa8e115468b7211d754b5c74d0afb11719218d1553a218844aa2459da8a64a"
+  },
+  "setB": {
+    "n_records": 30215,
+    "n_categories": 14,
+    "n_vf_ids": 1322,
+    "n_genera": 74,
+    "n_species": 283,
+    "categories": {
+      "Effector delivery system": 8804,
+      "Immune modulation": 4677,
+      "Adherence": 4677,
+      "Nutritional/Metabolic factor": 3964,
+      "Motility": 3358,
+      "Exotoxin": 1218,
+      "Biofilm": 748,
+      "Enzyme": 712,
+      "Others": 600,
+      "Regulation": 585,
+      "Invasion": 332,
+      "Stress survival": 260,
+      "Post-translational modification": 157,
+      "Antimicrobial activity/Competitive advantage": 123
+    },
+    "exotoxin": 1218,
+    "exotoxin_frac": 0.0403,
+    "non_toxin_virulence": 28997,
+    "hosts": {
+      "human_or_mammal": 22976,
+      "unassigned": 5635,
+      "plant": 1093,
+      "insect": 511
+    },
+    "host_non_human": 1604,
+    "host_unassigned_frac": 0.1865,
+    "categories_ge_20": [
+      "Adherence",
+      "Antimicrobial activity/Competitive advantage",
+      "Biofilm",
+      "Effector delivery system",
+      "Enzyme",
+      "Exotoxin",
+      "Immune modulation",
+      "Invasion",
+      "Motility",
+      "Nutritional/Metabolic factor",
+      "Others",
+      "Post-translational modification",
+      "Regulation",
+      "Stress survival"
+    ],
+    "exotoxin_by_host": {
+      "human_or_mammal": 759,
+      "unassigned": 217,
+      "insect": 181,
+      "plant": 61
+    },
+    "sha256": "0e8a78ec3feaf0acaf8c975db18d45b15b65e48b040d2750d25177a2c0125f20"
+  },
+  "host_contrast_is_setB_only": {
+    "setA_non_human": 0,
+    "setB_non_human": 1604
+  }
+}

@@ -96,3 +96,9 @@ results/v2/profile_hmm_scores_*.npz
 
 # Third-party datasets pulled for the external check; not redistributed.
 .external/
+
+# VFDB downloads: no license is stated on https://www.mgc.ac.cn/VFs/download.htm, the full
+# protein set is 19 MB uncompressed, and both are reproducible with
+# `python src/67_vfdb_ingest.py --download`. The aggregate summary in results/vfdb_ingest.json
+# is tracked; nothing that reproduces VFDB's own table is.
+data/external/vfdb/
