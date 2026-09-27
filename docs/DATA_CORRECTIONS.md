@@ -3348,3 +3348,54 @@ Raw downloads are not committed: no license is stated on the download page, the 
 virulence) carries no accession block and tripped the deliberate hard failure on unparsed headers; and
 the non-greedy category group kept its trailing space, so `"Exotoxin " != "Exotoxin"` reported **0
 exotoxins out of 248** while still counting fourteen categories.
+
+---
+
+## 2026-09-27 (thirty-fifth entry) — "VFDB fixes n_benign = 4" was two fixes wearing one label
+
+§ 5 of `docs/VFDB_CLASS_AXIS_DESIGN.md`, written earlier the same day, offered Option A as a single
+move: hazard stays "toxin", VFDB's 4,507 non-toxin virulence factors become the negatives, and that
+*"fixes the problem named earlier in this project as the binding one — **n_benign = 4**"*.
+
+🔴 **It does not.** `n_benign = 4` is the count in `data/annotations/benign_control_sites.json`, and
+what those four records carry is **per-residue catalytic positions** — 1AST, 1LNF, 1LYZ, 1QD2, each
+verified by `src/46`'s unique-offset rule, because dFSPE-M averages a per-residue statistic over the
+catalytic set and needs to know which residues those are. **VFDB carries no residue annotations at
+all.** Its records are sequences with a category, an organism and a VF id.
+
+Two separate fixes were sitting under one label:
+
+| | what it needs | source | what it repairs |
+|---|---|---|---|
+| **A1** | 4,507 hard negatives | VFDB setA, already downloaded | **criterion 1**, the worst-scoring one: 0 test negatives, 7.87% out-of-sample FPR at a nominal 5% |
+| **A2** | ≥ 30 benign enzymes **with `Active site` features** | Swiss-Prot, already local at `.external/db/uniprot_sprot.fasta` | **n_benign = 4**, which makes three of the mutation preregistration's AUROC halves untestable |
+
+⚠️ **The tell was available and I did not read it.** The mutation preregistration says the threshold
+*"becomes meaningful somewhere above n_benign of roughly 30"* and calls for a *"matched benign **enzyme**
+set"* — enzyme, not negative. A virulence factor is not an enzyme with a known active site, and the two
+words were treated as interchangeable because both mean "the not-hazardous side".
+
+Recommendation order changed from **A → B** to **A2 → A1 → B**: A2 is cheapest, needs no new data, and
+unblocks three frozen tests; A1 uses the download already made.
+
+### And both are now preregistered to fail
+
+`docs/NEGATIVE_EXPANSION_PREREGISTRATION.md`, frozen before either runs, six primary tests at
+α = 0.05/6 = 0.0083, floors and ceilings on each.
+
+🔴 **A2-1 predicts the benign controls will match or exceed the panel**, because the mutation axis
+measures positional constraint rather than hazard — P2 failed its own ceiling and P6's alignment
+reproduces both verdicts. At n = 4 the benign mean is **+5.26** against the panel, astacin **+8.42**,
+permutation *p* = 0.678; at n ≥ 30 that stops being underpowered and becomes a verdict.
+
+🔴 **A1-2 and A1-3 predict this project's own false-positive numbers get worse.** VFDB negatives are
+pathogen-produced and largely secreted, which are the two features the provenance control already reads
+at AUROC 0.818, so the honest prediction is a rate **above** the benign pool's 7.87% and 5.98%.
+
+🔴 **A1-4 predicts that a bigger negative set makes the two known failures worse.** § 10.7 found that
+*removing* benign neighbours repairs 8 to 11% of the beta-lactamase failure; adding 4,507
+virulence-associated neighbours should move it the other way. **If recovery rises instead, margin is not
+the mechanism it is written up as** — and that outcome would be the more interesting one.
+
+⚠️ If A2's exclusions yield fewer than 30 candidates, the AUROC halves **stay untestable and that is
+the reported result**. The exclusions do not get relaxed to reach the number.

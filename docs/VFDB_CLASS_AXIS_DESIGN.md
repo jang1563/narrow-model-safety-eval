@@ -164,12 +164,24 @@ gap VFDB closes, not "other species" in general.
 
 Two studies share one download and one embedding run, and they are not the same study.
 
-**Option A — hazard stays "toxin", and VFDB supplies the negatives.** Positives: the 248 verified
-(or 1,218 full) exotoxins. Negatives: the 4,507 verified non-toxin virulence factors, which are
-ontology-labelled, pathogen-produced, and a far harder negative class than a random benign pool.
-This fixes the problem named earlier in this project as the binding one — **n_benign = 4**, which
-makes three of the mutation preregistration's four AUROC thresholds unusable. It keeps the hazard
-construct that FSPE, FSI and the realizability tiers were built for.
+**Option A — hazard stays "toxin", and the negative side grows.** 🔴 *Corrected 2026-09-27, entry
+thirty-five: the first version of this paragraph said VFDB fixes `n_benign = 4`. It does not, and the
+two things it merged need separate work.*
+
+- **A1, VFDB as hard negatives.** Positives: the 248 verified (or 1,218 full) exotoxins. Negatives:
+  the 4,507 verified non-toxin virulence factors — ontology-labelled, pathogen-produced, secreted, a
+  far harder negative class than a random benign pool. What this repairs is **criterion 1**, the
+  project's worst-scoring one: every false-positive figure here was measured on negatives the
+  pipeline had already seen, and the out-of-sample rate against the benign pool is 7.87%
+  against a nominal 5%.
+- **A2, the matched benign enzyme set.** What `n_benign = 4` actually needs is benign enzymes with
+  **per-residue catalytic annotations**, which VFDB does not carry: `benign_control_sites.json` holds
+  four PDB entries (1AST, 1LNF, 1LYZ, 1QD2) verified by `src/46`'s offset rule, and the mutation
+  preregistration puts the threshold for its AUROC halves at roughly **n_benign = 30**. The source is
+  Swiss-Prot `Active site` features, already downloaded at `.external/db/uniprot_sprot.fasta` for P6.
+  **No VFDB involved.**
+
+Both keep the hazard construct that FSPE, FSI and the realizability tiers were built for.
 
 **Option B — hazard becomes "virulence factor", and VFDB supplies the class axis.** Leave-one-
 category-out over 14 categories, DeepVIC's own axis, asking the question DeepVIC does not ask. It
@@ -178,8 +190,9 @@ else's labels and someone else's class definitions — the strongest available t
 changes what "hazard" means for the duration of that experiment, and that has to be said in the
 title rather than in a footnote.
 
-**Recommendation: A first, then B.** A repairs a stated blocker and leaves the construct intact; B
-is the stronger novelty claim and needs A's infrastructure anyway.
+**Recommendation: A2, then A1, then B.** A2 is the cheapest and unblocks three frozen tests with no
+new data; A1 repairs the worst-scoring criterion and uses the download already made; B is the
+stronger novelty claim and needs A1's negative infrastructure anyway.
 
 The host question rides on either one, and § 4.2 says what to ask of it. The axis already survives
 class holdout at 0.804 and recovery already fails to follow it, so the open question is **not** whether
