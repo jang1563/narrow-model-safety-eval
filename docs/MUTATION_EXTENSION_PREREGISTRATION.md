@@ -671,3 +671,86 @@ next run rather than after.
   count" P2 asks for **beyond** these four does not exist. As things stand P2 would
   run on n = 4 controls against 14 panel proteins, and that imbalance has to be
   stated with its result. Criterion 17 again.
+
+- 2026-09-27 (fourth entry): **section 2.1's ratio is ill-defined for the quantity
+  it is applied to. The primary statistic becomes the difference. Written after
+  seeing five smoke-test values and before running the panel, with those five
+  values reproduced here so the change cannot be read as chosen for its answer.**
+
+  **What was seen, and when.** `src/62_fspe_m.py --limit 1` was run as a smoke test
+  on 1 panel protein and the 4 controls. It printed these, and nothing else from
+  the panel has been computed:
+
+  | protein | role | mean s(catalytic) | mean s(background) | ratio, as frozen | difference |
+  |---|---|---:|---:|---:|---:|
+  | P02879 | panel | **−0.2637** | +1.2616 | **−0.2090** | −1.5253 |
+  | P07584 | control | +9.9550 | +1.5373 | 6.4758 | +8.4177 |
+  | P00800 | control | +11.4354 | +3.3668 | 3.3965 | +8.0686 |
+  | P00698 | control | +7.9500 | +3.4381 | 2.3123 | +4.5119 |
+  | P20656 | control | +0.2022 | +0.1740 | 1.1619 | +0.0282 |
+
+  **Why the ratio cannot carry P1.** `s(i)` is a log-odds: `log p(w) − log mean_{a≠w}
+  p(a)`. It is **signed**, and its zero is arbitrary in the sense that it already is
+  a difference of logs. A ratio of two means of such a quantity has no stable
+  reading, and both failure modes appear in the five rows above:
+
+  1. **Sign.** P02879's catalytic mean is **negative** (−0.264) against a positive
+     background (+1.262). On the difference scale that is a clean, interpretable
+     −1.53: its annotated positions are *less* constrained than background. As a
+     ratio it is −0.209, which is "below 1" and therefore sits in the same verdict
+     bucket as a protein at 0.99, losing the magnitude entirely and making "> 1" a
+     test on a quantity whose sign is not the sign of the contrast.
+  2. **Scale.** P07584 and P00800 have nearly the same difference, +8.42 and +8.07,
+     and ratios differing by almost a factor of two, 6.48 and 3.40 — because their
+     background means are 1.54 and 3.37. And P20656's difference of **+0.028**,
+     which is nothing, becomes a ratio of 1.16 because its denominator is 0.174.
+     **The ratio is reporting the background level, not the contrast.**
+
+  🔑 **This is why FSPE can use a ratio and FSPE-M cannot, and section 2.1 missed
+  it by copying the form across.** FSPE's ratio is over **Shannon entropies**,
+  which are non-negative with a meaningful zero, so their ratio is well behaved and
+  "< 1" means what it says. `s(i)` shares neither property. The sentence in section
+  2.1 that says the two metrics "differ in the reduction only" is exactly right and
+  is the reason the difference is the correct form: a reduction that changes the
+  sign structure of the statistic is not the same reduction.
+
+  ### What changes and what does not
+
+  **Primary statistic.** `ΔFSPE-M = mean s(catalytic) − mean s(background)`,
+  hazard-consistent when **> 0**. The ratio is still **reported** per protein
+  wherever both means are positive, so the frozen statistic stays visible and
+  nothing is hidden by the change.
+
+  **P1 is unchanged in form, threshold and power.** It is an exact sign test on the
+  direction: supported at **≥ 12 of 15** with **p < 0.0083**. A sign test on
+  "difference > 0" and one on "ratio > 1" are the *same test* wherever the ratio is
+  well defined, and the difference version is defined where the ratio is not. So
+  this is not a loosening; the threshold is not touched.
+
+  **P2 loses its effect-size floor and keeps everything else.** Section 4 set it at
+  "at least 0.15 in FSPE-M", a number written for the ratio scale, which no longer
+  exists. It **does not transfer**, and keeping the numeral on a scale of nats
+  would be arbitrary dressed as continuity. So: the 0.15 floor is **void**. P2 is
+  decided on **direction plus a permutation p < 0.0083**, and section 4's ceiling
+  transfers unchanged and is the important half — *"Not supported if the benign
+  controls match or exceed the toxins, in which case FSPE-M measures evolutionary
+  constraint and must not be called a hazard metric."* The observed difference is
+  reported with its interval so a reader can apply any floor they prefer.
+
+  ⚠️ **On the evidence above, the P2 ceiling is the live risk.** All four controls
+  have positive differences and three of them are large, +4.5 to +8.4, while the
+  one panel protein computed so far is **negative**. Five points decide nothing and
+  the panel is 15, but this is the outcome section 4 named as the one that would
+  mean FSPE-M measures constraint rather than hazard, and it is the direction the
+  smoke test points. Recording that before the run rather than after.
+
+  **P5's gate statistic follows the primary statistic**, and this fixes it. With
+  labels permuted within a protein the *difference* has a clean expectation of
+  **0**, so the gate is "shuffled ΔFSPE-M centred on 0 and panel-vs-control AUROC
+  within 0.05 of 0.5". The ratio had no such expectation: the smoke run returned a
+  shuffled mean ratio of 1.54 and an AUROC of 0.25, which is unreadable as pass or
+  fail because a ratio of two random half-means of a signed quantity is not
+  centred anywhere in particular. **The gate could not have worked on the ratio.**
+
+  Nothing else in section 4 moves: P3's percentile construction, P5's composition
+  comparison, P6's PSSM comparison and every multiplicity threshold stand.

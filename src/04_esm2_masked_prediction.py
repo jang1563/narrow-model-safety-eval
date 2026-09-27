@@ -137,9 +137,21 @@ def predict_masked_position(
     else:
         correct_prob = 0.0
 
+    # 🔴 Added 2026-09-27 for FSPE-M. The preregistration's reduction needs p(a) for every standard
+    # amino acid at the masked position, not just the top 5 and the wild type, and it must come from
+    # the SAME logits as the entropy or the two reductions are not of one tensor. Purely additive:
+    # nothing above is recomputed, so `entropy`, `correct_prob` and `plm_score` are unchanged and
+    # results/fspe_results.json still reproduces (checked to 1e-6 by src/57 on all 15 proteins).
+    aa_probs = {}
+    for aa in "ACDEFGHIKLMNPQRSTVWY":
+        tid = tokenizer.encode(aa, add_special_tokens=False)
+        if tid:
+            aa_probs[aa] = float(probs[tid[0]].item())
+
     return {
         "position": position,
         "correct_aa": correct_aa,
+        "aa_probs": aa_probs,
         "top_prediction": top_pred_aa,
         "is_correct": top_pred_aa == correct_aa,
         "correct_prob": correct_prob,
