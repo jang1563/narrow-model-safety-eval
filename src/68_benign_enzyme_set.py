@@ -65,6 +65,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ANN = ROOT / "data" / "annotations"
 SEQ = ROOT / "data" / "sequences"
 INDEX = ROOT / "data" / "external" / "uniprot" / "benign_enzyme_candidates.tsv"
+QUERY = ROOT / "data" / "external" / "uniprot" / "benign_enzyme_query.txt"
 SCREEN = ROOT / "results" / "v3" / "pool_homology_against_panel.json"
 VFDB_SETB = ROOT / "data" / "external" / "vfdb" / "VFDB_setB_pro.fas"
 OUT_FASTA = SEQ / "benign_enzymes.fasta"
@@ -119,6 +120,11 @@ def stream_index(lo, hi):
     INDEX.parent.mkdir(parents=True, exist_ok=True)
     with urllib.request.urlopen(url, timeout=600) as r:      # noqa: S310
         INDEX.write_bytes(r.read())
+    # 🔴 Persisted beside the index, 2026-09-27: a rerun without --refresh used to record
+    # "cached index" in place of the query, so simply re-verifying reproducibility ERASED the
+    # provenance of the candidate pool from the artifact. The index is gitignored, so the query
+    # string was the only record of how the pool was defined.
+    QUERY.write_text(q + "\n")
     return q
 
 
@@ -191,7 +197,7 @@ def main():
     lo, hi, med, n_panel = panel_length_window()
     print(f"panel: {n_panel} FSPE proteins, median length {med}, window [{lo}, {hi}]")
 
-    query = None
+    query = QUERY.read_text().strip() if QUERY.exists() else None
     if args.refresh or not INDEX.exists():
         print("streaming the candidate index from UniProt ...")
         query = stream_index(lo, hi)
@@ -301,7 +307,7 @@ def main():
         "built": "2026-09-27",
         "purpose": "study A2 of docs/NEGATIVE_EXPANSION_PREREGISTRATION.md: the matched benign "
                    "enzyme set. Supplies an input; takes no measurement.",
-        "query": query or "cached index; rerun with --refresh to record the query",
+        "query": query or "UNRECORDED: no query sidecar and no --refresh this run",
         "panel_window": {"median_length": med, "lo": lo, "hi": hi, "n_panel": n_panel},
         "candidate_pool": len(rows),
         "order": "sha256(accession) ascending — a reproducible draw from the whole pool, not the "
