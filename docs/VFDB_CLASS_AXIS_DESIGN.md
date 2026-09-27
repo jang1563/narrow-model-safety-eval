@@ -202,3 +202,67 @@ which setB's Exotoxin × host cross-tab (759 mammal / 181 insect / 61 plant) can
 panel cannot, because Cry is the only insect-target class it has. Both require restricting to setB and
 stratifying on the species-level host label, with the **producer-not-target** caveat stated wherever
 the number appears.
+
+---
+
+## 6. "A multi-species universal classifier, antibiotics included" — what this panel already says about it
+
+Asked as a scoping question: is that too broad? The panel has enough of it built to answer with
+measurements instead of judgement, and the answer is **not too broad as a target, wrong shape as a
+single classifier.** Two of its pieces already exist here and behave in opposite ways.
+
+### 6.1 🟢 Multi-species is the half that works
+
+`target_host_v3.json` is already multi-species — animal 51, bacteria 52, insect 22 — and § 4.2's
+class-holdout verdict is **SUPPORTED**: balanced class accuracy 0.804, permutation *p* = 0.0150, the
+axis reaching mechanism classes it was never fit on. An insect-target Cry toxin recovers at **87.3%**,
+indistinguishable in practice from the mammalian toxin classes at 80 to 100%. **Species is a learnable
+axis in a frozen representation.** The one host without support is plant at n = 1, and setB has 1,093.
+
+### 6.2 🔴 Antibiotics is the half that is already in the panel and already failing
+
+"Including antibiotics" is not a new direction here. `beta_lactamase` **is** the antibiotic-resistance
+class, n = 14, and it is the project's documented failure:
+
+| | |
+|---|---|
+| recovery at 95% specificity | **18.6%** on v3, 21% on v2 |
+| at 30 seeds | **15.7%, sd 12.5**, and **7 of 30 splits recover it at exactly 0%** |
+| the only class Smith-Waterman alignment beats | **30% against 21%** |
+| its `target_host` | **`none_small_molecule`** — it does not act on a host at all |
+
+⚠️ **Read the alignment line precisely.** The exception is specific to Smith-Waterman's graded pairwise
+score: `phmmer` reaches 5% on that class and `jackhmmer` 0%, so the probe beats profile homology search
+there by 17 to 21 points. This is not "reference methods win for resistance genes" — curated AMR tooling
+is the incumbent for that job and **this project has never benchmarked against it**, which is a gap and
+not a result.
+
+🔑 **The deeper reason is margin, and it predicts that breadth imports hard families.** Both unflaggable
+classes — beta-lactamase and phage peptidoglycan hydrolase — are **hydrolases with ubiquitous catalytic
+machinery**, and § 1.1b-ter of the survey notes that hydrolases are the *easiest* family to place
+functionally in the EC-classification literature (68.3% held out) while being the hardest to flag here.
+The same ubiquity that makes a family easy to recognise puts its members close to benign proteins, which
+is what margin measures and why it tracks recovery at +0.894. **Antibiotic resistance enzymes are
+housekeeping-adjacent by construction**, so a universal screen that includes them is importing the
+lowest-margin families available.
+
+### 6.3 The asymmetry that decides the architecture
+
+**Species transfers; hazard construct does not.** The labelled `virulence_associated_non_toxin` class
+recovers at **34%** at 95% specificity on v3 — a probe trained on toxins does not reach virulence
+factors that are not toxins. Merging toxins, resistance enzymes and antimicrobials into one positive
+label assumes exactly the transfer that number denies, and it would be assumed rather than tested.
+
+⚠️ **And the binding constraint is the negative side, which breadth makes worse.** § 10.8: this panel is
+**850×** too small to calibrate a one-in-ten-thousand false-positive budget; the 8,259-protein pool
+brings that to **30×** by raw count and **70×** by distinct name; and the harvest design that keeps
+provenance separable tops out at **59,880** records. A wider hazard definition against the same negative
+supply raises the alert count without raising the negative count.
+
+🔑 **So the shape the evidence points at is not one universal binary classifier.** It is a **per-family,
+multi-label panel with margin as an admission test**: margin is computable from embeddings *before* a
+family is trained on, it ordered recovery at +0.894 across twelve classes, and § 10.6 shows the ordering
+holds in fourteen representations. That makes it possible to predict which of a hundred candidate
+families would be unflaggable **before** spending the compute, and to route those to the methods that do
+work on them rather than reporting a pooled number that hides them. The broad version is reachable; the
+monolithic version would average the phage-lysin failure into a headline and call it coverage.
