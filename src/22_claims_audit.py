@@ -2487,7 +2487,10 @@ CLAIMS = [
          and v["p6_unrun"]),
      {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
       "**So the verdict, as the preregistration fixed it in advance: dFSPE-M measures",
-      "docs/EVALUATION_REPORT.md": "| benign controls, n = 4 | **+5.26** |"}, []),
+      "docs/EVALUATION_REPORT.md": "| benign controls, n = 4 | **+5.26** |",
+      # the six-page summary carried nothing about this axis until 2026-09-27, so a completed line
+      # of work was missing from the flagship public document
+      "docs/DETECTOR_EVALUATION_SUMMARY.md": "against the panel's **+4.32**; two benign zinc proteases out-rank 14 of the 15 panel proteins."}, []),
     ("P3 is not supported, and the statistic is dominated by which residue was substituted",
      fspe_m_p3,
      lambda v: v is None or (

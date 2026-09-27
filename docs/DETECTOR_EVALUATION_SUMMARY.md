@@ -36,7 +36,12 @@ they should change a reader's practice:
 5. **Whoever supplies the benign set can suppress a hazard class without touching the aggregate.**
    500 genuine Swiss-Prot proteins, none forged or mislabelled, cut one class from **63.5% to 16.7%**
    while the measured false-positive rate *improved*.
-6. **A detector's own evaluation can be scored, and ours fails.** Against eighteen criteria, each
+6. **A second preregistration, on a companion metric, returned a negative on its own decisive
+   test.** Catalytic positions are measurably more constrained than background (13 of 15,
+   *p* = 0.0037) — and mechanism-matched **benign** enzymes show it more strongly, so the metric
+   measures evolutionary constraint rather than hazard. An alignment baseline reproduces both
+   verdicts, which is the preregistration's own stated case for reporting it.
+7. **A detector's own evaluation can be scored, and ours fails.** Against eighteen criteria, each
    anchored to a place this project fell short: **two fails, four partials, one mixed**. The worst
    is the first one, the split.
 
@@ -292,7 +297,7 @@ at once without noticing.
 
 ---
 
-## 6. A preregistration that failed twice
+## 6. Two preregistrations, and what freezing a claim buys
 
 One claim from this line of work was frozen before any external data was fetched: that embedding
 margin predicts which unseen molecules a probe will miss, with a floor, a comparison and a gap
@@ -314,6 +319,49 @@ The preregistration is the reason this section can be written at all. Nothing ab
 retrospectively reframed, because the frame was fixed first.
 
 ---
+
+### 6.1 The second one: a metric extension, preregistered and refused
+
+A companion metric was frozen before any run — six primary tests, a multiplicity threshold of
+0.05 / 6, and a stated ceiling on each. It reduces the same masked-token distributions a different
+way: for each position, how much the model prefers the wild-type residue over the average
+alternative, averaged over annotated catalytic positions minus averaged over background.
+
+| test | outcome |
+|---|---|
+| constraint: catalytic positions more constrained than background | **supported**, 13 of 15, sign *p* = 0.0037 |
+| hazard: panel above mechanism-matched benign enzymes | **failed on its own ceiling** |
+| loss-of-function substitutions disfavoured | not supported, and confounded by scanning design |
+| alignment baseline | reproduces **both** verdicts |
+
+🔑 **The hazard test failed in the way its own ceiling named in advance.** The preregistration had
+written: *"Not supported if the benign controls match or exceed the toxins, in which case it measures
+evolutionary constraint and must not be called a hazard metric."* Benign controls came in at **+5.26**
+against the panel's **+4.32**; two benign zinc proteases out-rank 14 of the 15 panel proteins. So the
+metric measures positional constraint and is not built on further.
+
+And the alignment baseline settles what that means. A position-specific scoring matrix from a
+homology search, reduced identically, agrees with the model on direction but not magnitude and
+reproduces both results — its own constraint test is 12 of 15 at *p* = 0.0176, and it fails the hazard
+comparison by a wider margin. The preregistration's own sentence applies: *"a multiple sequence
+alignment does this as well as a protein language model, and that is a publishable and more useful
+result than a marginal win for the model."*
+
+⚠️ **Two defects in the frozen design showed up only on contact with data**, and both are recorded in
+its append-only log with the values that forced them. Its primary statistic was a **ratio**, copied
+from a metric over entropies, which are non-negative; applied to a signed log-odds it reported the
+background level rather than the contrast, so it was retired for a difference *before* the panel ran,
+with the five smoke values disclosed. And **three of its four AUROC-based thresholds are unusable**:
+each was set on a 234-protein scale and applied to a 15-versus-4 comparison whose null standard
+deviation is 0.167, so a 0.05 margin fails on a clean pipeline three times in four. That is one
+finding about the design, not three about the data.
+
+**What freezing bought, in both cases.** The first preregistration's claim was falsified on two
+external panels and downgraded as it required. The second returned a negative on the test it had
+itself named "most likely to fail, and the one that decides whether this axis is worth building on".
+Neither outcome could have been reported with this much confidence if the threshold had been chosen
+afterwards — and the second one's design defects are legible precisely because the design was written
+down first.
 
 ## 7. Scoring the evaluation itself
 
