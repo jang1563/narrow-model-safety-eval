@@ -1,0 +1,583 @@
+{
+  "built": "2026-09-27 18:57:19",
+  "panel": "v2",
+  "seeds": 30,
+  "topk": [
+    0,
+    1,
+    5,
+    10,
+    25,
+    50,
+    100
+  ],
+  "gate_worst_delta": 0.059523809523809534,
+  "gate": {
+    "adp_ribosyl_ab_toxin": {
+      "published": 1.0,
+      "k0": 0.9952380952380953,
+      "delta": -0.004762
+    },
+    "beta_lactamase": {
+      "published": 0.21428571428571427,
+      "k0": 0.15476190476190474,
+      "delta": -0.059524
+    },
+    "clostridial_neurotoxin": {
+      "published": 1.0,
+      "k0": 1.0,
+      "delta": 0.0
+    },
+    "contact_dependent_inhibition": {
+      "published": 0.35,
+      "k0": 0.36666666666666664,
+      "delta": 0.016667
+    },
+    "pore_forming_cytolysin": {
+      "published": 0.6857142857142857,
+      "k0": 0.6904761904761906,
+      "delta": 0.004762
+    },
+    "rip_rrna_glycosidase": {
+      "published": 1.0,
+      "k0": 1.0,
+      "delta": 0.0
+    },
+    "superantigen_enterotoxin": {
+      "published": 1.0,
+      "k0": 1.0,
+      "delta": 0.0
+    },
+    "t3ss_effector_apparatus": {
+      "published": 0.8,
+      "k0": 0.8000000000000003,
+      "delta": 0.0
+    },
+    "virulence_associated_non_toxin": {
+      "published": 0.5,
+      "k0": 0.5133333333333333,
+      "delta": 0.013333
+    }
+  },
+  "leakage": "the direction is fitted on mean-pooled positives excluding the held-out class plus the TRAINING negatives only, so it sees neither the held-out class nor the calibration negatives",
+  "by_k": {
+    "0": {
+      "adp_ribosyl_ab_toxin": {
+        "n": 7,
+        "flagged_95_mean": 0.9952380952380953,
+        "flagged_95_sd": 0.02608202654786506,
+        "flagged_99_mean": 0.942857142857143,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "beta_lactamase": {
+        "n": 14,
+        "flagged_95_mean": 0.15476190476190474,
+        "flagged_95_sd": 0.1245446785879627,
+        "flagged_99_mean": 0.019047619047619046,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 7
+      },
+      "clostridial_neurotoxin": {
+        "n": 6,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 1.0,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "contact_dependent_inhibition": {
+        "n": 4,
+        "flagged_95_mean": 0.36666666666666664,
+        "flagged_95_sd": 0.20482681218167154,
+        "flagged_99_mean": 0.175,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 1
+      },
+      "pore_forming_cytolysin": {
+        "n": 7,
+        "flagged_95_mean": 0.6904761904761906,
+        "flagged_95_sd": 0.13569916085454173,
+        "flagged_99_mean": 0.5523809523809523,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "rip_rrna_glycosidase": {
+        "n": 7,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 0.9523809523809524,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "superantigen_enterotoxin": {
+        "n": 7,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 1.0,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "t3ss_effector_apparatus": {
+        "n": 10,
+        "flagged_95_mean": 0.8000000000000003,
+        "flagged_95_sd": 2.2584051416334807e-16,
+        "flagged_99_mean": 0.8000000000000003,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "virulence_associated_non_toxin": {
+        "n": 10,
+        "flagged_95_mean": 0.5133333333333333,
+        "flagged_95_sd": 0.05713464637233657,
+        "flagged_99_mean": 0.37999999999999995,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      }
+    },
+    "1": {
+      "adp_ribosyl_ab_toxin": {
+        "n": 7,
+        "flagged_95_mean": 0.6857142857142858,
+        "flagged_95_sd": 0.15192872138877822,
+        "flagged_99_mean": 0.5142857142857143,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "beta_lactamase": {
+        "n": 14,
+        "flagged_95_mean": 0.0761904761904762,
+        "flagged_95_sd": 0.09914009829449856,
+        "flagged_99_mean": 0.04523809523809523,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 16
+      },
+      "clostridial_neurotoxin": {
+        "n": 6,
+        "flagged_95_mean": 0.9055555555555554,
+        "flagged_95_sd": 0.1362000256928128,
+        "flagged_99_mean": 0.7000000000000001,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "contact_dependent_inhibition": {
+        "n": 4,
+        "flagged_95_mean": 0.15,
+        "flagged_95_sd": 0.16866616691580136,
+        "flagged_99_mean": 0.08333333333333333,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 15
+      },
+      "pore_forming_cytolysin": {
+        "n": 7,
+        "flagged_95_mean": 0.43333333333333335,
+        "flagged_95_sd": 0.12146961539507348,
+        "flagged_99_mean": 0.2904761904761905,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "rip_rrna_glycosidase": {
+        "n": 7,
+        "flagged_95_mean": 0.8714285714285716,
+        "flagged_95_sd": 0.14211630566186054,
+        "flagged_99_mean": 0.7571428571428572,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "superantigen_enterotoxin": {
+        "n": 7,
+        "flagged_95_mean": 0.8142857142857145,
+        "flagged_95_sd": 0.1990476976139253,
+        "flagged_99_mean": 0.7380952380952384,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "t3ss_effector_apparatus": {
+        "n": 10,
+        "flagged_95_mean": 0.6533333333333335,
+        "flagged_95_sd": 0.13578211078487257,
+        "flagged_99_mean": 0.55,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "virulence_associated_non_toxin": {
+        "n": 10,
+        "flagged_95_mean": 0.4166666666666667,
+        "flagged_95_sd": 0.16832508230603463,
+        "flagged_99_mean": 0.26,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      }
+    },
+    "5": {
+      "adp_ribosyl_ab_toxin": {
+        "n": 7,
+        "flagged_95_mean": 0.9047619047619049,
+        "flagged_95_sd": 0.09441350746446667,
+        "flagged_99_mean": 0.8190476190476192,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "beta_lactamase": {
+        "n": 14,
+        "flagged_95_mean": 0.13809523809523808,
+        "flagged_95_sd": 0.08983003211855094,
+        "flagged_99_mean": 0.04285714285714285,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 4
+      },
+      "clostridial_neurotoxin": {
+        "n": 6,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 1.0,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "contact_dependent_inhibition": {
+        "n": 4,
+        "flagged_95_mean": 0.2833333333333333,
+        "flagged_95_sd": 0.22488822255440177,
+        "flagged_99_mean": 0.1,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 8
+      },
+      "pore_forming_cytolysin": {
+        "n": 7,
+        "flagged_95_mean": 0.5476190476190476,
+        "flagged_95_sd": 0.14078963666465347,
+        "flagged_99_mean": 0.42380952380952386,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "rip_rrna_glycosidase": {
+        "n": 7,
+        "flagged_95_mean": 0.9857142857142858,
+        "flagged_95_sd": 0.04358979666133782,
+        "flagged_99_mean": 0.9619047619047619,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "superantigen_enterotoxin": {
+        "n": 7,
+        "flagged_95_mean": 0.980952380952381,
+        "flagged_95_sd": 0.062024640779329246,
+        "flagged_99_mean": 0.9571428571428572,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "t3ss_effector_apparatus": {
+        "n": 10,
+        "flagged_95_mean": 0.8033333333333336,
+        "flagged_95_sd": 0.018257418583505537,
+        "flagged_99_mean": 0.7566666666666667,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "virulence_associated_non_toxin": {
+        "n": 10,
+        "flagged_95_mean": 0.5366666666666667,
+        "flagged_95_sd": 0.1098065174038764,
+        "flagged_99_mean": 0.3766666666666667,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      }
+    },
+    "10": {
+      "adp_ribosyl_ab_toxin": {
+        "n": 7,
+        "flagged_95_mean": 0.9047619047619049,
+        "flagged_95_sd": 0.09441350746446667,
+        "flagged_99_mean": 0.8333333333333335,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "beta_lactamase": {
+        "n": 14,
+        "flagged_95_mean": 0.13333333333333333,
+        "flagged_95_sd": 0.1056685650920096,
+        "flagged_99_mean": 0.04523809523809522,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 7
+      },
+      "clostridial_neurotoxin": {
+        "n": 6,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 1.0,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "contact_dependent_inhibition": {
+        "n": 4,
+        "flagged_95_mean": 0.35833333333333334,
+        "flagged_95_sd": 0.2428577465461443,
+        "flagged_99_mean": 0.275,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 5
+      },
+      "pore_forming_cytolysin": {
+        "n": 7,
+        "flagged_95_mean": 0.5142857142857142,
+        "flagged_95_sd": 0.10342481554294153,
+        "flagged_99_mean": 0.38571428571428573,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "rip_rrna_glycosidase": {
+        "n": 7,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 0.9952380952380953,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "superantigen_enterotoxin": {
+        "n": 7,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 0.9714285714285714,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "t3ss_effector_apparatus": {
+        "n": 10,
+        "flagged_95_mean": 0.8033333333333336,
+        "flagged_95_sd": 0.018257418583505537,
+        "flagged_99_mean": 0.7866666666666668,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "virulence_associated_non_toxin": {
+        "n": 10,
+        "flagged_95_mean": 0.5433333333333332,
+        "flagged_95_sd": 0.1330888563259934,
+        "flagged_99_mean": 0.39,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      }
+    },
+    "25": {
+      "adp_ribosyl_ab_toxin": {
+        "n": 7,
+        "flagged_95_mean": 0.9095238095238096,
+        "flagged_95_sd": 0.09552501935133882,
+        "flagged_99_mean": 0.8333333333333334,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "beta_lactamase": {
+        "n": 14,
+        "flagged_95_mean": 0.1380952380952381,
+        "flagged_95_sd": 0.11244411127720091,
+        "flagged_99_mean": 0.030952380952380946,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 8
+      },
+      "clostridial_neurotoxin": {
+        "n": 6,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 1.0,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "contact_dependent_inhibition": {
+        "n": 4,
+        "flagged_95_mean": 0.65,
+        "flagged_95_sd": 0.1408104619937615,
+        "flagged_99_mean": 0.45,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "pore_forming_cytolysin": {
+        "n": 7,
+        "flagged_95_mean": 0.5190476190476191,
+        "flagged_95_sd": 0.11553098254878955,
+        "flagged_99_mean": 0.41428571428571426,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "rip_rrna_glycosidase": {
+        "n": 7,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 1.0,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "superantigen_enterotoxin": {
+        "n": 7,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 0.9952380952380953,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "t3ss_effector_apparatus": {
+        "n": 10,
+        "flagged_95_mean": 0.8033333333333336,
+        "flagged_95_sd": 0.018257418583505537,
+        "flagged_99_mean": 0.8000000000000003,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "virulence_associated_non_toxin": {
+        "n": 10,
+        "flagged_95_mean": 0.5,
+        "flagged_95_sd": 0.11447029429446781,
+        "flagged_99_mean": 0.3633333333333334,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      }
+    },
+    "50": {
+      "adp_ribosyl_ab_toxin": {
+        "n": 7,
+        "flagged_95_mean": 0.9190476190476191,
+        "flagged_95_sd": 0.08118868245084794,
+        "flagged_99_mean": 0.8047619047619048,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "beta_lactamase": {
+        "n": 14,
+        "flagged_95_mean": 0.08809523809523813,
+        "flagged_95_sd": 0.095063468804281,
+        "flagged_99_mean": 0.016666666666666666,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 11
+      },
+      "clostridial_neurotoxin": {
+        "n": 6,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 1.0,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "contact_dependent_inhibition": {
+        "n": 4,
+        "flagged_95_mean": 0.6916666666666667,
+        "flagged_95_sd": 0.1260017332484327,
+        "flagged_99_mean": 0.5416666666666666,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "pore_forming_cytolysin": {
+        "n": 7,
+        "flagged_95_mean": 0.5904761904761905,
+        "flagged_95_sd": 0.11086845032305156,
+        "flagged_99_mean": 0.4523809523809524,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "rip_rrna_glycosidase": {
+        "n": 7,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 1.0,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "superantigen_enterotoxin": {
+        "n": 7,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 0.9952380952380953,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "t3ss_effector_apparatus": {
+        "n": 10,
+        "flagged_95_mean": 0.8166666666666669,
+        "flagged_95_sd": 0.037904902178945175,
+        "flagged_99_mean": 0.8000000000000003,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "virulence_associated_non_toxin": {
+        "n": 10,
+        "flagged_95_mean": 0.5233333333333333,
+        "flagged_95_sd": 0.119433528860584,
+        "flagged_99_mean": 0.3433333333333334,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      }
+    },
+    "100": {
+      "adp_ribosyl_ab_toxin": {
+        "n": 7,
+        "flagged_95_mean": 0.9571428571428572,
+        "flagged_95_sd": 0.07642615437456059,
+        "flagged_99_mean": 0.8380952380952382,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "beta_lactamase": {
+        "n": 14,
+        "flagged_95_mean": 0.15476190476190474,
+        "flagged_95_sd": 0.11575917959829969,
+        "flagged_99_mean": 0.014285714285714285,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 6
+      },
+      "clostridial_neurotoxin": {
+        "n": 6,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 1.0,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "contact_dependent_inhibition": {
+        "n": 4,
+        "flagged_95_mean": 0.6583333333333333,
+        "flagged_95_sd": 0.15373697496459454,
+        "flagged_99_mean": 0.5083333333333333,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "pore_forming_cytolysin": {
+        "n": 7,
+        "flagged_95_mean": 0.6380952380952382,
+        "flagged_95_sd": 0.10432810619146024,
+        "flagged_99_mean": 0.47142857142857136,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "rip_rrna_glycosidase": {
+        "n": 7,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 1.0,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "superantigen_enterotoxin": {
+        "n": 7,
+        "flagged_95_mean": 1.0,
+        "flagged_95_sd": 0.0,
+        "flagged_99_mean": 0.9952380952380953,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "t3ss_effector_apparatus": {
+        "n": 10,
+        "flagged_95_mean": 0.8200000000000002,
+        "flagged_95_sd": 0.04068381021724861,
+        "flagged_99_mean": 0.8000000000000003,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      },
+      "virulence_associated_non_toxin": {
+        "n": 10,
+        "flagged_95_mean": 0.5399999999999999,
+        "flagged_95_sd": 0.11017227888394954,
+        "flagged_99_mean": 0.3766666666666668,
+        "fpr_heldout_95_mean": 0.0655737704918033,
+        "zero_seeds": 0
+      }
+    }
+  }
+}

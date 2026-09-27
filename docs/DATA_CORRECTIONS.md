@@ -3707,3 +3707,89 @@ two external panels.
 ranked by a direction fitted inside each fold, which is what a CNN would learn — is declared in `src/70`
 and deliberately **not implemented**, and it is the one closest to the architecture that prompted all of
 this.
+
+---
+
+## 2026-09-27 (fortieth entry) — Locality replicates on both failures; the supervised direction, which is what a CNN learns, cannot reach the harder one
+
+### 🔑 The label-free window generalises
+
+Entry thirty-nine reported `win_best25` on v2's beta-lactamase and said the bounds were "v2 only, 650M
+only, label-free only". v3 closes the first at 30 seeds:
+
+| flagged@95, 30 seeds | `mean_res` | `win_best25` | Δ |
+|---|---|---|---:|
+| beta_lactamase, **v2** | 15.5% [11.0, 19.9] | **35.0% [31.6, 38.4]** | **+19.5** |
+| beta_lactamase, **v3** | 21.0% [16.3, 25.6] | **37.4% [35.5, 39.2]** | **+16.4** |
+| **phage_peptidoglycan_hydrolase, v3** | 12.3% [10.0, 14.5] | **27.3% [23.3, 31.3]** | **+15.0** |
+
+All three intervals disjoint from their controls. **Both of the project's documented failures move by 15
+to 20 points**, and on the phage class it is not a lone grid point — **five of fourteen** reductions have
+intervals clear of the control (`win_best5` 27.8% [24.7, 30.9], `win_best25`, `win_best15`, `win_best9`,
+`dev_topk5`) against **one of fourteen** on v2's beta-lactamase.
+
+🔴 **The reallocation replicates as well**, which is why this remains not a fix: v3's panel mean falls
+**73.1% → 63.1%** against v2's 72.8% → 63.3%, with cry_insecticidal **−30.9**, pore_forming_cytolysin
+**−40.0** and superantigen_enterotoxin **−25.7**, all interval-disjoint at 30 seeds.
+
+### 🔴 And the supervised ranking, which is the one closest to a CNN, cannot touch beta-lactamase
+
+`src/73_supervised_pooling_lomo.py` — declared in `src/70` and deliberately left unimplemented until it
+could be done without leaking. The direction is fitted inside each fold on mean-pooled positives
+**excluding the held-out class** plus the **training** negatives only, so it sees neither the class it is
+tested on nor the negatives that set the threshold. **It reproduces `src/03b`'s fold loop rather than
+approximating it**, and the reproduction is gated: at `k = 0` (every residue, i.e. the mean) the worst
+per-class disagreement with the published run is **0.00e+00**.
+
+| | v2, *k* = 100 | v3, *k* = 25 |
+|---|---|---|
+| panel mean | 72.4% → **75.2%** | 72.8% → **74.7%** |
+| **beta_lactamase** | 15.5% → 15.5% (**+0.0**) | 21.0% → 15.5% (−5.5, ns) |
+| **phage_peptidoglycan_hydrolase** | — | 12.3% → 23.6% (**+11.4**, n = 32) |
+| contact_dependent_inhibition | +29.2 (**n = 4**) | +23.3 (**n = 4**) |
+| cry_insecticidal / bacteriocin | — | +12.6 / +5.8 |
+| pore_forming_cytolysin | −5.2 | −5.7 |
+
+🔑 **Unlike the label-free window this raises the panel mean rather than lowering it** — +2.8 and +1.9 at
+an unchanged realised FPR of 0.0656 — and on v2 it destroys nothing, the saturated classes staying at
+100%. It moves the phage class **+11.4 on n = 32**, a far more trustworthy n than the +29.2 it gets on
+contact-dependent inhibition, which has **four members** and so can only move in steps of 25%.
+
+🔴 **But +0.0 on v2's beta-lactamase and −5.5 on v3's, and that has a mechanism.** The supervised
+direction is fitted on the *other* classes, and beta-lactamase is the class whose members sit **closest to
+benign** — § 10.4's negative margin. **A direction learned from classes it is unlike points the wrong way
+for it.** The label-free "most deviant window" inherits no such bias, which is why the **unsupervised**
+reduction beats the supervised one on exactly the class the supervised one cannot see.
+
+⚠️ **Best-*k* is not stable and is not claimed to be**: 100 on v2, 25 on v3, both chosen after the fact.
+The whole *k* curve is in the artifacts. What replicates is the **pattern** — mid-range *k* helps the low
+classes, *k* = 1 is catastrophic on both panels (panel mean 55.6% and 57.0%), and no *k* helps
+beta-lactamase.
+
+### 🔑 What this settles about the architecture question
+
+§ 8.2 argued for per-family routing from § 8's fixed-budget mechanism and § 10.3's failed member-level
+gate. It now has two independent measurements instead of an analogy: **which reduction helps depends on
+the class, and for the hardest class the supervised reduction is the wrong one.** A CNN learns supervised
+local filters. On beta-lactamase, supervision is precisely what fails, because the supervision available
+comes from families that class is unlike. A single global reduction — mean, window, or learned filters —
+cannot be right for all twelve classes at a fixed false-positive budget.
+
+### Three defects found while running this, all recorded rather than quietly fixed
+
+⚠️ **`src/72` carried `_v2` inside its filenames after `--panel` was added**, so the v3 run read v2
+artifacts from the v3 directory and died. A flag that switches a directory and not the filenames inside it
+is a half-migration; six literals were replaced.
+
+⚠️ **The cost loop rebound `a`, argparse's own namespace**, so `a.panel` died on the *second* class — after
+the first had already printed a correct-looking result. Renamed. **A partial run that prints one good row
+before crashing is the failure mode most likely to be read as a result.**
+
+⚠️ **v3 has no `alignment_baseline.json`** — the alignment baseline was only ever computed on v2. The
+script crashed on it; the fix reports "NONE for this panel" rather than borrowing v2's 29.5%, where both
+the panel and the negative set differ.
+
+⚠️ And one near-miss in the audit itself: the new claim first read the `k = 0` gate from the **30-seed**
+artifact, where it is **0.0595** — which is not a gate failure but beta-lactamase's own 5-versus-30-seed
+gap. The gate is only meaningful against `src/03b`'s five-seed run. Reading it from the wrong file would
+have pinned a number that means something else while still passing.

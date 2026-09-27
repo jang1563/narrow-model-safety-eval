@@ -15,6 +15,7 @@ Usage:
     python src/72_coherent_pooling_seeds.py
 """
 
+import argparse
 import importlib.util
 import json
 import sys
@@ -24,7 +25,9 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
 V2 = ROOT / "results" / "v2"
-CLASS = "beta_lactamase"
+# --panel added 2026-09-27. src/03x's recover_seeds and ci95 are panel-agnostic — only its main()
+# hardcodes v2 paths — so the same fold logic runs on v3 by passing it v3 arrays.
+CLASS = "beta_lactamase"   # overridden by --class
 TAGS = ["mean_res", "dev_topk1", "dev_topk5", "dev_topk10", "dev_topk20", "dev_topk50",
         "dev_attn1", "dev_attn4", "dev_attn16", "win_best5", "win_best9", "win_best15",
         "win_best25", "win_max9", "win_max15"]
@@ -40,12 +43,29 @@ def load_03x():
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--panel", default="v2", choices=["v2", "v3"])
+    ap.add_argument("--class", dest="cls_main", default="beta_lactamase",
+                    help="the class the 14-reduction grid is compared on")
+    ap.add_argument("--classes", default="",
+                    help="comma-separated classes instead of the default beta-lactamase plus the "
+                         "four v2 cost classes; v3's second failure is phage_peptidoglycan_hydrolase")
+    a = ap.parse_args()
+    global V2, CLASS
+    V2 = ROOT / "results" / a.panel
+    CLASS = a.cls_main
     m = load_03x()
-    mech = json.loads((ROOT / "data/annotations/mechanism_classes_v2.json").read_text())
+    mech = json.loads((ROOT / f"data/annotations/mechanism_classes_{a.panel}.json").read_text())
     cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
-    align = json.loads((V2 / "alignment_baseline.json").read_text())["classes"][CLASS]
-    align_rec = align["alignment_recovery"]
-    print(f"{CLASS}: alignment reference {align_rec * 100:.1f}%, {m.SEEDS} seeds\n")
+    # ⚠️ The alignment baseline was only ever computed on v2, so on v3 there is no reference to
+    # clear and the comparison is control-versus-reduction only. Reported as absent rather than
+    # borrowed from v2, where the negative set and the panel both differ.
+    af = V2 / "alignment_baseline.json"
+    align_rec = (json.loads(af.read_text())["classes"][CLASS]["alignment_recovery"]
+                 if af.exists() and CLASS in json.loads(af.read_text())["classes"] else None)
+    print(f"{CLASS}: alignment reference "
+          f"{f'{align_rec * 100:.1f}%' if align_rec is not None else 'NONE for this panel'}, "
+          f"{m.SEEDS} seeds\n")
 
     hdr = f"{'reduction':<12}{'5seed':>7}{'30seed':>8}{'sd':>6}{'ci95':>16}{'zero':>6}{'>align?':>9}"
     print(hdr)
@@ -53,9 +73,9 @@ def main():
     out = {}
     for tag in TAGS:
         suf = f"_esm2_650M_{tag}"
-        P = np.load(V2 / f"embeddings_positive_v2{suf}.npy")
-        N = np.load(V2 / f"embeddings_negative_v2{suf}.npy")
-        man = json.loads((V2 / f"embedding_manifest_v2{suf}.json").read_text())
+        P = np.load(V2 / f"embeddings_positive_{a.panel}{suf}.npy")
+        N = np.load(V2 / f"embeddings_negative_{a.panel}{suf}.npy")
+        man = json.loads((V2 / f"embedding_manifest_{a.panel}{suf}.json").read_text())
         lomo = json.loads((V2 / f"lomo_results{suf}.json").read_text())
         pcls = np.array([cls[r["acc"]] for r in man["positive_rows"]])
         hi = np.where(pcls == CLASS)[0]
@@ -63,7 +83,8 @@ def main():
         v = m.recover_seeds(P, N, hi, tri, 0.95)
         lo, hh = m.ci95(v)
         pub = lomo["leave_one_mechanism_out"][CLASS]["flagged_95_mean"]
-        above = ("yes" if lo > align_rec else "overlap" if hh > align_rec else "no")
+        above = ("n/a" if align_rec is None else
+                 "yes" if lo > align_rec else "overlap" if hh > align_rec else "no")
         out[tag] = {"published_5seed": pub, "mean_30seed": float(v.mean()),
                     "sd": float(v.std(ddof=1)), "ci95": [lo, hh],
                     "zero_seeds": int((v == 0).sum()), "vs_alignment": above,
@@ -95,28 +116,33 @@ def main():
     # this project keeps finding in other people's tables. The classes win_best25 damages most get
     # the same seed count as the class it helps, for the control and for it.
     cost = {}
-    for cname in ("superantigen_enterotoxin", "pore_forming_cytolysin",
-                  "contact_dependent_inhibition", "rip_rrna_glycosidase"):
+    cost_classes = ([c for c in a.classes.split(",") if c] or
+                    ["superantigen_enterotoxin", "pore_forming_cytolysin",
+                     "contact_dependent_inhibition", "rip_rrna_glycosidase"])
+    for cname in cost_classes:
         cost[cname] = {}
         for tag in ("mean_res", "win_best25"):
             suf = f"_esm2_650M_{tag}"
-            P = np.load(V2 / f"embeddings_positive_v2{suf}.npy")
-            N = np.load(V2 / f"embeddings_negative_v2{suf}.npy")
-            man = json.loads((V2 / f"embedding_manifest_v2{suf}.json").read_text())
+            P = np.load(V2 / f"embeddings_positive_{a.panel}{suf}.npy")
+            N = np.load(V2 / f"embeddings_negative_{a.panel}{suf}.npy")
+            man = json.loads((V2 / f"embedding_manifest_{a.panel}{suf}.json").read_text())
             pc = np.array([cls[r["acc"]] for r in man["positive_rows"]])
             h = np.where(pc == cname)[0]
             v = m.recover_seeds(P, N, h, np.setdiff1d(np.arange(len(pc)), h), 0.95)
             lo, hh = m.ci95(v)
             cost[cname][tag] = {"mean_30seed": float(v.mean()), "sd": float(v.std(ddof=1)),
                                 "ci95": [lo, hh]}
-        a, b = cost[cname]["mean_res"], cost[cname]["win_best25"]
-        cost[cname]["delta_30seed"] = round(b["mean_30seed"] - a["mean_30seed"], 4)
-        cost[cname]["intervals_disjoint"] = bool(b["ci95"][1] < a["ci95"][0]
-                                                 or a["ci95"][1] < b["ci95"][0])
-        print(f"  {cname:<32} mean_res {a['mean_30seed'] * 100:5.1f}% "
-              f"[{a['ci95'][0] * 100:.1f}, {a['ci95'][1] * 100:.1f}]   "
-              f"win_best25 {b['mean_30seed'] * 100:5.1f}% "
-              f"[{b['ci95'][0] * 100:.1f}, {b['ci95'][1] * 100:.1f}]   "
+        # 🔴 These were named a and b, which shadowed argparse's namespace and killed a.panel on
+        # the second class. Found by the crash rather than by reading, on a run that had already
+        # printed one class's result.
+        ctlr, winr = cost[cname]["mean_res"], cost[cname]["win_best25"]
+        cost[cname]["delta_30seed"] = round(winr["mean_30seed"] - ctlr["mean_30seed"], 4)
+        cost[cname]["intervals_disjoint"] = bool(winr["ci95"][1] < ctlr["ci95"][0]
+                                                 or ctlr["ci95"][1] < winr["ci95"][0])
+        print(f"  {cname:<32} mean_res {ctlr['mean_30seed'] * 100:5.1f}% "
+              f"[{ctlr['ci95'][0] * 100:.1f}, {ctlr['ci95'][1] * 100:.1f}]   "
+              f"win_best25 {winr['mean_30seed'] * 100:5.1f}% "
+              f"[{winr['ci95'][0] * 100:.1f}, {winr['ci95'][1] * 100:.1f}]   "
               f"{cost[cname]['delta_30seed'] * 100:+.1f}  disjoint="
               f"{cost[cname]['intervals_disjoint']}")
     res["cost_at_30_seeds"] = cost
@@ -126,6 +152,7 @@ def main():
                          "note": "the confound gets slightly HARDER to exploit, not easier, which "
                                  "is the opposite of what section 9.1.1 warned about for local "
                                  "features"}
+    res["panel"] = a.panel
     (V2 / "coherent_pooling_seeds.json").write_text(json.dumps(res, indent=2) + "\n")
     print(f"\ncontrol mean_res: {ctl['mean_30seed'] * 100:.1f}% "
           f"[{ctl['ci95'][0] * 100:.1f}, {ctl['ci95'][1] * 100:.1f}]")

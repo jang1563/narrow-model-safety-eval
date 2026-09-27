@@ -1,0 +1,2684 @@
+{
+  "model": "facebook/esm2_t33_650M_UR50D",
+  "device": "mps",
+  "dry_run_tag": "esm2_650M_dev_topk50",
+  "pooling": "dev_topk50",
+  "built": "2026-09-27 18:51:22",
+  "embedding_dim": 1280,
+  "max_len": 1022,
+  "note": "reduction 'dev_topk50' of residue_stack_v3.npy; every tag comes from the one forward pass src/69 made, so the reductions differ and nothing else does",
+  "positive_rows": [
+    {
+      "row": 0,
+      "acc": "sp|O31506|YEEF_BACSU",
+      "name": "sp|O31506|YEEF_BACSU",
+      "len": 669
+    },
+    {
+      "row": 1,
+      "acc": "sp|O34344|SDPC_BACSU",
+      "name": "sp|O34344|SDPC_BACSU",
+      "len": 203
+    },
+    {
+      "row": 2,
+      "acc": "sp|P77335|HLYE_ECOLI",
+      "name": "sp|P77335|HLYE_ECOLI",
+      "len": 303
+    },
+    {
+      "row": 3,
+      "acc": "sp|A0A0H2US87|OSPC3_SHIFL",
+      "name": "sp|A0A0H2US87|OSPC3_SHIFL",
+      "len": 484
+    },
+    {
+      "row": 4,
+      "acc": "sp|B3BM80|CDIA4_ECO5C",
+      "name": "sp|B3BM80|CDIA4_ECO5C",
+      "len": 377
+    },
+    {
+      "row": 5,
+      "acc": "sp|B7UI21|NLEB1_ECO27",
+      "name": "sp|B7UI21|NLEB1_ECO27",
+      "len": 329
+    },
+    {
+      "row": 6,
+      "acc": "sp|B7UI22|NLEE_ECO27",
+      "name": "sp|B7UI22|NLEE_ECO27",
+      "len": 224
+    },
+    {
+      "row": 7,
+      "acc": "sp|P09616|HLA_STAAU",
+      "name": "sp|P09616|HLA_STAAU",
+      "len": 319
+    },
+    {
+      "row": 8,
+      "acc": "sp|P0C0J0|SPEB_STRPY",
+      "name": "sp|P0C0J0|SPEB_STRPY",
+      "len": 398
+    },
+    {
+      "row": 9,
+      "acc": "sp|P40136|CYAA_BACAN",
+      "name": "sp|P40136|CYAA_BACAN",
+      "len": 800
+    },
+    {
+      "row": 10,
+      "acc": "sp|Q7NWF2|COPC_CHRVO",
+      "name": "sp|Q7NWF2|COPC_CHRVO",
+      "len": 487
+    },
+    {
+      "row": 11,
+      "acc": "sp|O05442|CPNT_MYCTU",
+      "name": "sp|O05442|CPNT_MYCTU",
+      "len": 846
+    },
+    {
+      "row": 12,
+      "acc": "sp|P0A0L2|ETXA_STAAU",
+      "name": "sp|P0A0L2|ETXA_STAAU",
+      "len": 257
+    },
+    {
+      "row": 13,
+      "acc": "sp|P13128|TACY_LISMO",
+      "name": "sp|P13128|TACY_LISMO",
+      "len": 529
+    },
+    {
+      "row": 14,
+      "acc": "sp|P13423|PAG_BACAN",
+      "name": "sp|P13423|PAG_BACAN",
+      "len": 764
+    },
+    {
+      "row": 15,
+      "acc": "sp|P34071|ENTC2_STAAU",
+      "name": "sp|P34071|ENTC2_STAAU",
+      "len": 266
+    },
+    {
+      "row": 16,
+      "acc": "sp|P9WJ63|TLYA_MYCTU",
+      "name": "sp|P9WJ63|TLYA_MYCTU",
+      "len": 268
+    },
+    {
+      "row": 17,
+      "acc": "sp|Q8XBX8|NLEB1_ECO57",
+      "name": "sp|Q8XBX8|NLEB1_ECO57",
+      "len": 329
+    },
+    {
+      "row": 18,
+      "acc": "sp|Q9FBI2|STXA_SHIDY",
+      "name": "sp|Q9FBI2|STXA_SHIDY",
+      "len": 315
+    },
+    {
+      "row": 19,
+      "acc": "sp|P0DPI1|BXA1_CLOBH",
+      "name": "sp|P0DPI1|BXA1_CLOBH",
+      "len": 1296
+    },
+    {
+      "row": 20,
+      "acc": "sp|P11078|MU1_REOVD",
+      "name": "sp|P11078|MU1_REOVD",
+      "len": 708
+    },
+    {
+      "row": 21,
+      "acc": "sp|P01555|CHTA_VIBCH",
+      "name": "sp|P01555|CHTA_VIBCH",
+      "len": 258
+    },
+    {
+      "row": 22,
+      "acc": "sp|P02879|RICI_RICCO",
+      "name": "sp|P02879|RICI_RICCO",
+      "len": 576
+    },
+    {
+      "row": 23,
+      "acc": "sp|P10844|BXB_CLOBO",
+      "name": "sp|P10844|BXB_CLOBO",
+      "len": 1291
+    },
+    {
+      "row": 24,
+      "acc": "sp|Q45894|BXA2_CLOBJ",
+      "name": "sp|Q45894|BXA2_CLOBJ",
+      "len": 1296
+    },
+    {
+      "row": 25,
+      "acc": "sp|P01552|ETXB_STAAU",
+      "name": "sp|P01552|ETXB_STAAU",
+      "len": 266
+    },
+    {
+      "row": 26,
+      "acc": "sp|P01553|ENTC1_STAAU",
+      "name": "sp|P01553|ENTC1_STAAU",
+      "len": 266
+    },
+    {
+      "row": 27,
+      "acc": "sp|A0A0H3JPC6|TARS_STAAM",
+      "name": "sp|A0A0H3JPC6|TARS_STAAM",
+      "len": 573
+    },
+    {
+      "row": 28,
+      "acc": "sp|A0A3Q0NBH7|PGDA_LISMG",
+      "name": "sp|A0A3Q0NBH7|PGDA_LISMG",
+      "len": 466
+    },
+    {
+      "row": 29,
+      "acc": "sp|A1JUB7|YADA_YERE8",
+      "name": "sp|A1JUB7|YADA_YERE8",
+      "len": 422
+    },
+    {
+      "row": 30,
+      "acc": "sp|A6QIG7|CHIPS_STAAE",
+      "name": "sp|A6QIG7|CHIPS_STAAE",
+      "len": 149
+    },
+    {
+      "row": 31,
+      "acc": "sp|B6A876|CHI1_YERET",
+      "name": "sp|B6A876|CHI1_YERET",
+      "len": 542
+    },
+    {
+      "row": 32,
+      "acc": "sp|D0ZKX9|RSEP_SALT1",
+      "name": "sp|D0ZKX9|RSEP_SALT1",
+      "len": 450
+    },
+    {
+      "row": 33,
+      "acc": "sp|D0ZV89|PHOQ_SALT1",
+      "name": "sp|D0ZV89|PHOQ_SALT1",
+      "len": 487
+    },
+    {
+      "row": 34,
+      "acc": "sp|G3XDA8|PSTS_PSEAE",
+      "name": "sp|G3XDA8|PSTS_PSEAE",
+      "len": 323
+    },
+    {
+      "row": 35,
+      "acc": "sp|O52623|SOPE_SALTM",
+      "name": "sp|O52623|SOPE_SALTM",
+      "len": 240
+    },
+    {
+      "row": 36,
+      "acc": "sp|O84947|SCTE2_SALTY",
+      "name": "sp|O84947|SCTE2_SALTY",
+      "len": 484
+    },
+    {
+      "row": 37,
+      "acc": "sp|P06736|HLYC_ECOLX",
+      "name": "sp|P06736|HLYC_ECOLX",
+      "len": 170
+    },
+    {
+      "row": 38,
+      "acc": "sp|P09776|VIRB2_AGRTU",
+      "name": "sp|P09776|VIRB2_AGRTU",
+      "len": 121
+    },
+    {
+      "row": 39,
+      "acc": "sp|P0A1B9|SCTN1_SALTY",
+      "name": "sp|P0A1B9|SCTN1_SALTY",
+      "len": 431
+    },
+    {
+      "row": 40,
+      "acc": "sp|P0A1C1|SCTN_SHIFL",
+      "name": "sp|P0A1C1|SCTN_SHIFL",
+      "len": 430
+    },
+    {
+      "row": 41,
+      "acc": "sp|P0A2M9|SPVC_SALTY",
+      "name": "sp|P0A2M9|SPVC_SALTY",
+      "len": 241
+    },
+    {
+      "row": 42,
+      "acc": "sp|P00811|AMPC_ECOLI",
+      "name": "sp|P00811|AMPC_ECOLI",
+      "len": 377
+    },
+    {
+      "row": 43,
+      "acc": "sp|Q7WYA8|BLAB_PSEAI",
+      "name": "sp|Q7WYA8|BLAB_PSEAI",
+      "len": 246
+    },
+    {
+      "row": 44,
+      "acc": "sp|P9WKD3|BLAC_MYCTU",
+      "name": "sp|P9WKD3|BLAC_MYCTU",
+      "len": 307
+    },
+    {
+      "row": 45,
+      "acc": "sp|P26918|BLAB_AERHY",
+      "name": "sp|P26918|BLAB_AERHY",
+      "len": 254
+    },
+    {
+      "row": 46,
+      "acc": "sp|P14488|BLAB_BACCE",
+      "name": "sp|P14488|BLAB_BACCE",
+      "len": 256
+    },
+    {
+      "row": 47,
+      "acc": "sp|P04190|BLA2_BACCE",
+      "name": "sp|P04190|BLA2_BACCE",
+      "len": 257
+    },
+    {
+      "row": 48,
+      "acc": "sp|P14489|BLO10_PSEAI",
+      "name": "sp|P14489|BLO10_PSEAI",
+      "len": 266
+    },
+    {
+      "row": 49,
+      "acc": "sp|C7C422|BLAN1_KLEPN",
+      "name": "sp|C7C422|BLAN1_KLEPN",
+      "len": 270
+    },
+    {
+      "row": 50,
+      "acc": "sp|P05364|AMPC_ENTCL",
+      "name": "sp|P05364|AMPC_ENTCL",
+      "len": 381
+    },
+    {
+      "row": 51,
+      "acc": "sp|P52700|BLA1_STEMA",
+      "name": "sp|P52700|BLA1_STEMA",
+      "len": 290
+    },
+    {
+      "row": 52,
+      "acc": "sp|O87489|BLAV1_PSEAI",
+      "name": "sp|O87489|BLAV1_PSEAI",
+      "len": 299
+    },
+    {
+      "row": 53,
+      "acc": "sp|P05193|AMPC_CITFR",
+      "name": "sp|P05193|AMPC_CITFR",
+      "len": 381
+    },
+    {
+      "row": 54,
+      "acc": "sp|P52699|BLBI1_SERMA",
+      "name": "sp|P52699|BLBI1_SERMA",
+      "len": 246
+    },
+    {
+      "row": 55,
+      "acc": "sp|Q9KJY7|BLAG1_KLEPN",
+      "name": "sp|Q9KJY7|BLAG1_KLEPN",
+      "len": 287
+    },
+    {
+      "row": 56,
+      "acc": "sp|P00588|DTX_CORBE",
+      "name": "sp|P00588|DTX_CORBE",
+      "len": 567
+    },
+    {
+      "row": 57,
+      "acc": "sp|P04958|TETX_CLOTE",
+      "name": "sp|P04958|TETX_CLOTE",
+      "len": 1315
+    },
+    {
+      "row": 58,
+      "acc": "sp|P11140|ABRA_ABRPR",
+      "name": "sp|P11140|ABRA_ABRPR",
+      "len": 528
+    },
+    {
+      "row": 59,
+      "acc": "sp|P55981|VACA_HELPY",
+      "name": "sp|P55981|VACA_HELPY",
+      "len": 1290
+    },
+    {
+      "row": 60,
+      "acc": "sp|P0DF97|TACY_STRPQ",
+      "name": "sp|P0DF97|TACY_STRPQ",
+      "len": 571
+    },
+    {
+      "row": 61,
+      "acc": "sp|P00648|RNBR_BACAM",
+      "name": "sp|P00648|RNBR_BACAM",
+      "len": 157
+    },
+    {
+      "row": 62,
+      "acc": "sp|P04419|CEA2_ECOLX",
+      "name": "sp|P04419|CEA2_ECOLX",
+      "len": 581
+    },
+    {
+      "row": 63,
+      "acc": "sp|P15273|YOPH_YEREN",
+      "name": "sp|P15273|YOPH_YEREN",
+      "len": 468
+    },
+    {
+      "row": 64,
+      "acc": "tr|O34208|O34208_PSEAI",
+      "name": "tr|O34208|O34208_PSEAI",
+      "len": 687
+    },
+    {
+      "row": 65,
+      "acc": "tr|Q51451|Q51451_PSEAI",
+      "name": "tr|Q51451|Q51451_PSEAI",
+      "len": 453
+    },
+    {
+      "row": 66,
+      "acc": "sp|Q5EK40|CHXA_VIBCL",
+      "name": "sp|Q5EK40|CHXA_VIBCL",
+      "len": 666
+    },
+    {
+      "row": 67,
+      "acc": "sp|P11439|TOXA_PSEAE",
+      "name": "sp|P11439|TOXA_PSEAE",
+      "len": 638
+    },
+    {
+      "row": 68,
+      "acc": "sp|P75409|CARDS_MYCPN",
+      "name": "sp|P75409|CARDS_MYCPN",
+      "len": 591
+    },
+    {
+      "row": 69,
+      "acc": "sp|P04977|TOX1_BORPE",
+      "name": "sp|P04977|TOX1_BORPE",
+      "len": 269
+    },
+    {
+      "row": 70,
+      "acc": "sp|H9T8G6|CDIA9_BURPE",
+      "name": "sp|H9T8G6|CDIA9_BURPE",
+      "len": 1307
+    },
+    {
+      "row": 71,
+      "acc": "sp|Q6EH50|RIP4_PHYHE",
+      "name": "sp|Q6EH50|RIP4_PHYHE",
+      "len": 312
+    },
+    {
+      "row": 72,
+      "acc": "sp|P33186|RIPG_SURMU",
+      "name": "sp|P33186|RIPG_SURMU",
+      "len": 316
+    },
+    {
+      "row": 73,
+      "acc": "sp|Q9M653|RIPT_POLML",
+      "name": "sp|Q9M653|RIPT_POLML",
+      "len": 603
+    },
+    {
+      "row": 74,
+      "acc": "sp|P85101|RIPLY_SILCH",
+      "name": "sp|P85101|RIPLY_SILCH",
+      "len": 234
+    },
+    {
+      "row": 75,
+      "acc": "sp|P18640|BXC_CBCP",
+      "name": "sp|P18640|BXC_CBCP",
+      "len": 1291
+    },
+    {
+      "row": 76,
+      "acc": "sp|P0DPK1|BXX_CLOBO",
+      "name": "sp|P0DPK1|BXX_CLOBO",
+      "len": 1306
+    },
+    {
+      "row": 77,
+      "acc": "sp|P0DG09|SPEG_STRPQ",
+      "name": "sp|P0DG09|SPEG_STRPQ",
+      "len": 234
+    },
+    {
+      "row": 78,
+      "acc": "sp|P06886|TSST_STAAU",
+      "name": "sp|P06886|TSST_STAAU",
+      "len": 234
+    },
+    {
+      "row": 79,
+      "acc": "sp|P0A0M0|ETXH_STAAU",
+      "name": "sp|P0A0M0|ETXH_STAAU",
+      "len": 241
+    },
+    {
+      "row": 80,
+      "acc": "sp|P08083|CEAN_ECOLX",
+      "name": "sp|P08083|CEAN_ECOLX",
+      "len": 387
+    },
+    {
+      "row": 81,
+      "acc": "sp|Q06584|PYS2_PSEAE",
+      "name": "sp|Q06584|PYS2_PSEAE",
+      "len": 689
+    },
+    {
+      "row": 82,
+      "acc": "sp|Q6E3K9|PRONF_PROFF",
+      "name": "sp|Q6E3K9|PRONF_PROFF",
+      "len": 255
+    },
+    {
+      "row": 83,
+      "acc": "sp|P04479|CEIB_ECOLX",
+      "name": "sp|P04479|CEIB_ECOLX",
+      "len": 626
+    },
+    {
+      "row": 84,
+      "acc": "sp|P08696|BCN5_CLOPF",
+      "name": "sp|P08696|BCN5_CLOPF",
+      "len": 890
+    },
+    {
+      "row": 85,
+      "acc": "sp|P02978|CEA1_ECOLX",
+      "name": "sp|P02978|CEA1_ECOLX",
+      "len": 522
+    },
+    {
+      "row": 86,
+      "acc": "sp|P05819|CEAB_ECOLX",
+      "name": "sp|P05819|CEAB_ECOLX",
+      "len": 511
+    },
+    {
+      "row": 87,
+      "acc": "sp|P22522|CEAV_ECOLX",
+      "name": "sp|P22522|CEAV_ECOLX",
+      "len": 103
+    },
+    {
+      "row": 88,
+      "acc": "sp|P0DTW2|AS48L_BACIA",
+      "name": "sp|P0DTW2|AS48L_BACIA",
+      "len": 108
+    },
+    {
+      "row": 89,
+      "acc": "sp|Q47502|CEAK_ECOLX",
+      "name": "sp|Q47502|CEAK_ECOLX",
+      "len": 548
+    },
+    {
+      "row": 90,
+      "acc": "sp|P04480|CEA_CITFR",
+      "name": "sp|P04480|CEA_CITFR",
+      "len": 592
+    },
+    {
+      "row": 91,
+      "acc": "sp|P05820|CEAM_ECOLX",
+      "name": "sp|P05820|CEAM_ECOLX",
+      "len": 271
+    },
+    {
+      "row": 92,
+      "acc": "sp|P15935|BCNA_CLOPF",
+      "name": "sp|P15935|BCNA_CLOPF",
+      "len": 185
+    },
+    {
+      "row": 93,
+      "acc": "sp|P18000|CEA5_ECOLX",
+      "name": "sp|P18000|CEA5_ECOLX",
+      "len": 180
+    },
+    {
+      "row": 94,
+      "acc": "sp|P22294|HVTJ_LACHE",
+      "name": "sp|P22294|HVTJ_LACHE",
+      "len": 333
+    },
+    {
+      "row": 95,
+      "acc": "sp|B8QIR1|ENLYS_BPSH5",
+      "name": "sp|B8QIR1|ENLYS_BPSH5",
+      "len": 481
+    },
+    {
+      "row": 96,
+      "acc": "sp|Q8HA43|LYS_BPB30",
+      "name": "sp|Q8HA43|LYS_BPB30",
+      "len": 443
+    },
+    {
+      "row": 97,
+      "acc": "sp|P16009|NEEDL_BPT4",
+      "name": "sp|P16009|NEEDL_BPT4",
+      "len": 575
+    },
+    {
+      "row": 98,
+      "acc": "sp|P00720|ENLYS_BPT4",
+      "name": "sp|P00720|ENLYS_BPT4",
+      "len": 164
+    },
+    {
+      "row": 99,
+      "acc": "sp|P03706|ENLYS_LAMBD",
+      "name": "sp|P03706|ENLYS_LAMBD",
+      "len": 158
+    },
+    {
+      "row": 100,
+      "acc": "sp|Q8SD18|ENLYS_BPDPK",
+      "name": "sp|Q8SD18|ENLYS_BPDPK",
+      "len": 260
+    },
+    {
+      "row": 101,
+      "acc": "sp|Q37875|ENLYS_BPP1",
+      "name": "sp|Q37875|ENLYS_BPP1",
+      "len": 185
+    },
+    {
+      "row": 102,
+      "acc": "sp|P03726|EXLYS_BPT7",
+      "name": "sp|P03726|EXLYS_BPT7",
+      "len": 1318
+    },
+    {
+      "row": 103,
+      "acc": "sp|P00806|ENLYS_BPT7",
+      "name": "sp|P00806|ENLYS_BPT7",
+      "len": 151
+    },
+    {
+      "row": 104,
+      "acc": "sp|P15057|LYS_BPCP1",
+      "name": "sp|P15057|LYS_BPCP1",
+      "len": 339
+    },
+    {
+      "row": 105,
+      "acc": "sp|Q6QGE7|TMP_BPT5",
+      "name": "sp|Q6QGE7|TMP_BPT5",
+      "len": 1219
+    },
+    {
+      "row": 106,
+      "acc": "sp|P27380|EXLYS_BPPRD",
+      "name": "sp|P27380|EXLYS_BPPRD",
+      "len": 265
+    },
+    {
+      "row": 107,
+      "acc": "sp|O03979|ALYS_BPDP1",
+      "name": "sp|O03979|ALYS_BPDP1",
+      "len": 296
+    },
+    {
+      "row": 108,
+      "acc": "sp|Q4ZD58|ENLYS_BP263",
+      "name": "sp|Q4ZD58|ENLYS_BP263",
+      "len": 486
+    },
+    {
+      "row": 109,
+      "acc": "sp|Q9T1X2|ENLYS_BPMU",
+      "name": "sp|Q9T1X2|ENLYS_BPMU",
+      "len": 171
+    },
+    {
+      "row": 110,
+      "acc": "sp|P15132|GP13_BPPH2",
+      "name": "sp|P15132|GP13_BPPH2",
+      "len": 365
+    },
+    {
+      "row": 111,
+      "acc": "sp|P13559|ENLYS_BPPRD",
+      "name": "sp|P13559|ENLYS_BPPRD",
+      "len": 149
+    },
+    {
+      "row": 112,
+      "acc": "sp|P33486|LYS_BPMV1",
+      "name": "sp|P33486|LYS_BPMV1",
+      "len": 202
+    },
+    {
+      "row": 113,
+      "acc": "sp|P62692|ENLYS_BPLC2",
+      "name": "sp|P62692|ENLYS_BPLC2",
+      "len": 226
+    },
+    {
+      "row": 114,
+      "acc": "sp|O64203|ENLYS_BPMD2",
+      "name": "sp|O64203|ENLYS_BPMD2",
+      "len": 493
+    },
+    {
+      "row": 115,
+      "acc": "sp|P09963|ENLYS_BPP22",
+      "name": "sp|P09963|ENLYS_BPP22",
+      "len": 146
+    },
+    {
+      "row": 116,
+      "acc": "sp|Q7Y2C0|ENLYS_BPKMV",
+      "name": "sp|Q7Y2C0|ENLYS_BPKMV",
+      "len": 160
+    },
+    {
+      "row": 117,
+      "acc": "sp|O64205|LYSB_BPMD2",
+      "name": "sp|O64205|LYSB_BPMD2",
+      "len": 254
+    },
+    {
+      "row": 118,
+      "acc": "sp|Q7Y2C9|EXLYS_BPKMV",
+      "name": "sp|Q7Y2C9|EXLYS_BPKMV",
+      "len": 898
+    },
+    {
+      "row": 119,
+      "acc": "sp|Q9ZXB7|ENLYS_BPH19",
+      "name": "sp|Q9ZXB7|ENLYS_BPH19",
+      "len": 177
+    },
+    {
+      "row": 120,
+      "acc": "sp|Q7Y5N4|EXLYS_BPSP6",
+      "name": "sp|Q7Y5N4|EXLYS_BPSP6",
+      "len": 978
+    },
+    {
+      "row": 121,
+      "acc": "sp|Q37896|ENLYS_BPB03",
+      "name": "sp|Q37896|ENLYS_BPB03",
+      "len": 263
+    },
+    {
+      "row": 122,
+      "acc": "sp|Q6XQ98|ENLYS_BPT1",
+      "name": "sp|Q6XQ98|ENLYS_BPT1",
+      "len": 162
+    },
+    {
+      "row": 123,
+      "acc": "sp|O48471|ENLYS_BPSPP",
+      "name": "sp|O48471|ENLYS_BPSPP",
+      "len": 271
+    },
+    {
+      "row": 124,
+      "acc": "sp|Q6QGP7|ENLYS_BPT5",
+      "name": "sp|Q6QGP7|ENLYS_BPT5",
+      "len": 137
+    },
+    {
+      "row": 125,
+      "acc": "sp|Q38135|ALYS_BPR1T",
+      "name": "sp|Q38135|ALYS_BPR1T",
+      "len": 270
+    },
+    {
+      "row": 126,
+      "acc": "sp|Q38653|ENLYS_BPA51",
+      "name": "sp|Q38653|ENLYS_BPA51",
+      "len": 341
+    },
+    {
+      "row": 127,
+      "acc": "sp|P05519|CR4BA_BACTI",
+      "name": "sp|P05519|CR4BA_BACTI",
+      "len": 1136
+    },
+    {
+      "row": 128,
+      "acc": "sp|Q06117|CR3BB_BACTU",
+      "name": "sp|Q06117|CR3BB_BACTU",
+      "len": 652
+    },
+    {
+      "row": 129,
+      "acc": "sp|O87906|C25AA_BACTJ",
+      "name": "sp|O87906|C25AA_BACTJ",
+      "len": 675
+    },
+    {
+      "row": 130,
+      "acc": "sp|P0A375|CR1CA_BACTE",
+      "name": "sp|P0A375|CR1CA_BACTE",
+      "len": 1189
+    },
+    {
+      "row": 131,
+      "acc": "sp|Q45743|CR2AC_BACTU",
+      "name": "sp|Q45743|CR2AC_BACTU",
+      "len": 622
+    },
+    {
+      "row": 132,
+      "acc": "sp|Q45755|C13AA_BACTU",
+      "name": "sp|Q45755|C13AA_BACTU",
+      "len": 803
+    },
+    {
+      "row": 133,
+      "acc": "sp|P09662|C10AA_BACTI",
+      "name": "sp|P09662|C10AA_BACTI",
+      "len": 675
+    },
+    {
+      "row": 134,
+      "acc": "sp|Q45753|CR5AB_BACUD",
+      "name": "sp|Q45753|CR5AB_BACUD",
+      "len": 1289
+    },
+    {
+      "row": 135,
+      "acc": "sp|Q9X597|C26AA_BACTF",
+      "name": "sp|Q9X597|C26AA_BACTF",
+      "len": 1163
+    },
+    {
+      "row": 136,
+      "acc": "sp|O32321|C20AA_BACUF",
+      "name": "sp|O32321|C20AA_BACUF",
+      "len": 753
+    },
+    {
+      "row": 137,
+      "acc": "sp|Q45882|C16AA_PARBF",
+      "name": "sp|Q45882|C16AA_PARBF",
+      "len": 613
+    },
+    {
+      "row": 138,
+      "acc": "sp|Q99031|CR9AA_BACTG",
+      "name": "sp|Q99031|CR9AA_BACTG",
+      "len": 1156
+    },
+    {
+      "row": 139,
+      "acc": "sp|O05102|C17AA_PARBF",
+      "name": "sp|O05102|C17AA_PARBF",
+      "len": 618
+    },
+    {
+      "row": 140,
+      "acc": "sp|P21256|C11AA_BACTI",
+      "name": "sp|P21256|C11AA_BACTI",
+      "len": 643
+    },
+    {
+      "row": 141,
+      "acc": "sp|P56956|C21AA_BACTU",
+      "name": "sp|P56956|C21AA_BACTU",
+      "len": 1167
+    },
+    {
+      "row": 142,
+      "acc": "sp|Q9S597|C27AA_BACUH",
+      "name": "sp|Q9S597|C27AA_BACUH",
+      "len": 826
+    },
+    {
+      "row": 143,
+      "acc": "sp|O87905|C24AA_BACTJ",
+      "name": "sp|O87905|C24AA_BACTJ",
+      "len": 674
+    },
+    {
+      "row": 144,
+      "acc": "sp|O32307|C19AA_BACTJ",
+      "name": "sp|O32307|C19AA_BACTJ",
+      "len": 648
+    },
+    {
+      "row": 145,
+      "acc": "sp|Q45358|C18AA_PAEPP",
+      "name": "sp|Q45358|C18AA_PAEPP",
+      "len": 706
+    },
+    {
+      "row": 146,
+      "acc": "sp|O87404|CR1IC_BACTU",
+      "name": "sp|O87404|CR1IC_BACTU",
+      "len": 719
+    },
+    {
+      "row": 147,
+      "acc": "sp|P84613|CR4AA_BACTK",
+      "name": "sp|P84613|CR4AA_BACTK",
+      "len": 281
+    },
+    {
+      "row": 148,
+      "acc": "sp|Q45710|C14AA_BACTS",
+      "name": "sp|Q45710|C14AA_BACTS",
+      "len": 1186
+    }
+  ],
+  "negative_rows": [
+    {
+      "row": 0,
+      "acc": "sp|O05512|MANB_BACSU",
+      "name": "sp|O05512|MANB_BACSU",
+      "len": 362
+    },
+    {
+      "row": 1,
+      "acc": "sp|O34952|LTAS2_BACSU",
+      "name": "sp|O34952|LTAS2_BACSU",
+      "len": 649
+    },
+    {
+      "row": 2,
+      "acc": "sp|P29141|SUBV_BACSU",
+      "name": "sp|P29141|SUBV_BACSU",
+      "len": 806
+    },
+    {
+      "row": 3,
+      "acc": "sp|P39848|LYTD_BACSU",
+      "name": "sp|P39848|LYTD_BACSU",
+      "len": 880
+    },
+    {
+      "row": 4,
+      "acc": "sp|P42293|EABN2_BACSU",
+      "name": "sp|P42293|EABN2_BACSU",
+      "len": 469
+    },
+    {
+      "row": 5,
+      "acc": "sp|Q06320|CWLC_BACSU",
+      "name": "sp|Q06320|CWLC_BACSU",
+      "len": 255
+    },
+    {
+      "row": 6,
+      "acc": "sp|Q797B3|LTAS1_BACSU",
+      "name": "sp|Q797B3|LTAS1_BACSU",
+      "len": 639
+    },
+    {
+      "row": 7,
+      "acc": "sp|P04189|SUBT_BACSU",
+      "name": "sp|P04189|SUBT_BACSU",
+      "len": 381
+    },
+    {
+      "row": 8,
+      "acc": "sp|P04737|PIL1_ECOLI",
+      "name": "sp|P04737|PIL1_ECOLI",
+      "len": 121
+    },
+    {
+      "row": 9,
+      "acc": "sp|P25152|BSAP_BACSU",
+      "name": "sp|P25152|BSAP_BACSU",
+      "len": 455
+    },
+    {
+      "row": 10,
+      "acc": "sp|P37965|GLPQ_BACSU",
+      "name": "sp|P37965|GLPQ_BACSU",
+      "len": 293
+    },
+    {
+      "row": 11,
+      "acc": "sp|P39597|EFEB_BACSU",
+      "name": "sp|P39597|EFEB_BACSU",
+      "len": 416
+    },
+    {
+      "row": 12,
+      "acc": "sp|P94522|EABN1_BACSU",
+      "name": "sp|P94522|EABN1_BACSU",
+      "len": 323
+    },
+    {
+      "row": 13,
+      "acc": "sp|P96740|PGDS_BACSU",
+      "name": "sp|P96740|PGDS_BACSU",
+      "len": 413
+    },
+    {
+      "row": 14,
+      "acc": "sp|Q79F14|ESTB_BACSU",
+      "name": "sp|Q79F14|ESTB_BACSU",
+      "len": 210
+    },
+    {
+      "row": 15,
+      "acc": "sp|O31527|YESX_BACSU",
+      "name": "sp|O31527|YESX_BACSU",
+      "len": 612
+    },
+    {
+      "row": 16,
+      "acc": "sp|P05655|LSC_BACSU",
+      "name": "sp|P05655|LSC_BACSU",
+      "len": 473
+    },
+    {
+      "row": 17,
+      "acc": "sp|P0A6P9|ENO_ECOLI",
+      "name": "sp|P0A6P9|ENO_ECOLI",
+      "len": 432
+    },
+    {
+      "row": 18,
+      "acc": "sp|P16396|SUBE_BACSU",
+      "name": "sp|P16396|SUBE_BACSU",
+      "len": 645
+    },
+    {
+      "row": 19,
+      "acc": "sp|P19582|DHOM_BACSU",
+      "name": "sp|P19582|DHOM_BACSU",
+      "len": 433
+    },
+    {
+      "row": 20,
+      "acc": "sp|C0SPC1|CCRZ_BACSU",
+      "name": "sp|C0SPC1|CCRZ_BACSU",
+      "len": 269
+    },
+    {
+      "row": 21,
+      "acc": "sp|O06724|YISK_BACSU",
+      "name": "sp|O06724|YISK_BACSU",
+      "len": 301
+    },
+    {
+      "row": 22,
+      "acc": "sp|O31616|GLYOX_BACSU",
+      "name": "sp|O31616|GLYOX_BACSU",
+      "len": 369
+    },
+    {
+      "row": 23,
+      "acc": "sp|O31775|YMDB_BACSU",
+      "name": "sp|O31775|YMDB_BACSU",
+      "len": 264
+    },
+    {
+      "row": 24,
+      "acc": "sp|O34481|RECD2_BACSU",
+      "name": "sp|O34481|RECD2_BACSU",
+      "len": 798
+    },
+    {
+      "row": 25,
+      "acc": "sp|O34580|PCRA_BACSU",
+      "name": "sp|O34580|PCRA_BACSU",
+      "len": 739
+    },
+    {
+      "row": 26,
+      "acc": "sp|O34714|OXDC_BACSU",
+      "name": "sp|O34714|OXDC_BACSU",
+      "len": 385
+    },
+    {
+      "row": 27,
+      "acc": "sp|O34942|RECG_BACSU",
+      "name": "sp|O34942|RECG_BACSU",
+      "len": 682
+    },
+    {
+      "row": 28,
+      "acc": "sp|P00509|AAT_ECOLI",
+      "name": "sp|P00509|AAT_ECOLI",
+      "len": 396
+    },
+    {
+      "row": 29,
+      "acc": "sp|P00946|MANA_ECOLI",
+      "name": "sp|P00946|MANA_ECOLI",
+      "len": 391
+    },
+    {
+      "row": 30,
+      "acc": "sp|P04805|SYE_ECOLI",
+      "name": "sp|P04805|SYE_ECOLI",
+      "len": 471
+    },
+    {
+      "row": 31,
+      "acc": "sp|P04982|RBSD_ECOLI",
+      "name": "sp|P04982|RBSD_ECOLI",
+      "len": 139
+    },
+    {
+      "row": 32,
+      "acc": "sp|P05824|RECN_ECOLI",
+      "name": "sp|P05824|RECN_ECOLI",
+      "len": 553
+    },
+    {
+      "row": 33,
+      "acc": "sp|P06567|DNAI_BACSU",
+      "name": "sp|P06567|DNAI_BACSU",
+      "len": 311
+    },
+    {
+      "row": 34,
+      "acc": "sp|P06616|ERA_ECOLI",
+      "name": "sp|P06616|ERA_ECOLI",
+      "len": 301
+    },
+    {
+      "row": 35,
+      "acc": "sp|P12041|PURQ_BACSU",
+      "name": "sp|P12041|PURQ_BACSU",
+      "len": 227
+    },
+    {
+      "row": 36,
+      "acc": "sp|P17618|RIBD_BACSU",
+      "name": "sp|P17618|RIBD_BACSU",
+      "len": 361
+    },
+    {
+      "row": 37,
+      "acc": "sp|P25052|TENA_BACSU",
+      "name": "sp|P25052|TENA_BACSU",
+      "len": 236
+    },
+    {
+      "row": 38,
+      "acc": "sp|P31658|HCHA_ECOLI",
+      "name": "sp|P31658|HCHA_ECOLI",
+      "len": 283
+    },
+    {
+      "row": 39,
+      "acc": "sp|P36548|AMIA_ECOLI",
+      "name": "sp|P36548|AMIA_ECOLI",
+      "len": 289
+    },
+    {
+      "row": 40,
+      "acc": "sp|P37794|CHBG_ECOLI",
+      "name": "sp|P37794|CHBG_ECOLI",
+      "len": 249
+    },
+    {
+      "row": 41,
+      "acc": "sp|Q46806|PHYDA_ECOLI",
+      "name": "sp|Q46806|PHYDA_ECOLI",
+      "len": 461
+    },
+    {
+      "row": 42,
+      "acc": "sp|O35000|NAGB_BACSU",
+      "name": "sp|O35000|NAGB_BACSU",
+      "len": 242
+    },
+    {
+      "row": 43,
+      "acc": "sp|P0A6T5|GCH1_ECOLI",
+      "name": "sp|P0A6T5|GCH1_ECOLI",
+      "len": 222
+    },
+    {
+      "row": 44,
+      "acc": "sp|P0A759|NAGB_ECOLI",
+      "name": "sp|P0A759|NAGB_ECOLI",
+      "len": 266
+    },
+    {
+      "row": 45,
+      "acc": "sp|P0A962|ASPG1_ECOLI",
+      "name": "sp|P0A962|ASPG1_ECOLI",
+      "len": 338
+    },
+    {
+      "row": 46,
+      "acc": "sp|P0AC00|FRLB_ECOLI",
+      "name": "sp|P0AC00|FRLB_ECOLI",
+      "len": 340
+    },
+    {
+      "row": 47,
+      "acc": "sp|P0AED7|DAPE_ECOLI",
+      "name": "sp|P0AED7|DAPE_ECOLI",
+      "len": 375
+    },
+    {
+      "row": 48,
+      "acc": "sp|P77425|ALLC_ECOLI",
+      "name": "sp|P77425|ALLC_ECOLI",
+      "len": 411
+    },
+    {
+      "row": 49,
+      "acc": "sp|Q99ZW2|CAS9_STRP1",
+      "name": "sp|Q99ZW2|CAS9_STRP1",
+      "len": 1368
+    },
+    {
+      "row": 50,
+      "acc": "sp|P0A0M5|TYSY_STAAU",
+      "name": "sp|P0A0M5|TYSY_STAAU",
+      "len": 318
+    },
+    {
+      "row": 51,
+      "acc": "sp|P0A017|DYR_STAAU",
+      "name": "sp|P0A017|DYR_STAAU",
+      "len": 159
+    },
+    {
+      "row": 52,
+      "acc": "sp|P9WFV9|SYE_MYCTU",
+      "name": "sp|P9WFV9|SYE_MYCTU",
+      "len": 490
+    },
+    {
+      "row": 53,
+      "acc": "sp|O69689|ASPAT_MYCTU",
+      "name": "sp|O69689|ASPAT_MYCTU",
+      "len": 435
+    },
+    {
+      "row": 54,
+      "acc": "sp|P9WN57|GCH1_MYCTU",
+      "name": "sp|P9WN57|GCH1_MYCTU",
+      "len": 202
+    },
+    {
+      "row": 55,
+      "acc": "sp|P9WPH1|RIBD_MYCTU",
+      "name": "sp|P9WPH1|RIBD_MYCTU",
+      "len": 339
+    },
+    {
+      "row": 56,
+      "acc": "sp|P0A2K3|SYE_SALTY",
+      "name": "sp|P0A2K3|SYE_SALTY",
+      "len": 471
+    },
+    {
+      "row": 57,
+      "acc": "sp|P58661|AAT_SALTY",
+      "name": "sp|P58661|AAT_SALTY",
+      "len": 396
+    },
+    {
+      "row": 58,
+      "acc": "sp|P64209|GCH1_SALTY",
+      "name": "sp|P64209|GCH1_SALTY",
+      "len": 222
+    },
+    {
+      "row": 59,
+      "acc": "sp|Q8ZQX7|NAGB_SALTY",
+      "name": "sp|Q8ZQX7|NAGB_SALTY",
+      "len": 266
+    },
+    {
+      "row": 60,
+      "acc": "sp|Q83K84|SYE_SHIFL",
+      "name": "sp|Q83K84|SYE_SHIFL",
+      "len": 471
+    },
+    {
+      "row": 61,
+      "acc": "sp|P59688|NAGB_SHIFL",
+      "name": "sp|P59688|NAGB_SHIFL",
+      "len": 266
+    },
+    {
+      "row": 62,
+      "acc": "sp|Q83KZ1|MANA_SHIFL",
+      "name": "sp|Q83KZ1|MANA_SHIFL",
+      "len": 391
+    },
+    {
+      "row": 63,
+      "acc": "sp|Q81VV3|SYE_BACAN",
+      "name": "sp|Q81VV3|SYE_BACAN",
+      "len": 485
+    },
+    {
+      "row": 64,
+      "acc": "sp|Q81SW2|GCH1_BACAN",
+      "name": "sp|Q81SW2|GCH1_BACAN",
+      "len": 189
+    },
+    {
+      "row": 65,
+      "acc": "sp|Q81MH5|NAGB_BACAN",
+      "name": "sp|Q81MH5|NAGB_BACAN",
+      "len": 262
+    },
+    {
+      "row": 66,
+      "acc": "sp|Q81R23|TYSY_BACAN",
+      "name": "sp|Q81R23|TYSY_BACAN",
+      "len": 318
+    },
+    {
+      "row": 67,
+      "acc": "sp|O85746|TYRB_KLEPN",
+      "name": "sp|O85746|TYRB_KLEPN",
+      "len": 397
+    },
+    {
+      "row": 68,
+      "acc": "sp|P0C0C1|GCH1_STRPY",
+      "name": "sp|P0C0C1|GCH1_STRPY",
+      "len": 194
+    },
+    {
+      "row": 69,
+      "acc": "sp|P0A0K8|GYRB_STAAU",
+      "name": "sp|P0A0K8|GYRB_STAAU",
+      "len": 644
+    },
+    {
+      "row": 70,
+      "acc": "sp|P68845|RECA_STAAU",
+      "name": "sp|P68845|RECA_STAAU",
+      "len": 347
+    },
+    {
+      "row": 71,
+      "acc": "sp|P24497|AROA_KLEPN",
+      "name": "sp|P24497|AROA_KLEPN",
+      "len": 427
+    },
+    {
+      "row": 72,
+      "acc": "sp|P0C0H6|IMDH_STRPY",
+      "name": "sp|P0C0H6|IMDH_STRPY",
+      "len": 493
+    },
+    {
+      "row": 73,
+      "acc": "sp|P0C0G0|DHPS_STRPY",
+      "name": "sp|P0C0G0|DHPS_STRPY",
+      "len": 266
+    },
+    {
+      "row": 74,
+      "acc": "sp|P0DJP0|RECA_LISMO",
+      "name": "sp|P0DJP0|RECA_LISMO",
+      "len": 348
+    },
+    {
+      "row": 75,
+      "acc": "sp|Q9RLT9|RPOB_LISMO",
+      "name": "sp|Q9RLT9|RPOB_LISMO",
+      "len": 1184
+    },
+    {
+      "row": 76,
+      "acc": "sp|Q8Y5N8|SYI_LISMO",
+      "name": "sp|Q8Y5N8|SYI_LISMO",
+      "len": 921
+    },
+    {
+      "row": 77,
+      "acc": "sp|Q9KVX3|GYRB_VIBCH",
+      "name": "sp|Q9KVX3|GYRB_VIBCH",
+      "len": 805
+    },
+    {
+      "row": 78,
+      "acc": "sp|P45383|RECA_VIBCH",
+      "name": "sp|P45383|RECA_VIBCH",
+      "len": 354
+    },
+    {
+      "row": 79,
+      "acc": "sp|Q9KV30|RPOB_VIBCH",
+      "name": "sp|Q9KV30|RPOB_VIBCH",
+      "len": 1341
+    },
+    {
+      "row": 80,
+      "acc": "sp|Q9I7C2|GYRB_PSEAE",
+      "name": "sp|Q9I7C2|GYRB_PSEAE",
+      "len": 806
+    },
+    {
+      "row": 81,
+      "acc": "sp|P08280|RECA_PSEAE",
+      "name": "sp|P08280|RECA_PSEAE",
+      "len": 346
+    },
+    {
+      "row": 82,
+      "acc": "sp|Q51561|RPOB_PSEAE",
+      "name": "sp|Q51561|RPOB_PSEAE",
+      "len": 1357
+    },
+    {
+      "row": 83,
+      "acc": "sp|Q9HVM4|SYI_PSEAE",
+      "name": "sp|Q9HVM4|SYI_PSEAE",
+      "len": 943
+    },
+    {
+      "row": 84,
+      "acc": "sp|Q9HXZ4|PYRG_PSEAE",
+      "name": "sp|Q9HXZ4|PYRG_PSEAE",
+      "len": 542
+    },
+    {
+      "row": 85,
+      "acc": "sp|Q81A16|RECA_BACCR",
+      "name": "sp|Q81A16|RECA_BACCR",
+      "len": 343
+    },
+    {
+      "row": 86,
+      "acc": "sp|Q81J48|RPOB_BACCR",
+      "name": "sp|Q81J48|RPOB_BACCR",
+      "len": 1177
+    },
+    {
+      "row": 87,
+      "acc": "sp|Q814T2|PYRG_BACCR",
+      "name": "sp|Q814T2|PYRG_BACCR",
+      "len": 535
+    },
+    {
+      "row": 88,
+      "acc": "sp|A5I7L4|RPOB_CLOBH",
+      "name": "sp|A5I7L4|RPOB_CLOBH",
+      "len": 1232
+    },
+    {
+      "row": 89,
+      "acc": "sp|A5I526|GLYA_CLOBH",
+      "name": "sp|A5I526|GLYA_CLOBH",
+      "len": 413
+    },
+    {
+      "row": 90,
+      "acc": "sp|A5I7Y9|PURA_CLOBH",
+      "name": "sp|A5I7Y9|PURA_CLOBH",
+      "len": 428
+    },
+    {
+      "row": 91,
+      "acc": "sp|P0AES8|GYRB_SHIFL",
+      "name": "sp|P0AES8|GYRB_SHIFL",
+      "len": 804
+    },
+    {
+      "row": 92,
+      "acc": "sp|P17479|RECA_SERMA",
+      "name": "sp|P17479|RECA_SERMA",
+      "len": 354
+    },
+    {
+      "row": 93,
+      "acc": "sp|A1JK01|RECA_YERE8",
+      "name": "sp|A1JK01|RECA_YERE8",
+      "len": 354
+    },
+    {
+      "row": 94,
+      "acc": "sp|Q7NXL9|RECA_CHRVO",
+      "name": "sp|Q7NXL9|RECA_CHRVO",
+      "len": 350
+    },
+    {
+      "row": 95,
+      "acc": "sp|A0KPG3|RECA_AERHH",
+      "name": "sp|A0KPG3|RECA_AERHH",
+      "len": 354
+    },
+    {
+      "row": 96,
+      "acc": "sp|P33038|MURA_ENTCC",
+      "name": "sp|P33038|MURA_ENTCC",
+      "len": 419
+    },
+    {
+      "row": 97,
+      "acc": "sp|B2FL31|RECA_STRMK",
+      "name": "sp|B2FL31|RECA_STRMK",
+      "len": 345
+    },
+    {
+      "row": 98,
+      "acc": "sp|Q895I5|RECA_CLOTE",
+      "name": "sp|Q895I5|RECA_CLOTE",
+      "len": 350
+    },
+    {
+      "row": 99,
+      "acc": "sp|P55992|GYRB_HELPY",
+      "name": "sp|P55992|GYRB_HELPY",
+      "len": 773
+    },
+    {
+      "row": 100,
+      "acc": "sp|P40600|LIPE_AERHY",
+      "name": "sp|P40600|LIPE_AERHY",
+      "len": 684
+    },
+    {
+      "row": 101,
+      "acc": "sp|A0KLG5|BSR_AERHH",
+      "name": "sp|A0KLG5|BSR_AERHH",
+      "len": 408
+    },
+    {
+      "row": 102,
+      "acc": "sp|P94217|SLAP2_BACAN",
+      "name": "sp|P94217|SLAP2_BACAN",
+      "len": 862
+    },
+    {
+      "row": 103,
+      "acc": "sp|Q81JH1|YIDC2_BACAN",
+      "name": "sp|Q81JH1|YIDC2_BACAN",
+      "len": 255
+    },
+    {
+      "row": 104,
+      "acc": "sp|P0A3V1|SLEB_BACCE",
+      "name": "sp|P0A3V1|SLEB_BACCE",
+      "len": 259
+    },
+    {
+      "row": 105,
+      "acc": "sp|P36924|AMYB_BACCE",
+      "name": "sp|P36924|AMYB_BACCE",
+      "len": 546
+    },
+    {
+      "row": 106,
+      "acc": "sp|Q7NZY0|MSRP_CHRVO",
+      "name": "sp|Q7NZY0|MSRP_CHRVO",
+      "len": 305
+    },
+    {
+      "row": 107,
+      "acc": "sp|Q7NQB0|SURA_CHRVO",
+      "name": "sp|Q7NQB0|SURA_CHRVO",
+      "len": 429
+    },
+    {
+      "row": 108,
+      "acc": "sp|C3KW94|PRSA_CLOB6",
+      "name": "sp|C3KW94|PRSA_CLOB6",
+      "len": 336
+    },
+    {
+      "row": 109,
+      "acc": "sp|B1IGZ5|PRSA_CLOBK",
+      "name": "sp|B1IGZ5|PRSA_CLOBK",
+      "len": 336
+    },
+    {
+      "row": 110,
+      "acc": "sp|Q899I2|PRSA_CLOTE",
+      "name": "sp|Q899I2|PRSA_CLOTE",
+      "len": 339
+    },
+    {
+      "row": 111,
+      "acc": "sp|Q897L1|CBIM_CLOTE",
+      "name": "sp|Q897L1|CBIM_CLOTE",
+      "len": 241
+    },
+    {
+      "row": 112,
+      "acc": "sp|D6DRS2|PAGP_ENTCL",
+      "name": "sp|D6DRS2|PAGP_ENTCL",
+      "len": 191
+    },
+    {
+      "row": 113,
+      "acc": "sp|Q47490|PHOE_ENTCL",
+      "name": "sp|Q47490|PHOE_ENTCL",
+      "len": 350
+    },
+    {
+      "row": 114,
+      "acc": "sp|O25825|CY553_HELPY",
+      "name": "sp|O25825|CY553_HELPY",
+      "len": 96
+    },
+    {
+      "row": 115,
+      "acc": "sp|O26091|RLPA_HELPY",
+      "name": "sp|O26091|RLPA_HELPY",
+      "len": 315
+    },
+    {
+      "row": 116,
+      "acc": "sp|P15644|GSPD_KLEPN",
+      "name": "sp|P15644|GSPD_KLEPN",
+      "len": 660
+    },
+    {
+      "row": 117,
+      "acc": "sp|P24017|OMPA_KLEPN",
+      "name": "sp|P24017|OMPA_KLEPN",
+      "len": 344
+    },
+    {
+      "row": 118,
+      "acc": "sp|Q8Y585|HBP1_LISMO",
+      "name": "sp|Q8Y585|HBP1_LISMO",
+      "len": 207
+    },
+    {
+      "row": 119,
+      "acc": "sp|Q9RR44|GBUC_LISM4",
+      "name": "sp|Q9RR44|GBUC_LISM4",
+      "len": 300
+    },
+    {
+      "row": 120,
+      "acc": "sp|A0A089QRB9|MSL3_MYCTU",
+      "name": "sp|A0A089QRB9|MSL3_MYCTU",
+      "len": 2085
+    },
+    {
+      "row": 121,
+      "acc": "sp|I6Y4D2|PEPAM_MYCTU",
+      "name": "sp|I6Y4D2|PEPAM_MYCTU",
+      "len": 241
+    },
+    {
+      "row": 122,
+      "acc": "sp|Q8RNT4|LOX_PSEAI",
+      "name": "sp|Q8RNT4|LOX_PSEAI",
+      "len": 685
+    },
+    {
+      "row": 123,
+      "acc": "sp|S0HPF7|PILY1_PSEAW",
+      "name": "sp|S0HPF7|PILY1_PSEAW",
+      "len": 1163
+    },
+    {
+      "row": 124,
+      "acc": "sp|Q540U1|APHA_SALTM",
+      "name": "sp|Q540U1|APHA_SALTM",
+      "len": 237
+    },
+    {
+      "row": 125,
+      "acc": "sp|P06202|OPPA_SALTY",
+      "name": "sp|P06202|OPPA_SALTY",
+      "len": 543
+    },
+    {
+      "row": 126,
+      "acc": "sp|Q54468|CHB_SERMA",
+      "name": "sp|Q54468|CHB_SERMA",
+      "len": 885
+    },
+    {
+      "row": 127,
+      "acc": "sp|P9WEM3|LP10_SERMA",
+      "name": "sp|P9WEM3|LP10_SERMA",
+      "len": 197
+    },
+    {
+      "row": 128,
+      "acc": "sp|A0A2S4N3N0|OMPA_SHIFL",
+      "name": "sp|A0A2S4N3N0|OMPA_SHIFL",
+      "len": 348
+    },
+    {
+      "row": 129,
+      "acc": "sp|Q83QV0|NAPA_SHIFL",
+      "name": "sp|Q83QV0|NAPA_SHIFL",
+      "len": 828
+    },
+    {
+      "row": 130,
+      "acc": "sp|P0C5Z8|ATL_STAAU",
+      "name": "sp|P0C5Z8|ATL_STAAU",
+      "len": 1255
+    },
+    {
+      "row": 131,
+      "acc": "sp|Q2FZE6|ISDE_STAA8",
+      "name": "sp|Q2FZE6|ISDE_STAA8",
+      "len": 292
+    },
+    {
+      "row": 132,
+      "acc": "sp|B2FHL8|PL_STRMK",
+      "name": "sp|B2FHL8|PL_STRMK",
+      "len": 331
+    },
+    {
+      "row": 133,
+      "acc": "sp|B2FSW8|EALGL_STRMK",
+      "name": "sp|B2FSW8|EALGL_STRMK",
+      "len": 742
+    },
+    {
+      "row": 134,
+      "acc": "sp|Q9A1S2|PILIN_STRP1",
+      "name": "sp|Q9A1S2|PILIN_STRP1",
+      "len": 340
+    },
+    {
+      "row": 135,
+      "acc": "sp|P49054|PAM_STRPY",
+      "name": "sp|P49054|PAM_STRPY",
+      "len": 388
+    },
+    {
+      "row": 136,
+      "acc": "sp|P45779|GSPD_VIBCH",
+      "name": "sp|P45779|GSPD_VIBCH",
+      "len": 674
+    },
+    {
+      "row": 137,
+      "acc": "sp|Q9KSE5|BSR_VIBCH",
+      "name": "sp|Q9KSE5|BSR_VIBCH",
+      "len": 407
+    },
+    {
+      "row": 138,
+      "acc": "sp|A1JL26|NAPA_YERE8",
+      "name": "sp|A1JL26|NAPA_YERE8",
+      "len": 831
+    },
+    {
+      "row": 139,
+      "acc": "sp|P31499|HEMR_YEREN",
+      "name": "sp|P31499|HEMR_YEREN",
+      "len": 687
+    },
+    {
+      "row": 140,
+      "acc": "sp|P0A4F8|OCCT_AGRTU",
+      "name": "sp|P0A4F8|OCCT_AGRTU",
+      "len": 276
+    },
+    {
+      "row": 141,
+      "acc": "sp|P54910|TRBE_AGRTU",
+      "name": "sp|P54910|TRBE_AGRTU",
+      "len": 820
+    },
+    {
+      "row": 142,
+      "acc": "sp|P00782|SUBT_BACAM",
+      "name": "sp|P00782|SUBT_BACAM",
+      "len": 382
+    },
+    {
+      "row": 143,
+      "acc": "sp|P00692|AMY_BACAM",
+      "name": "sp|P00692|AMY_BACAM",
+      "len": 514
+    },
+    {
+      "row": 144,
+      "acc": "sp|P16450|GERD_BACSU",
+      "name": "sp|P16450|GERD_BACSU",
+      "len": 185
+    },
+    {
+      "row": 145,
+      "acc": "sp|P24327|PRSA_BACSU",
+      "name": "sp|P24327|PRSA_BACSU",
+      "len": 292
+    },
+    {
+      "row": 146,
+      "acc": "sp|Q46045|MBHS_CITFR",
+      "name": "sp|Q46045|MBHS_CITFR",
+      "len": 375
+    },
+    {
+      "row": 147,
+      "acc": "sp|Q01605|PHOE_CITFR",
+      "name": "sp|Q01605|PHOE_CITFR",
+      "len": 351
+    },
+    {
+      "row": 148,
+      "acc": "sp|P02925|RBSB_ECOLI",
+      "name": "sp|P02925|RBSB_ECOLI",
+      "len": 296
+    },
+    {
+      "row": 149,
+      "acc": "sp|P05825|FEPA_ECOLI",
+      "name": "sp|P05825|FEPA_ECOLI",
+      "len": 746
+    },
+    {
+      "row": 150,
+      "acc": "sp|O65039|CYSEP_RICCO",
+      "name": "sp|O65039|CYSEP_RICCO",
+      "len": 360
+    },
+    {
+      "row": 151,
+      "acc": "sp|P01089|2SS_RICCO",
+      "name": "sp|P01089|2SS_RICCO",
+      "len": 258
+    },
+    {
+      "row": 152,
+      "acc": "sp|Q32I06|NAPA_SHIDS",
+      "name": "sp|Q32I06|NAPA_SHIDS",
+      "len": 828
+    },
+    {
+      "row": 153,
+      "acc": "sp|P02935|OMPA_SHIDY",
+      "name": "sp|P02935|OMPA_SHIDY",
+      "len": 351
+    },
+    {
+      "row": 154,
+      "acc": "sp|D5TM67|CDAS_BACT1",
+      "name": "sp|D5TM67|CDAS_BACT1",
+      "len": 201
+    },
+    {
+      "row": 155,
+      "acc": "sp|P0DTQ0|DRDA_BACT7",
+      "name": "sp|P0DTQ0|DRDA_BACT7",
+      "len": 213
+    },
+    {
+      "row": 156,
+      "acc": "sp|P0DTQ1|DRDI_BACT7",
+      "name": "sp|P0DTQ1|DRDI_BACT7",
+      "len": 348
+    },
+    {
+      "row": 157,
+      "acc": "sp|Q8KNP2|TUBR_BACTI",
+      "name": "sp|Q8KNP2|TUBR_BACTI",
+      "len": 104
+    },
+    {
+      "row": 158,
+      "acc": "sp|Q8KNP3|TUBZ_BACTI",
+      "name": "sp|Q8KNP3|TUBZ_BACTI",
+      "len": 484
+    },
+    {
+      "row": 159,
+      "acc": "sp|P0CJ63|AHLLA_BACTK",
+      "name": "sp|P0CJ63|AHLLA_BACTK",
+      "len": 250
+    },
+    {
+      "row": 160,
+      "acc": "sp|Q6HAU5|PYRG_BACHK",
+      "name": "sp|Q6HAU5|PYRG_BACHK",
+      "len": 535
+    },
+    {
+      "row": 161,
+      "acc": "sp|Q6HE54|RIBBA_BACHK",
+      "name": "sp|Q6HE54|RIBBA_BACHK",
+      "len": 397
+    },
+    {
+      "row": 162,
+      "acc": "sp|Q6HES8|CARB_BACHK",
+      "name": "sp|Q6HES8|CARB_BACHK",
+      "len": 1072
+    },
+    {
+      "row": 163,
+      "acc": "sp|Q6HCT3|PFKA_BACHK",
+      "name": "sp|Q6HCT3|PFKA_BACHK",
+      "len": 319
+    },
+    {
+      "row": 164,
+      "acc": "sp|Q6HES7|CARA_BACHK",
+      "name": "sp|Q6HES7|CARA_BACHK",
+      "len": 365
+    },
+    {
+      "row": 165,
+      "acc": "sp|Q6HPW8|GLMU_BACHK",
+      "name": "sp|Q6HPW8|GLMU_BACHK",
+      "len": 459
+    },
+    {
+      "row": 166,
+      "acc": "sp|Q6HP80|GATB_BACHK",
+      "name": "sp|Q6HP80|GATB_BACHK",
+      "len": 475
+    },
+    {
+      "row": 167,
+      "acc": "sp|Q6HEV1|RLMN_BACHK",
+      "name": "sp|Q6HEV1|RLMN_BACHK",
+      "len": 362
+    },
+    {
+      "row": 168,
+      "acc": "sp|Q6HFT0|SELO_BACHK",
+      "name": "sp|Q6HFT0|SELO_BACHK",
+      "len": 488
+    },
+    {
+      "row": 169,
+      "acc": "sp|Q6HLA6|HMP_BACHK",
+      "name": "sp|Q6HLA6|HMP_BACHK",
+      "len": 402
+    },
+    {
+      "row": 170,
+      "acc": "sp|P0DTQ2|DRDK_BACT7",
+      "name": "sp|P0DTQ2|DRDK_BACT7",
+      "len": 409
+    },
+    {
+      "row": 171,
+      "acc": "sp|A0RHN7|RLMN_BACAH",
+      "name": "sp|A0RHN7|RLMN_BACAH",
+      "len": 362
+    },
+    {
+      "row": 172,
+      "acc": "sp|A0R922|GATB_BACAH",
+      "name": "sp|A0R922|GATB_BACAH",
+      "len": 475
+    },
+    {
+      "row": 173,
+      "acc": "sp|A0RGR8|SELO_BACAH",
+      "name": "sp|A0RGR8|SELO_BACAH",
+      "len": 488
+    },
+    {
+      "row": 174,
+      "acc": "sp|A0R8C1|GLMU_BACAH",
+      "name": "sp|A0R8C1|GLMU_BACAH",
+      "len": 459
+    },
+    {
+      "row": 175,
+      "acc": "sp|A0RBG1|QUEC_BACAH",
+      "name": "sp|A0RBG1|QUEC_BACAH",
+      "len": 220
+    },
+    {
+      "row": 176,
+      "acc": "sp|A0RHQ8|CARB_BACAH",
+      "name": "sp|A0RHQ8|CARB_BACAH",
+      "len": 1072
+    },
+    {
+      "row": 177,
+      "acc": "sp|Q6X3W5|TERM_BP35C",
+      "name": "sp|Q6X3W5|TERM_BP35C",
+      "len": 245
+    },
+    {
+      "row": 178,
+      "acc": "sp|Q6HAU9|MURA2_BACHK",
+      "name": "sp|Q6HAU9|MURA2_BACHK",
+      "len": 429
+    },
+    {
+      "row": 179,
+      "acc": "sp|Q6HAX7|ATPA_BACHK",
+      "name": "sp|Q6HAX7|ATPA_BACHK",
+      "len": 502
+    },
+    {
+      "row": 180,
+      "acc": "sp|Q6HAY0|ATPB_BACHK",
+      "name": "sp|Q6HAY0|ATPB_BACHK",
+      "len": 469
+    },
+    {
+      "row": 181,
+      "acc": "sp|Q6HAY5|NUOA_BACHK",
+      "name": "sp|Q6HAY5|NUOA_BACHK",
+      "len": 122
+    },
+    {
+      "row": 182,
+      "acc": "sp|Q6HBF2|GPMI_BACHK",
+      "name": "sp|Q6HBF2|GPMI_BACHK",
+      "len": 509
+    },
+    {
+      "row": 183,
+      "acc": "sp|Q6HBJ0|SYY2_BACHK",
+      "name": "sp|Q6HBJ0|SYY2_BACHK",
+      "len": 419
+    },
+    {
+      "row": 184,
+      "acc": "sp|Q6HBM0|SYM1_BACHK",
+      "name": "sp|Q6HBM0|SYM1_BACHK",
+      "len": 544
+    },
+    {
+      "row": 185,
+      "acc": "sp|Q6HCU5|FPG_BACHK",
+      "name": "sp|Q6HCU5|FPG_BACHK",
+      "len": 276
+    },
+    {
+      "row": 186,
+      "acc": "sp|Q6HCU7|COAE_BACHK",
+      "name": "sp|Q6HCU7|COAE_BACHK",
+      "len": 200
+    },
+    {
+      "row": 187,
+      "acc": "sp|Q6HCY5|HDOX_BACHK",
+      "name": "sp|Q6HCY5|HDOX_BACHK",
+      "len": 107
+    },
+    {
+      "row": 188,
+      "acc": "sp|Q6HD62|HEM3_BACHK",
+      "name": "sp|Q6HD62|HEM3_BACHK",
+      "len": 309
+    },
+    {
+      "row": 189,
+      "acc": "sp|Q6HDC0|DTD_BACHK",
+      "name": "sp|Q6HDC0|DTD_BACHK",
+      "len": 146
+    },
+    {
+      "row": 190,
+      "acc": "sp|Q6HDD0|MNMA_BACHK",
+      "name": "sp|Q6HDD0|MNMA_BACHK",
+      "len": 371
+    },
+    {
+      "row": 191,
+      "acc": "sp|Q6HDT8|GCSPB_BACHK",
+      "name": "sp|Q6HDT8|GCSPB_BACHK",
+      "len": 491
+    },
+    {
+      "row": 192,
+      "acc": "sp|Q6HE48|BIOF_BACHK",
+      "name": "sp|Q6HE48|BIOF_BACHK",
+      "len": 395
+    },
+    {
+      "row": 193,
+      "acc": "sp|Q6HEC6|MTND_BACHK",
+      "name": "sp|Q6HEC6|MTND_BACHK",
+      "len": 170
+    },
+    {
+      "row": 194,
+      "acc": "sp|Q6HED3|MTNA_BACHK",
+      "name": "sp|Q6HED3|MTNA_BACHK",
+      "len": 351
+    },
+    {
+      "row": 195,
+      "acc": "sp|Q6HEN5|COAD_BACHK",
+      "name": "sp|Q6HEN5|COAD_BACHK",
+      "len": 163
+    },
+    {
+      "row": 196,
+      "acc": "sp|M5AAG8|POL_BPNNR",
+      "name": "sp|M5AAG8|POL_BPNNR",
+      "len": 718
+    },
+    {
+      "row": 197,
+      "acc": "sp|A4ZFB2|SCAF_BP80A",
+      "name": "sp|A4ZFB2|SCAF_BP80A",
+      "len": 206
+    },
+    {
+      "row": 198,
+      "acc": "sp|P26747|CAPSD_BPP22",
+      "name": "sp|P26747|CAPSD_BPP22",
+      "len": 430
+    },
+    {
+      "row": 199,
+      "acc": "sp|P12528|FIBER_BPP22",
+      "name": "sp|P12528|FIBER_BPP22",
+      "len": 667
+    },
+    {
+      "row": 200,
+      "acc": "sp|P03015|GIN_BPMU",
+      "name": "sp|P03015|GIN_BPMU",
+      "len": 193
+    },
+    {
+      "row": 201,
+      "acc": "sp|P06022|ACTC_BPMU",
+      "name": "sp|P06022|ACTC_BPMU",
+      "len": 140
+    },
+    {
+      "row": 202,
+      "acc": "sp|P08764|T3RE_BPP1",
+      "name": "sp|P08764|T3RE_BPP1",
+      "len": 970
+    },
+    {
+      "row": 203,
+      "acc": "sp|P49861|CAPSD_BPHK7",
+      "name": "sp|P49861|CAPSD_BPHK7",
+      "len": 385
+    },
+    {
+      "row": 204,
+      "acc": "sp|Q9MCT1|TERL_BPHK7",
+      "name": "sp|Q9MCT1|TERL_BPHK7",
+      "len": 504
+    },
+    {
+      "row": 205,
+      "acc": "sp|A0A1L4BKS3|TERL_BPG20",
+      "name": "sp|A0A1L4BKS3|TERL_BPG20",
+      "len": 485
+    },
+    {
+      "row": 206,
+      "acc": "sp|Q9XJP3|FIBER_BPSFV",
+      "name": "sp|Q9XJP3|FIBER_BPSFV",
+      "len": 623
+    },
+    {
+      "row": 207,
+      "acc": "sp|P54308|TERL_BPSPP",
+      "name": "sp|P54308|TERL_BPSPP",
+      "len": 422
+    },
+    {
+      "row": 208,
+      "acc": "sp|P03685|NP_BPPH2",
+      "name": "sp|P03685|NP_BPPH2",
+      "len": 104
+    },
+    {
+      "row": 209,
+      "acc": "sp|P11014|PKG16_BPPH2",
+      "name": "sp|P11014|PKG16_BPPH2",
+      "len": 332
+    },
+    {
+      "row": 210,
+      "acc": "sp|P13390|FIBL1_BPT5",
+      "name": "sp|P13390|FIBL1_BPT5",
+      "len": 1396
+    },
+    {
+      "row": 211,
+      "acc": "sp|Q6QGP4|DNMK_BPT5",
+      "name": "sp|Q6QGP4|DNMK_BPT5",
+      "len": 250
+    },
+    {
+      "row": 212,
+      "acc": "sp|B3FK34|PHUZ_BP201",
+      "name": "sp|B3FK34|PHUZ_BP201",
+      "len": 315
+    },
+    {
+      "row": 213,
+      "acc": "sp|P04392|DMA_BPT4",
+      "name": "sp|P04392|DMA_BPT4",
+      "len": 259
+    },
+    {
+      "row": 214,
+      "acc": "sp|P04531|DNMK_BPT4",
+      "name": "sp|P04531|DNMK_BPT4",
+      "len": 241
+    },
+    {
+      "row": 215,
+      "acc": "sp|Q58MU6|PEBS_BPPRM",
+      "name": "sp|Q58MU6|PEBS_BPPRM",
+      "len": 233
+    },
+    {
+      "row": 216,
+      "acc": "sp|P49714|FIBER_BPK1E",
+      "name": "sp|P49714|FIBER_BPK1E",
+      "len": 811
+    },
+    {
+      "row": 217,
+      "acc": "sp|P03707|TERS_LAMBD",
+      "name": "sp|P03707|TERS_LAMBD",
+      "len": 181
+    },
+    {
+      "row": 218,
+      "acc": "sp|P03708|TERL_LAMBD",
+      "name": "sp|P03708|TERL_LAMBD",
+      "len": 641
+    },
+    {
+      "row": 219,
+      "acc": "sp|O09496|FIBER_BPK5",
+      "name": "sp|O09496|FIBER_BPK5",
+      "len": 632
+    },
+    {
+      "row": 220,
+      "acc": "sp|P00573|RPOL_BPT7",
+      "name": "sp|P00573|RPOL_BPT7",
+      "len": 883
+    },
+    {
+      "row": 221,
+      "acc": "sp|P03781|NUCK_BPT7",
+      "name": "sp|P03781|NUCK_BPT7",
+      "len": 196
+    },
+    {
+      "row": 222,
+      "acc": "sp|P10310|TERL_BPT3",
+      "name": "sp|P10310|TERL_BPT3",
+      "len": 586
+    },
+    {
+      "row": 223,
+      "acc": "sp|Q04830|FIBER_BPK1F",
+      "name": "sp|Q04830|FIBER_BPK1F",
+      "len": 1064
+    },
+    {
+      "row": 224,
+      "acc": "sp|Q38087|DPOL_BPR69",
+      "name": "sp|Q38087|DPOL_BPR69",
+      "len": 903
+    },
+    {
+      "row": 225,
+      "acc": "sp|D1L2X1|DPOL2_BPK32",
+      "name": "sp|D1L2X1|DPOL2_BPK32",
+      "len": 576
+    },
+    {
+      "row": 226,
+      "acc": "sp|A0A068Q5Q5|DEPOL_BPKNT",
+      "name": "sp|A0A068Q5Q5|DEPOL_BPKNT",
+      "len": 651
+    },
+    {
+      "row": 227,
+      "acc": "sp|P10277|PRIM_BPP4",
+      "name": "sp|P10277|PRIM_BPP4",
+      "len": 777
+    },
+    {
+      "row": 228,
+      "acc": "sp|A4ZFB3|CAPSD_BP80A",
+      "name": "sp|A4ZFB3|CAPSD_BP80A",
+      "len": 324
+    },
+    {
+      "row": 229,
+      "acc": "sp|Q6UAV6|PTELO_BPKO2",
+      "name": "sp|Q6UAV6|PTELO_BPKO2",
+      "len": 640
+    },
+    {
+      "row": 230,
+      "acc": "sp|A0A7U3TCA2|DATPH_BPS2L",
+      "name": "sp|A0A7U3TCA2|DATPH_BPS2L",
+      "len": 175
+    },
+    {
+      "row": 231,
+      "acc": "sp|G3FFN6|PURZ_BPVC8",
+      "name": "sp|G3FFN6|PURZ_BPVC8",
+      "len": 343
+    },
+    {
+      "row": 232,
+      "acc": "sp|P22884|VINT_BPML5",
+      "name": "sp|P22884|VINT_BPML5",
+      "len": 371
+    },
+    {
+      "row": 233,
+      "acc": "sp|Q8SDC3|PHUZ_BPDPK",
+      "name": "sp|Q8SDC3|PHUZ_BPDPK",
+      "len": 327
+    },
+    {
+      "row": 234,
+      "acc": "sp|Q331T7|TUBZ_CBCP",
+      "name": "sp|Q331T7|TUBZ_CBCP",
+      "len": 358
+    },
+    {
+      "row": 235,
+      "acc": "sp|A0A345MJY6|APYC1_BPBSP",
+      "name": "sp|A0A345MJY6|APYC1_BPBSP",
+      "len": 256
+    },
+    {
+      "row": 236,
+      "acc": "sp|P13771|TARGB_BPD10",
+      "name": "sp|P13771|TARGB_BPD10",
+      "len": 312
+    },
+    {
+      "row": 237,
+      "acc": "sp|Q77WP1|PTELO_BPN15",
+      "name": "sp|Q77WP1|PTELO_BPN15",
+      "len": 631
+    },
+    {
+      "row": 238,
+      "acc": "sp|Q9AYZ3|NEEDL_BPHK6",
+      "name": "sp|Q9AYZ3|NEEDL_BPHK6",
+      "len": 233
+    },
+    {
+      "row": 239,
+      "acc": "sp|Q71TL0|DAM_BPP1",
+      "name": "sp|Q71TL0|DAM_BPP1",
+      "len": 754
+    },
+    {
+      "row": 240,
+      "acc": "sp|Q9CIV7|DHAL_LACLA",
+      "name": "sp|Q9CIV7|DHAL_LACLA",
+      "len": 192
+    },
+    {
+      "row": 241,
+      "acc": "sp|P71447|PGMB_LACLA",
+      "name": "sp|P71447|PGMB_LACLA",
+      "len": 221
+    },
+    {
+      "row": 242,
+      "acc": "sp|Q02138|ILVC_LACLA",
+      "name": "sp|Q02138|ILVC_LACLA",
+      "len": 340
+    },
+    {
+      "row": 243,
+      "acc": "sp|A2RJT9|PYRDA_LACLM",
+      "name": "sp|A2RJT9|PYRDA_LACLM",
+      "len": 311
+    },
+    {
+      "row": 244,
+      "acc": "sp|O87761|PYRG_LACLM",
+      "name": "sp|O87761|PYRG_LACLM",
+      "len": 535
+    },
+    {
+      "row": 245,
+      "acc": "sp|P54322|PYRDB_LACLM",
+      "name": "sp|P54322|PYRDB_LACLM",
+      "len": 311
+    },
+    {
+      "row": 246,
+      "acc": "sp|P0DOB6|PFKA1_LACLL",
+      "name": "sp|P0DOB6|PFKA1_LACLL",
+      "len": 340
+    },
+    {
+      "row": 247,
+      "acc": "sp|P15244|CEO2_LACLL",
+      "name": "sp|P15244|CEO2_LACLL",
+      "len": 313
+    },
+    {
+      "row": 248,
+      "acc": "sp|O32765|LDH_LACHE",
+      "name": "sp|O32765|LDH_LACHE",
+      "len": 323
+    },
+    {
+      "row": 249,
+      "acc": "sp|P42371|FPG_LACLC",
+      "name": "sp|P42371|FPG_LACLC",
+      "len": 273
+    },
+    {
+      "row": 250,
+      "acc": "sp|P00862|DCHS_LACS3",
+      "name": "sp|P00862|DCHS_LACS3",
+      "len": 311
+    },
+    {
+      "row": 251,
+      "acc": "sp|P80019|PFKA_LACDE",
+      "name": "sp|P80019|PFKA_LACDE",
+      "len": 319
+    },
+    {
+      "row": 252,
+      "acc": "sp|Q74K42|INUS_LACJO",
+      "name": "sp|Q74K42|INUS_LACJO",
+      "len": 797
+    },
+    {
+      "row": 253,
+      "acc": "sp|Q59490|RTPR_LACLE",
+      "name": "sp|Q59490|RTPR_LACLE",
+      "len": 739
+    },
+    {
+      "row": 254,
+      "acc": "sp|A5HKP3|CBH_LACAI",
+      "name": "sp|A5HKP3|CBH_LACAI",
+      "len": 316
+    },
+    {
+      "row": 255,
+      "acc": "sp|O34153|GLPK_ENTCA",
+      "name": "sp|O34153|GLPK_ENTCA",
+      "len": 506
+    },
+    {
+      "row": 256,
+      "acc": "sp|Q47720|VANC2_ENTCA",
+      "name": "sp|Q47720|VANC2_ENTCA",
+      "len": 350
+    },
+    {
+      "row": 257,
+      "acc": "sp|P0DTQ4|TYRDC_ENTF3",
+      "name": "sp|P0DTQ4|TYRDC_ENTF3",
+      "len": 620
+    },
+    {
+      "row": 258,
+      "acc": "sp|Q820A8|IREK_ENTFA",
+      "name": "sp|Q820A8|IREK_ENTFA",
+      "len": 718
+    },
+    {
+      "row": 259,
+      "acc": "sp|Q82YZ0|CROS_ENTFA",
+      "name": "sp|Q82YZ0|CROS_ENTFA",
+      "len": 393
+    },
+    {
+      "row": 260,
+      "acc": "sp|Q831B2|AZOR_ENTFA",
+      "name": "sp|Q831B2|AZOR_ENTFA",
+      "len": 208
+    },
+    {
+      "row": 261,
+      "acc": "sp|Q837U7|PTC_ENTFA",
+      "name": "sp|Q837U7|PTC_ENTFA",
+      "len": 339
+    },
+    {
+      "row": 262,
+      "acc": "sp|Q3Y316|DMDH_ENTFD",
+      "name": "sp|Q3Y316|DMDH_ENTFD",
+      "len": 312
+    },
+    {
+      "row": 263,
+      "acc": "sp|Q9X3P3|VANTC_ENTGA",
+      "name": "sp|Q9X3P3|VANTC_ENTGA",
+      "len": 698
+    },
+    {
+      "row": 264,
+      "acc": "sp|A0A481NV25|TYRDC_ENTFC",
+      "name": "sp|A0A481NV25|TYRDC_ENTFC",
+      "len": 611
+    },
+    {
+      "row": 265,
+      "acc": "sp|P25051|VANA_ENTFC",
+      "name": "sp|P25051|VANA_ENTFC",
+      "len": 343
+    },
+    {
+      "row": 266,
+      "acc": "sp|A0A1S8KJG1|DAPE_ENTFC",
+      "name": "sp|A0A1S8KJG1|DAPE_ENTFC",
+      "len": 379
+    },
+    {
+      "row": 267,
+      "acc": "sp|Q05709|VANH_ENTFC",
+      "name": "sp|Q05709|VANH_ENTFC",
+      "len": 322
+    },
+    {
+      "row": 268,
+      "acc": "sp|Q8KQL2|ARPD_ENTAV",
+      "name": "sp|Q8KQL2|ARPD_ENTAV",
+      "len": 352
+    },
+    {
+      "row": 269,
+      "acc": "sp|Q9FD71|HMGCS_ENTFL",
+      "name": "sp|Q9FD71|HMGCS_ENTFL",
+      "len": 383
+    },
+    {
+      "row": 270,
+      "acc": "sp|P32113|COPA_ENTHA",
+      "name": "sp|P32113|COPA_ENTHA",
+      "len": 727
+    },
+    {
+      "row": 271,
+      "acc": "sp|P05425|COPB_ENTHA",
+      "name": "sp|P05425|COPB_ENTHA",
+      "len": 745
+    },
+    {
+      "row": 272,
+      "acc": "sp|G9MAP1|CLAHY_LACPN",
+      "name": "sp|G9MAP1|CLAHY_LACPN",
+      "len": 569
+    },
+    {
+      "row": 273,
+      "acc": "sp|P17584|DHD2_LACPA",
+      "name": "sp|P17584|DHD2_LACPA",
+      "len": 333
+    },
+    {
+      "row": 274,
+      "acc": "sp|P56511|LDH_LACPE",
+      "name": "sp|P56511|LDH_LACPE",
+      "len": 320
+    },
+    {
+      "row": 275,
+      "acc": "sp|J7GQ11|TYRDC_LEVBR",
+      "name": "sp|J7GQ11|TYRDC_LEVBR",
+      "len": 626
+    },
+    {
+      "row": 276,
+      "acc": "sp|Q9EY50|FEMX_WEIVI",
+      "name": "sp|Q9EY50|FEMX_WEIVI",
+      "len": 336
+    },
+    {
+      "row": 277,
+      "acc": "sp|P00381|DYR_LACCA",
+      "name": "sp|P00381|DYR_LACCA",
+      "len": 163
+    },
+    {
+      "row": 278,
+      "acc": "sp|Q6WVP7|RADH_LENKE",
+      "name": "sp|Q6WVP7|RADH_LENKE",
+      "len": 252
+    },
+    {
+      "row": 279,
+      "acc": "sp|Q70XJ9|LSC_FRUSA",
+      "name": "sp|Q70XJ9|LSC_FRUSA",
+      "len": 879
+    },
+    {
+      "row": 280,
+      "acc": "sp|P00343|LDH_LACCA",
+      "name": "sp|P00343|LDH_LACCA",
+      "len": 326
+    },
+    {
+      "row": 281,
+      "acc": "sp|P15925|FPGS_LACCA",
+      "name": "sp|P15925|FPGS_LACCA",
+      "len": 428
+    },
+    {
+      "row": 282,
+      "acc": "sp|Q9RE09|HPRK_LACCA",
+      "name": "sp|Q9RE09|HPRK_LACCA",
+      "len": 319
+    },
+    {
+      "row": 283,
+      "acc": "sp|F9USS9|LARA_LACPL",
+      "name": "sp|F9USS9|LARA_LACPL",
+      "len": 424
+    },
+    {
+      "row": 284,
+      "acc": "sp|F9UST4|LARE_LACPL",
+      "name": "sp|F9UST4|LARE_LACPL",
+      "len": 276
+    },
+    {
+      "row": 285,
+      "acc": "sp|P37063|POXB_LACPL",
+      "name": "sp|P37063|POXB_LACPL",
+      "len": 603
+    },
+    {
+      "row": 286,
+      "acc": "sp|Q88YH3|ENO1_LACPL",
+      "name": "sp|Q88YH3|ENO1_LACPL",
+      "len": 442
+    },
+    {
+      "row": 287,
+      "acc": "sp|Q03C44|PAGL1_LACP3",
+      "name": "sp|Q03C44|PAGL1_LACP3",
+      "len": 442
+    },
+    {
+      "row": 288,
+      "acc": "sp|P36497|PEDD_PEDAC",
+      "name": "sp|P36497|PEDD_PEDAC",
+      "len": 724
+    },
+    {
+      "row": 289,
+      "acc": "sp|Q03EG6|GATB_PEDPA",
+      "name": "sp|Q03EG6|GATB_PEDPA",
+      "len": 475
+    },
+    {
+      "row": 290,
+      "acc": "sp|Q03HB0|CARB_PEDPA",
+      "name": "sp|Q03HB0|CARB_PEDPA",
+      "len": 1057
+    },
+    {
+      "row": 291,
+      "acc": "sp|Q03HD2|GLMU_PEDPA",
+      "name": "sp|Q03HD2|GLMU_PEDPA",
+      "len": 467
+    },
+    {
+      "row": 292,
+      "acc": "sp|Q03GC2|FPG_PEDPA",
+      "name": "sp|Q03GC2|FPG_PEDPA",
+      "len": 275
+    },
+    {
+      "row": 293,
+      "acc": "sp|A2RIX0|HPF_LACLM",
+      "name": "sp|A2RIX0|HPF_LACLM",
+      "len": 185
+    },
+    {
+      "row": 294,
+      "acc": "sp|P50918|TPIS_LACLA",
+      "name": "sp|P50918|TPIS_LACLA",
+      "len": 252
+    },
+    {
+      "row": 295,
+      "acc": "sp|Q02YK5|PFKA_LACLS",
+      "name": "sp|Q02YK5|PFKA_LACLS",
+      "len": 340
+    }
+  ]
+}

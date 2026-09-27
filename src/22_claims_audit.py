@@ -542,6 +542,62 @@ def coherent_pooling():
     }
 
 
+def locality_across_panels():
+    """Both failures respond to a label-free window; the supervised direction cannot reach one of them.
+
+    \U0001f534 Three things are pinned together because the interesting part is their relation, and a
+    later edit that quoted any one alone would misstate it: the label-free window helps both
+    unflaggable classes on both panels, the supervised ranking raises the PANEL mean instead, and the
+    supervised ranking does nothing for beta-lactamase. The last one is the mechanism, so it is the
+    one most likely to be dropped as a negative.
+    """
+    c2, c3 = j("../results/v2/coherent_pooling_seeds.json"), j("../results/v3/coherent_pooling_seeds.json")
+    s2 = j("../results/v2/supervised_pooling_v2_30seeds.json")
+    # \U0001f534 The gate compares k = 0 against src/03b's published run, which is FIVE seeds, so it
+    # is only meaningful in the five-seed artifact. The 30-seed file records a 0.0595 delta that is
+    # the 5-versus-30-seed difference in beta-lactamase and not a gate failure; reading the gate
+    # from there would have pinned a number that means something else.
+    g5 = j("../results/v2/supervised_pooling_v2.json")
+    s3 = j("../results/v3/supervised_pooling_v3_30seeds.json")
+    if None in (c2, c3, s2, s3, g5):
+        return None
+
+    def sup(d, k, cname):
+        r = d["by_k"][str(k)].get(cname)
+        return None if r is None else round(r["flagged_95_mean"], 4)
+
+    def panelmean(d, k):
+        v = [x["flagged_95_mean"] for x in d["by_k"][str(k)].values()]
+        return round(sum(v) / len(v), 4)
+
+    return {
+        # the label-free window, on the class each panel's control fails on
+        "v2_blact_ctl": round(c2["reductions"]["mean_res"]["mean_30seed"], 4),
+        "v2_blact_win": round(c2["reductions"]["win_best25"]["mean_30seed"], 4),
+        "v3_phage_ctl": round(c3["reductions"]["mean_res"]["mean_30seed"], 4),
+        "v3_phage_win": round(c3["reductions"]["win_best25"]["mean_30seed"], 4),
+        "v3_blact_ctl": round(c3["cost_at_30_seeds"]["beta_lactamase"]["mean_res"]["mean_30seed"], 4),
+        "v3_blact_win": round(c3["cost_at_30_seeds"]["beta_lactamase"]["win_best25"]["mean_30seed"], 4),
+        "v3_blact_disjoint": c3["cost_at_30_seeds"]["beta_lactamase"]["intervals_disjoint"],
+        # on the phage class locality is not one lucky grid point
+        "v2_clear_of_control": c2["intervals_clear_of_control"],
+        "v3_clear_of_control": sorted(c3["intervals_clear_of_control"]),
+        # the supervised arm: panel mean UP, and beta-lactamase unmoved
+        "sup_gate_5seed": g5["gate_worst_delta"],
+        "sup_gate_30seed_is_seed_noise": round(s2["gate_worst_delta"], 4),
+        "v2_sup_panel_0": panelmean(s2, 0), "v2_sup_panel_100": panelmean(s2, 100),
+        "v3_sup_panel_0": panelmean(s3, 0), "v3_sup_panel_25": panelmean(s3, 25),
+        "v2_sup_blact": (sup(s2, 0, "beta_lactamase"), sup(s2, 100, "beta_lactamase")),
+        "v3_sup_blact": (sup(s3, 0, "beta_lactamase"), sup(s3, 25, "beta_lactamase")),
+        "v3_sup_phage": (sup(s3, 0, "phage_peptidoglycan_hydrolase"),
+                         sup(s3, 25, "phage_peptidoglycan_hydrolase")),
+        # k = 1 is catastrophic on both panels, which is what makes mid-range k a real regime
+        "k1_panel": (panelmean(s2, 1), panelmean(s3, 1)),
+        "cdi_n": s2["by_k"]["0"]["contact_dependent_inhibition"]["n"],
+        "phage_n": s3["by_k"]["0"]["phage_peptidoglycan_hydrolase"]["n"],
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -2784,6 +2840,35 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("locality helps both failures; supervision helps the panel and not beta-lactamase",
+     locality_across_panels,
+     lambda v: v is None or (
+         # label-free window: both failures, both panels, and the v3 beta-lactamase interval disjoint
+         v["v2_blact_win"] - v["v2_blact_ctl"] > 0.15
+         and v["v3_blact_win"] - v["v3_blact_ctl"] > 0.15 and v["v3_blact_disjoint"]
+         and v["v3_phage_win"] - v["v3_phage_ctl"] > 0.13
+         # one grid point clears on v2's class, five on v3's
+         and v["v2_clear_of_control"] == ["win_best25"]
+         and len(v["v3_clear_of_control"]) == 5 and "win_best5" in v["v3_clear_of_control"]
+         # the reproduced fold loop is exact at k = 0
+         and v["sup_gate_5seed"] == 0.0
+         # and the 30-seed "gate" delta is beta-lactamase's own 5-vs-30-seed gap, not a failure
+         and abs(v["sup_gate_30seed_is_seed_noise"]
+                 - (v["v2_sup_blact"][0] - v["v2_blact_ctl"] + 0.0595)) < 0.06
+         # supervision raises the panel mean instead of lowering it
+         and v["v2_sup_panel_100"] > v["v2_sup_panel_0"]
+         and v["v3_sup_panel_25"] > v["v3_sup_panel_0"]
+         # and does nothing for beta-lactamase on either panel
+         and v["v2_sup_blact"][1] <= v["v2_sup_blact"][0]
+         and v["v3_sup_blact"][1] < v["v3_sup_blact"][0]
+         # while moving the phage class on n = 32
+         and v["v3_sup_phage"][1] - v["v3_sup_phage"][0] > 0.10 and v["phage_n"] == 32
+         # k = 1 is catastrophic on both, so mid-range k is a regime and not a trend
+         and max(v["k1_panel"]) < 0.60
+         # the class with the largest supervised gain has four members
+         and v["cdi_n"] == 4),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "🔴 **And it does nothing at all for beta-lactamase: +0.0 on v2 and −5.5 on v3.**"}, []),
     ("a coherent window reduction reallocates recovery rather than adding it",
      coherent_pooling,
      lambda v: v is None or (

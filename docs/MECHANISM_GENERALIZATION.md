@@ -1216,6 +1216,77 @@ ranking residues by a direction fitted inside each fold, which is what a CNN wou
 in `src/70` and **not implemented**, and it is the one closest to the architecture § 9.1.1 was asked
 about.
 
+#### 9.1.3 🔑 Both unflaggable classes respond to locality, on both panels — and the supervised direction, which is what a CNN learns, cannot reach the harder one
+
+`src/69/70/72` on v3 and `src/73_supervised_pooling_lomo.py`, 2026-09-27. § 9.1.2 left two things open:
+whether `win_best25` is beta-lactamase-specific, and what a **supervised** residue ranking does. Both are
+now measured, at 30 seeds, and they answer differently.
+
+**`src/73` reproduces `src/03b`'s fold loop rather than approximating it**, and the reproduction is
+gated: with the ranking ignored (`k = 0`, every residue, which is exactly the mean) its worst per-class
+disagreement with `lomo_results_esm2_650M_mean_res.json` is **0.00e+00**. The direction is fitted inside
+each fold on mean-pooled positives **excluding the held-out class** plus the **training** negatives only,
+so it sees neither the class it will be tested on nor the negatives that will set the threshold.
+
+##### The label-free window generalises to the second failure class
+
+| 30 seeds, flagged@95 | `mean_res` | `win_best25` | Δ |
+|---|---|---|---:|
+| beta_lactamase, **v2** | 15.5% [11.0, 19.9] | **35.0% [31.6, 38.4]** | **+19.5** |
+| beta_lactamase, **v3** | 21.0% [16.3, 25.6] | **37.4% [35.5, 39.2]** | **+16.4** |
+| **phage_peptidoglycan_hydrolase, v3** | 12.3% [10.0, 14.5] | **27.3% [23.3, 31.3]** | **+15.0** |
+
+🔑 **Every one of those intervals is disjoint from its control, and the two classes are the project's two
+documented failures.** § 10.4's margin statistic identifies both before training; a label-free 25-residue
+window moves both by 15 to 20 points. And on the phage class it is not a lone grid point: **five of the
+fourteen reductions have intervals clear of the control** — `win_best5` 27.8% [24.7, 30.9], `win_best25`,
+`win_best15`, `win_best9`, `dev_topk5` — against **one of fourteen** on v2's beta-lactamase.
+
+🔴 **The reallocation replicates too, and is the reason this is still not a fix.** v3 panel mean falls
+**73.1% → 63.1%**, against v2's 72.8% → 63.3%. At 30 seeds on v3 the losses are cry_insecticidal
+**−30.9** (79.2% → 48.3%), pore_forming_cytolysin **−40.0** (100% → 60.0%) and superantigen_enterotoxin
+**−25.7** (95.2% → 69.5%), all three interval-disjoint.
+
+##### The supervised ranking is a better global trade and cannot touch beta-lactamase
+
+Residues ranked by the fold's own logistic direction, top-*k* averaged, 30 seeds:
+
+| | v2, best-panel *k* = 100 | v3, best-panel *k* = 25 |
+|---|---|---|
+| panel mean | 72.4% → **75.2%** | 72.8% → **74.7%** |
+| **beta_lactamase** | 15.5% → 15.5% (**+0.0**) | 21.0% → 15.5% (−5.5, ns) |
+| **phage_peptidoglycan_hydrolase** | — | 12.3% → 23.6% (**+11.4**, n=32) |
+| contact_dependent_inhibition | 36.7% → 65.8% (+29.2) | 72.5% → 95.8% (+23.3) |
+| cry_insecticidal | — | 79.2% → 91.8% (+12.6) |
+| bacteriocin | — | 86.4% → 92.2% (+5.8) |
+| superantigen_enterotoxin | 100% → 100% (+0.0) | 95.2% → 86.2% (−9.0) |
+| pore_forming_cytolysin | 69.0% → 63.8% (−5.2) | 100% → 94.3% (−5.7) |
+
+🔑 **Unlike the label-free window this raises the panel mean rather than lowering it**, by +2.8 and +1.9
+points at an unchanged realised FPR of 0.0656, and on v2 it destroys nothing — the saturated classes stay
+at 100%. It also moves the phage class **+11.4 on n = 32**, which is a far more trustworthy n than the
++29.2 it gets on contact-dependent inhibition, a class with **four members**, where the statistic can
+only move in steps of 25%.
+
+🔴 **And it does nothing at all for beta-lactamase: +0.0 on v2 and −5.5 on v3.** That is the sharpest
+result in this subsection, because it has a mechanism. **The supervised direction is fitted on the other
+classes, and beta-lactamase is the class whose members sit closest to benign** — § 10.4's negative
+margin. A direction learned from classes it is unlike points the wrong way for it. The label-free "most
+deviant window" inherits no such bias, which is why the unsupervised reduction beats the supervised one
+on exactly the class the supervised one cannot see.
+
+⚠️ **Best-*k* is not stable and is not claimed to be.** It is 100 on v2 and 25 on v3, chosen after the
+fact; the whole *k* curve is in `supervised_pooling_*_30seeds.json`. What is stable across both panels is
+the **pattern** — mid-range *k* helps the low classes, *k* = 1 is catastrophic everywhere (panel 55.6% and
+57.0%), and no *k* helps beta-lactamase.
+
+🔑 **So the architectural reading of § 8.2 now has two independent measurements behind it rather than an
+analogy.** The reduction that helps a class depends on the class: the two unflaggable families need
+locality, one of them needs it **label-free** because supervision trained on the others actively misleads,
+and the families already at 100% are damaged by the locality that helps the others. A single global
+choice — mean, window, or a CNN's learned filters — cannot be right for all of them at a fixed
+false-positive budget.
+
 ### 9.2 Strictness: where each class stops being recoverable
 
 `src/03f_coverage_strictness.py` sweeps the false-positive budget and reports **s90**, the strictest

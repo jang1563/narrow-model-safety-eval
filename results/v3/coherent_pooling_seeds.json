@@ -1,0 +1,306 @@
+{
+  "class": "phage_peptidoglycan_hydrolase",
+  "seeds": 30,
+  "alignment_recovery": null,
+  "protocol": "src/03x's recover_seeds, imported unchanged; 03b fold logic, 40% negative holdout",
+  "control": "mean_res",
+  "n_grid_points": 14,
+  "beat_control_at_5_seeds": [
+    "dev_topk5",
+    "dev_topk10",
+    "win_best5",
+    "win_best9",
+    "win_best15",
+    "win_best25",
+    "win_max9",
+    "win_max15"
+  ],
+  "beat_control_at_30_seeds": [
+    "dev_topk5",
+    "win_best15",
+    "win_best25",
+    "win_best5",
+    "win_best9",
+    "win_max15",
+    "win_max9"
+  ],
+  "intervals_clear_of_control": [
+    "dev_topk5",
+    "win_best15",
+    "win_best25",
+    "win_best5",
+    "win_best9"
+  ],
+  "reductions": {
+    "mean_res": {
+      "published_5seed": 0.1,
+      "mean_30seed": 0.12291666666666666,
+      "sd": 0.06300086662421636,
+      "ci95": [
+        0.100372096082261,
+        0.14546123725107232
+      ],
+      "zero_seeds": 0,
+      "vs_alignment": "n/a",
+      "published_inside_ci": false
+    },
+    "dev_topk1": {
+      "published_5seed": 0.0,
+      "mean_30seed": 0.015625,
+      "sd": 0.038273277230987154,
+      "ci95": [
+        0.0019290836378137912,
+        0.029320916362186207
+      ],
+      "zero_seeds": 25,
+      "vs_alignment": "n/a",
+      "published_inside_ci": false
+    },
+    "dev_topk5": {
+      "published_5seed": 0.16875,
+      "mean_30seed": 0.17708333333333334,
+      "sd": 0.08736648269703076,
+      "ci95": [
+        0.14581963901587497,
+        0.20834702765079172
+      ],
+      "zero_seeds": 0,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "dev_topk10": {
+      "published_5seed": 0.125,
+      "mean_30seed": 0.10833333333333334,
+      "sd": 0.09838859736755079,
+      "ci95": [
+        0.07312542593605936,
+        0.1435412407306073
+      ],
+      "zero_seeds": 5,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "dev_topk20": {
+      "published_5seed": 0.0375,
+      "mean_30seed": 0.03958333333333333,
+      "sd": 0.05622205563860045,
+      "ci95": [
+        0.019464529106319635,
+        0.05970213756034703
+      ],
+      "zero_seeds": 10,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "dev_topk50": {
+      "published_5seed": 0.05625,
+      "mean_30seed": 0.05520833333333333,
+      "sd": 0.06445400937655192,
+      "ci95": [
+        0.03214376229330451,
+        0.07827290437336215
+      ],
+      "zero_seeds": 7,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "dev_attn1": {
+      "published_5seed": 0.0625,
+      "mean_30seed": 0.065625,
+      "sd": 0.06427962050346102,
+      "ci95": [
+        0.04262283321675678,
+        0.08862716678324323
+      ],
+      "zero_seeds": 6,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "dev_attn4": {
+      "published_5seed": 0.03125,
+      "mean_30seed": 0.035416666666666666,
+      "sd": 0.060714436636536084,
+      "ci95": [
+        0.013690284545461385,
+        0.05714304878787195
+      ],
+      "zero_seeds": 14,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "dev_attn16": {
+      "published_5seed": 0.0375,
+      "mean_30seed": 0.041666666666666664,
+      "sd": 0.06582396630582119,
+      "ci95": [
+        0.018111862835496602,
+        0.06522147049783672
+      ],
+      "zero_seeds": 14,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "win_best5": {
+      "published_5seed": 0.25625,
+      "mean_30seed": 0.278125,
+      "sd": 0.08620891700218519,
+      "ci95": [
+        0.2472755352465442,
+        0.3089744647534558
+      ],
+      "zero_seeds": 0,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "win_best9": {
+      "published_5seed": 0.1875,
+      "mean_30seed": 0.203125,
+      "sd": 0.054898760663732595,
+      "ci95": [
+        0.1834797307981923,
+        0.2227702692018077
+      ],
+      "zero_seeds": 0,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "win_best15": {
+      "published_5seed": 0.225,
+      "mean_30seed": 0.21666666666666667,
+      "sd": 0.08987439351225356,
+      "ci95": [
+        0.1845055279897453,
+        0.24882780534358806
+      ],
+      "zero_seeds": 0,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "win_best25": {
+      "published_5seed": 0.26875,
+      "mean_30seed": 0.27291666666666664,
+      "sd": 0.11099730761982732,
+      "ci95": [
+        0.23319679025226325,
+        0.31263654308107003
+      ],
+      "zero_seeds": 0,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "win_max9": {
+      "published_5seed": 0.1125,
+      "mean_30seed": 0.13333333333333333,
+      "sd": 0.0856537570218261,
+      "ci95": [
+        0.10268253002746516,
+        0.1639841366392015
+      ],
+      "zero_seeds": 1,
+      "vs_alignment": "n/a",
+      "published_inside_ci": true
+    },
+    "win_max15": {
+      "published_5seed": 0.18125,
+      "mean_30seed": 0.14583333333333334,
+      "sd": 0.08502239393985779,
+      "ci95": [
+        0.11540846040475225,
+        0.17625820626191444
+      ],
+      "zero_seeds": 1,
+      "vs_alignment": "n/a",
+      "published_inside_ci": false
+    }
+  },
+  "reading": "Under a null in which the reductions are equivalent, about half the grid would beat the control. Far fewer than half means coherent localisation is systematically worse, not merely no better.",
+  "cost_at_30_seeds": {
+    "beta_lactamase": {
+      "mean_res": {
+        "mean_30seed": 0.20952380952380953,
+        "sd": 0.12986938348792837,
+        "ci95": [
+          0.1630506474915997,
+          0.25599697155601936
+        ]
+      },
+      "win_best25": {
+        "mean_30seed": 0.3738095238095239,
+        "sd": 0.05199514584247187,
+        "ci95": [
+          0.35520329982717797,
+          0.3924157477918699
+        ]
+      },
+      "delta_30seed": 0.1643,
+      "intervals_disjoint": true
+    },
+    "cry_insecticidal": {
+      "mean_res": {
+        "mean_30seed": 0.7924242424242425,
+        "sd": 0.1686802464823283,
+        "ci95": [
+          0.7320627914350261,
+          0.8527856934134589
+        ]
+      },
+      "win_best25": {
+        "mean_30seed": 0.4833333333333333,
+        "sd": 0.15857881456667564,
+        "ci95": [
+          0.42658663333134317,
+          0.5400800333353234
+        ]
+      },
+      "delta_30seed": -0.3091,
+      "intervals_disjoint": true
+    },
+    "pore_forming_cytolysin": {
+      "mean_res": {
+        "mean_30seed": 1.0,
+        "sd": 0.0,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "win_best25": {
+        "mean_30seed": 0.6000000000000001,
+        "sd": 0.11502225712469967,
+        "ci95": [
+          0.5588398139029933,
+          0.6411601860970069
+        ]
+      },
+      "delta_30seed": -0.4,
+      "intervals_disjoint": true
+    },
+    "superantigen_enterotoxin": {
+      "mean_res": {
+        "mean_30seed": 0.9523809523809524,
+        "sd": 0.09441350746446667,
+        "ci95": [
+          0.9185955126369248,
+          0.98616639212498
+        ]
+      },
+      "win_best25": {
+        "mean_30seed": 0.6952380952380952,
+        "sd": 0.26721735304737565,
+        "ci95": [
+          0.5996155935177938,
+          0.7908605969583966
+        ]
+      },
+      "delta_30seed": -0.2571,
+      "intervals_disjoint": true
+    }
+  },
+  "fixed_budget": "realised FPR at nominal 5% is 0.0656 for mean_res and for win_best25 alike, so the reallocation is not bought by loosening the threshold",
+  "provenance": {
+    "mean_res": 0.815,
+    "win_best25": 0.7766,
+    "note": "the confound gets slightly HARDER to exploit, not easier, which is the opposite of what section 9.1.1 warned about for local features"
+  },
+  "panel": "v3"
+}
