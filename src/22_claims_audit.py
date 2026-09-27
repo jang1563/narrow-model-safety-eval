@@ -2592,7 +2592,12 @@ CLAIMS = [
          and abs(v["typicality_partial"]["esm2_650M"]) < 0.40
          and v["margin_dominates_both"]),
      {"docs/MECHANISM_GENERALIZATION.md":
-      "**the more typical of general protein space a class is, the less of it is recovered.**"}, []),
+      "**the more typical of general protein space a class is, the less of it is recovered.**",
+      # The public card carries the margin result, so it carries the baseline for it too. Nothing in
+      # the card is retired by this: it claimed margin beat its own parts, which is still true, and
+      # never claimed it had been given anything simpler than itself.
+      "huggingface/README.md":
+      "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.

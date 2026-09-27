@@ -264,6 +264,25 @@ Spearman **+0.894, permutation p 0.00015**, and it beats each of its own parts w
 runs the other way at −0.564. **Both failing classes have a negative margin: their members sit
 closer to a benign protein than to any hazard class the probe trained on.**
 
+🔴 **Margin also has to beat a baseline with no labels in it at all, and that baseline is a real
+predictor here. Added 2026-09-27.** ["Viral Proteins Reveal Geometry of Protein Language
+Models"](https://arxiv.org/abs/2606.12609) (ICML 2026 workshops) reports a dominant **nativeness axis**
+in protein-LM embedding space aligned with masked reconstruction perplexity. If that is what organises
+the geometry, then "the failing classes sit close to benign" could just be "the failing classes sit
+close to protein space in general". Tested with the cheapest possible stand-in — mean cosine of a
+class to the mean of the 8,259-protein benign pool, no hazard label, no class label, no fit — it
+reaches Spearman **−0.746** against recovery at permutation *p* = **0.0034** on ESM-2 650M, the arm
+every figure above uses: **the more typical of general protein space a class is, the less of it is
+recovered.** That belonged in the baseline list and was not in it.
+
+🟢 **Margin survives, and the baseline does not replicate.** With typicality held, margin keeps
+**+0.776** of its +0.894 on 650M and **+0.798** of its +0.796 on 35M; with margin held, typicality
+falls to −0.346 and +0.109. And typicality is **+0.021 at *p* = 0.53 on ESM-2 35M** — null and
+sign-flipped — so it is an **arm-specific confound, not an explanation**, and a report covering only
+the canonical arm could not have told the difference. What this does *not* settle: the proxy is
+cosine-to-centroid, not the paper's perplexity-aligned axis, and the same question applies to FSPE,
+which is itself a masked-prediction entropy contrast. `src/66_typicality_baseline.py`, §10.6.4.
+
 So the seven refused explanations in `docs/MECHANISM_GENERALIZATION.md` §9 were all looking for
 something specific to beta-lactamase, and the phenomenon is not specific to it. v2 stays frozen and fully reproducible; v3 is a parallel file set. See §2.5 and
 §10.4 of [`docs/MECHANISM_GENERALIZATION.md`](https://github.com/jang1563/narrow-model-safety-eval/blob/main/docs/MECHANISM_GENERALIZATION.md).
