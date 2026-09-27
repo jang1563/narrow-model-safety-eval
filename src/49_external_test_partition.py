@@ -73,6 +73,13 @@ CONTAMINANT = "Q8X739"
 # cannot be collapsed into one variable. Getting this wrong silently loads a different arm's panel.
 ARMS = {"esm2_35M": {"panel": "_esm2_35M", "pool": "esm2_35M"},
         "canonical": {"panel": "", "pool": "esm2_650M"}}
+# 🔑 Added 2026-09-27. Entry forty-three: §§ 9.1.2–9.1.3 claimed § 8's fixed-budget objection was
+# answered by a realised FPR of 0.0656, which is 4/61 by construction and answers nothing. The
+# quantity that tests § 8 is the out-of-sample rate this script measures, and giving the reductions
+# that treatment needs only an arm entry each — the panel suffix and the pool tag both carry the
+# reduction name, so nothing about the protocol changes.
+ARMS.update({t: {"panel": f"_esm2_650M_{t}", "pool": f"esm2_650M_{t}"}
+             for t in ("mean_res", "win_best25", "win_best9", "win_max9")})
 
 
 def conformal_threshold(s_cal, alpha):

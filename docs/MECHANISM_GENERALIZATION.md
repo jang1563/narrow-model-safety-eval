@@ -1205,6 +1205,24 @@ answered**: testing it needs an *out-of-sample* rate of the kind § 2.6.1 measur
 provenance confound *easier* to exploit. It goes the other way: **AUROC 0.8150 → 0.7766**. That figure is
 a five-fold cross-validated probe on the pooled features and does not depend on the threshold.
 
+##### 🔒 The test § 8 actually needs, and a prediction written before it finished
+
+`src/76_pool_reduction_embed.py` embeds the 8,259-protein benign pool under `mean_res`, `win_best25`,
+`win_best9` and `win_max9` — reductions computed inside the forward pass, so no residue stack is stored —
+and `src/49` then measures the out-of-sample rate with the published 118-negative calibration split, the
+same way § 2.6.1 did for the canonical arm. **The canonical figures to beat, α = 0.05:** panel-to-pool
+`np.quantile` **7.867% [7.574, 8.159]**, conformal **5.978% [5.729, 6.228]**, and by distinct name
+**9.640%** and **7.142%**.
+
+🔒 **Prediction, frozen here while the embedding was still running** (git history carries the timestamp):
+**`win_best25`'s out-of-sample rate will be worse than the canonical arm's.** Two reasons. § 8's mechanism
+is that capacity raising the negatives' scores costs threshold headroom, and this reduction selects each
+protein's *most unusual window* — which a benign pool protein has as much as a toxin does. And its
+in-panel separability is already lower: baseline AUROC **0.9437** against the canonical **0.9738**, and a
+representation that separates less well overshoots a nominal budget by more. **If the rate is instead
+unchanged or better, § 8's objection does not apply to a hard-gated reduction and the retraction in this
+subsection was too broad.**
+
 🔴 **But it is a reallocation, not a fix, and the heading of § 9 survives on that.** Panel mean recovery
 falls **72.8% → 63.3%**. The two classes that gain are the two lowest, and three of the classes that
 lose were at or near saturation. At a fixed budget you can move where the sensitivity goes and not how
