@@ -224,3 +224,43 @@ without a pass/fail — stands permanently rather than provisionally, and its st
 attributed to the wrong sample size. A2-3's own [0.40, 0.60] window is ±0.10, about 1.2 null standard
 deviations, which a clean pipeline clears roughly 77% of the time: **better than the gate it replaces
 and still not a strong test.** Said here rather than left for a reader to work out.
+
+
+### Amendment 4 — 2026-09-27, on review, after A2 was reported
+
+🔴 **A2's two sides are annotated by different methods, and nothing above says so.** Its construction
+specifies "Swiss-Prot `Active site` features" for the controls and says nothing about the panel, whose
+catalytic positions come from PDB and literature curation. Measured: **10 of the panel's 74 annotated
+positions are a UniProt `Active site`** (≈32% on the annotation audit's comparable subset) against
+**100%** of the controls'.
+
+So A2-1's result — benign mean +6.76 against the panel's +4.32 — **does not distinguish "benign enzymes
+are more constrained at their catalytic sites" from "UniProt's curated active sites are more constrained
+than mixed literature annotations."** A2-1's *verdict* is unaffected, because the preregistered ceiling
+asks whether the panel exceeds the controls and the burden was on the panel; the *interpretation* is.
+
+⚠️ **This should have been an exclusion rule in A2's construction and was not.** The frozen rules covered
+panel membership, VFDB membership, hazard terms, similarity and site count — every axis except whether the
+two sides' positions mean the same thing. Recorded here rather than repaired silently. **The repair:
+restrict the panel to its UniProt-confirmed `Active site` positions and recompute both means**, which
+costs one rerun of `src/62` on a filtered annotation and is not done here.
+
+
+### Amendment 5 — 2026-09-27: A1's negative set is built, and it needs an effective-*n* before its rate is quoted
+
+`src/74_vfdb_negative_set.py`. **4,218 admitted** from VFDB setA, maximum similarity to any v3 positive
+**0.2663** against the frozen 0.282 bound, so rule 4 bound on 41 candidates and nothing admitted comes
+close to the limit. Rejections: 248 Exotoxin (A1's positive class), 222 length outside [50, 1022], 41
+similarity, 12 exact sequence match to a panel protein, 12 non-standard residues, 2 duplicate sequence.
+Categories: Effector delivery system 1,691 · Immune modulation 658 · Adherence 607 · Motility 595 ·
+Nutritional/Metabolic 320. 38 genera, *Legionella* 440.
+
+🔴 **A1's rate must not be quoted on the raw 4,218.** § 10.9 established the rule for the benign pool:
+8,259 raw records are 3,550 distinct names, a redundancy factor of 2.33, and **the distinct-unit rate is
+the honest one** — it raised the out-of-sample figure from 7.87% to 9.64%. A1 currently removes only
+**exact** sequence duplicates, and `src/74` does not record VFDB's own `VF####` id, which is the natural
+redundancy unit for a database that lists one representative gene per virulence factor per organism.
+
+**So before `src/49` is run on this set**, `src/74` gains the `VF####` grouping and A1-1 to A1-3 report
+both rates, raw and per distinct unit, exactly as § 2.6.1 does for the pool. Stated now because quoting
+the raw rate first and the corrected one later is how a number escapes.

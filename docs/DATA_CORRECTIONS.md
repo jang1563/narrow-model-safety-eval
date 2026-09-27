@@ -3916,3 +3916,103 @@ interval-clean on ESM-2 650M and evaporated on the cheapest arm in the project. 
 have been caught by more seeds, a bigger panel, or a better threshold — only by varying the
 representation. **The rule is worth more than the findings it has killed**, and the cost of applying it
 was one 103 MB residue stack and about twenty minutes of compute per test.
+
+---
+
+## 2026-09-27 (forty-third entry) — A review of the day's own work, which found two vacuous claims, one overlapping confirmation and one incomparable comparison
+
+Asked to go back over the session for anything hasty, thin, or out of my depth. Five things checked, and
+they were checked against the artifacts rather than reasoned about. **Three are real errors in text
+already written, two of them mine from today.**
+
+### 🔴 1. The false-positive check I cited as answering § 8 is vacuous
+
+§ 9.1.2 and § 9.1.3 both read that the realised FPR is *"0.0656 for the control and 0.0656 for
+`win_best25`, identical, so § 8's fixed-budget objection is answered."*
+
+`03b` sets `t95 = quantile(s_nte, 0.95)` on the 40% negative holdout and then reports
+`(s_nte >= t95).mean()` **on those same negatives**. With `m = int(154 × 0.40) = 61` that is 4/61 =
+**0.0656 for any score vector whatsoever**. Checked: it is the single distinct value across every
+reduction, every class and every seed, and a random normal vector returns it too. **That number is
+vacuous.** It is a property of m and nothing else.
+
+So **§ 8's objection is not answered.** § 8's mechanism is that capacity raising the *negatives'* scores
+costs threshold headroom, and the quantity that tests it is an **out-of-sample** rate of the kind § 2.6.1
+measures against the 8,259-protein pool — **never run for any reduction**. Both sentences are corrected in
+place and the audit claim now pins the figure as *definitional* rather than as evidence.
+
+⚠️ The other confound check in that paragraph does hold: the provenance probe going **0.8150 → 0.7766**
+is a cross-validated AUROC on the features and does not involve the threshold.
+
+### 🔴 2. A2's control set and the panel carry different *kinds* of annotation, and I never checked
+
+The powered P2 verdict says benign enzymes exceed toxins on dFSPE-M by 2.44 points. `src/68` built its 60
+controls from UniProt **`Active site`** features only. The panel's catalytic positions come from PDB and
+literature curation, and **10 of 74 of them are a UniProt `Active site`** — the audit's own
+`annotation_set_against_uniprot` line has been printing `frac_active = 0.32` on its comparable subset in
+every run of the gate today.
+
+| | positions from UniProt `Active site` |
+|---|---|
+| A2 controls (n = 60) | **100%** |
+| v2 panel (74 annotated positions) | **13.5%** (10 of 74; ≈32% on the audit's comparable subset) |
+
+🔴 **So "benign enzymes have more catalytic-site constraint than toxins do" is not established by this
+comparison.** The alternative it does not exclude is that **UniProt's curated `Active site` positions are
+more strongly conserved than a mixture of active sites, substrate contacts and functionally-important
+residues** — which is a claim about annotation provenance, not about hazard.
+
+What does survive: the **preregistered ceiling fires on direction**, and the burden was on the panel to
+exceed the controls, which it does not, at *p* = 0.0009. The n = 4 controls had the same UniProt
+provenance, so the powered run did not introduce the confound — **it inherited it and made it 15 times
+larger without anyone noticing.** The repair is available and cheap: restrict the panel to its
+UniProt-confirmed `Active site` positions and recompute. Not run today, named here.
+
+⚠️ **This is the failure I am least comfortable with.** I built a 60-member control set to fix an
+underpowered comparison and did not ask whether it was measuring the same thing on both sides. The number
+that would have told me was on screen dozens of times.
+
+### ⚠️ 3. The 30-seed "confirmation" of `win_best25` included the 5 seeds that selected it
+
+`src/03b` screens on seeds 0–4; `src/03x` confirms on `range(30)`. The screen's seeds are a **subset** of
+the confirmation's, so calling the second a confirmation was loose. 🟢 **Rerun on the 25 seeds that took
+no part in the selection**: `win_best25` **36.0% [32.2, 39.8]** against the control's **14.3% [9.4, 19.1]**
+— disjoint, **+21.7**, still clear of alignment's 29.5%. **The result does not depend on the overlap**, and
+§ 9.1.2 now carries the held-out-seed figure. A screen-and-confirm that shares seeds is still worth
+fixing even when the answer is unchanged, because next time it will not be.
+
+### ⚠️ 4. The cross-reduction margin comparison used one scale for fifteen different geometries
+
+§ 9.1.4 said *"every reduction that drives the margin more than 0.019 below the control's loses 9 to 15
+points."* Margin is a difference of cosines, which is scale-free **within** a reduction — but the cosine
+distribution itself moves enormously between them: mean pairwise cosine among positives is **0.256** under
+`dev_topk1` and **0.931** under `mean_res`. A displacement of 0.019 is not one quantity across that grid.
+Sentence withdrawn. What stands is the rank correlation, **+0.270 at *p* = 0.166**, which was null anyway,
+and the within-geometry observation that `win_best25` gains 19.5 points with a margin change of −0.0009.
+
+### ⚠️ 5. A1's negative set has no effective-*n*, which is the criticism § 10.9 made of the pool
+
+`src/74` finished: **4,218 admitted** from VFDB setA, maximum similarity to any panel positive **0.2663**
+against the 0.282 bound, rejections 248 Exotoxin / 222 length / 41 similarity / 12 panel-sequence-match /
+12 alphabet / 2 duplicate. Categories are Effector delivery system 1,691, Immune modulation 658, Adherence
+607, Motility 595. 38 genera, *Legionella* 440.
+
+⚠️ **§ 10.9's whole point about the benign pool was that 8,259 raw records are 3,550 distinct names, a
+redundancy factor of 2.33, and that the honest rate is the distinct-name one.** A1 currently reports raw
+*n* only: exact-sequence duplicates were removed, near-duplicates were not, and `src/74` does not even
+record VFDB's own `VF####` grouping id, which is the natural redundancy unit. **Before A1's rate is
+quoted it needs the same distinct-unit accounting the pool got**, or it will invite exactly the criticism
+this project levelled at itself.
+
+### What the review did not find
+
+The gates held everywhere they were checked. `src/73`'s reproduction of `03b`'s fold loop is exact at
+`k = 0` on both arms (0.00e+00). `src/69`'s residue stacks reproduce the published pooled artifacts to
+between 1.9e-06 and 9.1e-06 per protein on three arm/panel combinations. The A2 control set reruns
+byte-identically. `src/30`'s published artifact was re-derived unchanged after the namespace fix. And the
+cross-representation rule is the reason three of today's findings are bounded rather than believed.
+
+🔴 **The pattern in the three errors is one thing, not three: I checked whether numbers were stable and
+not whether they were measuring what I said they measured.** Seeds, intervals, gates and replication all
+got attention. A definitionally constant quantity, an annotation-provenance mismatch and a cross-geometry
+scale did not, and no amount of additional seeds would have surfaced any of them.

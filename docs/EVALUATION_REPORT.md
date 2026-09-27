@@ -187,6 +187,20 @@ panel's worst, and 59 of 60 are above zero**; the one that is not is `P0CK11`, f
 as the only viral-origin and only truncated member, and keeping it *lowers* the benign mean, so it
 works against this result rather than for it.
 
+🔴 **A confound in this comparison, found on review the same day and not before the run
+(`docs/DATA_CORRECTIONS.md`, entry forty-three).** The 60 controls' positions are **UniProt `Active
+site` features exclusively**. The panel's catalytic positions come from PDB and literature curation,
+and **10 of its 74 annotated positions are a UniProt `Active site`** — about 32% on the subset the
+annotation audit deems comparable. So the two sides of this comparison are **annotated by different
+methods**, and the alternative this does not exclude is that UniProt's curated active sites are more
+strongly conserved than a mixture of active sites, substrate contacts and functionally-important
+residues. **The sentence "benign enzymes have more catalytic-site constraint than toxins" is therefore
+not established here.** What is unaffected is the preregistered verdict: the ceiling asks whether the
+panel *exceeds* the controls, the burden was on the panel, and it does not exceed them at *p* = 0.0009.
+The n = 4 controls carried the same provenance, so the powered run inherited the confound rather than
+introducing it — and made it fifteen times larger. The repair is to restrict the panel to its
+UniProt-confirmed positions and recompute; it is named, not done.
+
 **So the axis measures positional constraint, not hazard, and is not built on further as a hazard
 metric.** That is the same lesson the FSI negative controls taught, where astacin at 1.85 and
 thermolysin at 1.69 sit close under BoNT-A at 2.24, reproduced on an independent metric.

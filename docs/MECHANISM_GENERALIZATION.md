@@ -1183,15 +1183,27 @@ the protein's own mean:
 
 🔑 **[31.6, 38.4] is the first pooling choice in this project whose whole interval clears alignment's
 29.5% on beta-lactamase**, and 0 of its 30 seeds recover the class at zero against the control's 7.
+⚠️ *Those 30 seeds **include** the 5 that selected it, so added 2026-09-27: on the **25 seeds that took no
+part in the selection** (5 to 29) `win_best25` gives **36.0% [32.2, 39.8]** against the control's
+**14.3% [9.4, 19.1]** — disjoint, +21.7 points, still clear of alignment. The screen-and-confirm was
+overlapping and the result does not depend on that.*
 🔴 *On ESM-2 650M only: § 9.1.4 puts the same reduction on `esm2_35M`, where it costs 9.5 points instead
 and no reduction clears its control. Read every number in this subsection as one-arm.*
 § 9's sentence *"no pooling choice comes near alignment"* was true of mean, CLS and max and is false in
 general.
 
-🟢 **Two confounds checked, and neither explains it.** The realised false-positive rate at a nominal 5%
-is **0.0656 for the control and 0.0656 for `win_best25`**, identical, so § 8's fixed-budget objection is
-answered: this is not bought by loosening the threshold. And § 9.1.1 warned that local features should
-make § 2.3's provenance confound *easier* to exploit; it goes the other way, **0.8150 → 0.7766**.
+🔴 **A confound check I got wrong, corrected 2026-09-27 (entry forty-three).** This paragraph read
+*"the realised false-positive rate at a nominal 5% is 0.0656 for the control and 0.0656 for `win_best25`,
+identical, so § 8's fixed-budget objection is answered."* **That number is vacuous.** `03b` takes the
+threshold as `quantile(s_nte, 0.95)` and then reports `(s_nte >= t95).mean()` on the *same* 61 negatives,
+so it equals 4/61 = 0.0656 for every reduction, every class, every seed, and for random scores. It is a
+property of m = 61 and cannot distinguish two score distributions. **§ 8's objection is therefore not
+answered**: testing it needs an *out-of-sample* rate of the kind § 2.6.1 measures against the
+8,259-protein pool, and that has not been run for any reduction.
+
+🟢 **One confound check that does hold.** § 9.1.1 warned that local features should make § 2.3's
+provenance confound *easier* to exploit. It goes the other way: **AUROC 0.8150 → 0.7766**. That figure is
+a five-fold cross-validated probe on the pooled features and does not depend on the threshold.
 
 🔴 **But it is a reallocation, not a fix, and the heading of § 9 survives on that.** Panel mean recovery
 falls **72.8% → 63.3%**. The two classes that gain are the two lowest, and three of the classes that
@@ -1268,8 +1280,10 @@ Residues ranked by the fold's own logistic direction, top-*k* averaged, 30 seeds
 | pore_forming_cytolysin | 69.0% → 63.8% (−5.2) | 100% → 94.3% (−5.7) |
 
 🔑 **Unlike the label-free window this raises the panel mean rather than lowering it**, by +2.8 and +1.9
-points at an unchanged realised FPR of 0.0656, and on v2 it destroys nothing — the saturated classes stay
-at 100%. It also moves the phage class **+11.4 on n = 32**, which is a far more trustworthy n than the
+points, and on v2 it destroys nothing — the saturated classes stay at 100%. ⚠️ *This originally said
+"at an unchanged realised FPR of 0.0656". That figure is 4/61 by construction and says nothing; see
+§ 9.1.2 and entry forty-three. The panel-mean comparison stands on its own, at a threshold rule held
+fixed across reductions, but nothing here shows the out-of-sample rate is unchanged.* It also moves the phage class **+11.4 on n = 32**, which is a far more trustworthy n than the
 +29.2 it gets on contact-dependent inhibition, a class with **four members**, where the statistic can
 only move in steps of 25%.
 
@@ -1336,10 +1350,12 @@ different kind of variation.
 
 🔴 **But the gain is not a margin effect.** Regressing the change in beta-lactamase's margin against the
 change in its recovery over the fifteen reductions gives Spearman **+0.270 at permutation *p* = 0.166** —
-**not a result**. The pattern is asymmetric rather than absent: every reduction that drives the margin
-more than 0.019 below the control's loses 9 to 15 points, while `win_best25` gains 19.5 with a margin
-change of **−0.0009**, essentially none. **Preserving the margin is necessary for the gain and does not
-produce it** — `win_max9` and `win_max15` also leave the margin intact and still lose 6.9 and 8.3.
+**not a result**. ⚠️ *And a cross-reduction comparison of margin **values** is weaker than it looks, so the
+sentence that stood here is withdrawn (entry forty-three): these reductions do not share a geometry —
+mean pairwise cosine among positives runs from **0.256** under `dev_topk1` to **0.931** under `mean_res`
+— so "a margin change of 0.019" is not one quantity across the grid. What survives is the rank
+correlation above, which is null, and the single observation that **`win_best25` gains 19.5 points with a
+margin change of −0.0009 in its own geometry**: the gain is not accompanied by a margin improvement.
 
 ⚠️ So margin explains the **losses** and not the gain, and the mechanism for the gain remains what
 § 9.1.2 said it was: unexplained, with length ruled out, catalytic-site proximity weak (9 of 14,

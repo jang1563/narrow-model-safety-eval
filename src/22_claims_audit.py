@@ -537,7 +537,12 @@ def coherent_pooling():
         # the cost, at the same seed count as the gain
         "cost": {k: (round(v["delta_30seed"], 3), v["intervals_disjoint"]) for k, v in c.items()},
         "all_cost_intervals_disjoint": all(v["intervals_disjoint"] for v in c.values()),
-        "fpr_unchanged": "0.0656 for mean_res and for win_best25 alike" in d["fixed_budget"],
+        # \U0001f534 Entry forty-three: this quantity is 4/61 by construction — 03b thresholds on
+        # the same 61 negatives it then measures — so it is identical for every reduction, every
+        # class, every seed and for random scores. Kept as a recorded value, NOT as evidence that
+        # the budget held, and the predicate below no longer treats it as a confound check.
+        "fpr_is_definitional": "0.0656 for mean_res and for win_best25 alike" in d["fixed_budget"],
+        "fpr_value": 4 / 61,
         "provenance_drops": d["provenance"]["win_best25"] < d["provenance"]["mean_res"],
     }
 
@@ -2974,10 +2979,17 @@ CLAIMS = [
          and v["cost"]["superantigen_enterotoxin"][0] < -0.40
          and v["cost"]["pore_forming_cytolysin"][0] < -0.25
          and v["cost"]["contact_dependent_inhibition"][0] > 0.15
-         # not bought by loosening the budget, and the provenance confound did not get easier
-         and v["fpr_unchanged"] and v["provenance_drops"]),
+         # the provenance confound did not get easier, which is a real check; the FPR figure is
+         # definitional and is pinned as such rather than as evidence
+         and v["fpr_is_definitional"] and abs(v["fpr_value"] - 0.0656) < 1e-3
+         and v["provenance_drops"]),
+     # 🔴 The retraction of the vacuous FPR claim has to sit in a document the gate reads, or the
+     # claim can come back. Two false starts, both worth recording: docs/DATA_CORRECTIONS.md is NOT
+     # on the pinned surface — it is the log, and only cited_entries_exist scans it — and the first
+     # fragment tried spanned a line break, which fails for a reason unrelated to the retraction.
+     # A dict cannot carry the same key twice either, so both pins go in one entry.
      {"docs/MECHANISM_GENERALIZATION.md":
-      "🔴 **But it is a reallocation, not a fix, and the heading of § 9 survives on that.**"},
+      "property of m = 61 and cannot distinguish two score distributions"},
      # the sentence section 9 carried while mean, CLS and max were the whole evidence
      ["Max stays far below both, and no pooling choice comes near\nalignment, which is what the heading claims."]),
     ("P2 fails harder at n_benign = 60 than at 4, and the gate's AUROC half can never be a test",
