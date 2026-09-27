@@ -937,6 +937,45 @@ So §8's result holds for a second kind of combination. Two complementary detect
 one under a fixed false-positive budget, whether the second is an alignment score or another language
 model.
 
+### 8.2 🔴 What §8 does and does not rule out, and the one architecture left standing
+
+Added 2026-09-27, asked directly: a single classifier is not the only option, and a mixture of experts
+is a real architecture — how deep has this gone?
+
+**Architecture has been swept, at two levels, and neither is where the failure lives.**
+
+| what was varied | where | result |
+|---|---|---|
+| classifier **head**, 4 heads × 14 arms, 30 seeds | §9.1 | logistic is worst on 7 of 14 arms; some other head wins on 12 of 14 by a median of 5.1 points — but it moves **only** threshold-adjacent members, the four saturated classes are unmoved to the decimal, and beta-lactamase reaches **21%** with the best of four |
+| **representation**, 14 arms | §10.6 | margin's ordering holds in all of them |
+| **alignment + embedding ensemble** | §8 | probe alone 73.1%, learned stack 73.1% (ties by ignoring the alignment feature), split-FPR OR 71.8% **and busts the budget at 6.5% FPR**, max-ensemble 57.8% |
+| **two language models fused** | §8.1 | costs 0.4 points; tracks the mean of its inputs, not the better |
+
+🔑 **But §8 and §8.1 both tested *soft* combination, and the reason they fail does not carry to a hard
+gate.** The mechanism §8 records is that **OR-ing two detectors raises the negatives' scores too, which
+pushes the calibrated threshold up, so a union is not free under a fixed false-positive budget.** A
+mixture of experts with a **hard** gate — each sequence routed to exactly one expert, scored once —
+does not inflate the negatives' scores, because no negative is scored by two detectors. **That
+architecture has not been tested here, and §8 is not evidence against it.** It is the one combination
+the existing negative results leave standing, and the complementarity it would exploit is measured:
+embedding and alignment recovery are correlated at Spearman **−0.25** across classes, and alignment
+beats the probe on exactly the class the probe fails.
+
+🔴 **The gate is the blocker, and this project has already failed at it once.** A deployable router needs
+to decide per **sequence** which expert to use, and §10.3 is the record of the **member**-level margin
+claim being preregistered, frozen and **failing on two external panels**. The version that works is
+**class**-level: margin orders classes at +0.894 and transfers to mechanisms it was not fit on (§10.5).
+So routing is available **if the family is known** and not otherwise, and for a novel sequence the family
+is exactly what is unknown.
+
+⚠️ **Which makes the gate a separate prediction problem, and one the field has already built.** DeepVIC
+([Bioinformatics Advances 6(1) vbag237, 2026](https://academic.oup.com/bioinformaticsadvances/article/6/1/vbag237/8762933))
+classifies virulence factors into **14 VFDB categories at 0.838 accuracy** on a 2,598-sequence holdout.
+A category router of that kind feeding per-family experts is a concrete mixture-of-experts design, it is
+downstream of study B in `docs/VFDB_CLASS_AXIS_DESIGN.md` §5 rather than available now, and its honest
+error budget is the router's 16% misroute rate compounded with each expert's own miss rate. **That
+compounding is the thing to measure first, and it has not been.**
+
 
 ## 9. Not the pooling, the head, the scale, the structure, or the lineage
 

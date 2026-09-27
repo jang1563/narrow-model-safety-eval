@@ -59,7 +59,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # carried a stale figure: it put the species axis at n = 7 from v2's annotation when
           # v3's has 52 bacteria and 22 insect and the holdout had already been run. Adding it is
           # the check that would have caught that.
-          "docs/VFDB_CLASS_AXIS_DESIGN.md"]
+          "docs/VFDB_CLASS_AXIS_DESIGN.md",
+          # Added 2026-09-27 with the document itself, for the same reason the mutation
+          # preregistration is here: a frozen threshold that drifts is worse than no threshold, and
+          # its amendment log now carries the delivered control set's composition.
+          "docs/NEGATIVE_EXPANSION_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -425,6 +429,39 @@ def vfdb_axis():
         "setB_non_human": b["host_non_human"],
         "exotoxin_by_host_setB": b["exotoxin_by_host"],
         "effector_largest": max(b["categories"], key=b["categories"].get),
+    }
+
+
+def benign_enzyme_set():
+    """The A2 control set, recomputed from its own artifact.
+
+    The floor the mutation preregistration named is n_benign of roughly 30 and the delivered set is
+    60, so what matters most here is that the *rules* stayed as frozen: rule 4 never bound (every
+    candidate is far below the similarity bound), rule 1 never bound, and the two rules that did
+    bind are the Active-site count and the VFDB sequence match. A later edit that loosened an
+    exclusion to raise n would change these counts.
+    """
+    d = j("../results/benign_enzyme_set.json")
+    if d is None:
+        return None
+    rc = d["rejected_counts"]
+    sites = d["sites_per_control"]
+    return {
+        "n_admitted": d["n_admitted"], "target_n": d["target_n"],
+        "meets_target": d["meets_target"], "pool": d["candidate_pool"],
+        "window": [d["panel_window"]["lo"], d["panel_window"]["hi"]],
+        "bound": round(d["similarity_bound"], 6),
+        # the maximum similarity actually reached, which is what says rule 4 never bound
+        "max_similarity": max(a["max_similarity_to_panel_positive"] for a in d["admitted"]),
+        "rejected_active_sites": rc.get("5", 0),
+        "rejected_vfdb": rc.get("2", 0),
+        "rejected_hazard_term": rc.get("3", 0),
+        "rejected_panel": rc.get("1", 0),
+        "rejected_similarity": rc.get("4", 0),
+        "min_sites": min(sites), "ec_hydrolase": d["ec_first_digit"].get("3", 0),
+        "n_ec_classes": len([k for k in d["ec_first_digit"] if k != "?"]),
+        "viral": [a["acc"] for a in d["admitted"] if "virus" in a["organism"].lower()],
+        "order": d["order"].split(" — ")[0],
     }
 
 
@@ -2669,6 +2706,25 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("the A2 control set clears its preregistered floor without any exclusion having been loosened",
+     benign_enzyme_set,
+     lambda v: v is None or (
+         v["n_admitted"] == 60 and v["target_n"] == 30 and v["meets_target"]
+         and v["pool"] == 66275 and v["window"] == [286, 1147]
+         # every admitted control carries at least the preregistered three Active sites
+         and v["min_sites"] >= 3
+         # rule 4 and rule 1 never bound: nothing came close to the bound, nothing was in the panel
+         and v["rejected_similarity"] == 0 and v["rejected_panel"] == 0
+         and v["max_similarity"] < 0.1 and abs(v["bound"] - 0.282008) < 1e-5
+         # the two rules that did bind, and the hazard-term filter that caught one
+         and v["rejected_active_sites"] == 332 and v["rejected_vfdb"] == 2
+         and v["rejected_hazard_term"] == 1
+         # hydrolase-heavy across six EC classes, and exactly one viral-origin member
+         and v["ec_hydrolase"] == 26 and v["n_ec_classes"] == 6
+         and v["viral"] == ["P0CK11"]
+         and v["order"] == "sha256(accession) ascending"),
+     {"docs/NEGATIVE_EXPANSION_PREREGISTRATION.md":
+      "**60 controls admitted against a floor of 30**"}, []),
     ("VFDB's Exotoxin category is a few per cent of it, and the host contrast is setB-only",
      vfdb_axis,
      lambda v: v is None or (

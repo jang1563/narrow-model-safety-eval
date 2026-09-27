@@ -112,3 +112,63 @@ restate any § 2 number. A2 adds controls to the mutation extension and changes 
 Out of scope here and deliberately. § 4.2 of `docs/VFDB_CLASS_AXIS_DESIGN.md` establishes that the host
 axis already survives class holdout at 0.804 and that recovery does not follow it, so the species
 question needs setB and its own preregistration, not a rider on these two.
+
+---
+
+## Amendments
+
+Append-only. Nothing above this line is edited.
+
+### Amendment 1 — 2026-09-27, before A2 was run: exclusion 2 cannot be applied as written
+
+A2's exclusion 2 says *"any accession appearing in VFDB setA or setB"*. **VFDB has no UniProt
+accessions.** Its records are identified by VFG ids and GenBank or RefSeq accessions
+(`VFG037176(gb|WP_001081735)`), so there is nothing to join on.
+
+Applied instead as an **exact sequence match against setB's 30,215 protein records**, which is stricter
+in one direction (it catches a VFDB protein deposited under a different accession) and weaker in
+another (it misses a VFDB entry whose sequence differs by one residue from the Swiss-Prot canonical
+form). Recorded here rather than reinterpreted silently. **It caught two candidates**, O33407 and
+B0VMS2, so the rule was not decorative.
+
+### Amendment 2 — 2026-09-27, after A2 was built and before anything is measured on it
+
+`src/68_benign_enzyme_set.py`. **60 controls admitted against a floor of 30**, from a pool of 66,275
+reviewed Swiss-Prot entries carrying an `Active site` in the panel's own length window [286, 1147].
+
+| | |
+|---|---|
+| admitted | **60** (compute cap; the floor was 30) |
+| examined after the cheap rules | 62 |
+| rejected: fewer than 3 Active sites | 332 |
+| rejected: exact VFDB setB sequence | 2 |
+| rejected: hazard term in name or keywords | 1 (Q8FHF4) |
+| rejected: in the panel / above the similarity bound | **0 / 0** |
+| length | 289 to 1,043, median 440 |
+| EC first digit | 3:26, 2:16, 6:8, 1:6, 4:1, 5:1, unassigned:2 |
+| catalytic sites per control | 3 for 52 of them, 4 for five, 5 for one, 6 for two |
+
+**Selection order is `sha256(accession)` ascending**, a reproducible draw from the whole pool rather
+than the head of accession order, which would have been biased toward old, well-characterised `P0xxxx`
+entries. Maximum similarity to any v3 positive across all 60 is **0.047**, far below the 0.282 bound,
+so rule 4 never bound.
+
+🔴 **Three properties of the delivered set are flagged now, before any measurement, because noticing
+them afterwards would be indistinguishable from explaining a result.**
+
+1. **The set is hydrolase-heavy: 26 of 60 are EC 3.** That is not a defect — it is the right direction,
+   since both classes the probe cannot flag are hydrolases (§ 1.1b-ter of the survey) — but it means the
+   benign side is enriched for exactly the fold family the panel's failures come from, and A2-1's
+   comparison inherits that.
+2. **`P0CK11` is a 1,043-residue Turnip mosaic virus P3N-PIPO polyprotein**, the only viral-origin
+   member and the longest. Its `Active site` features belong to a protease domain inside a multi-domain
+   precursor, so its masked-position context is unlike the single-domain enzymes around it. **If it is
+   an outlier in A2, that was predicted here and is not a post-hoc exclusion.** It is kept: no
+   domain-architecture rule was frozen, and adding one after seeing the set would be tuning.
+3. **A few controls come from pathogens** — *Salmonella*, *Vibrio vulnificus*, *Pseudomonas
+   aeruginosa*. Deliberately kept. § 2.3's provenance probe reaches AUROC 0.818 on hazard from
+   lab-strain provenance alone, so benign enzymes with pathogen provenance make the control **stronger**
+   against that confound, not weaker.
+
+⚠️ **No pathogen-origin or domain-architecture exclusion was added.** Both were considered after seeing
+the set, which is precisely when a new exclusion stops being a rule and becomes a result.

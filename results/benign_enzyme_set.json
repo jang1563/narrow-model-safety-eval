@@ -1,0 +1,3005 @@
+{
+  "built": "2026-09-27",
+  "purpose": "study A2 of docs/NEGATIVE_EXPANSION_PREREGISTRATION.md: the matched benign enzyme set. Supplies an input; takes no measurement.",
+  "query": "(reviewed:true) AND (ft_act_site:*) AND (length:[286 TO 1147]) NOT (keyword:KW-0800) NOT (keyword:KW-0843)",
+  "panel_window": {
+    "median_length": 573.5,
+    "lo": 286,
+    "hi": 1147,
+    "n_panel": 16
+  },
+  "candidate_pool": 66275,
+  "order": "sha256(accession) ascending \u2014 a reproducible draw from the whole pool, not the head of accession order",
+  "compute_cap": 60,
+  "similarity_bound": 0.28200822087841454,
+  "n_admitted": 60,
+  "target_n": 30,
+  "meets_target": true,
+  "n_examined_after_cheap_rules": 62,
+  "ec_first_digit": {
+    "1": 6,
+    "2": 16,
+    "3": 26,
+    "4": 1,
+    "5": 1,
+    "6": 8,
+    "?": 2
+  },
+  "length": {
+    "min": 289,
+    "median": 440.0,
+    "max": 1043
+  },
+  "sites_per_control": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    4,
+    4,
+    4,
+    4,
+    4,
+    5,
+    6,
+    6
+  ],
+  "rejected_counts": {
+    "5": 332,
+    "2": 2,
+    "3": 1
+  },
+  "admitted": [
+    {
+      "acc": "A9N275",
+      "name": "N-succinylarginine dihydrolase (EC 3.5.3.23)",
+      "organism": "Salmonella paratyphi B (strain ATCC BAA-1250 / SPB7)",
+      "ec": "3.5.3.23",
+      "length": 447,
+      "catalytic_residues": [
+        174,
+        248,
+        365
+      ],
+      "residues": {
+        "174": "E",
+        "248": "H",
+        "365": "C"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.033046,
+      "excluded_ligand_sites": 4
+    },
+    {
+      "acc": "Q2H454",
+      "name": "Sulfate adenylyltransferase (EC 2.7.7.4) (ATP-sulfurylase) (Sulfate adenylate transferase) (SAT)",
+      "organism": "Chaetomium globosum (strain ATCC 6205 / CBS 148.51 / DSM 1962 / NBRC 6347 / NRRL 1970) (Soil fungus)",
+      "ec": "2.7.7.4",
+      "length": 573,
+      "catalytic_residues": [
+        198,
+        199,
+        200
+      ],
+      "residues": {
+        "198": "T",
+        "199": "R",
+        "200": "N"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.025797,
+      "excluded_ligand_sites": 5
+    },
+    {
+      "acc": "Q57LW5",
+      "name": "3-ketoacyl-CoA thiolase (EC 2.3.1.16) (ACSs) (Acetyl-CoA acyltransferase) (Acyl-CoA ligase) (Beta-ketothiolase) (Fatty acid oxidation complex subunit beta)",
+      "organism": "Salmonella choleraesuis (strain SC-B67)",
+      "ec": "2.3.1.16",
+      "length": 436,
+      "catalytic_residues": [
+        99,
+        392,
+        422
+      ],
+      "residues": {
+        "99": "C",
+        "392": "H",
+        "422": "C"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.035838,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q8VZU3",
+      "name": "Serine carboxypeptidase-like 19 (Protein SINAPOYLGLUCOSE ACCUMULATOR 2) (Sinapoylglucose--choline O-sinapoyltransferase) (SCT) (EC 2.3.1.91) [Cleaved into: Serine carboxypeptidase-like 19 chain A; Serine carboxypeptidase-like 19 chain B]",
+      "organism": "Arabidopsis thaliana (Mouse-ear cress)",
+      "ec": "2.3.1.91",
+      "length": 465,
+      "catalytic_residues": [
+        178,
+        389,
+        443
+      ],
+      "residues": {
+        "178": "S",
+        "389": "D",
+        "443": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.031352,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q10716",
+      "name": "Cysteine proteinase 1 (EC 3.4.22.-)",
+      "organism": "Zea mays (Maize)",
+      "ec": "3.4.22.-",
+      "length": 371,
+      "catalytic_residues": [
+        161,
+        303,
+        330
+      ],
+      "residues": {
+        "161": "C",
+        "303": "H",
+        "330": "N"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.03872,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q7MN04",
+      "name": "Apolipoprotein N-acyltransferase (ALP N-acyltransferase) (EC 2.3.1.269)",
+      "organism": "Vibrio vulnificus (strain YJ016)",
+      "ec": "2.3.1.269",
+      "length": 506,
+      "catalytic_residues": [
+        264,
+        330,
+        382
+      ],
+      "residues": {
+        "264": "E",
+        "330": "K",
+        "382": "C"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.032359,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "O97578",
+      "name": "Dipeptidyl peptidase 1 (EC 3.4.14.1) (Cathepsin C) (Cathepsin J) (Dipeptidyl peptidase I) (DPP-I) (DPPI) (Dipeptidyl transferase) [Cleaved into: Dipeptidyl peptidase 1 exclusion domain chain (Dipeptidyl peptidase I exclusion domain chain); Dipeptidyl peptidase 1 heavy chain 1 (Dipeptidyl peptidase I heavy chain 1); Dipeptidyl peptidase 1 heavy chain 2 (Dipeptidyl peptidase I heavy chain 2); Dipeptidyl peptidase 1 heavy chain 3 (Dipeptidyl peptidase I heavy chain 3); Dipeptidyl peptidase 1 heavy chain 4 (Dipeptidyl peptidase I heavy chain 4); Dipeptidyl peptidase 1 light chain (Dipeptidyl peptidase I light chain)]",
+      "organism": "Canis lupus familiaris (Dog) (Canis familiaris)",
+      "ec": "3.4.14.1",
+      "length": 435,
+      "catalytic_residues": [
+        231,
+        377,
+        399
+      ],
+      "residues": {
+        "231": "C",
+        "377": "H",
+        "399": "N"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.035303,
+      "excluded_ligand_sites": 3
+    },
+    {
+      "acc": "Q46F10",
+      "name": "Hydroxymethylglutaryl-CoA synthase (HMG-CoA synthase) (HMGCS) (EC 2.3.3.10)",
+      "organism": "Methanosarcina barkeri (strain Fusaro / DSM 804)",
+      "ec": "2.3.3.10",
+      "length": 349,
+      "catalytic_residues": [
+        81,
+        113,
+        237
+      ],
+      "residues": {
+        "81": "E",
+        "113": "C",
+        "237": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.049485,
+      "excluded_ligand_sites": 9
+    },
+    {
+      "acc": "Q9HTJ1",
+      "name": "NAD/NADP-dependent betaine aldehyde dehydrogenase (BADH) (EC 1.2.1.8)",
+      "organism": "Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1)",
+      "ec": "1.2.1.8",
+      "length": 490,
+      "catalytic_residues": [
+        162,
+        252,
+        286,
+        464
+      ],
+      "residues": {
+        "162": "K",
+        "252": "E",
+        "286": "C",
+        "464": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.03511,
+      "excluded_ligand_sites": 9
+    },
+    {
+      "acc": "A6YFB5",
+      "name": "Serine protease HTRA1 (EC 3.4.21.-) (High-temperature requirement A serine peptidase 1) (Serine protease 11)",
+      "organism": "Xenopus laevis (African clawed frog)",
+      "ec": "3.4.21.-",
+      "length": 459,
+      "catalytic_residues": [
+        199,
+        229,
+        307
+      ],
+      "residues": {
+        "199": "H",
+        "229": "D",
+        "307": "S"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.037763,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q6Q252",
+      "name": "Phospholipase A1 1 (PLA1 1) (EC 3.1.1.32) (allergen Pol d 1)",
+      "organism": "Polistes dominula (European paper wasp) (Vespa dominula)",
+      "ec": "3.1.1.32",
+      "length": 337,
+      "catalytic_residues": [
+        174,
+        202,
+        263
+      ],
+      "residues": {
+        "174": "S",
+        "202": "D",
+        "263": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.031533,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "A9A557",
+      "name": "DNA primase small subunit PriS (EC 2.7.7.-)",
+      "organism": "Nitrosopumilus maritimus (strain SCM1)",
+      "ec": "2.7.7.-",
+      "length": 373,
+      "catalytic_residues": [
+        95,
+        97,
+        281
+      ],
+      "residues": {
+        "95": "D",
+        "97": "D",
+        "281": "D"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.034552,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "A3NWJ3",
+      "name": "GMP synthase [glutamine-hydrolyzing] (EC 6.3.5.2) (GMP synthetase) (Glutamine amidotransferase)",
+      "organism": "Burkholderia pseudomallei (strain 1106a)",
+      "ec": "6.3.5.2",
+      "length": 539,
+      "catalytic_residues": [
+        81,
+        176,
+        178
+      ],
+      "residues": {
+        "81": "C",
+        "176": "H",
+        "178": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.038007,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "P06681",
+      "name": "Complement C2 (C3/C5 convertase) [Cleaved into: Complement C2a; Serine protease complement C2b (EC 3.4.21.43)]",
+      "organism": "Homo sapiens (Human)",
+      "ec": "3.4.21.43",
+      "length": 752,
+      "catalytic_residues": [
+        507,
+        561,
+        679
+      ],
+      "residues": {
+        "507": "H",
+        "561": "D",
+        "679": "S"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.025737,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "E9E1Z2",
+      "name": "Pheromone-processing carboxypeptidase KEX1 (EC 3.4.16.6) (Carboxypeptidase D)",
+      "organism": "Metarhizium acridum (strain CQMa 102)",
+      "ec": "3.4.16.6",
+      "length": 616,
+      "catalytic_residues": [
+        183,
+        382,
+        444
+      ],
+      "residues": {
+        "183": "S",
+        "382": "D",
+        "444": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.023646,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "C1AHF8",
+      "name": "Homoserine O-acetyltransferase (HAT) (EC 2.3.1.31) (Homoserine transacetylase) (HTA)",
+      "organism": "Mycobacterium bovis (strain BCG / Tokyo 172 / ATCC 35737 / TMC 1019)",
+      "ec": "2.3.1.31",
+      "length": 379,
+      "catalytic_residues": [
+        157,
+        320,
+        350
+      ],
+      "residues": {
+        "157": "S",
+        "320": "D",
+        "350": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.033403,
+      "excluded_ligand_sites": 2
+    },
+    {
+      "acc": "Q9PLM7",
+      "name": "Phosphatidylserine decarboxylase proenzyme (EC 4.1.1.65) [Cleaved into: Phosphatidylserine decarboxylase alpha chain; Phosphatidylserine decarboxylase beta chain]",
+      "organism": "Chlamydia muridarum (strain MoPn / Nigg)",
+      "ec": "4.1.1.65",
+      "length": 301,
+      "catalytic_residues": [
+        117,
+        173,
+        260
+      ],
+      "residues": {
+        "117": "D",
+        "173": "H",
+        "260": "S"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.034419,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q8NZH6",
+      "name": "Xaa-Pro dipeptidyl-peptidase (EC 3.4.14.11) (X-Pro dipeptidyl-peptidase) (X-prolyl-dipeptidyl aminopeptidase) (X-PDAP)",
+      "organism": "Streptococcus pyogenes serotype M18 (strain MGAS8232)",
+      "ec": "3.4.14.11",
+      "length": 760,
+      "catalytic_residues": [
+        349,
+        469,
+        499
+      ],
+      "residues": {
+        "349": "S",
+        "469": "D",
+        "499": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.029288,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q63081",
+      "name": "Protein disulfide-isomerase A6 (EC 5.3.4.1) (Calcium-binding protein 1) (CaBP1) (Protein disulfide isomerase P5) (Thioredoxin domain-containing protein 7)",
+      "organism": "Rattus norvegicus (Rat)",
+      "ec": "5.3.4.1",
+      "length": 440,
+      "catalytic_residues": [
+        55,
+        58,
+        190,
+        193
+      ],
+      "residues": {
+        "55": "C",
+        "58": "C",
+        "190": "C",
+        "193": "C"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.042889,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q9NQE7",
+      "name": "Thymus-specific serine protease (EC 3.4.-.-) (Serine protease 16)",
+      "organism": "Homo sapiens (Human)",
+      "ec": "3.4.-.-",
+      "length": 514,
+      "catalytic_residues": [
+        185,
+        447,
+        472
+      ],
+      "residues": {
+        "185": "S",
+        "447": "D",
+        "472": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.028849,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "H6U1I8",
+      "name": "GDSL lipase (TcGLIP) (EC 3.1.1.-) (Pyrethrin type I synthase)",
+      "organism": "Tanacetum cinerariifolium (Dalmatian daisy) (Chrysanthemum cinerariifolium)",
+      "ec": "3.1.1.-",
+      "length": 365,
+      "catalytic_residues": [
+        40,
+        318,
+        321
+      ],
+      "residues": {
+        "40": "S",
+        "318": "D",
+        "321": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.033357,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q9V3Z2",
+      "name": "Serine protease 7 (EC 3.4.21.-) (Melanization protease 2)",
+      "organism": "Drosophila melanogaster (Fruit fly)",
+      "ec": "3.4.21.-",
+      "length": 391,
+      "catalytic_residues": [
+        182,
+        244,
+        341
+      ],
+      "residues": {
+        "182": "H",
+        "244": "D",
+        "341": "S"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.03639,
+      "excluded_ligand_sites": 4
+    },
+    {
+      "acc": "Q89AS4",
+      "name": "Ribonucleoside-diphosphate reductase subunit alpha (EC 1.17.4.1) (Ribonucleotide reductase)",
+      "organism": "Buchnera aphidicola subsp. Baizongia pistaciae (strain Bp)",
+      "ec": "1.17.4.1",
+      "length": 761,
+      "catalytic_residues": [
+        437,
+        439,
+        441
+      ],
+      "residues": {
+        "437": "N",
+        "439": "C",
+        "441": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.028205,
+      "excluded_ligand_sites": 6
+    },
+    {
+      "acc": "Q96VT7",
+      "name": "Dipeptidyl-aminopeptidase B (DPAP B) (EC 3.4.14.5)",
+      "organism": "Aspergillus niger",
+      "ec": "3.4.14.5",
+      "length": 901,
+      "catalytic_residues": [
+        739,
+        816,
+        849
+      ],
+      "residues": {
+        "739": "S",
+        "816": "D",
+        "849": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.026264,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "A0A509AKI1",
+      "name": "Subtilisin-like protease PIMMS2 (EC 3.4.21.62) (Midgut invasion ookinete protein 2)",
+      "organism": "Plasmodium berghei (strain Anka)",
+      "ec": "3.4.21.62",
+      "length": 836,
+      "catalytic_residues": [
+        155,
+        222,
+        414
+      ],
+      "residues": {
+        "155": "D",
+        "222": "H",
+        "414": "S"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.031846,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "B8GZZ0",
+      "name": "Homoserine O-acetyltransferase (HAT) (EC 2.3.1.31) (Homoserine transacetylase) (HTA)",
+      "organism": "Caulobacter vibrioides (strain NA1000 / CB15N) (Caulobacter crescentus)",
+      "ec": "2.3.1.31",
+      "length": 382,
+      "catalytic_residues": [
+        155,
+        321,
+        354
+      ],
+      "residues": {
+        "155": "S",
+        "321": "D",
+        "354": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.041309,
+      "excluded_ligand_sites": 2
+    },
+    {
+      "acc": "B4TBN9",
+      "name": "Erythronate-4-phosphate dehydrogenase (EC 1.1.1.290)",
+      "organism": "Salmonella heidelberg (strain SL476)",
+      "ec": "1.1.1.290",
+      "length": 378,
+      "catalytic_residues": [
+        208,
+        237,
+        254
+      ],
+      "residues": {
+        "208": "R",
+        "237": "E",
+        "254": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.032805,
+      "excluded_ligand_sites": 7
+    },
+    {
+      "acc": "Q5F7G6",
+      "name": "CTP synthase (EC 6.3.4.2) (Cytidine 5'-triphosphate synthase) (Cytidine triphosphate synthetase) (CTP synthetase) (CTPS) (UTP--ammonia ligase)",
+      "organism": "Neisseria gonorrhoeae (strain ATCC 700825 / FA 1090)",
+      "ec": "6.3.4.2",
+      "length": 544,
+      "catalytic_residues": [
+        380,
+        517,
+        519
+      ],
+      "residues": {
+        "380": "C",
+        "517": "H",
+        "519": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.029239,
+      "excluded_ligand_sites": 5
+    },
+    {
+      "acc": "Q5LTN6",
+      "name": "Carbamoyl phosphate synthase small chain (EC 6.3.5.5) (Carbamoyl phosphate synthetase glutamine chain)",
+      "organism": "Ruegeria pomeroyi (strain ATCC 700808 / DSM 15171 / DSS-3) (Silicibacter pomeroyi)",
+      "ec": "6.3.5.5",
+      "length": 388,
+      "catalytic_residues": [
+        276,
+        360,
+        362
+      ],
+      "residues": {
+        "276": "C",
+        "360": "H",
+        "362": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.032145,
+      "excluded_ligand_sites": 8
+    },
+    {
+      "acc": "Q8UVX0",
+      "name": "Piwi-like protein 1 (EC 3.1.26.-)",
+      "organism": "Danio rerio (Zebrafish) (Brachydanio rerio)",
+      "ec": "3.1.26.-",
+      "length": 858,
+      "catalytic_residues": [
+        629,
+        667,
+        699,
+        833
+      ],
+      "residues": {
+        "629": "D",
+        "667": "E",
+        "699": "D",
+        "833": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.02015,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q6GQQ9",
+      "name": "OTU domain-containing protein 7B (EC 3.4.19.12) (Cellular zinc finger anti-NF-kappa-B protein) (Cezanne) (Zinc finger A20 domain-containing protein 1) (Zinc finger protein Cezanne)",
+      "organism": "Homo sapiens (Human)",
+      "ec": "3.4.19.12",
+      "length": 843,
+      "catalytic_residues": [
+        191,
+        194,
+        358
+      ],
+      "residues": {
+        "191": "D",
+        "194": "C",
+        "358": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.036676,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q3SY69",
+      "name": "Mitochondrial 10-formyltetrahydrofolate dehydrogenase (Mitochondrial 10-FTHFDH) (mtFDH) (EC 1.5.1.6) (Aldehyde dehydrogenase family 1 member L2)",
+      "organism": "Homo sapiens (Human)",
+      "ec": "1.5.1.6",
+      "length": 923,
+      "catalytic_residues": [
+        128,
+        694,
+        728
+      ],
+      "residues": {
+        "128": "H",
+        "694": "E",
+        "728": "C"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.023203,
+      "excluded_ligand_sites": 2
+    },
+    {
+      "acc": "P26222",
+      "name": "Endoglucanase E-2 (EC 3.2.1.4) (Cellulase E-2) (Cellulase E2) (Endo-1,4-beta-glucanase E-2)",
+      "organism": "Thermobifida fusca (Thermomonospora fusca)",
+      "ec": "3.2.1.4",
+      "length": 441,
+      "catalytic_residues": [
+        110,
+        148,
+        296
+      ],
+      "residues": {
+        "110": "D",
+        "148": "D",
+        "296": "D"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.033699,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q8QZR3",
+      "name": "Pyrethroid hydrolase Ces2a (EC 3.1.1.88) (Carboxylic ester hydrolase 2A) (EC 3.1.1.-) (carboxylesterase 2A)",
+      "organism": "Mus musculus (Mouse)",
+      "ec": "3.1.1.-; 3.1.1.88",
+      "length": 558,
+      "catalytic_residues": [
+        227,
+        344,
+        456
+      ],
+      "residues": {
+        "227": "S",
+        "344": "E",
+        "456": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.024541,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "P49221",
+      "name": "Protein-glutamine gamma-glutamyltransferase 4 (EC 2.3.2.13) (Fibrinoligase) (Prostate transglutaminase) (Prostate-specific transglutaminase) (Transglutaminase P) (TG(P)) (TGP) (TGase P) (Transglutaminase-4) (TGase-4)",
+      "organism": "Homo sapiens (Human)",
+      "ec": "2.3.2.13",
+      "length": 684,
+      "catalytic_residues": [
+        268,
+        327,
+        350
+      ],
+      "residues": {
+        "268": "C",
+        "327": "H",
+        "350": "D"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.027781,
+      "excluded_ligand_sites": 4
+    },
+    {
+      "acc": "B1J1V8",
+      "name": "Tyrosine recombinase XerC",
+      "organism": "Pseudomonas putida (strain W619)",
+      "ec": "",
+      "length": 299,
+      "catalytic_residues": [
+        146,
+        170,
+        237,
+        240,
+        263,
+        272
+      ],
+      "residues": {
+        "146": "R",
+        "170": "K",
+        "237": "H",
+        "240": "R",
+        "263": "H",
+        "272": "Y"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.041047,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "B0BS41",
+      "name": "CTP synthase (EC 6.3.4.2) (Cytidine 5'-triphosphate synthase) (Cytidine triphosphate synthetase) (CTP synthetase) (CTPS) (UTP--ammonia ligase)",
+      "organism": "Actinobacillus pleuropneumoniae serotype 3 (strain JL03)",
+      "ec": "6.3.4.2",
+      "length": 545,
+      "catalytic_residues": [
+        379,
+        515,
+        517
+      ],
+      "residues": {
+        "379": "C",
+        "515": "H",
+        "517": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.033924,
+      "excluded_ligand_sites": 5
+    },
+    {
+      "acc": "C4ZZA1",
+      "name": "N-succinylarginine dihydrolase (EC 3.5.3.23)",
+      "organism": "Escherichia coli (strain K12 / MC4100 / BW2952)",
+      "ec": "3.5.3.23",
+      "length": 447,
+      "catalytic_residues": [
+        174,
+        248,
+        365
+      ],
+      "residues": {
+        "174": "E",
+        "248": "H",
+        "365": "C"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.031512,
+      "excluded_ligand_sites": 4
+    },
+    {
+      "acc": "Q05493",
+      "name": "3-ketoacyl-CoA thiolase, peroxisomal (EC 2.3.1.16) (Acetyl-CoA acyltransferase) (Beta-ketothiolase) (Peroxisomal 3-oxoacyl-CoA thiolase)",
+      "organism": "Yarrowia lipolytica (strain CLIB 122 / E 150) (Yeast) (Candida lipolytica)",
+      "ec": "2.3.1.16",
+      "length": 414,
+      "catalytic_residues": [
+        115,
+        370,
+        400
+      ],
+      "residues": {
+        "115": "C",
+        "370": "H",
+        "400": "C"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.039319,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q9L2J6",
+      "name": "Bis(hydroxyethyl) terephthalate hydrolase (BHET hydrolase) (BHETase) (EC 3.1.1.-) (BHET-degrading enzyme) (BHET-degrading esterase A)",
+      "organism": "Streptomyces coelicolor (strain ATCC BAA-471 / A3(2) / M145)",
+      "ec": "3.1.1.-",
+      "length": 310,
+      "catalytic_residues": [
+        179,
+        225,
+        257
+      ],
+      "residues": {
+        "179": "S",
+        "225": "D",
+        "257": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.047058,
+      "excluded_ligand_sites": 3
+    },
+    {
+      "acc": "P23155",
+      "name": "Putative polyketide beta-ketoacyl synthase 1 (EC 2.3.1.-) (WhiE ORF III)",
+      "organism": "Streptomyces coelicolor (strain ATCC BAA-471 / A3(2) / M145)",
+      "ec": "2.3.1.-",
+      "length": 423,
+      "catalytic_residues": [
+        170,
+        310,
+        347
+      ],
+      "residues": {
+        "170": "C",
+        "310": "H",
+        "347": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.033727,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "A2BWS5",
+      "name": "Aspartyl/glutamyl-tRNA(Asn/Gln) amidotransferase subunit A (Asp/Glu-ADT subunit A) (EC 3.5.1.2) (Glutamyl-tRNA(Gln) amidotransferase subunit A) (Glu-ADT subunit A)",
+      "organism": "Prochlorococcus marinus (strain MIT 9515)",
+      "ec": "3.5.1.2",
+      "length": 484,
+      "catalytic_residues": [
+        74,
+        149,
+        173
+      ],
+      "residues": {
+        "74": "K",
+        "149": "S",
+        "173": "S"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.036168,
+      "excluded_ligand_sites": 8
+    },
+    {
+      "acc": "P0CK11",
+      "name": "P3N-PIPO polyprotein [Cleaved into: P1 protease (EC 3.4.21.-) (N-terminal protein) (P1 proteinase); Helper component proteinase (HC-pro) (EC 3.4.22.45); Movement protein P3N-PIPO (Pretty interesting potyviridae ORF) (PIPO)]",
+      "organism": "Turnip mosaic virus (strain Japanese) (TuMV)",
+      "ec": "3.4.21.-; 3.4.22.45",
+      "length": 1043,
+      "catalytic_residues": [
+        270,
+        279,
+        313,
+        706,
+        779
+      ],
+      "residues": {
+        "270": "H",
+        "279": "D",
+        "313": "S",
+        "706": "C",
+        "779": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.025271,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "B9MN03",
+      "name": "UDP-N-acetylenolpyruvoylglucosamine reductase (EC 1.3.1.98) (UDP-N-acetylmuramate dehydrogenase)",
+      "organism": "Caldicellulosiruptor bescii (strain ATCC BAA-1888 / DSM 6725 / KCTC 15123 / Z-1320) (Anaerocellum thermophilum)",
+      "ec": "1.3.1.98",
+      "length": 314,
+      "catalytic_residues": [
+        171,
+        223,
+        293
+      ],
+      "residues": {
+        "171": "R",
+        "223": "S",
+        "293": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.042193,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q9BV23",
+      "name": "Monoacylglycerol lipase ABHD6 (EC 3.1.1.23) (2-arachidonoylglycerol hydrolase) (Abhydrolase domain-containing protein 6)",
+      "organism": "Homo sapiens (Human)",
+      "ec": "3.1.1.23",
+      "length": 337,
+      "catalytic_residues": [
+        148,
+        278,
+        306
+      ],
+      "residues": {
+        "148": "S",
+        "278": "D",
+        "306": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.037156,
+      "excluded_ligand_sites": 2
+    },
+    {
+      "acc": "Q5Z1C4",
+      "name": "Homoserine O-acetyltransferase (HAT) (EC 2.3.1.31) (Homoserine transacetylase) (HTA)",
+      "organism": "Nocardia farcinica (strain IFM 10152)",
+      "ec": "2.3.1.31",
+      "length": 382,
+      "catalytic_residues": [
+        164,
+        327,
+        357
+      ],
+      "residues": {
+        "164": "S",
+        "327": "D",
+        "357": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.032762,
+      "excluded_ligand_sites": 2
+    },
+    {
+      "acc": "A4YH99",
+      "name": "Hydroxymethylglutaryl-CoA synthase (HMG-CoA synthase) (HMGCS) (EC 2.3.3.10)",
+      "organism": "Metallosphaera sedula (strain ATCC 51363 / DSM 5348 / JCM 9185 / NBRC 15509 / TH2)",
+      "ec": "2.3.3.10",
+      "length": 348,
+      "catalytic_residues": [
+        80,
+        112,
+        235
+      ],
+      "residues": {
+        "80": "E",
+        "112": "C",
+        "235": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.038885,
+      "excluded_ligand_sites": 6
+    },
+    {
+      "acc": "A0A1E3P8S6",
+      "name": "Ethanol acetyltransferase 1 (EC 2.3.1.268) (Acetyl-CoA hydrolase) (EC 3.1.2.1) (Acetyl-CoA thioesterase) (Alcohol acetyltransferase) (AAT) (Ethyl acetate esterase) (EC 3.1.1.-)",
+      "organism": "Wickerhamomyces anomalus (strain ATCC 58044 / CBS 1984 / NCYC 433 / NRRL Y-366-8) (Yeast) (Hansenula anomala)",
+      "ec": "2.3.1.268; 3.1.1.-; 3.1.2.1",
+      "length": 391,
+      "catalytic_residues": [
+        121,
+        145,
+        295
+      ],
+      "residues": {
+        "121": "S",
+        "145": "D",
+        "295": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.03825,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "P58377",
+      "name": "Apolipoprotein N-acyltransferase (ALP N-acyltransferase) (EC 2.3.1.269) (ACT206) (Acid-inducible protein)",
+      "organism": "Rhizobium meliloti (strain 1021) (Ensifer meliloti) (Sinorhizobium meliloti)",
+      "ec": "2.3.1.269",
+      "length": 531,
+      "catalytic_residues": [
+        287,
+        351,
+        405
+      ],
+      "residues": {
+        "287": "E",
+        "351": "K",
+        "405": "C"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.029058,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "A8GXV3",
+      "name": "Tyrosine recombinase XerC",
+      "organism": "Rickettsia bellii (strain OSU 85-389)",
+      "ec": "",
+      "length": 305,
+      "catalytic_residues": [
+        159,
+        182,
+        250,
+        253,
+        276,
+        285
+      ],
+      "residues": {
+        "159": "R",
+        "182": "K",
+        "250": "H",
+        "253": "R",
+        "276": "H",
+        "285": "Y"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.040314,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q9PMG8",
+      "name": "Carbamoyl phosphate synthase small chain (EC 6.3.5.5) (Carbamoyl phosphate synthetase glutamine chain)",
+      "organism": "Campylobacter jejuni subsp. jejuni serotype O:2 (strain ATCC 700819 / NCTC 11168)",
+      "ec": "6.3.5.5",
+      "length": 372,
+      "catalytic_residues": [
+        268,
+        351,
+        353
+      ],
+      "residues": {
+        "268": "C",
+        "351": "H",
+        "353": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.040352,
+      "excluded_ligand_sites": 7
+    },
+    {
+      "acc": "C3LED2",
+      "name": "HPr kinase/phosphorylase (HPrK/P) (EC 2.7.11.-) (EC 2.7.4.-) (HPr(Ser) kinase/phosphorylase)",
+      "organism": "Bacillus anthracis (strain CDC 684 / NRRL 3495)",
+      "ec": "2.7.11.-; 2.7.4.-",
+      "length": 309,
+      "catalytic_residues": [
+        138,
+        159,
+        177,
+        243
+      ],
+      "residues": {
+        "138": "H",
+        "159": "K",
+        "177": "D",
+        "243": "R"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.04016,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "O28995",
+      "name": "Carbamoyl phosphate synthase small chain (EC 6.3.5.5) (Carbamoyl phosphate synthetase glutamine chain)",
+      "organism": "Archaeoglobus fulgidus (strain ATCC 49558 / DSM 4304 / JCM 9628 / NBRC 100126 / VC-16)",
+      "ec": "6.3.5.5",
+      "length": 358,
+      "catalytic_residues": [
+        249,
+        333,
+        335
+      ],
+      "residues": {
+        "249": "C",
+        "333": "H",
+        "335": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.036098,
+      "excluded_ligand_sites": 7
+    },
+    {
+      "acc": "Q03H14",
+      "name": "GMP synthase [glutamine-hydrolyzing] (EC 6.3.5.2) (GMP synthetase) (Glutamine amidotransferase)",
+      "organism": "Pediococcus pentosaceus (strain ATCC 25745 / CCUG 21536 / LMG 10740 / 183-1w)",
+      "ec": "6.3.5.2",
+      "length": 517,
+      "catalytic_residues": [
+        88,
+        176,
+        178
+      ],
+      "residues": {
+        "88": "C",
+        "176": "H",
+        "178": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.026821,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "V5YM14",
+      "name": "Dipeptidyl aminopeptidase BII (DAP BII) (EC 3.4.14.-)",
+      "organism": "Pseudoxanthomonas mexicana",
+      "ec": "3.4.14.-",
+      "length": 722,
+      "catalytic_residues": [
+        86,
+        224,
+        657
+      ],
+      "residues": {
+        "86": "H",
+        "224": "D",
+        "657": "S"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.028751,
+      "excluded_ligand_sites": 1
+    },
+    {
+      "acc": "Q6IE21",
+      "name": "OTU domain-containing protein 6A (EC 3.4.19.12) (Hin-6 protease)",
+      "organism": "Mus musculus (Mouse)",
+      "ec": "3.4.19.12",
+      "length": 290,
+      "catalytic_residues": [
+        150,
+        153,
+        269
+      ],
+      "residues": {
+        "150": "D",
+        "153": "C",
+        "269": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.039391,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "A5TZL0",
+      "name": "UDP-N-acetylenolpyruvoylglucosamine reductase (EC 1.3.1.98) (UDP-N-acetylmuramate dehydrogenase)",
+      "organism": "Mycobacterium tuberculosis (strain ATCC 25177 / H37Ra)",
+      "ec": "1.3.1.98",
+      "length": 369,
+      "catalytic_residues": [
+        176,
+        257,
+        361
+      ],
+      "residues": {
+        "176": "R",
+        "257": "S",
+        "361": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.04052,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "Q4R584",
+      "name": "Protein ABHD8 (EC 3.-.-.-) (Alpha/beta hydrolase domain-containing protein 8) (Abhydrolase domain-containing protein 8)",
+      "organism": "Macaca fascicularis (Crab-eating macaque) (Cynomolgus monkey)",
+      "ec": "3.-.-.-",
+      "length": 440,
+      "catalytic_residues": [
+        253,
+        371,
+        399
+      ],
+      "residues": {
+        "253": "S",
+        "371": "D",
+        "399": "H"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.030962,
+      "excluded_ligand_sites": 0
+    },
+    {
+      "acc": "B9L1Z5",
+      "name": "Formamidopyrimidine-DNA glycosylase (Fapy-DNA glycosylase) (EC 3.2.2.23) (DNA-(apurinic or apyrimidinic site) lyase MutM) (AP lyase MutM) (EC 4.2.99.18)",
+      "organism": "Thermomicrobium roseum (strain ATCC 27502 / DSM 5159 / P-2)",
+      "ec": "3.2.2.23; 4.2.99.18",
+      "length": 289,
+      "catalytic_residues": [
+        2,
+        3,
+        60,
+        277
+      ],
+      "residues": {
+        "2": "P",
+        "3": "E",
+        "60": "K",
+        "277": "R"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.038562,
+      "excluded_ligand_sites": 3
+    },
+    {
+      "acc": "B7MZ76",
+      "name": "CTP synthase (EC 6.3.4.2) (Cytidine 5'-triphosphate synthase) (Cytidine triphosphate synthetase) (CTP synthetase) (CTPS) (UTP--ammonia ligase)",
+      "organism": "Escherichia coli O81 (strain ED1a)",
+      "ec": "6.3.4.2",
+      "length": 545,
+      "catalytic_residues": [
+        379,
+        515,
+        517
+      ],
+      "residues": {
+        "379": "C",
+        "515": "H",
+        "517": "E"
+      },
+      "offset": 0,
+      "max_similarity_to_panel_positive": 0.030598,
+      "excluded_ligand_sites": 5
+    }
+  ],
+  "rejected": [
+    {
+      "acc": "Q88LS1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B2V6F1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B8CMW5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q04EZ9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q6AS41",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9Z0M5",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A7H331",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9TYV5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q63085",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8FIT1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q4FTX2",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q57CE8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A3MJW6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q720R2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B6HZX8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q4KGU2",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q932M0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A9NDN1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B3R2F9",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q3MB82",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A7MNZ6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A6VUR6",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B2RLG9",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B7MIZ8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q74ZR2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q2G1J0",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8PDX2",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "G0SB20",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B5EZA2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B7UEU8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q30NR4",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P24802",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q4ZRA0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q3JAD5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q31859",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P0CQ19",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5E1N9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q32FQ5",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8ZIV7",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A9MR43",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A5GHL4",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B3QIT8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P60349",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q6NVF0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8K2Z8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q1H0F2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B0RRR1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "G1T7U7",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O24750",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P76093",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5HGY9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B8GNA8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A1UEN7",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q73WB6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B6J5G0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "E0U070",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q0S2X1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B2FQN4",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P27217",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A4FWX2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q4WBS1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9XZE5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A8AU84",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q0TNZ8",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q99U75",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9CBR9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P20845",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q01YA2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9RKK5",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A5EID1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B7MD64",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q7W0D0",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A8H2M6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5PK76",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O27427",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q4K5U7",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B0RHI9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A6H730",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P0DF23",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q4KLN6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B4TXL7",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "C3LIA6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8TL01",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q10743",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O84148",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A6H8I0",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B6J168",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P51020",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5AUW5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P21620",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q3AV73",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A5DHM6",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A0Q0Z5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q86CR9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O33407",
+      "rule": 2,
+      "reason": "exact sequence match in VFDB setB"
+    },
+    {
+      "acc": "Q9V9S8",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q2SZ01",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q2K2T3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9Z0L8",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9ZFR9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A1S8M3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P20651",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P0C0G6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8Z7N0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8T9S7",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q0J0G2",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P58106",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q12043",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q07571",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P82993",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q64TE4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B5YZ41",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q47H71",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q694C5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q65KK2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q94EJ2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P80365",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A4XAM8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q14I06",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P92401",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B1LFH3",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q57IZ5",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P9WN77",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9CKK4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "C1F4B7",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q59821",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q4R8T9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B6I1U3",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q1ZXI8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8BFR4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B2TWE0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P30714",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q01873",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q892A0",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B2RXA1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A4IN50",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9HT22",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8CQU7",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8FHF4",
+      "rule": 3,
+      "reason": "hazard term 'toxin' in name or keywords"
+    },
+    {
+      "acc": "I1S2N3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B5FNT1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q6MAB5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P57370",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B4PDM5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8R2S1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8ZCF9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P0DW33",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "C1C8F1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q3M8N2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q6GB55",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5F9J5",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A5IRV6",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8NCT3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q38X88",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q71YE1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q55FJ6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9M1Q2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q13444",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B7MKL9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5MZU1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "I1BYW6",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q68BJ6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A8FYK5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q1QCE0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A3D2C2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A1SQ09",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q01IS8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5A692",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A9BX80",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5RCY1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9CCR4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9XHM5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q6PB06",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O49809",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O85140",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P0CH91",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A7NDL0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A0A0C1E5A5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A0A0C5PRQ1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B0VMS2",
+      "rule": 2,
+      "reason": "exact sequence match in VFDB setB"
+    },
+    {
+      "acc": "A4TS63",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9WXV5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P0C1A5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q08IC0",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A4IHT9",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B3EHP0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B8E6A3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5M2Y5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "C1C6B0",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8D6Q8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8E0C9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A0A0G2JZ79",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5JFW1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q09HN2",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q979Z9",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B1IWD1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8TFN1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P63630",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P19642",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q10VR1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A1AWR5",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "K7X479",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O64780",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O52196",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B5ED21",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q2NR41",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5HUQ3",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A1D145",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A3DIE1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9HU77",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B9A1H3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9A5Z3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A5W7Q4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P07343",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8PJL7",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A4YHK6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P64335",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "F1LKH9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O93344",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P35915",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B6YTE4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8KIY0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A9M374",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A6WT44",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8GX23",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "D0WGK0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q47VR7",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q6GF03",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q92918",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5XI42",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5HJI1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "C6DF65",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9NST1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "C9S923",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8XAS9",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8DBF1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q47BH8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "C0M9C4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B4N1V2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A4G919",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B2AH54",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q6HPL2",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q16620",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q4FRK9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q1C134",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8KGE0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8ZJ02",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O35831",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A1R8Q0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A6TEK8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q1M964",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P69787",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q0HX60",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q4KIF4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P11801",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A9CKB4",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A0AAV8SIN5",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B7LEY2",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P49741",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8X5L7",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O67616",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q3JNE9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9ZI56",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8DKE4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A1RWC3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "C3MAJ1",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A9MHQ8",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5XCU7",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P46549",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8EG66",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P83543",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A6U1X3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A5VYS4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P59815",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q920F5",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5NNQ4",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P44390",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9LSD0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q2KWX0",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P52401",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A9IVH5",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P9WIN4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q7N590",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P77272",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9Z8I3",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P51015",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q29RY9",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q6FJ14",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O62138",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9HGZ1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A7ZML2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5RF40",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P0CK39",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A3NZ22",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8H1S1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q5RFM7",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P36437",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "C5BGI9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A1V0R0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q09537",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P44573",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O52532",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q01577",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9CAU7",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q0AB55",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9Z735",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B8D7B3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O23349",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A9BHV4",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P09960",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B6J3R8",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B7UIG9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A8LSF0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9P8I0",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "O27390",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P05465",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B7L504",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "A0AJB3",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B5EHV2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q88X63",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q87IB3",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P50202",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B8F506",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8EKR0",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8FTC6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P49138",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q8Q0P9",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B4F1U6",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "B6I7L2",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q2N9J7",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P0ADG9",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q9ZVX1",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P9WPB4",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "Q0V984",
+      "rule": 5,
+      "reason": "1 Active site features, fewer than 3"
+    },
+    {
+      "acc": "P28389",
+      "rule": 5,
+      "reason": "2 Active site features, fewer than 3"
+    }
+  ]
+}

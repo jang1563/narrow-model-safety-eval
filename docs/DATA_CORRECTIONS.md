@@ -3399,3 +3399,79 @@ the mechanism it is written up as** — and that outcome would be the more inter
 
 ⚠️ If A2's exclusions yield fewer than 30 candidates, the AUROC halves **stay untestable and that is
 the reported result**. The exclusions do not get relaxed to reach the number.
+
+---
+
+## 2026-09-27 (thirty-sixth entry) — A2 built: 4 controls to 60, and the architecture question answered from the sweeps that already exist
+
+### 🟢 A2 delivered, and every exclusion held
+
+`src/68_benign_enzyme_set.py`, against the floor frozen hours earlier in
+`docs/NEGATIVE_EXPANSION_PREREGISTRATION.md`. **60 controls admitted, floor 30**, from 66,275 reviewed
+Swiss-Prot entries carrying an `Active site` in the panel's own length window [286, 1147]. That takes
+`n_benign` from **4 to 60** and makes the mutation preregistration's three untestable AUROC halves
+testable.
+
+What bound and what did not: fewer than three Active sites rejected **332**, exact VFDB setB sequence
+match **2**, hazard term in name or keywords **1**. Panel membership and the similarity bound rejected
+**zero** — the highest similarity any of the 60 reaches against a v3 positive is **0.0495**, against a
+bound of 0.282. **No exclusion was loosened to reach the number**, and claim 83 now pins those counts so
+a later edit cannot loosen one quietly.
+
+⚠️ **Selection order matters and was chosen before looking.** `sha256(accession)` ascending, a
+reproducible draw from the whole pool, not the head of accession order — `P0xxxx` entries are older and
+better characterised, so taking the first N would have been a selection choice wearing an ordering's
+clothes.
+
+🔴 **Three properties flagged in amendment 2 before anything is measured**, because noticing them
+afterwards is indistinguishable from explaining a result: the set is **hydrolase-heavy (26 of 60 are
+EC 3)**, which is the right direction since both unflaggable classes are hydrolases but means the benign
+side is enriched for the panel's own failure family; **`P0CK11` is a 1,043-residue Turnip mosaic virus
+polyprotein**, the only viral member and the longest, whose Active sites sit in a protease domain inside
+a multi-domain precursor; and a few controls come from *Salmonella*, *Vibrio vulnificus* and
+*P. aeruginosa*, **kept deliberately** because § 2.3's provenance probe reaches 0.818 from lab-strain
+provenance alone, so pathogen-provenance benign enzymes make the control stronger against that confound.
+**No pathogen-origin or domain-architecture exclusion was added**, both having been considered only
+after seeing the set.
+
+### ⚠️ Amendment 1: an exclusion that could not be applied as written
+
+A2's exclusion 2 said "any accession appearing in VFDB setA or setB". **VFDB has no UniProt
+accessions** — `VFG037176(gb|WP_001081735)` — so there is nothing to join on. Applied as an exact
+sequence match against setB's 30,215 records instead, stricter in one direction and weaker in another,
+and recorded as an amendment rather than reinterpreted silently. It caught O33407 and B0VMS2, so the
+rule was not decorative. **The preregistration was written the same day and still contained a rule that
+could not be executed**, which is the argument for running the build before treating a frozen document
+as finished.
+
+### The architecture question, answered from what is already here
+
+Asked whether a mixture of experts is an option and whether classifier architecture has been explored
+deeply. New § 8.2 of `docs/MECHANISM_GENERALIZATION.md`.
+
+**It has been swept at two levels and neither is where the failure lives.** Four heads × 14 arms × 30
+seeds (§ 9.1): logistic is the worst head on 7 of 14 arms and beaten on 12 of 14 by a median of 5.1
+points, **but it moves only threshold-adjacent members** — the four saturated classes are unmoved to the
+decimal and beta-lactamase reaches **21%** with the best of four. Ensembles twice (§ 8, § 8.1):
+alignment + embedding gives 73.1% against the probe's 73.1%, the OR variant busts the budget at 6.5%
+FPR, and fusing two language models costs 0.4 points.
+
+🔑 **But § 8 tested *soft* combination, and its mechanism does not carry to a hard gate.** The reason
+unions fail there is that **OR-ing raises the negatives' scores too, pushing the calibrated threshold
+up**. A mixture of experts with a hard gate routes each sequence to exactly one expert, so no negative
+is scored twice and the threshold is not inflated. **That architecture is untested here and § 8 is not
+evidence against it** — it is the one combination the existing negative results leave standing, and the
+complementarity is measured at Spearman **−0.25** between embedding and alignment recovery across
+classes.
+
+🔴 **The gate is the blocker, and this project has already failed at it.** A router needs a per-**sequence**
+decision, and § 10.3 is the record of the **member**-level margin claim being preregistered, frozen and
+**failing on two external panels**. The version that works is **class**-level (+0.894, transfers to
+mechanisms it was not fit on). So routing works **if the family is known**, and for a novel sequence the
+family is what is unknown.
+
+⚠️ Which makes the gate a separate prediction problem the field has built: **DeepVIC classifies into 14
+VFDB categories at 0.838 accuracy.** A category router feeding per-family experts is a concrete design,
+downstream of study B rather than available now, and its honest error budget is the router's **16%
+misroute rate compounded with each expert's own miss rate**. That compounding is the first thing to
+measure and has not been.
