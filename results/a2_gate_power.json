@@ -1,0 +1,66 @@
+{
+  "n_perm": 20000,
+  "tolerance": 0.05,
+  "frozen4": {
+    "n_panel": 15,
+    "n_control": 4,
+    "observed_shuffled_auroc": 0.2833333333333333,
+    "null_mean": 0.501,
+    "null_sd": 0.1669,
+    "p_within_tolerance": 0.2266,
+    "clean_pipeline_fails_this_gate": 0.7734,
+    "sd_from_half": 1.3,
+    "two_sided_p_for_observed": 0.2243,
+    "is_a_test": false
+  },
+  "a2": {
+    "n_panel": 15,
+    "n_control": 60,
+    "observed_shuffled_auroc": 0.43,
+    "null_mean": 0.4994,
+    "null_sd": 0.0834,
+    "p_within_tolerance": 0.4449,
+    "clean_pipeline_fails_this_gate": 0.5552,
+    "sd_from_half": 0.84,
+    "two_sided_p_for_observed": 0.4059,
+    "is_a_test": false
+  },
+  "sweep_n_benign_at_fixed_panel_14": {
+    "4": {
+      "null_sd": 0.1696,
+      "p_within_tolerance": 0.2025,
+      "is_a_test": false
+    },
+    "10": {
+      "null_sd": 0.1191,
+      "p_within_tolerance": 0.3095,
+      "is_a_test": false
+    },
+    "30": {
+      "null_sd": 0.0939,
+      "p_within_tolerance": 0.394,
+      "is_a_test": false
+    },
+    "60": {
+      "null_sd": 0.0876,
+      "p_within_tolerance": 0.4293,
+      "is_a_test": false
+    },
+    "120": {
+      "null_sd": 0.0828,
+      "p_within_tolerance": 0.4532,
+      "is_a_test": false
+    },
+    "500": {
+      "null_sd": 0.0787,
+      "p_within_tolerance": 0.4768,
+      "is_a_test": false
+    },
+    "5000": {
+      "null_sd": 0.0772,
+      "p_within_tolerance": 0.4682,
+      "is_a_test": false
+    }
+  },
+  "ceiling_note": "An AUROC's precision is set by the smaller group. The panel contributes 14 to 15 scorable proteins and cannot grow: functional_sites.json has 16 entries, 15 with catalytic residues. So the null sd floors out no matter how many controls are added, and the fifth amendment's prediction that the tolerance becomes meaningful above n_benign of roughly 30 attributes the problem to the wrong sample size."
+}

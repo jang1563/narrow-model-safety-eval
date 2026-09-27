@@ -172,3 +172,55 @@ them afterwards would be indistinguishable from explaining a result.**
 
 ⚠️ **No pathogen-origin or domain-architecture exclusion was added.** Both were considered after seeing
 the set, which is precisely when a new exclusion stops being a rule and becomes a result.
+
+### Amendment 3 — 2026-09-27: A2 run, and all three tests resolve
+
+`src/62_fspe_m.py --controls a2`, artifact `results/fspe_m_a2.json`, ESM-2 650M, 15 panel proteins and
+60 controls, 20 background positions each. The panel's dFSPE-M values are **bit-identical** to the
+frozen-four run, which is the check that the control set is the only thing that changed.
+
+| test | frozen at the top of this document | result | verdict |
+|---|---|---|---|
+| **A2-1** | panel > benign, one-sided *p* < 0.0083 | panel **+4.32**, benign **+6.76**, difference **−2.44**, one-sided *p* = **0.9991** | 🔴 **NOT SUPPORTED**, on the ceiling |
+| **A2-2** | AUROC ≥ 0.70, interval clear of 0.50 | **0.265**, 95% CI **[0.102, 0.445]** | 🔴 **NOT SUPPORTED**, and the interval is clear of 0.50 **on the wrong side** |
+| **A2-3** | shuffled AUROC inside [0.40, 0.60] | **0.430** | 🟢 **SUPPORTED** — no leak |
+
+🔴 **The prediction this document committed to was that A2-1 would fail, and it failed harder at power
+than it did at n = 4.** The benign mean rose from +5.26 to +6.76 and the gap from −0.94 to −2.44. At
+n = 4 the ceiling fired on direction only, *p* = 0.678; at n = 60 the controls exceed the panel at
+*p* = 0.0009. **All 60 controls sit above the panel's worst protein and 59 of 60 above zero.**
+dFSPE-M measures catalytic-site constraint, and ordinary benign enzymes have more of it than toxins do.
+
+⚠️ **The pre-flagged outlier behaved as flagged.** `P0CK11`, amendment 2's viral polyprotein, is the
+only control below zero at **−0.493** and the only one whose sequence is truncated by `MAX_SEQ_LEN`
+(1,043 residues against 1,022, with all its catalytic positions inside the kept region). Keeping it
+**lowers** the benign mean, so it works against this result; it is kept, as amendment 2 said it would
+be.
+
+🔴 **And the gate's AUROC half is still not a test, for a reason the mutation preregistration's fifth
+amendment got wrong.** `src/71_a2_gate_power.py`, 20,000 label permutations:
+
+| | n_panel 15, n_benign 4 | n_panel 15, n_benign 60 |
+|---|---:|---:|
+| observed shuffled AUROC | 0.2833 | **0.4300** |
+| null sd | 0.1669 | **0.0834** |
+| a clean pipeline fails the ±0.05 gate | 77.3% | **55.5%** |
+| two-sided *p* for the observed value | 0.2243 | **0.4059** |
+
+The n = 4 column **reproduces the fifth amendment's numbers exactly** (0.1669, 77.3%, 0.224), so the
+construction is theirs. That amendment predicted the tolerance "becomes meaningful somewhere above
+n_benign of roughly 30". **It does not, because n_benign is not the binding constraint.** An AUROC's
+precision is set by the *smaller* group, and sweeping n_benign at a fixed panel of 14 scorable proteins:
+
+| n_benign | 4 | 10 | 30 | 60 | 120 | 500 | 5,000 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| null sd | 0.170 | 0.119 | 0.094 | 0.088 | 0.083 | 0.079 | **0.077** |
+| a clean pipeline passes | 20% | 31% | 39% | 43% | 45% | 48% | **47%** |
+
+🔴 **The null sd floors at about 0.077 and the ±0.05 gate never passes more than about half the time,
+no matter how many controls are added.** `functional_sites.json` has 16 entries, 15 with catalytic
+residues, and that is the whole panel. So the fifth amendment's resolution — report the shuffled AUROC
+without a pass/fail — stands permanently rather than provisionally, and its stated repair condition was
+attributed to the wrong sample size. A2-3's own [0.40, 0.60] window is ±0.10, about 1.2 null standard
+deviations, which a clean pipeline clears roughly 77% of the time: **better than the gate it replaces
+and still not a strong test.** Said here rather than left for a reader to work out.

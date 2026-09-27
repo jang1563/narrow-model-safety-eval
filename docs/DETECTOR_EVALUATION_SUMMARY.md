@@ -340,6 +340,13 @@ evolutionary constraint and must not be called a hazard metric."* Benign control
 against the panel's **+4.32**; two benign zinc proteases out-rank 14 of the 15 panel proteins. So the
 metric measures positional constraint and is not built on further.
 
+🔑 **Powered on 2026-09-27, and the verdict hardened.** At n_benign = 4 the ceiling fired on direction
+alone, at *p* = 0.678. A matched set of **60** reviewed Swiss-Prot enzymes with `Active site` features
+puts the benign mean at **+6.76** against the same **+4.32**, a gap of **−2.44**, with the controls
+exceeding the panel at *p* = **0.0009** and an AUROC of **0.265** whose interval [0.102, 0.445] excludes
+0.50 **on the wrong side**. All 60 sit above the panel's worst protein. The axis measures catalytic-site
+constraint, and ordinary benign enzymes have more of it than toxins do.
+
 And the alignment baseline settles what that means. A position-specific scoring matrix from a
 homology search, reduced identically, agrees with the model on direction but not magnitude and
 reproduces both results — its own constraint test is 12 of 15 at *p* = 0.0176, and it fails the hazard

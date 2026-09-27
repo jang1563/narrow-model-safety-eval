@@ -465,6 +465,50 @@ def benign_enzyme_set():
     }
 
 
+def fspe_m_a2():
+    """P2 at n_benign = 60, and whether the gate's AUROC half can ever be a test.
+
+    The whole point of study A2 was to take a verdict that fired on direction at n = 4 and see
+    whether it survives power. It does, in the direction the preregistration predicted: the gap
+    widens rather than closing. Two things are pinned besides the verdict. The panel's values must
+    stay bit-identical to the frozen-four run, because if they move then the control set was not the
+    only thing that changed. And the gate-power sweep must keep showing that the null sd floors out,
+    because that is what makes the fifth amendment's resolution permanent rather than provisional.
+    """
+    d, g = j("../results/fspe_m_a2.json"), j("../results/a2_gate_power.json")
+    base = j("../results/fspe_m.json")
+    if d is None or g is None or base is None:
+        return None
+    p2, sw = d["P2"], g["sweep_n_benign_at_fixed_panel_14"]
+    pan = {r["acc"]: r["dfspe_m"] for r in d["panel"] if r["dfspe_m"] is not None}
+    old = {r["acc"]: r["dfspe_m"] for r in base["panel"] if r["dfspe_m"] is not None}
+    ben = [c["dfspe_m"] for c in d["controls"] if c["dfspe_m"] is not None]
+    return {
+        "n_benign": p2["n_benign"], "n_toxin": p2["n_toxin"],
+        "panel_mean": round(p2["toxin_mean"], 4), "benign_mean": round(p2["benign_mean"], 4),
+        "difference": round(p2["difference"], 4), "perm_p": p2["permutation_p"],
+        "auroc": round(p2["auroc"], 4), "auroc_ci95": p2["auroc_ci95"],
+        "interval_clear_of_half": p2["auroc_interval_clear_of_half"],
+        # the control set is the only thing that changed
+        "panel_identical_to_frozen4": all(abs(pan[k] - old[k]) < 1e-9 for k in pan if k in old),
+        "controls_above_panel_min": sum(1 for b in ben if b > min(pan.values())),
+        "controls_above_zero": sum(1 for b in ben if b > 0),
+        "lone_negative_control": [c["acc"] for c in d["controls"]
+                                  if c["dfspe_m"] is not None and c["dfspe_m"] < 0],
+        # A2-3: no leak, and the gate's own AUROC half still cannot discriminate
+        "shuffled_auroc": d["P5_gate"]["shuffled_auroc"],
+        "gate_null_sd_n60": g["a2"]["null_sd"], "gate_two_sided_p": g["a2"]["two_sided_p_for_observed"],
+        "gate_is_a_test_n60": g["a2"]["is_a_test"],
+        # the fifth amendment's n = 4 numbers, reproduced exactly by this script
+        # the fifth amendment prints 0.1669, 77.3% and 0.224; matched to its own printed precision
+        "reproduces_fifth_amendment": (abs(g["frozen4"]["null_sd"] - 0.1669) < 5e-4
+                                       and abs(g["frozen4"]["clean_pipeline_fails_this_gate"] - 0.773) < 5e-4
+                                       and abs(g["frozen4"]["two_sided_p_for_observed"] - 0.224) < 5e-4),
+        "sweep_floor_sd": sw["5000"]["null_sd"], "sweep_floor_passes": sw["5000"]["p_within_tolerance"],
+        "sweep_any_is_a_test": any(v["is_a_test"] for v in sw.values()),
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -2634,7 +2678,8 @@ CLAIMS = [
          and v["p6_unrun"]),
      {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
       "**So the verdict, as the preregistration fixed it in advance: dFSPE-M measures",
-      "docs/EVALUATION_REPORT.md": "| benign controls, n = 4 | **+5.26** |",
+      # the table gained an n = 60 row on 2026-09-27, so the pin follows the n = 4 cells
+      "docs/EVALUATION_REPORT.md": "| benign controls, **n = 4** | **+5.26** (−0.94) | 0.393 | 0.678 |",
       # the six-page summary carried nothing about this axis until 2026-09-27, so a completed line
       # of work was missing from the flagship public document
       "docs/DETECTOR_EVALUATION_SUMMARY.md": "against the panel's **+4.32**; two benign zinc proteases out-rank 14 of the 15 panel proteins."}, []),
@@ -2706,6 +2751,32 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("P2 fails harder at n_benign = 60 than at 4, and the gate's AUROC half can never be a test",
+     fspe_m_a2,
+     lambda v: v is None or (
+         v["n_benign"] == 60 and v["n_toxin"] == 14
+         # the panel did not move, so the control set is the only change
+         and v["panel_identical_to_frozen4"]
+         # the ceiling fires on direction AND significance now
+         and abs(v["panel_mean"] - 4.3197) < 0.01 and abs(v["benign_mean"] - 6.7563) < 0.01
+         and v["difference"] < -2.4 and v["perm_p"] > 0.99
+         # A2-2: not 0.70, and the interval excludes 0.50 on the wrong side
+         and v["auroc"] < 0.30 and v["interval_clear_of_half"] and v["auroc_ci95"][1] < 0.5
+         and v["controls_above_panel_min"] == 60 and v["controls_above_zero"] == 59
+         and v["lone_negative_control"] == ["P0CK11"]
+         # A2-3: inside [0.40, 0.60], so no leak
+         and 0.40 <= v["shuffled_auroc"] <= 0.60
+         # and the gate's own tolerance is still not a test, at any n_benign
+         and v["reproduces_fifth_amendment"] and not v["gate_is_a_test_n60"]
+         and v["gate_two_sided_p"] > 0.10 and v["sweep_floor_sd"] > 0.07
+         and v["sweep_floor_passes"] < 0.60 and not v["sweep_any_is_a_test"]),
+     {"docs/EVALUATION_REPORT.md":
+      "| benign enzymes, **n = 60** 🔑 | **+6.76** (−2.44) | **0.265** [0.102, 0.445] | **0.9991** |",
+      "docs/NEGATIVE_EXPANSION_PREREGISTRATION.md":
+      "**The null sd floors at about 0.077 and the ±0.05 gate never passes more than about half the "
+      "time,"},
+     # the caveat the powered run closed
+     ["the controls are not *significantly* above the panel, and the ceiling fires\non direction rather than significance — the burden was on the panel to exceed them and it does not\nexceed them at all. And dFSPE-M"]),
     ("the A2 control set clears its preregistered floor without any exclusion having been loosened",
      benign_enzyme_set,
      lambda v: v is None or (

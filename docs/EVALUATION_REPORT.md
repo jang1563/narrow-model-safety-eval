@@ -164,17 +164,28 @@ single out the same two proteins.
 🔴 **P2, the hazard claim: not supported, and it fails on the ceiling the preregistration wrote for
 it.**
 
-| | dFSPE-M |
-|---|---:|
-| panel mean, n = 14 | +4.32 |
-| benign controls, n = 4 | **+5.26** |
-| difference | **−0.94** |
-| AUROC | 0.393 |
+| | dFSPE-M | AUROC | permutation *p* |
+|---|---:|---:|---:|
+| panel mean, n = 14 | +4.32 | — | — |
+| benign controls, **n = 4** | **+5.26** (−0.94) | 0.393 | 0.678 |
+| benign enzymes, **n = 60** 🔑 | **+6.76** (−2.44) | **0.265** [0.102, 0.445] | **0.9991** |
 
 The preregistration's own words: *"Not supported if the benign controls match or exceed the toxins, in
 which case FSPE-M measures evolutionary constraint and must not be called a hazard metric."* They
 exceed it. Astacin (+8.42) and thermolysin (+8.07) — benign zinc proteases with conserved active
 sites — rank above **14 of the 15** panel proteins.
+
+🔑 **Powered 2026-09-27, and the gap widened.** The matched benign enzyme set section 4 asked for now
+exists: 60 reviewed Swiss-Prot enzymes with `Active site` features, built by `src/68` against the frozen
+floor of 30 in `docs/NEGATIVE_EXPANSION_PREREGISTRATION.md`. The benign mean rises from +5.26 to
+**+6.76**, the gap from −0.94 to **−2.44**, and the one-sided permutation *p* for the panel exceeding
+the controls reaches **0.9991** — which is to say the controls exceed the panel at *p* = 0.0009. The
+AUROC falls to **0.265** with a bootstrap interval of [0.102, 0.445] that **excludes 0.50 on the wrong
+side**: benign enzymes are not merely unseparated from toxins, they separate *from* them in the
+direction opposite to the hazard hypothesis. **Every one of the 60 controls has a dFSPE-M above the
+panel's worst, and 59 of 60 are above zero**; the one that is not is `P0CK11`, flagged before the run
+as the only viral-origin and only truncated member, and keeping it *lowers* the benign mean, so it
+works against this result rather than for it.
 
 **So the axis measures positional constraint, not hazard, and is not built on further as a hazard
 metric.** That is the same lesson the FSI negative controls taught, where astacin at 1.85 and
@@ -190,7 +201,8 @@ alanine- and cysteine-scanning series. The construction cannot answer the questi
 ⚠️ Read with two limits the preregistration recorded before the run. **n_benign = 4**, so the
 permutation *p* is 0.678: the controls are not *significantly* above the panel, and the ceiling fires
 on direction rather than significance — the burden was on the panel to exceed them and it does not
-exceed them at all. And dFSPE-M inherits FSPE's background, whose per-protein sampling variance
+exceed them at all. 🟢 **That first limit is closed as of 2026-09-27**: at n_benign = 60 the ceiling
+fires on significance as well as direction. And dFSPE-M inherits FSPE's background, whose per-protein sampling variance
 § 3.1.1 measures at up to 0.345 on a redraw, so P1 is a sign test over quantities each of which is
 one draw. **P6, the alignment baseline: an alignment reproduces both verdicts.** A position-specific scoring
 matrix from a `jackhmmer` search of Swiss-Prot, reduced identically on the same positions, agrees with

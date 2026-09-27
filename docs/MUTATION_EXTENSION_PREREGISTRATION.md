@@ -1037,3 +1037,54 @@ next run rather than after.
   sites, and no separation of hazard from benign. On the question section 0 posed —
   whether the extension was worth making — that is the answer arriving twice by
   independent routes.
+
+- 2026-09-27 (tenth entry): **P2 decided at n_benign = 60. The ceiling fires on
+  significance as well as direction, and the fifth amendment's repair condition was
+  attributed to the wrong sample size.**
+
+  Section 4 asked for a matched benign enzyme set and it now exists:
+  `src/68_benign_enzyme_set.py` admitted **60** reviewed Swiss-Prot enzymes carrying
+  `Active site` features against a floor of 30 frozen in
+  `docs/NEGATIVE_EXPANSION_PREREGISTRATION.md`. `src/62_fspe_m.py --controls a2`,
+  artifact `results/fspe_m_a2.json`. **The panel's dFSPE-M values are bit-identical
+  to the frozen-four run**, so the control set is the only thing that changed.
+
+  | | n_benign = 4 | n_benign = 60 |
+  |---|---:|---:|
+  | panel mean | +4.32 | +4.32 |
+  | benign mean | +5.26 | **+6.76** |
+  | difference | −0.94 | **−2.44** |
+  | AUROC | 0.393 | **0.265**, 95% CI [0.102, 0.445] |
+  | one-sided *p*, panel > benign | 0.678 | **0.9991** |
+
+  🔴 **P2 NOT SUPPORTED, now on significance as well as direction.** The fifth
+  amendment's limitation — "the controls are not *significantly* above the panel, and
+  the ceiling fires on direction rather than significance" — is closed: the controls
+  exceed the panel at *p* = 0.0009. All 60 controls sit above the panel's worst
+  protein and 59 of 60 above zero. **dFSPE-M measures catalytic-site constraint, and
+  ordinary benign enzymes have more of it than toxins do.** The axis is not built on
+  further as a hazard metric, which is what section 4 said it would mean.
+
+  🔴 **The fifth amendment predicted its AUROC half would become meaningful "somewhere
+  above n_benign of roughly 30". It does not, and the reason is a mistake in that
+  amendment rather than in the data.** `src/71_a2_gate_power.py` reproduces its null
+  exactly at n = 4 (sd 0.1669, clean pipeline fails 77.3%, two-sided *p* 0.224) and
+  then sweeps n_benign at the panel's fixed size:
+
+  | n_benign | 4 | 30 | 60 | 500 | 5,000 |
+  |---|---:|---:|---:|---:|---:|
+  | null sd | 0.170 | 0.094 | 0.088 | 0.079 | **0.077** |
+  | clean pipeline passes ±0.05 | 20% | 39% | 43% | 48% | **47%** |
+
+  **An AUROC's precision is set by the smaller group.** `functional_sites.json` has 16
+  entries, 15 with catalytic residues, and that is the whole panel — it cannot grow.
+  So the null sd floors near 0.077 and a ±0.05 tolerance never passes more than about
+  half the time however many controls are added. **The resolution stands permanently,
+  not provisionally: the shuffled AUROC is reported without a pass/fail.** The observed
+  0.4300 at n = 60 is two-sided *p* = 0.4059 under its own null, so there is no leak
+  evidence; that is all it can say, and it is not a repair of the gate.
+
+  ⚠️ This is the same defect class the fifth amendment itself named — a threshold
+  carried across a change of sample size without a power argument — committed a second
+  time inside the amendment that named it, by assuming the power problem lived in the
+  sample size that was about to grow.

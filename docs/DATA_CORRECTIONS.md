@@ -3542,3 +3542,80 @@ sequence idiosyncrasy is exactly what a motif detector latches onto.
 against 21%". The audited figure is 30%, 29.5% at 30 seeds. Both the overreach and the number are recorded
 as an appended note in that file rather than edited into it, because the run was launched on the text as
 written.
+
+---
+
+## 2026-09-27 (thirty-eighth entry) — A2 run: the predicted failure, harder at power, and a gate that can never be a test
+
+### 🔴 P2 at n_benign = 60: the prediction held and the gap widened
+
+`src/62_fspe_m.py --controls a2` on the 60-enzyme set built hours earlier. **The panel's dFSPE-M values
+are bit-identical to the frozen-four run**, so the control set is the only thing that changed.
+
+| | n_benign = 4 | n_benign = 60 |
+|---|---:|---:|
+| panel mean | +4.32 | +4.32 |
+| benign mean | +5.26 | **+6.76** |
+| difference | −0.94 | **−2.44** |
+| AUROC | 0.393 | **0.265**, 95% CI [0.102, 0.445] |
+| one-sided *p*, panel > benign | 0.678 | **0.9991** |
+
+`docs/NEGATIVE_EXPANSION_PREREGISTRATION.md` predicted A2-1 would fail. **It failed harder than at
+n = 4.** The fifth amendment's standing caveat — *"the controls are not significantly above the panel,
+and the ceiling fires on direction rather than significance"* — is closed: the controls exceed the panel
+at *p* = **0.0009**. **All 60 controls sit above the panel's worst protein and 59 of 60 above zero.**
+A2-2 asked for AUROC ≥ 0.70 and got 0.265 with an interval that **excludes 0.50 on the wrong side**:
+benign enzymes are not merely unseparated from toxins, they separate *from* them in the direction
+opposite to the hazard hypothesis. A2-3, the leak check, is 0.430, inside its [0.40, 0.60] window.
+
+🔑 **So dFSPE-M measures catalytic-site constraint, and ordinary benign enzymes have more of it than
+toxins do.** Astacin and thermolysin were not unlucky picks; they were representative. The axis is not
+built on further as a hazard metric, which is what section 4 of the mutation preregistration said this
+outcome would mean.
+
+⚠️ **The pre-flagged outlier behaved as flagged and in the conservative direction.** `P0CK11`, the viral
+polyprotein amendment 2 named before the run, is the only control below zero at **−0.493**, and also the
+only one whose sequence is truncated (1,043 against `MAX_SEQ_LEN` 1,022, with every catalytic position
+inside the kept region). Keeping it **lowers** the benign mean, so it works against this result. Kept,
+as amendment 2 said it would be.
+
+### 🔴 And the same defect twice, the second time inside the amendment that named it
+
+The fifth amendment of the mutation preregistration retired the P5 gate's AUROC half at n_benign = 4,
+diagnosing it exactly: *"A ±0.05 tolerance on a statistic whose null standard deviation is 0.167 is not
+a threshold, it is a coin weighted against passing"*, and naming the defect class — **"a threshold
+carried across a change of sample size without a power argument."** It then predicted the repair: the
+tolerance *"becomes meaningful somewhere above n_benign of roughly 30"*.
+
+`src/71_a2_gate_power.py` reproduces that amendment's null **exactly** at n = 4 — sd 0.1669, clean
+pipeline fails 77.3%, two-sided *p* 0.224 — so the construction is theirs, not a new one. Then it sweeps
+n_benign with the panel fixed:
+
+| n_benign | 4 | 10 | 30 | 60 | 120 | 500 | 5,000 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| null sd | 0.170 | 0.119 | 0.094 | 0.088 | 0.083 | 0.079 | **0.077** |
+| a clean pipeline passes ±0.05 | 20% | 31% | 39% | 43% | 45% | 48% | **47%** |
+
+🔴 **The prediction is wrong, and it is wrong by the defect it had just named.** An AUROC's precision is
+set by the **smaller** group. `functional_sites.json` has 16 entries, 15 with catalytic residues, and
+that is the whole panel — it cannot grow. So the null sd floors near **0.077** and a ±0.05 tolerance
+never passes more than about half the time however many controls are added. The amendment attributed its
+power problem to the sample size that was about to grow, having just written down that thresholds must
+not be carried across sample sizes without a power argument.
+
+**Consequence**: the fifth amendment's resolution — report the shuffled AUROC without a pass/fail —
+stands **permanently**, not provisionally. The observed 0.4300 at n = 60 is two-sided *p* = 0.4059 under
+its own null, which says there is no leak evidence and says nothing more. ⚠️ And A2-3's own [0.40, 0.60]
+window is ±0.10, about 1.2 null standard deviations, which a clean pipeline clears roughly 77% of the
+time: **better than the gate it replaces and still not a strong test.** Written down rather than left
+for a reader to derive.
+
+### What this closes and what it costs
+
+🟢 **Closed**: `n_benign = 4` as a limitation, listed in the mutation preregistration, in
+`docs/EVALUATION_REPORT.md` § P2 and in `docs/DETECTOR_EVALUATION_SUMMARY.md`. All three now carry the
+n = 60 numbers.
+
+🔴 **Not closed, and now known to be uncloseable on this design**: the AUROC half of the P5 gate. The
+route to a real leak test of that kind is more *panel* proteins with catalytic annotations, not more
+controls — and the panel is 15 because 15 is how many the annotation set has.
