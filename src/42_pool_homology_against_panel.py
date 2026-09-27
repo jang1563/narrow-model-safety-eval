@@ -229,6 +229,18 @@ def main():
                "classes": sorted(per_class), "threshold": THRESH,
                "alignments": len(pool) * len(keys),
                "per_class": summary, "panel_negative_reference": panel_ref,
+               # 🔴 Added 2026-09-27. `best` has held every pool protein's maximum similarity to
+               # the panel since this script was written and only the entries above 0.30 were ever
+               # written out, so applying any other bound meant re-running 1.23M alignments. It is
+               # dumped now, sorted descending, because the standing test partition in src/60 needs
+               # a bound at the panel's OWN negative maximum (0.282) rather than at the 0.30 rule
+               # that governs positives, and that bound cannot be applied to a file that only
+               # records what already cleared 0.30.
+               "pool_max_similarity": [
+                   {"pool_acc": pk.split("|")[1], "pool_name": nm, "similarity": sim,
+                    "positive": tk.split("|")[1] if tk else None,
+                    "positive_class": cls[tk] if tk else None}
+                   for pk, (sim, tk, nm) in sorted(best.items(), key=lambda kv: -kv[1][0])],
                "above_threshold": [{"pool_acc": pk.split("|")[1], "pool_name": nm,
                                     "similarity": sim, "positive": tk.split("|")[1],
                                     "positive_class": cls[tk]}

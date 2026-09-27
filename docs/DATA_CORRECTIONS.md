@@ -2825,3 +2825,83 @@ running Foldseek, which needs the Linux binary on the HPC.
 That file's own `stats` field said `no_structure: 3` against a real 214, inherited from v2 when
 `src/27` built it. Recomputed in place with a maintenance note recording what it said, and `02i`
 computes the fraction rather than trusting the field.
+
+---
+
+## 2026-09-27 (twenty-eighth entry) — Criterion 1 moves from fail to partial, and three figures for "distinct names in the pool" turn out to measure two different things
+
+`docs/DETECTOR_CRITERIA.md` has scored the split as this project's worst failure since the document
+was written, and the reason it stayed a failure after `src/48` and `src/49` measured what an honest
+false-positive rate looks like is that both were **analysis-time draws**. Nothing in the repository
+*was* a test partition. `src/60_negative_test_partition.py` freezes one.
+
+### The partition, and the rule
+
+8,258 pool proteins, **test only**, admitted under three conditions: in the reviewed Swiss-Prot pool
+`src/34` built; accession in neither the panel's positive nor its negative set; and maximum
+normalized local-alignment similarity to any panel positive **below the maximum the panel's own
+negatives reach under the same screen**, 0.282, read from the screen artifact rather than written as
+a literal.
+
+That bound is deliberately tighter than the **0.30** rule governing positives against positives.
+`src/27`'s policy leaves negatives unscreened against positives so that mechanism-matched benign
+proteins can serve as hard negatives, which is right for curated calibration negatives and wrong for
+a test partition: a test member closer to a hazard than any calibration negative is a different kind
+of object, and admitting it would make the measured rate arguable.
+
+🟢 **Tightening it is free.** Exactly one pool protein clears 0.30 (`Q8X739`, PhoQ, 0.871 against a
+virulence-associated control) and exactly one clears 0.282 — the same one. **Nothing sits between the
+two bounds**, so the stricter rule costs nothing and removes the argument. That is measured, not
+assumed: `src/42` now dumps every pool protein's maximum, which it had been computing all along and
+writing out only for entries above 0.30, so applying any other bound used to mean re-running 1.23
+million alignments.
+
+**Test-only is the load-bearing restriction.** Criterion 18's attack works through negatives the fit
+sees; a set that appears only at evaluation time cannot suppress a class's recovery, it can only
+change the rate that is reported. That asymmetry is why this is the safe half of the repair, and the
+artifact says so in a `role` field rather than leaving it to a reader.
+
+### What it does not fix, stated in the scorecard rather than implied
+
+**The threshold is still set on 118 calibration points.** The panel's own negatives are still
+178/118/0. What improves is the resolution of the rate that is **measured** — 1/296 to 1/3,549 by
+distinct name — not of the threshold that is **set**. And exchangeability is **voided by design**:
+the panel's negatives are three curated blocks, the partition is Swiss-Prot and 87% bacterial, so
+the conformal guarantee does not hold across the shift. `src/49` measured that cost rather than
+assuming it away, and a panel-to-pool rate is the deployment-shift number.
+
+So criterion 1 is now **partial, not pass**, and the scorecard row says a partial here means "a test
+set exists", not "the split is fixed". Tally moves from three fails and three partials to **two fails
+(3, 12) and four partials (1, 4, 5, 18)**, propagated to the criteria document, the README and the
+six-page summary, with the audit's own tally strings updated.
+
+⚠️ **An obsolete forbid had to be retired for this.** The audit forbade the string
+`(two fails, four partials)` on both public surfaces, because both had once carried that count while
+the table did not support it. On 2026-09-27 it became true. The forbid is removed rather than worked
+around: a forbid on a count is a forbid on a count the table does not support, and it has to be
+retired when the table changes.
+
+### Three figures for one quantity, and two of them were right
+
+While computing the partition's effective size, three different "distinct names in this pool" figures
+surfaced for the same 8,259 proteins:
+
+| figure | source | what it groups by |
+|---|---|---|
+| 3,550 | `src/36_pool_effective_n.py` | the lowercased protein description |
+| 3,407 | `src/49_external_test_partition.py` | the gene symbol, `sp|ACC|GENE_ORGANISM` → `GENE` |
+| 3,552 | the first version of `src/60` | the description, **not lowercased** — a bug |
+
+The first two are effective sizes of **different quantities** and both are legitimate; the third was
+mine and is fixed. `src/60` now reports both conventions, 3,549 by description after the one
+rejection and 3,407 by gene symbol, reconciling exactly with the two existing figures, and the
+artifact carries a field saying they must not be conflated. A resolution claim that rests on
+"distinct names" has to say which convention it means.
+
+### What was deliberately not done
+
+No pool protein is promoted into the train or calibration split. That is the direction criterion 18
+warns about and it would change every published recovery number, so calibration resolution stays
+where it is. The partition is not used to re-threshold anything: `src/49`'s measurements already
+stand on the same membership, and § 2.6.2's parallel table is where a guaranteed-threshold figure
+lives.

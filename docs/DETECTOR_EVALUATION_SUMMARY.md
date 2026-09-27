@@ -37,7 +37,7 @@ they should change a reader's practice:
    500 genuine Swiss-Prot proteins, none forged or mislabelled, cut one class from **63.5% to 16.7%**
    while the measured false-positive rate *improved*.
 6. **A detector's own evaluation can be scored, and ours fails.** Against eighteen criteria, each
-   anchored to a place this project fell short: **three fails, three partials, one mixed**. The worst
+   anchored to a place this project fell short: **two fails, four partials, one mixed**. The worst
    is the first one, the split.
 
 The transferable claim is not about protein models. It is that **a detector number without a stated
@@ -319,8 +319,8 @@ retrospectively reframed, because the frame was fixed first.
 
 `docs/DETECTOR_CRITERIA.md` states eighteen criteria for evaluating a hazard detector, each anchored
 to a number measured here — usually to a place this project's own probe fell short — and scores this
-project against them. The result is **three fails (the split, per-class performance, the
-preregistration ceiling), three partials, one mixed**, on a framework whose headline aggregate is
+project against them. The result is **two fails (per-class performance, the preregistration
+ceiling), four partials, one mixed**, on a framework whose headline aggregate is
 0.974.
 
 The ordering matters more than the tally. A per-class table, a multiplicity threshold and an iso-FP

@@ -487,6 +487,42 @@ def fspe_background_ablation():
     }
 
 
+def negative_test_partition():
+    """The standing test partition, from the frozen artifact plus a rebuild of its rule.
+
+    🔴 Added 2026-09-27 with the partition. Criterion 1 moved from fail to partial on the strength
+    of this file existing, so the claim asserts the things that make it a partition rather than a
+    draw: a written bound taken from the panel's own negatives rather than a literal, membership
+    frozen under a digest, and the test-only role stated in the artifact. It also asserts the two
+    distinct-name conventions separately, because three different figures for "distinct names in
+    this pool" already existed and two of them are valid measures of different quantities.
+    """
+    d = j("../data/sequences/negative_test_partition_v3.json")
+    if d is None:
+        return None
+    screen = j("v3/pool_homology_against_panel.json")
+    c, r = d["counts"], d["resolution"]
+    admitted = {x["acc"] for x in d["admitted"]}
+    return {
+        "admitted": c["admitted"], "rejected": c["rejected"], "pool": c["pool"],
+        "distinct_names": c["distinct_names"], "gene_symbols": c["distinct_gene_symbols"],
+        # the bound is the panel negatives' own maximum, read from the screen and not a literal
+        "bound": screen["panel_negative_reference"]["max"],
+        "bound_in_rule": f"{screen['panel_negative_reference']['max']:.6f}" in d["rule"]["3"],
+        # tighter than the 0.30 positives rule, and free: nothing sits between the two
+        "n_above_bound": sum(1 for x in screen["pool_max_similarity"]
+                            if x["similarity"] >= screen["panel_negative_reference"]["max"]),
+        "n_above_030": sum(1 for x in screen["pool_max_similarity"] if x["similarity"] > 0.30),
+        "rejected_accs": sorted(x["acc"] for x in d["rejected"]),
+        "test_only_stated": d["role"].startswith("TEST ONLY"),
+        "exchangeability_voided": "VOIDED BY DESIGN" in d["exchangeability"],
+        "digest_matches_membership":
+            d["sha256_of_sorted_accessions"] == __import__("hashlib").sha256(
+                "\n".join(sorted(admitted)).encode()).hexdigest(),
+        "panel_rate": r["panel_finest_rate"], "name_rate": r["finest_rate_by_distinct_name"],
+    }
+
+
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
 
@@ -1844,9 +1880,10 @@ def criteria_scorecard_consistency():
             "fails": sorted(fails), "partials": sorted(partials),
             "mixed": sorted(int(n) for n, v in rows if "Mixed" in v),
             "doc_says_18": "on eighteen criteria" in t,
-            "doc_tally": "Three fails (1, 3, 12), three partials (4, 5, 18) and one mixed (7)" in t,
+            # 🔴 Both tally strings updated 2026-09-27 when criterion 1 moved fail -> partial.
+            "doc_tally": "Two fails (3, 12), four partials (1, 4, 5, 18) and one mixed (7)" in t,
             "readme_says_18": "states eighteen criteria" in r,
-            "readme_tally": "(three fails, three partials, one mixed)" in r}
+            "readme_tally": "two fails, four partials, one mixed" in r}
 
 
 
@@ -2260,6 +2297,24 @@ CLAIMS = [
      # the three sentences that said the background excludes the flanking positions
      ["excluding ±2 flanking residues\naround each functional site",
       "non-functional residues (excluding\n±2 flanking positions)"]),
+    ("the negatives have a standing test partition, bounded by the panel's own negatives",
+     negative_test_partition,
+     lambda v: v is None or (
+         v["pool"] == 8259 and v["admitted"] == 8258 and v["rejected"] == 1
+         and v["rejected_accs"] == ["Q8X739"]
+         # the bound is read from the screen, is stated in the rule, and is tighter than 0.30
+         and abs(v["bound"] - 0.282008) < 1e-5 and v["bound_in_rule"]
+         # and tightening it is free: the same single protein clears either bound
+         and v["n_above_bound"] == 1 and v["n_above_030"] == 1
+         # the two name conventions, reconciled with src/36's 3550 and src/49's 3407
+         and v["distinct_names"] == 3549 and v["gene_symbols"] == 3407
+         # what makes it a partition rather than a draw
+         and v["test_only_stated"] and v["exchangeability_voided"]
+         and v["digest_matches_membership"]
+         # the resolution it buys, and the one it does not
+         and abs(v["panel_rate"] - 1 / 296) < 1e-9
+         and abs(v["name_rate"] - 1 / 3549) < 1e-9),
+     {"docs/DETECTOR_CRITERIA.md": "**Partial as of 2026-09-27, and it was a fail.**"}, []),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.
@@ -2838,15 +2893,24 @@ CLAIMS = [
     ("detector criteria scorecard is internally consistent", criteria_scorecard_consistency,
      lambda v: (v["headings"] == 18 and v["rows"] == 18
                 and v["heads_are_1_to_n"] and v["rows_match_heads"]
-                # the split, per-class performance, and the floor-only prereg
-                and v["fails"] == [1, 3, 12] and v["partials"] == [4, 5, 18]
+                # 🔴 2026-09-27: criterion 1 moved fail -> partial when src/60 froze a standing
+                # test partition. It is a PARTIAL and not a pass because the threshold is still set
+                # on 118 calibration points: the partition improves the resolution of the rate that
+                # is measured, not of the threshold that is set. Remaining fails are per-class
+                # performance and the floor-only preregistration.
+                and v["fails"] == [3, 12] and v["partials"] == [1, 4, 5, 18]
                 and v["mixed"] == [7]
                 and v["doc_says_18"] and v["doc_tally"]
                 and v["readme_says_18"] and v["readme_tally"]),
      {"README.md": "states eighteen criteria for evaluating a hazard detector"},
      # the counts either document carried while the scorecard said otherwise. "five partials" was
      # briefly written into both on 2026-09-21 and the table never had five, so it is forbidden too.
-     ["states seventeen criteria", "(two fails, four partials)", "five partials"]),
+     # 🔴 `(two fails, four partials)` was forbidden here because both documents once carried it
+     # while the table did not. On 2026-09-27 it became TRUE -- criterion 1 moved to partial -- so
+     # the forbid is removed rather than worked around. A forbid on a count is only ever a forbid
+     # on a count the table does not support, and it has to be retired when the table changes.
+     ["states seventeen criteria", "five partials",
+      "Three fails (1, 3, 12), three partials (4, 5, 18)"]),
     ("tier 3 mutation coordinates verified against UniProt", tier3_coordinates,
      lambda v: (v["n"] == 4 and v["all_seq_match"] and v["all_identities_ok"]
                 and v["offsets"] == {"P00588": 32, "P02879": 35, "P04977": 34, "P0DPI1": 1}

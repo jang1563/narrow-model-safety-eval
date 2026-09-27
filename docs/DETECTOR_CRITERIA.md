@@ -648,7 +648,7 @@ Applied honestly, against its own criteria.
 
 | criterion | verdict |
 |---|---|
-| 1 the split | **Fail, and it is the worst one.** The published panel still has no test set (178/118/0) and the resolution ceiling is 0.9915. Now quantified rather than only stated: a test partition was supplied two ways, both replicate across two model arms, and the honest out-of-sample figure for a nominal 5% budget is about 7%, or about 10% de-duplicated. Measured, not repaired — and as of 2026-09-24 also **stated on the public surfaces**, which it was not: until then the figure lived in this document and in § 2.6.1 while the README and the dataset card quoted `flagged@95` with no indication that the 95 is in-sample |
+| 1 the split | **Partial as of 2026-09-27, and it was a fail.** The panel's own negatives are still 178/118/0, so calibration resolution is unchanged. What changed is that a **standing test partition now exists as a frozen artifact** rather than as an analysis-time draw: 8,258 pool proteins, test-only, admitted under a written rule bounded at the panel negatives' own maximum homology to a hazard (0.282, tighter than the 0.30 positives rule and free — nothing sits between them), with a sha256 over the membership. The honest out-of-sample figure stays about 7%, or about 10% de-duplicated, replicated on two arms, and is stated on the public surfaces. **Still not fixed: the threshold is still set on 118 points**, so the partition improves the resolution of the rate that is measured, 1/296 to 1/3,549 by distinct name, and not of the threshold that is set |
 | 2 iso-FP comparisons | **Pass now, failed before.** The three-to-four fold "gain" was a budget artefact |
 | 3 per class not aggregate | **Pass** on reporting, **fail** on performance: 10% on a 32-member class |
 | 4 predicts its own failures | **Partial.** Ranks them at +0.894, over-predicts recovery by 34 points |
@@ -667,14 +667,22 @@ Applied honestly, against its own criteria.
 | 17 annotation is the constraint | **Pass**, learned from a wasted sweep |
 | 18 reference set as attack surface | **Partial.** The panel's own negatives have a stated, reproducible selection rule (`02d`, `27`), which is the main ask. But the per-class before-and-after check was only run on 2026-09-21, long after the set was fixed, and it was run because the vulnerability was found rather than as a standing gate. One class, `rip_rrna_glycosidase`, loses 62.9 points to a supplement that moves the aggregate rate by 0.05 |
 
-Three fails (1, 3, 12), three partials (4, 5, 18) and one mixed (7) on eighteen criteria, on a framework whose
+Two fails (3, 12), four partials (1, 4, 5, 18) and one mixed (7) on eighteen criteria, on a framework whose
 headline aggregate number is 0.981. That ratio is the reason this document
 exists.
 
-And the ordering matters more than the tally. The worst failure is criterion 1,
-the split, which no amount of work on the other seventeen can compensate for: a
-per-class table, a multiplicity threshold and an iso-FP control are all
-improvements to a number that was still never measured on unseen negatives. An
+🔴 **Criterion 1 moved from fail to partial on 2026-09-27, and the tally above changed with it.**
+It was three fails and three partials. What moved is narrow: a standing test partition now exists as
+a frozen artifact rather than as an analysis-time draw, so a false-positive rate can name the
+partition it was measured on. What did not move is the part that made it the worst failure — **the
+threshold is still set on 118 calibration points**, so the finest rate the threshold can express is
+unchanged, and the partition improves only the resolution of the rate that is measured. A partial
+here should be read as "a test set exists", not as "the split is fixed".
+
+And the ordering still matters more than the tally. Criterion 1 is listed first because the other
+seventeen are downstream of it: a per-class table, a multiplicity threshold and an iso-FP control are
+all improvements to a number that, until the partition existed, was never measured on unseen
+negatives. An
 earlier draft of this document listed calibration resolution as criterion 1 and
 scored it a pass, which was true of resolution and quietly omitted that the
 panel has no test set. Getting the ordering wrong is the most likely way to
