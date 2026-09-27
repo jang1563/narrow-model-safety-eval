@@ -614,6 +614,19 @@ def fspe_m_p3():
             "top_share": d["largest_protein_share"]}
 
 
+def fspe_m_p5_composition():
+    """P5's composition half, and the noise floor that makes its margin unusable at this n."""
+    d = j("../results/fspe_m_p5_composition.json")
+    if d is None:
+        return None
+    return {"n_panel": d["n_panel"], "n_control": d["n_control"],
+            "auroc_dfspe_m": d["auroc_dfspe_m"], "auroc_composition": d["auroc_composition"],
+            "difference": d["difference"], "margin": d["required_margin"],
+            "null_sd": d["null_auroc_sd"], "inside_noise": d["margin_inside_noise"],
+            "both_below_half": (d["auroc_dfspe_m"] < 0.5 and d["auroc_composition"] < 0.5),
+            "indeterminate": d["verdict"].startswith("INDETERMINATE")}
+
+
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
 
@@ -2453,6 +2466,18 @@ CLAIMS = [
      {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
       "**79% of the set is alanine or cysteine scanning**",
       "docs/EVALUATION_REPORT.md": "median\npercentile **61.1** among the 19 alternatives"}, []),
+    ("P5's composition half is indeterminate because its margin is inside the noise",
+     fspe_m_p5_composition,
+     lambda v: v is None or (
+         v["n_panel"] == 15 and v["n_control"] == 4
+         and abs(v["auroc_dfspe_m"] - 0.3833) < 0.002
+         and abs(v["auroc_composition"] - 0.4167) < 0.002
+         and v["difference"] < 0 and v["both_below_half"]
+         # the margin section 4 requires is a fifth of the statistic's own null spread
+         and v["margin"] == 0.05 and abs(v["null_sd"] - 0.167) < 0.005
+         and v["inside_noise"] and v["indeterminate"]),
+     {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
+      "The required margin is **one fifth of the sampling noise**"}, []),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.

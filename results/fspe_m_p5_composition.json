@@ -1,0 +1,131 @@
+{
+  "built": "2026-09-27 11:49:32",
+  "statement": "P5's composition half: dFSPE-M's panel-vs-control AUROC against a leave-one-out amino-acid-composition baseline on the same proteins",
+  "n_panel": 15,
+  "n_control": 4,
+  "auroc_dfspe_m": 0.38333333333333336,
+  "auroc_composition": 0.4166666666666667,
+  "difference": -0.033333333333333326,
+  "required_margin": 0.05,
+  "null_auroc_sd": 0.16726553581514567,
+  "margin_inside_noise": true,
+  "verdict": "INDETERMINATE: the required 0.05 margin is inside the sampling noise of an AUROC at n_control = 4, whose null standard deviation is 0.167. Reported without a pass or fail, on the same grounds as step 4's AUROC half.",
+  "section4_baseline_for_reference": 0.754,
+  "baseline_scope_note": "section 4's 0.754 is the composition baseline on the 234-protein leave-one-mechanism-out panel, not on these 19 proteins; it is quoted for reference and is not the comparator here",
+  "per_protein": [
+    {
+      "acc": "P02879",
+      "panel": 1,
+      "dfspe_m": -1.5252842047136856,
+      "composition_score": -0.7139258630595617
+    },
+    {
+      "acc": "P01555",
+      "panel": 1,
+      "dfspe_m": 2.808114479238994,
+      "composition_score": 4.364524977668845
+    },
+    {
+      "acc": "P0DPI1",
+      "panel": 1,
+      "dfspe_m": 7.745824543007245,
+      "composition_score": 0.9533724767282457
+    },
+    {
+      "acc": "P01552",
+      "panel": 1,
+      "dfspe_m": 0.13771472458098644,
+      "composition_score": -1.4691070544175981
+    },
+    {
+      "acc": "P13423",
+      "panel": 1,
+      "dfspe_m": 1.559467442769588,
+      "composition_score": 4.854363144894557
+    },
+    {
+      "acc": "P11140",
+      "panel": 1,
+      "dfspe_m": -0.610634195307049,
+      "composition_score": 2.3235719278309843
+    },
+    {
+      "acc": "P04958",
+      "panel": 1,
+      "dfspe_m": 6.056412116534567,
+      "composition_score": 4.172696514001128
+    },
+    {
+      "acc": "O34208",
+      "panel": 1,
+      "dfspe_m": 10.007044840744278,
+      "composition_score": 4.3647742647351295
+    },
+    {
+      "acc": "Q51451",
+      "panel": 1,
+      "dfspe_m": 3.6474103292881943,
+      "composition_score": 0.3646638591367297
+    },
+    {
+      "acc": "P15273",
+      "panel": 1,
+      "dfspe_m": 8.181919196026811,
+      "composition_score": 2.1508986149913785
+    },
+    {
+      "acc": "P00648",
+      "panel": 1,
+      "dfspe_m": 5.876047736590726,
+      "composition_score": -0.2988783101350876
+    },
+    {
+      "acc": "P04419",
+      "panel": 1,
+      "dfspe_m": 4.68749613864416,
+      "composition_score": 1.7981726755209093
+    },
+    {
+      "acc": "Q99ZW2",
+      "panel": 1,
+      "dfspe_m": 6.878892379689143,
+      "composition_score": 3.087112534170801
+    },
+    {
+      "acc": "P00588",
+      "panel": 1,
+      "dfspe_m": 2.2157870481466246,
+      "composition_score": 2.1480238904622526
+    },
+    {
+      "acc": "P0DF97",
+      "panel": 1,
+      "dfspe_m": 2.9480003919303144,
+      "composition_score": 2.5037246054245883
+    },
+    {
+      "acc": "P07584",
+      "panel": 0,
+      "dfspe_m": 8.417730958990788,
+      "composition_score": 3.4043641847426076
+    },
+    {
+      "acc": "P00800",
+      "panel": 0,
+      "dfspe_m": 8.068605835664957,
+      "composition_score": 1.0436715341099416
+    },
+    {
+      "acc": "P00698",
+      "panel": 0,
+      "dfspe_m": 4.511917394851464,
+      "composition_score": 4.160660190098449
+    },
+    {
+      "acc": "P20656",
+      "panel": 0,
+      "dfspe_m": 0.028181179574394477,
+      "composition_score": 2.3066583779148626
+    }
+  ]
+}

@@ -942,3 +942,37 @@ next run rather than after.
 
   **P3 stays reported as not supported**, with the confound stated in the same
   paragraph as the verdict. P4 remains a descriptive table and P6 is unrun.
+
+- 2026-09-27 (eighth entry): **P5's composition half: INDETERMINATE, for the same
+  reason step 4's AUROC half was.** `src/64_fspe_m_p5_composition.py`, artifact
+  `results/fspe_m_p5_composition.json`. No threshold changed.
+
+  | | AUROC |
+  |---|---:|
+  | dFSPE-M, panel vs control | **0.3833** |
+  | amino-acid composition, leave-one-out | **0.4167** |
+  | difference | **−0.0333** |
+  | required margin | +0.05 |
+  | null sd of an AUROC at n_control = 4 | **0.1673** |
+
+  The required margin is **one fifth of the sampling noise** of the statistic it is
+  applied to, so this is reported without a pass or fail. The fifth amendment
+  established the arithmetic for step 4's AUROC half and it applies unchanged here:
+  section 4 wrote +0.05 for a comparison on the 234-protein panel, where the
+  composition baseline reaches 0.754, and the same number cannot carry a 15-versus-4
+  comparison. **Section 4's 0.754 is not the comparator** — it is a figure from a
+  different panel, quoted for reference.
+
+  What can be said without a threshold: both AUROCs sit **below 0.5**, and
+  composition is nominally the better of the two. Neither separates the panel from
+  the controls in the hazard-consistent direction, which is the same finding P2
+  already returned on the means and is not independent evidence of it.
+
+  ⚠️ The 0.3833 here is over all 15 panel proteins; P2's 0.393 in the sixth
+  amendment is over the 14 with `P01552` excluded. Same quantity, different
+  denominators, stated so the two numbers are not read as a discrepancy.
+
+  **P6 remains the only unrun primary test**, and it is blocked on an input: a homolog
+  alignment per panel protein needs a sequence database that is not present locally or
+  on the cluster. HMMER is installed locally, so the tooling is there and the data is
+  not.
