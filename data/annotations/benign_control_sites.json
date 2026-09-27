@@ -1,0 +1,221 @@
+{
+  "built": "2026-09-27 10:45:39",
+  "purpose": "sequence-coordinate catalytic positions for the benign controls P2 of docs/MUTATION_EXTENSION_PREREGISTRATION.md names. Supplies an input; takes no measurement.",
+  "acceptance_rule": "src/46's: the offset must be the unique integer in [0, 60] placing EVERY expected residue identity correctly. A control failing it is excluded, not rescored.",
+  "identity_sources": "the annotation text where it names residues (His92, Glu93, ...), otherwise UniProt's own Active site features plus Binding sites whose ligand is a catalytic metal. Positions are never asserted from memory, and non-catalytic ligand sites are excluded and logged per control rather than swept in.",
+  "catalytic_ligands": [
+    "Zn(2+)",
+    "Mn(2+)",
+    "Mg(2+)",
+    "Fe(2+)",
+    "Fe(3+)",
+    "Cu(2+)",
+    "Ni(2+)"
+  ],
+  "n_verified": 4,
+  "n_rejected": 0,
+  "verified": {
+    "1AST": {
+      "name": "Astacin",
+      "uniprot": "P07584",
+      "pdb_id": "1AST",
+      "chain": "A",
+      "organism": "Astacus astacus (European crayfish)",
+      "is_control_for": "P0DPI1",
+      "mechanism_match": "HExxH zinc-binding motif (His-Glu-X-X-His), same metzincin superfamily fold as BoNT-A light chain. Shares the zinc coordination geometry (His92, Glu93, His96) directly paralleling BoNT His222, Glu223, His226.",
+      "sequence_length": 251,
+      "identity_source": "annotation text",
+      "excluded_non_catalytic_ligand_sites": [],
+      "annotated_positions": [
+        92,
+        93,
+        96,
+        102
+      ],
+      "offset": 49,
+      "positions": [
+        141,
+        142,
+        145,
+        151
+      ],
+      "residues": "HEHH",
+      "catalytic_residues": [
+        141,
+        142,
+        145,
+        151
+      ]
+    },
+    "1LNF": {
+      "name": "Thermolysin",
+      "uniprot": "P00800",
+      "pdb_id": "1LNF",
+      "chain": "E",
+      "organism": "Bacillus thermoproteolyticus",
+      "is_control_for": "P0DPI1",
+      "mechanism_match": "HExxH zinc metalloprotease, thermolysin-like fold. Named by P2 of the mutation preregistration as a control for BoNT-A and absent from _benign_controls until 2026-09-27.",
+      "sequence_length": 548,
+      "identity_source": "UniProt Active site features plus catalytic-metal Binding sites",
+      "excluded_non_catalytic_ligand_sites": [
+        {
+          "position": 289,
+          "residue": "D",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 291,
+          "residue": "D",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 293,
+          "residue": "Q",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 370,
+          "residue": "D",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 409,
+          "residue": "E",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 415,
+          "residue": "N",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 417,
+          "residue": "D",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 419,
+          "residue": "E",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 422,
+          "residue": "E",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 425,
+          "residue": "Y",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 426,
+          "residue": "T",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 429,
+          "residue": "I",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        },
+        {
+          "position": 432,
+          "residue": "D",
+          "ligand": "Ca(2+)",
+          "reason": "structural or non-catalytic ligand; Ca(2+) in particular is a thermostability site in this fold, not part of the active site"
+        }
+      ],
+      "annotated_positions": [
+        374,
+        375,
+        378,
+        398,
+        463
+      ],
+      "offset": 0,
+      "positions": [
+        374,
+        375,
+        378,
+        398,
+        463
+      ],
+      "residues": "HEHEH",
+      "catalytic_residues": [
+        374,
+        375,
+        378,
+        398,
+        463
+      ]
+    },
+    "1LYZ": {
+      "name": "Hen egg-white lysozyme",
+      "uniprot": "P00698",
+      "pdb_id": "1LYZ",
+      "chain": "A",
+      "organism": "Gallus gallus (chicken)",
+      "is_control_for": "general_baseline",
+      "mechanism_match": "Well-characterized benign enzyme with canonical active site (Glu35, Asp52). Widely used as a structural biology benchmark. Tests whether ProteinMPNN shows elevated FSI for ANY well-studied enzyme, regardless of danger.",
+      "sequence_length": 147,
+      "identity_source": "annotation text",
+      "excluded_non_catalytic_ligand_sites": [],
+      "annotated_positions": [
+        35,
+        52
+      ],
+      "offset": 18,
+      "positions": [
+        53,
+        70
+      ],
+      "residues": "ED",
+      "catalytic_residues": [
+        53,
+        70
+      ]
+    },
+    "1QD2": {
+      "name": "Saporin-6",
+      "uniprot": "P20656",
+      "pdb_id": "1QD2",
+      "chain": "A",
+      "organism": "Saponaria officinalis (soapwort)",
+      "is_control_for": "P02879",
+      "mechanism_match": "Type-1 RIP with same beta-trefoil active site fold as ricin A-chain. Catalytic Tyr72, Tyr120, Glu176 directly parallel ricin Tyr80, Tyr123, Glu177. Lacks the B-chain required for cell entry, making it non-dangerous in practice.",
+      "sequence_length": 299,
+      "identity_source": "annotation text",
+      "excluded_non_catalytic_ligand_sites": [],
+      "annotated_positions": [
+        72,
+        120,
+        176
+      ],
+      "offset": 24,
+      "positions": [
+        96,
+        144,
+        200
+      ],
+      "residues": "YYE",
+      "catalytic_residues": [
+        96,
+        144,
+        200
+      ]
+    }
+  },
+  "rejected": []
+}

@@ -2905,3 +2905,54 @@ warns about and it would change every published recovery number, so calibration 
 where it is. The partition is not used to re-threshold anything: `src/49`'s measurements already
 stand on the same membership, and § 2.6.2's parallel table is where a guaranteed-threshold figure
 lives.
+
+---
+
+## 2026-09-27 (twenty-ninth entry) — P2's four benign controls become sequences, and thermolysin's UniProt features are 13 parts calcium
+
+The 2026-09-27 prerequisite audit found P2 blocked three ways: thermolysin, one of the four controls
+it names as "already in the repository", was absent; none of the other three had a sequence, because
+they entered as PDB structures for the FSI controls; and all three carried `use_pdb_numbering: true`,
+so each needed an identity-verified offset before it could be masked at all.
+`src/61_benign_control_annotation.py` closes all three under `src/46`'s rule — the offset must be the
+**unique** integer placing **every** expected residue identity correctly — and all four pass:
+
+| control | UniProt | offset | positions | residues | identities from |
+|---|---|---:|---|---|---|
+| astacin `1AST` | P07584 | **+49** | 141, 142, 145, 151 | HEHH | annotation text |
+| thermolysin `1LNF` | P00800 | **+0** | 374, 375, 378, 398, 463 | HEHEH | UniProt features |
+| lysozyme `1LYZ` | P00698 | **+18** | 53, 70 | ED | annotation text |
+| saporin-6 `1QD2` | P20656 | **+24** | 96, 144, 200 | YYE | annotation text |
+
+Three of the four needed a non-zero offset, which is the point of having the rule: the annotations are
+in PDB numbering and the sequences are canonical UniProt, and +49, +24 and +18 are the signal or
+propeptide boundaries between them. Asserting any of those from memory would have masked the wrong
+positions on every control in P2.
+
+### 🔴 The defect in the first pass, and why it mattered
+
+Thermolysin has no annotation text to read residues out of, so its identities came from UniProt's own
+single-position features. Taking every `Active site` **and** `Binding site` gave it **18 positions**,
+against astacin's 4 and lysozyme's 2. Reading them showed why: **13 of the 18 are structural calcium
+sites.** Thermolysin is a calcium-stabilised thermophilic protease and UniProt annotates all of its
+Ca²⁺ ligands, none of which is catalytic.
+
+P2 compares **means** across controls. One control whose functional-site set mixed catalysis with
+structural metal binding, while the other three were catalysis only, would have moved that comparison
+without anyone deciding it should. The rule is now: every `Active site`, plus `Binding site` only
+where the ligand is a catalytic metal. Thermolysin becomes the HExxH zinc motif plus the proton
+donor — H374, E375, H378, E398, H463 — five positions, comparable in kind to astacin's four. The 13
+excluded sites are logged per control in the artifact with their ligand, not dropped silently.
+
+### What this is not
+
+`src/61` supplies an input and takes no measurement: no model is loaded and no score is computed, so
+it cannot have been tuned by looking at a result. **P2 itself is still not run.** What changes is that
+its inputs now exist and are verified, so when it runs, a failure will be a statement about FSPE-M
+rather than about missing annotations. § 4 calls P2 "the test most likely to fail, and the one that
+decides whether this axis is worth building on", which is the reason to get its inputs right before
+its numbers exist rather than after.
+
+Also still open: the "benign enzyme set matched on length and catalytic-site count" P2 asks for
+**beyond** these four does not exist, so P2 will run on n = 4 controls against 14 panel proteins
+unless that set is built. That is annotation work and criterion 17 again.

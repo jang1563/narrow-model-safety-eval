@@ -523,6 +523,34 @@ def negative_test_partition():
     }
 
 
+def benign_control_sites():
+    """P2's controls as sequences, with the offset each one needed, from the artifact.
+
+    🔴 Added 2026-09-27. P2 of the mutation preregistration names four benign controls "already in
+    the repository"; one was absent and none had a sequence or a sequence-coordinate position. What
+    is asserted is that all four now verify under src/46's rule -- a UNIQUE offset placing EVERY
+    expected identity -- and that thermolysin's position set is catalytic rather than the 18-position
+    mixture UniProt's Binding site features give if calcium is not excluded.
+    """
+    d = j("../data/annotations/benign_control_sites.json")
+    if d is None:
+        return None
+    v = d["verified"]
+    return {
+        "n_verified": d["n_verified"], "n_rejected": d["n_rejected"],
+        "keys": sorted(v),
+        "offsets": {k: v[k]["offset"] for k in sorted(v)},
+        "residues": {k: v[k]["residues"] for k in sorted(v)},
+        "n_positions": {k: len(v[k]["positions"]) for k in sorted(v)},
+        # thermolysin is the one read from UniProt rather than from annotation text, and the one
+        # where a ligand filter was needed
+        "thermolysin_excluded_ca_sites":
+            len(v.get("1LNF", {}).get("excluded_non_catalytic_ligand_sites", [])),
+        "thermolysin_from_uniprot": "UniProt" in v.get("1LNF", {}).get("identity_source", ""),
+        "text_sourced": sorted(k for k in v if v[k]["identity_source"] == "annotation text"),
+    }
+
+
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
 
@@ -2315,6 +2343,22 @@ CLAIMS = [
          and abs(v["panel_rate"] - 1 / 296) < 1e-9
          and abs(v["name_rate"] - 1 / 3549) < 1e-9),
      {"docs/DETECTOR_CRITERIA.md": "**Partial as of 2026-09-27, and it was a fail.**"}, []),
+    ("P2's four benign controls verify as sequences, thermolysin included",
+     benign_control_sites,
+     lambda v: v is None or (
+         v["n_verified"] == 4 and v["n_rejected"] == 0
+         and v["keys"] == ["1AST", "1LNF", "1LYZ", "1QD2"]
+         # every offset is the unique one placing every identity, src/46's rule
+         and v["offsets"] == {"1AST": 49, "1LNF": 0, "1LYZ": 18, "1QD2": 24}
+         and v["residues"] == {"1AST": "HEHH", "1LNF": "HEHEH", "1LYZ": "ED", "1QD2": "YYE"}
+         # thermolysin's set is catalytic, not the calcium-inclusive one
+         and v["n_positions"]["1LNF"] == 5 and v["thermolysin_excluded_ca_sites"] == 13
+         and v["thermolysin_from_uniprot"]
+         and v["text_sourced"] == ["1AST", "1LYZ", "1QD2"]),
+     # pinned in the preregistration rather than the corrections log, because the log is not on the
+     # audited surface: it has to be able to quote figures the gate forbids elsewhere
+     {"docs/MUTATION_EXTENSION_PREREGISTRATION.md":
+      "| thermolysin `1LNF` | P00800 | +0 | 374, 375, 378, 398, 463 | HEHEH |"}, []),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.

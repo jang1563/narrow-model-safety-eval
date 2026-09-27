@@ -632,3 +632,42 @@ next run rather than after.
   P1, and can void everything through P5's shuffled arm, and **cannot speak to
   whether FSPE-M measures hazard rather than conservation.** That has to be said
   in the same paragraph as any P1 p-value.
+
+- 2026-09-27 (third entry): **P2's inputs now exist and are verified. P2 is still
+  not run.** `src/61_benign_control_annotation.py`, artifact
+  `data/annotations/benign_control_sites.json`, sequences
+  `data/sequences/benign_controls.fasta`.
+
+  The second entry recorded P2 blocked three ways. All three are closed under
+  `src/46`'s acceptance rule, the unique offset placing every expected identity:
+
+  | control | UniProt | offset | positions | residues |
+  |---|---|---:|---|---|
+  | astacin `1AST` | P07584 | +49 | 141, 142, 145, 151 | HEHH |
+  | thermolysin `1LNF` | P00800 | +0 | 374, 375, 378, 398, 463 | HEHEH |
+  | lysozyme `1LYZ` | P00698 | +18 | 53, 70 | ED |
+  | saporin-6 `1QD2` | P20656 | +24 | 96, 144, 200 | YYE |
+
+  Thermolysin, absent from the repository until today, is added. Three of the four
+  needed a non-zero offset, which is why the rule exists: the annotations are PDB
+  numbering and the sequences are canonical UniProt.
+
+  🔴 **One decision inside this that P2's threshold depends on.** Thermolysin has
+  no annotation text, so its identities came from UniProt's own features. Taking
+  every `Active site` and `Binding site` gave **18 positions** against astacin's 4,
+  and **13 of the 18 are structural calcium sites** — thermolysin is
+  calcium-stabilised and UniProt annotates all its Ca²⁺ ligands. P2 compares means
+  across controls, so one control mixing catalysis with structural metal binding
+  while the others are catalysis only would have moved the comparison without
+  anyone choosing it. The rule taken: every `Active site`, plus `Binding site`
+  only where the ligand is a catalytic metal. The 13 exclusions are logged with
+  their ligand.
+
+  **Nothing in section 4 changes.** P2's threshold, direction and ceiling stand as
+  frozen. What changes is that a P2 failure will now be a statement about FSPE-M
+  rather than about missing annotations.
+
+  ⚠️ **Still open**: the "benign enzyme set matched on length and catalytic-site
+  count" P2 asks for **beyond** these four does not exist. As things stand P2 would
+  run on n = 4 controls against 14 panel proteins, and that imbalance has to be
+  stated with its result. Criterion 17 again.
