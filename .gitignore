@@ -112,3 +112,7 @@ data/external/uniprot/
 # Checkpoint shards for src/76's pool embedding: intermediate state for a ~4.5 hour run, rebuilt by
 # resuming it. The finished pooled arrays are what matter and they are written only after the gate.
 results/*/pool_reduction_ckpt/
+
+# src/77's checkpoint shards, same reasoning as src/76's: intermediate state for a long embedding,
+# rebuilt by resuming it. The finished array is written only after the method gate passes.
+results/*/vfdb_neg_ckpt/

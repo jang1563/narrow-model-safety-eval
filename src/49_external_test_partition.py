@@ -104,32 +104,59 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", type=int, default=200)
     ap.add_argument("--arm", default="esm2_35M", choices=sorted(ARMS))
+    # 🔑 Added 2026-09-28 for study A1 of docs/NEGATIVE_EXPANSION_PREREGISTRATION.md. The pool is
+    # Swiss-Prot housekeeping proteins, an easy negative set; VFDB's non-toxin virulence factors are
+    # pathogen-produced and largely secreted, which are the two features § 2.3's provenance probe
+    # already reads at AUROC 0.818. Same protocol, same calibration split, harder test negatives.
+    ap.add_argument("--test-negatives", dest="tneg", default="pool", choices=["pool", "vfdb"])
     a = ap.parse_args()
     RES = ROOT / "results/v3"
     ps, pt = ARMS[a.arm]["panel"], ARMS[a.arm]["pool"]
 
     P = np.load(RES / f"embeddings_positive_v3{ps}.npy")
     N = np.load(RES / f"embeddings_negative_v3{ps}.npy")
-    POOL = np.load(RES / f"embeddings_pool_large_{pt}.npy")
+    if a.tneg == "vfdb":
+        if a.arm != "canonical":
+            raise SystemExit("--test-negatives vfdb is only embedded for the canonical arm; A1's "
+                             "comparison is against § 2.6.1's canonical figures")
+        vf = RES / "embeddings_vfdb_neg_esm2_650M.npy"
+        if not vf.exists():
+            raise SystemExit(f"{vf.name} is missing; run python src/77_vfdb_negative_embed.py first "
+                             "(it gates on the panel negatives before writing)")
+        POOL = np.load(vf)
+        pman = json.load(open(RES / "embedding_manifest_vfdb_neg_esm2_650M.json"))
+    else:
+        POOL = np.load(RES / f"embeddings_pool_large_{pt}.npy")
+        pman = json.load(open(RES / f"embedding_manifest_pool_large_{pt}.json"))
     man = json.load(open(RES / f"embedding_manifest_v3{ps}.json"))
-    pman = json.load(open(RES / f"embedding_manifest_pool_large_{pt}.json"))
     # the panel and the pool must come from the same model, or the comparison is meaningless
     assert man["model"] == pman["model"], f"{man['model']} != {pman['model']}"
     assert P.shape[1] == POOL.shape[1], f"dim {P.shape[1]} != {POOL.shape[1]}"
     mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v3.json"))
 
-    pool_acc = [_acc(r) for r in pman["rows"]]
-    pool_name = [_name(r) for r in pman["rows"]]
-    keep = np.array([i for i, x in enumerate(pool_acc) if x != CONTAMINANT])
-    assert len(keep) == len(pool_acc) - 1, f"{CONTAMINANT} not found in the pool"
-    POOL, pool_name = POOL[keep], [pool_name[i] for i in keep]
-    # one representative per distinct name, for the effective-n version of the rate
-    first_of_name, ded = {}, []
-    for i, nm in enumerate(pool_name):
-        if nm not in first_of_name:
-            first_of_name[nm] = i
-            ded.append(i)
-    ded = np.array(ded)
+    if a.tneg == "vfdb":
+        # ⚠️ The pool's contaminant drop and its distinct-NAME grouping are both pool-specific.
+        # VFDB rows are VFG ids and its redundancy unit is the VF#### group, which src/77 recorded
+        # as representative_rows — amendment 5 of the preregistration requires the rate on both the
+        # raw set and that subset, and requires saying they are differently COMPOSED sets rather
+        # than one rate at two resolutions (raw is 40% secretion effectors, the subset 25% adherence).
+        ded = np.array(pman["representative_rows"])
+        assert len(ded) == pman["n_distinct_vf"], "representative_rows disagrees with n_distinct_vf"
+        print(f"test negatives: VFDB, {POOL.shape[0]} records -> {len(ded)} distinct VF groups "
+              f"(redundancy {pman['redundancy_factor']})")
+    else:
+        pool_acc = [_acc(r) for r in pman["rows"]]
+        pool_name = [_name(r) for r in pman["rows"]]
+        keep = np.array([i for i, x in enumerate(pool_acc) if x != CONTAMINANT])
+        assert len(keep) == len(pool_acc) - 1, f"{CONTAMINANT} not found in the pool"
+        POOL, pool_name = POOL[keep], [pool_name[i] for i in keep]
+        # one representative per distinct name, for the effective-n version of the rate
+        first_of_name, ded = {}, []
+        for i, nm in enumerate(pool_name):
+            if nm not in first_of_name:
+                first_of_name[nm] = i
+                ded.append(i)
+        ded = np.array(ded)
 
     pos_acc = [r["acc"] for r in man["positive_rows"]]
     cls_of = {p["fasta_id"]: p["mechanism_class"] for p in mech["proteins"]}
@@ -139,8 +166,9 @@ def main():
 
     n_ca = int(len(N) * NEG_HOLDOUT_FRAC)
     print(f"model={man['model']}  positives={len(P)}  panel_negatives={len(N)}")
-    print(f"pool test set: {len(POOL)} proteins ({CONTAMINANT} dropped), "
-          f"{len(ded)} distinct names")
+    print(f"test set: {len(POOL)} proteins"
+          + (f" ({CONTAMINANT} dropped), {len(ded)} distinct names" if a.tneg == "pool"
+             else f", {len(ded)} distinct VF groups"))
     print(f"calibration stays at the published {n_ca}; seeds={a.seeds}")
     for alpha in ALPHAS:
         _, k, g = conformal_threshold(np.zeros(n_ca), alpha)
@@ -245,7 +273,8 @@ def main():
     shift_bad = [al for al in ALPHAS
                  if out_fp[str(al)]["shift"]["conformal"] is not None
                  and out_fp[str(al)]["shift"]["conformal"]["excludes_nominal"]]
-    dest = RES / f"external_test_partition_{a.arm}.json"
+    dest = RES / (f"external_test_partition_{a.arm}.json" if a.tneg == "pool"
+                  else f"external_test_partition_{a.arm}_vfdb.json")
     # 🔴 The arm count is READ FROM DISK, 2026-09-24, entry twenty-three. This was a hardcoded
     # `True` plus the words "SINGLE ARM, provisional" in the verdict string, and it stayed there
     # after the canonical 650M pool embeddings were computed and this script was run on them. So
@@ -266,7 +295,7 @@ def main():
            f"Replicated across {len(arms)} arms ({', '.join(arms)}), so criterion 7 is met."))
     print(f"\nverdict: {verdict}")
 
-    json.dump({"model": man["model"], "arm": a.arm, "seeds": a.seeds,
+    json.dump({"model": man["model"], "arm": a.arm, "test_negatives": a.tneg, "seeds": a.seeds,
                "calibration_n": n_ca, "pool_n": int(len(POOL)),
                "pool_distinct_names": int(len(ded)), "contaminant_dropped": CONTAMINANT,
                "conformal_k": {str(al): conformal_threshold(np.zeros(n_ca), al)[1]
