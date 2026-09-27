@@ -1016,8 +1016,11 @@ against 3B). Scaling redistributes which classes carry the fragility rather than
 **Pooling is not the fix.** Max pooling drives beta-lactamase to 0% and CLS to 13%, against mean at 21%.
 🔴 **The mean-beats-CLS part of that does not survive 30 seeds.** The three come out at **mean 15.7%
 [11.2, 20.2], CLS 16.4% [10.6, 22.2], max 1.9% [0.6, 3.2]**, so mean and CLS are indistinguishable and the
-published ordering between them was seed noise. Max stays far below both, and no pooling choice comes near
-alignment, which is what the heading claims.
+published ordering between them was seed noise. Max stays far below both. 🔴 **"No pooling choice comes
+near alignment" was the sentence here until 2026-09-27, and § 9.1.2 falsifies it**: a coherent
+25-residue window reduction reaches **35.0% [31.6, 38.4]**, entirely above alignment's 29.5%. The
+heading survives on a different fact — that reduction costs 43.8 points on superantigens and 9.5 on the
+panel mean, so it reallocates recovery rather than adding any.
 
 **Structure is not the fix.** SaProt with real AlphaFold structures for 231 of 234 panel proteins reaches
 10%, below plain ESM-2.
@@ -1026,8 +1029,10 @@ alignment, which is what the heading claims.
 beta-lactamase resists every configuration tested and that plain alignment beats every embedding method on
 it. **Both were wrong:** ESM-C 600M recovers **51%**, above alignment's 30% and more than double ESM-2
 650M. 🟢 **This is the one arm-level claim in §9 that gets stronger under seed checking.** At 30 seeds it is
-**48.3%, 95% CI [43.9, 52.7]**, and it is still the **only** one of the fourteen arms whose interval lies
-entirely above alignment's 29.5%, with no other arm's interval even reaching it.
+**48.3%, 95% CI [43.9, 52.7]**, and it is still the **only** one of the fourteen **model arms** whose
+interval lies entirely above alignment's 29.5%, with no other arm's interval even reaching it.
+⚠️ *"Arm" is load-bearing from 2026-09-27: § 9.1.2's `win_best25` is a re-pooling of the ESM-2 650M arm,
+not a fifteenth model, and its interval clears alignment as well.*
 
 That error predated the panel expansion — ESM-C 600M already scored 48.6% on the 66-protein panel —
 and survived because the class was summarized from the ESM-2 arms without checking the ESM-C row.
@@ -1148,6 +1153,68 @@ reaches **AUROC 0.818** on hazard from lab-strain provenance alone — **local f
 easier to exploit, not harder**, since organism-specific sequence idiosyncrasy is exactly what a motif
 detector can latch onto. Any residue-level result has to clear the provenance, localization and
 target-host controls before it means anything.
+
+#### 9.1.2 🔑 A coherent reduction does move beta-lactamase past alignment, and it takes as much as it gives
+
+`src/69_residue_stack_embed.py`, `src/70_coherent_pooling.py`, `src/72_coherent_pooling_seeds.py`,
+2026-09-27. § 9.1.1 said the residue stack had never been tested and named the test. This is it:
+fourteen **label-free** reductions that keep whole residues or whole windows intact, computed from one
+forward pass, written as tagged artifacts that `src/03b` evaluates **unchanged** so the protocol cannot
+drift. The control, `mean_res`, reproduces the published mean to 3.9e-04.
+
+**Thirteen of the fourteen are worse, most of them far worse.** At 30 seeds on beta-lactamase:
+`dev_topk10` and `dev_topk50` reach **0.0%** on every seed, `dev_attn1` 1.4%, `win_best5` 3.8%,
+`win_max9` 8.6% against the per-dimension max's 1.9%. 🔴 **Under a null in which the reductions were
+equivalent, about half the grid would beat the control. One did.** Concentrating on a few residues
+destroys the signal mean pooling captures.
+
+🔑 **And the one is not noise.** `win_best25` — the 25-residue window whose mean deviates furthest from
+the protein's own mean:
+
+| 30 seeds, flagged@95 | `mean_res` | `win_best25` | Δ | intervals |
+|---|---|---|---:|---|
+| **beta_lactamase** | 15.5% [11.0, 19.9] | **35.0% [31.6, 38.4]** | **+19.5** | disjoint |
+| **contact_dependent_inhibition** | 36.7% [29.3, 44.0] | **55.8% [50.7, 60.9]** | **+19.2** | disjoint |
+| superantigen_enterotoxin | 100.0% | **56.2% [50.2, 62.2]** | **−43.8** | disjoint |
+| pore_forming_cytolysin | 69.0% [64.2, 73.9] | 39.0% [36.1, 42.0] | −30.0 | disjoint |
+| rip_rrna_glycosidase | 100.0% | 89.0% [84.9, 93.2] | −10.9 | disjoint |
+
+🔑 **[31.6, 38.4] is the first pooling choice in this project whose whole interval clears alignment's
+29.5% on beta-lactamase**, and 0 of its 30 seeds recover the class at zero against the control's 7.
+§ 9's sentence *"no pooling choice comes near alignment"* was true of mean, CLS and max and is false in
+general.
+
+🟢 **Two confounds checked, and neither explains it.** The realised false-positive rate at a nominal 5%
+is **0.0656 for the control and 0.0656 for `win_best25`**, identical, so § 8's fixed-budget objection is
+answered: this is not bought by loosening the threshold. And § 9.1.1 warned that local features should
+make § 2.3's provenance confound *easier* to exploit; it goes the other way, **0.8150 → 0.7766**.
+
+🔴 **But it is a reallocation, not a fix, and the heading of § 9 survives on that.** Panel mean recovery
+falls **72.8% → 63.3%**. The two classes that gain are the two lowest, and three of the classes that
+lose were at or near saturation. At a fixed budget you can move where the sensitivity goes and not how
+much of it there is — which is § 8's mechanism arriving a fourth time, after the panel (§ 4), the
+negative set (§ 5) and the classifier head (§ 9.1).
+
+⚠️ **What determines which classes gain is not explained.** It is not length: beta-lactamase is the
+**shortest** class (median 278) and gains most, superantigen the second shortest (257) and loses most,
+while the clostridial neurotoxins are the longest (median 1,296) and do not move. A direct mechanistic
+check is **weak**: across the 14 panel proteins that carry catalytic annotations the chosen window's
+centre sits a mean of 102 residues from the nearest annotated catalytic residue against 143 expected for
+a uniformly placed window, closer than chance on **9 of 14** — a sign test at *p* ≈ 0.21, which is not a
+result. Six land essentially on the site (YopH 0, `O34208` 1, cholera A 3, `Q51451` 3, colicin E2 9,
+anthrax PA 13) and the two truncated 1,300-residue neurotoxins land ~375 away. 🔴 **And it cannot be
+checked on the class that gained**: no beta-lactamase carries functional-site annotations in this panel.
+
+🔑 **The reading that survives all of it is § 8.2's, reached independently.** A reduction that helps the
+lowest classes by as much as it hurts the highest is not a better global choice, it is evidence that the
+right reduction is **per family** — and the families needing locality are the low-margin ones the margin
+statistic already identifies before training. That is the mixture-of-experts case, and it now rests on a
+measured trade rather than on an analogy.
+
+⚠️ Bounds on this result: v2 only, ESM-2 650M only, label-free reductions only. The supervised variant —
+ranking residues by a direction fitted inside each fold, which is what a CNN would learn — is declared
+in `src/70` and **not implemented**, and it is the one closest to the architecture § 9.1.1 was asked
+about.
 
 ### 9.2 Strictness: where each class stops being recoverable
 

@@ -3619,3 +3619,91 @@ n = 60 numbers.
 🔴 **Not closed, and now known to be uncloseable on this design**: the AUROC half of the P5 gate. The
 route to a real leak test of that kind is more *panel* proteins with catalytic annotations, not more
 controls — and the panel is 15 because 15 is how many the annotation set has.
+
+---
+
+## 2026-09-27 (thirty-ninth entry) — The residue stack tested at last: 13 of 14 reductions worse, and the one that works reallocates rather than adds
+
+Entry thirty-seven established that § 9's "Pooling is not the fix" rested on three reductions, two of
+them whole-protein summaries and one that destroys residue coherence, and that no architecture here had
+ever seen more than one vector per protein. This ran the test that was missing.
+
+### The negative nine tenths
+
+`src/69` wrote the `L × d` stack behind a per-protein reproduction gate; `src/70` wrote fourteen
+**label-free** coherent reductions as tagged artifacts `src/03b` evaluates **unchanged**; `src/72`
+re-ran the winner at 30 seeds through `src/03x`'s imported fold logic. Control `mean_res` reproduces the
+published mean to 3.9e-04 and its beta-lactamase recovery to the decimal.
+
+🔴 **Twelve of fourteen are worse on the point estimate and most are far worse**: `dev_topk10` and
+`dev_topk50` recover the class at **0.0% on all 30 seeds**, `dev_attn1` 1.4%, `win_best5` 3.8%. Under a
+null where the reductions were equivalent about half the grid would beat the control. **Concentrating on
+a few residues destroys the signal mean pooling captures** — so the hypothesis entry thirty-seven put
+forward, that the signal is a local motif an average washes out, is wrong for thirteen of the fourteen
+ways of being local that were tried.
+
+### 🔑 And right for the fourteenth, which is not noise
+
+`win_best25`, the 25-residue window whose mean deviates furthest from the protein's own mean, at 30 seeds:
+
+| flagged@95 | `mean_res` | `win_best25` | Δ | intervals |
+|---|---|---|---:|---|
+| **beta_lactamase** | 15.5% [11.0, 19.9] | **35.0% [31.6, 38.4]** | **+19.5** | disjoint |
+| **contact_dependent_inhibition** | 36.7% [29.3, 44.0] | **55.8% [50.7, 60.9]** | **+19.2** | disjoint |
+| superantigen_enterotoxin | 100.0% | **56.2% [50.2, 62.2]** | **−43.8** | disjoint |
+| pore_forming_cytolysin | 69.0% [64.2, 73.9] | 39.0% [36.1, 42.0] | −30.0 | disjoint |
+| rip_rrna_glycosidase | 100.0% | 89.0% [84.9, 93.2] | −10.9 | disjoint |
+
+🔑 **[31.6, 38.4] is the first pooling choice in this project whose whole interval clears alignment's
+29.5% on beta-lactamase**, with 0 of 30 seeds at zero against the control's 7. The class that resisted
+fourteen representations, four classifier heads, five scales, structure and lineage moves **+19.5 points
+from a change of reduction on the canonical arm**.
+
+🟢 Two confounds checked and neither explains it. Realised FPR at a nominal 5% is **0.0656 for both**, so
+§ 8's fixed-budget objection is answered rather than dodged. And § 9.1.1 predicted local features would
+make § 2.3's provenance confound *easier*; it goes the other way, **0.8150 → 0.7766**.
+
+🔴 **But it takes as much as it gives, and § 9's heading survives on that** rather than on its original
+evidence. Panel mean recovery falls **72.8% → 63.3%**. The two classes that gain are the two lowest; three
+of those that lose were at or near saturation. **At a fixed budget you can move where the sensitivity goes
+and not how much of it there is** — § 8's mechanism arriving a fourth time, after the panel (§ 4), the
+negative set (§ 5) and the classifier head (§ 9.1). The gain and the cost are both reported at 30 seeds
+**because reporting the gain at 30 and the cost at 5 is exactly the asymmetry this project keeps finding
+in other people's tables**; `src/72` was extended to make them symmetric before anything was written.
+
+⚠️ **What decides which classes gain is unexplained, and the mechanistic check is weak.** Not length:
+beta-lactamase is the **shortest** class (median 278) and gains most, superantigen the second shortest
+(257) and loses most, the clostridial neurotoxins the longest (1,296) and do not move. Across the 14
+panel proteins with catalytic annotations the chosen window's centre sits a mean of **102** residues from
+the nearest annotated catalytic residue against **143** expected for a uniform window, closer than chance
+on **9 of 14** — sign test *p* ≈ 0.21, **not a result**. Six land essentially on the site (YopH 0,
+`O34208` 1, cholera A 3, `Q51451` 3, colicin E2 9, anthrax PA 13); the two truncated 1,300-residue
+neurotoxins land ~375 away. 🔴 **And it cannot be checked on the class that gained**: no beta-lactamase
+in this panel carries functional-site annotations.
+
+### Two sentences this falsified, and a claim it broke
+
+🔴 § 9 read *"no pooling choice comes near alignment, which is what the heading claims"*. **False as of
+today**, and rewritten: the heading now rests on the reallocation instead.
+
+🔴 And claim "ESM-C 600M ... is the only arm that does" **failed the gate**, because `src/70`'s reductions
+land in the same artifact namespace and the recomputation found two things above alignment. That is the
+gate working exactly as intended: the public sentence said "the only one of the fourteen arms", and a
+**re-pooling of the 650M arm** is not a fifteenth model. Both `docs/MECHANISM_GENERALIZATION.md` and the
+Hugging Face card now say **model arm** and name the exception; the claim pins **both** facts rather than
+excluding the new one, so neither can drift and the arm-versus-reduction distinction has to stay in the
+prose.
+
+### 🔑 The reading that survives, reached from an independent direction
+
+A reduction that helps the lowest classes by as much as it hurts the highest is not a better global
+choice. It is evidence that **the right reduction is per family**, and that the families needing locality
+are the low-margin ones margin already identifies *before* training. That is § 8.2's mixture-of-experts
+case, arrived at from a measured trade rather than from an analogy — and § 8.2's blocker still stands: the
+gate has to work per sequence, and § 10.3 is the record of member-level margin failing preregistration on
+two external panels.
+
+⚠️ Bounds: v2 only, ESM-2 650M only, **label-free reductions only**. The supervised variant — residues
+ranked by a direction fitted inside each fold, which is what a CNN would learn — is declared in `src/70`
+and deliberately **not implemented**, and it is the one closest to the architecture that prompted all of
+this.

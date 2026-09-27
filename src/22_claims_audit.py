@@ -509,6 +509,39 @@ def fspe_m_a2():
     }
 
 
+def coherent_pooling():
+    """win_best25 reallocates recovery at a fixed budget: the first pooling choice to clear alignment.
+
+    \U0001f534 The thing most worth pinning here is not the gain. It is that the gain and the cost are
+    both measured at 30 seeds, that the realised false-positive rate is unchanged, and that 13 of the
+    14 reductions are WORSE - a later edit that quoted the win without the reallocation, or the gain
+    at 30 seeds against a cost at 5, would be the asymmetry this project keeps finding elsewhere.
+    """
+    d = j("../results/v2/coherent_pooling_seeds.json")
+    if d is None:
+        return None
+    r, c = d["reductions"], d["cost_at_30_seeds"]
+    ctl, win = r["mean_res"], r["win_best25"]
+    worse = [k for k, v in r.items()
+             if k != "mean_res" and v["mean_30seed"] <= ctl["mean_30seed"]]
+    return {
+        "n_grid_points": d["n_grid_points"],
+        "align": d["alignment_recovery"],
+        "control_30seed": round(ctl["mean_30seed"], 4), "control_ci": ctl["ci95"],
+        "win_30seed": round(win["mean_30seed"], 4), "win_ci": win["ci95"],
+        "win_clears_alignment": win["vs_alignment"],
+        "win_zero_seeds": win["zero_seeds"], "control_zero_seeds": ctl["zero_seeds"],
+        "n_worse_than_control": len(worse),
+        "beat_at_5": d["beat_control_at_5_seeds"],
+        "intervals_clear_of_control": d["intervals_clear_of_control"],
+        # the cost, at the same seed count as the gain
+        "cost": {k: (round(v["delta_30seed"], 3), v["intervals_disjoint"]) for k, v in c.items()},
+        "all_cost_intervals_disjoint": all(v["intervals_disjoint"] for v in c.values()),
+        "fpr_unchanged": "0.0656 for mean_res and for win_best25 alike" in d["fixed_budget"],
+        "provenance_drops": d["provenance"]["win_best25"] < d["provenance"]["mean_res"],
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -2751,6 +2784,31 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("a coherent window reduction reallocates recovery rather than adding it",
+     coherent_pooling,
+     lambda v: v is None or (
+         v["n_grid_points"] == 14
+         # 12 of 14 are worse on the point estimate and win_best9 beats it without a clear
+         # interval, so exactly one survives the rule src/70 fixed before running
+         and v["n_worse_than_control"] == 12
+         and v["beat_at_5"] == ["win_best25"]
+         and v["intervals_clear_of_control"] == ["win_best25"]
+         # the gain: first pooling choice whose whole interval clears alignment on this class
+         and abs(v["align"] - 0.295) < 0.01
+         and v["win_30seed"] > 0.34 and v["win_ci"][0] > v["align"]
+         and v["win_ci"][0] > v["control_ci"][1]
+         and v["win_zero_seeds"] == 0 and v["control_zero_seeds"] == 7
+         # and the cost, at the same 30 seeds, all of it interval-disjoint
+         and v["all_cost_intervals_disjoint"]
+         and v["cost"]["superantigen_enterotoxin"][0] < -0.40
+         and v["cost"]["pore_forming_cytolysin"][0] < -0.25
+         and v["cost"]["contact_dependent_inhibition"][0] > 0.15
+         # not bought by loosening the budget, and the provenance confound did not get easier
+         and v["fpr_unchanged"] and v["provenance_drops"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "🔴 **But it is a reallocation, not a fix, and the heading of § 9 survives on that.**"},
+     # the sentence section 9 carried while mean, CLS and max were the whole evidence
+     ["Max stays far below both, and no pooling choice comes near\nalignment, which is what the heading claims."]),
     ("P2 fails harder at n_benign = 60 than at 4, and the gate's AUROC half can never be a test",
      fspe_m_a2,
      lambda v: v is None or (
@@ -2993,12 +3051,18 @@ CLAIMS = [
                 and abs(v["interaction"]) < 0.05
                 and v["ci"][0] < 0 < v["ci"][1]),
      {"docs/MECHANISM_GENERALIZATION.md": "refuted it**: the interaction was"}, []),
-    ("beta-lactamase: ESM-C 600M beats alignment, and is the only arm that does", beta_lactamase_across_arms,
-     lambda v: (v["n_arms"] == 14 and abs(v["alignment"] - 0.30) < 0.02
+    # \U0001f534 2026-09-27: this used to assert arms_above_alignment == ["esmc_600M"]. It broke when
+    # src/70's reductions landed in the same artifact namespace, which is the gate working: the
+    # public sentence said "the only one of the fourteen arms" and a POOLING of the 650M arm now
+    # clears alignment too. Both facts are pinned rather than the new one excluded, so neither can
+    # drift and the arm-versus-reduction distinction has to stay in the prose.
+    ("beta-lactamase: one model arm and one pooling of another clear alignment", beta_lactamase_across_arms,
+     lambda v: (abs(v["alignment"] - 0.30) < 0.02
                 and v["duplicate_arm_max_diff"] == 0
                 and v["esmc_600M"] is not None and v["esmc_600M"] > v["alignment"]
                 and v["esm2_650M"] < v["alignment"]
-                and v["arms_above_alignment"] == ["esmc_600M"]),
+                and v["arms_above_alignment"] == ["esm2_650M_win_best25", "esmc_600M"]
+                and v["max_arm"] == "esmc_600M"),
      {"docs/MECHANISM_GENERALIZATION.md": "ESM-C 600M recovers **51%**"},
      ["resists every configuration tested and that plain alignment beats every embedding method on it.\n**Both statements are correct**"]),
     ("member separability: embedding proximity separates, sequence similarity does not",

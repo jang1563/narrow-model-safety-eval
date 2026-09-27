@@ -163,12 +163,26 @@ def main():
         pooled = {k: v for k, v in pooled.items()}
 
     names = sorted({k[1] for k in pooled})
+    # src/03b reads a manifest beside each embedding pair for the row order, so one is written per
+    # tag from the residue stack's own index. The ids come from the same FASTA read that produced
+    # the stack, which is the FASTA order src/02b and src/03b use.
     written = []
     for name in names:
         tag = f"esm2_650M_{name}"
         for role in ("positive", "negative"):
             arr = np.vstack(pooled[(role, name)]).astype(np.float32)
             np.save(out / f"embeddings_{role}_{a.panel}_{tag}.npy", arr)
+        (out / f"embedding_manifest_{a.panel}_{tag}.json").write_text(json.dumps({
+            "model": meta["model"], "device": meta["device"], "dry_run_tag": tag,
+            "pooling": name, "built": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "embedding_dim": int(stack.shape[1]), "max_len": meta["max_len"],
+            "note": f"reduction '{name}' of residue_stack_{a.panel}.npy; every tag comes from the "
+                    "one forward pass src/69 made, so the reductions differ and nothing else does",
+            "positive_rows": [{"row": i, "acc": r["id"], "name": r["id"], "len": r["seq_len"]}
+                              for i, r in enumerate(meta["rows"]["positive"])],
+            "negative_rows": [{"row": i, "acc": r["id"], "name": r["id"], "len": r["seq_len"]}
+                              for i, r in enumerate(meta["rows"]["negative"])],
+        }, indent=2) + "\n")
         written.append(tag)
 
     # the control has to reproduce the published mean, or every comparison below is against a
