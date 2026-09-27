@@ -3864,3 +3864,55 @@ nothing moved**: 14 arms, identical verdict, identical per-arm numbers. The one 
 `arms_embedded_but_unscored` gained `_esmc_600M_mp` — a real embedding pair with no `lomo_results`,
 produced by `src/56` after `src/30` last ran, and correctly reported. **Nothing was wrong; the list was
 simply stale, which is its own small argument for re-deriving artifacts rather than trusting them.**
+
+---
+
+## 2026-09-27 (forty-second entry) — The supervised reduction fails the same test, so every gain in the pooling line is one arm
+
+Entry forty-one closed the label-free window's representation bound and found the gain was ESM-2 650M
+only. **Leaving § 9.1.3's supervised half unbounded while bounding the label-free half would have been
+the same asymmetry this log keeps recording in other people's tables**, so `src/73 --arm` ran it on
+`esm2_35M`, 30 seeds, gated at `k = 0` to **0.00e+00** against that arm's own published run.
+
+| v2, 30 seeds | ESM-2 **650M** | ESM-2 **35M** |
+|---|---|---|
+| panel mean at *k* = 0 | 72.4% | 76.4% |
+| best panel mean over *k* | **75.2%** (*k* = 100) | **75.4%** (*k* = 100) |
+| *k* values above the *k* = 0 panel mean | **50 and 100** | 🔴 **none** |
+| beta_lactamase | 15.5% → 15.5% | 16.9% → **2.6%** |
+| contact_dependent_inhibition (**n = 4**) | 36.7% → 65.8% | 72.5% → 83.3% |
+
+### 🔴 The unified result, which is negative
+
+| | ESM-2 650M | ESM-2 35M |
+|---|---|---|
+| label-free `win_best25`, beta-lactamase | **+19.5** | **−9.5** |
+| supervised top-*k*, panel mean | **+2.8** | **−1.0**, no *k* above control |
+| supervised top-*k*, beta-lactamase | +0.0 | **−14.3** |
+| cost: superantigen under `win_best25` | −43.8 | −45.2 |
+
+**Every gain in §§ 9.1.2 to 9.1.4 is specific to ESM-2 650M. Every cost is general.** The only thing that
+partly survives across arms is the supervised gain on contact-dependent inhibition — a class with **four
+members**, where the statistic moves in steps of 25%.
+
+🔑 **So the answer to the question that started this is negative.** A CNN learns local filters,
+supervised. Both cheap stand-ins for that — a label-free local window and a supervised residue ranking —
+gain on one representation out of two and cost on both. **Motivating a convolutional architecture from
+either would be motivating it from a single-arm effect.** § 10.6's rule exists to stop exactly that, and
+this is the third time in two days it has stopped something: the typicality baseline (§ 10.6.4), the
+window (§ 9.1.4), and now the supervised ranking.
+
+### What survives, and it is not small
+
+🟢 **Margin's ordering holds across fifteen re-poolings of one arm as well as across fourteen model
+arms** — Spearman +0.536 to +0.941, 14 of 15 significant, 12 of 15 with beta-lactamase at the floor.
+That is a second and different kind of variation for § 10.4, and it is about the **diagnosis** rather than
+a repair. 🔴 **But margin does not explain the one gain it was the obvious candidate for**: Δmargin
+against Δrecovery over the fifteen reductions is Spearman **+0.270 at *p* = 0.166**, and `win_best25`
+gains 19.5 points with a margin change of −0.0009. Preserving the margin is necessary and not sufficient.
+
+⚠️ **A methodological note that is the real yield of this stretch.** Three findings in two days looked
+interval-clean on ESM-2 650M and evaporated on the cheapest arm in the project. None of the three would
+have been caught by more seeds, a bigger panel, or a better threshold — only by varying the
+representation. **The rule is worth more than the findings it has killed**, and the cost of applying it
+was one 103 MB residue stack and about twenty minutes of compute per test.

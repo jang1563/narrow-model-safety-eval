@@ -1345,6 +1345,34 @@ produce it** — `win_max9` and `win_max15` also leave the margin intact and sti
 § 9.1.2 said it was: unexplained, with length ruled out, catalytic-site proximity weak (9 of 14,
 *p* ≈ 0.21), and unavailable on the class that gained.
 
+##### The supervised reduction fails the same test, which settles the whole subsection
+
+Leaving § 9.1.3's supervised half unbounded while bounding the label-free half would be the asymmetry
+this document keeps catching elsewhere, so `src/73 --arm` ran it on `esm2_35M` too, 30 seeds, gated at
+`k = 0` to **0.00e+00** against that arm's own published run.
+
+| v2, 30 seeds | ESM-2 **650M** | ESM-2 **35M** |
+|---|---|---|
+| panel mean at *k* = 0 | 72.4% | 76.4% |
+| best panel mean over *k* | **75.2%** (*k* = 100) | **75.4%** (*k* = 100) |
+| *k* values above the *k* = 0 panel mean | **50 and 100** | 🔴 **none** |
+| beta_lactamase | 15.5% → 15.5% | 16.9% → **2.6%** |
+| contact_dependent_inhibition (n = 4) | 36.7% → 65.8% | 72.5% → 83.3% |
+
+🔴 **So every gain in §§ 9.1.2–9.1.4 is specific to ESM-2 650M, and every cost is general.** The
+label-free window gains +19.5 on 650M and loses 9.5 on 35M; the supervised ranking raises the panel mean
+on 650M and no *k* raises it on 35M; the superantigen cost is −43.8 and −45.2 on the two arms alike. The
+one thing that partly survives is the supervised gain on contact-dependent inhibition, a **four-member**
+class.
+
+🔑 **The conclusion for the architecture question is therefore negative, and it is the answer to the
+question that prompted this whole subsection.** A CNN learns local filters, supervised. Both stand-ins for
+that — a label-free local window and a supervised residue ranking — produce gains on one representation
+out of two and costs on both. **Motivating a convolutional architecture from either would be motivating
+it from a single-arm effect**, and § 10.6's rule exists to stop exactly that. What survives is § 9.1.4's
+first half: margin's ordering holds across fifteen reductions as well as fourteen arms, which is about
+the *diagnosis* and not about a fix.
+
 ### 9.2 Strictness: where each class stops being recoverable
 
 `src/03f_coverage_strictness.py` sweeps the false-positive budget and reports **s90**, the strictest

@@ -152,6 +152,10 @@ def selftest():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--panel", default="v2", choices=["v2", "v3"])
+    # 🔴 --arm added 2026-09-27 after § 9.1.4. The LABEL-FREE window's gain turned out to be
+    # ESM-2 650M only; leaving the supervised half of § 9.1.3 unbounded while bounding the other
+    # half is the asymmetry this project keeps catching in other people's tables.
+    ap.add_argument("--arm", default="esm2_650M", choices=["esm2_650M", "esm2_35M", "esm2_150M"])
     ap.add_argument("--seeds", type=int, default=5)
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
@@ -159,8 +163,9 @@ def main():
         return selftest()
 
     out = ROOT / "results" / a.panel
-    meta = json.loads((out / f"residue_stack_index_{a.panel}.json").read_text())
-    stack = np.load(out / f"residue_stack_{a.panel}.npy", mmap_mode="r")
+    sfx = "" if a.arm == "esm2_650M" else f"_{a.arm}"
+    meta = json.loads((out / f"residue_stack_index_{a.panel}{sfx}.json").read_text())
+    stack = np.load(out / f"residue_stack_{a.panel}{sfx}.npy", mmap_mode="r")
     prows, nrows = meta["rows"]["positive"], meta["rows"]["negative"]
     mech = json.loads((ROOT / f"data/annotations/mechanism_classes_{a.panel}.json").read_text())
     cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
@@ -168,11 +173,11 @@ def main():
     # the classes src/03b reports: those it deems holdout-eligible, as its own artifact recorded them
     # src/03b writes lomo_results<suffix>.json inside the panel directory, so the name does not
     # carry the panel; v2 and v3 differ by directory only.
-    ctl_name = "lomo_results_esm2_650M_mean_res.json"
+    ctl_name = f"lomo_results_{a.arm}_mean_res.json"
     ctl = json.loads((out / ctl_name).read_text())["leave_one_mechanism_out"]
     targets = sorted(ctl)
     seeds = list(range(a.seeds))
-    print(f"panel {a.panel}: {len(prows)} positives, {len(nrows)} negatives, "
+    print(f"panel {a.panel}, arm {a.arm}: {len(prows)} positives, {len(nrows)} negatives, "
           f"{len(targets)} classes, {a.seeds} seeds, k in {TOPK}\n")
 
     # mean-pooled features for step 1, straight off the stack
@@ -198,9 +203,11 @@ def main():
         raise SystemExit("GATE FAILED: the reproduced fold loop does not match src/03b at k=0, so "
                          "nothing measured with it is comparable to a published number.")
 
-    dest = out / f"supervised_pooling_{a.panel}{'' if a.seeds == 5 else f'_{a.seeds}seeds'}.json"
+    dest = out / (f"supervised_pooling_{a.panel}{sfx}"
+                  f"{'' if a.seeds == 5 else f'_{a.seeds}seeds'}.json")
     dest.write_text(json.dumps({
-        "built": time.strftime("%Y-%m-%d %H:%M:%S"), "panel": a.panel, "seeds": a.seeds,
+        "built": time.strftime("%Y-%m-%d %H:%M:%S"), "panel": a.panel, "arm": a.arm,
+        "seeds": a.seeds,
         "topk": list(TOPK), "gate_worst_delta": worst, "gate": gate,
         "leakage": ("the direction is fitted on mean-pooled positives excluding the held-out class "
                     "plus the TRAINING negatives only, so it sees neither the held-out class nor "

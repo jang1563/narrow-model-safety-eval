@@ -598,6 +598,16 @@ def locality_across_panels():
     }
 
 
+def _panel_mean(d, k):
+    v = [x["flagged_95_mean"] for x in d["by_k"][str(k)].values()]
+    return sum(v) / len(v)
+
+
+def _get(d, k, cname):
+    r = d["by_k"][str(k)].get(cname)
+    return None if r is None else round(r["flagged_95_mean"], 4)
+
+
 def window_gain_is_one_arm():
     """The window's gain is ESM-2 650M only; its cost is not. And margin explains the cost, not the gain.
 
@@ -611,6 +621,8 @@ def window_gain_is_one_arm():
     b = j("../results/v2/coherent_pooling_seeds_esm2_35M.json")
     c = j("../results/v3/coherent_pooling_seeds.json")
     mr = j("../results/v2/margin_across_reductions.json")
+    s650 = j("../results/v2/supervised_pooling_v2_30seeds.json")
+    s35 = j("../results/v2/supervised_pooling_v2_esm2_35M_30seeds.json")
     if None in (a, b, c, mr):
         return None
     def cost(d):
@@ -636,6 +648,15 @@ def window_gain_is_one_arm():
         # margin's ordering survives re-pooling, which is the positive half
         "rho_min": round(min(rhos), 3), "rho_max": round(max(rhos), 3),
         "n_significant": len(sig), "n_blact_at_floor": len(floor),
+        # the supervised half, bounded the same way: no k raises the 35M panel mean
+        "sup_k_above_control": {
+            arm: [k for k in d["topk"][1:]
+                  if _panel_mean(d, k) > _panel_mean(d, 0)]
+            for arm, d in (("650M", s650), ("35M", s35)) if d}
+        if (s650 and s35) else None,
+        "sup_blact": {arm: (_get(d, 0, "beta_lactamase"), _get(d, 100, "beta_lactamase"))
+                      for arm, d in (("650M", s650), ("35M", s35)) if d}
+        if (s650 and s35) else None,
     }
 
 
@@ -2894,7 +2915,13 @@ CLAIMS = [
          and len(v["superantigen_cost"]) == 3
          and all(d < -0.25 and disj for d, disj in v["superantigen_cost"].values())
          # margin's ordering survives re-pooling: the positive half of this claim
-         and v["rho_min"] > 0.5 and v["n_significant"] == 14 and v["n_blact_at_floor"] == 12),
+         and v["rho_min"] > 0.5 and v["n_significant"] == 14 and v["n_blact_at_floor"] == 12
+         # and the SUPERVISED half is bounded the same way: k values raise the 650M panel mean and
+         # none raises the 35M one, so every gain in this line is one arm
+         and (v["sup_k_above_control"] is None or (
+             len(v["sup_k_above_control"]["650M"]) >= 2
+             and v["sup_k_above_control"]["35M"] == []
+             and v["sup_blact"]["35M"][1] < v["sup_blact"]["35M"][0] - 0.10))),
      {"docs/MECHANISM_GENERALIZATION.md":
       "🔴 **The gain is representation-specific.**"},
      # the sentences that stated the gain before the second arm existed
