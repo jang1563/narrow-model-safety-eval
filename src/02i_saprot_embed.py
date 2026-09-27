@@ -67,6 +67,9 @@ ROOT = Path(__file__).resolve().parent.parent
 RES_ROOT = ROOT / "results"          # the panel picks the subdirectory at runtime
 ANN = ROOT / "data" / "annotations"  # and the 3Di file, which is per panel
 MAX_LEN = 1022
+# A held-out class needs most of its members to carry real structure before a SaProt recovery figure
+# for it means anything. Below this, the class is named unreportable for the arm.
+MIN_CLASS_COVERAGE = 0.80
 MODEL = "westlake-repl/SaProt_650M_AF2"
 
 
@@ -162,6 +165,34 @@ def main():
     frac = len(masked) / max(len(pos) + len(neg), 1)
     print(f"3Di coverage: {len(pos) + len(neg) - len(masked)} with structure, "
           f"{len(masked)} masked ({frac:.1%})")
+
+    # 🔴 Per-class coverage, 2026-09-27. An aggregate masked fraction hides the only thing that
+    # decides whether an arm is interpretable: WHICH classes are missing. On v3 the aggregate is
+    # 18% and phage_peptidoglycan_hydrolase is 0 of 32 -- every member of the class § 10.6.2 is
+    # about has no AlphaFold model, so no threshold on the aggregate could have caught that. The
+    # per-class table goes in the manifest, and a class below MIN_CLASS_COVERAGE is named as
+    # unreportable for this arm rather than left to be scored and quoted.
+    cls_cov = {}
+    mp = ROOT / "data" / "annotations" / f"mechanism_classes_{pv}.json"
+    if mp.exists():
+        cls_of = {x["fasta_id"]: x["mechanism_class"]
+                  for x in json.load(open(mp))["proteins"]}
+        for f, _ in pos:
+            c = cls_of.get(f)
+            if c is None:
+                continue
+            ok_bad = cls_cov.setdefault(c, [0, 0])
+            ok_bad[0 if ann.get(f, {}).get("status") == "ok" else 1] += 1
+        print("per-class 3Di coverage:")
+        for c in sorted(cls_cov, key=lambda k: cls_cov[k][0] / sum(cls_cov[k])):
+            ok_n, bad_n = cls_cov[c]
+            flag = "  <-- UNREPORTABLE for this arm" \
+                if ok_n / (ok_n + bad_n) < MIN_CLASS_COVERAGE else ""
+            print(f"    {c:<34}{ok_n:>4} ok {bad_n:>4} masked "
+                  f"{100 * ok_n / (ok_n + bad_n):>5.0f}%{flag}")
+    unreportable = sorted(c for c, (o, b) in cls_cov.items()
+                          if o / (o + b) < MIN_CLASS_COVERAGE)
+
     if frac > a.allow_masked:
         print(f"XX {frac:.1%} of this panel carries the no_structure mask, above the "
               f"{a.allow_masked:.0%} limit. SaProt's structure channel would be absent for those "
@@ -189,6 +220,13 @@ def main():
         "built": time.strftime("%Y-%m-%d %H:%M:%S"),
         "embedding_dim": int(P.shape[1]),
         "structures_used": n_struct, "structures_masked": len(pos) + len(neg) - n_struct,
+        "per_class_coverage": {c: {"ok": o, "masked": b, "fraction": o / (o + b)}
+                               for c, (o, b) in sorted(cls_cov.items())},
+        "min_class_coverage": MIN_CLASS_COVERAGE,
+        "unreportable_classes": unreportable,
+        "unreportable_note": ("a held-out class below min_class_coverage has too few real "
+                              "structures for a SaProt recovery figure to be about the model; "
+                              "any per-class number for it must not be quoted from this arm"),
         "note": "amino acid plus Foldseek 3Di per position, AlphaFold DB v6; "
                 "proteins without a structure carry '#' and are effectively sequence-only",
         "positive_rows": [
@@ -202,6 +240,10 @@ def main():
     }
     json.dump(man, open(OUT / f"embedding_manifest_{pv}_{a.tag}.json", "w"), indent=2)
     print(f"wrote {P.shape} and {N.shape}, {n_struct} with real structure")
+    if unreportable:
+        print(f"⚠️  UNREPORTABLE classes for this arm: {unreportable}")
+        print("   Their members are mostly or wholly mask, so a recovery figure for them would be")
+        print("   a statement about AlphaFold coverage rather than about SaProt.")
 
 
 if __name__ == "__main__":

@@ -1701,6 +1701,13 @@ def v3_arm_seed_stability():
             "phage_overlapping_canonical": sorted(
                 set(d["arms"]) - {"canonical 650M"}
                 - set(sm["phage_peptidoglycan_hydrolase"]["arms_disjoint_from_canonical"])),
+            # 🔴 2026-09-27: beta-lactamase gained its first overlap with the canonical arm when
+            # saprot_650M came in at [7.8, 17.0] against the canonical [16.5, 25.9] -- half a point
+            # of overlap. Pinned by name for the same reason the phage one is: the identity of an
+            # overlap is the finding, a count of them is not.
+            "beta_overlapping_canonical": sorted(
+                set(d["arms"]) - {"canonical 650M"}
+                - set(sm["beta_lactamase"]["arms_disjoint_from_canonical"])),
             "beta_outside_ci": sorted(sm["beta_lactamase"]["published_outside_own_ci"]),
             "phage_outside_ci": sorted(sm["phage_peptidoglycan_hydrolase"]["published_outside_own_ci"]),
             "beta_top_changes": sm["beta_lactamase"]["top_arm_changes"],
@@ -1891,6 +1898,12 @@ def v3_margin_across_arms():
             "which_locates": d["P1"]["arms_locating_failure"],
             "significant": len(d["P2"]["arms_significant"]),
             "all_negative": len(d["arms_with_all_failure_margins_negative"]),
+            # 🔴 2026-09-27: no longer everywhere. saprot_650M's lowest-margin class is phage, not
+            # beta-lactamase, and that is the structure confound rather than a geometric finding:
+            # none of the 32 phage members has an AlphaFold model, so they are the only proteins
+            # that arm sees sequence-only. The exception is named so it cannot be read as evidence.
+            "beta_lowest_arms": sorted(k for k, v in a.items()
+                                       if v["lowest_margin_class"] == "beta_lactamase"),
             "beta_lowest_everywhere": all(v["lowest_margin_class"] == "beta_lactamase"
                                           for v in a.values()),
             "min_rho": min(v["rho"] for v in a.values()),
@@ -2930,13 +2943,19 @@ CLAIMS = [
      # phage while being disjoint from it on beta-lactamase, and BOTH of its published 5-seed
      # figures sit outside their own 30-seed intervals, which is the fourth and fifth time that
      # has happened in this project.
-     lambda v: (v["seeds"] == 30 and v["n_arms"] == 9
-                and v["beta_disjoint_pairs"] == 25 and v["phage_disjoint_pairs"] == 26
-                and v["beta_canonical_separates_from_all"]
+     # 🔴 2026-09-27: ten arms. saprot_650M joins esmc_600M and prott5_xl in overlapping the
+     # canonical arm on phage -- and for SaProt that overlap is uninterpretable anyway, because
+     # none of the 32 phage members has a structure for it to read. § 10.6.2 names the class
+     # unreportable for this arm; the number is pinned so the exclusion cannot be forgotten.
+     lambda v: (v["seeds"] == 30 and v["n_arms"] == 10
+                and v["beta_disjoint_pairs"] == 30 and v["phage_disjoint_pairs"] == 31
+                and not v["beta_canonical_separates_from_all"]
+                and v["beta_overlapping_canonical"] == ["saprot_650M"]
                 and not v["phage_canonical_separates_from_all"]
-                and v["phage_overlapping_canonical"] == ["esmc_600M", "prott5_xl"]
+                and v["phage_overlapping_canonical"] == ["esmc_600M", "prott5_xl",
+                                                          "saprot_650M"]
                 and v["beta_outside_ci"] == ["esm2_150M", "esm2_35M", "esm2_3B", "esmc_300M",
-                                             "prott5_xl"]
+                                             "prott5_xl", "saprot_650M"]
                 and v["phage_outside_ci"] == ["esm2_3B", "esm2_8M", "esmc_300M", "esmc_600M",
                                               "prott5_xl"]
                 and not v["beta_top_changes"] and v["phage_top_changes"]
@@ -3038,7 +3057,7 @@ CLAIMS = [
      {"docs/MECHANISM_GENERALIZATION.md":
       "| **K=80** | **+16.6** [+13.6, +19.6] | **+20.7** [+15.6, +25.8] | "
       "**+2.8** [−0.7, +6.3] |"}, []),
-    ("on v3 the across-arms test is stricter and comes back partial across nine arms",
+    ("on v3 the across-arms test is stricter and comes back partial across ten arms",
      v3_margin_across_arms,
      # Five arms now, not three. The three-arm version of this claim also pinned that
     # beta-lactamase recovery falls and the phage class rises monotonically with capacity;
@@ -3054,23 +3073,31 @@ CLAIMS = [
     # to see v3, and it reaches NEITHER failing class, so the § 10.6.2 dissociation is
     # model-specific rather than lineage-specific. It also carries the weakest rho of the nine,
     # +0.739, which is margin's class ordering at its weakest on the out-of-lineage arm.
-    lambda v: (v["n_arms"] == 9 and v["k"] == 2
+    # 🔴 2026-09-27: ten arms. saprot_650M brings the count of arms locating the failure pair to
+    # 3 of 10, and its own is STRUCTURE-CONFOUNDED: AlphaFold DB has no model for any of the 32
+    # phage members, so they are the only proteins that arm sees sequence-only, and its phage
+    # margin is -0.0368, the most negative of all ten. That is what a systematically different
+    # input does to one class, not what geometry does. Counted here and discounted in § 10.6.2.
+    lambda v: (v["n_arms"] == 10 and v["k"] == 2
                 and abs(v["chance"] - 1 / 66) < 1e-9
                 and v["failures"] == ["beta_lactamase", "phage_peptidoglycan_hydrolase"]
-                and v["all_negative"] == 8 and v["significant"] == 9
+                and v["all_negative"] == 9 and v["significant"] == 10
                 and abs(v["min_rho"] - 0.739) < 0.002
                 # 🔴 `min_rho > 0.75` until 2026-09-27, written when the weakest of five ESM-2
                 # arms was +0.796. ProtT5 is +0.739, so the floor would have failed for the
                 # correct reason stated wrongly: the weakest arm is pinned by value above, and
                 # `significant == 9` is what actually carries "every arm's ordering holds".
-                and v["beta_lowest_everywhere"]
-                and v["locate"] == 2
-                and sorted(v["which_locates"]) == ["canonical", "esm2_3B"]
+                # beta-lactamase is the lowest-margin class in 9 of 10, and the exception is the
+                # structure-confounded arm rather than a counterexample
+                and not v["beta_lowest_everywhere"]
+                and len(v["beta_lowest_arms"]) == 9
+                and "saprot_650M" not in v["beta_lowest_arms"]
+                and v["locate"] == 3
+                and sorted(v["which_locates"]) == ["canonical", "esm2_3B", "saprot_650M"]
                 and v["displacer"] == ["virulence_associated_non_toxin"]
                 and v["beta_not_monotone_in_capacity"]),
      {"docs/MECHANISM_GENERALIZATION.md":
-      "| esm2_3B | 2560 | +0.831 | 0.0006 | −0.0030 | 4.3% → **9.3%** [5.6, 13.0] "
-      "| −0.0014 | 6.9% → **4.1%** [2.4, 5.7] | **yes** |",
+      "**AlphaFold DB has no model for any of the 32 phage peptidoglycan hydrolases.**",
       # 🔴 2026-09-24. The standalone summary first quoted § 10.6's fourteen-arm generality and not
       # this section's PARTIAL, so a reader would have taken the bottom-two identification as
       # representation-general, which this section explicitly denies. The qualifier is pinned here

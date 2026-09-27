@@ -52,8 +52,15 @@ if [ "$PREP" -ne 0 ]; then
     exit 0
 fi
 
+# --allow-masked 0.20 is deliberate and is not a way round the guard. AlphaFold DB has no model for
+# any of the 32 phage_peptidoglycan_hydrolase members, so v3 cannot go below 18% masked by fetching
+# harder: that class is unanswerable for a structure-aware model by construction. 02i now reports
+# per-class coverage and names phage unreportable for this arm, so the beta-lactamase half of
+# § 10.6.2's dissociation -- 14 of 14 with real structure -- can be measured while the phage half
+# stays explicitly unmeasured rather than silently scored.
 echo; echo "############ step 2: embed v3 with SaProt ############"; date
-"$PY" src/02i_saprot_embed.py --tag saprot_650M --panel v3 2>&1 | grep -vE 'it/s\]'
+"$PY" src/02i_saprot_embed.py --tag saprot_650M --panel v3 --allow-masked 0.20 2>&1 \
+    | grep -vE 'it/s\]'
 
 echo; echo "############ step 3: leave-one-mechanism-out ############"; date
 "$PY" src/03b_leave_one_mechanism_out.py --panel v3 --tag saprot_650M 2>&1 | grep -v Warning

@@ -18,7 +18,8 @@
     "esm3_1_4B",
     "esmc_300M",
     "esmc_600M",
-    "prott5_xl"
+    "prott5_xl",
+    "saprot_650M"
   ],
   "results": {
     "beta_lactamase": {
@@ -262,6 +263,33 @@
             0.0
           ],
           "zero_seeds": 30,
+          "published_inside_ci": true
+        }
+      },
+      "saprot_650M": {
+        "suffix": "_saprot_650M",
+        "dim": 1280,
+        "n_members": 14,
+        "0.95": {
+          "published_5seed": 0.1714285714285714,
+          "mean_30seed": 0.12380952380952381,
+          "sd": 0.12850755574537245,
+          "ci95": [
+            0.07782368557634965,
+            0.16979536204269796
+          ],
+          "zero_seeds": 11,
+          "published_inside_ci": false
+        },
+        "0.99": {
+          "published_5seed": 0.0,
+          "mean_30seed": 0.0023809523809523807,
+          "sd": 0.013041013273932521,
+          "ci95": [
+            -0.0022857142857142837,
+            0.007047619047619046
+          ],
+          "zero_seeds": 29,
           "published_inside_ci": true
         }
       }
@@ -509,6 +537,33 @@
           "zero_seeds": 24,
           "published_inside_ci": true
         }
+      },
+      "saprot_650M": {
+        "suffix": "_saprot_650M",
+        "dim": 1280,
+        "n_members": 32,
+        "0.95": {
+          "published_5seed": 0.11875,
+          "mean_30seed": 0.10729166666666666,
+          "sd": 0.05104203319127139,
+          "ci95": [
+            0.08902650966627265,
+            0.12555682366706067
+          ],
+          "zero_seeds": 0,
+          "published_inside_ci": true
+        },
+        "0.99": {
+          "published_5seed": 0.05625,
+          "mean_30seed": 0.03125,
+          "sd": 0.03577196696702119,
+          "ci95": [
+            0.018449166020344118,
+            0.04405083397965588
+          ],
+          "zero_seeds": 15,
+          "published_inside_ci": false
+        }
       }
     }
   },
@@ -524,7 +579,7 @@
         "esmc_600M",
         "prott5_xl"
       ],
-      "n_disjoint_pairs": 25,
+      "n_disjoint_pairs": 30,
       "disjoint_pairs": [
         [
           "canonical 650M",
@@ -575,6 +630,10 @@
           "esmc_600M"
         ],
         [
+          "esm2_150M",
+          "saprot_650M"
+        ],
+        [
           "esm2_35M",
           "esm2_8M"
         ],
@@ -615,8 +674,16 @@
           "prott5_xl"
         ],
         [
+          "esm2_8M",
+          "saprot_650M"
+        ],
+        [
           "esm3_1_4B",
           "esmc_600M"
+        ],
+        [
+          "esm3_1_4B",
+          "saprot_650M"
         ],
         [
           "esmc_300M",
@@ -625,6 +692,14 @@
         [
           "esmc_600M",
           "prott5_xl"
+        ],
+        [
+          "esmc_600M",
+          "saprot_650M"
+        ],
+        [
+          "prott5_xl",
+          "saprot_650M"
         ]
       ],
       "top_arm_5seed": "esmc_600M",
@@ -635,7 +710,8 @@
         "esm2_35M",
         "esm2_3B",
         "esmc_300M",
-        "prott5_xl"
+        "prott5_xl",
+        "saprot_650M"
       ]
     },
     "phage_peptidoglycan_hydrolase": {
@@ -647,7 +723,7 @@
         "esm3_1_4B",
         "esmc_300M"
       ],
-      "n_disjoint_pairs": 26,
+      "n_disjoint_pairs": 31,
       "disjoint_pairs": [
         [
           "canonical 650M",
@@ -706,6 +782,10 @@
           "prott5_xl"
         ],
         [
+          "esm2_35M",
+          "saprot_650M"
+        ],
+        [
           "esm2_3B",
           "esm2_8M"
         ],
@@ -722,6 +802,10 @@
           "prott5_xl"
         ],
         [
+          "esm2_3B",
+          "saprot_650M"
+        ],
+        [
           "esm2_8M",
           "esmc_300M"
         ],
@@ -734,6 +818,10 @@
           "prott5_xl"
         ],
         [
+          "esm2_8M",
+          "saprot_650M"
+        ],
+        [
           "esm3_1_4B",
           "esmc_300M"
         ],
@@ -746,12 +834,20 @@
           "prott5_xl"
         ],
         [
+          "esm3_1_4B",
+          "saprot_650M"
+        ],
+        [
           "esmc_300M",
           "esmc_600M"
         ],
         [
           "esmc_300M",
           "prott5_xl"
+        ],
+        [
+          "esmc_300M",
+          "saprot_650M"
         ]
       ],
       "top_arm_5seed": "esm2_8M",

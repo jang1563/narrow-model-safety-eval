@@ -1771,7 +1771,7 @@ class on v2, where the bottom-1 of nine has a per-arm chance of 1/9. v3 has **tw
 the test becomes whether the bottom-**two** of twelve are exactly those two, and the chance per arm falls
 to **1/66**. That is a much stricter question and the answer is not as clean.
 
-**Nine arms are embedded for v3 as of 2026-09-27.** It was five until 09-24, and all five were
+**Ten arms are embedded for v3 as of 2026-09-27.** It was five until 09-24, and all five were
 ESM-2, for a reason that is not a decision: `src/02e` was hardcoded to the v2 panel while `src/02b`
 had already been given `--panel`, so the ESM-C and ESM-3 loaders could not see v3 at all. A gap in a
 loader had scoped this section to one model family. `slurm/esmc_v3_arms.sh` and `slurm/prott5_v3.sh` close it, and § 10.6.2
@@ -1797,10 +1797,12 @@ comparison below is between arms and this project has retracted three such compa
 | **esmc_600M** | 1152 | +0.856 | 0.0004 | −0.0231 | 41.4% → **40.5%** [36.5, 44.5] | −0.0006 | 15.0% → **12.1%** [9.4, 14.8] | no |
 | **esm3_1_4B** | 1536 | +0.858 | 0.0003 | −0.0071 | 2.9% → **2.9%** [0.7, 5.0] | **+0.0012** | 31.2% → **31.7%** [27.4, 36.0] | no |
 | **prott5_xl** | 1024 | +0.739 | 0.0041 | −0.0717 | 7.1% → **2.4%** [0.6, 4.2] | −0.0304 | 6.9% → **11.2%** [7.3, 15.2] | no |
+| **saprot_650M** | 1280 | **+0.954** | 0.0000 | −0.0255 | 17.1% → **12.4%** [7.8, 17.0] | **−0.0368** | *unreportable* | *(yes)* |
 
-**What holds in all nine.** Every arm has a significant positive margin-against-recovery correlation
-(+0.739 to +0.894, every p ≤ 0.0041), and **beta-lactamase is the single lowest-margin class in all
-nine**. ⚠️ The weakest of the nine is ProtT5 at +0.739, which is margin's class ordering at its
+**What holds in all ten.** Every arm has a significant positive margin-against-recovery correlation
+(+0.739 to **+0.954**, every p ≤ 0.0041), and **beta-lactamase is the single lowest-margin class in
+nine of the ten**. The exception is `saprot_650M`, and it is the structure confound rather than a
+counterexample: see § 10.6.3. ⚠️ The weakest of the nine is ProtT5 at +0.739, which is margin's class ordering at its
 weakest on the one arm outside the lineage — still significant, and worth noting rather than
 averaging away. So §10.6's central claim, that the failing class sits closer to benign than to any hazard class
 the probe trained on, survives the move to a panel with two failures and holds across a **375-fold
@@ -1810,9 +1812,11 @@ parameter range** within ESM-2, 8M to 3B, and across two further architectures.
 `esm3_1_4B` is the only arm whose **phage margin is positive**, +0.0012, and it is also the arm that
 recovers phage best, 31.7% [27.4, 36.0]. Margin and recovery agree on the arm that breaks the pattern.
 
-🔴 **What does not hold is the exact bottom-two, and it now holds in two arms of nine.** In 150M, 35M,
-8M, and in all four new arms, the **labelled virulence control** takes second-lowest and displaces the
-phage class. The displacer is the
+🔴 **What does not hold is the exact bottom-two, and it now holds in three arms of ten — two of them
+interpretably.** In 150M, 35M, 8M and the ESM-C and ESM-3 arms, the **labelled virulence control**
+takes second-lowest and displaces the phage class. `saprot_650M` does put the pair in the bottom two,
+and § 10.6.3 explains why that must not be counted: none of the 32 phage members has a structure for
+that arm to read. The displacer is the
 same class in all three misses, which is the informative part: the control is a genuinely borderline set,
 so the bottom of the margin ordering is where hazard and the control become hard to tell apart. That is the
 same shape as §10.6's CLS and SaProt exceptions. The ordering and the negative-margin property are
@@ -2709,6 +2713,58 @@ measurements and nothing here touches them. What changes is the **scope of the w
 should be read as "not reached by the canonical arm, and reached by a named other one" everywhere it
 appears.
 
+
+#### 10.6.3 🔴 A structure-aware model cannot be tested on a class without structures, and that is a limit on adding arms
+
+`slurm/saprot_v3.sh`, 2026-09-27. SaProt is the tenth arm and the only one that reads a structure
+token beside each residue. Giving it v3 required replacing the `no_structure` mask `src/27` had left
+on the 214 members v3 added, which meant fetching AlphaFold models and running Foldseek over them.
+That worked, and produced a fact that closes a line of enquiry rather than extending it.
+
+**AlphaFold DB has no model for any of the 32 phage peptidoglycan hydrolases.** Coverage went from
+231 of 445 to 365 of 445, and the 80 still masked are 45 negatives, one member each of three toxin
+classes, and **the entire phage class**:
+
+| class | with structure | masked |
+|---|---:|---:|
+| **phage_peptidoglycan_hydrolase** | **0** | **32** |
+| beta_lactamase | 14 | 0 |
+| the other twelve positive classes | all but 3 | 3 total |
+| negatives | 251 | 45 |
+
+So the class § 10.6.2 is about is **unanswerable for a structure-aware model by construction**, and no
+amount of fetching changes it. `src/02i` now computes coverage per class and names a class below 80%
+**unreportable for the arm**, because an aggregate threshold cannot catch this: 18% masked overall
+looks tolerable and hides a class at 100%.
+
+⚠️ **The general point, which applies beyond SaProt.** "Add more representations" is the strategy that
+produced § 10.6.2's dissociation, and it has a boundary: a representation requiring an input the panel
+cannot supply for a class cannot be evaluated on that class. Structure is the case here; anything
+conditioned on annotation, localisation or an external database would hit the same wall somewhere.
+**An arm count is not a coverage count.**
+
+**What SaProt does say, on the half that is measurable.** Beta-lactamase has 14 of 14 real structures,
+so its figure is interpretable: **12.4% [7.8, 17.0]** at 30 seeds. That is indistinguishable from the
+canonical arm's 21.2% [16.5, 25.9] by half a point of overlap — the first arm to overlap the canonical
+one on this class — and far below ESM-C 600M's 40.5% [36.5, 44.5]. **Across ten arms, ESM-C 600M is
+still the only one that reaches beta-lactamase.** SaProt's other classes are healthy — RIP,
+superantigen, ADP-ribosyl and Cry at 100%, bacteriocin 93% — so this is not a weak arm.
+
+🔴 **Its margin result must be discounted, not counted.** `saprot_650M` has the **highest**
+margin-against-recovery correlation of all ten arms, +0.954 at p = 0.0000, and it is one of only three
+whose bottom-two margin classes are exactly the two failures. Both facts are artefacts of the same
+gap. Its phage margin is **−0.0368**, the most negative of any arm and an order of magnitude below
+most, because those 32 proteins are the only ones it sees sequence-only while every other protein
+carries structure. A class represented differently from every other class sits at the edge of the
+embedding for that reason alone.
+
+So the honest count for § 10.6.1's bottom-two test is **two of ten on interpretable arms, with a third
+arm agreeing for a reason attributable to missing structures**. The claims audit pins all three and
+names the exception, so the discount cannot quietly become a confirmation.
+
+🟢 **One thing this run did settle cleanly.** Rebuilding v3's 3Di recomputed the 231 strings `src/27`
+had inherited from v2, and **all 231 reproduced exactly**. AlphaFold DB v6 and Foldseek have not moved
+under the published values, which is the check that makes every other 3Di number here quotable.
 
 ## 11. What this does not claim
 

@@ -3051,3 +3051,66 @@ No threshold in section 4 was adjusted to fit an outcome. P1's stands as frozen 
 effect-size floor was voided **before** the panel ran, on the grounds that its scale no longer exists,
 with the five smoke values that forced the change disclosed in the amendment log. The ratio is still
 reported per protein wherever both means are positive, so the frozen statistic stays visible.
+
+---
+
+## 2026-09-27 (thirty-first entry) — SaProt is the tenth arm, and the class it was added to settle has no structures at all
+
+`slurm/saprot_v3.sh`. SaProt reads an amino acid and a structure token at every position, so it was
+the one arm that could not simply be embedded: `structure_3di_v3.json` carried real Foldseek strings
+for the 231 v2 members and the `no_structure` mask for the 214 v3 added, because `src/27` built the
+file by inheriting v2's entries and foldseek ships as a Linux binary. Fetching AlphaFold models and
+running Foldseek on the cluster raised coverage from **231 of 445 to 365 of 445**.
+
+### The fact that closes the question
+
+**AlphaFold DB has no model for any of the 32 phage peptidoglycan hydrolases.** The 80 entries still
+masked are 45 negatives, one member each of three toxin classes, and the whole phage class. So the
+class § 10.6.2 was about is **unanswerable for a structure-aware model by construction**.
+
+🔴 **An aggregate masked fraction could not have caught that.** 18% masked overall reads as tolerable
+and hides a class at 100%. `src/02i` now computes coverage **per class** into its manifest and names
+any class below 80% as `unreportable` for the arm, with the note that a recovery figure for it would
+be a statement about AlphaFold coverage rather than about the model. The 5% aggregate guard was right
+to refuse and wrong to be the only check.
+
+⚠️ **The transferable limit.** "Add more representations" produced § 10.6.2's dissociation and has a
+boundary: a representation requiring an input the panel cannot supply for a class cannot be evaluated
+on that class. **An arm count is not a coverage count**, and anything conditioned on annotation,
+localisation or an external database hits the same wall somewhere else.
+
+### What the measurable half says
+
+Beta-lactamase has 14 of 14 real structures. At 30 seeds SaProt gives **12.4% [7.8, 17.0]**, which
+overlaps the canonical arm's [16.5, 25.9] by half a point — **the first arm to overlap the canonical
+one on this class** — and sits far below ESM-C 600M's [36.5, 44.5]. Across **ten** arms ESM-C 600M is
+still the only one that reaches beta-lactamase. SaProt is not a weak arm: RIP, superantigen,
+ADP-ribosyl and Cry all at 100%, bacteriocin 93%.
+
+### The margin result that has to be discounted
+
+`saprot_650M` returns the **highest** margin-against-recovery correlation of any arm, **+0.954** at
+p = 0.0000, and is one of only three arms whose bottom-two margin classes are exactly the two
+failures. Both are artefacts of the same gap: its phage margin is **−0.0368**, the most negative of
+all ten and an order of magnitude below most, because those 32 proteins are the only ones it sees
+sequence-only while every other protein carries structure. A class represented differently from every
+other class sits at the edge of the embedding for that reason alone.
+
+So § 10.6.1's bottom-two count is now **two of ten on interpretable arms plus one agreeing for a
+structural reason**, and the audit pins all three with the exception named, so the discount cannot
+drift into a confirmation. Two derived assertions moved with it and are recorded rather than adjusted
+quietly: `beta_lowest_everywhere` is now false — SaProt's lowest-margin class is phage — and the
+canonical arm gained its **first** overlap with another arm on beta-lactamase, which is SaProt's.
+
+### 🟢 One thing the run settled cleanly
+
+Rebuilding v3's 3Di recomputed the 231 strings inherited from v2, and **all 231 reproduced exactly**.
+AlphaFold DB v6 and Foldseek have not moved under the published values. That check was added to
+`src/02h` for this run and it is why the launcher stops before embedding if any string changes: a
+changed string would be a question about every 3Di number in the repository, not about one arm.
+
+### What was deliberately not done
+
+`--allow-masked 0.20` is in the launcher with the reason written beside it, not as a way past the
+guard: v3 cannot go below 18% by fetching harder. No phage figure is reported for this arm. The v2
+SaProt arm is untouched.
