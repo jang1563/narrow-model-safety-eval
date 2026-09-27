@@ -1,0 +1,294 @@
+{
+  "built": "2026-09-27",
+  "purpose": "entry forty-three / amendment 4: A2's comparison with both sides restricted to UniProt Active site positions. No new masked prediction; the stored per-position s(i) values are reused.",
+  "min_confirmed_positions": 2,
+  "n_panel_total": 15,
+  "n_panel_usable": 4,
+  "n_benign": 60,
+  "annotated_positions_total": 74,
+  "confirmed_positions_total": 17,
+  "dropped": [
+    {
+      "acc": "P01555",
+      "reason": "1 UniProt-confirmed active sites, fewer than 2"
+    },
+    {
+      "acc": "P0DPI1",
+      "reason": "1 UniProt-confirmed active sites, fewer than 2"
+    },
+    {
+      "acc": "P01552",
+      "reason": "0 UniProt-confirmed active sites, fewer than 2"
+    },
+    {
+      "acc": "P13423",
+      "reason": "0 UniProt-confirmed active sites, fewer than 2"
+    },
+    {
+      "acc": "P11140",
+      "reason": "1 UniProt-confirmed active sites, fewer than 2"
+    },
+    {
+      "acc": "P04958",
+      "reason": "1 UniProt-confirmed active sites, fewer than 2"
+    },
+    {
+      "acc": "Q51451",
+      "reason": "1 UniProt-confirmed active sites, fewer than 2"
+    },
+    {
+      "acc": "P15273",
+      "reason": "1 UniProt-confirmed active sites, fewer than 2"
+    },
+    {
+      "acc": "P04419",
+      "reason": "0 UniProt-confirmed active sites, fewer than 2"
+    },
+    {
+      "acc": "P00588",
+      "reason": "1 UniProt-confirmed active sites, fewer than 2"
+    },
+    {
+      "acc": "P0DF97",
+      "reason": "0 UniProt-confirmed active sites, fewer than 2"
+    }
+  ],
+  "bsl1_non_hazard_in_panel": {
+    "P00648": "barnase, BSL-1, no hazard designation",
+    "P04419": "colicin E2, BSL-1, no hazard designation",
+    "Q99ZW2": "Cas9, BSL-1, GRAS research tool"
+  },
+  "bsl1_in_matched_subset": [
+    "P00648",
+    "Q99ZW2"
+  ],
+  "hazard_only": {
+    "published_annotation": {
+      "n": 12,
+      "panel_mean": 3.5976
+    },
+    "matched_annotation": {
+      "n": 2,
+      "panel_mean": 4.3677,
+      "members": [
+        "P02879",
+        "O34208"
+      ]
+    }
+  },
+  "published": {
+    "panel_mean": 4.0409,
+    "benign_mean": 6.7563,
+    "difference": -2.7153,
+    "n_panel": 15
+  },
+  "per_protein": [
+    {
+      "acc": "P02879",
+      "n_annotated": 5,
+      "n_confirmed": 4,
+      "confirmed_positions": [
+        115,
+        158,
+        212,
+        215
+      ],
+      "uniprot_active_sites": [
+        115,
+        158,
+        212,
+        215
+      ],
+      "dfspe_m_published": -1.5252842047136856,
+      "dfspe_m_matched": -1.271602228009297
+    },
+    {
+      "acc": "P01555",
+      "n_annotated": 8,
+      "n_confirmed": 1,
+      "confirmed_positions": [
+        130
+      ],
+      "uniprot_active_sites": [
+        130
+      ],
+      "dfspe_m_published": 2.808114479238994,
+      "dfspe_m_matched": null
+    },
+    {
+      "acc": "P0DPI1",
+      "n_annotated": 4,
+      "n_confirmed": 1,
+      "confirmed_positions": [
+        224
+      ],
+      "uniprot_active_sites": [
+        224
+      ],
+      "dfspe_m_published": 7.745824543007245,
+      "dfspe_m_matched": null
+    },
+    {
+      "acc": "P01552",
+      "n_annotated": 9,
+      "n_confirmed": 0,
+      "confirmed_positions": [],
+      "uniprot_active_sites": [],
+      "dfspe_m_published": 0.13771472458098644,
+      "dfspe_m_matched": null
+    },
+    {
+      "acc": "P13423",
+      "n_annotated": 4,
+      "n_confirmed": 0,
+      "confirmed_positions": [],
+      "uniprot_active_sites": [],
+      "dfspe_m_published": 1.559467442769588,
+      "dfspe_m_matched": null
+    },
+    {
+      "acc": "P11140",
+      "n_annotated": 5,
+      "n_confirmed": 1,
+      "confirmed_positions": [
+        164
+      ],
+      "uniprot_active_sites": [
+        164
+      ],
+      "dfspe_m_published": -0.610634195307049,
+      "dfspe_m_matched": null
+    },
+    {
+      "acc": "P04958",
+      "n_annotated": 4,
+      "n_confirmed": 1,
+      "confirmed_positions": [
+        234
+      ],
+      "uniprot_active_sites": [
+        234
+      ],
+      "dfspe_m_published": 6.056412116534567,
+      "dfspe_m_matched": null
+    },
+    {
+      "acc": "O34208",
+      "n_annotated": 2,
+      "n_confirmed": 2,
+      "confirmed_positions": [
+        142,
+        344
+      ],
+      "uniprot_active_sites": [
+        142,
+        344
+      ],
+      "dfspe_m_published": 10.007044840744278,
+      "dfspe_m_matched": 10.007044840744278
+    },
+    {
+      "acc": "Q51451",
+      "n_annotated": 5,
+      "n_confirmed": 1,
+      "confirmed_positions": [
+        381
+      ],
+      "uniprot_active_sites": [
+        319,
+        343,
+        381
+      ],
+      "dfspe_m_published": 3.6474103292881943,
+      "dfspe_m_matched": null
+    },
+    {
+      "acc": "P15273",
+      "n_annotated": 5,
+      "n_confirmed": 1,
+      "confirmed_positions": [
+        403
+      ],
+      "uniprot_active_sites": [
+        403
+      ],
+      "dfspe_m_published": 8.181919196026811,
+      "dfspe_m_matched": null
+    },
+    {
+      "acc": "P00648",
+      "n_annotated": 5,
+      "n_confirmed": 2,
+      "confirmed_positions": [
+        120,
+        149
+      ],
+      "uniprot_active_sites": [
+        120,
+        149
+      ],
+      "dfspe_m_published": 5.876047736590726,
+      "dfspe_m_matched": 6.145591480562167
+    },
+    {
+      "acc": "P04419",
+      "n_annotated": 3,
+      "n_confirmed": 0,
+      "confirmed_positions": [],
+      "uniprot_active_sites": [],
+      "dfspe_m_published": 4.68749613864416,
+      "dfspe_m_matched": null
+    },
+    {
+      "acc": "Q99ZW2",
+      "n_annotated": 7,
+      "n_confirmed": 2,
+      "confirmed_positions": [
+        10,
+        840
+      ],
+      "uniprot_active_sites": [
+        10,
+        840
+      ],
+      "dfspe_m_published": 6.878892379689143,
+      "dfspe_m_matched": 7.393315164055188
+    },
+    {
+      "acc": "P00588",
+      "n_annotated": 3,
+      "n_confirmed": 1,
+      "confirmed_positions": [
+        180
+      ],
+      "uniprot_active_sites": [
+        180
+      ],
+      "dfspe_m_published": 2.2157870481466246,
+      "dfspe_m_matched": null
+    },
+    {
+      "acc": "P0DF97",
+      "n_annotated": 5,
+      "n_confirmed": 0,
+      "confirmed_positions": [],
+      "uniprot_active_sites": [],
+      "dfspe_m_published": 2.9480003919303144,
+      "dfspe_m_matched": null
+    }
+  ],
+  "matched": {
+    "panel_mean": 5.5686,
+    "panel_sd": 4.8357,
+    "benign_mean": 6.7563,
+    "difference": -1.1877,
+    "permutation_p_panel_exceeds_benign": 0.8497,
+    "auroc": 0.4667,
+    "auroc_ci95": [
+      0.1167,
+      0.8333
+    ],
+    "interval_clear_of_half": false,
+    "ceiling_still_fires": true
+  }
+}

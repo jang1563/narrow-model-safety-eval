@@ -4016,3 +4016,63 @@ cross-representation rule is the reason three of today's findings are bounded ra
 not whether they were measuring what I said they measured.** Seeds, intervals, gates and replication all
 got attention. A definitionally constant quantity, an annotation-provenance mismatch and a cross-geometry
 scale did not, and no amount of additional seeds would have surfaced any of them.
+
+---
+
+## 2026-09-27 (forty-fourth entry) — The A2 repair: half the gap was annotation, the hazard arm is a third non-hazard, and both repairs grew the side that was not binding
+
+Entry forty-three named the A2 annotation confound and said the repair was available and not done.
+`src/75_a2_annotation_matched.py` does it, and it needed **no new masked prediction**: `fspe_m_a2.json`
+stores per-position `s(i)` and `src/62` builds them in sorted position order, so the panel's means
+recompute directly on any subset of its positions.
+
+### 🔴 Matching the annotation halves the gap and destroys the significance
+
+| arm | panel *n* | panel mean | benign | difference | significance |
+|---|---:|---:|---:|---:|---|
+| as reported | 15 | +4.04 | +6.76 | **−2.72** | benign exceeds at *p* = 0.0009 |
+| **annotation-matched** | **4** | **+5.57** | +6.76 | **−1.19** | AUROC **0.467 [0.117, 0.833]**, covers 0.50 |
+| hazard-only, published annotation | 12 | +3.60 | +6.76 | −3.16 | — |
+| **hazard-only *and* annotation-matched** | **2** | +4.37 | +6.76 | — | untestable |
+
+Only **17 of the panel's 74 annotated positions (23%)** are a UniProt `Active site`, and only **4 of 15
+proteins** carry two or more. On those four the panel mean rises by 1.53 points and the AUROC interval
+**covers 0.50**. **So a substantial part of the powered result was annotation provenance.**
+
+### 🔴 And a second defect the repair exposed, documented nowhere before today
+
+**P2's hazard arm contains three BSL-1 entries with no hazard designation**: barnase and colicin E2
+("no hazard designation") and Cas9 ("GRAS; widely used research tool"), as `functional_sites.json` itself
+describes them. Section 4 of the mutation preregistration says P2 compares *"the panel mean"* against the
+benign controls and never says that one fifth of the panel is not a hazard. Searched: no document flags it.
+
+Excluding them moves the gap **away** from zero, to −3.16, so the dilution was working *against* the
+finding rather than for it. ⚠️ But **two of the four annotation-matched survivors are barnase and Cas9**,
+so the matched test's hazard arm is half non-hazard, and applying both restrictions leaves **ricin
+(−1.27) and ExoU (+10.01)** — two proteins that disagree by 11 points.
+
+### 🟢 What survives, and 🔴 what is withdrawn
+
+The **preregistered verdict** survives every restriction because its ceiling is directional: the panel had
+to *exceed* the controls and benign ≥ panel in all four arms. **P2 remains NOT SUPPORTED.**
+
+🔴 **Withdrawn**: *"dFSPE-M measures catalytic-site constraint, and ordinary benign enzymes have more of
+it than toxins do"*, together with the *p* = 0.0009 and the AUROC 0.265. Corrected in the two living
+documents; it survives verbatim in three append-only records, which is why the audit pins the
+**withdrawal** rather than forbidding the sentence — a forbid would fail the gate forever and the only way
+to pass would be to rewrite history.
+
+### 🔑 The synthesis, and it is uncomfortable
+
+**A2 grew the wrong side of the comparison.** It was built to lift `n_benign` from 4, and it did: 60
+controls, floor cleared, every frozen exclusion holding, the set reproducing byte-identically. The binding
+constraint was the **panel** — 15 proteins, 74 positions, 17 confirmed, 4 proteins usable, 2 of those a
+genuine hazard.
+
+⚠️ **This is the second time today the constraint turned out to live on the panel side.** The fifth
+amendment blamed `n_benign` for the P5 gate's AUROC having no power and predicted the tolerance would
+become meaningful above 30 controls; `src/71` showed the null sd floors at 0.077 because an AUROC's
+precision is set by the **smaller** group, which is the panel and cannot grow. **Two independent repairs,
+both aimed at n_benign, both limited by n_panel.** What either would actually need is more panel proteins
+carrying uniform, UniProt-confirmed catalytic annotation — one resource, two blocked tests, and it was
+never the thing being bought.

@@ -1088,3 +1088,39 @@ next run rather than after.
   carried across a change of sample size without a power argument — committed a second
   time inside the amendment that named it, by assuming the power problem lived in the
   sample size that was about to grow.
+
+
+- 2026-09-27 (eleventh entry): **the tenth entry's interpretation is withdrawn. Its
+  verdict is not.**
+
+  The tenth entry concluded: *"dFSPE-M measures catalytic-site constraint, and
+  ordinary benign enzymes have more of it than toxins do."* `src/75_a2_annotation_matched.py`
+  shows that comparison is **annotation-confounded**. The 60 controls' positions are
+  UniProt `Active site` features exclusively; **17 of this panel's 74 annotated
+  positions (23%)** are, the rest coming from PDB and literature curation.
+
+  | arm | panel *n* | panel mean | benign | difference |
+  |---|---:|---:|---:|---:|
+  | as reported in the tenth entry | 15 | +4.04 | +6.76 | −2.72 |
+  | annotation-matched | **4** | +5.57 | +6.76 | **−1.19**, AUROC 0.467 [0.117, 0.833] |
+  | hazard-only, published annotation | 12 | +3.60 | +6.76 | −3.16 |
+  | hazard-only **and** annotation-matched | **2** | +4.37 | +6.76 | untestable |
+
+  🔴 **And a second thing, documented nowhere in this document before now: P2's hazard
+  arm contains three BSL-1 entries with no hazard designation** — barnase, colicin E2
+  and Cas9, the last described in `functional_sites.json` as "GRAS; widely used
+  research tool". Section 4 says P2 compares "the panel mean" against the benign
+  controls and never says the panel includes three non-hazards. Excluding them moves
+  the gap *away* from zero (−3.16), so the dilution was conservative — but **two of the
+  four annotation-matched survivors are barnase and Cas9**, so the matched test's
+  hazard arm is half non-hazard, and both restrictions together leave ricin and ExoU.
+
+  🟢 **P2 remains NOT SUPPORTED.** Section 4's ceiling is directional — the panel had to
+  exceed the controls — and benign ≥ panel in every arm above. 🔴 **Withdrawn**: the
+  magnitude, the *p* = 0.0009, and any statement about which side is more constrained.
+
+  ⚠️ **What this says about the repair itself.** The matched benign enzyme set was built
+  to lift `n_benign` from 4, and it did. The binding constraint was the **panel**. That
+  is the second time in one day: the fifth entry blamed `n_benign` for the P5 gate's
+  AUROC having no power and `src/71` showed the limit is `n_panel` and cannot be reached
+  by adding controls. **Both repairs grew the side that was not binding.**

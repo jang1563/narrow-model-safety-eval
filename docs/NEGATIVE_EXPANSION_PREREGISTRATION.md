@@ -264,3 +264,33 @@ redundancy unit for a database that lists one representative gene per virulence 
 **So before `src/49` is run on this set**, `src/74` gains the `VF####` grouping and A1-1 to A1-3 report
 both rates, raw and per distinct unit, exactly as § 2.6.1 does for the pool. Stated now because quoting
 the raw rate first and the corrected one later is how a number escapes.
+
+
+### Amendment 6 — 2026-09-27: the repair, and what it shows about which side was binding
+
+`src/75_a2_annotation_matched.py`, no new masked prediction: `results/fspe_m_a2.json` stores per-position
+`s(i)` and `src/62` builds them in sorted position order, so the panel's means can be recomputed
+restricted to UniProt-confirmed positions directly.
+
+| arm | panel *n* | panel mean | benign | difference |
+|---|---:|---:|---:|---:|
+| as reported | 15 | +4.04 | +6.76 | −2.72 |
+| annotation-matched | **4** | +5.57 | +6.76 | **−1.19** (AUROC 0.467 [0.117, 0.833]) |
+| hazard-only, published annotation | 12 | +3.60 | +6.76 | −3.16 |
+| hazard-only **and** annotation-matched | **2** | +4.37 | +6.76 | untestable |
+
+🔴 **Two independent restrictions each collapse this comparison**, and the second was not known when A2
+was designed: the FSPE panel's P2 arm contains **three BSL-1 entries with no hazard designation**
+(barnase, colicin E2, Cas9), and two of them are among the four annotation-matched survivors.
+
+🔑 **So A2 grew the wrong side of the comparison.** It was built to fix `n_benign = 4` and it did — 60
+controls, floor cleared, every exclusion held. But the binding constraint was the **panel**: 15 proteins,
+74 annotated positions, 17 UniProt-confirmed, 4 proteins with two or more, 2 of those a genuine hazard.
+⚠️ **This is the second time today the constraint turned out to be on the panel side**: `src/71` showed
+the P5 gate's AUROC power is set by n_panel and floors out however many controls are added. **A2 and the
+gate repair both grew n_benign against a limit that lives in n_panel.**
+
+**What A2 still settles**: its verdict, which is directional and holds in all four arms. **What it does
+not settle**: any statement about how much more constrained one side is than the other. A test of that
+needs more *panel* proteins with uniform, UniProt-confirmed catalytic annotation — which is the same
+resource `src/71` identified as the ceiling on the gate.

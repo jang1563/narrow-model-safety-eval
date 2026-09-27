@@ -198,8 +198,36 @@ residues. **The sentence "benign enzymes have more catalytic-site constraint tha
 not established here.** What is unaffected is the preregistered verdict: the ceiling asks whether the
 panel *exceeds* the controls, the burden was on the panel, and it does not exceed them at *p* = 0.0009.
 The n = 4 controls carried the same provenance, so the powered run inherited the confound rather than
-introducing it — and made it fifteen times larger. The repair is to restrict the panel to its
-UniProt-confirmed positions and recompute; it is named, not done.
+introducing it — and made it fifteen times larger.
+
+🔑 **The repair, run the same day (`src/75_a2_annotation_matched.py`, no new inference — the stored
+per-position `s(i)` values are reused).** Restricting the panel to its UniProt-confirmed `Active site`
+positions:
+
+| arm | panel *n* | panel mean | benign | difference | significance |
+|---|---:|---:|---:|---:|---|
+| as published, mixed annotation | 15 | +4.04 | +6.76 | **−2.72** | benign exceeds at *p* = 0.0009 |
+| **annotation-matched** | **4** | **+5.57** | +6.76 | **−1.19** | AUROC **0.467 [0.117, 0.833]**, covers 0.50 |
+| hazard-only, published annotation | 12 | +3.60 | +6.76 | −3.16 | — |
+| **hazard-only *and* annotation-matched** | **2** | +4.37 | +6.76 | — | **untestable** |
+
+🔴 **Matching the annotation halves the gap and destroys the significance.** Only **17 of the panel's 74
+annotated positions (23%)** are a UniProt `Active site`, and only **4 of 15 proteins** have two or more.
+On those four the panel mean rises to +5.57 and the AUROC interval **covers 0.50**. So a substantial part
+of the powered result was annotation provenance rather than hazard.
+
+🔴 **And a second problem the repair exposed, documented nowhere before today: P2's hazard arm contains
+three BSL-1 non-hazards** — barnase and colicin E2 ("no hazard designation") and Cas9 ("GRAS; widely used
+research tool"). Excluding them moves the gap the *other* way, to −3.16, so that dilution was working
+against the finding rather than for it. But **two of the four annotation-matched survivors are barnase
+and Cas9**, so the matched test's hazard arm is half non-hazard, and applying both restrictions at once
+leaves **ricin and ExoU** — *n* = 2.
+
+🟢 **What survives every restriction is the preregistered verdict, which is directional**: the ceiling
+asks whether the panel *exceeds* the controls, and benign ≥ panel in all four arms above. **P2 remains
+NOT SUPPORTED.** 🔴 **What does not survive is the interpretation**: "benign enzymes have more
+catalytic-site constraint than toxins, at *p* = 0.0009" is withdrawn. The panel cannot support that
+comparison once like is compared with like.
 
 **So the axis measures positional constraint, not hazard, and is not built on further as a hazard
 metric.** That is the same lesson the FSI negative controls taught, where astacin at 1.85 and

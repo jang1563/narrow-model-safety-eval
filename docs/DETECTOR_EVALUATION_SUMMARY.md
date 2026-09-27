@@ -344,8 +344,23 @@ metric measures positional constraint and is not built on further.
 alone, at *p* = 0.678. A matched set of **60** reviewed Swiss-Prot enzymes with `Active site` features
 puts the benign mean at **+6.76** against the same **+4.32**, a gap of **−2.44**, with the controls
 exceeding the panel at *p* = **0.0009** and an AUROC of **0.265** whose interval [0.102, 0.445] excludes
-0.50 **on the wrong side**. All 60 sit above the panel's worst protein. The axis measures catalytic-site
-constraint, and ordinary benign enzymes have more of it than toxins do.
+0.50 **on the wrong side**. All 60 sit above the panel's worst protein.
+
+🔴 **That comparison is annotation-confounded, and the sentence that stood here is withdrawn.** It read
+*"the axis measures catalytic-site constraint, and ordinary benign enzymes have more of it than toxins
+do."* The 60 controls' positions are UniProt `Active site` features exclusively; **only 17 of the panel's
+74 annotated positions (23%) are**, the rest being PDB and literature curation. Restricting both sides to
+UniProt-confirmed positions leaves **4 usable panel proteins**, moves the panel mean to **+5.57**, halves
+the gap to **−1.19**, and gives an AUROC of **0.467 [0.117, 0.833]** that **covers 0.50**. Worse, **two of
+those four are barnase and Cas9** — BSL-1 entries with no hazard designation, which the panel contains and
+which nothing flagged until 2026-09-27; with both restrictions applied the hazard arm is ricin and ExoU,
+*n* = 2.
+
+🟢 **The preregistered verdict is unaffected**, because its ceiling is directional: the panel had to
+*exceed* the controls and does not, in any of the four arms. **P2 is still NOT SUPPORTED.** What is
+withdrawn is any claim about *how much* more constrained one side is. See § P2 of
+[`docs/EVALUATION_REPORT.md`](EVALUATION_REPORT.md) and entry forty-four of
+[`docs/DATA_CORRECTIONS.md`](DATA_CORRECTIONS.md).
 
 And the alignment baseline settles what that means. A position-specific scoring matrix from a
 homology search, reduced identically, agrees with the model on direction but not magnitude and

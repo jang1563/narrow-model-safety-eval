@@ -665,6 +665,41 @@ def window_gain_is_one_arm():
     }
 
 
+def a2_annotation_matched():
+    """A2's comparison with both sides annotated the same way, and what the panel arm turns out to be.
+
+    \U0001f534 The number most likely to be quoted alone is the published -2.72. Pinned here with the
+    three numbers that bound it: the annotation-matched -1.19 whose AUROC interval covers 0.50, the
+    23% of panel positions that are UniProt-confirmed, and the fact that two of the four surviving
+    panel proteins are BSL-1 entries with no hazard designation.
+    """
+    d = j("../results/a2_annotation_matched.json")
+    if d is None:
+        return None
+    mt, hz = d.get("matched"), d["hazard_only"]
+    return {
+        "n_panel_total": d["n_panel_total"], "n_panel_usable": d["n_panel_usable"],
+        "n_benign": d["n_benign"],
+        "annotated": d["annotated_positions_total"], "confirmed": d["confirmed_positions_total"],
+        "confirmed_frac": round(d["confirmed_positions_total"] / d["annotated_positions_total"], 4),
+        "published_diff": d["published"]["difference"],
+        "matched_diff": mt["difference"] if mt else None,
+        "matched_auroc": mt["auroc"] if mt else None,
+        "matched_ci": mt["auroc_ci95"] if mt else None,
+        "matched_covers_half": (not mt["interval_clear_of_half"]) if mt else None,
+        "ceiling_still_fires": mt["ceiling_still_fires"] if mt else None,
+        # the panel's hazard arm is not all hazards, which nothing said before 2026-09-27
+        "bsl1_in_panel": sorted(d["bsl1_non_hazard_in_panel"]),
+        "bsl1_in_matched": sorted(d["bsl1_in_matched_subset"]),
+        "hazard_only_matched_n": hz["matched_annotation"]["n"] if hz["matched_annotation"] else 0,
+        "hazard_only_matched_members": (sorted(hz["matched_annotation"]["members"])
+                                        if hz["matched_annotation"] else []),
+        # excluding the non-hazards moves the gap AWAY from zero, so the dilution was conservative
+        "hazard_only_published_mean": (hz["published_annotation"]["panel_mean"]
+                                       if hz["published_annotation"] else None),
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -2907,6 +2942,36 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("A2's gap halves and loses significance once both sides are annotated the same way",
+     a2_annotation_matched,
+     lambda v: v is None or (
+         v["n_panel_total"] == 15 and v["n_benign"] == 60
+         # only a quarter of the panel's annotated positions are a UniProt Active site
+         and v["annotated"] == 74 and v["confirmed"] == 17 and v["confirmed_frac"] < 0.25
+         and v["n_panel_usable"] == 4
+         # matching the annotation halves the gap and the interval then covers 0.50
+         and v["published_diff"] < -2.5 and -1.5 < v["matched_diff"] < -0.8
+         and v["matched_covers_half"] and v["matched_ci"][0] < 0.5 < v["matched_ci"][1]
+         # the directional ceiling, which is what was preregistered, still fires
+         and v["ceiling_still_fires"]
+         # P2's hazard arm holds three BSL-1 non-hazards, two of them in the matched subset
+         and v["bsl1_in_panel"] == ["P00648", "P04419", "Q99ZW2"]
+         and v["bsl1_in_matched"] == ["P00648", "Q99ZW2"]
+         # both restrictions together leave ricin and ExoU
+         and v["hazard_only_matched_n"] == 2
+         and v["hazard_only_matched_members"] == ["O34208", "P02879"]
+         # and excluding the non-hazards moves the gap the other way, so the dilution was conservative
+         and v["hazard_only_published_mean"] < 4.0),
+     # 🔴 A forbid cannot be used for the withdrawn sentence. It legitimately survives in three
+     # append-only records — the corrections log, the tenth entry of the mutation preregistration and
+     # amendment 3 here — because those are not edited. Forbidding it would fail the gate forever and
+     # the only way to pass would be to rewrite history. So the WITHDRAWAL is pinned in the two
+     # living documents instead, which is the mechanism that works against an append-only log.
+     {"docs/EVALUATION_REPORT.md":
+      "🔴 **Matching the annotation halves the gap and destroys the significance.**",
+      "docs/DETECTOR_EVALUATION_SUMMARY.md":
+      "🔴 **That comparison is annotation-confounded, and the sentence that stood here is withdrawn.**"},
+     []),
     ("the window's gain is one arm; its cost and margin's ordering are not",
      window_gain_is_one_arm,
      lambda v: v is None or (
