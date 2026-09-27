@@ -210,6 +210,43 @@ literature, and it is what a paper should lead with.
 
 ---
 
+### 1.1e 🔴 Viral Proteins Reveal Geometry of Protein Language Models (ICML 2026 workshops) — found 2026-09-27, and it produced a real test
+
+| | |
+|---|---|
+| **arXiv** | [2606.12609](https://arxiv.org/abs/2606.12609) |
+| **Venue** | ICML 2026 workshops, code public |
+
+**What it claims.** A **dominant nativeness axis** in PLM embedding space, aligned with masked
+reconstruction perplexity, ordering sequences from well-modelled cellular proteins through viral
+proteins to shuffled and random ones. Quoting the abstract: *"we identify a dominant nativeness axis in
+embedding space, aligned with masked reconstruction perplexity, that orders sequences from well-modeled
+cellular proteins through viral proteins to shuffled and random sequences"*, and viral proteins stay
+*"linearly separable beyond zero-shot perplexity and shallow sequence features"*.
+
+🔑 **Why it is the sharpest threat to § 10.4's margin result that this survey has recorded.** Margin
+says the failing classes sit closer to benign proteins than to any hazard class the probe trained on.
+If embedding geometry is organised by typicality, then that could be the failing classes sitting close
+to **protein space in general**, and margin would be a rotation of a nativeness axis rather than
+anything about hazard.
+
+**It was tested rather than argued about.** `src/66_typicality_baseline.py` and § 10.6.4: a label-free
+typicality proxy — mean cosine to the benign pool's centroid — reaches **−0.746 against recovery on the
+canonical arm at permutation p = 0.0034**, which is a real predictor that § 9's baseline list did not
+contain. Margin nonetheless survives controlling for it, **+0.776 of its +0.894**, and the decisive
+difference is replication: typicality is **+0.021 at p = 0.53 on `esm2_35M`**, null and sign-flipped,
+while margin holds at +0.796. So typicality is an arm-specific confound and not an explanation.
+
+⚠️ **The open half, stated at its true width.** The proxy used is cosine-to-centroid on embeddings, not
+the paper's construct, which is perplexity-aligned. The same question therefore applies to **FSPE**,
+which *is* a masked-prediction entropy metric, and has not been asked there at all. Their code is
+public, so reproducing the actual axis is available work rather than a caveat to live with.
+
+**Positioning note.** This paper is the reason to stop treating the survey as done. It postdates the
+April survey, was not caught by the 2026-09-18 review pass, and it took a deliberate search against
+the *new* findings to surface. Everything in § 10.6.2, § 10.6.3 and § 2.6.2 currently carries **zero**
+citations.
+
 ### 1.2 SafeBench-Seq (December 2025)
 
 | Field | Detail |

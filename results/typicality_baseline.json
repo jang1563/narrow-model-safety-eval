@@ -1,0 +1,206 @@
+{
+  "built": "2026-09-27 12:39:38",
+  "panel": "v3",
+  "perms": 20000,
+  "baseline": "typicality(class) = mean cosine of its members to the mean of the 8,259-protein benign pool. No hazard label, no class label, no fit.",
+  "prompted_by": "arXiv 2606.12609, ICML 2026 workshops, which reports a dominant nativeness axis in PLM embedding space aligned with masked reconstruction perplexity",
+  "reading": "the partial correlations are the load-bearing numbers: margin controlling for typicality says whether margin carries anything typicality does not",
+  "arms": {
+    "esm2_35M": {
+      "n_classes": 12,
+      "classes": [
+        "adp_ribosyl_ab_toxin",
+        "bacteriocin",
+        "beta_lactamase",
+        "clostridial_neurotoxin",
+        "contact_dependent_inhibition",
+        "cry_insecticidal",
+        "phage_peptidoglycan_hydrolase",
+        "pore_forming_cytolysin",
+        "rip_rrna_glycosidase",
+        "superantigen_enterotoxin",
+        "t3ss_effector_apparatus",
+        "virulence_associated_non_toxin"
+      ],
+      "margin_vs_recovery": 0.7957943811805186,
+      "typicality_vs_recovery": 0.02112728445611996,
+      "margin_vs_typicality": -0.055944055944055944,
+      "margin_vs_recovery_typicality_controlled": 0.7984046342902559,
+      "typicality_vs_recovery_margin_controlled": 0.10857630761622834,
+      "typicality_perm_p": 0.52905,
+      "margin_dominates": true,
+      "per_class": [
+        {
+          "class": "adp_ribosyl_ab_toxin",
+          "typicality": 0.9337740540504456,
+          "margin": 0.002980930497869849,
+          "recovery_95": 0.9142857142857143
+        },
+        {
+          "class": "bacteriocin",
+          "typicality": 0.9264574646949768,
+          "margin": 0.012967626564204693,
+          "recovery_95": 0.8666666666666668
+        },
+        {
+          "class": "beta_lactamase",
+          "typicality": 0.9058961272239685,
+          "margin": -0.01720735803246498,
+          "recovery_95": 0.014285714285714285
+        },
+        {
+          "class": "clostridial_neurotoxin",
+          "typicality": 0.9229876399040222,
+          "margin": 0.018071135506033897,
+          "recovery_95": 1.0
+        },
+        {
+          "class": "contact_dependent_inhibition",
+          "typicality": 0.896509051322937,
+          "margin": 0.013018965721130371,
+          "recovery_95": 1.0
+        },
+        {
+          "class": "cry_insecticidal",
+          "typicality": 0.9305744767189026,
+          "margin": 0.01037297211587429,
+          "recovery_95": 0.5545454545454545
+        },
+        {
+          "class": "phage_peptidoglycan_hydrolase",
+          "typicality": 0.9291518330574036,
+          "margin": -0.0021170638501644135,
+          "recovery_95": 0.26875
+        },
+        {
+          "class": "pore_forming_cytolysin",
+          "typicality": 0.9297654032707214,
+          "margin": 0.010746538639068604,
+          "recovery_95": 0.8857142857142856
+        },
+        {
+          "class": "rip_rrna_glycosidase",
+          "typicality": 0.9342854619026184,
+          "margin": 0.011127199046313763,
+          "recovery_95": 1.0
+        },
+        {
+          "class": "superantigen_enterotoxin",
+          "typicality": 0.916833221912384,
+          "margin": 0.007948373444378376,
+          "recovery_95": 0.9428571428571428
+        },
+        {
+          "class": "t3ss_effector_apparatus",
+          "typicality": 0.9411264657974243,
+          "margin": -0.007945293560624123,
+          "recovery_95": 0.74
+        },
+        {
+          "class": "virulence_associated_non_toxin",
+          "typicality": 0.9211578369140625,
+          "margin": -0.00820212997496128,
+          "recovery_95": 0.36
+        }
+      ]
+    },
+    "esm2_650M": {
+      "n_classes": 12,
+      "classes": [
+        "adp_ribosyl_ab_toxin",
+        "bacteriocin",
+        "beta_lactamase",
+        "clostridial_neurotoxin",
+        "contact_dependent_inhibition",
+        "cry_insecticidal",
+        "phage_peptidoglycan_hydrolase",
+        "pore_forming_cytolysin",
+        "rip_rrna_glycosidase",
+        "superantigen_enterotoxin",
+        "t3ss_effector_apparatus",
+        "virulence_associated_non_toxin"
+      ],
+      "margin_vs_recovery": 0.8943883753090784,
+      "typicality_vs_recovery": -0.7464973841162387,
+      "margin_vs_typicality": -0.7132867132867133,
+      "margin_vs_recovery_typicality_controlled": 0.7760693100712499,
+      "typicality_vs_recovery_margin_controlled": -0.346233170537121,
+      "typicality_perm_p": 0.00335,
+      "margin_dominates": true,
+      "per_class": [
+        {
+          "class": "adp_ribosyl_ab_toxin",
+          "typicality": 0.9308789372444153,
+          "margin": 0.005785099230706692,
+          "recovery_95": 1.0
+        },
+        {
+          "class": "bacteriocin",
+          "typicality": 0.9439278244972229,
+          "margin": 0.006128867622464895,
+          "recovery_95": 0.8399999999999999
+        },
+        {
+          "class": "beta_lactamase",
+          "typicality": 0.9602896571159363,
+          "margin": -0.00817735306918621,
+          "recovery_95": 0.1857142857142857
+        },
+        {
+          "class": "clostridial_neurotoxin",
+          "typicality": 0.9291965365409851,
+          "margin": 0.007935713045299053,
+          "recovery_95": 1.0
+        },
+        {
+          "class": "contact_dependent_inhibition",
+          "typicality": 0.9345647692680359,
+          "margin": -0.00519523024559021,
+          "recovery_95": 0.75
+        },
+        {
+          "class": "cry_insecticidal",
+          "typicality": 0.9485582113265991,
+          "margin": 0.004513407126069069,
+          "recovery_95": 0.8727272727272727
+        },
+        {
+          "class": "phage_peptidoglycan_hydrolase",
+          "typicality": 0.9531859755516052,
+          "margin": -0.005539679899811745,
+          "recovery_95": 0.1
+        },
+        {
+          "class": "pore_forming_cytolysin",
+          "typicality": 0.9408542513847351,
+          "margin": 0.006365384440869093,
+          "recovery_95": 1.0
+        },
+        {
+          "class": "rip_rrna_glycosidase",
+          "typicality": 0.9061564207077026,
+          "margin": 0.007911460474133492,
+          "recovery_95": 0.9428571428571428
+        },
+        {
+          "class": "superantigen_enterotoxin",
+          "typicality": 0.9108423590660095,
+          "margin": 0.00465491833165288,
+          "recovery_95": 0.9142857142857143
+        },
+        {
+          "class": "t3ss_effector_apparatus",
+          "typicality": 0.9430942535400391,
+          "margin": 0.0006775677320547402,
+          "recovery_95": 0.8
+        },
+        {
+          "class": "virulence_associated_non_toxin",
+          "typicality": 0.9596273303031921,
+          "margin": -0.002737110946327448,
+          "recovery_95": 0.34
+        }
+      ]
+    }
+  }
+}

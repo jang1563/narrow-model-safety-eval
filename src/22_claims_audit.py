@@ -661,6 +661,32 @@ def fspe_m_p6():
     }
 
 
+def typicality_baseline():
+    """Margin against a label-free typicality baseline, on both arms that have pool embeddings.
+
+    Added 2026-09-27, prompted by arXiv 2606.12609's nativeness axis. The load-bearing assertions are
+    that the baseline is a REAL predictor on the canonical arm -- it was missing and criterion 14
+    required it -- that margin survives controlling for it on both arms, and that the baseline does
+    NOT replicate while margin does. The last one is what makes typicality a confound on one arm
+    rather than an explanation of the finding.
+    """
+    d = j("../results/typicality_baseline.json")
+    if d is None:
+        return None
+    a = d["arms"]
+    return {
+        "arms": sorted(a),
+        "margin": {k: v["margin_vs_recovery"] for k, v in a.items()},
+        "typicality": {k: v["typicality_vs_recovery"] for k, v in a.items()},
+        "margin_partial": {k: v["margin_vs_recovery_typicality_controlled"] for k, v in a.items()},
+        "typicality_partial": {k: v["typicality_vs_recovery_margin_controlled"]
+                               for k, v in a.items()},
+        "typicality_perm_p": {k: v["typicality_perm_p"] for k, v in a.items()},
+        "margin_dominates_both": all(v["margin_dominates"] for v in a.values()),
+        "n_classes": {k: v["n_classes"] for k, v in a.items()},
+    }
+
+
 def functional_site_numbering():
     """The mature-chain numbering fix, pinned from the artifacts alone.
 
@@ -2549,6 +2575,24 @@ CLAIMS = [
       "docs/EVALUATION_REPORT.md": "its own P1 is 12 of 15 above zero at *p* = 0.0176"},
      # the sentence the report carried while P6 was unrun
      ["P6, the alignment baseline that would settle whether a PSSM does this as well, is unrun"]),
+    ("margin survives a label-free typicality baseline, which itself does not replicate",
+     typicality_baseline,
+     lambda v: v is None or (
+         v["arms"] == ["esm2_35M", "esm2_650M"] and v["n_classes"]["esm2_650M"] == 12
+         # margin reproduces § 10.6.1's published rho exactly, tie-averaged ranks included
+         and abs(v["margin"]["esm2_650M"] - 0.8944) < 0.002
+         and abs(v["margin"]["esm2_35M"] - 0.7958) < 0.002
+         # the baseline is a real predictor on the canonical arm, and was missing
+         and v["typicality"]["esm2_650M"] < -0.70 and v["typicality_perm_p"]["esm2_650M"] < 0.01
+         # and it does NOT replicate: null and sign-flipped on the second arm
+         and abs(v["typicality"]["esm2_35M"]) < 0.10
+         and v["typicality_perm_p"]["esm2_35M"] > 0.30
+         # margin's partial is essentially its raw value on both arms
+         and v["margin_partial"]["esm2_650M"] > 0.75 and v["margin_partial"]["esm2_35M"] > 0.75
+         and abs(v["typicality_partial"]["esm2_650M"]) < 0.40
+         and v["margin_dominates_both"]),
+     {"docs/MECHANISM_GENERALIZATION.md":
+      "**the more typical of general protein space a class is, the less of it is recovered.**"}, []),
     ("every dated entry cited by a document exists in the corrections log", cited_entries_exist,
      # `headings` counts distinct DATES, not entries: several days carry a second, third and fourth
      # entry under the same date. 13 is a floor and can only grow.

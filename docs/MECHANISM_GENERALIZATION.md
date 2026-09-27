@@ -2766,6 +2766,68 @@ names the exception, so the discount cannot quietly become a confirmation.
 had inherited from v2, and **all 231 reproduced exactly**. AlphaFold DB v6 and Foldseek have not moved
 under the published values, which is the check that makes every other 3Di number here quotable.
 
+#### 10.6.4 🔴 The baseline margin never had, found by reading prior work rather than by introspection
+
+`src/66_typicality_baseline.py`, 2026-09-27. Criterion 14 of `docs/DETECTOR_CRITERIA.md` is "report the
+boring baselines, including the ones that make the model look worse", and § 9 does that for the
+*recovery* figures: composition 0.754, shuffled labels 0.506, lab-strain provenance 0.818. **The margin
+result never got the same treatment.** § 10.4 compares margin to its own parts — nearest-positive
+alone, nearest-negative alone, class size — and to nothing simpler than itself.
+
+The simpler thing came from the literature. **"Viral Proteins Reveal Geometry of Protein Language
+Models"** ([arXiv 2606.12609](https://arxiv.org/abs/2606.12609), ICML 2026 workshops) reports a
+**dominant nativeness axis** in PLM embedding space, aligned with masked reconstruction perplexity,
+ordering sequences from well-modelled cellular proteins through viral proteins to shuffled ones. If the
+geometry is organised by how *typical* a sequence is, a class sitting close to benign proteins may
+simply be a class sitting close to protein space in general — and margin would be reading a typicality
+axis rather than anything about hazard.
+
+**The baseline, which uses no label of any kind:**
+
+    typicality(class) = mean cosine of its members to the mean of the 8,259-protein benign pool
+
+One line, no fit, no hazard label, no class label, no held-out structure.
+
+| arm | margin ↔ recovery | typicality ↔ recovery | margin ↔ recovery, typicality held | typicality ↔ recovery, margin held | typicality perm *p* |
+|---|---:|---:|---:|---:|---:|
+| canonical 650M | **+0.894** | **−0.746** | **+0.776** | −0.346 | **0.0034** |
+| esm2_35M | **+0.796** | +0.021 | **+0.798** | +0.109 | 0.529 |
+
+🔑 **Typicality is a real predictor on the canonical arm and it was missing.** −0.746 at p = 0.0034,
+from a statistic with no labels, on the arm every published figure uses. The sign is the readable part:
+**the more typical of general protein space a class is, the less of it is recovered.** Its top three by
+typicality are beta-lactamase, the labelled virulence control and the phage class — the two failures
+and the control that displaces phage from the margin bottom-two in § 10.6.1 — and its bottom is the
+RIP, superantigen, clostridial and ADP-ribosyl classes, all at 90 to 100% recovery.
+
+🟢 **And margin survives it, on both arms, which is the answer to the question the paper raises.**
+Controlling for typicality, margin keeps **+0.776** of its +0.894 on the canonical arm and **+0.798** of
+its +0.796 on `esm2_35M` — unchanged. Controlling for margin, typicality falls to −0.346 and +0.109.
+Margin carries information typicality does not; typicality carries little margin does not.
+
+🔴 **The decisive difference is replication, and it runs the project's way.** Typicality is −0.746 on
+the canonical arm and **+0.021 at p = 0.53 on `esm2_35M`** — indistinguishable from noise, and with the
+sign flipped. Margin is +0.894 and +0.796. So typicality is an **arm-specific confound** rather than a
+general explanation, and a paper that had reported only the canonical arm would have had a serious
+problem. § 10.6's insistence on running every geometric claim across representations is what makes this
+answerable rather than a worry.
+
+⚠️ **What this does not settle.** The nativeness axis in that paper is aligned with **masked
+reconstruction perplexity**, and FSPE is a masked-prediction entropy metric, so the same question can
+be asked of FSPE and has not been: § 3.1 of the evaluation report measures entropy at catalytic
+positions against background within a protein, and whether that contrast is partly a typicality
+contrast is untested. The cosine-to-centroid proxy used here is **not** the paper's axis — it is a
+cheap stand-in, computed on embeddings rather than on perplexity — so this section rules out the
+crudest version of the concern and not the paper's actual construct. Doing that properly means
+reproducing their axis, and their code is public.
+
+⚠️ **One correction to the baseline itself, recorded because it is the kind that flatters.** The first
+version of `src/66` ranked without tie-averaging and returned +0.902 for margin against § 10.6.1's
+published +0.894. Three classes sit at exactly 100% recovery on the canonical arm, so the ties are
+real and `src/30`'s tie-averaged ranks are correct. Fixed, and margin now reproduces +0.894 and +0.796
+exactly. A baseline that disagrees with the number it is a baseline for, for a reason unrelated to the
+baseline, is worse than no baseline.
+
 ## 11. What this does not claim
 
 - **Not a better classifier.** DTVF (ProtT5 + LSTM/CNN) reports AUROC 0.92 on the standard 576/576
