@@ -26,9 +26,23 @@ with an **include-specials** mean (see § 9.1.4's note on the two means). This s
 that mean too and requires it to reproduce the published array per protein. If it does not, the rows are
 misaligned or the pass differs, and every rate computed downstream would be measuring that instead.
 
+Checkpoint and resume
+---------------------
+🔴 The first version accumulated every vector in memory and wrote once at the end, so four hours of
+forward passes depended on the process surviving. `MEMORY.md` already carries the lesson that ignores —
+"per-call JSONL checkpoint+resume", recorded after a long harness was lost the same way. Fixed
+2026-09-27, at the cost of redoing the 84 minutes the unprotected run had completed.
+
+Shards of 250 proteins go to `results/v3/pool_reduction_ckpt/`, each holding every requested tag plus
+the include-specials mean used by the gate. A rerun counts the complete shards and resumes after them,
+so a kill costs at most 249 proteins. ⚠️ The trailing partial shard is deliberately NOT written: if it
+were, `start = n_shards * SHARD` would skip proteins on resume. And nothing is combined into a final
+array until the gate passes, so an interrupted run leaves no artifact that could be read as finished.
+
 Usage:
-    python src/76_pool_reduction_embed.py                       # all of TAGS
+    python src/76_pool_reduction_embed.py                       # resumes if shards exist
     python src/76_pool_reduction_embed.py --tags mean_res win_best25
+    python src/76_pool_reduction_embed.py --restart             # discard shards and start over
 """
 
 import argparse
@@ -50,6 +64,7 @@ PUBMAN = RES / "embedding_manifest_pool_large_esm2_650M.json"
 MODEL = "facebook/esm2_t33_650M_UR50D"
 MAX_LEN = 1022
 TOL = 5e-5
+SHARD = 250      # proteins per checkpoint shard
 # the reductions worth the pass: the control, the one reduction that gained, and its two neighbours
 TAGS = ("mean_res", "win_best25", "win_best9", "win_max9")
 
@@ -81,6 +96,7 @@ def main():
     ap.add_argument("--tags", nargs="+", default=list(TAGS))
     ap.add_argument("--batch_size", type=int, default=4)
     ap.add_argument("--device", default=None)
+    ap.add_argument("--restart", action="store_true", help="discard checkpoint shards and start over")
     a = ap.parse_args()
 
     m70 = load70()
@@ -102,9 +118,43 @@ def main():
     tok = AutoTokenizer.from_pretrained(MODEL)
     model = AutoModel.from_pretrained(MODEL).to(dev).eval()
 
-    acc = {t: [] for t in a.tags}
-    incl, n_trunc, t0 = [], 0, time.time()
-    for i in range(0, len(recs), a.batch_size):
+    ck = RES / "pool_reduction_ckpt"
+    ck.mkdir(exist_ok=True)
+    if a.restart:
+        for f in sorted(ck.glob("shard_*.npz")):
+            f.unlink()
+        print("discarded existing shards")
+    # A shard counts only if it holds every tag this run asks for, and only up to the first gap, so
+    # widening --tags or losing a middle shard re-runs from there rather than silently skipping.
+    have = 0
+    while True:
+        f = ck / f"shard_{have:05d}.npz"
+        if not f.exists():
+            break
+        with np.load(f) as z:
+            if not all(k in z for k in (*a.tags, "_incl")):
+                break
+        have += 1
+    start = have * SHARD
+    if start:
+        print(f"resuming after {have} shard(s) = {start} proteins")
+
+    pend = {t: [] for t in a.tags}
+    pend_incl = []
+    next_shard = have
+
+    def flush():
+        nonlocal next_shard
+        np.savez(ck / f"shard_{next_shard:05d}.npz",
+                 **{t: np.vstack(pend[t]).astype(np.float32) for t in a.tags},
+                 _incl=np.vstack(pend_incl).astype(np.float32))
+        next_shard += 1
+        for t in a.tags:
+            pend[t].clear()
+        pend_incl.clear()
+
+    n_trunc, t0 = 0, time.time()
+    for i in range(start, len(recs), a.batch_size):
         batch = recs[i:i + a.batch_size]
         seqs = []
         for _, s in batch:
@@ -121,15 +171,35 @@ def main():
             body = h[b, idx[1:-1]].float().cpu().numpy()
             red = m70.reduce_all(body)
             for t in a.tags:
-                acc[t].append(red[t])
+                pend[t].append(red[t])
             mm = msk[b].unsqueeze(-1).float()
-            incl.append(((h[b] * mm).sum(0) / mm.sum(0)).float().cpu().numpy())
+            pend_incl.append(((h[b] * mm).sum(0) / mm.sum(0)).float().cpu().numpy())
+            if len(pend_incl) == SHARD:
+                flush()
         if (i + a.batch_size) % 200 < a.batch_size or i + a.batch_size >= len(recs):
             el = time.time() - t0
             done = min(i + a.batch_size, len(recs))
             print(f"  {done}/{len(recs)}  {el / 60:.1f} min  "
                   f"(eta {el / done * (len(recs) - done) / 60:.0f} min)", flush=True)
     print(f"  {n_trunc} sequence(s) truncated to {MAX_LEN}")
+
+    # ---- reassemble from the shards plus the unwritten tail -----------------------------------
+    acc = {t: [] for t in a.tags}
+    incl = []
+    for k in range(next_shard):
+        with np.load(ck / f"shard_{k:05d}.npz") as z:
+            for t in a.tags:
+                acc[t].append(z[t])
+            incl.append(z["_incl"])
+    if pend_incl:
+        for t in a.tags:
+            acc[t].append(np.vstack(pend[t]).astype(np.float32))
+        incl.append(np.vstack(pend_incl).astype(np.float32))
+    acc = {t: np.vstack(v) for t, v in acc.items()}
+    # 🔴 A shard arithmetic error would show up here as a row count, not as a wrong number later.
+    if acc[a.tags[0]].shape[0] != len(recs):
+        raise SystemExit(f"reassembled {acc[a.tags[0]].shape[0]} rows for {len(recs)} proteins: the "
+                         "shard arithmetic is wrong and nothing is written")
 
     # ---- the gate -----------------------------------------------------------------------------
     got = np.vstack(incl).astype(np.float32)
@@ -141,7 +211,7 @@ def main():
                          "forward pass differs, so nothing is written.")
 
     for t in a.tags:
-        arr = np.vstack(acc[t]).astype(np.float32)
+        arr = acc[t].astype(np.float32)
         np.save(RES / f"embeddings_pool_large_esm2_650M_{t}.npy", arr)
         (RES / f"embedding_manifest_pool_large_esm2_650M_{t}.json").write_text(json.dumps({
             "model": MODEL, "tag": f"esm2_650M_{t}", "n": int(arr.shape[0]),
