@@ -102,3 +102,9 @@ results/v2/profile_hmm_scores_*.npz
 # `python src/67_vfdb_ingest.py --download`. The aggregate summary in results/vfdb_ingest.json
 # is tracked; nothing that reproduces VFDB's own table is.
 data/external/vfdb/
+
+# The A2 candidate index: a 27 MB UniProt stream of 66,275 accessions, regenerable with
+# `python src/68_benign_enzyme_set.py --refresh`. The per-entry records the build actually
+# used are cached under data/uniprot_cache/ and ARE tracked, so the 60 admitted controls stay
+# reproducible without the index.
+data/external/uniprot/
