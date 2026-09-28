@@ -129,3 +129,14 @@ results/*/class_axis_pos_ckpt_*/
 # `python src/84_localization_control.py --fetch`. The strata tallies that anything cites are in
 # results/localization_control*.json, which is tracked.
 data/external/uniprot_localization/
+
+# GO cellular-component / signal-peptide / transmembrane records for the pool's test partition,
+# cached by src/92 so the study does not re-fetch 6,758 accessions. A mirror of public UniProt fields,
+# regenerable with `python src/92_localization_coverage.py --fetch`. The strata tallies anything cites
+# are in results/localization_coverage*.json, which is tracked.
+data/external/uniprot_localization_go/
+
+# src/90's UniProt ID-mapping result for the 4,218 VFDB negatives, same reasoning: a mirror of a public
+# service's output, regenerable with `python src/90_vfdb_uniprot_map.py --map`, and the chosen entries
+# it produces are tracked in results/vfdb_uniprot_map.json.
+data/external/uniprot_idmap/

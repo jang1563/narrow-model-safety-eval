@@ -103,7 +103,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-28 with the document. It upgrades study H's verdict from partial to
           # supported and withdraws H-5 as a share, so it is the document that settles what two other
           # audited surfaces are allowed to say.
-          "docs/MATCHED_VFDB_SCALEUP_PREREGISTRATION.md"]
+          "docs/MATCHED_VFDB_SCALEUP_PREREGISTRATION.md",
+          # Added 2026-09-29 with the document. It lifts a caveat study E attached to every statement
+          # of this project's main adverse finding, and it is the only place recording that the
+          # length-matched estimate lands in a different band than the primary.
+          "docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1375,6 +1379,48 @@ def matched_vfdb_scaleup():
                "35M": round(b["K4_membership_closes"], 3)},
         "reference": {"650M": round(ra["V_reference"]["mean"], 4),
                       "35M": round(rb["V_reference"]["mean"], 4)},
+    }
+
+
+def localization_coverage():
+    """Study E's contrast on annotation that is no longer sparse.
+
+    \U0001f7e2 Two things have to travel together. The ceiling study E BREACHED is now CLEARED --
+    unannotated falls 55.0% -> 37.0% -- which lifts the caveat study E attached to every statement of
+    its result. And the verdict survives that: R = 5.182 and 5.855, both far above the frozen 3.0.
+
+    \U0001f534 The third thing is the one a summary would drop: the length-MATCHED ratio fell to
+    2.623 on 650M, which is in the PARTIAL band, while 35M's is 3.553. The frozen rule does not invoke
+    the matched subsample (length AUROC 0.562, inside tolerance) so R governs -- but the arms straddle
+    the boundary there and the gap says length carries more of this contrast than the AUROC suggests.
+
+    \u26a0\ufe0f The availability guard fails again at 0.48 and 0.52. Doubling the annotated
+    fraction did not fix it, so that is a property of the pool rather than of the keyword source.
+    """
+    a = j("../results/localization_coverage.json")
+    b = j("../results/localization_coverage_esm2_35M.json")
+    if None in (a, b):
+        return None
+    return {
+        "strata": a["strata_n"], "strata_study_e": a["strata_n_study_e"],
+        "additive": a["additive"], "reclassified_under_union": a["reclassified_under_union"],
+        "R": {"650M": round(a["L1_ratio"]["mean"], 3), "35M": round(b["L1_ratio"]["mean"], 3)},
+        "R_decontaminated": {"650M": round(a["L1_ratio_decontaminated"]["mean"], 3),
+                             "35M": round(b["L1_ratio_decontaminated"]["mean"], 3)},
+        "band": a["band"], "band_agrees": a["band"] == b["band"],
+        # 🟢 the guard study E breached
+        "unannotated_frac": round(a["L3_unannotated_frac"], 4),
+        "ceiling_met": a["L3_ceiling_met"],
+        # ⚠️ the guard that fails whichever source is asked
+        "availability": {"650M": round(a["L4_availability_ratio"], 2),
+                         "35M": round(b["L4_availability_ratio"], 2)},
+        "availability_ok": a["L4_availability_ok"] or b["L4_availability_ok"],
+        "length_auroc": round(a["length_auroc"], 3),
+        "length_confounded": a["length_confounded"],
+        # 🔴 the matched estimate, which straddles the band the primary clears
+        "matched_R": {"650M": round(a["length_matched_ratio"], 3),
+                      "35M": round(b["length_matched_ratio"], 3)},
+        "floors_met": a["floors_met"] and b["floors_met"],
     }
 
 
@@ -3670,6 +3716,29 @@ CLAIMS = [
       "**310 of 6,139 eligible proteins changed side = 5.05%**",
       "paper/MANUSCRIPT.md":
       "**\"Almost exactly independent\" was a property of the defective\nfactor**"},
+     []),
+    ("study E's ceiling is cleared and its verdict survives, but the matched estimate straddles",
+     localization_coverage,
+     lambda v: v is None or (
+         # 🔒 additive as amended: nothing study E classified changed class
+         v["additive"] and v["reclassified_under_union"] == 49
+         and v["strata_study_e"]["intracellular"] == 1666
+         and v["strata"]["intracellular"] == 2739
+         and v["floors_met"]
+         # 🟢 the ceiling study E breached at 55.0% is cleared
+         and v["ceiling_met"] and v["unannotated_frac"] < 0.40
+         # 🟢 and the verdict survives on both arms, on the frozen and decontaminated readings alike
+         and v["band_agrees"] and v["band"] == "localization is a major driver"
+         and v["R"]["650M"] > 3.0 and v["R"]["35M"] > 3.0
+         and v["R_decontaminated"]["650M"] > 3.0 and v["R_decontaminated"]["35M"] > 3.0
+         # ⚠️ availability still fails on BOTH arms, whichever source is asked
+         and not v["availability_ok"]
+         and v["availability"]["650M"] < 0.67 and v["availability"]["35M"] < 0.67
+         # 🔴 and the matched estimate straddles the boundary the primary clears
+         and not v["length_confounded"] and v["length_auroc"] < 0.65
+         and v["matched_R"]["650M"] < 3.0 < v["matched_R"]["35M"]),
+     {"docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md":
+      "**Unannotated falls from 55.0% to 37.0%**, under the frozen 50%."},
      []),
     ("without the bridge's selection the matched contrast is supported, not partial",
      matched_vfdb_scaleup,

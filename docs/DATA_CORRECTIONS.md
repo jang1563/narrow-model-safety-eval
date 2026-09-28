@@ -5123,3 +5123,61 @@ metric was never well-founded.**
 
 ⚠️ **Note what did not change**: a benign secreted protein is still flagged at **37.5%** against 6.9%
 cytoplasmic. **Study E is untouched by any of this.**
+
+---
+
+## 2026-09-29 (sixty-third entry) — Study E's ceiling is cleared, its verdict survives, and one number moves against it
+
+Study E returned this project's main adverse finding and **breached its own frozen ceiling** doing it:
+its rule left **55.0%** of the eligible pool `unannotated` against a ceiling of 50%, so every statement
+of the result carried the caveat that *"the annotated contrast is not representative of the pool"*. The
+availability guard failed too. 🔑 **Both had one cause — UniProt's curated keywords are sparse, so the
+contrast was measured on the 45% a curator had reached.**
+
+GO cellular-component terms plus signal-peptide and transmembrane features take coverage to **66.1%**.
+
+| stratum | study E | with the broader sources | Δ |
+|---|---:|---:|---:|
+| extracellular | 652 | 657 | +5 |
+| membrane | 495 | 537 | +42 |
+| **intracellular** | 1,666 | **2,739** | **+1,073** |
+| **unannotated** | 3,434 | **2,314** | **−1,120** |
+
+### 🟢 The ceiling clears and the verdict survives
+
+**Unannotated falls to 37.0%**, under the frozen 50%. 🔒 **The caveat study E attached to every
+statement of its result is lifted.** And `R` is **5.182 [5.034, 5.330]** and **5.855 [5.500, 6.211]` —
+**4.965** and **5.353** with VFDB contaminants dropped from the strata, against study G's clean
+condition at 5.074 and 4.347. **Study E was not an artifact of sparse annotation.**
+
+### ⚠️ The availability guard fails again — and that makes it a finding
+
+**0.48** and **0.52**, still outside [0.67, 1.5]. 🔑 **Doubling the annotated fraction did not fix it**,
+so proteins no curator has localized are flagged at about half the rate of proteins someone has,
+**whichever source is asked**. That is a property of the pool, not of the keyword vocabulary.
+
+### 🔴 And the length-matched estimate now straddles the band
+
+Length-alone AUROC is **0.562** — better than study E's 0.607 and inside the 0.65 tolerance — so the
+frozen rule does **not** invoke the matched subsample and R governs. But the matched ratio is **2.623**
+on 650M, in the **partial** band, against **3.553** on 35M. Study E's were 4.382 and 3.430.
+
+⚠️ **The cause is mechanical and it cuts the wrong way for comfort**: the intracellular stratum grew by
+1,073, so 1:1 nearest-neighbour matching now draws from a much larger pool and matches better. **That
+makes the matched estimate more trustworthy, not less.** 🔒 **Recorded because the frozen rule happened
+not to reach for it** — the claim that survives matching on both arms is the **fourfold overshoot of
+the nominal budget**, not the fivefold ratio, and the manuscript now says so.
+
+### 🔴 The preregistration described two different rules
+
+§ 1.1 stated a **first-match-wins rule over the union of all sources** and in the same paragraph called
+the change **"purely additive"**. The script's own additivity guard caught it on the first run: **49**
+proteins study E had classified would have been reclassified, because a `SIGNAL` feature outranks a
+`Cytoplasm` keyword under first-match-wins. 🔒 **The stated intent governs** — this study asks whether
+*coverage* invalidated study E, so classification is held fixed — and the literal reading is kept as
+`union_stratum()` with its 49 reclassifications reported in every artifact.
+
+⚠️ **And a prediction failed to name its population for the third time in this project.** § 4 predicted
+the extracellular rate would *fall* below 21.75%; it read **23.93%**, because these rates are on study
+G's clean fold while the frozen strata still carry contaminants. The comparable figure is the
+decontaminated one. **The prediction was not wrong so much as unscoreable as written.**

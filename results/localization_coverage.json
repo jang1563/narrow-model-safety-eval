@@ -1,0 +1,108 @@
+{
+  "built": "2026-09-29 06:49:31",
+  "arm": "esm2_650M",
+  "seeds": 30,
+  "n_eligible": 6247,
+  "strata_n": {
+    "extracellular": 657,
+    "membrane": 537,
+    "intracellular": 2739,
+    "unannotated": 2314
+  },
+  "strata_n_study_e": {
+    "extracellular": 652,
+    "membrane": 495,
+    "intracellular": 1666,
+    "unannotated": 3434
+  },
+  "additive": true,
+  "reclassified_under_union": 49,
+  "rates": {
+    "extracellular": {
+      "mean": 0.2392694063926941,
+      "ci": [
+        0.22910940249045347,
+        0.2494294102949347
+      ]
+    },
+    "membrane": {
+      "mean": 0.16883923029174427,
+      "ci": [
+        0.15809087069454644,
+        0.1795875898889421
+      ]
+    },
+    "intracellular": {
+      "mean": 0.04646464646464645,
+      "ci": [
+        0.043929673652114185,
+        0.04899961927717872
+      ]
+    },
+    "unannotated": {
+      "mean": 0.046197061365600686,
+      "ci": [
+        0.04290920449931709,
+        0.049484918231884285
+      ]
+    },
+    "clean_extracellular": {
+      "mean": 0.20829294561120087,
+      "ci": [
+        0.1984190721960927,
+        0.21816681902630905
+      ]
+    },
+    "clean_intracellular": {
+      "mean": 0.0422575086164451,
+      "ci": [
+        0.0397484118021097,
+        0.0447666054307805
+      ]
+    },
+    "all": {
+      "mean": 0.07716237127154367,
+      "ci": [
+        0.0731425594918265,
+        0.08118218305126083
+      ]
+    },
+    "annotated": {
+      "mean": 0.09538096448851598,
+      "ci": [
+        0.09079297414958243,
+        0.09996895482744952
+      ]
+    }
+  },
+  "L1_ratio": {
+    "mean": 5.182226740053389,
+    "ci": [
+      5.034441798606531,
+      5.330011681500247
+    ]
+  },
+  "band": "localization is a major driver",
+  "L1_ratio_decontaminated": {
+    "mean": 4.965376906813287,
+    "ci": [
+      4.806363627160167,
+      5.124390186466407
+    ]
+  },
+  "clean_strata_n": {
+    "extracellular": 619,
+    "membrane": 523,
+    "intracellular": 2708,
+    "unannotated": 2289
+  },
+  "L3_unannotated_frac": 0.37041780054426127,
+  "L3_ceiling_met": true,
+  "L4_availability_ratio": 0.48434256891125155,
+  "L4_availability_ok": false,
+  "floors_met": true,
+  "length_auroc": 0.5620895092755136,
+  "length_confounded": false,
+  "length_matched_ratio": 2.6233920055070308,
+  "n_matched_pairs": 657
+}

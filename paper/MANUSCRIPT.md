@@ -218,8 +218,25 @@ Both hold the probe and its calibration fixed and vary only what the proteins ar
 🔴 **The localization gradient is the larger finding of the two, and it is adverse.** Among benign
 Bacteria and Archaea in the pool, a **secreted or surface-exposed** protein is flagged at **21.75%**
 against **4.13%** for a cytoplasmic one — a **5.38×** ratio [5.13, 5.63], replicating at **5.15×** on
-ESM-2 35M and surviving 1:1 length matching at **4.38×** and **3.43×**. ⚠️ **So the nominal 5% is not
-merely exceeded on virulence factors; it is exceeded fourfold on ordinary benign secreted proteins.**
+ESM-2 35M. ⚠️ **So the nominal 5% is not merely exceeded on virulence factors; it is exceeded fourfold
+on ordinary benign secreted proteins.**
+
+🟢 **That was measured on the 45% of the pool a curator had localized, and it survives dropping that
+restriction.** Adding GO cellular-component terms and signal-peptide and transmembrane features takes
+coverage to 66%, so the unannotated stratum falls from **55.0% to 37.0%** — under a ceiling the
+original preregistration set at 50% **and breached**, which is why every earlier statement of this
+result carried the caveat that the annotated contrast might not represent the pool
+(`docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md`). The intracellular stratum grows from 1,666 proteins
+to **2,739**, and `R` is **5.18** and **5.86** — **4.97** and **5.35** once VFDB contaminants are
+dropped from the strata. 🔒 **The caveat is lifted and the finding is unchanged.**
+
+🔴 **One number moves against it and is reported here rather than left in the appendix.** Length-alone
+AUROC is 0.562, inside the 0.65 tolerance, so the frozen rule keeps `R` as the estimate — but with the
+larger intracellular stratum the **1:1 length-matched** ratio is **2.62** on 650M and **3.55** on 35M,
+straddling the 3.0 boundary that `R` clears on both arms. The matched estimate is now drawn from a much
+better-matched pool, which makes it more trustworthy, not less. ⚠️ **Length carries more of this
+contrast than an AUROC of 0.562 suggests, and the fourfold overshoot of the nominal budget is the claim
+that survives matching — not the fivefold ratio.**
 
 ⚠️ **Part of that ratio was contamination, and the corrected figure is the one to quote.** The benign
 pool holds **133 exact VFDB sequences** (1.61%), and they are **differentially** distributed across

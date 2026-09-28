@@ -1,0 +1,108 @@
+{
+  "built": "2026-09-29 06:49:34",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "n_eligible": 6247,
+  "strata_n": {
+    "extracellular": 657,
+    "membrane": 537,
+    "intracellular": 2739,
+    "unannotated": 2314
+  },
+  "strata_n_study_e": {
+    "extracellular": 652,
+    "membrane": 495,
+    "intracellular": 1666,
+    "unannotated": 3434
+  },
+  "additive": true,
+  "reclassified_under_union": 49,
+  "rates": {
+    "extracellular": {
+      "mean": 0.150025367833587,
+      "ci": [
+        0.14290842266655554,
+        0.15714231300061846
+      ]
+    },
+    "membrane": {
+      "mean": 0.13730602110490378,
+      "ci": [
+        0.12764938087716088,
+        0.14696266133264668
+      ]
+    },
+    "intracellular": {
+      "mean": 0.02646951442132165,
+      "ci": [
+        0.024297464903218085,
+        0.028641563939425217
+      ]
+    },
+    "unannotated": {
+      "mean": 0.032252953039469894,
+      "ci": [
+        0.03027401292948065,
+        0.03423189314945913
+      ]
+    },
+    "clean_extracellular": {
+      "mean": 0.13527194399569192,
+      "ci": [
+        0.12930081308502203,
+        0.14124307490636182
+      ]
+    },
+    "clean_intracellular": {
+      "mean": 0.02620630231413097,
+      "ci": [
+        0.024037876495919798,
+        0.02837472813234214
+      ]
+    },
+    "all": {
+      "mean": 0.051133877594578735,
+      "ci": [
+        0.048227710716492005,
+        0.054040044472665465
+      ]
+    },
+    "annotated": {
+      "mean": 0.0622425629290618,
+      "ci": [
+        0.05864842096886331,
+        0.0658367048892603
+      ]
+    }
+  },
+  "L1_ratio": {
+    "mean": 5.855468619314773,
+    "ci": [
+      5.49971273620758,
+      6.211224502421966
+    ]
+  },
+  "band": "localization is a major driver",
+  "L1_ratio_decontaminated": {
+    "mean": 5.353434158207277,
+    "ci": [
+      5.002216359948062,
+      5.704651956466491
+    ]
+  },
+  "clean_strata_n": {
+    "extracellular": 619,
+    "membrane": 523,
+    "intracellular": 2708,
+    "unannotated": 2289
+  },
+  "L3_unannotated_frac": 0.37041780054426127,
+  "L3_ceiling_met": true,
+  "L4_availability_ratio": 0.5181816352297184,
+  "L4_availability_ok": false,
+  "floors_met": true,
+  "length_auroc": 0.5620895092755136,
+  "length_confounded": false,
+  "length_matched_ratio": 3.553117308582742,
+  "n_matched_pairs": 657
+}
