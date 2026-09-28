@@ -213,3 +213,30 @@ and the embedding both restart, about forty minutes of work discarded.
 🔑 **And length joins the reported controls regardless**, as criterion 14 requires: length-alone AUROC is
 reported beside composition and shuffled labels in every table, because the fact that it is now near
 chance is itself a claim that can drift.
+
+### Amendment 4 — 2026-09-28, before the LOMO runs: the confound test needed an operational definition
+
+§ 4 says the confound is handled by correlating *"the provenance probe's **per-category** accuracy"*
+against recovery. 🔴 **That is not a computable instruction.** § 2.3's provenance probe predicts a
+lab-strain label for panel members; VFDB representatives and pool proteins do not share such a label, and
+"accuracy per category" of a probe that does not have a per-category target is undefined.
+
+**Operationalized as the leakage channel that actually exists here, and stated before any recovery
+number:** a held-out category is easy to recover if the probe has already seen its **organisms** in
+another category's members. So for each category,
+
+    exclusivity(C) = fraction of C's members whose species appears in NO other category
+
+is computed from the build artifact alone — no embeddings, no labels, no probe — and correlated against
+recovery. 🔴 **If that correlation is significant at *p* < 0.0125, recovery is being driven by organism
+overlap rather than by category, and B-1 is reported as uninterpretable.**
+
+⚠️ **Two further controls are added here rather than discovered later**, both because § 9 of
+`docs/MECHANISM_GENERALIZATION.md` reports them for the panel and criterion 14 requires them: amino-acid
+**composition** alone, and **length** alone — the latter because amendment 3 changed the representative
+rule to bring length-alone AUROC from 0.667 to 0.484, and "near chance" is a claim that can drift.
+
+⚠️ This is the third amendment written while implementing against a frozen document, after a rule that
+made thirty seeds vary nothing and a rule that could not be executed on BLOSUM62's alphabet. **The
+pattern is that a preregistration is checked by implementing it, not by re-reading it**, and all three
+were caught before any probe was fitted.
