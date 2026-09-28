@@ -68,7 +68,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # furthest, and assembling it already found one: the criteria scorecard was quoting 0.981,
           # the SUPERSEDED v1 separability, unlabelled. On the audited surface the manuscript's
           # numbers fail the gate the same way the write-up's do.
-          "paper/MANUSCRIPT.md"]
+          "paper/MANUSCRIPT.md",
+          # Added 2026-09-28 with the document. Its predictions are frozen and its feasibility
+          # counts decide the design, so both are surfaces where a number drifting would matter.
+          "docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -824,6 +827,62 @@ def manuscript_headline():
         "alerts": round(alerts, 1), "real": round(real, 1),
         "precision": round(real / alerts, 4),
         "pool_tested": ext["pool_n"], "calibration_n": ext["calibration_n"],
+    }
+
+
+def external_class_axis_feasibility():
+    """The counts that decided study B's design, recomputed from VFDB rather than read from prose.
+
+    \U0001f534 These are the numbers the preregistration's design rests on: how many categories clear
+    the panel's own eligibility floor of 7 after VF-group dedup, and how many representatives they
+    hold. If a later VFDB download changes them the design has changed with it, and the frozen
+    document has to say so rather than quietly describing a different study.
+    """
+    import re
+    import collections
+    f = (R / ".." / "data" / "external" / "vfdb" / "VFDB_setA_pro.fas").resolve()
+    if not f.exists():
+        return None
+    head = re.compile(r"^>(?P<vfg>VFG\d+)(?:\([^)]*\))?\s*(?:\([^)]*\)\s*)?.*?"
+                      r"\[[^\[\]]*?\((?P<vf>VF\d+)\)\s*-\s*(?P<cat>[^\[\]]*?)\(VFC\d+\)\]\s*"
+                      r"\[(?P<org>[^\[\]]+)\]\s*$")
+    rows, cur, hid = [], [], None
+    for line in f.read_text(errors="replace").splitlines():
+        if line.startswith(">"):
+            if hid is not None:
+                m = head.match(hid)
+                if m:
+                    d = m.groupdict()
+                    rows.append((d["vf"], d["cat"].strip(), d["vfg"], "".join(cur),
+                                 " ".join(d["org"].split()[:2])))
+            hid, cur = line, []
+        else:
+            cur.append(line.strip())
+    if hid is not None:
+        m = head.match(hid)
+        if m:
+            d = m.groupdict()
+            rows.append((d["vf"], d["cat"].strip(), d["vfg"], "".join(cur),
+                         " ".join(d["org"].split()[:2])))
+    # the frozen rule: longest sequence per VF group, ties by lowest VFG id
+    best = {}
+    for vf, cat, vfg, seq, sp in rows:
+        k = best.get(vf)
+        if k is None or len(seq) > len(k[3]) or (len(seq) == len(k[3]) and vfg < k[2]):
+            best[vf] = (vf, cat, vfg, seq, sp)
+    rep = list(best.values())
+    c = collections.Counter(x[1] for x in rep)
+    elig = {k: v for k, v in c.items() if v >= 7}
+    return {
+        "raw": len(rows), "representatives": len(rep),
+        "redundancy": round(len(rows) / len(rep), 2),
+        "n_categories": len(c), "n_eligible": len(elig),
+        "in_eligible": sum(elig.values()),
+        "below_floor": sorted(k for k, v in c.items() if v < 7),
+        "exotoxin_reps": c.get("Exotoxin"),
+        "exotoxin_frac": round(c.get("Exotoxin", 0) / len(rep), 4),
+        "n_species": len(set(x[4] for x in rep)),
+        "largest_category": max(c, key=c.get),
     }
 
 
@@ -3069,6 +3128,18 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("study B's design rests on 13 eligible VFDB categories over 740 representatives",
+     external_class_axis_feasibility,
+     lambda v: v is None or (
+         v["raw"] == 4755 and v["representatives"] == 746 and v["redundancy"] > 6.3
+         and v["n_categories"] == 14 and v["n_eligible"] == 13 and v["in_eligible"] == 740
+         # the one category below the panel's own floor of 7, reported and not held out
+         and v["below_floor"] == ["Antimicrobial activity/Competitive advantage"]
+         # the construct change the preregistration states rather than hides
+         and v["exotoxin_reps"] == 102 and v["exotoxin_frac"] < 0.15
+         and v["n_species"] == 72 and v["largest_category"] == "Adherence"),
+     {"docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md":
+      "| categories with ≥ 7 representatives | — | **13 of 14** |"}, []),
     ("the manuscript's headline pair is the screened panel's separability and a 1.2% precision",
      manuscript_headline,
      lambda v: v is None or (

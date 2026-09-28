@@ -368,6 +368,13 @@ the scorecard in `docs/DETECTOR_CRITERIA.md`; the preregistrations in
 `docs/MUTATION_EXTENSION_PREREGISTRATION.md` and `docs/NEGATIVE_EXPANSION_PREREGISTRATION.md`; and the
 dated record of every number that moved in `docs/DATA_CORRECTIONS.md`.
 
-⚠️ **This manuscript is a draft and is on the audited surface**, which means a figure here that drifts
+🔴 **Status, 2026-09-28: this is an outline of an argument, not a submittable paper.** § 4 rests on a
+single positive result — margin — that has **never been tested on classes this project did not define**,
+and § 5 reports that nothing improved the screen.
+`docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md` freezes the external test, on VFDB's 13 eligible categories over 740 redundancy-deduplicated representatives, and
+states in advance that a null there means §§ 4 and 6 of this draft must be rewritten as a panel-specific
+observation. **This manuscript stays a draft until that returns, either way.**
+
+⚠️ **It is a draft and is on the audited surface**, which means a figure here that drifts
 from its artifact fails the gate in the same way a figure in the write-up does. It is assembled from
 sections `paper/0*.md`; edit those, not this file.
