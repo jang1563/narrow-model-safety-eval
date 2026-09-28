@@ -22,6 +22,7 @@ Usage:
 """
 
 import argparse
+import hashlib
 import json
 import time
 import urllib.parse
@@ -100,12 +101,20 @@ def length_matched(len_a, len_b, rng):
 
 
 def fetch_keywords(accs, batch=500, pause=0.34):
-    """UniProt keywords + CC subcellular location, cached per batch so it resumes."""
+    """UniProt keywords + CC subcellular location, cached per batch so it resumes.
+
+    🔴 The shard name is content-addressed and NOT positional. It was positional until 2026-09-28,
+    which meant a call with a different accession list silently read another list's cache: asking for
+    133 bridge accessions returned 500 rows of the 6,758-accession fetch and reported almost all of
+    them unannotated. Same class of defect as the stale embedding shard in entry 45, and the same fix
+    -- a fingerprint in the name. The caller's accessions are also verified against what came back.
+    """
     CACHE.mkdir(parents=True, exist_ok=True)
     got = {}
     for i in range(0, len(accs), batch):
         chunk = accs[i:i + batch]
-        shard = CACHE / f"kw_{i // batch:04d}.tsv"
+        tag = hashlib.sha256("\n".join(chunk).encode()).hexdigest()[:16]
+        shard = CACHE / f"kw_{i // batch:04d}_{tag}.tsv"
         if not shard.exists():
             q = urllib.parse.urlencode({"accessions": ",".join(chunk), "format": "tsv",
                                         "fields": "accession,keyword,cc_subcellular_location"})
@@ -121,10 +130,16 @@ def fetch_keywords(accs, batch=500, pause=0.34):
                     time.sleep(2 ** attempt)
             time.sleep(pause)
             print(f"  fetched {i + len(chunk):>6}/{len(accs)}", flush=True)
+        rows = {}
         for line in shard.read_text().splitlines()[1:]:
             f = line.split("\t")
             if f and f[0]:
-                got[f[0]] = {k.strip() for k in (f[1] if len(f) > 1 else "").split(";") if k.strip()}
+                rows[f[0]] = {k.strip() for k in (f[1] if len(f) > 1 else "").split(";") if k.strip()}
+        stray = set(rows) - set(chunk)
+        if stray:
+            raise SystemExit(f"cache shard {shard.name} holds {len(stray)} accessions that were not "
+                             f"requested (e.g. {sorted(stray)[:3]}); delete it and refetch")
+        got.update(rows)
     return got
 
 
