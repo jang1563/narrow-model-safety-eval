@@ -341,3 +341,20 @@ other. 🔴 **This does not overturn the preregistered verdict.** It says the st
 partially independent predictors on thirteen points, which is a statement about power, and the
 separation needs a design where organism composition is held fixed across categories rather than a
 larger *n* of the same shape.
+
+### Amendment 6 — 2026-09-28: B-1's verdict, revisited by the design this study called for
+
+The Results section above reports B-1 as **uninterpretable**, because the preregistered confound rule
+fired, and says the separation "needs a design where organism composition is held fixed across
+categories". That design is `docs/ORGANISM_STRATIFIED_PREREGISTRATION.md`, and it returned:
+
+🟢 **Mean within-species Spearman(margin, recovery) = +0.3750, permutation *p* = 0.0104, 8 of 10 strata
+positive.** Inside a species the organism is constant, so that stratum's ordering cannot be produced by
+organism identity, exclusivity or same-species-in-training.
+
+🔑 **So B-1 is reinstated as a claim about ordering**: margin's ordering of VFDB's categories is not an
+artifact of organism composition. ⚠️ **The uninterpretable verdict above is not deleted** — it was the
+correct call on the evidence available when it was made, and the rule that produced it is the reason a
+targeted follow-up existed to run. 🔴 **And the reinstatement is narrow**: it covers the *ordering* only.
+The absolute recoveries remain compatible with pathogen-versus-Swiss-Prot separation, which A1 measures
+at 40.8% false positives on non-toxin virulence factors.

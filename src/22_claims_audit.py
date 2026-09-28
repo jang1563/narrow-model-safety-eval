@@ -71,7 +71,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "paper/MANUSCRIPT.md",
           # Added 2026-09-28 with the document. Its predictions are frozen and its feasibility
           # counts decide the design, so both are surfaces where a number drifting would matter.
-          "docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md"]
+          "docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md",
+          # Added 2026-09-28. It reinstates B-1 on a narrow reading, so the narrowness is the part
+          # most likely to erode and the part a claim has to hold in place.
+          "docs/ORGANISM_STRATIFIED_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -963,6 +966,36 @@ def external_class_axis_result():
         "worst_recovery": min(rec.values()), "best_recovery": max(rec.values()),
         "lowest_margin_category": min(d["margin"], key=d["margin"].get),
         "n_negative_margin": sum(1 for v in d["margin"].values() if v < 0),
+    }
+
+
+def organism_stratified():
+    """Margin against recovery with the organism held constant by stratification.
+
+    \U0001f534 This is the study that reinstates B-1, so the three things pinned are the result, its
+    weakness, and its scope. It is +0.375 against B-1's +0.681; one of ten strata runs to -0.800 on
+    four categories; and it says nothing about the ABSOLUTE recoveries, which A1 shows sit on top of a
+    40.8% false-positive rate against non-toxin virulence factors. A later summary that carried the
+    first without the other two would misreport it.
+    """
+    d = j("../results/organism_stratified.json")
+    if d is None:
+        return None
+    c = d["C1"]
+    rhos = {k: round(v["rho"], 4) for k, v in d["per_species"].items()}
+    ncat = {k: v["n_categories"] for k, v in d["per_species"].items()}
+    return {
+        "n_cells": d["n_cells"], "n_strata": d["n_strata"],
+        "cells_in_strata": d["cells_in_strata"], "min_cell": d["min_cell"],
+        "mean_rho": round(c["mean_rho"], 4), "perm_p": round(c["perm_p"], 4),
+        "supported": c["supported"],
+        "inside_frozen_band": bool(0.1 <= c["mean_rho"] <= 0.5),
+        "n_positive": c["n_positive_strata"],
+        "sd_from_null": round((c["mean_rho"] - c["null_mean"]) / c["null_sd"], 2),
+        "weakest": min(rhos, key=rhos.get), "weakest_rho": min(rhos.values()),
+        "weakest_n_categories": ncat[min(rhos, key=rhos.get)],
+        "strongest_rho": max(rhos.values()),
+        "median_rho": round(float(sorted(rhos.values())[len(rhos) // 2]), 4),
     }
 
 
@@ -3208,6 +3241,24 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("with the organism held constant margin still orders the categories, weakly",
+     organism_stratified,
+     lambda v: v is None or (
+         # the strata the feasibility pass predicted, at the cell floor frozen before the data
+         v["min_cell"] == 3 and v["n_cells"] == 104 and v["n_strata"] == 10
+         and v["cells_in_strata"] == 48
+         # C-1 supported, and inside the band frozen before the run
+         and v["supported"] and v["inside_frozen_band"]
+         and abs(v["mean_rho"] - 0.375) < 0.001 and v["perm_p"] < 0.05
+         and v["n_positive"] == 8
+         # 🔴 and the weakness, which is the part a summary drops
+         and v["sd_from_null"] < 2.5
+         and v["weakest"] == "Porphyromonas gingivalis" and v["weakest_rho"] < -0.7
+         and v["weakest_n_categories"] == 4
+         # weaker than study B's +0.6813, which the reinstatement must not be quoted as matching
+         and v["mean_rho"] < 0.6813),
+     {"docs/ORGANISM_STRATIFIED_PREREGISTRATION.md":
+      "🔴 **It says nothing about the absolute recoveries.**"}, []),
     ("margin transfers to VFDB's categories at +0.68, and the confound rule voids the verdict",
      external_class_axis_result,
      lambda v: v is None or (

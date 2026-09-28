@@ -4364,3 +4364,63 @@ would mean "no variance" rather than "no confound" — and then a *significant* 
 variable whose range is 0.00 to 0.11 with five of thirteen tied at zero, because Spearman ranks
 differences of 0.01. **A statistic too degenerate to fail safely is also too degenerate to pass safely**,
 and I only checked one of those directions.
+
+---
+
+## 2026-09-28 (fiftieth entry) — Organism held constant: margin still orders the categories, weakly, and B-1 comes back on a narrow reading
+
+Study B's confound rule fired against study B, and study B's own conclusion was that the separation
+needs a design holding organism composition fixed. This is that design, and it is the fiftieth entry in
+this log.
+
+### 🔴 Matching was impossible, and the reason is biological
+
+Three designs were priced **before** the preregistration was written:
+
+| design | why it failed |
+|---|---|
+| within a single organism | the most prolific species, *M. tuberculosis*, has 39 representatives over 9 categories but only **6** with ≥ 4 members |
+| species-excluded folds | training collapses unevenly — **82 proteins (11%)** for Adherence against **656 (88%)** for Post-translational modification. It trades the organism confound for a training-size confound |
+| a shared top-*N* species pool | restricting to the top 6 moves the mean pairwise species-profile total-variation distance only from **0.753 to 0.540**, and costs three categories |
+
+🔑 **Categories genuinely have different organism profiles** — Motility factors come from flagellated
+organisms, exotoxins from toxin producers — so no subsetting equalises them. Organism was therefore held
+constant by **stratification**, the move § 2.4.1 made when it held mechanism class constant to test
+target host.
+
+### 🟢 C-1: supported, and inside the band frozen before the run
+
+Study B's folds unchanged — the per-category member flag rates reproduce its recoveries exactly, which is
+the check that these are the same folds. 104 cells at ≥ 3 members, **10 species with ≥ 4 categories
+covering 48 cells**.
+
+**Mean within-species Spearman(margin, recovery) = +0.3750, permutation *p* = 0.0104**, 8 of 10 strata
+positive, median *ρ* +0.464, and the observed value 2.24 sd from a null with mean −0.0001. § 3 predicted
+"+0.1 to +0.5, and I do not know whether it will clear *p* < 0.05." It is +0.375 and it does.
+
+**Inside a stratum the organism is constant**, so that stratum's ordering of categories cannot be
+produced by organism identity, exclusivity or same-species-in-training — the three quantities that
+voided study B. 🔑 **B-1 is reinstated as a claim about ordering.**
+
+### ⚠️ Three things that go with it, pinned in claim 95 so a summary cannot drop them
+
+- **It is weaker than B-1** — +0.375 against +0.681 — and 2.24 sd is not a large margin.
+- **One stratum runs hard the other way**: *P. gingivalis* at **−0.800** on four categories, one swap
+  from zero, with two more strata at 0.000 and +0.200.
+- 🔴 **It says nothing about the absolute recoveries.** Margin ordering the categories correctly is
+  entirely compatible with the whole ordering sitting on top of pathogen-versus-Swiss-Prot separation —
+  which § 2.3 measures at AUROC 0.818 and which A1 measures directly as **40.8%** false positives against
+  non-toxin virulence factors.
+
+### 🔑 What the sequence itself shows
+
+Study B's uninterpretable verdict is **not deleted**: it was the correct call on the evidence then
+available, and the rule that produced it is the reason a targeted follow-up existed to run at all. **A
+preregistered confound rule fired against its author's own result, the result was withheld, a design was
+built to answer the specific objection, and the answer came back positive and narrow.** That sequence —
+four documents, six amendments, one reinstatement on a smaller claim than was originally made — is the
+methodological content this project has that its results do not.
+
+⚠️ And the honest bound on all of it: **this is one embedding arm, one database, and a claim about
+ordering.** § 9.1.4 of `docs/MECHANISM_GENERALIZATION.md` records three findings that looked clean on
+ESM-2 650M and vanished on a second arm. **Nothing here has been run on a second arm.**

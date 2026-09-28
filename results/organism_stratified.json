@@ -1,0 +1,390 @@
+{
+  "built": "2026-09-28 13:36:19",
+  "alpha": 0.05,
+  "seeds": 30,
+  "min_cell": 3,
+  "min_categories_per_stratum": 4,
+  "n_cells": 104,
+  "n_strata": 10,
+  "cells_in_strata": 48,
+  "per_species": {
+    "Escherichia coli": {
+      "n_categories": 6,
+      "categories": [
+        "Adherence",
+        "Effector delivery system",
+        "Exotoxin",
+        "Invasion",
+        "Nutritional/Metabolic factor",
+        "Regulation"
+      ],
+      "rho": 0.6,
+      "cells": {
+        "Adherence": {
+          "n": 15,
+          "recovery": 0.8266666666666667,
+          "margin": 0.008654030039906502
+        },
+        "Effector delivery system": {
+          "n": 17,
+          "recovery": 0.9843137254901961,
+          "margin": 0.020376916974782944
+        },
+        "Exotoxin": {
+          "n": 11,
+          "recovery": 0.6151515151515151,
+          "margin": 0.0004606897127814591
+        },
+        "Invasion": {
+          "n": 5,
+          "recovery": 0.5933333333333334,
+          "margin": 0.005608797073364258
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 5,
+          "recovery": 0.5733333333333334,
+          "margin": 0.0007591486210003495
+        },
+        "Regulation": {
+          "n": 3,
+          "recovery": 0.45555555555555555,
+          "margin": 0.002590437652543187
+        }
+      }
+    },
+    "Legionella pneumophila": {
+      "n_categories": 5,
+      "categories": [
+        "Adherence",
+        "Effector delivery system",
+        "Nutritional/Metabolic factor",
+        "Regulation",
+        "Stress survival"
+      ],
+      "rho": 0.49999999999999994,
+      "cells": {
+        "Adherence": {
+          "n": 3,
+          "recovery": 0.5,
+          "margin": 0.005220691207796335
+        },
+        "Effector delivery system": {
+          "n": 4,
+          "recovery": 0.7833333333333333,
+          "margin": 0.0017498880624771118
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 6,
+          "recovery": 0.3888888888888889,
+          "margin": -0.002637028694152832
+        },
+        "Regulation": {
+          "n": 4,
+          "recovery": 0.44166666666666665,
+          "margin": -0.00043722987174987793
+        },
+        "Stress survival": {
+          "n": 4,
+          "recovery": 0.55,
+          "margin": -0.001765429973602295
+        }
+      }
+    },
+    "Listeria monocytogenes": {
+      "n_categories": 7,
+      "categories": [
+        "Adherence",
+        "Exotoxin",
+        "Immune modulation",
+        "Invasion",
+        "Nutritional/Metabolic factor",
+        "Post-translational modification",
+        "Stress survival"
+      ],
+      "rho": 0.8214285714285715,
+      "cells": {
+        "Adherence": {
+          "n": 7,
+          "recovery": 0.7333333333333334,
+          "margin": 0.008555157110095024
+        },
+        "Exotoxin": {
+          "n": 3,
+          "recovery": 0.7000000000000001,
+          "margin": 0.003359297988936305
+        },
+        "Immune modulation": {
+          "n": 5,
+          "recovery": 0.66,
+          "margin": 0.0098175760358572
+        },
+        "Invasion": {
+          "n": 6,
+          "recovery": 0.7055555555555556,
+          "margin": 0.011494834907352924
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 3,
+          "recovery": 0.6,
+          "margin": 0.0008695324067957699
+        },
+        "Post-translational modification": {
+          "n": 3,
+          "recovery": 0.4444444444444444,
+          "margin": 1.329183578491211e-05
+        },
+        "Stress survival": {
+          "n": 4,
+          "recovery": 0.26666666666666666,
+          "margin": -0.0024874359369277954
+        }
+      }
+    },
+    "Mycobacterium tuberculosis": {
+      "n_categories": 6,
+      "categories": [
+        "Effector delivery system",
+        "Immune modulation",
+        "Nutritional/Metabolic factor",
+        "Others",
+        "Regulation",
+        "Stress survival"
+      ],
+      "rho": 0.4285714285714286,
+      "cells": {
+        "Effector delivery system": {
+          "n": 6,
+          "recovery": 0.2888888888888889,
+          "margin": -0.0035375356674194336
+        },
+        "Immune modulation": {
+          "n": 4,
+          "recovery": 0.375,
+          "margin": 0.004118606448173523
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 5,
+          "recovery": 0.4133333333333334,
+          "margin": -0.0045687793754041195
+        },
+        "Others": {
+          "n": 4,
+          "recovery": 0.24166666666666667,
+          "margin": -0.005802333354949951
+        },
+        "Regulation": {
+          "n": 11,
+          "recovery": 0.26363636363636367,
+          "margin": -0.00043515724246390164
+        },
+        "Stress survival": {
+          "n": 5,
+          "recovery": 0.2733333333333333,
+          "margin": -0.004662895109504461
+        }
+      }
+    },
+    "Neisseria meningitidis": {
+      "n_categories": 4,
+      "categories": [
+        "Immune modulation",
+        "Invasion",
+        "Nutritional/Metabolic factor",
+        "Stress survival"
+      ],
+      "rho": 0.7999999999999999,
+      "cells": {
+        "Immune modulation": {
+          "n": 4,
+          "recovery": 0.5166666666666666,
+          "margin": 0.0032082200050354004
+        },
+        "Invasion": {
+          "n": 3,
+          "recovery": 0.8888888888888888,
+          "margin": 0.02070174552500248
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 5,
+          "recovery": 0.9133333333333333,
+          "margin": 0.007872330956161022
+        },
+        "Stress survival": {
+          "n": 4,
+          "recovery": 0.175,
+          "margin": -0.0027393996715545654
+        }
+      }
+    },
+    "Porphyromonas gingivalis": {
+      "n_categories": 4,
+      "categories": [
+        "Adherence",
+        "Enzyme",
+        "Nutritional/Metabolic factor",
+        "Post-translational modification"
+      ],
+      "rho": -0.7999999999999999,
+      "cells": {
+        "Adherence": {
+          "n": 5,
+          "recovery": 0.3466666666666667,
+          "margin": 0.0070611475966870785
+        },
+        "Enzyme": {
+          "n": 7,
+          "recovery": 0.43809523809523804,
+          "margin": -0.0002836670319084078
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 3,
+          "recovery": 0.7777777777777777,
+          "margin": -0.0013055801391601562
+        },
+        "Post-translational modification": {
+          "n": 3,
+          "recovery": 0.6,
+          "margin": 0.006434957031160593
+        }
+      }
+    },
+    "Salmonella enterica": {
+      "n_categories": 4,
+      "categories": [
+        "Adherence",
+        "Effector delivery system",
+        "Invasion",
+        "Regulation"
+      ],
+      "rho": 0.7999999999999999,
+      "cells": {
+        "Adherence": {
+          "n": 10,
+          "recovery": 0.9766666666666668,
+          "margin": 0.010370457544922829
+        },
+        "Effector delivery system": {
+          "n": 7,
+          "recovery": 0.8571428571428571,
+          "margin": 0.00730464281514287
+        },
+        "Invasion": {
+          "n": 3,
+          "recovery": 0.7333333333333334,
+          "margin": 0.008374989032745361
+        },
+        "Regulation": {
+          "n": 4,
+          "recovery": 0.4666666666666666,
+          "margin": -0.002244696021080017
+        }
+      }
+    },
+    "Staphylococcus aureus": {
+      "n_categories": 4,
+      "categories": [
+        "Adherence",
+        "Enzyme",
+        "Exotoxin",
+        "Immune modulation"
+      ],
+      "rho": 0.0,
+      "cells": {
+        "Adherence": {
+          "n": 6,
+          "recovery": 0.888888888888889,
+          "margin": 0.01288581918925047
+        },
+        "Enzyme": {
+          "n": 10,
+          "recovery": 0.72,
+          "margin": 0.003871411085128784
+        },
+        "Exotoxin": {
+          "n": 9,
+          "recovery": 0.9185185185185186,
+          "margin": 0.009733478538691998
+        },
+        "Immune modulation": {
+          "n": 5,
+          "recovery": 0.5733333333333334,
+          "margin": 0.011128151789307594
+        }
+      }
+    },
+    "Streptococcus pyogenes": {
+      "n_categories": 4,
+      "categories": [
+        "Adherence",
+        "Enzyme",
+        "Exotoxin",
+        "Immune modulation"
+      ],
+      "rho": 0.19999999999999998,
+      "cells": {
+        "Adherence": {
+          "n": 3,
+          "recovery": 0.6222222222222222,
+          "margin": 0.008872509002685547
+        },
+        "Enzyme": {
+          "n": 4,
+          "recovery": 0.6333333333333333,
+          "margin": 0.003884941339492798
+        },
+        "Exotoxin": {
+          "n": 3,
+          "recovery": 0.6888888888888888,
+          "margin": -0.0003231962618883699
+        },
+        "Immune modulation": {
+          "n": 4,
+          "recovery": 0.75,
+          "margin": 0.010450109839439392
+        }
+      }
+    },
+    "Vibrio cholerae": {
+      "n_categories": 4,
+      "categories": [
+        "Adherence",
+        "Biofilm",
+        "Effector delivery system",
+        "Exotoxin"
+      ],
+      "rho": 0.39999999999999997,
+      "cells": {
+        "Adherence": {
+          "n": 4,
+          "recovery": 0.36666666666666664,
+          "margin": -0.00024712085723876953
+        },
+        "Biofilm": {
+          "n": 6,
+          "recovery": 0.41111111111111115,
+          "margin": 0.0016255378723144531
+        },
+        "Effector delivery system": {
+          "n": 3,
+          "recovery": 0.5888888888888889,
+          "margin": -0.0016323724994435906
+        },
+        "Exotoxin": {
+          "n": 6,
+          "recovery": 0.6166666666666667,
+          "margin": 0.0029041965026408434
+        }
+      }
+    }
+  },
+  "C1": {
+    "mean_rho": 0.37499999999999994,
+    "perm_p": 0.0104,
+    "supported": true,
+    "n_positive_strata": 8,
+    "n_strata": 10,
+    "null_mean": -0.00014642857142857144,
+    "null_sd": 0.16751217710077324
+  },
+  "reading_fixed_in_advance": "supported => organism identity is excluded as the differentiating factor and study B's B-1 becomes interpretable as a claim about ordering; NOT supported => four to six points per stratum cannot separate 'margin does not work within an organism' from 'not enough power', so study B's confound remains unresolved and margin is not refuted"
+}
