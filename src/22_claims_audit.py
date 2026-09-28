@@ -111,7 +111,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-29 with the document. It is the only place reconciling the three weightings
           # of the localization ratio, and the only place recording that the flag rate is U-shaped in
           # length -- the fact that makes an AUROC diagnostic useless here.
-          "docs/LENGTH_ADJUSTMENT_PREREGISTRATION.md"]
+          "docs/LENGTH_ADJUSTMENT_PREREGISTRATION.md",
+          # Added 2026-09-29 with the document. It eliminates the most obvious mechanical explanation
+          # for the length-U and is the only place recording that its own control was uninformative
+          # rather than passed -- the sentence a summary would upgrade.
+          "docs/POOLING_ARTIFACT_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1467,6 +1471,42 @@ def length_adjustment():
         "auroc_length_predicts_flag": {
             "650M": round(a["M3_length_predicts_flag_auroc"]["all"]["mean"], 3),
             "35M": round(b["M3_length_predicts_flag_auroc"]["all"]["mean"], 3)},
+    }
+
+
+def pooling_artifact():
+    """Is the short arm of the length-U a special-token artifact? No -- and the geometry says why.
+
+    \U0001f534 The mechanism is real: every embedding here averages <cls> and <eos> in, the
+    displacement falls as 1/(L+2) exactly as the algebra predicts, and it is five times larger for a
+    short protein. Refitting the probe on residue-only embeddings moves NOTHING: U-index 8.38 -> 8.41,
+    every rate unchanged to two decimals, R 5.15 either way.
+
+    \u2b50 Two numbers explain the null and are pinned with it: the displacement is 0.34% of the
+    embedding norm, and only 2.1% of THAT lies along the probe's decision direction. Real, measurable,
+    and orthogonal.
+
+    \u26a0\ufe0f The long-arm control is pinned as UNINFORMATIVE rather than passed. It could only
+    discriminate if something moved, and nothing did. Single-arm, so indicative.
+    """
+    v = j("../results/pooling_artifact.json")
+    if v is None:
+        return None
+    inc, res = v["arms"]["include_specials"], v["arms"]["residues_only"]
+    g = v["geometry"]
+    return {
+        "band_n": v["band_n"], "floors_met": v["floors_met"],
+        "single_arm_indicative": v["single_arm_indicative"],
+        "U_include": round(inc["U_index"], 2), "U_residues": round(res["U_index"], 2),
+        "long_include": round(inc["long_index"], 2), "long_residues": round(res["long_index"], 2),
+        "R_include": round(inc["R"], 2), "R_residues": round(res["R"], 2),
+        "verdict": v["verdict"],
+        "U_move": round(v["U_index_relative_move"], 4),
+        "control_informative": v["control_informative"],
+        "displacement_pct_of_norm": round(g["displacement_pct_of_norm"], 3),
+        "displacement_pct_short": round(g["displacement_pct_of_norm_short"], 3),
+        "projection_pct": round(g["projection_pct_of_displacement"], 2),
+        "score_shift_pct_of_iqr": round(g["score_shift_pct_of_iqr"], 3),
     }
 
 
@@ -3762,6 +3802,26 @@ CLAIMS = [
       "**310 of 6,139 eligible proteins changed side = 5.05%**",
       "paper/MANUSCRIPT.md":
       "**\"Almost exactly independent\" was a property of the defective\nfactor**"},
+     []),
+    ("the length-U is not a pooling artifact, and the displacement is orthogonal to the probe",
+     pooling_artifact,
+     lambda v: v is None or (
+         v["floors_met"] and v["single_arm_indicative"]
+         and v["band_n"] == {"short": 274, "mid": 849, "long": 297}
+         # 🔴 nothing moved: the U survives residue-only pooling intact
+         and v["verdict"] == "not a pooling artifact"
+         and v["U_residues"] >= 5.0 and v["U_move"] < 0.02
+         and abs(v["U_include"] - v["U_residues"]) < 0.1
+         and abs(v["R_include"] - v["R_residues"]) < 0.05
+         # ⭐ and the geometry that explains the null
+         and 0.2 < v["displacement_pct_of_norm"] < 0.6
+         and v["displacement_pct_short"] > v["displacement_pct_of_norm"]
+         and v["projection_pct"] < 5.0
+         and v["score_shift_pct_of_iqr"] < 2.0
+         # ⚠️ the control could not discriminate, and must not be recorded as having passed
+         and not v["control_informative"]),
+     {"docs/POOLING_ARTIFACT_PREREGISTRATION.md":
+      "**U-index 8.38 → 8.41**, in the band the document calls *not a pooling artifact*."},
      []),
     ("the localization gradient survives length adjustment, and the flag rate is U-shaped in length",
      length_adjustment,

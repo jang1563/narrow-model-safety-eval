@@ -5231,3 +5231,62 @@ The band table printed **"the ratio exceeds 1.5 in every band"** beside a comput
 figure that can contradict it is one that will eventually be wrong** — this is the second time in two
 days a print string outlived the thing it described, after `src/77` naming the 650M file while writing
 the 35M one.
+
+---
+
+## 2026-09-29 (sixty-fifth entry) — The length-U is not a pooling artifact, and the displacement is orthogonal to the probe
+
+Study M found the flag rate is **U-shaped in protein length** — intracellular **14.15% → 1.69% →
+12.18%** — and the short arm had an obvious mechanical candidate. Every embedding in this project is
+`src/02b`'s mean over the **full attention mask**, so `<cls>` and `<eos>` are averaged in and are a
+large share of the mean for a short protein.
+
+🔒 **The mechanism is real and exactly the size the algebra predicts.** From
+`m_full − m_res = [(cls + eos) − 2·m_res] / (L + 2)`, the displacement should fall as `1/(L+2)`; the
+pool's two published arrays give **r = 0.977** and `d × (L+2)` near-constant at **9.51** (CV 0.105),
+with a **5× larger** displacement under 250 residues than over 700.
+
+`src/94` wrote the missing residue-only positives — gate **0.000e+00** against the published array,
+and `d × (L+2)` of **9.09** against the pool's 9.51 — and `src/95` refitted the probe under each
+pooling.
+
+| pooling | short | mid | long | **U-index** | `R` |
+|---|---:|---:|---:|---:|---:|
+| include-specials | 14.15% | 1.69% | 12.18% | **8.38** | 5.15 |
+| residues only | 14.16% | 1.68% | 12.18% | **8.41** | 5.15 |
+
+### 🔴 Nothing moved, and it is a real null
+
+Every rate is unchanged to two decimals. ⚠️ **The frozen bug-guard did not fire**: the two arrays
+genuinely differ, by up to **6.35e-02** on the first 200 rows, so this is not a comparison of an array
+with itself.
+
+### ⭐ The geometry explains the null, and is the part worth keeping
+
+The displacement is **0.34%** of the embedding norm (**0.71%** under 250 residues), and only **2.1%**
+of *that* lies along the probe's decision direction — a score shift of **1.07% of an IQR**.
+🔑 **Real, measurable, and almost perfectly orthogonal to what the probe reads.** Two independent
+reasons it cannot drive the U.
+
+### 🔴 The control was uninformative, which is not the same as passing
+
+§ 2 made the long-arm index a guard: if it moved as much as the short-arm index, the comparison would
+be picking up something else. **Neither moved** — 0.2% against 0.3% — so the guard had nothing to
+discriminate. 🔒 **Recorded as uninformative, and claim 107 pins it that way**, because "the control
+held" is exactly the upgrade a later summary would make.
+
+### 🔒 The prediction was wrong in the direction of expecting an artifact
+
+§ 4 predicted a U-index of **3.0 – 6.0** — the partial band, the artifact contributing but not
+accounting for it. The answer is **8.41**: it contributes **nothing**. ⚠️ **I proposed this study on
+the strength of a mechanism that turned out to be real, measurable, and irrelevant.** Recorded as a
+miss rather than reframed as a confirmation that the finding is robust — which is true, but is not what
+was predicted.
+
+### 🔑 What this leaves open
+
+**The U-shape is a property of the representation and the probe, not of the pooling**, and the most
+obvious mechanical explanation is now eliminated. Why proteins under 250 residues and over 700 are both
+flagged several times more often than mid-length ones is **not explained by anything in this
+repository**. ⚠️ Single-arm and therefore indicative: a second arm needs the 8,259-protein pool
+re-embedded at 35M with residue-only pooling.

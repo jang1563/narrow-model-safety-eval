@@ -1,0 +1,58 @@
+{
+  "built": "2026-09-29 08:34:43",
+  "arm": "esm2_650M",
+  "single_arm_indicative": true,
+  "seeds": 30,
+  "band_n": {
+    "short": 274,
+    "mid": 849,
+    "long": 297
+  },
+  "floors_met": true,
+  "arms": {
+    "include_specials": {
+      "rates": {
+        "short": 0.14148418491484185,
+        "mid": 0.016882606988614053,
+        "long": 0.12177328843995512,
+        "ex": 0.2392694063926941,
+        "in": 0.04646464646464645
+      },
+      "U_index": 8.380470208793076,
+      "long_index": 7.212943387361994,
+      "R": 5.149493746277548,
+      "seconds": 20
+    },
+    "residues_only": {
+      "rates": {
+        "short": 0.1416058394160584,
+        "mid": 0.016843345111896346,
+        "long": 0.12177328843995512,
+        "ex": 0.2393201420598681,
+        "in": 0.04650115613971036
+      },
+      "U_index": 8.407227808687665,
+      "long_index": 7.229756775211323,
+      "R": 5.146541762119696,
+      "seconds": 19
+    }
+  },
+  "band_thresholds": [
+    2.0,
+    5.0
+  ],
+  "verdict": "not a pooling artifact",
+  "U_index_relative_move": 0.0031928518600918177,
+  "long_index_relative_move": 0.002331002331002326,
+  "geometry": {
+    "median_embedding_norm": 6.912087917327881,
+    "median_displacement": 0.02321929857134819,
+    "displacement_pct_of_norm": 0.33655261993408203,
+    "displacement_pct_of_norm_short": 0.7052538394927979,
+    "projection_pct_of_displacement": 2.0895693429484408,
+    "score_shift_pct_of_iqr": 1.0655508221457004
+  },
+  "control_informative": false,
+  "control_holds": true,
+  "R_supported": true
+}
