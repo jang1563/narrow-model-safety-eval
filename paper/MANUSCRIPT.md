@@ -184,6 +184,27 @@ negatives are not exchangeable — three curated blocks against Swiss-Prot. 🔑
 design, and that is the point**: a deployed screen calibrates on negatives it curated and then meets
 whatever arrives.
 
+🔴 **And what arrives is not housekeeping proteins.** Run the same probe, with the same 118-point
+calibration, against **4,218 non-toxin virulence factors** from VFDB — pathogen-produced, largely
+secreted, the two features a provenance probe already reads at AUROC 0.818:
+
+| nominal 5% | `np.quantile` | conformal |
+|---|---|---|
+| benign pool, raw | 7.87% | 5.98% |
+| benign pool, one per distinct name | 9.64% | 7.14% |
+| **VFDB virulence factors, raw** | **46.70% [45.93, 47.47]** | **40.84% [40.01, 41.68]** |
+| **VFDB, one per distinct VF group** | **38.68%** | **32.61%** |
+
+**At a nominal 5% the probe flags two fifths of them**, +34.9 points on conformal and +25.5 on the
+like-for-like distinct-unit comparison, every interval disjoint. In the deployment arithmetic this turns
+605 alerts into **4,088** and precision from 1.21% into **0.18%**.
+
+🔑 **This says what the screen separates.** Not toxins from other proteins, but **virulence-associated
+pathogen proteins from benign housekeeping ones**. ⚠️ It does not say the probe is wrong to flag them —
+these proteins are not benign in any operational sense — but it does say the 5% budget is not met against
+them, and that a false-positive rate quoted against housekeeping proteins **does not transfer to the
+population a screen would actually meet**.
+
 🔴 **Criterion 12 fails, and the failure was expensive twice.** The first preregistration carried a floor
 and no ceiling. Adding ceilings to the second one is what made its NOT SUPPORTED verdict readable — and
 what later exposed that the same comparison was confounded by annotation provenance (§ 6).

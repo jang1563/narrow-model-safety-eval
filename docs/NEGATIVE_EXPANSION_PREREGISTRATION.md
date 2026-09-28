@@ -320,3 +320,49 @@ gate repair both grew n_benign against a limit that lives in n_panel.**
 not settle**: any statement about how much more constrained one side is than the other. A test of that
 needs more *panel* proteins with uniform, UniProt-confirmed catalytic annotation — which is the same
 resource `src/71` identified as the ceiling on the gate.
+
+### Amendment 6 — 2026-09-28: A1 run, and the result is larger than the prediction by an order of magnitude
+
+`src/77_vfdb_negative_embed.py` (method gate **9.06e-06** against the published panel negatives) and
+`src/49 --test-negatives vfdb`. Same probe, same published **118-negative** calibration split, two test
+sets.
+
+| nominal 5%, 200 seeds | `np.quantile` | conformal |
+|---|---|---|
+| benign pool, raw (8,258) | 7.867% [7.57, 8.16] | 5.978% [5.73, 6.23] |
+| benign pool, distinct name (3,407) | 9.640% [9.25, 10.03] | 7.142% [6.81, 7.47] |
+| **VFDB non-toxin virulence factors, raw (4,218)** | **46.698% [45.93, 47.47]** | **40.844% [40.01, 41.68]** |
+| **VFDB, distinct VF group (565)** | **38.675% [37.89, 39.46]** | **32.612% [31.81, 33.42]** |
+
+🔴 **A1-2 and A1-3: SUPPORTED, and not marginally.** The predicted direction was right and the
+magnitude was not: this document guessed "worse than 7.87%" and the answer is **+38.8 points** on the
+quantile estimator and **+34.9** on conformal, intervals disjoint by 37.8 and 33.8 points. On the
+distinct-unit comparison — the like-for-like one, since both sides are then one representative per
+redundancy group — it is **+29.0** and **+25.5**.
+
+🔑 **At a nominal 5% the probe flags two fifths of non-toxin virulence factors.** That is not an
+overshoot of a budget, it is a different regime, and it says what the screen is actually separating:
+**not toxins from other proteins, but virulence-associated pathogen proteins from benign housekeeping
+ones.** § 2.3's provenance probe measures that confound at AUROC 0.818 on the panel; this is the same
+confound measured on a test set built to isolate it.
+
+**In § 10.8's deployment arithmetic**, 10,000 sequences at one hazard in a thousand, recall 72.9%:
+
+| negative population | FPR | alerts | real | **precision** |
+|---|---:|---:|---:|---:|
+| benign pool, raw | 5.98% | 605 | 7.3 | **1.21%** |
+| benign pool, distinct name | 7.14% | 721 | 7.3 | **1.01%** |
+| **VFDB virulence factors, raw** | **40.84%** | **4,088** | 7.3 | **0.18%** |
+| **VFDB, distinct VF group** | **32.61%** | **3,265** | 7.3 | **0.22%** |
+
+⚠️ **Which population is the right one depends on what is being screened, and for a biosecurity screen
+it is not the benign pool.** Sequences arriving at a screen come disproportionately from pathogens and
+from synthesis orders that mention them. The honest reading is that § 10.8's 605 alerts is a **floor**
+that assumes an easy negative population, and that a realistic one costs five to seven times more.
+
+⚠️ **What A1 does not establish.** It does not say the probe is wrong to flag these proteins — VFDB
+virulence factors are not benign in any operational sense, and a screen flagging them may be doing its
+job. What it establishes is that **the 5% budget is not being met against them**, and that a
+false-positive rate quoted against housekeeping proteins does not transfer. Whether "virulence factor"
+should count as a positive at all is the construct question study B of
+`docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md` is about.

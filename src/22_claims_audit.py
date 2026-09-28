@@ -886,6 +886,49 @@ def external_class_axis_feasibility():
     }
 
 
+def a1_hard_negatives():
+    """A1: the same probe's out-of-sample rate on hard negatives rather than housekeeping proteins.
+
+    \U0001f534 The number a summary would carry from this project is 7.87%. This claim pins it beside
+    the 46.7% the same probe returns on VFDB virulence factors, and beside the distinct-unit pair,
+    because the raw-versus-raw comparison and the distinct-unit comparison are on differently
+    COMPOSED sets (amendment 5) and quoting either alone overstates what is known.
+    """
+    pool = j("../results/v3/external_test_partition_canonical.json")
+    vfdb = j("../results/v3/external_test_partition_canonical_vfdb.json")
+    lomo = j("../results/v3/lomo_results.json")
+    if None in (pool, vfdb, lomo):
+        return None
+    P, V = pool["false_positives"]["0.05"], vfdb["false_positives"]["0.05"]
+
+    def disjoint(a, b):
+        return bool(b["ci"][0] > a["ci"][1] or a["ci"][0] > b["ci"][1])
+
+    v = [x["flagged_95_mean"] for x in lomo["leave_one_mechanism_out"].values()
+         if x.get("flagged_95_mean") is not None]
+    rec, hz, n = sum(v) / len(v), 10.0, 10000
+
+    def precision(fpr):
+        real = hz * rec
+        return round(real / (real + (n - hz) * fpr), 4)
+
+    return {
+        "pool_raw": {k: round(P["shift"][k]["mean"], 5) for k in ("quantile", "conformal")},
+        "pool_dedup": {k: round(P["shift_dedup"][k]["mean"], 5) for k in ("quantile", "conformal")},
+        "vfdb_raw": {k: round(V["shift"][k]["mean"], 5) for k in ("quantile", "conformal")},
+        "vfdb_dedup": {k: round(V["shift_dedup"][k]["mean"], 5) for k in ("quantile", "conformal")},
+        "raw_disjoint": {k: disjoint(P["shift"][k], V["shift"][k])
+                         for k in ("quantile", "conformal")},
+        "dedup_disjoint": {k: disjoint(P["shift_dedup"][k], V["shift_dedup"][k])
+                           for k in ("quantile", "conformal")},
+        # the same calibration split on both sides, or the comparison is not the same probe
+        "calibration_n": (pool["calibration_n"], vfdb["calibration_n"]),
+        "n_tested": (pool["pool_n"], vfdb["pool_n"]),
+        "precision_pool": precision(P["shift"]["conformal"]["mean"]),
+        "precision_vfdb": precision(V["shift"]["conformal"]["mean"]),
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -3128,6 +3171,25 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("the same probe flags two fifths of non-toxin virulence factors at a nominal 5%",
+     a1_hard_negatives,
+     lambda v: v is None or (
+         # the same calibration split on both sides, so it is the same probe
+         v["calibration_n"] == (118, 118)
+         and v["n_tested"] == (8258, 4218)
+         # the published pool figures, unchanged
+         and abs(v["pool_raw"]["quantile"] - 0.0787) < 0.001
+         and abs(v["pool_raw"]["conformal"] - 0.0598) < 0.001
+         # the hard-negative figures, an order of magnitude up, on both estimators
+         and v["vfdb_raw"]["quantile"] > 0.45 and v["vfdb_raw"]["conformal"] > 0.40
+         and all(v["raw_disjoint"].values())
+         # and on the like-for-like distinct-unit comparison, still +25 points or more
+         and v["vfdb_dedup"]["conformal"] - v["pool_dedup"]["conformal"] > 0.25
+         and all(v["dedup_disjoint"].values())
+         # the deployment consequence: precision falls from about 1.2% to under 0.2%
+         and v["precision_pool"] > 0.011 and v["precision_vfdb"] < 0.002),
+     {"docs/NEGATIVE_EXPANSION_PREREGISTRATION.md":
+      "🔑 **At a nominal 5% the probe flags two fifths of non-toxin virulence factors.**"}, []),
     ("study B's design rests on 13 eligible VFDB categories over 740 representatives",
      external_class_axis_feasibility,
      lambda v: v is None or (

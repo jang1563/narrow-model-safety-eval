@@ -4197,3 +4197,50 @@ the claim is tightened to ±1.0 alert.
 pool figures only. ⚠️ The criteria table is referenced rather than reproduced, which is right for a paper
 and means the eighteen verdicts are not independently pinned inside it. And it is a **draft**: nothing has
 been through an outside reading.
+
+---
+
+## 2026-09-28 (forty-seventh entry) — A1: the same probe flags two fifths of non-toxin virulence factors, and study B's build
+
+### 🔴 A1, and the prediction was right in direction and wrong by an order of magnitude
+
+Same probe, same published **118-negative** calibration, two test sets. Method gate **9.06e-06**.
+
+| nominal 5%, 200 seeds | `np.quantile` | conformal |
+|---|---|---|
+| benign pool, raw (8,258) | 7.867% | 5.978% |
+| benign pool, distinct name (3,407) | 9.640% | 7.142% |
+| **VFDB non-toxin virulence factors, raw (4,218)** | **46.698%** | **40.844%** |
+| **VFDB, distinct VF group (565)** | **38.675%** | **32.612%** |
+
+**A1-2 and A1-3: SUPPORTED**, by **+38.8** and **+34.9** points, intervals disjoint by 37.8 and 33.8. On
+the like-for-like distinct-unit comparison — both sides then one representative per redundancy group —
+**+29.0** and **+25.5**. The preregistration guessed "worse than 7.87%"; it is five to six times worse.
+
+🔑 **This says what the screen separates: not toxins from other proteins, but virulence-associated
+pathogen proteins from benign housekeeping ones.** § 2.3's provenance probe measures that at AUROC 0.818
+on the panel; this is the same confound on a test set built to isolate it. In § 10.8's arithmetic the
+605 alerts become **4,088** and precision **1.21% → 0.18%**.
+
+⚠️ **What it does not establish**, stated because the number is quotable: it does not say the probe is
+wrong to flag these proteins — VFDB virulence factors are not benign in any operational sense, and a
+screen flagging them may be doing its job. It says **the 5% budget is not met against them**, and that a
+false-positive rate quoted against housekeeping proteins **does not transfer to the population a screen
+would meet**. Whether "virulence factor" should count as a positive is study B's question, not A1's.
+
+🔑 **And it vindicates the pushback on the manuscript.** The paper was drafted with § 3 quoting 7.87% as
+*the* out-of-sample rate, while the test that produces the most consequential number in the project was
+still embedding. That number is now in § 3. **Writing before the results are in is what "premature"
+meant, concretely.**
+
+### Study B built
+
+`src/78_external_class_axis_build.py`. 4,755 setA records → **746 representatives** at 6.37×
+redundancy removed by the frozen rule (longest sequence per `VF####` group, ties by lowest VFG id).
+**13 of 14 categories clear the panel's own eligibility floor of 7**, holding **740** across **72
+species**; `Antimicrobial activity/Competitive advantage` has 6 and is reported rather than held out.
+
+The pool partitions **1,000 train / 500 calibrate / 6,758 test** by `sha256(accession)`, contaminant
+dropped. 🟢 **That is the split criterion 1 records as absent from the main panel** (178/118/**0**), so
+study B's false-positive figures are out of sample by construction — and ⚠️ the test partition is
+deliberately **unscreened**, because a deployed screen does not get to remove the proteins it will meet.
