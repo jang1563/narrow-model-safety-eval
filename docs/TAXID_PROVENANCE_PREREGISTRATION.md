@@ -217,3 +217,53 @@ organism string:
 this study removes from the VFDB side. Fixing it would move **more** proteins, not fewer.
 🔒 **5.05% is therefore a lower bound on the string factor's error**, and the "substantially wrong"
 verdict is the conservative reading.
+
+---
+
+## 🔴 Amendment 2 — 2026-09-28: the declared limitation above was wrong, by about fifty-five fold
+
+The **"5.05% is a lower bound"** section says 823 pool proteins still match on a superseded name
+because their organism string reads *Enterobacter agglomerans (Erwinia herbicola) (Pantoea
+agglomerans)* and the fallback takes the first two words. 🔴 **That is not a defect, and checking it
+before building the follow-up study is what showed it.**
+
+**UniProt's taxonomy keeps the same primary name the protein record displays.** Taxid 549's
+`scientificName` is **`Enterobacter agglomerans`** — the old name — not *Pantoea agglomerans*. And the
+resolver maps VFDB's current-name entry onto that same primary: `resolve_species("Pantoea
+agglomerans")` → **`(549, 'Enterobacter agglomerans', 'synonym')`**. 🔑 **Both sides were already in
+one vocabulary and already agreed.**
+
+🔒 **Verified exhaustively rather than by example.** Every fallback protein whose display name carries
+parenthetical synonyms — **799** of them, across **254 distinct taxids**, all resolved — was compared
+against its taxon's `scientificName`:
+
+| | count |
+|---|---:|
+| ⭐ **fallback name == UniProt `scientificName`** | **799** |
+| disagree | **0** |
+| taxid unresolved | 0 |
+
+### 🔒 The real residual, which is small and not fixable by a better resolver
+
+Of the **14** VFDB names that failed to resolve, exactly **two** have any pool protein:
+*Clostridium difficile* (UniProt: *Clostridioides difficile*, **13** proteins) and *Borrelia
+bavariensis* (UniProt: *Borreliella bavariensis*, **2**). That is **15 of 6,139 eligible = 0.24%**,
+against study I's measured 5.05% — and only **4** reach the 2×2 cells at all, every one of them
+*C. difficile* in the intracellular stratum.
+
+⚠️ **No resolver change recovers them.** UniProt carries neither old name as a searchable synonym,
+checked at `size=200` both with and without the `rank:species` filter. *Mycobacterium bovis* resolves
+only at rank **`biotype`**, below species, and contributes no pool proteins.
+
+🔒 **The conclusion survives and the magnitude does not.** Those 15 are still pathogens scored benign,
+so **5.05% remains a lower bound** and "substantially wrong" is still the conservative reading — but
+the gap is **0.24%, not 823 proteins**, and the earlier section overstated it by roughly fifty-five
+fold.
+
+### ⚠️ Housekeeping found alongside it
+
+The resolver cache still held **68 entries from the defective 405-name list** of entry 58 — junk like
+*"Accessory secretion"*, all marked `UNRESOLVED`. Study I filtered them correctly by construction (it
+iterates the current 283 names), so **no reported number was affected**, and re-running after the prune
+reproduces study I byte-for-byte. 🔒 **Pruned anyway**: a cache holding keys from a superseded build is
+the same shape of trap as entry 45's stale shard.

@@ -4946,3 +4946,66 @@ I-1 was predicted at **1–5%** and came in at **5.05%** — ❌ missed **high**
 had predicted it would miss *low*. The other four held: provenance grew, RR stayed in band on both
 arms, the joint share moved 4.9 and 4.6 pp against a 5 pp prediction, and the guard that **"zero
 movement is a bug, not a finding"** was not triggered.
+
+---
+
+## 2026-09-28 (sixtieth entry) — Entry 59's declared limitation was wrong, and checking it is what killed the next study
+
+Entry 59 closed with a declared limitation: **823 pool proteins still match on a superseded name**,
+because their organism string reads *Enterobacter agglomerans (Erwinia herbicola) (Pantoea
+agglomerans)* and the lineage fallback takes the first two words — so **"fixing it would move more
+proteins, not fewer"**, and 5.05% was called a lower bound on that basis.
+
+🔒 **The next study was going to be that fix.** Its first feasibility check refuted its own premise.
+
+### 🔴 Both sides were already in one vocabulary
+
+**UniProt's taxonomy keeps the same primary name the protein record displays.** Taxid 549's
+`scientificName` is **`Enterobacter agglomerans`** — the *old* name. And the resolver maps VFDB's
+current-name entry onto exactly that: `resolve_species("Pantoea agglomerans")` →
+**`(549, 'Enterobacter agglomerans', 'synonym')`**. 🔑 **The fallback and the resolver produce the same
+string, so there was never a mismatch to fix.**
+
+🔒 **Verified exhaustively, not by example**: all **799** parenthetical-synonym fallback proteins across
+**254 distinct taxids** (all resolved) were compared against their taxon's `scientificName` —
+**799 agree, 0 disagree.**
+
+### 🔒 What the real residual is
+
+Of the 14 unresolved VFDB names, **two** have pool proteins: *Clostridium difficile* (13, as
+*Clostridioides difficile*) and *Borrelia bavariensis* (2, as *Borreliella bavariensis*). **15 of 6,139
+eligible = 0.24%**, of which only **4** reach the 2×2 cells — all *C. difficile*, all intracellular.
+
+⚠️ **Not fixable by a better resolver**: UniProt carries neither old name as a searchable synonym,
+checked at `size=200` with and without the rank filter. *M. bovis* resolves only at rank `biotype` and
+contributes no pool proteins.
+
+🟢 **The conclusion survives; the magnitude was wrong by about fifty-five fold.** Those 15 are still
+pathogens scored benign, so **5.05% remains a lower bound** and "substantially wrong" is still the
+conservative reading — but the residual is **0.24%**, not 823 proteins.
+
+### ⚠️ And the cache held 68 keys from a build that no longer exists
+
+The resolver cache still carried **68 entries from entry 58's defective 405-name list** — *"Accessory
+secretion"* and friends, all `UNRESOLVED`. Study I iterates the current 283 names, so **no reported
+number was affected**, and re-running after the prune reproduces study I byte-for-byte. 🔒 Pruned
+anyway: a cache keyed on a superseded build is entry 45's stale shard in a different costume.
+
+### 🔴 And the first version of the check was itself unsound
+
+The residual was first measured by matching a shared species **epithet** across a genus change. That
+matched **`Arcanobacterium pyogenes` → *Streptococcus pyogenes*** (55 proteins) and
+**`Mycobacterium bovis` → *Moraxella bovis*** (2) — **unrelated organisms that happen to share an
+epithet**, which would have inflated the residual from 15 to 72.
+
+🔒 Two filters make it sound, and `src/89_fallback_name_check.py` applies both: a protein whose species
+is **already classified pathogen cannot be a misclassification** (which removes *S. pyogenes*, a
+resolved VFDB species), and a candidate must match a **documented rename** listed explicitly in the
+script rather than inferred. The rejected epithet-only match is **recorded in the artifact**, not
+dropped.
+
+🔑 **Three studies in a row have now been improved by checking a premise instead of building on it**,
+and this is the first time the check **cancelled** the study rather than redirecting it. **A study that
+should not run is a result** — and the check that cancels it has to be held to the same standard as the
+study would have been, which is why this one is a script with a selftest and a pinned claim rather than
+the throwaway that first produced it.

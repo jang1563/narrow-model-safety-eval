@@ -1,0 +1,41 @@
+{
+  "built": "2026-09-28 21:05:47",
+  "n_fallback": 2122,
+  "n_parenthetical": 799,
+  "n_taxids": 254,
+  "n_taxids_resolved": 254,
+  "agree": 799,
+  "disagree": 0,
+  "unresolved_taxid": 0,
+  "disagreement_examples": [],
+  "entry_59_claimed_misclassified": 823,
+  "n_unresolved_vfdb_names": 14,
+  "unresolved_vfdb_names": [
+    "Arcanobacterium pyogenes",
+    "Borrelia bavariensis",
+    "Clostridium difficile",
+    "Francisella cf.",
+    "Francisella novicida",
+    "Helicobacter flexispira",
+    "Mycobacterium africanum",
+    "Mycobacterium bovis",
+    "Mycobacterium indicus",
+    "Mycobacterium vanbaalenii",
+    "Mycobacterium yongonense",
+    "Mycoplasma conjunctivae",
+    "Rickettsia heilongjiangensis",
+    "Streptococcus pseudopneumoiae"
+  ],
+  "residual_by_name": {
+    "Borrelia bavariensis -> Borreliella bavariensis": 2,
+    "Clostridium difficile -> Clostridioides difficile": 13
+  },
+  "rejected_epithet_only": {
+    "Mycobacterium bovis !~ Moraxella bovis": 2
+  },
+  "n_residual": 15,
+  "n_eligible": 6139,
+  "residual_frac": 0.0024433946896888744,
+  "n_residual_in_cells": 4,
+  "n_in_cells": 2261
+}

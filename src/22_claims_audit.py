@@ -1297,6 +1297,37 @@ def taxid_provenance():
     }
 
 
+def fallback_name_check():
+    """Was entry 59's declared limitation real? No -- and this holds the retraction in place.
+
+    \U0001f534 Entry 59 declared 823 pool proteins still matched on a superseded name and called
+    5.05% a lower bound on that basis. The measured number of mismatches is ZERO, over all 799
+    parenthetical-synonym cases and 254 taxids: UniProt's taxonomy keeps the same primary name the
+    protein record displays, and src/88's resolver maps VFDB's current-name entry onto that same
+    primary, so both sides were already in one vocabulary.
+
+    \u26a0\ufe0f The real residual is pinned alongside it -- 15 proteins, 0.24%, of which 4 reach
+    the 2x2 -- because "the limitation was wrong" and "there is no limitation" are different claims and
+    only the first one is true. The 823 is pinned too, so the size of the retraction survives retelling.
+    """
+    v = j("../results/fallback_name_check.json")
+    if v is None:
+        return None
+    return {
+        "n_parenthetical": v["n_parenthetical"], "n_taxids": v["n_taxids"],
+        "n_taxids_resolved": v["n_taxids_resolved"],
+        "agree": v["agree"], "disagree": v["disagree"],
+        "unresolved_taxid": v["unresolved_taxid"],
+        "entry_59_claimed": v["entry_59_claimed_misclassified"],
+        "n_unresolved_vfdb_names": v["n_unresolved_vfdb_names"],
+        "residual_by_name": v["residual_by_name"],
+        "n_residual": v["n_residual"], "residual_frac": round(v["residual_frac"], 4),
+        "n_residual_in_cells": v["n_residual_in_cells"],
+        # 🔴 a shared epithet is not a rename; this records what the sound filter threw out
+        "rejected_epithet_only": v["rejected_epithet_only"],
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -3539,6 +3570,27 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("entry 59's declared limitation was wrong, and the real residual is 0.24%",
+     fallback_name_check,
+     lambda v: v is None or (
+         # 🔴 zero mismatches, over every parenthetical case, with every taxid resolved
+         v["n_parenthetical"] == 799 and v["n_taxids"] == 254
+         and v["n_taxids_resolved"] == v["n_taxids"]
+         and v["agree"] == 799 and v["disagree"] == 0 and v["unresolved_taxid"] == 0
+         # the size of the retraction, kept next to the corrected number
+         and v["entry_59_claimed"] == 823
+         # ⚠️ and there IS a residual, small and named
+         and v["n_unresolved_vfdb_names"] == 14
+         and v["n_residual"] == 15 and v["residual_frac"] < 0.005
+         and v["n_residual_in_cells"] == 4
+         and set(v["residual_by_name"]) == {
+             "Borrelia bavariensis -> Borreliella bavariensis",
+             "Clostridium difficile -> Clostridioides difficile"}
+         # 🔴 the unsound epithet match is recorded as rejected, not silently dropped
+         and "Mycobacterium bovis !~ Moraxella bovis" in v["rejected_epithet_only"]),
+     {"docs/TAXID_PROVENANCE_PREREGISTRATION.md":
+      "parenthetical synonyms — **799** of them, across **254 distinct taxids**, all resolved — was compared"},
+     []),
     ("the name-matched provenance factor was substantially wrong",
      taxid_provenance,
      lambda v: v is None or (

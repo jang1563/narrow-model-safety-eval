@@ -1,19 +1,4 @@
 {
- "Accessory secretion": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Achromobactin biosynthesis": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Acid phosphatase": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Acinetobacter baumannii": {
   "taxid": 470,
   "canonical": "Acinetobacter baumannii",
@@ -38,31 +23,6 @@
   "taxid": 1656,
   "canonical": "Actinomyces viscosus",
   "how": "scientific"
- },
- "Acylhomoserine lactone": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Adherence and": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Adhesion and": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Adhesive factor": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Adhesive fimbriae": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
  },
  "Aeromonas enteropelogenes": {
   "taxid": 29489,
@@ -94,16 +54,6 @@
   "canonical": "Aeromonas veronii",
   "how": "scientific"
  },
- "Afimbrial adhesin": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Agglutinin receptor": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Aggregatibacter actinomycetemcomitans": {
   "taxid": 714,
   "canonical": "Aggregatibacter actinomycetemcomitans",
@@ -124,16 +74,6 @@
   "canonical": "Agrobacterium tumefaciens",
   "how": "scientific"
  },
- "Alkaline protease": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Allantion utilization": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Anaplasma centrale": {
   "taxid": 769,
   "canonical": "Anaplasma centrale",
@@ -149,17 +89,7 @@
   "canonical": "Anaplasma phagocytophilum",
   "how": "scientific"
  },
- "Anthrax toxin": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Arcanobacterium pyogenes": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Autolysin alt": {
   "taxid": null,
   "canonical": null,
   "how": "UNRESOLVED"
@@ -243,16 +173,6 @@
   "taxid": 33047,
   "canonical": "Bartonella vinsonii",
   "how": "scientific"
- },
- "Bcp pili": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Biotin synthesis": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
  },
  "Bordetella avium": {
   "taxid": 521,
@@ -364,11 +284,6 @@
   "canonical": "Burkholderia thailandensis",
   "how": "scientific"
  },
- "Cable pilus": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Campylobacter coli": {
   "taxid": 195,
   "canonical": "Campylobacter coli",
@@ -398,21 +313,6 @@
   "taxid": 28080,
   "canonical": "Campylobacter upsaliensis",
   "how": "scientific"
- },
- "Capsular polysaccharide": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Cell surface": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Cell wall": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
  },
  "Chlamydia muridarum": {
   "taxid": 83560,
@@ -458,11 +358,6 @@
   "taxid": 67825,
   "canonical": "Citrobacter rodentium",
   "how": "scientific"
- },
- "Ciu iron": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
  },
  "Clostridium acetobutylicum": {
   "taxid": 1488,
@@ -534,26 +429,6 @@
   "canonical": "Acetivibrio thermocellus",
   "how": "synonym"
  },
- "Clumping factor": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Collagen binding": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Colonization factor": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Copper exporter": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Corynebacterium diphtheriae": {
   "taxid": 1717,
   "canonical": "Corynebacterium diphtheriae",
@@ -584,26 +459,6 @@
   "canonical": "Coxiella burnetii",
   "how": "scientific"
  },
- "Csu fimbriae": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Curli fibers": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Cytadherence organelle": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Cytolethal distending": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Desulfovibrio vulgaris": {
   "taxid": 881,
   "canonical": "Nitratidesulfovibrio vulgaris",
@@ -619,26 +474,6 @@
   "canonical": "Dickeya dadantii",
   "how": "scientific"
  },
- "Diphtheria toxin": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Direct heme": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Dr adhesins": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Ebp pili": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Edwardsiella tarda": {
   "taxid": 636,
   "canonical": "Edwardsiella tarda",
@@ -648,21 +483,6 @@
   "taxid": 945,
   "canonical": "Ehrlichia chaffeensis",
   "how": "scientific"
- },
- "Enh loci": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Enhanced intracellular": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Enteroaggregative immunoglobulin": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
  },
  "Enterobacter asburiae": {
   "taxid": 61645,
@@ -694,16 +514,6 @@
   "canonical": "Enterobacter roggenkampii",
   "how": "scientific"
  },
- "Enterobactin receptor": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Enterobactin synthesis": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Enterococcus faecalis": {
   "taxid": 1351,
   "canonical": "Enterococcus faecalis",
@@ -713,11 +523,6 @@
   "taxid": 1352,
   "canonical": "Enterococcus faecium",
   "how": "scientific"
- },
- "Epidermal cell": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
  },
  "Erwinia amylovora": {
   "taxid": 552,
@@ -744,51 +549,6 @@
   "canonical": "Escherichia coli",
   "how": "scientific"
  },
- "Eut locus": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Exfoliative toxin": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Extracellular factor": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Extracellular hemolysin": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Ferric enterobactin": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Ferrous iron": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Fibrinogen binding": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Flagellar glycosylation": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Francisella cf": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Francisella noatunensis": {
   "taxid": 657445,
   "canonical": "Francisella noatunensis",
@@ -804,20 +564,10 @@
   "canonical": "Francisella philomiragia",
   "how": "scientific"
  },
- "Francisella sp": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Francisella tularensis": {
   "taxid": 263,
   "canonical": "Francisella tularensis",
   "how": "scientific"
- },
- "Fused nitrate": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
  },
  "Fusobacterium animalis": {
   "taxid": 76859,
@@ -854,21 +604,6 @@
   "canonical": "Fusobacterium vincentii",
   "how": "scientific"
  },
- "Ghf fimbriae": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Glutamine synthesis": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Haemagglutinating pili": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Haemophilus ducreyi": {
   "taxid": 730,
   "canonical": "Haemophilus ducreyi",
@@ -884,11 +619,6 @@
   "canonical": "Histophilus somni",
   "how": "synonym"
  },
- "Hda adhesin": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
  "Helicobacter acinonychis": {
   "taxid": 212,
   "canonical": "Helicobacter acinonychis",
@@ -903,71 +633,6 @@
   "taxid": 210,
   "canonical": "Helicobacter pylori",
   "how": "scientific"
- },
- "Heme binding": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Heme biosynthesis": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Heme receptor": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Heme uptake": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Hmu system": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Hus system": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Hyaluronate lyase": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Hyaluronic acid": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Hydrogen cyanide": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Insecticidal crystalline": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Intercellular adhesion": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Isocitrate lyase": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
- },
- "Kfc fimbriae": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
  },
  "Klebsiella oxytoca": {
   "taxid": 571,
@@ -988,11 +653,6 @@
   "taxid": 147802,
   "canonical": "Lactobacillus iners",
   "how": "scientific"
- },
- "Lateral flagella": {
-  "taxid": null,
-  "canonical": null,
-  "how": "UNRESOLVED"
  },
  "Legionella longbeachae": {
   "taxid": 450,
