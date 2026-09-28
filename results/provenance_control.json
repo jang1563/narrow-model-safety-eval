@@ -1,0 +1,62 @@
+{
+  "built": "2026-09-28 14:01:00",
+  "arm": "esm2_650M",
+  "seeds": 30,
+  "nominal": 0.050000000000000044,
+  "n_control": 106,
+  "control_species": 20,
+  "excluded_as_vfdb": [
+    ">sp|Q8Y585|HBP1_LISMO",
+    ">sp|Q2FZE6|ISDE_STAA8",
+    ">sp|Q9A1S2|PILIN_STRP1",
+    ">sp|P45779|GSPD_VIBCH"
+  ],
+  "species_counts": {
+    "Escherichia coli": 20,
+    "Pseudomonas aeruginosa": 7,
+    "Mycobacterium tuberculosis": 6,
+    "Shigella flexneri": 6,
+    "Bacillus anthracis": 6,
+    "Clostridium botulinum": 6,
+    "Enterococcus faecalis": 6,
+    "Streptococcus pyogenes": 5,
+    "Staphylococcus aureus": 5,
+    "Bacillus cereus": 5,
+    "Enterococcus faecium": 5,
+    "Klebsiella pneumoniae": 4,
+    "Listeria monocytogenes": 4,
+    "Vibrio cholerae": 4,
+    "Yersinia enterocolitica": 3,
+    "Aeromonas hydrophila": 3,
+    "Enterobacter cloacae": 3,
+    "Clostridium tetani": 3,
+    "Helicobacter pylori": 3,
+    "Shigella dysenteriae": 2
+  },
+  "rates": {
+    "pool_test": {
+      "mean": 0.06978889217717274,
+      "sd": 0.014658784053711071,
+      "ci": [
+        0.06454331367185388,
+        0.0750344706824916
+      ]
+    },
+    "pathogen_nonvf": {
+      "mean": 0.2207547169811321,
+      "sd": 0.03070476242811217,
+      "ci": [
+        0.20976715885805222,
+        0.231742275104212
+      ]
+    },
+    "vfdb": {
+      "mean": 0.7348585427532796,
+      "sd": 0.05125330938971341,
+      "ci": [
+        0.7165177815362485,
+        0.7531993039703107
+      ]
+    }
+  }
+}

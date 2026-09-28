@@ -74,7 +74,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md",
           # Added 2026-09-28. It reinstates B-1 on a narrow reading, so the narrowness is the part
           # most likely to erode and the part a claim has to hold in place.
-          "docs/ORGANISM_STRATIFIED_PREREGISTRATION.md"]
+          "docs/ORGANISM_STRATIFIED_PREREGISTRATION.md",
+          # Added 2026-09-28. It narrows the standing caveat of studies B and C, so the size of the
+          # narrowing is the number most likely to grow in the retelling.
+          "docs/PROVENANCE_CONTROL_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1041,6 +1044,40 @@ def margin_replicates_on_two_arms():
         # while the aggregate is stable
         "aggregate_delta": round(abs(c["650M"]["C1"]["mean_rho"] - c["35M"]["C1"]["mean_rho"]), 4),
         "same_strata_count": c["650M"]["n_strata"] == c["35M"]["n_strata"] == 10,
+    }
+
+
+def provenance_control():
+    """How much of the virulence separation is just pathogen origin?
+
+    \U0001f534 The quotable number here is "three quarters is not provenance". It is pinned together
+    with the 3.2x elevation that IS provenance, with the fact that the control is an upper bound
+    because those 106 are curated hard negatives, and with the arm replication — because a summary
+    keeping only the favourable half would be claiming the confound was eliminated rather than
+    measured.
+    """
+    a = j("../results/provenance_control.json")
+    b = j("../results/provenance_control_esm2_35M.json")
+    if None in (a, b):
+        return None
+    ra, rb = a["rates"], b["rates"]
+    share = ((ra["pathogen_nonvf"]["mean"] - ra["pool_test"]["mean"])
+             / (ra["vfdb"]["mean"] - ra["pool_test"]["mean"]))
+    return {
+        "n_control": a["n_control"], "control_species": a["control_species"],
+        "n_excluded_as_vfdb": len(a["excluded_as_vfdb"]),
+        "pool": {"650M": round(ra["pool_test"]["mean"], 4),
+                 "35M": round(rb["pool_test"]["mean"], 4)},
+        "pathogen_nonvf": {"650M": round(ra["pathogen_nonvf"]["mean"], 4),
+                           "35M": round(rb["pathogen_nonvf"]["mean"], 4)},
+        "vfdb_650M": round(ra["vfdb"]["mean"], 4),
+        "elevation": {"650M": round(ra["pathogen_nonvf"]["mean"] / ra["pool_test"]["mean"], 2),
+                      "35M": round(rb["pathogen_nonvf"]["mean"] / rb["pool_test"]["mean"], 2)},
+        "share_of_gap": round(share, 4),
+        # the control's intervals must exclude the pool's, or "elevated" is not established
+        "elevated_disjoint": {
+            arm: bool(r["pathogen_nonvf"]["ci"][0] > r["pool_test"]["ci"][1])
+            for arm, r in (("650M", ra), ("35M", rb))},
     }
 
 
@@ -3286,6 +3323,23 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("pathogen origin is worth a threefold elevation and about a quarter of the gap",
+     provenance_control,
+     lambda v: v is None or (
+         v["n_control"] == 106 and v["control_species"] == 20
+         # four proteins were positives sitting in a negative set
+         and v["n_excluded_as_vfdb"] == 4
+         # the elevation is real and replicates, with disjoint intervals on both arms
+         and v["elevation"]["650M"] > 3.0 and v["elevation"]["35M"] > 3.0
+         and all(v["elevated_disjoint"].values())
+         and 0.18 < v["pathogen_nonvf"]["650M"] < 0.25
+         and 0.17 < v["pathogen_nonvf"]["35M"] < 0.22
+         # 🔴 and it is only about a quarter of the benign-to-virulence gap
+         and 0.18 < v["share_of_gap"] < 0.28
+         and v["vfdb_650M"] > 0.70),
+     {"docs/PROVENANCE_CONTROL_PREREGISTRATION.md":
+      "**Roughly three\nquarters of the benign-to-virulence gap is not accounted for by pathogen origin.**"},
+     []),
     ("margin's ordering is the first finding here to survive the second-arm rule",
      margin_replicates_on_two_arms,
      lambda v: v is None or (

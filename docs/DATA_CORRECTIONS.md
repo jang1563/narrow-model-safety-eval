@@ -4472,3 +4472,47 @@ another experiment, a sign-flip definition blind to the flips that occurred, and
 discards the exit code it is gating on. **The shape is always the same: the verifier and the thing
 verified share an assumption, or the verifier's failure signal is thrown away before anyone reads it.**
 The fix here is to capture the exit code rather than pipe it: `audit > /tmp/a.txt 2>&1; rc=$?`.
+
+---
+
+## 2026-09-28 (fifty-second entry) — Pathogen origin is worth a threefold elevation and about a quarter of the gap
+
+Every write-up of studies B and C carried the same standing caveat: the ordering result *"says nothing
+about the absolute recoveries, which remain compatible with pathogen-versus-Swiss-Prot separation."*
+This closes most of it, using data already in the repository.
+
+**The control**: 106 proteins from the v3 negative set drawn from the **20 species that also contribute
+study B representatives**, with every exact VFDB sequence match excluded. ⚠️ **Four were excluded that
+way — positives sitting in a negative set**, found only because this study checked.
+
+| population | *n* | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|---:|
+| Swiss-Prot pool, test partition | 6,758 | 6.98% | 4.98% |
+| ⭐ **pathogen-derived, not in VFDB** | **106** | **22.08%** | **19.06%** |
+| VFDB virulence factors (near-positives for this probe) | 4,218 | 73.49% | — |
+
+🔴 **Pathogen origin alone is worth a 3.2× elevation** (3.8× on the second arm), intervals disjoint from
+the pool's on both. **Provenance is real and substantial.**
+
+🟢 **And it explains under a quarter.** The control sits **22.7%** of the way from the pool's rate to the
+virulence factors' rate, so **roughly three quarters of the separation is not pathogen origin.**
+
+🔑 **The direction of the control's known weakness makes that stronger, and it was recorded in advance.**
+Those 106 are the panel's **curated hard** negatives, not a random pathogen-proteome sample, so 22.08% is
+an **upper bound** on the provenance effect. Even at an upper bound it is under a quarter.
+
+⚠️ **What this does not establish**: that the remaining three quarters is *hazard* rather than another
+property virulence factors share — secretion, surface exposure, host interaction. Separating those needs
+negatives matched on **localization** as well as organism.
+
+### 🔴 And the preregistration named the wrong probe
+
+§ 2 defined the three outcomes against **A1's 40.8%**. That is the *panel* probe's rate on VFDB proteins;
+this study uses **study B's** probe, for which a VFDB virulence factor is a near-positive and which
+returns **73.49%** — a recall figure. The three-outcome framing survives, and the "report it as a
+proportion" branch is the one that applies, but **the anchors were wrong because the preregistration was
+written before the script named which probe it would use.**
+
+🔒 **Scoring the prediction anyway**: it said **20% to 45%**, and "much closer to A1's 40.8% than to the
+pool's 6.0%". The band was right at **22.08%**; the characterization was wrong — it lands near the bottom
+of the band, about midway between the anchors. **Recorded rather than quietly reframed as a hit.**
