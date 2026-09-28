@@ -1,0 +1,262 @@
+{
+  "built": "2026-09-28 13:14:55",
+  "alpha": 0.0125,
+  "seeds": 30,
+  "n_positives": 746,
+  "n_categories_total": 14,
+  "held_out": [
+    "Adherence",
+    "Biofilm",
+    "Effector delivery system",
+    "Enzyme",
+    "Exotoxin",
+    "Immune modulation",
+    "Invasion",
+    "Motility",
+    "Nutritional/Metabolic factor",
+    "Others",
+    "Post-translational modification",
+    "Regulation",
+    "Stress survival"
+  ],
+  "not_held_out": [
+    "Antimicrobial activity/Competitive advantage"
+  ],
+  "negatives": {
+    "screened_union": 1468,
+    "train": 978,
+    "calibrate": 490,
+    "test": 6758,
+    "test_unscreened": true
+  },
+  "recovery": {
+    "Adherence": {
+      "n": 180,
+      "mean": 0.7901851851851853,
+      "sd": 0.03894859492570347,
+      "zero_seeds": 0
+    },
+    "Biofilm": {
+      "n": 20,
+      "mean": 0.6383333333333333,
+      "sd": 0.08678484427250127,
+      "zero_seeds": 0
+    },
+    "Effector delivery system": {
+      "n": 108,
+      "mean": 0.7916666666666665,
+      "sd": 0.03709685463246642,
+      "zero_seeds": 0
+    },
+    "Enzyme": {
+      "n": 59,
+      "mean": 0.5819209039548024,
+      "sd": 0.06799114890557237,
+      "zero_seeds": 0
+    },
+    "Exotoxin": {
+      "n": 102,
+      "mean": 0.7944444444444444,
+      "sd": 0.06133274221888954,
+      "zero_seeds": 0
+    },
+    "Immune modulation": {
+      "n": 77,
+      "mean": 0.5307359307359306,
+      "sd": 0.035069634180053405,
+      "zero_seeds": 0
+    },
+    "Invasion": {
+      "n": 31,
+      "mean": 0.7397849462365591,
+      "sd": 0.04634809046994439,
+      "zero_seeds": 0
+    },
+    "Motility": {
+      "n": 18,
+      "mean": 0.8481481481481482,
+      "sd": 0.03841621151575113,
+      "zero_seeds": 0
+    },
+    "Nutritional/Metabolic factor": {
+      "n": 71,
+      "mean": 0.5408450704225352,
+      "sd": 0.05820133820189596,
+      "zero_seeds": 0
+    },
+    "Others": {
+      "n": 15,
+      "mean": 0.7266666666666669,
+      "sd": 0.026838526662429925,
+      "zero_seeds": 0
+    },
+    "Post-translational modification": {
+      "n": 8,
+      "mean": 0.4666666666666667,
+      "sd": 0.17349517201537246,
+      "zero_seeds": 0
+    },
+    "Regulation": {
+      "n": 31,
+      "mean": 0.4612903225806452,
+      "sd": 0.0880983078831735,
+      "zero_seeds": 0
+    },
+    "Stress survival": {
+      "n": 20,
+      "mean": 0.38666666666666666,
+      "sd": 0.07871087789404063,
+      "zero_seeds": 0
+    }
+  },
+  "test_fpr": {
+    "Adherence": {
+      "mean": 0.06735720627404557,
+      "sd": 0.011155291349597127
+    },
+    "Biofilm": {
+      "mean": 0.06975436519680378,
+      "sd": 0.015113299374618232
+    },
+    "Effector delivery system": {
+      "mean": 0.07048436421031863,
+      "sd": 0.013228372844393587
+    },
+    "Enzyme": {
+      "mean": 0.07153497089868797,
+      "sd": 0.014667856809187108
+    },
+    "Exotoxin": {
+      "mean": 0.07181611916740653,
+      "sd": 0.015114984535573656
+    },
+    "Immune modulation": {
+      "mean": 0.07243760481404755,
+      "sd": 0.011111911936800466
+    },
+    "Invasion": {
+      "mean": 0.07123409292690144,
+      "sd": 0.01482055704658742
+    },
+    "Motility": {
+      "mean": 0.07026733747657098,
+      "sd": 0.014765491947397917
+    },
+    "Nutritional/Metabolic factor": {
+      "mean": 0.07265463154779521,
+      "sd": 0.011726445884311407
+    },
+    "Others": {
+      "mean": 0.06940909539311432,
+      "sd": 0.014354223401670802
+    },
+    "Post-translational modification": {
+      "mean": 0.07119463352076551,
+      "sd": 0.01323090680918687
+    },
+    "Regulation": {
+      "mean": 0.06999605405938641,
+      "sd": 0.01535687503909314
+    },
+    "Stress survival": {
+      "mean": 0.07001085133668737,
+      "sd": 0.014199098809389413
+    }
+  },
+  "margin": {
+    "Adherence": 0.009659410454332829,
+    "Biofilm": 0.004808163736015558,
+    "Effector delivery system": 0.005954931955784559,
+    "Enzyme": 0.0039998614229261875,
+    "Exotoxin": 0.003709146287292242,
+    "Immune modulation": 0.005836580414324999,
+    "Invasion": 0.012753672897815704,
+    "Motility": 0.006618466693907976,
+    "Nutritional/Metabolic factor": 0.001045521697960794,
+    "Others": 0.003854163456708193,
+    "Post-translational modification": 0.002063453197479248,
+    "Regulation": 0.0015250617871060967,
+    "Stress survival": -0.00025877953157760203
+  },
+  "nn_positive": {
+    "Adherence": 0.9717902541160583,
+    "Biofilm": 0.9757270812988281,
+    "Effector delivery system": 0.9748344421386719,
+    "Enzyme": 0.9790331721305847,
+    "Exotoxin": 0.9760351181030273,
+    "Immune modulation": 0.9718425869941711,
+    "Invasion": 0.978412926197052,
+    "Motility": 0.9636414051055908,
+    "Nutritional/Metabolic factor": 0.9678887128829956,
+    "Others": 0.9775611758232117,
+    "Post-translational modification": 0.9547340869903564,
+    "Regulation": 0.9684104323387146,
+    "Stress survival": 0.9650259017944336
+  },
+  "nn_negative": {
+    "Adherence": 0.9621308445930481,
+    "Biofilm": 0.9709188342094421,
+    "Effector delivery system": 0.9688793420791626,
+    "Enzyme": 0.9750332832336426,
+    "Exotoxin": 0.9723260402679443,
+    "Immune modulation": 0.9660061001777649,
+    "Invasion": 0.9656592011451721,
+    "Motility": 0.9570229053497314,
+    "Nutritional/Metabolic factor": 0.96684330701828,
+    "Others": 0.9737070202827454,
+    "Post-translational modification": 0.9526706337928772,
+    "Regulation": 0.9668853878974915,
+    "Stress survival": 0.965284526348114
+  },
+  "B1": {
+    "rho": 0.6813186813186813,
+    "perm_p": 0.0059,
+    "supported": true
+  },
+  "B2": {
+    "bottom2_margin": [
+      "Stress survival",
+      "Nutritional/Metabolic factor"
+    ],
+    "bottom3_recovery": [
+      "Stress survival",
+      "Regulation",
+      "Post-translational modification"
+    ],
+    "supported": false
+  },
+  "B3": {
+    "rho_margin": 0.6813186813186813,
+    "rho_nn_positive": 0.3186813186813187,
+    "rho_nn_negative": 0.11538461538461539,
+    "supported": true
+  },
+  "B4": {
+    "mean_test_fpr": 0.07062702514019471,
+    "range": [
+      0.06735720627404557,
+      0.07265463154779521
+    ],
+    "nominal": 0.050000000000000044
+  },
+  "confound_exclusivity": {
+    "per_category": {
+      "Adherence": 0.05,
+      "Biofilm": 0.05,
+      "Effector delivery system": 0.05555555555555555,
+      "Enzyme": 0.01694915254237288,
+      "Exotoxin": 0.09803921568627451,
+      "Immune modulation": 0.012987012987012988,
+      "Invasion": 0.0,
+      "Motility": 0.1111111111111111,
+      "Nutritional/Metabolic factor": 0.014084507042253521,
+      "Others": 0.0,
+      "Post-translational modification": 0.0,
+      "Regulation": 0.0,
+      "Stress survival": 0.0
+    },
+    "rho": 0.7612977182887073,
+    "two_sided_p": 0.0042,
+    "uninterpretable_if_significant": true
+  }
+}

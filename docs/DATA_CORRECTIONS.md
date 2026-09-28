@@ -4306,3 +4306,61 @@ an existing directory's fingerprint disagrees, naming both hashes.
 pattern that could not match; and a checkpoint that would inherit from a different experiment. **In all
 four the verification shared an assumption with the thing it was verifying.** Seeds, intervals and
 replication were checked; whether a check *could fail* was not.
+
+---
+
+## 2026-09-28 (forty-ninth entry) — Study B: margin transfers at +0.68, and the confound rule I wrote voids the verdict
+
+The external test class-level margin had never had. VFDB's 13 curator-maintained categories, 746
+redundancy-deduplicated representatives, the pool split 978 train / 490 calibrate / 6,758 **unscreened**
+test, 30 seeds. `src/78` to `src/81`, five amendments, every one written before a probe existed.
+
+| | result | verdict |
+|---|---|---|
+| **B-1** Spearman(margin, recovery) | **+0.6813**, *p* = **0.0059** | 🟢 **SUPPORTED** at α = 0.0125 |
+| **B-2** bottom-2 margin inside bottom-3 recovery | 1 of 2 | 🔴 **NOT SUPPORTED** |
+| **B-3** margin against its parts | **+0.681** vs +0.319 and +0.115 | 🟢 **SUPPORTED** |
+| **B-4** FPR on never-seen negatives | **7.06%** at a nominal 5% | measurement |
+
+🔒 **B-1 landed inside the band frozen before the run** — "+0.4 to +0.8, significant, weaker than the
+panel's +0.894 because VFDB's categories are functional-role labels". It is +0.681. Recovery spans
+**38.7% (Stress survival) to 84.8% (Motility)**, and the lowest-margin category is also the
+worst-recovering one and the only negative margin in the thirteen.
+
+🔴 **B-4's prediction was wrong**, and in the study's favour: predicted worse than the panel's 7.87%, it
+is **better** at 7.06%. The reason is mechanical — the threshold is estimated on **490** calibration
+points against the panel's **118**. That is an argument for the split design, not for the probe.
+
+### 🔴 And then the rule I wrote fires against my own result
+
+§ 4 and amendment 4 fixed it: if the organism measure correlates with recovery at *p* < 0.0125,
+**B-1 is uninterpretable.** It does — Spearman(exclusivity, recovery) **+0.7613** at *p* = **0.0042**,
+with amendment 5's same-species measure giving the mirror image **−0.7613** at *p* = 0.0039. **By the
+rule as written that is the verdict, and it stands.** B-1 is not a clean transfer and must not be quoted
+as one.
+
+⚠️ **The sign is wrong for leakage, and that is an observation, not a rescue.** Leakage predicts that a
+category whose organisms the probe has already trained on is **easier**; the data say higher
+same-species-in-train goes with **lower** recovery. So the correlation exists and is not the mechanism
+the rule was written to catch.
+
+⚠️ **Post-hoc, labelled as such**, with § 10.6.4's partial-correlation construction: margin keeps
+**+0.632** of +0.681 with exclusivity held (*p* = 0.029), exclusivity keeps **+0.727** of +0.761 with
+margin held (*p* = 0.007), and the two correlate at only **+0.402** (*p* = 0.17). Neither explains the
+other away. 🔴 **That does not reinstate B-1**: it says thirteen points cannot separate two partially
+independent predictors, which is a power statement, and the separation needs a design holding organism
+composition fixed across categories — not more categories of the same shape.
+
+### What this costs the draft manuscript
+
+🔴 § 4 of `paper/MANUSCRIPT.md` rests on margin, and its external test came back **supported and
+uninterpretable at the same time**. The honest summary is narrower than the draft assumed: *margin's
+ordering reproduces on an axis this project did not define, and on that axis it cannot be separated from
+organism composition.* The draft stays a draft, and what it now needs is the organism-matched design,
+not more prose.
+
+⚠️ **Amendment 5 warned about the wrong failure mode.** It said a *non-significant* exclusivity result
+would mean "no variance" rather than "no confound" — and then a *significant* one appeared from a
+variable whose range is 0.00 to 0.11 with five of thirteen tied at zero, because Spearman ranks
+differences of 0.01. **A statistic too degenerate to fail safely is also too degenerate to pass safely**,
+and I only checked one of those directions.

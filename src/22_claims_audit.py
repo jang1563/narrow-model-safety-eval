@@ -929,6 +929,43 @@ def a1_hard_negatives():
     }
 
 
+def external_class_axis_result():
+    """Study B: margin on VFDB's categories, and the confound rule that fires against it.
+
+    \U0001f534 Four things are pinned together because any one alone misreports the study. B-1 is
+    SUPPORTED and inside its frozen band. B-2 is NOT supported. The preregistered confound rule fires,
+    so B-1's verdict is UNINTERPRETABLE and must not be quoted as a clean transfer. And the confound's
+    sign is the opposite of leakage, which is the observation that keeps the question open rather than
+    a rescue of B-1.
+    """
+    d = j("../results/external_class_axis_lomo.json")
+    if d is None:
+        return None
+    rec = {k: round(v["mean"], 4) for k, v in d["recovery"].items()}
+    conf = d["confound_exclusivity"]
+    return {
+        "n_positives": d["n_positives"], "n_held_out": len(d["held_out"]),
+        "not_held_out": d["not_held_out"],
+        "negatives": (d["negatives"]["screened_union"], d["negatives"]["train"],
+                      d["negatives"]["calibrate"], d["negatives"]["test"]),
+        "b1_rho": round(d["B1"]["rho"], 4), "b1_p": round(d["B1"]["perm_p"], 5),
+        "b1_supported": d["B1"]["supported"],
+        "b1_inside_frozen_band": bool(0.4 <= d["B1"]["rho"] <= 0.8),
+        "b2_supported": d["B2"]["supported"],
+        "b3_supported": d["B3"]["supported"],
+        "b3_parts": (round(d["B3"]["rho_nn_positive"], 3), round(d["B3"]["rho_nn_negative"], 3)),
+        "b4_fpr": round(d["B4"]["mean_test_fpr"], 4),
+        # B-4's prediction was that this would exceed the panel's 7.87%; it does not
+        "b4_beats_panel": d["B4"]["mean_test_fpr"] < 0.0787,
+        "confound_rho": round(conf["rho"], 4), "confound_p": round(conf["two_sided_p"], 4),
+        "b1_uninterpretable": conf["uninterpretable_if_significant"],
+        "worst_category": min(rec, key=rec.get), "best_category": max(rec, key=rec.get),
+        "worst_recovery": min(rec.values()), "best_recovery": max(rec.values()),
+        "lowest_margin_category": min(d["margin"], key=d["margin"].get),
+        "n_negative_margin": sum(1 for v in d["margin"].values() if v < 0),
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -3171,6 +3208,29 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("margin transfers to VFDB's categories at +0.68, and the confound rule voids the verdict",
+     external_class_axis_result,
+     lambda v: v is None or (
+         v["n_positives"] == 746 and v["n_held_out"] == 13
+         and v["not_held_out"] == ["Antimicrobial activity/Competitive advantage"]
+         # amendment 1's 2:1 rule fired, since 1,468 of 1,500 survived the screen
+         and v["negatives"] == (1468, 978, 490, 6758)
+         # B-1 supported and inside the band frozen before the run
+         and v["b1_supported"] and v["b1_inside_frozen_band"]
+         and abs(v["b1_rho"] - 0.6813) < 0.001 and v["b1_p"] < 0.0125
+         # B-2 not supported, B-3 supported and beating both parts
+         and not v["b2_supported"] and v["b3_supported"]
+         and max(v["b3_parts"]) < 0.4
+         # B-4's frozen prediction was wrong: better than the panel's 7.87%, not worse
+         and v["b4_beats_panel"] and abs(v["b4_fpr"] - 0.0706) < 0.001
+         # 🔴 and the preregistered confound rule fires, so the verdict is uninterpretable
+         and v["b1_uninterpretable"] and v["confound_p"] < 0.0125
+         and v["confound_rho"] > 0.7
+         # the lowest-margin category is also the worst-recovering one, and is the only negative margin
+         and v["lowest_margin_category"] == v["worst_category"] == "Stress survival"
+         and v["n_negative_margin"] == 1),
+     {"docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md":
+      "**By the rule as\nwritten, that is the verdict, and it stands.**"}, []),
     ("the same probe flags two fifths of non-toxin virulence factors at a nominal 5%",
      a1_hard_negatives,
      lambda v: v is None or (

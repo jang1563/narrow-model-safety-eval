@@ -240,3 +240,104 @@ rule to bring length-alone AUROC from 0.667 to 0.484, and "near chance" is a cla
 made thirty seeds vary nothing and a rule that could not be executed on BLOSUM62's alphabet. **The
 pattern is that a preregistration is checked by implementing it, not by re-reading it**, and all three
 were caught before any probe was fitted.
+
+### Amendment 5 — 2026-09-28, before any recovery number: amendment 4's confound test has almost no variance, and the reason is the argument
+
+Amendment 4 defined the confound test as Spearman(species **exclusivity**, recovery), where exclusivity
+is the fraction of a category's members whose species appears in no other category. Computed on the
+inputs, before any probe was fitted:
+
+🔴 **Exclusivity ranges 0.00 to 0.11, with five of the thirteen categories at exactly 0.00.** There is
+almost nothing to correlate, the statistic is dominated by ties, and a non-significant result from it
+would mean "no variance", not "no confound". ⚠️ **Reporting that as a confound ruled out would be the
+same defect as entry forty-three's 4/61 false-positive figure**: a check that cannot distinguish what it
+is used to distinguish.
+
+**So the direct quantity is computed instead**, and it is the one the concern was really about — for each
+held-out category, the fraction of its members that have a **same-species protein among the training
+positives**:
+
+| | |
+|---|---|
+| range across the 13 categories | **88.9% (Motility) to 100.0%** (five categories) |
+| mean | **96.9%** |
+
+🔑 **Organism leakage is near-total and near-uniform, and that is what makes B-1 interpretable rather
+than what threatens it.** The probe has seen essentially every held-out category's organisms while
+training, to within 11 percentage points, for every category. A channel that is equally open for all
+thirteen cannot explain why one recovers at 100% and another at 10%. **The ordering has to come from
+something category-specific.**
+
+⚠️ **This is an argument from the structure of the data, not a significance test, and it is weaker for
+it.** It rules out organism identity as the *differentiating* factor; it does not rule out that all
+thirteen recoveries are inflated together by pathogen-versus-Swiss-Prot provenance — § 2.3 measures that
+at AUROC 0.818 on the panel and it will be larger here. **B-1 is a claim about ordering and is reported
+only as that.** The absolute recoveries are reported beside it and are not claimed to be hazard
+detection.
+
+🔒 Both quantities are recorded here **before** the LOMO runs, so the reading above cannot be mistaken
+for a reaction to whatever B-1 returns.
+
+---
+
+## Results, 2026-09-28
+
+`src/81_external_class_axis_lomo.py`. 746 positives in 13 held-out categories, negatives **1,468 of
+1,500** surviving the screen (32 at or above 0.282, highest admitted 0.2785) so amendment 1's 2:1 rule
+applies: **978 train / 490 calibrate** redrawn per seed, **6,758 test** never fitted or calibrated on.
+30 seeds.
+
+| category | *n* | recovery | margin | exclusivity |
+|---|---:|---:|---:|---:|
+| Stress survival | 20 | **38.7%** | **−0.0003** | 0.000 |
+| Regulation | 31 | 46.1% | +0.0015 | 0.000 |
+| Post-translational modification | 8 | 46.7% | +0.0021 | 0.000 |
+| Immune modulation | 77 | 53.1% | +0.0058 | 0.013 |
+| Nutritional/Metabolic factor | 71 | 54.1% | +0.0010 | 0.014 |
+| Enzyme | 59 | 58.2% | +0.0040 | 0.017 |
+| Biofilm | 20 | 63.8% | +0.0048 | 0.050 |
+| Others | 15 | 72.7% | +0.0039 | 0.000 |
+| Invasion | 31 | 74.0% | +0.0128 | 0.000 |
+| Adherence | 180 | 79.0% | +0.0097 | 0.050 |
+| Effector delivery system | 108 | 79.2% | +0.0060 | 0.056 |
+| Exotoxin | 102 | 79.4% | +0.0037 | 0.098 |
+| Motility | 18 | **84.8%** | +0.0066 | 0.111 |
+
+### The four tests
+
+| | result | verdict |
+|---|---|---|
+| **B-1** Spearman(margin, recovery) | **+0.6813**, permutation *p* = **0.00590** | 🟢 **SUPPORTED** at α = 0.0125 |
+| **B-2** bottom-2 margin within bottom-3 recovery | margin bottom-2 = Stress survival, Nutritional/Metabolic; recovery bottom-3 = Stress survival, Regulation, Post-translational | 🔴 **NOT SUPPORTED** — 1 of 2 |
+| **B-3** margin against its own parts | margin **+0.681** vs nearest-positive **+0.319** vs nearest-negative **+0.115** | 🟢 **SUPPORTED** |
+| **B-4** out-of-sample FPR on the never-seen test negatives | **7.06%** at a nominal 5%, range [6.74, 7.27] | measurement |
+
+🔒 **B-1 landed inside the frozen prediction band.** § 5 predicted "+0.4 to +0.8, significant, and weaker
+than the panel's +0.894 because VFDB's categories are functional-role labels". It is **+0.681**.
+
+🔴 **B-4's prediction was wrong.** § 5 predicted worse than the panel's 7.87%; it is **better**, 7.06%.
+The likely reason is mechanical and in this study's favour: the threshold is set on **490** calibration
+points here against the panel's **118**, so it is estimated better. That is an argument for the split
+design, not for the probe.
+
+### 🔴 And the preregistered confound rule fires, so B-1 is reported UNINTERPRETABLE
+
+§ 4 and amendment 4 fixed the rule: if the organism measure correlates with recovery at *p* < 0.0125,
+**recovery is driven by organism overlap and B-1 is uninterpretable.** It does —
+Spearman(exclusivity, recovery) = **+0.7613**, two-sided *p* = **0.0042**, and amendment 5's
+same-species-in-train measure gives the mirror image, **−0.7613** at *p* = 0.0039. **By the rule as
+written, that is the verdict, and it stands.**
+
+⚠️ **But the sign is wrong for leakage, and that is worth stating without using it as a rescue.**
+Leakage predicts that a category whose organisms the probe has already seen is **easier**. The data say
+the opposite: higher same-species-in-train goes with **lower** recovery. So whatever this correlation is,
+it is not the mechanism the rule was written to catch.
+
+⚠️ **Post-hoc, and labelled as such**, using § 10.6.4's partial-correlation construction: margin keeps
+**+0.6322** of its +0.6813 with exclusivity held (*p* = 0.0286) and exclusivity keeps **+0.7273** of its
++0.7613 with margin held (*p* = 0.0074); the two are correlated at only **+0.402** (*p* = 0.17). So they
+are **not** redundant — both survive controlling for the other — and neither is explained away by the
+other. 🔴 **This does not overturn the preregistered verdict.** It says the study cannot separate two
+partially independent predictors on thirteen points, which is a statement about power, and the
+separation needs a design where organism composition is held fixed across categories rather than a
+larger *n* of the same shape.
