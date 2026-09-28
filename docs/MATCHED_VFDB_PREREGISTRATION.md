@@ -109,3 +109,118 @@ executed.
 
 🔒 Bridge cells ≥ 25 after the positive-side exclusion, or the affected test is indicative only.
 🔒 § 0.2's selection caveat travels with every number this study produces.
+
+---
+
+## 🔴 Amendment 1 — 2026-09-28, on running it: a taxonomic synonym is not evidence about provenance
+
+The first run applied the "Bacteria from a VFDB species" test to **both** sides. 🔴 **That is wrong on
+the bridge side**: a protein whose sequence matches VFDB exactly is pathogen-derived *by construction*,
+and the species test dropped ten of them because **UniProt has renamed the genus while VFDB still uses
+the old name**. The bridge spans **12** such renamed species in total: `Borreliella burgdorferi`,
+`Klebsiella aerogenes`, `Mycobacteroides abscessus`, `Mycolicibacterium gilvum`, `M. paratuberculosis`,
+`M. smegmatis`, `M. vanbaalenii`, `Mycoplasmoides genitalium`, `M. pneumoniae`, `Ralstonia nicotianae`,
+`Salmonella typhi`, `Salmonella typhimurium`.
+
+🔒 **Corrected**: the bridge requires only that the protein is bacterial. The benign side keeps the
+species test, because that is where provenance has to be held fixed.
+
+🔒 **Both versions are reported so the change cannot read as tuning.** It moved a cell *up* to just
+below the floor, which is the direction that would be suspicious, so here is every affected number:
+
+| | before (buggy) | after (corrected) |
+|---|---|---|
+| bridge extracellular *n* | 37 | **38** |
+| bridge intracellular *n* | 15 | **24** |
+| C/A, 650M | 1.954 | **1.974** |
+| C/A, 35M | 1.435 | **1.497** |
+| D/B, 650M | 1.915 | **3.204** |
+| ⭐ **D/B, 35M** | **0.532** | **1.311** |
+
+🔑 **The correction is what made the intracellular stratum replicate.** Before it, D/B was 1.92 on 650M
+and **0.53 on 35M** — opposite signs. After it, 3.20 and 1.31, the same sign on both arms. The
+sign flip was nine proteins removed by a genus rename.
+
+⚠️ **The same synonym problem runs the other way in studies F and G**, whose provenance factor is
+"species appears in VFDB": renamed pathogens were scored as benign-species, which **dilutes** the
+measured provenance effect. That direction is conservative, and **it is not quantified here.**
+
+---
+
+## 🔒 Reconciling § 0.3's declared counts with the delivered ones
+
+§ 0.3 declared 45 extracellular and 26 intracellular. Delivered: **38** and **24**. The whole
+difference is the § 1 positive-side check, which § 0.3's count was taken before:
+
+| | declared | − class-axis positives | delivered |
+|---|---:|---:|---:|
+| extracellular | 45 | −7 | **38** |
+| intracellular | 26 | −2 | **24** |
+
+## 🔴 The circularity check found 13, and it had never been run anywhere
+
+⚠️ The positive FASTA holds **745 distinct sequences for 746 records**, so one positive is an exact
+duplicate of another — noted in passing, found only because this check counted them.
+
+**13 of the 133 bridge proteins are themselves class-axis positives** — `A5U8S6`, `P9WGG7`, `P9WGH9`,
+`P9WGI3`, `P9WKK6`, `Q8DQ36`, `P05431`, `Q833V7`, `Q9WXB9`, `Q9RQJ2`, `P0A609`, `A1KQD8`, `E8XDJ8`,
+mostly *M. tuberculosis* and *M. bovis*. 🔴 **Evaluating those as test cases would have been
+circular**, and nothing in this repository had checked for it before this study's § 1 required it.
+
+---
+
+## Results, 2026-09-28
+
+`src/87_matched_vfdb.py`, study G's clean fold, 30 seeds, no new inference.
+`results/matched_vfdb.json`, `results/matched_vfdb_esm2_35M.json`.
+
+| population | *n* | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|---:|
+| benign × extracellular | 171 | 37.52% [36.18, 38.86] | 26.90% [25.65, 28.15] |
+| ⭐ **VFDB × extracellular** | **38** | **73.77% [70.41, 77.13]** | **40.70% [36.34, 45.07]** |
+| benign × intracellular | 597 | 6.87% [6.47, 7.27] | 5.09% [4.72, 5.47] |
+| **VFDB × intracellular** | 24 | **21.81% [20.47, 23.14]** | 6.67% [5.33, 8.00] |
+| VFDB × membrane | 12 | 53.89% | 38.06% |
+| VFDB × unannotated | 46 | 42.54% | 12.03% |
+| *reference*: full VFDB set | 4,218 | 76.95% [75.80, 78.10] | — |
+
+### ⚠️ H-1 / H-2: partial on both arms, and 650M cannot be told from the supported band
+
+**C/A = 1.974 [1.889, 2.059]** on 650M and **1.497 [1.360, 1.634]** on 35M. Both land in the frozen
+**partial** band [1.2, 2.0), so **the band verdict agrees on both arms: partial.** ⚠️ 650M's interval
+**straddles 2.0**, so on that arm partial and supported cannot be distinguished; the verdict is the
+band the point estimate falls in, as frozen.
+
+⚠️ **D/B is indicative only**: the bridge intracellular cell holds **24**, one short of the frozen
+floor of 25. 🔒 **The floor is not being moved for one protein.** It gives 3.204 and 1.311 — elevated on
+both arms, and see Amendment 1 for why that is a corrected number.
+
+### ⭐ H-5: membership closes 91.9% of the residual that studies D–G could not attribute
+
+With pathogen origin **and** extracellular localization both held fixed, the benign cell sits at
+**37.52%** and the full VFDB set at **76.95%**. VFDB membership alone takes a protein to **73.77%** —
+**91.9% of the way.**
+
+🟢 **This is the first positive evidence in the project that the residual majority of the separation is
+about being a virulence factor**, rather than a further property the curated sets happen to share. And
+🔑 **it is measured on the subset § 0.2 declared to be biased against it**: every one of these 38 is a
+VFDB virulence factor that UniProt declines to annotate as virulent, toxic, cytolytic or haemolytic,
+and they still reach within 3.2 points of the full set.
+
+### 🔒 What this does not overturn
+
+⚠️ **Study E stands.** The probe remains strongly localization-graded — that is the *benign* finding and
+this is a *membership* finding, and both are true: a benign secreted protein is flagged at 37.5% here
+against 6.9% cytoplasmic. **The 5% budget is still wrong for secreted proteins by a factor of seven.**
+⚠️ **And 35M is much weaker than 650M** — 1.497 against 1.974, with the bridge at 40.70% against 73.77%.
+The finding is a verdict on the band, not on the magnitude.
+
+### 🔒 Frozen predictions
+
+| | frozen | actual | |
+|---|---|---|---|
+| H-1 C/A ≈ 1.8, partial band | | 1.974 / 1.497 | band ✅ both arms |
+| bridge extracellular ≈ 60% | | **73.77%** / 40.70% | ❌ underestimated on 650M |
+| D/B ≈ 2.5 | | 3.204 / 1.311 | straddles it, underpowered |
+| H-3 bridge below the full set | | 73.77% < 76.95% | ✅ |
+| wide intervals on small cells | | yes | ✅ |

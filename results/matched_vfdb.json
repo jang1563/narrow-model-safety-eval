@@ -1,0 +1,149 @@
+{
+  "built": "2026-09-28 15:08:16",
+  "arm": "esm2_650M",
+  "seeds": 30,
+  "n_excluded_as_positive": 13,
+  "excluded_as_positive": [
+    "A5U8S6",
+    "P9WGG7",
+    "P9WGH9",
+    "P9WGI3",
+    "P9WKK6",
+    "Q8DQ36",
+    "P05431",
+    "Q833V7",
+    "Q9WXB9",
+    "Q9RQJ2",
+    "P0A609",
+    "A1KQD8",
+    "E8XDJ8"
+  ],
+  "circularity_check_ran": true,
+  "n_positive_sequences": 745,
+  "group_n": {
+    "A_benign_extra": 171,
+    "B_benign_intra": 597,
+    "C_vfdb_extra": 38,
+    "D_vfdb_intra": 24,
+    "vfdb_membrane": 12,
+    "vfdb_unannotated": 46,
+    "C_testonly": 32,
+    "D_testonly": 18
+  },
+  "floor": 25,
+  "floor_met": false,
+  "clean_fold": [
+    966,
+    484
+  ],
+  "n_union": 1450,
+  "rates": {
+    "A_benign_extra": {
+      "mean": 0.37524366471734893,
+      "ci": [
+        0.361848778871118,
+        0.3886385505635799
+      ]
+    },
+    "B_benign_intra": {
+      "mean": 0.06867671691792294,
+      "ci": [
+        0.064678954609519,
+        0.07267447922632689
+      ]
+    },
+    "C_vfdb_extra": {
+      "mean": 0.7377192982456139,
+      "ci": [
+        0.7041295758352031,
+        0.7713090206560247
+      ]
+    },
+    "D_vfdb_intra": {
+      "mean": 0.21805555555555553,
+      "ci": [
+        0.20467162776131806,
+        0.231439483349793
+      ]
+    },
+    "vfdb_membrane": {
+      "mean": 0.5388888888888889,
+      "ci": [
+        0.5109440731117044,
+        0.5668337046660733
+      ]
+    },
+    "vfdb_unannotated": {
+      "mean": 0.4253623188405796,
+      "ci": [
+        0.4045601754018361,
+        0.44616446227932316
+      ]
+    },
+    "C_testonly": {
+      "mean": 0.7385416666666667,
+      "ci": [
+        0.7092505027756888,
+        0.7678328305576445
+      ]
+    },
+    "D_testonly": {
+      "mean": 0.2685185185185185,
+      "ci": [
+        0.25462354326631476,
+        0.2824134937707222
+      ]
+    },
+    "vfdb_full": {
+      "mean": 0.7695353247984826,
+      "ci": [
+        0.7580256038585901,
+        0.7810450457383752
+      ]
+    }
+  },
+  "H1_CA": {
+    "mean": 1.9737627010729564,
+    "ci": [
+      1.8888849453738177,
+      2.0586404567720953
+    ]
+  },
+  "H1_DB": {
+    "mean": 3.2042545509907523,
+    "ci": [
+      3.035588043478581,
+      3.3729210585029237
+    ]
+  },
+  "band": "partial",
+  "H1_CA_testonly": {
+    "mean": 1.979673458083764,
+    "ci": [
+      1.8941779025630683,
+      2.06516901360446
+    ]
+  },
+  "H1_DB_testonly": {
+    "mean": 3.9639496022425504,
+    "ci": [
+      3.7415848519710737,
+      4.186314352514027
+    ]
+  },
+  "renamed_genus_dropped_from_benign_side": [
+    "Borreliella burgdorferi",
+    "Klebsiella aerogenes",
+    "Mycobacteroides abscessus",
+    "Mycolicibacterium gilvum",
+    "Mycolicibacterium paratuberculosis",
+    "Mycolicibacterium smegmatis",
+    "Mycolicibacterium vanbaalenii",
+    "Mycoplasmoides genitalium",
+    "Mycoplasmoides pneumoniae",
+    "Ralstonia nicotianae",
+    "Salmonella typhi",
+    "Salmonella typhimurium"
+  ],
+  "H5_membership_closes": 0.9193083958551851
+}

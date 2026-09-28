@@ -4758,3 +4758,77 @@ The decontaminated joint share on 650M is **46.0%**, and the sum claim 98 forbid
 **44.8%**. 🔴 **Unrelated.** One is a measured rate on the (pathogen × extracellular) cell; the other is
 an arithmetic error this repository bans. The proof it is chance is the second arm, which puts the same
 figure at **32.2%**. Claim 100 pins both numbers together for that reason.
+
+---
+
+## 2026-09-28 (fifty-seventh entry) — Membership covers 92% of the residual, and the check that found 13 circular test cases
+
+Studies D through G left the same sentence in five documents: the majority of the benign→VFDB separation
+belongs to neither provenance nor localization, and **what it does belong to is not established.**
+🔒 `docs/MATCHED_VFDB_PREREGISTRATION.md` is the first test that could separate the two candidates —
+hazard, or a further property the curated sets share — and it needed VFDB proteins carrying UniProt
+localization, which nothing in this repository had.
+
+🔑 **The instrument is the contamination study G removed.** 133 pool proteins are exact VFDB sequence
+matches, so they are virulence factors **and** Swiss-Prot entries with localization annotation. They are
+held out under G's clean fold and embedded on **both** arms, which the 4,218-protein VFDB set is not.
+
+| population | *n* | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|---:|
+| benign × extracellular | 171 | 37.52% | 26.90% |
+| ⭐ **VFDB × extracellular** | **38** | **73.77%** | **40.70%** |
+| benign × intracellular | 597 | 6.87% | 5.09% |
+| VFDB × intracellular | 24 | 21.81% | 6.67% |
+| *reference*: full VFDB set | 4,218 | 76.95% | — |
+
+⭐ **With both confounds held fixed, membership alone covers 91.9% of the distance from the matched
+benign cell to the full VFDB rate** — and on a subset **§ 0.2 declared in advance to be biased against
+it**: the pool query excludes *Virulence*, *Toxin*, *Cytolysis*, *Hemolysis*, *Bacteriocin* and
+*Bacteriolytic enzyme* (names read from UniProt, not assumed), so every one of these 38 is a virulence
+factor **UniProt declines to call virulent**, and they still land within 3.2 points of the full set.
+
+🟢 **First positive evidence in the project that the residual is about being a virulence factor.**
+
+### ⚠️ Three qualifications, all frozen before the numbers existed
+
+- **The band says partial, not supported.** C/A is **1.974** and **1.497** against a 2.0 threshold.
+  650M's interval **[1.889, 2.059] straddles** it. The verdict is the band the point estimate falls in,
+  as frozen.
+- **D/B is indicative.** The intracellular cell holds **24** against a floor of **25**. 🔒 **The floor
+  was not moved for one protein.**
+- 🔴 **Study E is untouched.** In this same table a benign secreted protein is flagged at 37.5% against
+  6.9% cytoplasmic — the nominal 5% is still wrong by a factor of seven for secreted proteins. A
+  *membership* finding does not cancel a *benign-side localization* finding.
+
+🔴 **And H-5's 91.9% is a share of the residual inside the matched cell, not of the pool→VFDB gap.**
+Restating it against the whole gap would roughly quadruple what it claims. Claim 101 forbids that
+reading in the three forms it would be written in.
+
+### 🔴 The circularity check found 13, and it had never been run anywhere
+
+§ 1 required excluding any bridge protein that is itself a class-axis positive. **13 of 133 were**
+(`A5U8S6`, `P9WGG7`, `P9WGH9`, `P9WGI3`, `P9WKK6`, `Q8DQ36`, `P05431`, `Q833V7`, `Q9WXB9`, `Q9RQJ2`,
+`P0A609`, `A1KQD8`, `E8XDJ8`, mostly *M. tuberculosis* and *M. bovis*). 🔴 **Evaluating a training
+positive as a test case is circular, and nothing here had ever checked for it.**
+
+⚠️ **Two incidental finds from writing that check.** The positive FASTA holds **745 distinct sequences
+for 746 records**, so one positive duplicates another. And the check was first written against a
+filename that does not exist — it would have **printed a warning and carried on**, the seventh instance
+of that pattern; it now exits instead.
+
+### 🔴 A taxonomic synonym is not evidence about provenance
+
+The first run applied "Bacteria from a VFDB species" to **both** sides. That is wrong on the bridge: a
+protein matching a VFDB sequence exactly is pathogen-derived **by construction**, and the test dropped
+ten of them because **UniProt renamed the genus while VFDB kept the old name** — the bridge spans **12**
+such species, including *Mycoplasmoides pneumoniae*, *Mycobacteroides abscessus*, *Klebsiella
+aerogenes* and *Salmonella typhimurium*.
+
+⭐ **The correction is what made the intracellular stratum replicate.** Before it, D/B was 1.92 on 650M
+and **0.53 on 35M** — opposite signs. After it, **3.20 and 1.31**, same sign both arms. **A sign flip
+produced by nine proteins lost to a genus rename.** Both versions are in Amendment 1, because the fix
+moved a cell *up* toward its floor and that is the direction that should have to show its work.
+
+⚠️ **The same synonym problem runs the other way in studies F and G**, whose provenance factor is
+"species appears in VFDB": renamed pathogens were scored as benign-species, which **dilutes** their
+measured provenance effect. Conservative direction, **and not quantified.**

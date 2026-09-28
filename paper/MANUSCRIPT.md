@@ -252,8 +252,33 @@ provenance ≈2.7×, each roughly constant across the other's levels. ⚠️ 35M
 the arms agree on the band and not on the point estimate.
 
 ⭐ **Together they span 42.2% of the pool→VFDB gap on 650M and 32.8% on 35M** — measured, not summed;
-**22.7% + 22.1% is not a quantity this repository has.** 🔑 **So the majority of the separation still
-belongs to neither confound**, and what it does belong to is not established here.
+**22.7% + 22.1% is not a quantity this repository has.** 🔑 **So the majority of the separation belongs
+to neither confound.**
+
+🟢 **And a matched test attributes most of that majority to virulence-factor membership itself.** 133
+pool proteins are exact VFDB sequence matches, which makes them the only population here that is both a
+virulence factor *and* a Swiss-Prot entry carrying UniProt localization; they are held out under the
+decontaminated fold (`docs/MATCHED_VFDB_PREREGISTRATION.md`). Holding pathogen origin **and**
+extracellular localization fixed and varying only membership:
+
+| | *n* | ESM-2 650M | ESM-2 35M |
+|---|---:|---:|---:|
+| benign × extracellular | 171 | 37.52% | 26.90% |
+| ⭐ **VFDB × extracellular** | **38** | **73.77%** | **40.70%** |
+| *reference*: full VFDB set | 4,218 | 76.95% | — |
+
+Membership alone covers **91.9%** of the distance from that matched cell to the full VFDB rate, and it
+does so on a subset **selected against the hypothesis**: the pool's build query excludes the
+*Virulence*, *Toxin*, *Cytolysis*, *Hemolysis*, *Bacteriocin* and *Bacteriolytic enzyme* keywords, so
+every one of these 38 is a virulence factor **UniProt declines to call virulent** — and they still land
+within 3.2 points of the full set.
+
+⚠️ **Three qualifications travel with that.** The frozen band puts the ratio at **partial** on both arms
+(1.974 and 1.497 against a 2.0 threshold), and 650M's interval straddles the threshold rather than
+clearing it. The intracellular cell holds **24** proteins against a floor of 25 set in advance, so its
+3.20× and 1.31× are **indicative, not a verdict**. And 🔴 **none of this softens the localization
+finding** — in this very table a benign secreted protein is flagged at 37.5% against 6.9% cytoplasmic,
+so the nominal 5% is still wrong by a factor of seven for secreted proteins.
 
 🔴 **Criterion 12 fails, and the failure was expensive twice.** The first preregistration carried a floor
 and no ceiling. Adding ceilings to the second one is what made its NOT SUPPORTED verdict readable — and

@@ -90,7 +90,12 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-28 with the document. It is the one place recording that study E's published
           # ratio was inflated by contamination, and the one place explaining why a 46.0% figure that
           # sits next to a forbidden 44.8% sum is a coincidence -- both are sentences a retelling drops.
-          "docs/DECONTAMINATION_PREREGISTRATION.md"]
+          "docs/DECONTAMINATION_PREREGISTRATION.md",
+          # Added 2026-09-28 with the document. It holds the project's first positive evidence that the
+          # residual separation is virulence-related, and three qualifications that a retelling drops:
+          # the band is partial not supported, D/B sits one protein under its floor, and H-5's 91.9% is
+          # a share of the residual inside the matched cell rather than of the whole gap.
+          "docs/MATCHED_VFDB_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1208,6 +1213,47 @@ def decontamination_sensitivity():
         "threshold_fell": {"650M": round(ca["threshold"] - da["threshold"], 4),
                            "35M": round(cb["threshold"] - db["threshold"], 4)},
         "verdicts": {"650M": a["verdict"], "35M": b["verdict"]},
+    }
+
+
+def matched_vfdb():
+    """With provenance and localization both held fixed, does VFDB membership still matter?
+
+    \u26a0\ufe0f Three numbers have to travel together or this result is misreported. The band verdict
+    is PARTIAL on both arms, not supported -- 650M's interval straddles 2.0 and the rule says the band
+    the point estimate falls in. The intracellular cell holds 24 against a frozen floor of 25, so D/B
+    is indicative and must never be quoted as a verdict. And H-5's 91.9% is the share of the RESIDUAL
+    inside the matched cell, not of the pool-to-VFDB gap; the forbid list bans the latter reading,
+    which is the one a retelling would produce.
+
+    \U0001f7e2 What it does establish: on the subset the preregistration declared biased AGAINST it --
+    VFDB proteins UniProt declines to call virulent -- membership alone reaches 73.77% against a matched
+    benign 37.52% and a full-VFDB 76.95%.
+    """
+    a = j("../results/matched_vfdb.json")
+    b = j("../results/matched_vfdb_esm2_35M.json")
+    if None in (a, b):
+        return None
+    ra, rb = a["rates"], b["rates"]
+    return {
+        "n_excluded_as_positive": a["n_excluded_as_positive"],
+        "n_positive_sequences": a["n_positive_sequences"],
+        "circularity_check_ran": a["circularity_check_ran"],
+        "cells": {k: a["group_n"][k] for k in ("A_benign_extra", "C_vfdb_extra",
+                                              "B_benign_intra", "D_vfdb_intra")},
+        # 🔴 24 against a floor of 25: D/B is indicative, and the floor was not moved for one protein
+        "floor_met": a["floor_met"], "floor": a["floor"],
+        "CA": {"650M": round(a["H1_CA"]["mean"], 3), "35M": round(b["H1_CA"]["mean"], 3)},
+        "CA_ci_650M": [round(x, 3) for x in a["H1_CA"]["ci"]],
+        "DB": {"650M": round(a["H1_DB"]["mean"], 3), "35M": round(b["H1_DB"]["mean"], 3)},
+        "band": a["band"], "band_agrees": a["band"] == b["band"],
+        "vfdb_extra": {"650M": round(ra["C_vfdb_extra"]["mean"], 4),
+                       "35M": round(rb["C_vfdb_extra"]["mean"], 4)},
+        "benign_extra": {"650M": round(ra["A_benign_extra"]["mean"], 4),
+                         "35M": round(rb["A_benign_extra"]["mean"], 4)},
+        "vfdb_full_650M": round(ra["vfdb_full"]["mean"], 4),
+        "membership_closes_residual": round(a["H5_membership_closes"], 4),
+        "n_renamed_genus": len(a["renamed_genus_dropped_from_benign_side"]),
     }
 
 
@@ -3453,6 +3499,35 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("VFDB membership closes 92% of the residual, and the band says partial",
+     matched_vfdb,
+     lambda v: v is None or (
+         # 🔴 the circularity check ran and found 13; it had never run anywhere before
+         v["circularity_check_ran"] and v["n_excluded_as_positive"] == 13
+         and v["n_positive_sequences"] == 745
+         and v["cells"] == {"A_benign_extra": 171, "C_vfdb_extra": 38,
+                            "B_benign_intra": 597, "D_vfdb_intra": 24}
+         # 🔴 the floor was NOT met, so D/B is indicative -- pinned so it cannot become a verdict
+         and v["floor"] == 25 and not v["floor_met"]
+         # ⚠️ PARTIAL on both arms, and 650M's interval straddles the 2.0 boundary
+         and v["band"] == "partial" and v["band_agrees"]
+         and 1.2 <= v["CA"]["650M"] < 2.0 and 1.2 <= v["CA"]["35M"] < 2.0
+         and v["CA_ci_650M"][1] > 2.0
+         # 🟢 and the substantive result, on a subset declared biased against it
+         and 0.72 < v["vfdb_extra"]["650M"] < 0.76
+         and 0.36 < v["benign_extra"]["650M"] < 0.39
+         and v["vfdb_full_650M"] > 0.75
+         and 0.88 < v["membership_closes_residual"] < 0.95
+         # ⚠️ the genus-rename problem that Amendment 1 records
+         and v["n_renamed_genus"] == 12),
+     {"docs/MATCHED_VFDB_PREREGISTRATION.md":
+      "**91.9% of the way.**",
+      "paper/MANUSCRIPT.md":
+      "**91.9%** of the distance from that matched cell to the full VFDB rate"},
+     # 🔴 H-5 is a share of the RESIDUAL INSIDE the matched cell. Restating it against the whole
+     # pool-to-VFDB gap would roughly quadruple what it claims, and is the misreading a summary
+     # produces. Banned in the forms it would be written in.
+     ["91.9% of the gap", "91.9% of the pool", "membership explains the entire separation"]),
     ("the localization verdict survives decontamination, smaller",
      decontamination_sensitivity,
      lambda v: v is None or (
