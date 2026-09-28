@@ -140,3 +140,49 @@ therefore interpretable as a claim about ordering**, and the amendment to that d
   cells; raising it to 4 leaves 5 strata and 23 cells, and to 5 leaves 3 strata and 13. The frozen
   setting is the one reported, and the rapid loss of strata is why it was set at 3 before the data were
   seen.
+
+---
+
+## Second arm, 2026-09-28 — and this is the first thing in the project to survive it
+
+§ 9.1.4 of `docs/MECHANISM_GENERALIZATION.md` records **three** findings that were interval-clean on
+ESM-2 650M and vanished on ESM-2 35M. The Results section above closed with "nothing here has been run
+on a second arm". It has now. The screen is sequence-based and therefore arm-independent, the pool was
+already embedded on both arms with identical row order, and the 746 representatives were re-embedded
+with a gate of **1.67e-06** against that arm's published panel negatives.
+
+| | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|
+| **C-1** mean within-species *ρ* | **+0.3750** | **+0.4107** |
+| permutation *p* (α = 0.05) | 0.0104 | **0.0069** |
+| strata positive | **8 of 10** | **8 of 10** |
+| verdict | 🟢 SUPPORTED | 🟢 **SUPPORTED** |
+| | | |
+| **B-1** Spearman(margin, recovery) | +0.6813 | **+0.7253** |
+| permutation *p* (α = 0.0125) | 0.0059 | **0.0034** |
+| **B-2** bottom-2 margin in bottom-3 recovery | 🔴 NOT SUPPORTED | 🟢 **SUPPORTED** |
+| **B-3** margin against its parts | 🟢 SUPPORTED | 🟢 SUPPORTED |
+| **B-4** out-of-sample FPR at a nominal 5% | 7.06% | **4.95%** |
+| confound *ρ*, rule fires below *p* = 0.0125 | +0.7613 at *p* = **0.0042** | +0.5887 at *p* = 0.0371 |
+| B-1 uninterpretable by the frozen rule? | **YES** | **no** |
+
+🟢 **C-1 replicates, and slightly stronger.** 🟢 **B-1 replicates, and on the 35M arm the confound rule
+does not fire at all**, so B-1 is interpretable there without the stratified follow-up. 🟢 **B-2, which
+failed on 650M, passes on 35M.**
+
+🔑 **B-4 is worth its own line: 4.95% against a nominal 5%**, on negatives that were never screened and
+never seen by fitting or calibration. The panel's own out-of-sample figure is 7.87%. **The difference is
+the split**: 490 calibration points here against 118 there. That is the clearest evidence in this project
+that criterion 1's fail is about the *design* and not about the representation.
+
+⚠️ **What does not replicate is which strata are weak**, and it is worth quantifying rather than
+asserting. Across the ten strata the two arms' *ρ* values agree at only **+0.49** (Pearson), with a mean
+absolute difference of **0.341**, a maximum of **1.000**, and **two strata moving by more than 0.5**:
+*P. gingivalis* goes −0.800 → 0.000 and *S. pyogenes* +0.200 → −0.800. Meanwhile the **aggregate moves by
+0.036** and the count of positive strata is identical at 8 of 10. 🔑 **The per-stratum values are noise
+around a stable aggregate**, which is what four categories per stratum should produce, and they must not
+be read individually.
+
+🔴 **And the bound that does not move.** Both arms order the categories; neither says the ordering sits
+on anything but pathogen-versus-Swiss-Prot separation. A1 measures that directly at **40.8%** false
+positives against non-toxin virulence factors, and it is not addressed by anything in this document.

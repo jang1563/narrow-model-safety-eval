@@ -54,10 +54,10 @@ ROOT = Path(__file__).resolve().parent.parent
 RES = ROOT / "results" / "v3"
 BUILD = ROOT / "results" / "external_class_axis_build.json"
 SCREEN = ROOT / "results" / "external_class_axis_screen.json"
-POS_NPY = RES / "embeddings_class_axis_positives.npy"
-POS_MAN = RES / "embedding_manifest_class_axis_positives.json"
-POOL_NPY = RES / "embeddings_pool_large_esm2_650M.npy"
-OUT = ROOT / "results" / "external_class_axis_lomo.json"
+
+
+
+OUT_STEM = ROOT / "results" / "external_class_axis_lomo"
 ALPHA = 0.05 / 4          # four primary tests, fixed in section 4
 SEEDS, N_TRAIN, N_CAL = 30, 1000, 500
 SPEC = 0.95
@@ -122,14 +122,30 @@ def selftest():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--arm", default="esm2_650M", choices=["esm2_650M", "esm2_35M"])
     ap.add_argument("--seeds", type=int, default=SEEDS)
     a = ap.parse_args()
     if a.selftest:
         return selftest()
+    sfx = "" if a.arm == "esm2_650M" else f"_{a.arm}"
 
-    for f in (POS_NPY, SCREEN):
+    POS_NPY = RES / f"embeddings_class_axis_positives{sfx}.npy"
+    POS_MAN = RES / f"embedding_manifest_class_axis_positives{sfx}.json"
+    # the pool is named by ARM, not by suffix: embeddings_pool_large_esm2_650M.npy and
+    # embeddings_pool_large_esm2_35M.npy. Appending the suffix to the 650M name asked for a file
+    # that has never existed.
+    POOL_NPY = RES / f"embeddings_pool_large_{a.arm}.npy"
+    OUT = Path(f"{OUT_STEM}{sfx}.json")
+    for f in (POS_NPY, POOL_NPY, SCREEN):
         if not f.exists():
             raise SystemExit(f"{f.name} missing; run src/79 and src/80 first")
+    POS_NPY = RES / f"embeddings_class_axis_positives{sfx}.npy"
+    POS_MAN = RES / f"embedding_manifest_class_axis_positives{sfx}.json"
+    # the pool is named by ARM, not by suffix: embeddings_pool_large_esm2_650M.npy and
+    # embeddings_pool_large_esm2_35M.npy. Appending the suffix to the 650M name asked for a file
+    # that has never existed.
+    POOL_NPY = RES / f"embeddings_pool_large_{a.arm}.npy"
+    OUT = Path(f"{OUT_STEM}{sfx}.json")
     m30 = load30()
     build = json.loads(BUILD.read_text())
     screen = json.loads(SCREEN.read_text())

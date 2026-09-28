@@ -44,7 +44,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RES = ROOT / "results" / "v3"
 BUILD = ROOT / "results" / "external_class_axis_build.json"
 SCREEN = ROOT / "results" / "external_class_axis_screen.json"
-OUT = ROOT / "results" / "organism_stratified.json"
+OUT_STEM = ROOT / "results" / "organism_stratified"
 ALPHA = 0.05
 SEEDS, N_TRAIN, N_CAL, SPEC, PERMS = 30, 1000, 500, 0.95, 20000
 MIN_CELL, MIN_CATS, FLOOR = 3, 4, 7
@@ -86,17 +86,26 @@ def selftest():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--arm", default="esm2_650M", choices=["esm2_650M", "esm2_35M"])
     ap.add_argument("--seeds", type=int, default=SEEDS)
     a = ap.parse_args()
     if a.selftest:
         return selftest()
+    sfx = "" if a.arm == "esm2_650M" else f"_{a.arm}"
 
+    POS_NPY = RES / f"embeddings_class_axis_positives{sfx}.npy"
+    POS_MAN = RES / f"embedding_manifest_class_axis_positives{sfx}.json"
+    # the pool is named by ARM, not by suffix: embeddings_pool_large_esm2_650M.npy and
+    # embeddings_pool_large_esm2_35M.npy. Appending the suffix to the 650M name asked for a file
+    # that has never existed.
+    POOL_NPY = RES / f"embeddings_pool_large_{a.arm}.npy"
+    OUT = Path(f"{OUT_STEM}{sfx}.json")
     m30 = load30()
     build = json.loads(BUILD.read_text())
     screen = json.loads(SCREEN.read_text())
-    man = json.loads((RES / "embedding_manifest_class_axis_positives.json").read_text())
-    P = np.load(RES / "embeddings_class_axis_positives.npy")
-    POOL = np.load(RES / "embeddings_pool_large_esm2_650M.npy")
+    man = json.loads((POS_MAN).read_text())
+    P = np.load(POS_NPY)
+    POOL = np.load(POOL_NPY)
     cats = np.array(man["category_of_row"])
     sp = np.array(man["species_of_row"])
 

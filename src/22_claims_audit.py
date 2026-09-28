@@ -999,6 +999,51 @@ def organism_stratified():
     }
 
 
+def margin_replicates_on_two_arms():
+    """The first finding in this project to survive the second-arm rule that killed three others.
+
+    \U0001f534 Pinned with what does NOT replicate, because a summary that carried only the aggregate
+    would be quoting per-stratum values that flip sign between arms. And pinned with B-4, which is the
+    cleanest evidence the project has that criterion 1's fail is about the split rather than the
+    representation: 4.95% against a nominal 5% on 490 calibration points, where the panel's 118 give
+    7.87%.
+    """
+    b = {a: j(f"../results/external_class_axis_lomo{s}.json")
+         for a, s in (("650M", ""), ("35M", "_esm2_35M"))}
+    c = {a: j(f"../results/organism_stratified{s}.json")
+         for a, s in (("650M", ""), ("35M", "_esm2_35M"))}
+    if any(v is None for v in (*b.values(), *c.values())):
+        return None
+    # 🔴 A first version counted "sign flips where both arms are strong", and found none — because
+    # the two unstable strata are -0.800 -> 0.000 and +0.200 -> -0.800, neither of which has both
+    # ends above 0.3. The instability is real and that definition could not see it. Measured as the
+    # per-stratum agreement between arms instead, which is the quantity the caveat is about.
+    ks = sorted(c["650M"]["per_species"])
+    ra = [c["650M"]["per_species"][k]["rho"] for k in ks]
+    rb = [c["35M"]["per_species"][k]["rho"] for k in ks]
+    deltas = [abs(x - y) for x, y in zip(ra, rb)]
+    return {
+        "b1_rho": {a: round(v["B1"]["rho"], 4) for a, v in b.items()},
+        "b1_supported": {a: v["B1"]["supported"] for a, v in b.items()},
+        "b2_supported": {a: v["B2"]["supported"] for a, v in b.items()},
+        "b4_fpr": {a: round(v["B4"]["mean_test_fpr"], 4) for a, v in b.items()},
+        "confound_fires": {a: v["confound_exclusivity"]["uninterpretable_if_significant"]
+                           for a, v in b.items()},
+        "c1_rho": {a: round(v["C1"]["mean_rho"], 4) for a, v in c.items()},
+        "c1_p": {a: round(v["C1"]["perm_p"], 4) for a, v in c.items()},
+        "c1_supported": {a: v["C1"]["supported"] for a, v in c.items()},
+        "c1_positive": {a: v["C1"]["n_positive_strata"] for a, v in c.items()},
+        # what does NOT replicate: the per-stratum values themselves
+        "per_stratum_agreement": round(float(np.corrcoef(ra, rb)[0, 1]), 4),
+        "mean_abs_delta": round(float(np.mean(deltas)), 3),
+        "max_abs_delta": round(float(max(deltas)), 3),
+        "strata_moving_over_half": sum(1 for x in deltas if x > 0.5),
+        # while the aggregate is stable
+        "aggregate_delta": round(abs(c["650M"]["C1"]["mean_rho"] - c["35M"]["C1"]["mean_rho"]), 4),
+        "same_strata_count": c["650M"]["n_strata"] == c["35M"]["n_strata"] == 10,
+    }
+
+
 def cited_entries_exist():
     """Every "<date> entry" citation resolves to a heading that exists in the corrections log.
 
@@ -3241,6 +3286,28 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("margin's ordering is the first finding here to survive the second-arm rule",
+     margin_replicates_on_two_arms,
+     lambda v: v is None or (
+         # both primary tests supported on both arms
+         all(v["b1_supported"].values()) and all(v["c1_supported"].values())
+         and all(x > 0.65 for x in v["b1_rho"].values())
+         and all(x > 0.35 for x in v["c1_rho"].values())
+         and all(x < 0.05 for x in v["c1_p"].values())
+         and v["c1_positive"] == {"650M": 8, "35M": 8} and v["same_strata_count"]
+         # B-2 fails on one arm and passes on the other, which is part of the record
+         and v["b2_supported"]["650M"] is False and v["b2_supported"]["35M"] is True
+         # the confound rule fires on 650M and not on 35M
+         and v["confound_fires"]["650M"] and not v["confound_fires"]["35M"]
+         # B-4: essentially nominal on the arm with 490 calibration points
+         and abs(v["b4_fpr"]["35M"] - 0.05) < 0.005 and v["b4_fpr"]["650M"] > 0.065
+         # 🔴 and the per-stratum values are noise while the aggregate is not: two strata move by
+         # more than 0.5 between arms and the per-stratum agreement is only +0.49, yet the mean
+         # differs by 0.036 and the positive count is identical
+         and v["strata_moving_over_half"] == 2 and v["per_stratum_agreement"] < 0.6
+         and v["max_abs_delta"] >= 1.0 and v["aggregate_delta"] < 0.05),
+     {"docs/ORGANISM_STRATIFIED_PREREGISTRATION.md":
+      "⚠️ **What does not replicate is which strata are weak.**"}, []),
     ("with the organism held constant margin still orders the categories, weakly",
      organism_stratified,
      lambda v: v is None or (
