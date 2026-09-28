@@ -86,7 +86,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-28 with the document. It carries the one number this repository will quote
           # for "how much do both confounds explain" -- the measured 42.1%, standing in for a sum that
           # claim 98 forbids -- and the pool contamination count that the same study turned up.
-          "docs/JOINT_DECOMPOSITION_PREREGISTRATION.md"]
+          "docs/JOINT_DECOMPOSITION_PREREGISTRATION.md",
+          # Added 2026-09-28 with the document. It is the one place recording that study E's published
+          # ratio was inflated by contamination, and the one place explaining why a 46.0% figure that
+          # sits next to a forbidden 44.8% sum is a coincidence -- both are sentences a retelling drops.
+          "docs/DECONTAMINATION_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1172,6 +1176,38 @@ def joint_decomposition():
         "f5_within_intracellular": {"650M": round(a["F5_provenance_within_intracellular"], 3),
                                     "35M": round(b["F5_provenance_within_intracellular"], 3)},
         "contamination": a["pool_contamination"],
+    }
+
+
+def decontamination_sensitivity():
+    """Do studies E and F survive a pool with no VFDB proteins in it?
+
+    \U0001f7e2 All three frozen primaries hold on both arms, so study E's adverse verdict is not a
+    contamination artifact. \u26a0\ufe0f But R FELL on both arms -- by 5.7% of itself on 650M and
+    15.6% on 35M -- so part of the original ratio was contamination, and this claim pins the fall
+    alongside the survival. A summary keeping only "it held" would be dropping the half that says the
+    published 5.381 was inflated.
+
+    \U0001f534 It also pins the decontaminated joint share (46.0% on 650M) BECAUSE it lands near the
+    forbidden sum of 22.7% + 22.1% = 44.8% by coincidence. The 35M arm puts the same figure at 32.2%,
+    which is the evidence that it is a coincidence.
+    """
+    a = j("../results/decontamination_sensitivity.json")
+    b = j("../results/decontamination_sensitivity_esm2_35M.json")
+    if None in (a, b):
+        return None
+    da, ca = a["conditions"]["dirty"], a["conditions"]["clean"]
+    db, cb = b["conditions"]["dirty"], b["conditions"]["clean"]
+    return {
+        "removed_from_union": a["n_contaminants_removed_from_union"],
+        "fold_dirty": da["fold"], "fold_clean": ca["fold"],
+        "R_clean": {"650M": round(ca["R"], 3), "35M": round(cb["R"], 3)},
+        "R_fell": {"650M": round(ca["R"] - da["R"], 3), "35M": round(cb["R"] - db["R"], 3)},
+        "RR_clean": {"650M": round(ca["RR"], 3), "35M": round(cb["RR"], 3)},
+        "joint_clean": {"650M": round(ca["joint_share"], 4), "35M": round(cb["joint_share"], 4)},
+        "threshold_fell": {"650M": round(ca["threshold"] - da["threshold"], 4),
+                           "35M": round(cb["threshold"] - db["threshold"], 4)},
+        "verdicts": {"650M": a["verdict"], "35M": b["verdict"]},
     }
 
 
@@ -3417,6 +3453,25 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("the localization verdict survives decontamination, smaller",
+     decontamination_sensitivity,
+     lambda v: v is None or (
+         v["removed_from_union"] == 18
+         and v["fold_dirty"] == [978, 490] and v["fold_clean"] == [966, 484]
+         # 🟢 every frozen primary holds on both arms
+         and all(d["G1_R_holds"] and d["G2_RR_holds"] and d["G3_joint_within_10pp"]
+                 and d["threshold_fell"] and d["floors_met"] for d in v["verdicts"].values())
+         and v["R_clean"]["650M"] > 3.0 and v["R_clean"]["35M"] > 3.0
+         and 0.67 <= v["RR_clean"]["650M"] <= 1.5 and 0.67 <= v["RR_clean"]["35M"] <= 1.5
+         # ⚠️ and R FELL on both arms -- the published ratio was inflated, which is half the result
+         and v["R_fell"]["650M"] < 0 and v["R_fell"]["35M"] < 0
+         and v["R_fell"]["35M"] < v["R_fell"]["650M"]
+         # 🔴 the 650M joint share lands near the forbidden 44.8% sum; 35M is the proof it is chance
+         and 0.43 < v["joint_clean"]["650M"] < 0.49
+         and v["joint_clean"]["35M"] < 0.36),
+     {"docs/DECONTAMINATION_PREREGISTRATION.md":
+      "**These are unrelated.**"},
+     []),
     ("provenance and localization compose, and together span 42% not 45%",
      joint_decomposition,
      lambda v: v is None or (

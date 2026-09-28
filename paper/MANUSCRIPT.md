@@ -221,6 +221,15 @@ against **4.13%** for a cytoplasmic one — a **5.38×** ratio [5.13, 5.63], rep
 ESM-2 35M and surviving 1:1 length matching at **4.38×** and **3.43×**. ⚠️ **So the nominal 5% is not
 merely exceeded on virulence factors; it is exceeded fourfold on ordinary benign secreted proteins.**
 
+⚠️ **Part of that ratio was contamination, and the corrected figure is the one to quote.** The benign
+pool holds **133 exact VFDB sequences** (1.61%), and they are **differentially** distributed across
+exactly this contrast — 5.67% of the extracellular stratum against 1.20% of the intracellular one.
+Removing every one of them from fitting, calibration and evaluation
+(`docs/DECONTAMINATION_PREREGISTRATION.md`) leaves **R = 5.07 [4.91, 5.24]** on 650M and **4.35 [4.09,
+4.61]** on 35M — 🟢 **the verdict holds well clear of its frozen 3.0 floor on both arms**, and
+⚠️ **the published ratio was inflated by 5.7% of itself on 650M and 15.6% on 35M.** The decontaminated
+extracellular rate is **20.90%**, so the fourfold overshoot of the nominal budget is unaffected.
+
 🔒 **What survives.** Against a *localization-matched* benign baseline of 21.75% rather than the pool's
 7.06%, VFDB virulence factors are still flagged at **73.49%**, so **roughly three quarters of the
 separation is not localization** — the same fraction provenance left over.

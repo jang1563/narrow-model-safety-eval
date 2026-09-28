@@ -1,0 +1,97 @@
+{
+  "built": "2026-09-28 14:34:25",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "n_contaminants_removed_from_union": 18,
+  "conditions": {
+    "dirty": {
+      "n_union": 1468,
+      "fold": [
+        978,
+        490
+      ],
+      "group_n": {
+        "extracellular": 652,
+        "membrane": 495,
+        "intracellular": 1666,
+        "unannotated": 3434,
+        "all": 6247,
+        "pathogen|extracellular": 171,
+        "pathogen|intracellular": 597,
+        "benign_species|extracellular": 444,
+        "benign_species|intracellular": 1049
+      },
+      "threshold": 0.9499005546960885,
+      "rates": {
+        "extracellular": 0.1529652351738241,
+        "membrane": 0.13892255892255892,
+        "intracellular": 0.030772308923569427,
+        "unannotated": 0.025150456222092797,
+        "all": 0.04900485566405208,
+        "pathogen|extracellular": 0.2738791423001949,
+        "pathogen|intracellular": 0.048185371300949194,
+        "benign_species|extracellular": 0.08836336336336335,
+        "benign_species|intracellular": 0.020336828725770577
+      },
+      "R": 5.151307821255819,
+      "R_ci": [
+        4.786386064926522,
+        5.516229577585116
+      ],
+      "RR": 1.3272744849998672,
+      "RR_ci": [
+        1.2164819091476076,
+        1.4380670608521269
+      ],
+      "joint_share": 0.3278750130957412
+    },
+    "clean": {
+      "n_union": 1450,
+      "fold": [
+        966,
+        484
+      ],
+      "group_n": {
+        "extracellular": 615,
+        "membrane": 484,
+        "intracellular": 1646,
+        "unannotated": 3394,
+        "all": 6139,
+        "pathogen|extracellular": 171,
+        "pathogen|intracellular": 597,
+        "benign_species|extracellular": 444,
+        "benign_species|intracellular": 1049
+      },
+      "threshold": 0.9496699196566109,
+      "rates": {
+        "extracellular": 0.13615176151761518,
+        "membrane": 0.140771349862259,
+        "intracellular": 0.03228027541514784,
+        "unannotated": 0.026144175996857196,
+        "all": 0.04784709779008524,
+        "pathogen|extracellular": 0.26900584795321636,
+        "pathogen|intracellular": 0.050921273031825795,
+        "benign_species|extracellular": 0.084984984984985,
+        "benign_species|intracellular": 0.021671433110899266
+      },
+      "R": 4.346826472751465,
+      "R_ci": [
+        4.084723235185867,
+        4.608929710317063
+      ],
+      "RR": 1.3577133367808127,
+      "RR_ci": [
+        1.2644123805731362,
+        1.4510142929884893
+      ],
+      "joint_share": 0.3219142152354964
+    }
+  },
+  "verdict": {
+    "G1_R_holds": true,
+    "G2_RR_holds": true,
+    "G3_joint_within_10pp": true,
+    "threshold_fell": true,
+    "floors_met": true
+  }
+}

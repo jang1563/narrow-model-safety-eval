@@ -4708,3 +4708,53 @@ threshold, and make **every flag rate in this repository too low.**
 ⚠️ **The decontaminated re-run is still owed.** Six contaminants in a 490-protein calibration set
 still fall into a tail of roughly 25 proteins. **This entry reduces the number, not the reason** — and
 saying so is the difference between a correction and a retreat.
+
+---
+
+## 2026-09-28 (fifty-sixth entry) — The decontaminated re-run: the verdict holds, the ratio was inflated, and my bound was invalid
+
+Entries 54 and 55 both said a decontaminated re-run was owed. 🔒 **Run**, per
+`docs/DECONTAMINATION_PREREGISTRATION.md`, frozen after a declared diagnostic and before the probe was
+fitted on a clean pool. `src/84` and `src/85` were deliberately left alone — they are the record of the
+preregistered analyses — and `src/86` reports both conditions side by side.
+
+🔒 **Why it was worth running even after entry 55 shrank the number.** Study F always excluded
+contaminants from its cells; ⚠️ **study E never did**, and the contamination is **differential across
+exactly the contrast E measures**: 5.67% of the extracellular stratum (37 / 652) against 1.20% of the
+intracellular one (20 / 1,666).
+
+| | ESM-2 650M dirty → clean | ESM-2 35M dirty → clean |
+|---|---|---|
+| threshold | 0.9131 → **0.8953** | 0.9499 → 0.9497 |
+| extracellular | 21.75% → **20.90%** | 15.30% → **13.62%** |
+| intracellular | 4.13% → 4.15% | 3.08% → 3.23% |
+| ⭐ **R** | 5.381 → **5.074 [4.913, 5.235]** | 5.151 → **4.347 [4.085, 4.609]** |
+| **RR** | 1.009 → **0.999** | 1.327 → **1.358** |
+| joint share | 42.2% → **46.0%** | 32.8% → 32.2% |
+
+🟢 **All three primaries hold on both arms.** Study E's adverse verdict is **not** a contamination
+artifact, so the qualifications entry 53 wrote into the manuscript and four preregistrations **stand as
+written**. The confounds still compose — RR is 0.999 on 650M, almost exactly independent.
+
+⚠️ **And R fell on both arms: by 5.7% of itself on 650M and 15.6% on 35M.** The localization finding is
+real and **was modestly inflated**, more so on the arm where the effect is smaller. The manuscript now
+quotes the decontaminated ratio.
+
+### 🔴 The prediction record here is the worst of the four studies, and one prediction was arithmetically invalid
+
+§ 3 predicted R would **rise**, on the strength of a bound that a clean R is "≥ 5.74". 🔴 **That bound
+divides two lower bounds, which bounds nothing.** A ratio is bounded below by its numerator's lower
+bound over its denominator's **upper** bound: 17.04% / 4.18% = **≥ 4.08**. Both observations satisfy the
+correct bound; the predicted *direction* came entirely from the invalid one. **R fell on both arms.**
+
+⚠️ **Second defect: the frozen ranges never said which arm they applied to.** "Extracellular 17–21%" is
+true of 650M (20.90%) and false of 35M (13.62%). A prediction that does not name its population cannot
+be scored cleanly, and this one could not be. **Both defects are in the frozen document, not in the
+analysis** — which is where preregistration errors are supposed to end up and be visible.
+
+### 🔴 One coincidence, named before anyone can lean on it
+
+The decontaminated joint share on 650M is **46.0%**, and the sum claim 98 forbids — 22.7% + 22.1% — is
+**44.8%**. 🔴 **Unrelated.** One is a measured rate on the (pathogen × extracellular) cell; the other is
+an arithmetic error this repository bans. The proof it is chance is the second arm, which puts the same
+figure at **32.2%**. Claim 100 pins both numbers together for that reason.
