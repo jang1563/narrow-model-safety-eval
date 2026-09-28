@@ -230,13 +230,32 @@ result carried the caveat that the annotated contrast might not represent the po
 to **2,739**, and `R` is **5.18** and **5.86** — **4.97** and **5.35** once VFDB contaminants are
 dropped from the strata. 🔒 **The caveat is lifted and the finding is unchanged.**
 
-🔴 **One number moves against it and is reported here rather than left in the appendix.** Length-alone
-AUROC is 0.562, inside the 0.65 tolerance, so the frozen rule keeps `R` as the estimate — but with the
-larger intracellular stratum the **1:1 length-matched** ratio is **2.62** on 650M and **3.55** on 35M,
-straddling the 3.0 boundary that `R` clears on both arms. The matched estimate is now drawn from a much
-better-matched pool, which makes it more trustworthy, not less. ⚠️ **Length carries more of this
-contrast than an AUROC of 0.562 suggests, and the fourfold overshoot of the nominal budget is the claim
-that survives matching — not the fivefold ratio.**
+⚠️ **Length was the obvious alternative explanation, and adjusting for it costs about a quarter.**
+Pooling across ten length deciles gives a Mantel–Haenszel ratio of **3.98 [3.87, 4.09]** on 650M and
+**4.70 [4.44, 4.97]** on 35M against crude ratios of 5.18 and 5.86 — 🔒 **still above the frozen 3.0 on
+both arms** (`docs/LENGTH_ADJUSTMENT_PREREGISTRATION.md`).
+
+⭐ **The ratio is not constant in length, which is what reconciles three different estimates of it.**
+On 650M it runs from **1.40** in the longest band to **11.30** in the middle:
+
+| length | intracellular | extracellular | ratio |
+|---|---:|---:|---:|
+| 0–250 | 14.15% | 46.12% | 3.26 |
+| 350–450 | 1.91% | 21.60% | **11.30** |
+| 450–550 | 1.69% | 17.10% | 10.13 |
+| 700+ | 12.18% | 17.08% | **1.40** |
+
+Mantel–Haenszel weights by cell size and gives 3.98; 1:1 length matching reproduces the *extracellular*
+length distribution, which piles up at both extremes where the ratio is lowest, and gives 2.62; the
+crude estimate is a third weighting. 🔒 **They are three weightings of one varying quantity, not three
+answers.** What no weighting changes: **the ratio exceeds 1.0 in every band on both arms** — there is
+no protein length at which the gradient disappears.
+
+🔴 **The flag rate is U-shaped in length inside both strata** — intracellular 14.15% → 1.69% → 12.18%,
+extracellular 46.12% → 17.10% → 17.08%. ⚠️ **A monotone summary cannot see that**: length's AUROC for
+predicting the flag is **0.437**, below 0.5, for a relationship this strong. The confound rule that
+cleared length in the first place measured a monotone quantity, and would have cleared it however
+strong the U was.
 
 ⚠️ **Part of that ratio was contamination, and the corrected figure is the one to quote.** The benign
 pool holds **133 exact VFDB sequences** (1.61%), and they are **differentially** distributed across

@@ -5181,3 +5181,53 @@ proteins study E had classified would have been reclassified, because a `SIGNAL`
 the extracellular rate would *fall* below 21.75%; it read **23.93%**, because these rates are on study
 G's clean fold while the frozen strata still carry contaminants. The comparable figure is the
 decontaminated one. **The prediction was not wrong so much as unscoreable as written.**
+
+---
+
+## 2026-09-29 (sixty-fourth entry) — The gradient survives length adjustment, and the flag rate is U-shaped in length
+
+Study L left one number moving against this project's main adverse finding: the 1:1 length-matched
+ratio came in at **2.623** on 650M, in the *partial* band, against a primary `R` of 5.182. 🔑 **Study
+E's confound rule could not explain it**, because it asks whether length separates the **strata**
+(AUROC 0.562, inside tolerance) and never whether length predicts the **flag**.
+
+| | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|
+| crude `R` | 5.182 | 5.855 |
+| ⭐ **Mantel–Haenszel `R`**, pooled over 9 length deciles | **3.984 [3.874, 4.094]** | **4.704 [4.438, 4.970]** |
+| attenuation of the excess risk | 28.6% | 23.7% |
+
+🔒 **The verdict holds on both arms.** Adjustment removes about a quarter and leaves the rest.
+
+### ⭐ Why three estimates disagreed, and why none of them was wrong
+
+The ratio **varies with length**, from **1.40** to **11.30** on 650M. The three estimates weight length
+differently: **Mantel–Haenszel** by cell size (3.98); **1:1 matching** by the *extracellular* length
+distribution, which piles up at both extremes where the ratio is lowest (2.62); **crude**, a third
+weighting again (5.18).
+
+🔒 **What survives every weighting**: the ratio exceeds **1.0 in every band on both arms**, and its
+minimum on 35M is **2.54**. **There is no protein length at which the localization gradient
+disappears.**
+
+### 🔴 The flag rate is U-shaped in length, and that broke the diagnostic this study froze
+
+Inside **both** strata the rate falls and then rises — intracellular **14.15% → 1.69% → 12.18%**,
+extracellular **46.12% → 17.10% → 17.08%**.
+
+§ 4 predicted length→flag AUROC **≥ 0.70**. It is **0.437** and **0.338** — 🔴 **below 0.5, wrong in
+magnitude and in sign.** ⚠️ **AUROC is a monotone summary and this relationship is not monotone**: the
+two arms of the U cancel, and it reports "no relationship" for a strong one.
+
+🔑 **This is the same shape of error twice over.** Study E's confound rule measured length separating
+the *strata* rather than predicting the *flag*; this study then asked the right question with an
+instrument that cannot see the answer. **Both would have cleared length however strong the U was.** The
+length-band table is the diagnostic that works and it is now in the artifact and in the manuscript.
+
+### ⚠️ And one line of the study's own output asserted what its neighbour refuted
+
+The band table printed **"the ratio exceeds 1.5 in every band"** beside a computed minimum of **1.40**.
+🔒 Changed to print the number instead of a claim about it. **A hardcoded assertion standing next to a
+figure that can contradict it is one that will eventually be wrong** — this is the second time in two
+days a print string outlived the thing it described, after `src/77` naming the 650M file while writing
+the 35M one.

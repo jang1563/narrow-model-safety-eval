@@ -107,7 +107,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-29 with the document. It lifts a caveat study E attached to every statement
           # of this project's main adverse finding, and it is the only place recording that the
           # length-matched estimate lands in a different band than the primary.
-          "docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md"]
+          "docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md",
+          # Added 2026-09-29 with the document. It is the only place reconciling the three weightings
+          # of the localization ratio, and the only place recording that the flag rate is U-shaped in
+          # length -- the fact that makes an AUROC diagnostic useless here.
+          "docs/LENGTH_ADJUSTMENT_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1421,6 +1425,48 @@ def localization_coverage():
         "matched_R": {"650M": round(a["length_matched_ratio"], 3),
                       "35M": round(b["length_matched_ratio"], 3)},
         "floors_met": a["floors_met"] and b["floors_met"],
+    }
+
+
+def length_adjustment():
+    """Is the localization gradient partly a length gradient?
+
+    \U0001f7e2 The verdict survives: Mantel-Haenszel R = 3.984 and 4.704 against a frozen 3.0, with
+    about a quarter of the excess risk removed. Pinned with the crude R so the attenuation cannot be
+    dropped from either side.
+
+    \u2b50 The reconciliation is the substance. The ratio runs 1.40 to 11.30 across length bands on
+    650M, so crude (5.18), Mantel-Haenszel (3.98) and 1:1 matching (2.62) are three weightings of one
+    varying quantity rather than three answers to one question. What survives every weighting is that
+    the ratio exceeds 1.0 in EVERY band on both arms, which is why min_band_ratio is pinned.
+
+    \U0001f534 And the AUROC is pinned BECAUSE IT FAILED. The flag rate is U-shaped in length inside
+    both strata, so a monotone summary reports 0.437 -- below 0.5 -- for a strong relationship. The
+    preregistration predicted >= 0.70. Keeping the failure in the registry is what stops the
+    instrument being reached for again.
+    """
+    a = j("../results/length_adjustment.json")
+    b = j("../results/length_adjustment_esm2_35M.json")
+    if None in (a, b):
+        return None
+    bands = a["length_bands"]
+    return {
+        "n_deciles_used": a["n_deciles_used"], "verdict_eligible": a["verdict_eligible"],
+        "crude": {"650M": round(a["crude_R"]["mean"], 3), "35M": round(b["crude_R"]["mean"], 3)},
+        "MH": {"650M": round(a["M1_mantel_haenszel_R"]["mean"], 3),
+               "35M": round(b["M1_mantel_haenszel_R"]["mean"], 3)},
+        "band": a["band"], "band_agrees": a["band"] == b["band"],
+        "attenuation": {"650M": round(a["attenuation"], 3), "35M": round(b["attenuation"], 3)},
+        "min_band_ratio": {"650M": round(a["min_band_ratio"], 2),
+                           "35M": round(b["min_band_ratio"], 2)},
+        "n_bands": len(bands),
+        # 🔴 U-shaped: the rate falls then rises inside the intracellular stratum
+        "intra_rate_short": round(bands["0-250"]["rate_intracellular"], 4),
+        "intra_rate_mid": round(bands["450-550"]["rate_intracellular"], 4),
+        "intra_rate_long": round(bands["700-inf"]["rate_intracellular"], 4),
+        "auroc_length_predicts_flag": {
+            "650M": round(a["M3_length_predicts_flag_auroc"]["all"]["mean"], 3),
+            "35M": round(b["M3_length_predicts_flag_auroc"]["all"]["mean"], 3)},
     }
 
 
@@ -3716,6 +3762,29 @@ CLAIMS = [
       "**310 of 6,139 eligible proteins changed side = 5.05%**",
       "paper/MANUSCRIPT.md":
       "**\"Almost exactly independent\" was a property of the defective\nfactor**"},
+     []),
+    ("the localization gradient survives length adjustment, and the flag rate is U-shaped in length",
+     length_adjustment,
+     lambda v: v is None or (
+         v["verdict_eligible"] and v["n_deciles_used"] == 9
+         # 🟢 the verdict holds on both arms after adjustment
+         and v["band_agrees"]
+         and v["band"] == "localization is a major driver independent of length"
+         and v["MH"]["650M"] > 3.0 and v["MH"]["35M"] > 3.0
+         # ⚠️ and adjustment really did move it -- roughly a quarter of the excess risk
+         and v["MH"]["650M"] < v["crude"]["650M"] and v["MH"]["35M"] < v["crude"]["35M"]
+         and 0.15 < v["attenuation"]["650M"] < 0.40
+         # ⭐ no length at which the gradient disappears
+         and v["n_bands"] == 6
+         and v["min_band_ratio"]["650M"] > 1.0 and v["min_band_ratio"]["35M"] > 1.0
+         # 🔴 U-shaped in length: down then up inside the intracellular stratum
+         and v["intra_rate_mid"] < v["intra_rate_short"]
+         and v["intra_rate_mid"] < v["intra_rate_long"]
+         # 🔴 which is why the monotone diagnostic reported below 0.5 for a strong relationship
+         and v["auroc_length_predicts_flag"]["650M"] < 0.5
+         and v["auroc_length_predicts_flag"]["35M"] < 0.5),
+     {"docs/LENGTH_ADJUSTMENT_PREREGISTRATION.md":
+      "**R_MH = 3.984 and 4.704**, both above the frozen 3.0."},
      []),
     ("study E's ceiling is cleared and its verdict survives, but the matched estimate straddles",
      localization_coverage,
