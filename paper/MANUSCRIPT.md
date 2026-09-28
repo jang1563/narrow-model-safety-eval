@@ -282,18 +282,42 @@ positives, so scoring them scored the probe's own training data; `src/74` screen
 positives that came later. Including them put the reference at 76.95% and made every share-of-gap
 figure in this paper about 4.3% too small.
 
-Membership alone covers **99.1%** of the distance from that matched cell to the full VFDB rate, and it
-does so on a subset **selected against the hypothesis**: the pool's build query excludes the
+⚠️ **Those 38 are selected against the hypothesis**, which is what made this version small and its
+verdict only *partial* (C/A 1.974 and 1.497 against a frozen 2.0): the pool's build query excludes the
 *Virulence*, *Toxin*, *Cytolysis*, *Hemolysis*, *Bacteriocin* and *Bacteriolytic enzyme* keywords, so
-every one of these 38 is a virulence factor **UniProt declines to call virulent** — and they still land
-within 3.2 points of the full set.
+every bridge protein is a virulence factor **UniProt declines to call virulent**.
 
-⚠️ **Three qualifications travel with that.** The frozen band puts the ratio at **partial** on both arms
-(1.974 and 1.497 against a 2.0 threshold), and 650M's interval straddles the threshold rather than
-clearing it. The intracellular cell holds **24** proteins against a floor of 25 set in advance, so its
-3.20× and 1.31× are **indicative, not a verdict**. And 🔴 **none of this softens the localization
-finding** — in this very table a benign secreted protein is flagged at 37.5% against 6.9% cytoplasmic,
-so the nominal 5% is still wrong by a factor of seven for secreted proteins.
+🟢 **Removing that selection settles it.** Every VFDB record carries a RefSeq accession, so UniProt's
+ID-mapping service gives the 4,218 admitted negatives a Swiss-Prot identity — **including** the
+virulence-annotated members the bridge could not contain (`docs/MATCHED_VFDB_SCALEUP_PREREGISTRATION.md`).
+After dropping class-axis positives and any protein whose length differs from its mapped entry, 778
+remain:
+
+| | *n* | ESM-2 650M | ESM-2 35M |
+|---|---:|---:|---:|
+| benign × extracellular | 171 | 37.52% | 26.90% |
+| ⭐ **VFDB × extracellular** | **264** | **89.95%** | **69.41%** |
+| benign × intracellular | 597 | 6.87% | 5.09% |
+| ⭐ **VFDB × intracellular** | **134** | **54.08%** | **34.00%** |
+
+**C/A = 2.418 [2.339, 2.497]** and **2.617 [2.495, 2.740]** — 🟢 **supported on both arms**, not
+partial. And `D/B` = **7.988** and **6.875** on cells of 134 against a floor of 100: **within the
+intracellular stratum, where neither secretion nor surface exposure can be doing the work, a VFDB
+protein is seven to eight times more likely to be flagged than a benign one from the same kind of
+organism.** ⭐ The 228 *Virulence*-keyword members are flagged **+19.2** and **+15.2 points** above the
+rest, which is the selection the bridge was missing, measured.
+
+🔴 **One earlier framing does not survive this.** Expressing membership's effect as a fraction of the
+distance to the full-VFDB rate gave 99.1% at bridge scale and gives **143%** and **188%** here — a
+fraction cannot exceed 100% unless the reference is not a ceiling, and it is not: the full-VFDB rate
+averages over a **mixture of localizations** (89.95% extracellular down to 54.08% intracellular), which
+a localization-matched cell is not bounded by. **The 99.1% meant the matched cell landed just under the
+whole-set average, not that membership explained 99.1% of anything.** ⚠️ The contrast is unharmed; the
+normalisation was.
+
+⚠️ 🔴 **And none of this softens the localization finding** — in these same tables a benign secreted
+protein is flagged at 37.5% against 6.9% cytoplasmic, so the nominal 5% is still wrong by a factor of
+seven for secreted proteins.
 
 🔴 **Criterion 12 fails, and the failure was expensive twice.** The first preregistration carried a floor
 and no ceiling. Adding ceilings to the second one is what made its NOT SUPPORTED verdict readable — and

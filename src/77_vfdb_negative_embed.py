@@ -50,8 +50,13 @@ SEQ = ROOT / "data" / "sequences"
 VFDB_FASTA = SEQ / "vfdb_negatives.fasta"
 VFDB_META = ROOT / "results" / "vfdb_negative_set.json"
 GATE_FASTA = SEQ / "benign_negatives_v3.fasta"
-GATE_PUB = RES / "embeddings_negative_v3.npy"
 MODEL = "facebook/esm2_t33_650M_UR50D"
+# 🔒 Added 2026-09-28 for study K's second arm. The 4,218 VFDB negatives were embedded on 650M only,
+# so the matched contrast at scale had one arm; this project's standing rule is that a verdict needs
+# two. Nothing about the 650M path changes -- the arm suffix is empty for it, so the published
+# filenames stay exactly as they were.
+ARM_OF = {"facebook/esm2_t33_650M_UR50D": "esm2_650M",
+          "facebook/esm2_t12_35M_UR50D": "esm2_35M"}
 MAX_LEN = 1022
 TOL = 5e-5
 SHARD = 250
@@ -124,8 +129,13 @@ def main():
     ap.add_argument("--batch_size", type=int, default=4)
     ap.add_argument("--device", default=None)
     ap.add_argument("--restart", action="store_true")
+    ap.add_argument("--model", default=MODEL, choices=sorted(ARM_OF))
     a = ap.parse_args()
-    ck = RES / "vfdb_neg_ckpt"
+    model_id = a.model
+    arm = ARM_OF[model_id]
+    sfx = "" if arm == "esm2_650M" else f"_{arm}"
+    gate_pub = RES / f"embeddings_negative_v3{sfx}.npy"
+    ck = RES / f"vfdb_neg_ckpt{sfx}"
     if a.restart and ck.exists():
         for f in sorted(ck.glob("shard_*.npz")):
             f.unlink()
@@ -133,19 +143,20 @@ def main():
 
     dev = a.device or ("cuda" if torch.cuda.is_available() else
                        "mps" if torch.backends.mps.is_available() else "cpu")
-    print(f"model={MODEL}  device={dev}  pooling=src/02b's include-specials mean")
-    tok = AutoTokenizer.from_pretrained(MODEL)
-    model = AutoModel.from_pretrained(MODEL).to(dev).eval()
+    print(f"model={model_id}  arm={arm}  device={dev}  "
+          f"pooling=src/02b's include-specials mean")
+    tok = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModel.from_pretrained(model_id).to(dev).eval()
 
     # ---- the gate, first: this code path must reproduce the published panel negatives -----------
     gate_recs = read_fasta(GATE_FASTA)
-    pub = np.load(GATE_PUB)
+    pub = np.load(gate_pub)
     if len(gate_recs) != pub.shape[0]:
         raise SystemExit(f"gate FASTA has {len(gate_recs)} rows, published array has {pub.shape[0]}")
     print(f"\ngate: re-embedding {len(gate_recs)} panel negatives through this path")
     got = embed(gate_recs, tok, model, dev, a.batch_size, "gate")
     delta = float(np.abs(got - pub).max())
-    print(f"gate: max abs delta against {GATE_PUB.name} = {delta:.3e}  (tolerance {TOL:.0e})")
+    print(f"gate: max abs delta against {gate_pub.name} = {delta:.3e}  (tolerance {TOL:.0e})")
     if delta > TOL:
         raise SystemExit("GATE FAILED: this pooling is not src/02b's, so an A1 rate computed with it "
                          "would not be comparable to section 2.6.1's. Nothing written.")
@@ -159,15 +170,15 @@ def main():
     print(f"\n{len(recs)} VFDB hard negatives, order matches the artifact")
     arr = embed(recs, tok, model, dev, a.batch_size, "vfdb", ck=ck)
 
-    np.save(RES / "embeddings_vfdb_neg_esm2_650M.npy", arr)
+    np.save(RES / f"embeddings_vfdb_neg_{arm}.npy", arr)
     # one representative per VF group, in first-seen order: amendment 5's effective-n subset
     seen, rep_idx = set(), []
     for i, (h, _) in enumerate(recs):
         if vf_of[h] not in seen:
             seen.add(vf_of[h])
             rep_idx.append(i)
-    (RES / "embedding_manifest_vfdb_neg_esm2_650M.json").write_text(json.dumps({
-        "model": MODEL, "tag": "vfdb_neg_esm2_650M", "n": int(arr.shape[0]),
+    (RES / f"embedding_manifest_vfdb_neg_{arm}.json").write_text(json.dumps({
+        "model": model_id, "tag": f"vfdb_neg_{arm}", "n": int(arr.shape[0]),
         "dim": int(arr.shape[1]),
         "pooling": "src/02b's: mean over the full attention mask, <cls> and <eos> included",
         "gate": {"panel_negatives_vs_published": delta, "tolerance": TOL,
@@ -179,7 +190,7 @@ def main():
         "n_distinct_vf": len(rep_idx),
         "redundancy_factor": round(len(recs) / len(rep_idx), 3),
     }, indent=2) + "\n")
-    print(f"\nwrote embeddings_vfdb_neg_esm2_650M.npy {arr.shape}")
+    print(f"\nwrote embeddings_vfdb_neg_{arm}.npy {arr.shape}")
     print(f"  {len(rep_idx)} distinct VF groups, redundancy {len(recs) / len(rep_idx):.3f}")
 
 

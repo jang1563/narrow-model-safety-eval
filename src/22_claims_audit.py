@@ -99,7 +99,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-28 with the document. It supersedes a number in two other preregistrations
           # and in the manuscript, and it is the only place recording that the tidy 1.009 came from a
           # defective factor -- exactly the kind of sentence a later summary would drop.
-          "docs/TAXID_PROVENANCE_PREREGISTRATION.md"]
+          "docs/TAXID_PROVENANCE_PREREGISTRATION.md",
+          # Added 2026-09-28 with the document. It upgrades study H's verdict from partial to
+          # supported and withdraws H-5 as a share, so it is the document that settles what two other
+          # audited surfaces are allowed to say.
+          "docs/MATCHED_VFDB_SCALEUP_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1326,6 +1330,51 @@ def fallback_name_check():
         "n_residual_in_cells": v["n_residual_in_cells"],
         # 🔴 a shared epithet is not a rename; this records what the sound filter threw out
         "rejected_epithet_only": v["rejected_epithet_only"],
+    }
+
+
+def matched_vfdb_scaleup():
+    """Study H's contrast without its selection, and seven times the size.
+
+    \U0001f7e2 The verdict moves from PARTIAL to SUPPORTED on both arms -- C/A 2.418 and 2.617 against
+    a frozen 2.0 -- and D/B becomes a verdict rather than indicative on cells of 134 against a floor of
+    100. Both are pinned because the upgrade is the result.
+
+    \u2b50 K-3 is pinned because it explains the upgrade: the 228 Virulence-keyword members that the
+    pool's build query excluded, and that study H's bridge therefore could not contain, are flagged
+    19.2 and 15.2 points above the rest.
+
+    \U0001f534 K-4 is pinned BECAUSE IT BROKE. A share of the distance to the full-VFDB rate exceeds
+    100% on both arms, which is only possible because the reference is a mixture of localizations
+    rather than a ceiling -- so study H's H-5 is withdrawn as a share. A metric that failed is kept in
+    the registry so it cannot quietly come back.
+    """
+    a = j("../results/matched_vfdb_scaleup.json")
+    b = j("../results/matched_vfdb_scaleup_esm2_35M.json")
+    if None in (a, b):
+        return None
+    ra, rb = a["rates"], b["rates"]
+    return {
+        "n_mapped_reviewed": a["n_mapped_reviewed"], "n_kept": a["n_kept"],
+        "dropped_circular": a["n_dropped_circular"], "dropped_length": a["n_dropped_length"],
+        "cells": {k: a["cell_n"][k] for k in ("V_extracellular", "V_intracellular",
+                                              "B_extracellular", "B_intracellular")},
+        "floor": a["floor"], "floor_met": a["floor_met"],
+        "CA": {"650M": round(a["K1_CA"]["mean"], 3), "35M": round(b["K1_CA"]["mean"], 3)},
+        "DB": {"650M": round(a["K1b_DB"]["mean"], 3), "35M": round(b["K1b_DB"]["mean"], 3)},
+        "band": a["band"], "band_agrees": a["band"] == b["band"],
+        "v_extra": {"650M": round(ra["V_extracellular"]["mean"], 4),
+                    "35M": round(rb["V_extracellular"]["mean"], 4)},
+        "v_intra": {"650M": round(ra["V_intracellular"]["mean"], 4),
+                    "35M": round(rb["V_intracellular"]["mean"], 4)},
+        "n_virulence": a["n_virulence_keyword"],
+        "K3": {"650M": round(a["K3_virulence_minus_other"], 4),
+               "35M": round(b["K3_virulence_minus_other"], 4)},
+        # 🔴 both above 1.0, which is what withdraws study H's H-5 as a share
+        "K4": {"650M": round(a["K4_membership_closes"], 3),
+               "35M": round(b["K4_membership_closes"], 3)},
+        "reference": {"650M": round(ra["V_reference"]["mean"], 4),
+                      "35M": round(rb["V_reference"]["mean"], 4)},
     }
 
 
@@ -3622,7 +3671,29 @@ CLAIMS = [
       "paper/MANUSCRIPT.md":
       "**\"Almost exactly independent\" was a property of the defective\nfactor**"},
      []),
-    ("VFDB membership closes 99% of the residual, and the band says partial",
+    ("without the bridge's selection the matched contrast is supported, not partial",
+     matched_vfdb_scaleup,
+     lambda v: v is None or (
+         v["n_mapped_reviewed"] == 966 and v["n_kept"] == 778
+         and v["dropped_circular"] == 178 and v["dropped_length"] == 10
+         and v["cells"]["V_extracellular"] == 264 and v["cells"]["V_intracellular"] == 134
+         and v["floor"] == 100 and v["floor_met"]
+         # 🟢 supported on BOTH arms, which is the upgrade from study H's partial
+         and v["band_agrees"] and v["CA"]["650M"] >= 2.0 and v["CA"]["35M"] >= 2.0
+         and v["band"] == "VFDB membership matters beyond both confounds"
+         # 🟢 and D/B is a verdict now, an order of magnitude inside the intracellular stratum
+         and v["DB"]["650M"] > 6.0 and v["DB"]["35M"] > 6.0
+         and v["v_extra"]["650M"] > 0.88 and v["v_intra"]["650M"] > 0.50
+         # ⭐ the selection study H could not escape, measured
+         and v["n_virulence"] == 228
+         and v["K3"]["650M"] > 0.15 and v["K3"]["35M"] > 0.12
+         # 🔴 K-4 exceeds 1.0 on both arms: the reference is a mixture, not a ceiling
+         and v["K4"]["650M"] > 1.0 and v["K4"]["35M"] > 1.0
+         and v["reference"]["650M"] < v["v_extra"]["650M"]),
+     {"docs/MATCHED_VFDB_SCALEUP_PREREGISTRATION.md":
+      "**C/A = 2.418 [2.339, 2.497]** on 650M and **2.617 [2.495, 2.740]** on 35M."},
+     []),
+    ("study H read partial on a selected bridge, and H-5 is withdrawn as a share",
      matched_vfdb,
      lambda v: v is None or (
          # 🔴 the circularity check ran and found 13; it had never run anywhere before
@@ -3648,7 +3719,7 @@ CLAIMS = [
      {"docs/MATCHED_VFDB_PREREGISTRATION.md":
       "**91.9% of the way.**",
       "paper/MANUSCRIPT.md":
-      "**99.1%** of the distance from that matched cell to the full VFDB rate"},
+      "fraction cannot exceed 100% unless the reference is not a ceiling, and it is not: the full-VFDB rate"},
      # 🔴 H-5 is a share of the RESIDUAL INSIDE the matched cell. Restating it against the whole
      # pool-to-VFDB gap would roughly quadruple what it claims, and is the misreading a summary
      # produces. Banned in the forms it would be written in.

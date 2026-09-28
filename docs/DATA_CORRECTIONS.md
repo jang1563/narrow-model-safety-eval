@@ -5062,3 +5062,64 @@ Study H's own preregistration required a circularity check on **its** VFDB side,
 ⚠️ **This is the fourth defect this session found by preparing the next study rather than by re-reading
 the last one**, and the third where the next study could not have been trusted without it. **The
 scale-up that found it has not been run yet.**
+
+---
+
+## 2026-09-28 (sixty-second entry) — Without the bridge's selection the matched contrast is supported, and one metric had to be withdrawn
+
+Study H held pathogen origin **and** extracellular localization fixed, varied only VFDB membership, and
+read **partial** — C/A 1.974 and 1.497 against a frozen 2.0. It declared in advance that its VFDB side
+was **selected against the hypothesis**: the pool's build query excludes *Virulence*, *Toxin*,
+*Cytolysis*, *Hemolysis*, *Bacteriocin* and *Bacteriolytic enzyme*, so every bridge protein is a
+virulence factor **UniProt declines to call virulent**. It was also small — 38 and **24**, one under
+its own floor.
+
+🔑 **Every VFDB record carries a RefSeq accession**, so UniProt's ID-mapping service gives the 4,218
+admitted negatives a Swiss-Prot identity, including the virulence-annotated members. 966 map to a
+reviewed entry; after dropping **178** class-axis positives and **10** whose length differs from the
+mapped entry, **778** remain. The 35M arm needed the 4,218 embedded, whose gate reproduced the
+published 35M panel negatives at **0.000e+00**.
+
+| population | *n* | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|---:|
+| benign × extracellular | 171 | 37.52% | 26.90% |
+| ⭐ **VFDB × extracellular** | **264** | **89.95%** | **69.41%** |
+| benign × intracellular | 597 | 6.87% | 5.09% |
+| ⭐ **VFDB × intracellular** | **134** | **54.08%** | **34.00%** |
+
+### 🟢 Supported on both arms, and D/B is a verdict
+
+**C/A = 2.418 [2.339, 2.497]** and **2.617 [2.495, 2.740]**, both clearing the frozen 2.0 — **the
+verdict moves from partial to supported.** And **D/B = 7.988** and **6.875** on cells of 134 against a
+floor of 100: ⭐ **within the intracellular stratum, where neither secretion nor surface exposure can be
+doing the work, a VFDB protein is seven to eight times more likely to be flagged than a benign one from
+the same kind of organism.**
+
+⭐ **K-3 explains the upgrade.** The **228** kept proteins carrying the *Virulence* keyword — exactly
+what the pool query excluded — are flagged **+19.18 pp** and **+15.16 pp** above the other 550.
+**Study H's declared selection caveat was real, and is now measured.**
+
+### 🔴 And K-4 broke, which withdraws study H's H-5 as a share
+
+K-4 — the H-5 quantity, membership's effect as a fraction of the distance to the full-VFDB rate —
+returns **143.4%** and **187.5%**. 🔴 **A fraction cannot exceed 100% unless the reference is not a
+ceiling**, and it is not: the full-VFDB rate averages over a **mixture of localizations** (89.95%
+extracellular down to 54.08% intracellular on 650M), which a localization-**matched** cell is not
+bounded by.
+
+🔒 **So H-5's 99.1% means the matched cell landed just under the whole-set average at bridge scale, not
+that membership explained 99.1% of the residual.** Withdrawn as a share in
+`docs/MATCHED_VFDB_PREREGISTRATION.md` and in the manuscript, in this commit. ⚠️ **The contrast is
+unharmed — it is the normalisation that was wrong**, and the contrast is stronger here than it was
+there.
+
+### 🔒 Predictions: two of five, and the most useful result came from a failure
+
+K-1's band was right on 650M (2.418 against a predicted 2.2) and K-3 was right on both arms. 🔴 The
+prediction that **35M would read partial and the arms would disagree** was wrong in both halves — 35M
+came in **above** 650M at 2.617 and the arms **agree**. D/B was predicted at 3.0 and came in near 8.
+**K-4 was predicted at 95–105% and came in at 143% and 188% — and that miss is what exposed that the
+metric was never well-founded.**
+
+⚠️ **Note what did not change**: a benign secreted protein is still flagged at **37.5%** against 6.9%
+cytoplasmic. **Study E is untouched by any of this.**

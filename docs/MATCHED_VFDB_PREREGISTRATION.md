@@ -249,3 +249,26 @@ both held fixed, VFDB membership covers **essentially all** of the remaining dis
 decontaminated full-VFDB rate — 73.77% against a reference of 74.09%. ⚠️ **The three
 qualifications are untouched**: the band is still *partial* (C/A 1.974 and 1.497, unchanged), D/B
 still sits one protein under its floor, and study E is still not softened.
+
+---
+
+## 🔴 Amendment 2 — 2026-09-28: H-5's normalisation is not well-founded
+
+H-5 expressed membership's effect as **the fraction of the distance from the matched benign cell to the
+full-VFDB rate**, and reported **99.1%**. `docs/MATCHED_VFDB_SCALEUP_PREREGISTRATION.md` runs the same
+quantity on 264 extracellular proteins instead of 38 and gets **143.4%** on 650M and **187.5%** on 35M.
+
+🔴 **A fraction cannot exceed 100% unless the reference is not a ceiling**, and it is not. The
+full-VFDB rate averages over a **mixture of localizations** — 89.95% extracellular, 71.75% membrane,
+54.86% unannotated, 54.08% intracellular on 650M — and a localization-**matched** cell is not bounded
+by that mixture.
+
+🔒 **So the 99.1% says the matched cell landed just under the whole-set average at bridge scale**, not
+that membership explained 99.1% of the residual. **The quantity is withdrawn as a share.** The
+underlying contrast is unharmed and is stronger at scale: C/A rises from 1.974 to **2.418** on 650M and
+from 1.497 to **2.617** on 35M, moving the verdict from *partial* to **supported**, and D/B from an
+indicative 3.204 to a verdict of **7.988**.
+
+⚠️ **The reason the bridge read lower is the selection § 0.2 declared in advance**: the 228
+*Virulence*-keyword members that the pool's build query excluded are flagged **19.2 points** above the
+rest.

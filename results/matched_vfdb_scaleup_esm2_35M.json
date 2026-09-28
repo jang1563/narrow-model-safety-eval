@@ -1,0 +1,169 @@
+{
+  "built": "2026-09-28 21:48:44",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "n_mapped_reviewed": 966,
+  "n_kept": 778,
+  "n_dropped_circular": 178,
+  "n_dropped_length": 10,
+  "length_mismatched": [
+    {
+      "vfg": "VFG000180",
+      "uniprot": "Q00514",
+      "vfdb_len": 148,
+      "uniprot_len": "142"
+    },
+    {
+      "vfg": "VFG000541",
+      "uniprot": "P0CL16",
+      "vfdb_len": 130,
+      "uniprot_len": "116"
+    },
+    {
+      "vfg": "VFG001011",
+      "uniprot": "P0A1K9",
+      "vfdb_len": 248,
+      "uniprot_len": "293"
+    },
+    {
+      "vfg": "VFG001145",
+      "uniprot": "P35757",
+      "vfdb_len": 236,
+      "uniprot_len": "241"
+    },
+    {
+      "vfg": "VFG003977",
+      "uniprot": "Q8ZNG2",
+      "vfdb_len": 317,
+      "uniprot_len": "340"
+    },
+    {
+      "vfg": "VFG007946",
+      "uniprot": "P9WMX7",
+      "vfdb_len": 275,
+      "uniprot_len": "256"
+    },
+    {
+      "vfg": "VFG011823",
+      "uniprot": "Q6TG07",
+      "vfdb_len": 186,
+      "uniprot_len": "172"
+    },
+    {
+      "vfg": "VFG021800",
+      "uniprot": "P9WQF1",
+      "vfdb_len": 106,
+      "uniprot_len": "84"
+    },
+    {
+      "vfg": "VFG039405",
+      "uniprot": "Q83D09",
+      "vfdb_len": 483,
+      "uniprot_len": "465"
+    },
+    {
+      "vfg": "VFG043013",
+      "uniprot": "Q51434",
+      "vfdb_len": 262,
+      "uniprot_len": "227"
+    }
+  ],
+  "cell_n": {
+    "V_extracellular": 264,
+    "V_intracellular": 134,
+    "V_membrane": 160,
+    "V_unannotated": 220,
+    "B_extracellular": 171,
+    "B_intracellular": 597
+  },
+  "n_virulence_keyword": 228,
+  "n_other_keyword": 550,
+  "floor": 100,
+  "floor_met": true,
+  "clean_fold": [
+    966,
+    484
+  ],
+  "rates": {
+    "V_extracellular": {
+      "mean": 0.6940656565656566,
+      "ci": [
+        0.6769397603320606,
+        0.7111915527992525
+      ]
+    },
+    "V_intracellular": {
+      "mean": 0.3400497512437811,
+      "ci": [
+        0.3245465848499717,
+        0.35555291763759056
+      ]
+    },
+    "V_membrane": {
+      "mean": 0.4164583333333333,
+      "ci": [
+        0.3960911490438635,
+        0.43682551762280314
+      ]
+    },
+    "V_unannotated": {
+      "mean": 0.28969696969696973,
+      "ci": [
+        0.27365188518409084,
+        0.3057420542098486
+      ]
+    },
+    "B_extracellular": {
+      "mean": 0.26900584795321636,
+      "ci": [
+        0.2564980685709807,
+        0.28151362733545204
+      ]
+    },
+    "B_intracellular": {
+      "mean": 0.050921273031825795,
+      "ci": [
+        0.047180963460071314,
+        0.054661582603580276
+      ]
+    },
+    "V_virulence": {
+      "mean": 0.5688596491228071,
+      "ci": [
+        0.5496013297764418,
+        0.5881179684691723
+      ]
+    },
+    "V_other": {
+      "mean": 0.4172121212121213,
+      "ci": [
+        0.4037912116414386,
+        0.430633030782804
+      ]
+    },
+    "V_reference": {
+      "mean": 0.4957381211461733,
+      "ci": [
+        0.47977395802863876,
+        0.5117022842637079
+      ]
+    }
+  },
+  "K1_CA": {
+    "mean": 2.6172804209171763,
+    "ci": [
+      2.494987935571103,
+      2.7395729062632497
+    ]
+  },
+  "K1b_DB": {
+    "mean": 6.875324452253369,
+    "ci": [
+      6.433815769387856,
+      7.316833135118882
+    ]
+  },
+  "band": "VFDB membership matters beyond both confounds",
+  "K3_virulence_minus_other": 0.15164752791068575,
+  "K4_membership_closes": 1.8747212411649032
+}
