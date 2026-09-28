@@ -133,3 +133,83 @@ positive set is five times larger and more diverse.
 🔴 **If B-1 comes back null, the class-level margin result is a property of classes this project drew**,
 and § 10.4 to § 10.6 need rewriting as a panel-specific observation rather than a mechanism. That outcome
 is the reason to run it, and the manuscript stays a draft until this returns either way.
+
+---
+
+## Amendments
+
+Append-only. Nothing above this line is edited.
+
+### Amendment 1 — 2026-09-28, before any embedding: thirty seeds would have varied nothing
+
+§ 2 fixes the membership of all three partitions by `sha256(accession)`, and § 3 asks for **30 seeds**.
+🔴 **Those two are incompatible.** In `src/03b` the seed drives the train/test negative permutation; with
+membership fixed and logistic regression deterministic, thirty seeds would be thirty identical runs and
+every interval would be zero-width.
+
+**The resolution, which keeps what § 2 was for.** The **test** partition stays fixed — that is the
+criterion-1 point and it must not be resampled, or the out-of-sample figures stop being out of sample.
+**Train and calibrate are redrawn per seed from their fixed 1,500-protein union**, at the frozen sizes
+1,000 and 500. The test partition is never touched by any seed.
+
+⚠️ **And a size rule, fixed now rather than when the screen comes back.** The union is screened at
+0.282 against the 746 representatives before any split. If fewer than 1,500 survive, the survivors are
+split **2:1** train to calibrate and the realised sizes are reported wherever the figures are. No
+exclusion is relaxed to reach 1,500.
+
+⚠️ This was found by writing the implementation, not by re-reading the document. **A preregistration
+that has not been implemented against has not been checked**, which is the second time in two days the
+same lesson has appeared — amendment 1 of `docs/NEGATIVE_EXPANSION_PREREGISTRATION.md` recorded a rule
+that could not be executed for the same reason.
+
+### Amendment 2 — 2026-09-28, during the screen: two residues BLOSUM62 does not have
+
+The screen crashed on `ValueError: sequence contains letters not in the alphabet`. BLOSUM62's alphabet
+is `ARNDCQEGHILKMFPSTWYVBZX*` — it carries X, B and Z but **not U (selenocysteine) or O
+(pyrrolysine)**, and **10 of the 1,500** train-plus-calibrate negatives contain one of them. (22 more
+are in the test partition, which is unscreened by design and therefore unaffected; ESM-2's tokenizer
+handles them.)
+
+**Resolved by substituting for the alignment only: U → C, O → K**, both conservative — U is a cysteine
+analogue and O a lysine analogue — with the count logged in the artifact. **The stored sequences are
+untouched**, so nothing the probe or the embedding sees changes.
+
+⚠️ **The alternative was to drop those ten, and it was rejected**: it would shrink a partition frozen
+before this was known, for a reason that has nothing to do with the proteins themselves. `src/74` did
+exclude non-standard sequences, but it was choosing which candidates to *admit*; here the membership is
+already fixed and the question is only whether a similarity can be computed for it.
+
+### Amendment 3 — 2026-09-28, before any probe was fitted: the representative rule created a length confound
+
+§ 1 froze "the longest sequence, ties by lowest VFG id" as the representative rule. It was chosen for
+determinism and **nothing else**, and measuring the inputs before running anything shows what it cost:
+
+| representative rule | mean length | 🔴 **AUROC from length alone** |
+|---|---:|---:|
+| **longest (as frozen)** | 803 | **0.6674** |
+| median length | 589 | 0.4857 |
+| **lowest VFG id** | 604 | **0.4835** |
+
+Negatives average **462**. So "longest" makes study B's positives systematically longer than its
+negatives and hands a probe **0.667 AUROC from sequence length alone** — comparable in size to the
+composition baseline of 0.754 that § 9 of `docs/MECHANISM_GENERALIZATION.md` reports as a reason to
+discount a separability figure. A margin-versus-recovery result obtained on that set would be partly a
+result about length.
+
+**Amended to: one representative per `VF####` group, the record with the lowest VFG id.** Length-alone
+AUROC **0.4835**, essentially chance.
+
+🔑 **Why this is a legitimate amendment and not a post-hoc choice**, stated so a reader can check it:
+**no probe has been fitted and no recovery number exists.** The decision is driven entirely by a property
+of the inputs — a length distribution — computed before any label was used, and the alternative was
+measured and reported here rather than picked quietly. The category structure is **unchanged**: the same
+13 eligible categories holding the same 740 representatives, because the grouping is by `VF####` and only
+the choice within a group moved.
+
+⚠️ **What it costs.** The lowest-VFG-id rule takes 23 representatives under 100 residues where "longest"
+took 11, since some VF groups are genuinely short peptides; the minimum is 38 either way. And the screen
+and the embedding both restart, about forty minutes of work discarded.
+
+🔑 **And length joins the reported controls regardless**, as criterion 14 requires: length-alone AUROC is
+reported beside composition and shuffled labels in every table, because the fact that it is now near
+chance is itself a claim that can drift.

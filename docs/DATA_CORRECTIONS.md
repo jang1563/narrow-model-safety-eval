@@ -4244,3 +4244,65 @@ The pool partitions **1,000 train / 500 calibrate / 6,758 test** by `sha256(acce
 dropped. 🟢 **That is the split criterion 1 records as absent from the main panel** (178/118/**0**), so
 study B's false-positive figures are out of sample by construction — and ⚠️ the test partition is
 deliberately **unscreened**, because a deployed screen does not get to remove the proteins it will meet.
+
+---
+
+## 2026-09-28 (forty-eighth entry) — A length confound I built into a frozen rule, and three processes a kill silently failed to stop
+
+Study B's implementation produced two problems worth recording, one about design and one about hygiene.
+Both were caught by measuring rather than by re-reading.
+
+### 🔴 The representative rule handed a probe 0.667 AUROC from length alone
+
+§ 1 of `docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md` froze "the longest sequence per `VF####` group,
+ties by lowest VFG id". It was chosen for **determinism and nothing else**, and measuring the inputs
+before fitting anything showed the cost:
+
+| rule | mean length | **AUROC from length alone** |
+|---|---:|---:|
+| **longest, as frozen** | 803 | **0.6674** |
+| median length | 589 | 0.4857 |
+| **lowest VFG id** | 604 | **0.4835** |
+
+Negatives average 462, so "longest" made the positives systematically longer and handed a probe two
+thirds of an AUROC from sequence length — comparable to the composition baseline of 0.754 that § 9 of
+`docs/MECHANISM_GENERALIZATION.md` treats as reason to discount a separability figure. A
+margin-versus-recovery result on that set would have been partly a result about length.
+
+**Amended to lowest VFG id** (amendment 3), which is chance on length. 🔑 **Legitimate because it is
+outcome-independent**: no probe had been fitted, no recovery number existed, the decision rests entirely
+on a length distribution computed before any label was used, and the alternatives were measured and
+published in the amendment rather than picked quietly. The category structure is unchanged — the same 13
+eligible categories holding the same 740 representatives, since grouping is by `VF####` and only the
+choice *within* a group moved.
+
+⚠️ And length now joins composition and shuffled labels as a reported control, because "it is near
+chance" is itself a claim that can drift.
+
+### 🔴 `pkill -f "A\|B"` matched nothing, and the verification used the same pattern
+
+Cleaning up before the rerun, `pkill -f "79_external\|80_external"` was followed by
+`pgrep -fl "79_external\|80_external" || echo "both stopped"`, which printed **both stopped**. macOS
+`pgrep`/`pkill` take an **extended** regex, so `\|` is a literal and neither call matched anything.
+**The kill and its check failed the same way**, so the check could not detect the failure.
+
+Five processes were then running at once — three stale ones on the **previous** representative rule
+(started 10:40, 10:43 and 10:47) and two new ones on the amended rule. That is why the screen's estimate
+read 252 minutes: it was contending with its own zombies. With them gone the same screen reports **69**.
+It also explains an embedding that had appeared to die silently an hour earlier: it had not died, there
+were two of it.
+
+🔴 **And there was real contamination.** A stale process wrote `shard_00000.npz` at 11:08 from the
+old-rule positives. The new run counts complete shards and resumes after them, so it would have combined
+**250 old-rule vectors with 496 new-rule ones** and written a finished-looking artifact with **no error
+anywhere**. Caught by reading process start times, not by any check in the code.
+
+**Fixed**: killed by PID and verified by PID; shard directory wiped; and `src/80` now writes a
+`build.sha256` fingerprint of the build artifact into its checkpoint directory and **refuses to run** if
+an existing directory's fingerprint disagrees, naming both hashes.
+
+⚠️ **This is the fourth instance this session of one failure mode.** A false-positive figure that was
+4/61 by construction; an alert tolerance of 600 to 606 that hid a 1.5-alert inconsistency; a `pgrep`
+pattern that could not match; and a checkpoint that would inherit from a different experiment. **In all
+four the verification shared an assumption with the thing it was verifying.** Seeds, intervals and
+replication were checked; whether a check *could fail* was not.

@@ -82,11 +82,17 @@ def main():
     if bad:
         raise SystemExit(f"{bad} unparsed VFDB headers; the representative rule cannot be applied")
 
+    # 🔴 Amendment 3 of the preregistration, 2026-09-28. This was "longest sequence, ties by lowest
+    # VFG id", chosen for determinism alone. Measured on the inputs before any probe was fitted, that
+    # rule makes the positives average 803 residues against the negatives' 462 and hands a probe
+    # AUROC 0.667 from LENGTH ALONE — comparable to the composition baseline § 9 treats as a reason to
+    # discount a separability figure. Lowest VFG id gives 0.4835, essentially chance, with the same 13
+    # eligible categories holding the same 740 representatives, because only the choice WITHIN a group
+    # moved. The amendment records that no probe existed when this was decided.
     best = {}
     for r in rows:
         k = best.get(r["vf"])
-        if k is None or len(r["seq"]) > len(k["seq"]) or \
-                (len(r["seq"]) == len(k["seq"]) and r["vfg"] < k["vfg"]):
+        if k is None or r["vfg"] < k["vfg"]:
             best[r["vf"]] = r
     rep = sorted(best.values(), key=lambda r: r["vfg"])
     cats = collections.Counter(r["cat"] for r in rep)
@@ -124,7 +130,8 @@ def main():
         "built": "2026-09-28",
         "purpose": "study B of docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md. Builds and partitions; "
                    "fits nothing, measures nothing.",
-        "representative_rule": "longest sequence per VF#### group, ties by lowest VFG id",
+        "representative_rule": "lowest VFG id per VF#### group (amendment 3; was longest "
+                               "sequence, which gave a length-alone AUROC of 0.667)",
         "n_records": len(rows), "n_representatives": len(rep),
         "redundancy_factor": round(len(rows) / len(rep), 3),
         "eligibility_floor": FLOOR,

@@ -1,7 +1,7 @@
 {
   "built": "2026-09-28",
   "purpose": "study B of docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md. Builds and partitions; fits nothing, measures nothing.",
-  "representative_rule": "longest sequence per VF#### group, ties by lowest VFG id",
+  "representative_rule": "lowest VFG id per VF#### group (amendment 3; was longest sequence, which gave a length-alone AUROC of 0.667)",
   "n_records": 4755,
   "n_representatives": 746,
   "redundancy_factor": 6.374,
@@ -58,11 +58,11 @@
       "len": 910
     },
     {
-      "vfg": "VFG000008",
+      "vfg": "VFG000003",
       "vf": "VF0031",
       "cat": "Adherence",
       "species": "Bordetella pertussis",
-      "len": 873
+      "len": 207
     },
     {
       "vfg": "VFG000010",
@@ -107,11 +107,18 @@
       "len": 624
     },
     {
-      "vfg": "VFG000064",
+      "vfg": "VFG000039",
       "vf": "VF0035",
       "cat": "Effector delivery system",
       "species": "Bordetella pertussis",
-      "len": 699
+      "len": 600
+    },
+    {
+      "vfg": "VFG000055",
+      "vf": "VF0687",
+      "cat": "Effector delivery system",
+      "species": "Bordetella pertussis",
+      "len": 402
     },
     {
       "vfg": "VFG000068",
@@ -212,11 +219,11 @@
       "len": 620
     },
     {
-      "vfg": "VFG000106",
+      "vfg": "VFG000103",
       "vf": "VF0127",
       "cat": "Others",
       "species": "Vibrio cholerae",
-      "len": 1520
+      "len": 215
     },
     {
       "vfg": "VFG000107",
@@ -240,11 +247,32 @@
       "len": 97
     },
     {
+      "vfg": "VFG000111",
+      "vf": "VF0082",
+      "cat": "Adherence",
+      "species": "Pseudomonas aeruginosa",
+      "len": 149
+    },
+    {
       "vfg": "VFG000115",
       "vf": "VF0086",
       "cat": "Exotoxin",
       "species": "Pseudomonas aeruginosa",
       "len": 638
+    },
+    {
+      "vfg": "VFG000116",
+      "vf": "VF0091",
+      "cat": "Biofilm",
+      "species": "Pseudomonas aeruginosa",
+      "len": 449
+    },
+    {
+      "vfg": "VFG000137",
+      "vf": "VF0085",
+      "cat": "Immune modulation",
+      "species": "Pseudomonas aeruginosa",
+      "len": 348
     },
     {
       "vfg": "VFG000144",
@@ -268,11 +296,18 @@
       "len": 498
     },
     {
-      "vfg": "VFG000152",
+      "vfg": "VFG000147",
+      "vf": "VF0853",
+      "cat": "Effector delivery system",
+      "species": "Pseudomonas aeruginosa",
+      "len": 453
+    },
+    {
+      "vfg": "VFG000151",
       "vf": "VF0093",
       "cat": "Biofilm",
       "species": "Pseudomonas aeruginosa",
-      "len": 241
+      "len": 239
     },
     {
       "vfg": "VFG000155",
@@ -289,32 +324,53 @@
       "len": 730
     },
     {
-      "vfg": "VFG000165",
+      "vfg": "VFG000159",
+      "vf": "VF0094",
+      "cat": "Nutritional/Metabolic factor",
+      "species": "Pseudomonas aeruginosa",
+      "len": 443
+    },
+    {
+      "vfg": "VFG000164",
       "vf": "VF0095",
       "cat": "Nutritional/Metabolic factor",
       "species": "Pseudomonas aeruginosa",
-      "len": 1809
+      "len": 720
     },
     {
-      "vfg": "VFG000184",
+      "vfg": "VFG000172",
+      "vf": "VF0100",
+      "cat": "Nutritional/Metabolic factor",
+      "species": "Pseudomonas aeruginosa",
+      "len": 334
+    },
+    {
+      "vfg": "VFG000174",
       "vf": "VF0084",
       "cat": "Effector delivery system",
       "species": "Pseudomonas aeruginosa",
-      "len": 658
+      "len": 174
     },
     {
-      "vfg": "VFG000198",
+      "vfg": "VFG000185",
       "vf": "VF0083",
       "cat": "Effector delivery system",
       "species": "Pseudomonas aeruginosa",
-      "len": 706
+      "len": 349
     },
     {
-      "vfg": "VFG000230",
+      "vfg": "VFG000221",
       "vf": "VF0075",
       "cat": "Adherence",
       "species": "Neisseria meningitidis",
-      "len": 1009
+      "len": 170
+    },
+    {
+      "vfg": "VFG000236",
+      "vf": "VF0076",
+      "cat": "Invasion",
+      "species": "Neisseria meningitidis",
+      "len": 224
     },
     {
       "vfg": "VFG000240",
@@ -324,6 +380,13 @@
       "len": 272
     },
     {
+      "vfg": "VFG000241",
+      "vf": "VF0078",
+      "cat": "Immune modulation",
+      "species": "Neisseria meningitidis",
+      "len": 336
+    },
+    {
       "vfg": "VFG000249",
       "vf": "VF0272",
       "cat": "Nutritional/Metabolic factor",
@@ -331,11 +394,18 @@
       "len": 505
     },
     {
-      "vfg": "VFG000259",
+      "vfg": "VFG000250",
+      "vf": "VF0081",
+      "cat": "Invasion",
+      "species": "Neisseria meningitidis",
+      "len": 331
+    },
+    {
+      "vfg": "VFG000252",
       "vf": "VF0079",
       "cat": "Immune modulation",
       "species": "Neisseria meningitidis",
-      "len": 704
+      "len": 349
     },
     {
       "vfg": "VFG000261",
@@ -366,18 +436,25 @@
       "len": 791
     },
     {
-      "vfg": "VFG000268",
+      "vfg": "VFG000267",
       "vf": "VF0049",
       "cat": "Nutritional/Metabolic factor",
       "species": "Neisseria meningitidis",
-      "len": 810
+      "len": 357
     },
     {
-      "vfg": "VFG000270",
+      "vfg": "VFG000269",
       "vf": "VF0050",
       "cat": "Enzyme",
       "species": "Helicobacter pylori",
-      "len": 569
+      "len": 238
+    },
+    {
+      "vfg": "VFG000276",
+      "vf": "VF0051",
+      "cat": "Motility",
+      "species": "Helicobacter pylori",
+      "len": 510
     },
     {
       "vfg": "VFG000279",
@@ -387,11 +464,11 @@
       "len": 1290
     },
     {
-      "vfg": "VFG000287",
+      "vfg": "VFG000280",
       "vf": "VF0060",
       "cat": "Effector delivery system",
       "species": "Helicobacter pylori",
-      "len": 1927
+      "len": 115
     },
     {
       "vfg": "VFG000306",
@@ -408,11 +485,11 @@
       "len": 144
     },
     {
-      "vfg": "VFG000309",
+      "vfg": "VFG000308",
       "vf": "VF0057",
       "cat": "Immune modulation",
       "species": "Helicobacter pylori",
-      "len": 476
+      "len": 425
     },
     {
       "vfg": "VFG000310",
@@ -429,11 +506,18 @@
       "len": 638
     },
     {
-      "vfg": "VFG000315",
+      "vfg": "VFG000313",
       "vf": "VF0056",
       "cat": "Immune modulation",
       "species": "Helicobacter pylori",
-      "len": 470
+      "len": 407
+    },
+    {
+      "vfg": "VFG000326",
+      "vf": "VF0044",
+      "cat": "Immune modulation",
+      "species": "Haemophilus influenzae",
+      "len": 326
     },
     {
       "vfg": "VFG000334",
@@ -492,11 +576,11 @@
       "len": 1084
     },
     {
-      "vfg": "VFG000353",
+      "vfg": "VFG000349",
       "vf": "VF0134",
       "cat": "Adherence",
       "species": "Yersinia pestis",
-      "len": 823
+      "len": 214
     },
     {
       "vfg": "VFG000354",
@@ -506,25 +590,25 @@
       "len": 182
     },
     {
-      "vfg": "VFG000362",
+      "vfg": "VFG000358",
       "vf": "VF0136",
       "cat": "Nutritional/Metabolic factor",
       "species": "Yersinia pestis",
-      "len": 3163
+      "len": 673
     },
     {
-      "vfg": "VFG000384",
+      "vfg": "VFG000372",
       "vf": "VF0140",
       "cat": "Effector delivery system",
       "species": "Yersinia pestis",
-      "len": 704
+      "len": 130
     },
     {
-      "vfg": "VFG000415",
+      "vfg": "VFG000373",
       "vf": "VF1021",
       "cat": "Effector delivery system",
       "species": "Yersinia pestis",
-      "len": 732
+      "len": 219
     },
     {
       "vfg": "VFG000417",
@@ -534,11 +618,11 @@
       "len": 312
     },
     {
-      "vfg": "VFG000419",
+      "vfg": "VFG000418",
       "vf": "VF0138",
       "cat": "Immune modulation",
       "species": "Yersinia pestis",
-      "len": 833
+      "len": 170
     },
     {
       "vfg": "VFG000422",
@@ -548,18 +632,32 @@
       "len": 587
     },
     {
-      "vfg": "VFG000429",
+      "vfg": "VFG000423",
       "vf": "VF0101",
       "cat": "Immune modulation",
       "species": "Salmonella enterica",
-      "len": 831
+      "len": 656
     },
     {
-      "vfg": "VFG000434",
+      "vfg": "VFG000433",
       "vf": "VF0104",
       "cat": "Adherence",
       "species": "Salmonella enterica",
-      "len": 802
+      "len": 230
+    },
+    {
+      "vfg": "VFG000437",
+      "vf": "VF0948",
+      "cat": "Effector delivery system",
+      "species": "Salmonella enterica",
+      "len": 216
+    },
+    {
+      "vfg": "VFG000439",
+      "vf": "VF0947",
+      "cat": "Effector delivery system",
+      "species": "Salmonella enterica",
+      "len": 591
     },
     {
       "vfg": "VFG000442",
@@ -569,25 +667,25 @@
       "len": 185
     },
     {
-      "vfg": "VFG000446",
+      "vfg": "VFG000443",
       "vf": "VF0102",
       "cat": "Adherence",
       "species": "Salmonella enterica",
-      "len": 870
+      "len": 185
     },
     {
-      "vfg": "VFG000454",
+      "vfg": "VFG000452",
       "vf": "VF0105",
       "cat": "Adherence",
       "species": "Salmonella enterica",
-      "len": 842
+      "len": 175
     },
     {
-      "vfg": "VFG000462",
+      "vfg": "VFG000457",
       "vf": "VF0103",
       "cat": "Adherence",
       "species": "Salmonella enterica",
-      "len": 277
+      "len": 151
     },
     {
       "vfg": "VFG000463",
@@ -602,20 +700,6 @@
       "cat": "Effector delivery system",
       "species": "Salmonella enterica",
       "len": 782
-    },
-    {
-      "vfg": "VFG000468",
-      "vf": "VF0947",
-      "cat": "Effector delivery system",
-      "species": "Salmonella enterica",
-      "len": 788
-    },
-    {
-      "vfg": "VFG000469",
-      "vf": "VF0948",
-      "cat": "Effector delivery system",
-      "species": "Salmonella enterica",
-      "len": 765
     },
     {
       "vfg": "VFG000474",
@@ -639,18 +723,18 @@
       "len": 150
     },
     {
-      "vfg": "VFG000493",
+      "vfg": "VFG000492",
       "vf": "VF0321",
       "cat": "Effector delivery system",
       "species": "Salmonella enterica",
-      "len": 920
+      "len": 212
     },
     {
-      "vfg": "VFG000557",
+      "vfg": "VFG000530",
       "vf": "VF0116",
       "cat": "Effector delivery system",
       "species": "Salmonella enterica",
-      "len": 685
+      "len": 251
     },
     {
       "vfg": "VFG000574",
@@ -674,11 +758,11 @@
       "len": 5559
     },
     {
-      "vfg": "VFG000619",
+      "vfg": "VFG000615",
       "vf": "VF0123",
       "cat": "Nutritional/Metabolic factor",
       "species": "Shigella flexneri",
-      "len": 731
+      "len": 593
     },
     {
       "vfg": "VFG000630",
@@ -695,11 +779,11 @@
       "len": 1372
     },
     {
-      "vfg": "VFG000637",
+      "vfg": "VFG000636",
       "vf": "VF0125",
       "cat": "Exotoxin",
       "species": "Shigella flexneri",
-      "len": 177
+      "len": 61
     },
     {
       "vfg": "VFG000667",
@@ -709,11 +793,11 @@
       "len": 1102
     },
     {
-      "vfg": "VFG000671",
+      "vfg": "VFG000669",
       "vf": "VF0124",
       "cat": "Immune modulation",
       "species": "Shigella flexneri",
-      "len": 486
+      "len": 120
     },
     {
       "vfg": "VFG000674",
@@ -737,11 +821,11 @@
       "len": 466
     },
     {
-      "vfg": "VFG000690",
+      "vfg": "VFG000685",
       "vf": "VF0043",
       "cat": "Immune modulation",
       "species": "Haemophilus influenzae",
-      "len": 1215
+      "len": 265
     },
     {
       "vfg": "VFG000710",
@@ -758,11 +842,11 @@
       "len": 939
     },
     {
-      "vfg": "VFG000751",
+      "vfg": "VFG000750",
       "vf": "VF0174",
       "cat": "Adherence",
       "species": "Escherichia coli",
-      "len": 552
+      "len": 133
     },
     {
       "vfg": "VFG000763",
@@ -772,18 +856,25 @@
       "len": 274
     },
     {
+      "vfg": "VFG000794",
+      "vf": "VF1110",
+      "cat": "Effector delivery system",
+      "species": "Escherichia coli",
+      "len": 248
+    },
+    {
+      "vfg": "VFG000795",
+      "vf": "VF0191",
+      "cat": "Effector delivery system",
+      "species": "Escherichia coli",
+      "len": 92
+    },
+    {
       "vfg": "VFG000803",
       "vf": "VF0202",
       "cat": "Effector delivery system",
       "species": "Escherichia coli",
       "len": 934
-    },
-    {
-      "vfg": "VFG000813",
-      "vf": "VF0191",
-      "cat": "Effector delivery system",
-      "species": "Escherichia coli",
-      "len": 675
     },
     {
       "vfg": "VFG000832",
@@ -793,11 +884,11 @@
       "len": 123
     },
     {
-      "vfg": "VFG000837",
+      "vfg": "VFG000835",
       "vf": "VF0206",
       "cat": "Exotoxin",
       "species": "Escherichia coli",
-      "len": 319
+      "len": 315
     },
     {
       "vfg": "VFG000839",
@@ -863,18 +954,18 @@
       "len": 38
     },
     {
-      "vfg": "VFG000876",
+      "vfg": "VFG000871",
       "vf": "VF0221",
       "cat": "Adherence",
       "species": "Escherichia coli",
-      "len": 878
+      "len": 200
     },
     {
-      "vfg": "VFG000884",
+      "vfg": "VFG000880",
       "vf": "VF0220",
       "cat": "Adherence",
       "species": "Escherichia coli",
-      "len": 836
+      "len": 77
     },
     {
       "vfg": "VFG000902",
@@ -898,32 +989,39 @@
       "len": 1376
     },
     {
-      "vfg": "VFG000906",
+      "vfg": "VFG000905",
       "vf": "VF0225",
       "cat": "Exotoxin",
       "species": "Escherichia coli",
-      "len": 1024
+      "len": 170
     },
     {
-      "vfg": "VFG000912",
+      "vfg": "VFG000909",
       "vf": "VF0224",
       "cat": "Adherence",
       "species": "Escherichia coli",
-      "len": 876
+      "len": 180
     },
     {
-      "vfg": "VFG000917",
+      "vfg": "VFG000916",
       "vf": "VF0227",
       "cat": "Nutritional/Metabolic factor",
       "species": "Escherichia coli",
-      "len": 660
+      "len": 342
     },
     {
-      "vfg": "VFG000930",
+      "vfg": "VFG000923",
       "vf": "VF0228",
       "cat": "Nutritional/Metabolic factor",
       "species": "Escherichia coli",
-      "len": 1293
+      "len": 746
+    },
+    {
+      "vfg": "VFG000935",
+      "vf": "VF0230",
+      "cat": "Nutritional/Metabolic factor",
+      "species": "Escherichia coli",
+      "len": 725
     },
     {
       "vfg": "VFG000936",
@@ -933,11 +1031,18 @@
       "len": 731
     },
     {
-      "vfg": "VFG000944",
+      "vfg": "VFG000942",
       "vf": "VF0223",
       "cat": "Adherence",
       "species": "Escherichia coli",
-      "len": 859
+      "len": 101
+    },
+    {
+      "vfg": "VFG000952",
+      "vf": "VF0248",
+      "cat": "Exotoxin",
+      "species": "Streptococcus pyogenes",
+      "len": 225
     },
     {
       "vfg": "VFG000960",
@@ -1017,13 +1122,6 @@
       "len": 53
     },
     {
-      "vfg": "VFG000982",
-      "vf": "VF0248",
-      "cat": "Exotoxin",
-      "species": "Streptococcus pyogenes",
-      "len": 236
-    },
-    {
       "vfg": "VFG000983",
       "vf": "VF0265",
       "cat": "Exotoxin",
@@ -1038,11 +1136,11 @@
       "len": 633
     },
     {
-      "vfg": "VFG001006",
+      "vfg": "VFG000985",
       "vf": "VF0118",
       "cat": "Effector delivery system",
       "species": "Shigella flexneri",
-      "len": 686
+      "len": 332
     },
     {
       "vfg": "VFG001017",
@@ -1087,11 +1185,11 @@
       "len": 305
     },
     {
-      "vfg": "VFG001146",
+      "vfg": "VFG001144",
       "vf": "VF0036",
       "cat": "Adherence",
       "species": "Haemophilus influenzae",
-      "len": 837
+      "len": 213
     },
     {
       "vfg": "VFG001149",
@@ -1108,18 +1206,18 @@
       "len": 1536
     },
     {
-      "vfg": "VFG001231",
-      "vf": "VF0082",
-      "cat": "Adherence",
+      "vfg": "VFG001236",
+      "vf": "VF0273",
+      "cat": "Motility",
       "species": "Pseudomonas aeruginosa",
-      "len": 2472
+      "len": 146
     },
     {
-      "vfg": "VFG001275",
+      "vfg": "VFG001273",
       "vf": "VF0011",
       "cat": "Exotoxin",
       "species": "Staphylococcus aureus",
-      "len": 325
+      "len": 309
     },
     {
       "vfg": "VFG001276",
@@ -1136,25 +1234,25 @@
       "len": 486
     },
     {
-      "vfg": "VFG001280",
+      "vfg": "VFG001279",
       "vf": "VF0019",
       "cat": "Adherence",
       "species": "Staphylococcus aureus",
-      "len": 1347
+      "len": 955
     },
     {
-      "vfg": "VFG001283",
+      "vfg": "VFG001282",
       "vf": "VF0010",
       "cat": "Adherence",
       "species": "Staphylococcus aureus",
-      "len": 1015
+      "len": 943
     },
     {
-      "vfg": "VFG001285",
+      "vfg": "VFG001284",
       "vf": "VF0014",
       "cat": "Biofilm",
       "species": "Staphylococcus aureus",
-      "len": 412
+      "len": 186
     },
     {
       "vfg": "VFG001289",
@@ -1185,11 +1283,11 @@
       "len": 319
     },
     {
-      "vfg": "VFG001295",
+      "vfg": "VFG001294",
       "vf": "VF0006",
       "cat": "Enzyme",
       "species": "Staphylococcus aureus",
-      "len": 393
+      "len": 109
     },
     {
       "vfg": "VFG001296",
@@ -1199,11 +1297,11 @@
       "len": 327
     },
     {
-      "vfg": "VFG001300",
+      "vfg": "VFG001298",
       "vf": "VF0003",
       "cat": "Immune modulation",
       "species": "Staphylococcus aureus",
-      "len": 607
+      "len": 228
     },
     {
       "vfg": "VFG001313",
@@ -1234,6 +1332,20 @@
       "len": 690
     },
     {
+      "vfg": "VFG001317",
+      "vf": "VF0015",
+      "cat": "Nutritional/Metabolic factor",
+      "species": "Staphylococcus aureus",
+      "len": 645
+    },
+    {
+      "vfg": "VFG001325",
+      "vf": "VF0020",
+      "cat": "Exotoxin",
+      "species": "Staphylococcus aureus",
+      "len": 257
+    },
+    {
       "vfg": "VFG001328",
       "vf": "VF0021",
       "cat": "Enzyme",
@@ -1241,11 +1353,11 @@
       "len": 163
     },
     {
-      "vfg": "VFG001354",
+      "vfg": "VFG001353",
       "vf": "VF0145",
       "cat": "Adherence",
       "species": "Streptococcus pneumoniae",
-      "len": 627
+      "len": 273
     },
     {
       "vfg": "VFG001355",
@@ -1281,6 +1393,13 @@
       "cat": "Immune modulation",
       "species": "Streptococcus pneumoniae",
       "len": 744
+    },
+    {
+      "vfg": "VFG001362",
+      "vf": "VF0147",
+      "cat": "Immune modulation",
+      "species": "Streptococcus pneumoniae",
+      "len": 1856
     },
     {
       "vfg": "VFG001363",
@@ -1346,6 +1465,20 @@
       "len": 301
     },
     {
+      "vfg": "VFG001386",
+      "vf": "VF0286",
+      "cat": "Regulation",
+      "species": "Mycobacterium tuberculosis",
+      "len": 247
+    },
+    {
+      "vfg": "VFG001390",
+      "vf": "VF0298",
+      "cat": "Regulation",
+      "species": "Mycobacterium tuberculosis",
+      "len": 228
+    },
+    {
       "vfg": "VFG001391",
       "vf": "VF0302",
       "cat": "Nutritional/Metabolic factor",
@@ -1358,6 +1491,13 @@
       "cat": "Regulation",
       "species": "Mycobacterium tuberculosis",
       "len": 257
+    },
+    {
+      "vfg": "VFG001393",
+      "vf": "VF0299",
+      "cat": "Nutritional/Metabolic factor",
+      "species": "Mycobacterium tuberculosis",
+      "len": 521
     },
     {
       "vfg": "VFG001395",
@@ -1381,11 +1521,11 @@
       "len": 144
     },
     {
-      "vfg": "VFG001401",
+      "vfg": "VFG001400",
       "vf": "VF0320",
       "cat": "Exotoxin",
       "species": "Mycobacterium tuberculosis",
-      "len": 512
+      "len": 508
     },
     {
       "vfg": "VFG001404",
@@ -1407,6 +1547,13 @@
       "cat": "Regulation",
       "species": "Mycobacterium tuberculosis",
       "len": 230
+    },
+    {
+      "vfg": "VFG001407",
+      "vf": "VF0309",
+      "cat": "Immune modulation",
+      "species": "Mycobacterium tuberculosis",
+      "len": 583
     },
     {
       "vfg": "VFG001412",
@@ -1437,11 +1584,18 @@
       "len": 277
     },
     {
-      "vfg": "VFG001417",
+      "vfg": "VFG001416",
       "vf": "VF0319",
       "cat": "Nutritional/Metabolic factor",
       "species": "Mycobacterium tuberculosis",
-      "len": 309
+      "len": 139
+    },
+    {
+      "vfg": "VFG001419",
+      "vf": "VF0311",
+      "cat": "Adherence",
+      "species": "Mycobacterium tuberculosis",
+      "len": 338
     },
     {
       "vfg": "VFG001420",
@@ -1486,6 +1640,13 @@
       "len": 201
     },
     {
+      "vfg": "VFG001446",
+      "vf": "VF0222",
+      "cat": "Adherence",
+      "species": "Escherichia coli",
+      "len": 181
+    },
+    {
       "vfg": "VFG001447",
       "vf": "VF0240",
       "cat": "Exotoxin",
@@ -1521,11 +1682,11 @@
       "len": 330
     },
     {
-      "vfg": "VFG001802",
-      "vf": "VF0020",
-      "cat": "Exotoxin",
+      "vfg": "VFG001800",
+      "vf": "VF0009",
+      "cat": "Enzyme",
       "species": "Staphylococcus aureus",
-      "len": 266
+      "len": 280
     },
     {
       "vfg": "VFG001809",
@@ -1535,25 +1696,11 @@
       "len": 234
     },
     {
-      "vfg": "VFG001811",
-      "vf": "VF0311",
-      "cat": "Adherence",
-      "species": "Mycobacterium tuberculosis",
-      "len": 340
-    },
-    {
-      "vfg": "VFG001821",
-      "vf": "VF0299",
-      "cat": "Nutritional/Metabolic factor",
-      "species": "Mycobacterium tuberculosis",
-      "len": 1682
-    },
-    {
-      "vfg": "VFG001825",
+      "vfg": "VFG001824",
       "vf": "VF0317",
       "cat": "Regulation",
       "species": "Mycobacterium tuberculosis",
-      "len": 578
+      "len": 217
     },
     {
       "vfg": "VFG001826",
@@ -1577,11 +1724,18 @@
       "len": 315
     },
     {
-      "vfg": "VFG001839",
+      "vfg": "VFG001830",
       "vf": "VF0156",
       "cat": "Effector delivery system",
       "species": "Legionella pneumophila",
-      "len": 1048
+      "len": 86
+    },
+    {
+      "vfg": "VFG001854",
+      "vf": "VF0157",
+      "cat": "Motility",
+      "species": "Legionella pneumophila",
+      "len": 475
     },
     {
       "vfg": "VFG001855",
@@ -1591,6 +1745,13 @@
       "len": 549
     },
     {
+      "vfg": "VFG001856",
+      "vf": "VF0292",
+      "cat": "Nutritional/Metabolic factor",
+      "species": "Legionella pneumophila",
+      "len": 263
+    },
+    {
       "vfg": "VFG001857",
       "vf": "VF0293",
       "cat": "Nutritional/Metabolic factor",
@@ -1598,11 +1759,11 @@
       "len": 502
     },
     {
-      "vfg": "VFG001859",
+      "vfg": "VFG001858",
       "vf": "VF0160",
       "cat": "Nutritional/Metabolic factor",
       "species": "Legionella pneumophila",
-      "len": 751
+      "len": 75
     },
     {
       "vfg": "VFG001860",
@@ -1661,11 +1822,18 @@
       "len": 162
     },
     {
-      "vfg": "VFG001877",
+      "vfg": "VFG001870",
       "vf": "VF0154",
       "cat": "Effector delivery system",
       "species": "Legionella pneumophila",
-      "len": 791
+      "len": 399
+    },
+    {
+      "vfg": "VFG001880",
+      "vf": "VF0155",
+      "cat": "Adherence",
+      "species": "Legionella pneumophila",
+      "len": 574
     },
     {
       "vfg": "VFG001883",
@@ -1689,11 +1857,11 @@
       "len": 910
     },
     {
-      "vfg": "VFG001930",
+      "vfg": "VFG001890",
       "vf": "VF0114",
       "cat": "Motility",
       "species": "Campylobacter jejuni",
-      "len": 865
+      "len": 294
     },
     {
       "vfg": "VFG001931",
@@ -1703,11 +1871,11 @@
       "len": 319
     },
     {
-      "vfg": "VFG001934",
+      "vfg": "VFG001932",
       "vf": "VF0115",
       "cat": "Exotoxin",
       "species": "Campylobacter jejuni",
-      "len": 268
+      "len": 189
     },
     {
       "vfg": "VFG001935",
@@ -1717,18 +1885,25 @@
       "len": 610
     },
     {
-      "vfg": "VFG001944",
+      "vfg": "VFG001936",
       "vf": "VF0326",
       "cat": "Immune modulation",
       "species": "Campylobacter jejuni",
-      "len": 536
+      "len": 515
     },
     {
-      "vfg": "VFG001960",
+      "vfg": "VFG001949",
       "vf": "VF0323",
       "cat": "Immune modulation",
       "species": "Campylobacter jejuni",
-      "len": 1031
+      "len": 612
+    },
+    {
+      "vfg": "VFG001976",
+      "vf": "VF0325",
+      "cat": "Effector delivery system",
+      "species": "Campylobacter jejuni",
+      "len": 225
     },
     {
       "vfg": "VFG001983",
@@ -1752,13 +1927,6 @@
       "len": 424
     },
     {
-      "vfg": "VFG002012",
-      "vf": "VF0157",
-      "cat": "Motility",
-      "species": "Legionella pneumophila",
-      "len": 692
-    },
-    {
       "vfg": "VFG002029",
       "vf": "VF0330",
       "cat": "Adherence",
@@ -1780,32 +1948,46 @@
       "len": 475
     },
     {
-      "vfg": "VFG002045",
+      "vfg": "VFG002044",
       "vf": "VF0336",
       "cat": "Regulation",
       "species": "Bordetella pertussis",
-      "len": 1238
+      "len": 209
     },
     {
-      "vfg": "VFG002047",
+      "vfg": "VFG002046",
       "vf": "VF0333",
       "cat": "Effector delivery system",
       "species": "Shigella dysenteriae",
-      "len": 681
+      "len": 319
     },
     {
-      "vfg": "VFG002063",
+      "vfg": "VFG002057",
       "vf": "VF0334",
       "cat": "Effector delivery system",
       "species": "Pseudomonas aeruginosa",
-      "len": 1101
+      "len": 570
     },
     {
-      "vfg": "VFG002088",
+      "vfg": "VFG002078",
       "vf": "VF0335",
       "cat": "Effector delivery system",
       "species": "Vibrio cholerae",
-      "len": 1166
+      "len": 589
+    },
+    {
+      "vfg": "VFG002091",
+      "vf": "VF0634",
+      "cat": "Effector delivery system",
+      "species": "Vibrio cholerae",
+      "len": 1017
+    },
+    {
+      "vfg": "VFG002095",
+      "vf": "VF0798",
+      "cat": "Effector delivery system",
+      "species": "Legionella pneumophila",
+      "len": 374
     },
     {
       "vfg": "VFG002097",
@@ -1815,18 +1997,18 @@
       "len": 427
     },
     {
-      "vfg": "VFG002120",
-      "vf": "VF0798",
-      "cat": "Effector delivery system",
-      "species": "Legionella pneumophila",
-      "len": 2225
-    },
-    {
-      "vfg": "VFG002149",
+      "vfg": "VFG002124",
       "vf": "VF0344",
       "cat": "Effector delivery system",
       "species": "Chlamydia trachomatis",
-      "len": 921
+      "len": 146
+    },
+    {
+      "vfg": "VFG002125",
+      "vf": "VF0711",
+      "cat": "Effector delivery system",
+      "species": "Chlamydia trachomatis",
+      "len": 421
     },
     {
       "vfg": "VFG002155",
@@ -1906,6 +2088,13 @@
       "len": 510
     },
     {
+      "vfg": "VFG002175",
+      "vf": "VF0356",
+      "cat": "Exotoxin",
+      "species": "Enterococcus faecalis",
+      "len": 94
+    },
+    {
       "vfg": "VFG002179",
       "vf": "VF0353",
       "cat": "Adherence",
@@ -1913,11 +2102,11 @@
       "len": 1873
     },
     {
-      "vfg": "VFG002186",
+      "vfg": "VFG002180",
       "vf": "VF0361",
       "cat": "Immune modulation",
       "species": "Enterococcus faecalis",
-      "len": 836
+      "len": 270
     },
     {
       "vfg": "VFG002191",
@@ -1934,11 +2123,11 @@
       "len": 447
     },
     {
-      "vfg": "VFG002196",
+      "vfg": "VFG002195",
       "vf": "VF0359",
       "cat": "Enzyme",
       "species": "Enterococcus faecalis",
-      "len": 1372
+      "len": 1004
     },
     {
       "vfg": "VFG002197",
@@ -1962,11 +2151,11 @@
       "len": 1872
     },
     {
-      "vfg": "VFG002211",
+      "vfg": "VFG002208",
       "vf": "VF0365",
       "cat": "Effector delivery system",
       "species": "Brucella melitensis",
-      "len": 831
+      "len": 238
     },
     {
       "vfg": "VFG002219",
@@ -1976,25 +2165,32 @@
       "len": 2867
     },
     {
-      "vfg": "VFG002233",
+      "vfg": "VFG002220",
+      "vf": "VF0367",
+      "cat": "Immune modulation",
+      "species": "Brucella melitensis",
+      "len": 543
+    },
+    {
+      "vfg": "VFG002231",
       "vf": "VF0369",
       "cat": "Effector delivery system",
       "species": "Bartonella henselae",
-      "len": 784
+      "len": 107
     },
     {
-      "vfg": "VFG002248",
+      "vfg": "VFG002241",
       "vf": "VF0682",
       "cat": "Effector delivery system",
       "species": "Bartonella henselae",
-      "len": 1043
+      "len": 544
     },
     {
-      "vfg": "VFG002259",
+      "vfg": "VFG002249",
       "vf": "VF0372",
       "cat": "Effector delivery system",
       "species": "Bartonella henselae",
-      "len": 823
+      "len": 222
     },
     {
       "vfg": "VFG002270",
@@ -2039,6 +2235,13 @@
       "len": 522
     },
     {
+      "vfg": "VFG002285",
+      "vf": "VF0391",
+      "cat": "Enzyme",
+      "species": "Clostridium perfringens",
+      "len": 382
+    },
+    {
       "vfg": "VFG002286",
       "vf": "VF0383",
       "cat": "Exotoxin",
@@ -2081,11 +2284,11 @@
       "len": 328
     },
     {
-      "vfg": "VFG002293",
+      "vfg": "VFG002292",
       "vf": "VF0381",
       "cat": "Exotoxin",
       "species": "Clostridium perfringens",
-      "len": 875
+      "len": 454
     },
     {
       "vfg": "VFG002296",
@@ -2144,53 +2347,53 @@
       "len": 730
     },
     {
-      "vfg": "VFG002356",
+      "vfg": "VFG002318",
       "vf": "VF0394",
       "cat": "Motility",
       "species": "Yersinia enterocolitica",
-      "len": 692
+      "len": 169
     },
     {
-      "vfg": "VFG002363",
+      "vfg": "VFG002360",
       "vf": "VF0392",
       "cat": "Immune modulation",
       "species": "Yersinia enterocolitica",
-      "len": 465
+      "len": 362
     },
     {
-      "vfg": "VFG002379",
+      "vfg": "VFG002378",
       "vf": "VF0310",
       "cat": "Effector delivery system",
       "species": "Mycobacterium tuberculosis",
-      "len": 100
+      "len": 95
     },
     {
-      "vfg": "VFG002382",
+      "vfg": "VFG002380",
       "vf": "VF0315",
       "cat": "Effector delivery system",
       "species": "Mycobacterium tuberculosis",
-      "len": 747
+      "len": 573
     },
     {
-      "vfg": "VFG002395",
+      "vfg": "VFG002393",
       "vf": "VF0402",
       "cat": "Effector delivery system",
       "species": "Mycobacterium tuberculosis",
-      "len": 1391
+      "len": 194
     },
     {
-      "vfg": "VFG002409",
+      "vfg": "VFG002404",
       "vf": "VF0403",
       "cat": "Effector delivery system",
       "species": "Staphylococcus aureus",
-      "len": 1479
+      "len": 152
     },
     {
-      "vfg": "VFG002415",
+      "vfg": "VFG002412",
       "vf": "VF0404",
       "cat": "Adherence",
       "species": "Escherichia coli",
-      "len": 841
+      "len": 222
     },
     {
       "vfg": "VFG002418",
@@ -2235,11 +2438,11 @@
       "len": 516
     },
     {
-      "vfg": "VFG002434",
+      "vfg": "VFG002425",
       "vf": "VF0431",
       "cat": "Adherence",
       "species": "Burkholderia pseudomallei",
-      "len": 589
+      "len": 172
     },
     {
       "vfg": "VFG002436",
@@ -2256,6 +2459,13 @@
       "len": 1654
     },
     {
+      "vfg": "VFG002438",
+      "vf": "VF0428",
+      "cat": "Effector delivery system",
+      "species": "Burkholderia pseudomallei",
+      "len": 353
+    },
+    {
       "vfg": "VFG002442",
       "vf": "VF0710",
       "cat": "Effector delivery system",
@@ -2263,11 +2473,11 @@
       "len": 512
     },
     {
-      "vfg": "VFG002446",
-      "vf": "VF0428",
+      "vfg": "VFG002474",
+      "vf": "VF0429",
       "cat": "Effector delivery system",
       "species": "Burkholderia pseudomallei",
-      "len": 880
+      "len": 164
     },
     {
       "vfg": "VFG002481",
@@ -2277,32 +2487,25 @@
       "len": 1007
     },
     {
-      "vfg": "VFG002489",
-      "vf": "VF0429",
-      "cat": "Effector delivery system",
-      "species": "Burkholderia pseudomallei",
-      "len": 1324
-    },
-    {
-      "vfg": "VFG002531",
+      "vfg": "VFG002490",
       "vf": "VF0430",
       "cat": "Motility",
       "species": "Burkholderia pseudomallei",
-      "len": 747
+      "len": 165
     },
     {
-      "vfg": "VFG002538",
+      "vfg": "VFG002537",
       "vf": "VF0433",
       "cat": "Biofilm",
       "species": "Burkholderia pseudomallei",
-      "len": 239
+      "len": 203
     },
     {
-      "vfg": "VFG002548",
+      "vfg": "VFG002545",
       "vf": "VF0436",
       "cat": "Immune modulation",
       "species": "Burkholderia pseudomallei",
-      "len": 2546
+      "len": 230
     },
     {
       "vfg": "VFG003454",
@@ -2319,18 +2522,25 @@
       "len": 835
     },
     {
-      "vfg": "VFG003540",
+      "vfg": "VFG003510",
       "vf": "VF1025",
       "cat": "Effector delivery system",
       "species": "Yersinia enterocolitica",
-      "len": 789
+      "len": 83
     },
     {
-      "vfg": "VFG003560",
+      "vfg": "VFG003511",
+      "vf": "VF1037",
+      "cat": "Effector delivery system",
+      "species": "Yersinia enterocolitica",
+      "len": 544
+    },
+    {
+      "vfg": "VFG003559",
       "vf": "VF0635",
       "cat": "Effector delivery system",
       "species": "Yersinia enterocolitica",
-      "len": 658
+      "len": 180
     },
     {
       "vfg": "VFG003624",
@@ -2347,11 +2557,18 @@
       "len": 581
     },
     {
-      "vfg": "VFG004925",
+      "vfg": "VFG004903",
       "vf": "VF0990",
       "cat": "Exotoxin",
       "species": "Staphylococcus aureus",
-      "len": 356
+      "len": 230
+    },
+    {
+      "vfg": "VFG005163",
+      "vf": "VF0243",
+      "cat": "Adherence",
+      "species": "Streptococcus pyogenes",
+      "len": 604
     },
     {
       "vfg": "VFG005197",
@@ -2359,13 +2576,6 @@
       "cat": "Adherence",
       "species": "Streptococcus pneumoniae",
       "len": 551
-    },
-    {
-      "vfg": "VFG005201",
-      "vf": "VF0243",
-      "cat": "Adherence",
-      "species": "Streptococcus pyogenes",
-      "len": 1164
     },
     {
       "vfg": "VFG005215",
@@ -2382,18 +2592,18 @@
       "len": 306
     },
     {
-      "vfg": "VFG005289",
+      "vfg": "VFG005277",
       "vf": "VF0527",
       "cat": "Adherence",
       "species": "Streptococcus agalactiae",
-      "len": 890
+      "len": 554
     },
     {
-      "vfg": "VFG005299",
+      "vfg": "VFG005291",
       "vf": "VF0528",
       "cat": "Adherence",
       "species": "Streptococcus agalactiae",
-      "len": 901
+      "len": 308
     },
     {
       "vfg": "VFG005301",
@@ -2408,13 +2618,6 @@
       "cat": "Adherence",
       "species": "Streptococcus mutans",
       "len": 1562
-    },
-    {
-      "vfg": "VFG005486",
-      "vf": "VF0147",
-      "cat": "Immune modulation",
-      "species": "Streptococcus pneumoniae",
-      "len": 2004
     },
     {
       "vfg": "VFG005584",
@@ -2438,11 +2641,11 @@
       "len": 255
     },
     {
-      "vfg": "VFG005787",
+      "vfg": "VFG005760",
       "vf": "VF0279",
       "cat": "Exotoxin",
       "species": "Streptococcus agalactiae",
-      "len": 731
+      "len": 101
     },
     {
       "vfg": "VFG005800",
@@ -2452,32 +2655,18 @@
       "len": 1020
     },
     {
-      "vfg": "VFG006034",
+      "vfg": "VFG005834",
       "vf": "VF0274",
       "cat": "Immune modulation",
       "species": "Streptococcus agalactiae",
-      "len": 485
+      "len": 413
     },
     {
-      "vfg": "VFG006218",
-      "vf": "VF0076",
-      "cat": "Invasion",
-      "species": "Neisseria meningitidis",
-      "len": 271
-    },
-    {
-      "vfg": "VFG006237",
-      "vf": "VF0081",
-      "cat": "Invasion",
-      "species": "Neisseria meningitidis",
-      "len": 392
-    },
-    {
-      "vfg": "VFG006303",
+      "vfg": "VFG006300",
       "vf": "VF0897",
       "cat": "Adherence",
       "species": "Neisseria meningitidis",
-      "len": 1829
+      "len": 1302
     },
     {
       "vfg": "VFG006339",
@@ -2485,13 +2674,6 @@
       "cat": "Adherence",
       "species": "Helicobacter pylori",
       "len": 733
-    },
-    {
-      "vfg": "VFG006543",
-      "vf": "VF0051",
-      "cat": "Motility",
-      "species": "Helicobacter pylori",
-      "len": 828
     },
     {
       "vfg": "VFG006717",
@@ -2515,11 +2697,11 @@
       "len": 399
     },
     {
-      "vfg": "VFG006902",
+      "vfg": "VFG006896",
       "vf": "VF0609",
       "cat": "Adherence",
       "species": "Vibrio cholerae",
-      "len": 562
+      "len": 153
     },
     {
       "vfg": "VFG006920",
@@ -2557,39 +2739,39 @@
       "len": 471
     },
     {
-      "vfg": "VFG007103",
+      "vfg": "VFG007043",
       "vf": "VF0613",
       "cat": "Effector delivery system",
       "species": "Vibrio cholerae",
-      "len": 674
+      "len": 252
     },
     {
-      "vfg": "VFG007140",
-      "vf": "VF0634",
-      "cat": "Effector delivery system",
-      "species": "Vibrio cholerae",
-      "len": 1163
-    },
-    {
-      "vfg": "VFG007152",
+      "vfg": "VFG007146",
       "vf": "VF0408",
       "cat": "Effector delivery system",
       "species": "Vibrio parahaemolyticus",
-      "len": 705
+      "len": 334
     },
     {
-      "vfg": "VFG007183",
+      "vfg": "VFG007180",
       "vf": "VF0632",
       "cat": "Effector delivery system",
       "species": "Vibrio parahaemolyticus",
-      "len": 497
+      "len": 387
     },
     {
-      "vfg": "VFG007192",
+      "vfg": "VFG007184",
       "vf": "VF0409",
       "cat": "Effector delivery system",
       "species": "Vibrio parahaemolyticus",
-      "len": 627
+      "len": 135
+    },
+    {
+      "vfg": "VFG007190",
+      "vf": "VF0633",
+      "cat": "Effector delivery system",
+      "species": "Vibrio parahaemolyticus",
+      "len": 289
     },
     {
       "vfg": "VFG007280",
@@ -2599,39 +2781,18 @@
       "len": 609
     },
     {
-      "vfg": "VFG007556",
+      "vfg": "VFG007286",
       "vf": "VF0519",
       "cat": "Motility",
       "species": "Vibrio cholerae",
-      "len": 785
+      "len": 377
     },
     {
-      "vfg": "VFG007849",
-      "vf": "VF0309",
-      "cat": "Immune modulation",
-      "species": "Mycobacterium tuberculosis",
-      "len": 2188
-    },
-    {
-      "vfg": "VFG008007",
+      "vfg": "VFG007980",
       "vf": "VF0803",
       "cat": "Immune modulation",
       "species": "Mycobacterium tuberculosis",
-      "len": 2126
-    },
-    {
-      "vfg": "VFG009810",
-      "vf": "VF0286",
-      "cat": "Regulation",
-      "species": "Mycobacterium tuberculosis",
-      "len": 485
-    },
-    {
-      "vfg": "VFG009869",
-      "vf": "VF0298",
-      "cat": "Regulation",
-      "species": "Mycobacterium tuberculosis",
-      "len": 504
+      "len": 267
     },
     {
       "vfg": "VFG010851",
@@ -2648,13 +2809,6 @@
       "len": 580
     },
     {
-      "vfg": "VFG010882",
-      "vf": "VF0292",
-      "cat": "Nutritional/Metabolic factor",
-      "species": "Legionella pneumophila",
-      "len": 650
-    },
-    {
       "vfg": "VFG010906",
       "vf": "VF0261",
       "cat": "Regulation",
@@ -2662,32 +2816,11 @@
       "len": 64
     },
     {
-      "vfg": "VFG011087",
-      "vf": "VF0687",
-      "cat": "Effector delivery system",
-      "species": "Bordetella pertussis",
-      "len": 656
-    },
-    {
-      "vfg": "VFG011505",
-      "vf": "VF0367",
-      "cat": "Immune modulation",
-      "species": "Brucella melitensis",
-      "len": 703
-    },
-    {
-      "vfg": "VFG011631",
+      "vfg": "VFG011626",
       "vf": "VF0368",
       "cat": "Regulation",
       "species": "Brucella melitensis",
-      "len": 601
-    },
-    {
-      "vfg": "VFG011757",
-      "vf": "VF0325",
-      "cat": "Effector delivery system",
-      "species": "Campylobacter jejuni",
-      "len": 822
+      "len": 239
     },
     {
       "vfg": "VFG012088",
@@ -2732,18 +2865,11 @@
       "len": 265
     },
     {
-      "vfg": "VFG012162",
-      "vf": "VF0391",
-      "cat": "Enzyme",
-      "species": "Clostridium perfringens",
-      "len": 1173
-    },
-    {
-      "vfg": "VFG012337",
-      "vf": "VF0222",
-      "cat": "Adherence",
-      "species": "Escherichia coli",
-      "len": 876
+      "vfg": "VFG012191",
+      "vf": "VF0375",
+      "cat": "Exotoxin",
+      "species": "Clostridium botulinum",
+      "len": 1296
     },
     {
       "vfg": "VFG012493",
@@ -2753,25 +2879,18 @@
       "len": 1014
     },
     {
-      "vfg": "VFG012509",
-      "vf": "VF0230",
-      "cat": "Nutritional/Metabolic factor",
-      "species": "Escherichia coli",
-      "len": 1219
-    },
-    {
-      "vfg": "VFG012597",
+      "vfg": "VFG012591",
       "vf": "VF0234",
       "cat": "Nutritional/Metabolic factor",
       "species": "Escherichia coli",
-      "len": 660
+      "len": 342
     },
     {
-      "vfg": "VFG013064",
+      "vfg": "VFG013063",
       "vf": "VF0256",
       "cat": "Nutritional/Metabolic factor",
       "species": "Shigella dysenteriae",
-      "len": 660
+      "len": 342
     },
     {
       "vfg": "VFG013075",
@@ -2788,18 +2907,18 @@
       "len": 202
     },
     {
-      "vfg": "VFG013235",
+      "vfg": "VFG013221",
       "vf": "VF0754",
       "cat": "Adherence",
       "species": "Haemophilus ducreyi",
-      "len": 560
+      "len": 85
     },
     {
-      "vfg": "VFG013248",
-      "vf": "VF0044",
-      "cat": "Immune modulation",
-      "species": "Haemophilus influenzae",
-      "len": 587
+      "vfg": "VFG013561",
+      "vf": "VF0401",
+      "cat": "Adherence",
+      "species": "Yersinia pseudotuberculosis",
+      "len": 147
     },
     {
       "vfg": "VFG013647",
@@ -2816,53 +2935,11 @@
       "len": 2795
     },
     {
-      "vfg": "VFG013658",
-      "vf": "VF0401",
-      "cat": "Adherence",
-      "species": "Yersinia pseudotuberculosis",
-      "len": 568
-    },
-    {
-      "vfg": "VFG014117",
-      "vf": "VF0085",
-      "cat": "Immune modulation",
-      "species": "Pseudomonas aeruginosa",
-      "len": 665
-    },
-    {
-      "vfg": "VFG014893",
-      "vf": "VF0091",
-      "cat": "Biofilm",
-      "species": "Pseudomonas aeruginosa",
-      "len": 868
-    },
-    {
-      "vfg": "VFG015165",
-      "vf": "VF0853",
-      "cat": "Effector delivery system",
-      "species": "Pseudomonas aeruginosa",
-      "len": 687
-    },
-    {
-      "vfg": "VFG015515",
-      "vf": "VF0100",
-      "cat": "Nutritional/Metabolic factor",
-      "species": "Pseudomonas aeruginosa",
-      "len": 627
-    },
-    {
       "vfg": "VFG015859",
       "vf": "VF0915",
       "cat": "Effector delivery system",
       "species": "Pseudomonas aeruginosa",
       "len": 1099
-    },
-    {
-      "vfg": "VFG016041",
-      "vf": "VF0094",
-      "cat": "Nutritional/Metabolic factor",
-      "species": "Pseudomonas aeruginosa",
-      "len": 5149
     },
     {
       "vfg": "VFG016216",
@@ -2886,11 +2963,11 @@
       "len": 466
     },
     {
-      "vfg": "VFG016278",
+      "vfg": "VFG016270",
       "vf": "VF0533",
       "cat": "Exotoxin",
       "species": "Bacillus cereus",
-      "len": 402
+      "len": 386
     },
     {
       "vfg": "VFG016338",
@@ -2914,11 +2991,11 @@
       "len": 1070
     },
     {
-      "vfg": "VFG016472",
+      "vfg": "VFG016463",
       "vf": "VF0426",
       "cat": "Adherence",
       "species": "Mycoplasma hyopneumoniae",
-      "len": 1879
+      "len": 1108
     },
     {
       "vfg": "VFG016557",
@@ -2928,11 +3005,11 @@
       "len": 59
     },
     {
-      "vfg": "VFG016784",
+      "vfg": "VFG016757",
       "vf": "VF0373",
       "cat": "Motility",
       "species": "Bartonella bacilliformis",
-      "len": 694
+      "len": 380
     },
     {
       "vfg": "VFG017885",
@@ -2956,13 +3033,6 @@
       "len": 172
     },
     {
-      "vfg": "VFG018682",
-      "vf": "VF0633",
-      "cat": "Effector delivery system",
-      "species": "Vibrio parahaemolyticus",
-      "len": 484
-    },
-    {
       "vfg": "VFG019014",
       "vf": "VF0393",
       "cat": "Exotoxin",
@@ -2977,18 +3047,18 @@
       "len": 269
     },
     {
-      "vfg": "VFG022051",
+      "vfg": "VFG022019",
       "vf": "VF0521",
       "cat": "Effector delivery system",
       "species": "Mycobacterium tuberculosis",
-      "len": 1330
+      "len": 631
     },
     {
-      "vfg": "VFG022340",
+      "vfg": "VFG022098",
       "vf": "VF1196",
       "cat": "Effector delivery system",
       "species": "Mycobacterium tuberculosis",
-      "len": 97
+      "len": 96
     },
     {
       "vfg": "VFG031564",
@@ -3061,18 +3131,25 @@
       "len": 466
     },
     {
-      "vfg": "VFG033393",
+      "vfg": "VFG033389",
       "vf": "VF0235",
       "cat": "Adherence",
       "species": "Escherichia coli",
-      "len": 322
+      "len": 175
     },
     {
-      "vfg": "VFG033545",
+      "vfg": "VFG033422",
       "vf": "VF0172",
       "cat": "Effector delivery system",
       "species": "Escherichia coli",
-      "len": 675
+      "len": 92
+    },
+    {
+      "vfg": "VFG033738",
+      "vf": "VF1111",
+      "cat": "Effector delivery system",
+      "species": "Escherichia coli",
+      "len": 254
     },
     {
       "vfg": "VFG034541",
@@ -3082,39 +3159,32 @@
       "len": 1539
     },
     {
-      "vfg": "VFG034576",
+      "vfg": "VFG034574",
+      "vf": "VF0215",
+      "cat": "Others",
+      "species": "Escherichia coli",
+      "len": 116
+    },
+    {
+      "vfg": "VFG034575",
       "vf": "VF0214",
       "cat": "Adherence",
       "species": "Escherichia coli",
-      "len": 841
+      "len": 146
     },
     {
-      "vfg": "VFG034636",
+      "vfg": "VFG034612",
       "vf": "VF0213",
       "cat": "Adherence",
       "species": "Escherichia coli",
-      "len": 894
+      "len": 238
     },
     {
-      "vfg": "VFG034721",
+      "vfg": "VFG034679",
       "vf": "VF0237",
       "cat": "Invasion",
       "species": "Escherichia coli",
-      "len": 577
-    },
-    {
-      "vfg": "VFG034915",
-      "vf": "VF1110",
-      "cat": "Effector delivery system",
-      "species": "Escherichia coli",
-      "len": 802
-    },
-    {
-      "vfg": "VFG034917",
-      "vf": "VF1111",
-      "cat": "Effector delivery system",
-      "species": "Escherichia coli",
-      "len": 802
+      "len": 460
     },
     {
       "vfg": "VFG034928",
@@ -3131,13 +3201,6 @@
       "len": 3223
     },
     {
-      "vfg": "VFG035909",
-      "vf": "VF0215",
-      "cat": "Others",
-      "species": "Escherichia coli",
-      "len": 412
-    },
-    {
       "vfg": "VFG036066",
       "vf": "VF0210",
       "cat": "Exotoxin",
@@ -3145,25 +3208,18 @@
       "len": 258
     },
     {
-      "vfg": "VFG036778",
-      "vf": "VF0078",
-      "cat": "Immune modulation",
-      "species": "Neisseria meningitidis",
-      "len": 423
-    },
-    {
-      "vfg": "VFG036956",
+      "vfg": "VFG036938",
       "vf": "VF0450",
       "cat": "Antimicrobial activity/Competitive advantage",
       "species": "Neisseria meningitidis",
-      "len": 508
+      "len": 384
     },
     {
-      "vfg": "VFG036992",
+      "vfg": "VFG036974",
       "vf": "VF0451",
       "cat": "Antimicrobial activity/Competitive advantage",
       "species": "Neisseria meningitidis",
-      "len": 1067
+      "len": 412
     },
     {
       "vfg": "VFG037028",
@@ -3173,11 +3229,11 @@
       "len": 504
     },
     {
-      "vfg": "VFG037082",
+      "vfg": "VFG037046",
       "vf": "VF0455",
       "cat": "Stress survival",
       "species": "Neisseria meningitidis",
-      "len": 304
+      "len": 241
     },
     {
       "vfg": "VFG037100",
@@ -3208,11 +3264,11 @@
       "len": 174
     },
     {
-      "vfg": "VFG037177",
+      "vfg": "VFG037176",
       "vf": "VF0470",
       "cat": "Exotoxin",
       "species": "Acinetobacter baumannii",
-      "len": 742
+      "len": 722
     },
     {
       "vfg": "VFG037203",
@@ -3222,25 +3278,25 @@
       "len": 541
     },
     {
-      "vfg": "VFG037330",
+      "vfg": "VFG037218",
       "vf": "VF0467",
       "cat": "Nutritional/Metabolic factor",
       "species": "Acinetobacter baumannii",
-      "len": 980
+      "len": 389
     },
     {
-      "vfg": "VFG037497",
+      "vfg": "VFG037470",
       "vf": "VF0636",
       "cat": "Nutritional/Metabolic factor",
       "species": "Acinetobacter baumannii",
-      "len": 1034
+      "len": 296
     },
     {
-      "vfg": "VFG037612",
+      "vfg": "VFG037560",
       "vf": "VF0461",
       "cat": "Biofilm",
       "species": "Acinetobacter baumannii",
-      "len": 832
+      "len": 178
     },
     {
       "vfg": "VFG037638",
@@ -3257,18 +3313,18 @@
       "len": 609
     },
     {
-      "vfg": "VFG037720",
+      "vfg": "VFG037705",
       "vf": "VF0504",
       "cat": "Biofilm",
       "species": "Acinetobacter baumannii",
-      "len": 1059
+      "len": 406
     },
     {
-      "vfg": "VFG037807",
+      "vfg": "VFG037747",
       "vf": "VF0466",
       "cat": "Immune modulation",
       "species": "Acinetobacter baumannii",
-      "len": 391
+      "len": 327
     },
     {
       "vfg": "VFG037852",
@@ -3285,18 +3341,18 @@
       "len": 356
     },
     {
-      "vfg": "VFG038205",
+      "vfg": "VFG038191",
       "vf": "VF0471",
       "cat": "Biofilm",
       "species": "Acinetobacter baumannii",
-      "len": 238
+      "len": 188
     },
     {
-      "vfg": "VFG038234",
+      "vfg": "VFG038219",
       "vf": "VF0463",
       "cat": "Regulation",
       "species": "Acinetobacter baumannii",
-      "len": 549
+      "len": 238
     },
     {
       "vfg": "VFG038249",
@@ -3306,25 +3362,39 @@
       "len": 348
     },
     {
-      "vfg": "VFG038273",
+      "vfg": "VFG038261",
       "vf": "VF0478",
       "cat": "Effector delivery system",
       "species": "Aeromonas hydrophila",
-      "len": 678
+      "len": 548
     },
     {
-      "vfg": "VFG038342",
+      "vfg": "VFG038317",
+      "vf": "VF0475",
+      "cat": "Adherence",
+      "species": "Aeromonas hydrophila",
+      "len": 290
+    },
+    {
+      "vfg": "VFG038320",
       "vf": "VF0479",
       "cat": "Effector delivery system",
       "species": "Aeromonas salmonicida",
-      "len": 705
+      "len": 221
     },
     {
-      "vfg": "VFG038363",
+      "vfg": "VFG038359",
       "vf": "VF0652",
       "cat": "Effector delivery system",
       "species": "Aeromonas salmonicida",
-      "len": 728
+      "len": 463
+    },
+    {
+      "vfg": "VFG038365",
+      "vf": "VF0480",
+      "cat": "Effector delivery system",
+      "species": "Aeromonas hydrophila",
+      "len": 172
     },
     {
       "vfg": "VFG038367",
@@ -3334,32 +3404,18 @@
       "len": 927
     },
     {
-      "vfg": "VFG038402",
-      "vf": "VF0480",
-      "cat": "Effector delivery system",
-      "species": "Aeromonas hydrophila",
-      "len": 1161
-    },
-    {
-      "vfg": "VFG038413",
+      "vfg": "VFG038409",
       "vf": "VF0486",
       "cat": "Adherence",
       "species": "Aeromonas hydrophila",
-      "len": 844
+      "len": 180
     },
     {
-      "vfg": "VFG038488",
-      "vf": "VF0475",
-      "cat": "Adherence",
-      "species": "Aeromonas hydrophila",
-      "len": 1117
-    },
-    {
-      "vfg": "VFG038545",
+      "vfg": "VFG038509",
       "vf": "VF0476",
       "cat": "Adherence",
       "species": "Aeromonas hydrophila",
-      "len": 465
+      "len": 460
     },
     {
       "vfg": "VFG038561",
@@ -3369,18 +3425,18 @@
       "len": 1240
     },
     {
-      "vfg": "VFG038707",
+      "vfg": "VFG038619",
       "vf": "VF0473",
       "cat": "Motility",
       "species": "Aeromonas hydrophila",
-      "len": 729
+      "len": 199
     },
     {
-      "vfg": "VFG038882",
+      "vfg": "VFG038855",
       "vf": "VF0474",
       "cat": "Motility",
       "species": "Aeromonas salmonicida",
-      "len": 779
+      "len": 236
     },
     {
       "vfg": "VFG038892",
@@ -3397,11 +3453,11 @@
       "len": 4685
     },
     {
-      "vfg": "VFG038964",
+      "vfg": "VFG038922",
       "vf": "VF0487",
       "cat": "Effector delivery system",
       "species": "Anaplasma phagocytophilum",
-      "len": 2360
+      "len": 271
     },
     {
       "vfg": "VFG039063",
@@ -3432,25 +3488,25 @@
       "len": 355
     },
     {
-      "vfg": "VFG039131",
+      "vfg": "VFG039101",
       "vf": "VF0503",
       "cat": "Effector delivery system",
       "species": "Coxiella burnetii",
-      "len": 1039
+      "len": 257
     },
     {
-      "vfg": "VFG039311",
+      "vfg": "VFG039226",
       "vf": "VF0696",
       "cat": "Effector delivery system",
       "species": "Coxiella burnetii",
-      "len": 1392
+      "len": 809
     },
     {
-      "vfg": "VFG040108",
+      "vfg": "VFG039753",
       "vf": "VF0488",
       "cat": "Effector delivery system",
       "species": "Rickettsia typhi",
-      "len": 1154
+      "len": 262
     },
     {
       "vfg": "VFG040442",
@@ -3509,11 +3565,11 @@
       "len": 305
     },
     {
-      "vfg": "VFG040767",
+      "vfg": "VFG040745",
       "vf": "VF0494",
       "cat": "Exotoxin",
       "species": "Rickettsia typhi",
-      "len": 596
+      "len": 498
     },
     {
       "vfg": "VFG040807",
@@ -3544,32 +3600,46 @@
       "len": 1335
     },
     {
-      "vfg": "VFG041027",
+      "vfg": "VFG041012",
       "vf": "VF0943",
       "cat": "Effector delivery system",
       "species": "Pseudomonas aeruginosa",
-      "len": 1175
+      "len": 842
     },
     {
-      "vfg": "VFG041033",
+      "vfg": "VFG041030",
+      "vf": "VF1194",
+      "cat": "Effector delivery system",
+      "species": "Pseudomonas aeruginosa",
+      "len": 154
+    },
+    {
+      "vfg": "VFG041031",
       "vf": "VF0944",
       "cat": "Effector delivery system",
       "species": "Pseudomonas aeruginosa",
-      "len": 1271
+      "len": 361
     },
     {
-      "vfg": "VFG041109",
+      "vfg": "VFG041090",
       "vf": "VF0974",
       "cat": "Effector delivery system",
       "species": "Salmonella enterica",
-      "len": 1289
+      "len": 351
     },
     {
-      "vfg": "VFG041732",
-      "vf": "VF1037",
+      "vfg": "VFG041101",
+      "vf": "VF1195",
       "cat": "Effector delivery system",
-      "species": "Yersinia enterocolitica",
-      "len": 702
+      "species": "Salmonella enterica",
+      "len": 161
+    },
+    {
+      "vfg": "VFG041431",
+      "vf": "VF0695",
+      "cat": "Effector delivery system",
+      "species": "Brucella melitensis",
+      "len": 105
     },
     {
       "vfg": "VFG042311",
@@ -3593,39 +3663,32 @@
       "len": 1305
     },
     {
-      "vfg": "VFG042855",
+      "vfg": "VFG042845",
       "vf": "VF0458",
       "cat": "Adherence",
       "species": "Francisella tularensis",
-      "len": 594
+      "len": 342
     },
     {
-      "vfg": "VFG042861",
-      "vf": "VF0155",
-      "cat": "Adherence",
-      "species": "Legionella pneumophila",
-      "len": 1169
-    },
-    {
-      "vfg": "VFG042887",
+      "vfg": "VFG042883",
       "vf": "VF0966",
       "cat": "Invasion",
       "species": "Salmonella enterica",
-      "len": 571
+      "len": 139
     },
     {
-      "vfg": "VFG042968",
+      "vfg": "VFG042967",
       "vf": "VF0531",
       "cat": "Adherence",
       "species": "Streptococcus pyogenes",
-      "len": 340
+      "len": 185
     },
     {
-      "vfg": "VFG042973",
+      "vfg": "VFG042972",
       "vf": "VF0530",
       "cat": "Adherence",
       "species": "Streptococcus pneumoniae",
-      "len": 398
+      "len": 183
     },
     {
       "vfg": "VFG042976",
@@ -3633,13 +3696,6 @@
       "cat": "Adherence",
       "species": "Enterococcus faecalis",
       "len": 1154
-    },
-    {
-      "vfg": "VFG043014",
-      "vf": "VF0273",
-      "cat": "Motility",
-      "species": "Pseudomonas aeruginosa",
-      "len": 753
     },
     {
       "vfg": "VFG043465",
@@ -3705,18 +3761,25 @@
       "len": 485
     },
     {
-      "vfg": "VFG043625",
+      "vfg": "VFG043623",
       "vf": "VF0567",
       "cat": "Biofilm",
       "species": "Klebsiella pneumoniae",
-      "len": 828
+      "len": 211
     },
     {
-      "vfg": "VFG043640",
+      "vfg": "VFG043629",
       "vf": "VF0612",
       "cat": "Adherence",
       "species": "Vibrio vulnificus",
-      "len": 442
+      "len": 96
+    },
+    {
+      "vfg": "VFG043656",
+      "vf": "VF0384",
+      "cat": "Exotoxin",
+      "species": "Clostridium botulinum",
+      "len": 431
     },
     {
       "vfg": "VFG043671",
@@ -3733,18 +3796,11 @@
       "len": 666
     },
     {
-      "vfg": "VFG043733",
+      "vfg": "VFG043732",
       "vf": "VF0185",
       "cat": "Exotoxin",
       "species": "Escherichia coli",
-      "len": 269
-    },
-    {
-      "vfg": "VFG043778",
-      "vf": "VF0375",
-      "cat": "Exotoxin",
-      "species": "Clostridium botulinum",
-      "len": 1297
+      "len": 258
     },
     {
       "vfg": "VFG044015",
@@ -3761,13 +3817,6 @@
       "len": 443
     },
     {
-      "vfg": "VFG044025",
-      "vf": "VF0384",
-      "cat": "Exotoxin",
-      "species": "Clostridium botulinum",
-      "len": 721
-    },
-    {
       "vfg": "VFG044044",
       "vf": "VF0518",
       "cat": "Exotoxin",
@@ -3775,39 +3824,39 @@
       "len": 189
     },
     {
-      "vfg": "VFG044199",
+      "vfg": "VFG044194",
       "vf": "VF0551",
       "cat": "Nutritional/Metabolic factor",
       "species": "Francisella tularensis",
-      "len": 639
+      "len": 114
     },
     {
-      "vfg": "VFG044329",
-      "vf": "VF0564",
-      "cat": "Nutritional/Metabolic factor",
-      "species": "Klebsiella pneumoniae",
-      "len": 3163
-    },
-    {
-      "vfg": "VFG044336",
+      "vfg": "VFG044322",
       "vf": "VF0563",
       "cat": "Nutritional/Metabolic factor",
       "species": "Klebsiella pneumoniae",
-      "len": 1214
+      "len": 311
     },
     {
-      "vfg": "VFG044443",
-      "vf": "VF0015",
+      "vfg": "VFG044323",
+      "vf": "VF0564",
       "cat": "Nutritional/Metabolic factor",
-      "species": "Staphylococcus aureus",
-      "len": 895
+      "species": "Klebsiella pneumoniae",
+      "len": 434
     },
     {
-      "vfg": "VFG045312",
+      "vfg": "VFG044346",
+      "vf": "VF0550",
+      "cat": "Nutritional/Metabolic factor",
+      "species": "Francisella tularensis",
+      "len": 557
+    },
+    {
+      "vfg": "VFG045296",
       "vf": "VF0171",
       "cat": "Immune modulation",
       "species": "Legionella pneumophila",
-      "len": 598
+      "len": 451
     },
     {
       "vfg": "VFG045326",
@@ -3838,11 +3887,11 @@
       "len": 1025
     },
     {
-      "vfg": "VFG045337",
+      "vfg": "VFG045331",
       "vf": "VF0410",
       "cat": "Exotoxin",
       "species": "Listeria innocua",
-      "len": 437
+      "len": 49
     },
     {
       "vfg": "VFG045341",
@@ -3901,11 +3950,11 @@
       "len": 1416
     },
     {
-      "vfg": "VFG045386",
+      "vfg": "VFG045355",
       "vf": "VF0520",
       "cat": "Immune modulation",
       "species": "Anaplasma phagocytophilum",
-      "len": 461
+      "len": 355
     },
     {
       "vfg": "VFG045464",
@@ -3934,13 +3983,6 @@
       "cat": "Regulation",
       "species": "Burkholderia pseudomallei",
       "len": 580
-    },
-    {
-      "vfg": "VFG045474",
-      "vf": "VF0356",
-      "cat": "Exotoxin",
-      "species": "Enterococcus faecalis",
-      "len": 993
     },
     {
       "vfg": "VFG045626",
@@ -4027,25 +4069,18 @@
       "len": 514
     },
     {
-      "vfg": "VFG046680",
+      "vfg": "VFG046610",
       "vf": "VF0543",
       "cat": "Immune modulation",
       "species": "Francisella tularensis",
-      "len": 560
+      "len": 222
     },
     {
-      "vfg": "VFG047111",
+      "vfg": "VFG046887",
       "vf": "VF0542",
       "cat": "Immune modulation",
       "species": "Francisella tularensis",
-      "len": 628
-    },
-    {
-      "vfg": "VFG047401",
-      "vf": "VF0550",
-      "cat": "Nutritional/Metabolic factor",
-      "species": "Francisella tularensis",
-      "len": 747
+      "len": 347
     },
     {
       "vfg": "VFG047416",
@@ -4055,18 +4090,18 @@
       "len": 485
     },
     {
-      "vfg": "VFG047529",
+      "vfg": "VFG047431",
       "vf": "VF0552",
       "cat": "Nutritional/Metabolic factor",
       "species": "Francisella tularensis",
-      "len": 428
+      "len": 260
     },
     {
-      "vfg": "VFG047582",
+      "vfg": "VFG047564",
       "vf": "VF0559",
       "cat": "Nutritional/Metabolic factor",
       "species": "Francisella tularensis",
-      "len": 770
+      "len": 347
     },
     {
       "vfg": "VFG047600",
@@ -4104,18 +4139,18 @@
       "len": 473
     },
     {
-      "vfg": "VFG047708",
+      "vfg": "VFG047690",
       "vf": "VF0558",
       "cat": "Nutritional/Metabolic factor",
       "species": "Francisella tularensis",
-      "len": 1094
+      "len": 306
     },
     {
-      "vfg": "VFG047777",
+      "vfg": "VFG047748",
       "vf": "VF0544",
       "cat": "Effector delivery system",
       "species": "Francisella tularensis",
-      "len": 1093
+      "len": 820
     },
     {
       "vfg": "VFG048030",
@@ -4132,81 +4167,81 @@
       "len": 1075
     },
     {
-      "vfg": "VFG048277",
+      "vfg": "VFG048229",
       "vf": "VF0566",
       "cat": "Adherence",
       "species": "Klebsiella pneumoniae",
-      "len": 870
+      "len": 201
     },
     {
-      "vfg": "VFG048498",
+      "vfg": "VFG048409",
       "vf": "VF0562",
       "cat": "Nutritional/Metabolic factor",
       "species": "Klebsiella pneumoniae",
-      "len": 1293
+      "len": 248
     },
     {
-      "vfg": "VFG048621",
+      "vfg": "VFG048600",
       "vf": "VF0565",
       "cat": "Nutritional/Metabolic factor",
       "species": "Klebsiella pneumoniae",
-      "len": 733
+      "len": 574
     },
     {
-      "vfg": "VFG048755",
+      "vfg": "VFG048632",
       "vf": "VF0569",
       "cat": "Effector delivery system",
       "species": "Klebsiella pneumoniae",
-      "len": 1151
+      "len": 163
     },
     {
-      "vfg": "VFG048951",
+      "vfg": "VFG048797",
       "vf": "VF0560",
       "cat": "Immune modulation",
       "species": "Klebsiella pneumoniae",
-      "len": 717
+      "len": 388
     },
     {
-      "vfg": "VFG048998",
+      "vfg": "VFG048995",
       "vf": "VF0570",
       "cat": "Regulation",
       "species": "Klebsiella pneumoniae",
-      "len": 212
+      "len": 210
     },
     {
-      "vfg": "VFG049018",
+      "vfg": "VFG049007",
       "vf": "VF0571",
       "cat": "Regulation",
       "species": "Klebsiella pneumoniae",
-      "len": 216
+      "len": 207
     },
     {
-      "vfg": "VFG049073",
+      "vfg": "VFG049029",
       "vf": "VF0561",
       "cat": "Immune modulation",
       "species": "Klebsiella pneumoniae",
-      "len": 631
+      "len": 402
     },
     {
-      "vfg": "VFG049120",
+      "vfg": "VFG049114",
       "vf": "VF0572",
       "cat": "Nutritional/Metabolic factor",
       "species": "Klebsiella pneumoniae",
-      "len": 453
+      "len": 307
     },
     {
-      "vfg": "VFG049144",
+      "vfg": "VFG049133",
       "vf": "VF0568",
       "cat": "Antimicrobial activity/Competitive advantage",
       "species": "Klebsiella pneumoniae",
-      "len": 1048
+      "len": 397
     },
     {
-      "vfg": "VFG049148",
+      "vfg": "VFG049147",
       "vf": "VF0573",
       "cat": "Exotoxin",
       "species": "Klebsiella pneumoniae",
-      "len": 3206
+      "len": 244
     },
     {
       "vfg": "VFG049468",
@@ -4237,11 +4272,11 @@
       "len": 116
     },
     {
-      "vfg": "VFG049917",
+      "vfg": "VFG049898",
       "vf": "VF0579",
       "cat": "Effector delivery system",
       "species": "Shigella sonnei",
-      "len": 1402
+      "len": 160
     },
     {
       "vfg": "VFG049918",
@@ -4258,18 +4293,18 @@
       "len": 652
     },
     {
-      "vfg": "VFG049962",
+      "vfg": "VFG049956",
       "vf": "VF0584",
       "cat": "Nutritional/Metabolic factor",
       "species": "Bacillus anthracis",
-      "len": 612
+      "len": 602
     },
     {
-      "vfg": "VFG050038",
+      "vfg": "VFG049994",
       "vf": "VF0586",
       "cat": "Nutritional/Metabolic factor",
       "species": "Bacillus cereus",
-      "len": 2385
+      "len": 256
     },
     {
       "vfg": "VFG050111",
@@ -4279,18 +4314,18 @@
       "len": 493
     },
     {
-      "vfg": "VFG050115",
+      "vfg": "VFG050112",
       "vf": "VF0583",
       "cat": "Exotoxin",
       "species": "Bacillus cereus",
-      "len": 3374
+      "len": 268
     },
     {
-      "vfg": "VFG050161",
+      "vfg": "VFG050157",
       "vf": "VF0239",
       "cat": "Invasion",
       "species": "Escherichia coli",
-      "len": 675
+      "len": 327
     },
     {
       "vfg": "VFG050212",
@@ -4342,18 +4377,11 @@
       "len": 220
     },
     {
-      "vfg": "VFG050233",
-      "vf": "VF0711",
-      "cat": "Effector delivery system",
-      "species": "Chlamydia trachomatis",
-      "len": 1449
-    },
-    {
-      "vfg": "VFG050277",
+      "vfg": "VFG050274",
       "vf": "VF0615",
       "cat": "Biofilm",
       "species": "Vibrio cholerae",
-      "len": 469
+      "len": 166
     },
     {
       "vfg": "VFG050283",
@@ -4412,11 +4440,11 @@
       "len": 244
     },
     {
-      "vfg": "VFG050300",
+      "vfg": "VFG050295",
       "vf": "VF1191",
       "cat": "Adherence",
       "species": "Pseudomonas aeruginosa",
-      "len": 421
+      "len": 162
     },
     {
       "vfg": "VFG050301",
@@ -4433,18 +4461,18 @@
       "len": 1862
     },
     {
-      "vfg": "VFG050567",
+      "vfg": "VFG050313",
       "vf": "VF1334",
       "cat": "Adherence",
       "species": "Acinetobacter baumannii",
-      "len": 1284
+      "len": 352
     },
     {
-      "vfg": "VFG050742",
+      "vfg": "VFG050712",
       "vf": "VF1335",
       "cat": "Effector delivery system",
       "species": "Acinetobacter baumannii",
-      "len": 758
+      "len": 247
     },
     {
       "vfg": "VFG050901",
@@ -4454,18 +4482,18 @@
       "len": 593
     },
     {
-      "vfg": "VFG050959",
+      "vfg": "VFG050910",
       "vf": "VF1337",
       "cat": "Effector delivery system",
       "species": "Acinetobacter baumannii",
-      "len": 1274
+      "len": 948
     },
     {
-      "vfg": "VFG051111",
+      "vfg": "VFG051109",
       "vf": "VF1338",
       "cat": "Effector delivery system",
       "species": "Acinetobacter baumannii",
-      "len": 941
+      "len": 248
     },
     {
       "vfg": "VFG051113",
@@ -4517,18 +4545,11 @@
       "len": 311
     },
     {
-      "vfg": "VFG051244",
-      "vf": "VF0695",
-      "cat": "Effector delivery system",
-      "species": "Brucella melitensis",
-      "len": 1582
-    },
-    {
-      "vfg": "VFG051314",
+      "vfg": "VFG051291",
       "vf": "VF1346",
       "cat": "Adherence",
       "species": "Chlamydia trachomatis",
-      "len": 1770
+      "len": 975
     },
     {
       "vfg": "VFG051474",
@@ -4538,13 +4559,6 @@
       "len": 433
     },
     {
-      "vfg": "VFG051484",
-      "vf": "VF1194",
-      "cat": "Effector delivery system",
-      "species": "Pseudomonas aeruginosa",
-      "len": 1317
-    },
-    {
       "vfg": "VFG051488",
       "vf": "VF1350",
       "cat": "Effector delivery system",
@@ -4552,11 +4566,11 @@
       "len": 745
     },
     {
-      "vfg": "VFG052256",
+      "vfg": "VFG052045",
       "vf": "VF0318",
       "cat": "Immune modulation",
       "species": "Mycobacterium tuberculosis",
-      "len": 1400
+      "len": 1094
     },
     {
       "vfg": "VFG052267",
@@ -4566,11 +4580,11 @@
       "len": 1141
     },
     {
-      "vfg": "VFG052332",
+      "vfg": "VFG052292",
       "vf": "VF0370",
       "cat": "Immune modulation",
       "species": "Bartonella henselae",
-      "len": 542
+      "len": 291
     },
     {
       "vfg": "VFG052339",
@@ -4580,11 +4594,11 @@
       "len": 356
     },
     {
-      "vfg": "VFG052342",
+      "vfg": "VFG052341",
       "vf": "VF1362",
       "cat": "Exotoxin",
       "species": "Vibrio parahaemolyticus",
-      "len": 438
+      "len": 111
     },
     {
       "vfg": "VFG052343",
@@ -4601,20 +4615,6 @@
       "len": 241
     },
     {
-      "vfg": "VFG052350",
-      "vf": "VF1195",
-      "cat": "Effector delivery system",
-      "species": "Salmonella enterica",
-      "len": 1364
-    },
-    {
-      "vfg": "VFG052352",
-      "vf": "VF0009",
-      "cat": "Enzyme",
-      "species": "Staphylococcus aureus",
-      "len": 281
-    },
-    {
       "vfg": "VFG052355",
       "vf": "VF1205",
       "cat": "Immune modulation",
@@ -4629,11 +4629,11 @@
       "len": 160
     },
     {
-      "vfg": "VFG052394",
+      "vfg": "VFG052358",
       "vf": "VF1368",
       "cat": "Motility",
       "species": "Borrelia burgdorferi",
-      "len": 931
+      "len": 336
     },
     {
       "vfg": "VFG052410",
@@ -4650,11 +4650,11 @@
       "len": 191
     },
     {
-      "vfg": "VFG052414",
+      "vfg": "VFG052413",
       "vf": "VF1371",
       "cat": "Adherence",
       "species": "Borrelia burgdorferi",
-      "len": 296
+      "len": 273
     },
     {
       "vfg": "VFG052415",
@@ -4685,11 +4685,11 @@
       "len": 339
     },
     {
-      "vfg": "VFG052420",
+      "vfg": "VFG052419",
       "vf": "VF1377",
       "cat": "Nutritional/Metabolic factor",
       "species": "Borrelia burgdorferi",
-      "len": 511
+      "len": 404
     },
     {
       "vfg": "VFG052421",
@@ -4762,11 +4762,11 @@
       "len": 345
     },
     {
-      "vfg": "VFG052434",
+      "vfg": "VFG052433",
       "vf": "VF1389",
       "cat": "Immune modulation",
       "species": "Borrelia burgdorferi",
-      "len": 186
+      "len": 177
     },
     {
       "vfg": "VFG052435",
@@ -4804,53 +4804,53 @@
       "len": 315
     },
     {
-      "vfg": "VFG052998",
+      "vfg": "VFG052977",
       "vf": "VF1395",
       "cat": "Effector delivery system",
       "species": "Enterobacter cloacae",
-      "len": 1206
+      "len": 167
     },
     {
-      "vfg": "VFG053128",
+      "vfg": "VFG053091",
       "vf": "VF1396",
       "cat": "Effector delivery system",
       "species": "Enterobacter chengduensis",
-      "len": 1022
+      "len": 165
     },
     {
-      "vfg": "VFG053162",
+      "vfg": "VFG053160",
       "vf": "VF1401",
       "cat": "Effector delivery system",
       "species": "Enterobacter cloacae",
-      "len": 488
+      "len": 163
     },
     {
-      "vfg": "VFG053219",
+      "vfg": "VFG053177",
       "vf": "VF1397",
       "cat": "Biofilm",
       "species": "Enterobacter cloacae",
-      "len": 277
+      "len": 110
     },
     {
-      "vfg": "VFG053247",
+      "vfg": "VFG053226",
       "vf": "VF1399",
       "cat": "Adherence",
       "species": "Enterobacter cloacae",
-      "len": 854
+      "len": 187
     },
     {
-      "vfg": "VFG053387",
+      "vfg": "VFG053282",
       "vf": "VF1400",
       "cat": "Motility",
       "species": "Enterobacter cloacae",
-      "len": 692
+      "len": 124
     },
     {
-      "vfg": "VFG053599",
+      "vfg": "VFG053597",
       "vf": "VF1404",
       "cat": "Exotoxin",
       "species": "Enterobacter hormaechei",
-      "len": 1024
+      "len": 478
     },
     {
       "vfg": "VFG053601",
@@ -4860,11 +4860,11 @@
       "len": 397
     },
     {
-      "vfg": "VFG053606",
+      "vfg": "VFG053604",
       "vf": "VF1415",
       "cat": "Immune modulation",
       "species": "Bacteroides fragilis",
-      "len": 482
+      "len": 172
     },
     {
       "vfg": "VFG053615",
@@ -4874,11 +4874,11 @@
       "len": 103
     },
     {
-      "vfg": "VFG053632",
+      "vfg": "VFG053616",
       "vf": "VF1417",
       "cat": "Effector delivery system",
       "species": "Bacteroides fragilis",
-      "len": 827
+      "len": 790
     },
     {
       "vfg": "VFG053636",
@@ -4895,11 +4895,11 @@
       "len": 558
     },
     {
-      "vfg": "VFG053650",
+      "vfg": "VFG053638",
       "vf": "VF1418",
       "cat": "Effector delivery system",
       "species": "Bacteroides fragilis",
-      "len": 812
+      "len": 129
     },
     {
       "vfg": "VFG053655",
@@ -4916,25 +4916,25 @@
       "len": 395
     },
     {
-      "vfg": "VFG053680",
+      "vfg": "VFG053679",
       "vf": "VF1423",
       "cat": "Effector delivery system",
       "species": "Bacteroides fragilis",
-      "len": 608
+      "len": 605
     },
     {
-      "vfg": "VFG053955",
+      "vfg": "VFG053952",
       "vf": "VF1250",
       "cat": "Nutritional/Metabolic factor",
       "species": "Porphyromonas gingivalis",
-      "len": 1469
+      "len": 108
     },
     {
-      "vfg": "VFG053966",
+      "vfg": "VFG053958",
       "vf": "VF1427",
       "cat": "Effector delivery system",
       "species": "Porphyromonas gingivalis",
-      "len": 2499
+      "len": 1158
     },
     {
       "vfg": "VFG053977",
@@ -4958,18 +4958,18 @@
       "len": 1723
     },
     {
-      "vfg": "VFG053984",
+      "vfg": "VFG053980",
       "vf": "VF1431",
       "cat": "Adherence",
       "species": "Porphyromonas gingivalis",
-      "len": 1228
+      "len": 563
     },
     {
-      "vfg": "VFG053988",
+      "vfg": "VFG053985",
       "vf": "VF1432",
       "cat": "Adherence",
       "species": "Porphyromonas gingivalis",
-      "len": 670
+      "len": 383
     },
     {
       "vfg": "VFG053990",
@@ -5007,11 +5007,11 @@
       "len": 2628
     },
     {
-      "vfg": "VFG053998",
+      "vfg": "VFG053996",
       "vf": "VF1442",
       "cat": "Nutritional/Metabolic factor",
       "species": "Porphyromonas gingivalis",
-      "len": 740
+      "len": 198
     },
     {
       "vfg": "VFG054000",
@@ -5035,18 +5035,18 @@
       "len": 821
     },
     {
-      "vfg": "VFG054010",
+      "vfg": "VFG054003",
       "vf": "VF1446",
       "cat": "Immune modulation",
       "species": "Porphyromonas gingivalis",
-      "len": 542
+      "len": 190
     },
     {
-      "vfg": "VFG054031",
+      "vfg": "VFG054021",
       "vf": "VF1435",
       "cat": "Immune modulation",
       "species": "Porphyromonas gingivalis",
-      "len": 512
+      "len": 378
     },
     {
       "vfg": "VFG054066",
@@ -5070,18 +5070,18 @@
       "len": 414
     },
     {
-      "vfg": "VFG054357",
+      "vfg": "VFG054356",
       "vf": "VF1459",
       "cat": "Exotoxin",
       "species": "Fusobacterium necrophorum",
-      "len": 3229
+      "len": 145
     },
     {
-      "vfg": "VFG054381",
+      "vfg": "VFG054376",
       "vf": "VF1461",
       "cat": "Nutritional/Metabolic factor",
       "species": "Fusobacterium animalis",
-      "len": 604
+      "len": 370
     },
     {
       "vfg": "VFG054531",
@@ -5140,11 +5140,11 @@
       "len": 1054
     },
     {
-      "vfg": "VFG054549",
+      "vfg": "VFG054539",
       "vf": "VF1460",
       "cat": "Nutritional/Metabolic factor",
       "species": "Fusobacterium nucleatum",
-      "len": 480
+      "len": 122
     },
     {
       "vfg": "VFG054556",
@@ -5161,18 +5161,18 @@
       "len": 546
     },
     {
-      "vfg": "VFG054572",
+      "vfg": "VFG054571",
       "vf": "VF1308",
       "cat": "Exotoxin",
       "species": "Aggregatibacter actinomycetemcomitans",
-      "len": 283
+      "len": 222
     },
     {
-      "vfg": "VFG054576",
+      "vfg": "VFG054574",
       "vf": "VF1463",
       "cat": "Exotoxin",
       "species": "Aggregatibacter actinomycetemcomitans",
-      "len": 1055
+      "len": 477
     },
     {
       "vfg": "VFG054578",
@@ -5203,11 +5203,11 @@
       "len": 381
     },
     {
-      "vfg": "VFG054583",
+      "vfg": "VFG054582",
       "vf": "VF1469",
       "cat": "Invasion",
       "species": "Aggregatibacter actinomycetemcomitans",
-      "len": 356
+      "len": 346
     },
     {
       "vfg": "VFG054584",
@@ -5217,53 +5217,53 @@
       "len": 181
     },
     {
-      "vfg": "VFG054588",
+      "vfg": "VFG054586",
       "vf": "VF1471",
       "cat": "Immune modulation",
       "species": "Aggregatibacter actinomycetemcomitans",
-      "len": 472
+      "len": 264
     },
     {
-      "vfg": "VFG054774",
+      "vfg": "VFG054738",
       "vf": "VF1473",
       "cat": "Effector delivery system",
       "species": "Aggregatibacter aphrophilus",
-      "len": 1227
+      "len": 171
     },
     {
-      "vfg": "VFG054791",
+      "vfg": "VFG054786",
       "vf": "VF1474",
       "cat": "Effector delivery system",
       "species": "Aggregatibacter aphrophilus",
-      "len": 806
+      "len": 724
     },
     {
-      "vfg": "VFG054938",
+      "vfg": "VFG054909",
       "vf": "VF1477",
       "cat": "Enzyme",
       "species": "Klebsiella pneumoniae",
-      "len": 567
+      "len": 274
     },
     {
-      "vfg": "VFG055088",
+      "vfg": "VFG055001",
       "vf": "VF1478",
       "cat": "Enzyme",
       "species": "Mycobacterium tuberculosis",
-      "len": 577
+      "len": 100
     },
     {
-      "vfg": "VFG055265",
+      "vfg": "VFG055231",
       "vf": "VF1479",
       "cat": "Enzyme",
       "species": "Staphylococcus aureus",
-      "len": 571
+      "len": 100
     },
     {
-      "vfg": "VFG055381",
+      "vfg": "VFG055353",
       "vf": "VF1480",
       "cat": "Enzyme",
       "species": "Yersinia pseudotuberculosis",
-      "len": 572
+      "len": 100
     }
   ],
   "pool_partition": {
