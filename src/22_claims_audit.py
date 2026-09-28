@@ -3307,7 +3307,7 @@ CLAIMS = [
          and v["strata_moving_over_half"] == 2 and v["per_stratum_agreement"] < 0.6
          and v["max_abs_delta"] >= 1.0 and v["aggregate_delta"] < 0.05),
      {"docs/ORGANISM_STRATIFIED_PREREGISTRATION.md":
-      "⚠️ **What does not replicate is which strata are weak.**"}, []),
+      "⚠️ **What does not replicate is which strata are weak**, and it is worth quantifying rather than"}, []),
     ("with the organism held constant margin still orders the categories, weakly",
      organism_stratified,
      lambda v: v is None or (

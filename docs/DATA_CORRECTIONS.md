@@ -4424,3 +4424,51 @@ methodological content this project has that its results do not.
 ⚠️ And the honest bound on all of it: **this is one embedding arm, one database, and a claim about
 ordering.** § 9.1.4 of `docs/MECHANISM_GENERALIZATION.md` records three findings that looked clean on
 ESM-2 650M and vanished on a second arm. **Nothing here has been run on a second arm.**
+
+---
+
+## 2026-09-28 (fifty-first entry) — Both studies replicate on a second arm, and a commit went out with a red gate
+
+### 🟢 The replication, which is the first in this project to happen rather than fail
+
+§ 9.1.4 records **three** findings that were interval-clean on ESM-2 650M and vanished on ESM-2 35M. The
+organism-stratified write-up closed with "nothing here has been run on a second arm". It has now: the
+screen is sequence-based and therefore arm-independent, the pool was already embedded on both arms with
+identical row order, and the 746 representatives were re-embedded with a gate of **1.67e-06**.
+
+| | 650M | 35M |
+|---|---:|---:|
+| **C-1** mean within-species *ρ* | +0.3750 (*p* 0.0104) | **+0.4107** (*p* 0.0069) |
+| strata positive | 8 of 10 | 8 of 10 |
+| **B-1** Spearman(margin, recovery) | +0.6813 (*p* 0.0059) | **+0.7253** (*p* 0.0034) |
+| **B-2** | 🔴 NOT SUPPORTED | 🟢 SUPPORTED |
+| **B-4** out-of-sample FPR, nominal 5% | 7.06% | **4.95%** |
+| confound rule fires? | **YES** | **no** |
+
+🔑 **B-4 is the line to keep.** 4.95% against a nominal 5%, on negatives never screened and never seen by
+fitting or calibration, where the panel's own figure is 7.87%. The difference is **490 calibration points
+against 118** — the clearest evidence in this project that criterion 1's fail is about the **design** and
+not the representation.
+
+⚠️ **What does not replicate is which strata are weak**: the two arms' per-stratum *ρ* agree at only
+**+0.49**, mean absolute difference **0.341**, max **1.000**, two strata moving more than 0.5 — while the
+aggregate moves **0.036** and the positive count is identical. Per-stratum values are noise around a
+stable aggregate.
+
+⚠️ A first version of that check counted sign flips where both arms are strong and found **none**,
+because the two unstable strata are −0.800 → 0.000 and +0.200 → −0.800 and neither has both ends above
+0.3. **The instability was real and the definition could not see it.**
+
+### 🔴 And a commit went out with the gate red
+
+Repointing that caveat rewrote the sentence claim 96 pins, so the gate failed — and the commit happened
+anyway. The command was `audit 2>&1 | tail -1 && pytest && git add && git commit`, and **`tail` exits 0
+whatever the audit did**, so the `&&` chain could not stop it. The audit's own exit code is correct; it
+was piped away.
+
+⚠️ **This is the sixth instance this session of a check that cannot fail** — 4/61 as a false-positive
+figure, a 600-to-606 alert tolerance, a `pgrep` pattern matching nothing, a checkpoint inheriting from
+another experiment, a sign-flip definition blind to the flips that occurred, and now a pipeline that
+discards the exit code it is gating on. **The shape is always the same: the verifier and the thing
+verified share an assumption, or the verifier's failure signal is thrown away before anyone reads it.**
+The fix here is to capture the exit code rather than pipe it: `audit > /tmp/a.txt 2>&1; rc=$?`.
