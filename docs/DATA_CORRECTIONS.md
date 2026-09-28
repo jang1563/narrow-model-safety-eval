@@ -4516,3 +4516,71 @@ written before the script named which probe it would use.**
 🔒 **Scoring the prediction anyway**: it said **20% to 45%**, and "much closer to A1's 40.8% than to the
 pool's 6.0%". The band was right at **22.08%**; the characterization was wrong — it lands near the bottom
 of the band, about midway between the anchors. **Recorded rather than quietly reframed as a hit.**
+
+---
+
+## 2026-09-28 (fifty-third entry) — The probe is substantially a localization detector, and the frozen rule says so
+
+Entry 52 closed the provenance half of the standing caveat and named the half it could not close:
+whether the rest is *hazard* or some other property virulence factors share. 🔴 **The localization
+half has now been measured, and it came back adverse.**
+
+`docs/LOCALIZATION_CONTROL_PREREGISTRATION.md` was frozen before a single annotation was fetched, and
+tests the benign side, where the hypothesis is sharp and nothing already computed could leak in: *if
+the probe is a localization detector, benign extracellular proteins from non-pathogens must be flagged
+far above benign cytoplasmic ones.* Study B's fold unchanged, 30 seeds, **no new inference** — the pool
+was already embedded on both arms and only the annotation join is new.
+
+| stratum (Bacteria + Archaea, pool test partition) | *n* | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|---:|
+| ⭐ **extracellular** | **652** | **21.73%** | **14.83%** |
+| membrane | 495 | 16.84% | 13.45% |
+| ⭐ **intracellular** | **1,666** | **4.15%** | **2.98%** |
+| unannotated | 3,434 | 4.32% | 2.42% |
+
+🔴 **R = 5.36 on 650M and 5.13 on 35M**, against a frozen adverse ceiling of 3.0. Both arms, so it is a
+verdict. **Length did not explain it**: length-alone AUROC is 0.607, inside the frozen 0.65 tolerance,
+and 1:1 length-matched subsamples still give 4.38 and 3.40.
+
+⚠️ **At a nominal 5%, ordinary benign secreted proteins are flagged at 22%.** Whatever else is true,
+the quoted false-positive rate does not hold for the localization class a screen meets most often.
+
+### 🔴 The prediction was wrong, and so was the rule's own labelling
+
+§ 2.1 predicted **R ≈ 2.0**, in the partial band. The answer is **5.36**. Recorded as a miss.
+
+🔴 **And a defect in the preregistration that this result exposed**: § 2's bands were set on a **ratio**
+but labelled with conclusions about **share**. Those come apart here —
+
+| | value |
+|---|---:|
+| ratio, extracellular / intracellular | **5.36×** |
+| share of the pool→VFDB gap, § 3's formula | 26.5% |
+| share of the pool→VFDB gap, study D's formula | **22.1%** (provenance: 22.7%) |
+
+— so the gradient is enormous *and* the share is about a quarter. 🔒 **The rule as written governs**:
+R ≥ 3.0 on both arms, so § 2's obligation is live, and the hazard reading has been qualified in
+`paper/MANUSCRIPT.md` and in the studies B, C and D preregistrations **in the same commit that records
+this**. Switching to the share statistic because it reads better is exactly the move a frozen band
+exists to prevent, and it is named here rather than taken.
+
+### ⚠️ Two frozen guards fired, and they cut against the strata
+
+- **Ceiling breached**: `unannotated` is **55.0%** of the eligible pool, over the frozen 50%. The
+  annotated contrast is **not representative of the pool**.
+- **Availability check failed**: ratio **0.41** / **0.32**, outside the frozen [0.67, 1.5].
+  **Annotation availability itself tracks the score.** The unannotated rate (4.32%) sits almost on the
+  intracellular one (4.15%), which is *consistent with* those being mostly uncurated cytoplasmic
+  proteins — ⚠️ a reading, not a demonstration, and the ceiling stands either way.
+
+### 🔴 The misreading this invites, forbidden in the gate
+
+Provenance buys 22.7% of the gap and localization buys 22.1%. **They do not add to 45%.**
+Pathogen-derived proteins are themselves enriched for secretion, so the two controls overlap by
+construction and **the joint decomposition has not been run**. Claim 98's forbid list bans the sum in
+the three forms it would be written in.
+
+🟢 **What survives, and it is not nothing**: against a *localization-matched* benign baseline of 21.73%
+instead of the pool's 7.08%, VFDB virulence factors are still flagged at **73.49%**. Roughly three
+quarters of the separation is not localization — the same fraction provenance left over. **Two
+independent confounds have each been measured at about a quarter, and neither has taken the result.**

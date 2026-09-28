@@ -116,3 +116,16 @@ results/*/pool_reduction_ckpt/
 # src/77's checkpoint shards, same reasoning as src/76's: intermediate state for a long embedding,
 # rebuilt by resuming it. The finished array is written only after the method gate passes.
 results/*/vfdb_neg_ckpt/
+
+# src/80's checkpoint shards, same reasoning as src/76's and src/77's. The build fingerprint that
+# makes a resume safe (`build.sha256`) lives in the directory with them, so ignoring the whole
+# directory is safe: a shard written under a different build is refused rather than reused. Added
+# after five concurrent processes wrote into this directory at once (entry 45).
+results/*/class_axis_pos_ckpt/
+results/*/class_axis_pos_ckpt_*/
+
+# UniProt localization keywords for the pool's test partition, cached by src/84 so the study does not
+# re-fetch 6,758 accessions. A mirror of public UniProt fields, regenerable with
+# `python src/84_localization_control.py --fetch`. The strata tallies that anything cites are in
+# results/localization_control*.json, which is tracked.
+data/external/uniprot_localization/

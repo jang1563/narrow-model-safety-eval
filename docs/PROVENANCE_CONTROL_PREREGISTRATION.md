@@ -122,3 +122,20 @@ upper bound, provenance explains under a quarter.**
 ⚠️ **What is still not established**: that the remaining three quarters is *hazard* rather than some
 other property virulence factors share — secretion, surface exposure, host interaction. Separating those
 needs negatives matched on **localization** as well as organism, which this study does not have.
+
+---
+
+## Addendum — 2026-09-28, later the same day: the localization half of that caveat has now been measured
+
+`docs/LOCALIZATION_CONTROL_PREREGISTRATION.md` ran the missing control on the benign side, and it
+returned an **adverse verdict on both arms**: benign *extracellular* bacterial and archaeal proteins are
+flagged at **21.73%** against **4.15%** for cytoplasmic ones, a **5.36×** ratio that replicates at 5.13×
+on ESM-2 35M and survives length matching.
+
+🔑 **The share arithmetic lands in almost exactly the same place this study did**: localization spans
+**22.1%** of the pool→VFDB gap in this document's own formula, against provenance's **22.7%**.
+
+⚠️ 🔴 **The two shares must not be added.** Pathogen-derived proteins are themselves enriched for
+secretion, so provenance and localization are expected to overlap and the joint decomposition has not
+been run. **"About 45% explained" is not a result this repository has, and is the obvious way for these
+two numbers to be misread together.**

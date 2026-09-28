@@ -186,3 +186,26 @@ be read individually.
 🔴 **And the bound that does not move.** Both arms order the categories; neither says the ordering sits
 on anything but pathogen-versus-Swiss-Prot separation. A1 measures that directly at **40.8%** false
 positives against non-toxin virulence factors, and it is not addressed by anything in this document.
+
+---
+
+## Addendum — 2026-09-28: the standing caveat above has now been measured on both of its halves
+
+The caveat this document leaves open — that the absolute recoveries stay compatible with
+pathogen-versus-Swiss-Prot separation rather than hazard — has since been quantified by two controls
+that hold the probe and its calibration fixed and vary only what the proteins are:
+
+| control | benign comparison | share of the pool→VFDB gap |
+|---|---|---:|
+| pathogen origin (`docs/PROVENANCE_CONTROL_PREREGISTRATION.md`) | 6.98% → **22.08%** | **22.7%** |
+| localization (`docs/LOCALIZATION_CONTROL_PREREGISTRATION.md`) | 7.08% → **21.73%** | **22.1%** |
+
+🔴 **The localization control returned an adverse verdict on both arms**: benign *extracellular*
+bacteria/archaea are flagged at **21.73%** against **4.15%** cytoplasmic — **5.36×**, replicating at
+5.13× on ESM-2 35M and surviving length matching. **On the benign side this probe behaves substantially
+like a localization detector**, and the recoveries in this document have to be read with that in hand.
+
+🔒 **What survives**: against a localization-matched benign baseline of 21.73%, VFDB proteins are still
+flagged at 73.49%, and against the pathogen-matched baseline of 22.08% likewise — so **neither confound
+explains most of the separation.** ⚠️ **Nor may the two shares be added** — pathogen-derived proteins are
+enriched for secretion, and the joint decomposition has not been run.

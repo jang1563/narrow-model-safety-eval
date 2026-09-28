@@ -125,3 +125,94 @@ Margin already predicts category recovery at ρ = +0.68 (B-1). 🔒 **So E-0 rep
 localization grouping's correlation with recovery both raw and partialled on margin.** If the
 grouping adds nothing beyond margin, it is not an independent explanation of anything — it is
 B-1 relabelled. This stays exploratory in either case.
+
+---
+
+## Amendment 1 — 2026-09-28, on running it: § 3 asked for one thing and called it another
+
+§ 3 specified "the extracellular stratum's elevation **above the intracellular one**" and in the same
+sentence called it "the same arithmetic" as study D. It is not. Study D computed
+`(control − pool) / (vfdb − pool)`, against the **pool's overall rate**, not against another stratum.
+
+🔒 Both are now reported and neither replaces the other: `contrast` is § 3 as written, `study_d_form`
+is the figure that is actually comparable to study D's 22.7%. **Named rather than silently switched
+to whichever one reads better.**
+
+---
+
+## Results, 2026-09-28
+
+`src/84_localization_control.py`, study B's fold unchanged, 30 seeds, no new inference.
+`results/localization_control.json`, `results/localization_control_esm2_35M.json`.
+
+| stratum | *n* | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|---:|
+| ⭐ **extracellular** | **652** | **21.73% [20.40, 23.06]** | **14.83% [14.05, 15.60]** |
+| membrane | 495 | 16.84% [15.45, 18.23] | 13.45% [12.45, 14.46] |
+| ⭐ **intracellular** | **1,666** | **4.15% [3.77, 4.53]** | **2.98% [2.73, 3.23]** |
+| unannotated | 3,434 | 4.32% [3.91, 4.73] | 2.42% [2.24, 2.59] |
+| all eligible (Bacteria + Archaea) | 6,247 | 7.08% | 4.74% |
+
+### 🔴 E-1 and E-2: the adverse band, on both arms
+
+**R = 5.356 [5.108, 5.604]** on 650M and **5.130 [4.814, 5.446]** on 35M. The frozen ceiling was
+**3.0**. Both arms are in the adverse band, so by § 2's second-arm rule **this is a verdict, not an
+indication.**
+
+🔒 **The length rule did not save it.** Length-alone AUROC is **0.607**, inside the frozen 0.65
+tolerance, so E-1 is not declared length-confounded — and the length-matched subsample (652 pairs,
+1:1 nearest-neighbour) still gives **R = 4.378** on 650M and **3.400** on 35M, both above the ceiling.
+
+🔒 **The prediction in § 2.1 was wrong, and not by a little.** It said **R ≈ 2.0**, partial band.
+The answer is **5.36**, nearly three times that, in the band the document called adverse. Recorded as
+a miss.
+
+### 🔴 Two frozen guards fired, and they cut against the strata
+
+- **Ceiling breached**: `unannotated` is **55.0%** of the eligible pool, over the frozen 50%. The
+  annotated contrast is **not representative of the pool**, and that caveat travels with every
+  statement of this result.
+- **Availability check failed**: the availability ratio is **0.41** (650M) and **0.32** (35M), outside
+  the frozen [0.67, 1.5]. **Annotation availability itself tracks the score.**
+- Floor met: 652 and 1,666, both over 300.
+
+⚠️ The unannotated rate (4.32%) sits almost exactly on the intracellular rate (4.15%), which is
+*consistent with* unannotated Swiss-Prot bacterial proteins being predominantly cytoplasmic proteins
+no curator got to. **That is a reading, not a demonstration** — nothing here establishes it, and the
+ceiling stands regardless.
+
+### ⚠️ E-3: a huge ratio, and a share of the gap that is nonetheless about a quarter
+
+| | share of the pool→VFDB gap |
+|---|---:|
+| localization, § 3 as written (extracellular − intracellular) | **26.5%** |
+| localization, study D's arithmetic (extracellular − pool) | **22.1%** |
+| provenance, study D | 22.7% |
+
+🔴 **The band labels in § 2 conflated two different things and this result separates them.** The
+bands were set on a **ratio** and labelled with a conclusion about **share**. Both readings are true
+at once, and both are now on the record:
+
+- **The gradient is enormous.** A benign secreted or surface-exposed bacterial protein is **5.4×**
+  more likely to be flagged than a benign cytoplasmic one. On the benign side the probe behaves
+  substantially like a localization detector.
+- **The share is about a quarter.** Against a localization-matched benign baseline of **21.73%**,
+  VFDB virulence factors are still flagged at **73.49%** — so **roughly three quarters of the gap
+  is still not localization**, almost exactly what was left over after provenance.
+
+🔒 **The rule as written governs.** R ≥ 3.0 on both arms, so § 2's obligation is live and is being
+executed: every claim that the probe responds to virulence is qualified in the same commit that
+records this. **Switching to the share statistic now, because it reads better, is precisely the move
+the frozen band exists to prevent.**
+
+### What this does and does not license
+
+🟢 Licensed: the probe's **false positives are strongly structured by localization**, and any
+deployment reading of its 5% nominal rate is wrong for secreted and surface proteins, where the real
+rate is 22%.
+🔴 Licensed: **"the probe detects virulence" is not supportable unqualified**, and is now qualified
+everywhere it appears.
+⚠️ Not licensed: that localization *explains* the virulence separation. It accounts for about a
+quarter of it. Provenance accounted for about another quarter. **The two have not been shown to be
+independent** — pathogen-derived proteins are themselves enriched for secretion, so these shares
+cannot simply be added, and the joint decomposition has not been run.

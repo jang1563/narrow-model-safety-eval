@@ -77,7 +77,12 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/ORGANISM_STRATIFIED_PREREGISTRATION.md",
           # Added 2026-09-28. It narrows the standing caveat of studies B and C, so the size of the
           # narrowing is the number most likely to grow in the retelling.
-          "docs/PROVENANCE_CONTROL_PREREGISTRATION.md"]
+          "docs/PROVENANCE_CONTROL_PREREGISTRATION.md",
+          # Added 2026-09-28 with the document. It is the one preregistration in this repository whose
+          # frozen rule returned an ADVERSE verdict, so it is the document most likely to be softened
+          # in a retelling -- and the only place the 5.4x gradient and the 22.1% share are stated
+          # together, which is the pairing the claim exists to hold.
+          "docs/LOCALIZATION_CONTROL_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1078,6 +1083,46 @@ def provenance_control():
         "elevated_disjoint": {
             arm: bool(r["pathogen_nonvf"]["ci"][0] > r["pool_test"]["ci"][1])
             for arm, r in (("650M", ra), ("35M", rb))},
+    }
+
+
+def localization_control():
+    """Is the virulence separation hazard, or is it being on the outside of the cell?
+
+    \U0001f534 This claim exists to stop the result being told as half of itself. The ratio alone
+    ("5.4x, the probe is a localization detector") overstates it; the share alone ("22%, about the
+    same as provenance") understates it. Both are pinned, together with the two frozen guards that
+    FIRED -- the 55% unannotated ceiling and the availability check -- because a summary quietly
+    dropping those would be claiming a clean measurement this is not.
+
+    \u26a0\ufe0f The forbid list bans the arithmetic that adds this share to provenance's. Pathogen
+    proteins are enriched for secretion, so the two overlap by construction and the joint
+    decomposition has not been run.
+    """
+    a = j("../results/localization_control.json")
+    b = j("../results/localization_control_esm2_35M.json")
+    if None in (a, b):
+        return None
+    ra, rb = a["rates"], b["rates"]
+    return {
+        "n_eligible": a["n_eligible"],
+        "n_extracellular": a["strata_n"]["extracellular"],
+        "n_intracellular": a["strata_n"]["intracellular"],
+        "extracellular": {"650M": round(ra["extracellular"]["mean"], 4),
+                          "35M": round(rb["extracellular"]["mean"], 4)},
+        "intracellular": {"650M": round(ra["intracellular"]["mean"], 4),
+                          "35M": round(rb["intracellular"]["mean"], 4)},
+        "ratio": {"650M": round(a["E1_ratio"]["mean"], 3), "35M": round(b["E1_ratio"]["mean"], 3)},
+        "matched_ratio": {"650M": round(a["length_matched"]["ratio"]["mean"], 3),
+                          "35M": round(b["length_matched"]["ratio"]["mean"], 3)},
+        "length_auroc": round(a["gate"]["length_auroc"], 3),
+        "share_contrast": round(a["E3_fraction_of_gap"]["contrast"], 4),
+        "share_study_d_form": round(a["E3_fraction_of_gap"]["study_d_form"], 4),
+        # \U0001f534 both frozen guards fired; pinned so a retelling cannot drop them
+        "unannotated_frac": round(a["gate"]["unannotated_frac"], 3),
+        "ceiling_breached": not a["gate"]["ceiling_unannotated_met"],
+        "availability_failed": not a["gate"]["availability_ok"],
+        "band": a["band"],
     }
 
 
@@ -3323,6 +3368,37 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("localization is a 5.4x gradient and about a quarter of the gap",
+     localization_control,
+     lambda v: v is None or (
+         # the floor was met and the strata are the ones the preregistration froze
+         v["n_extracellular"] >= 300 and v["n_intracellular"] >= 300
+         # \U0001f534 the adverse band, on both arms, and surviving 1:1 length matching
+         and v["ratio"]["650M"] > 3.0 and v["ratio"]["35M"] > 3.0
+         and v["matched_ratio"]["650M"] > 3.0 and v["matched_ratio"]["35M"] > 3.0
+         and v["band"] == "localization is a major driver"
+         # the length confound rule did not fire, which is why the verdict stands
+         and abs(v["length_auroc"] - 0.5) < 0.15
+         and 0.20 < v["extracellular"]["650M"] < 0.24
+         and 0.03 < v["intracellular"]["650M"] < 0.05
+         # \u26a0\ufe0f and it is still only about a quarter of the benign-to-virulence gap
+         and 0.18 < v["share_study_d_form"] < 0.27
+         and 0.22 < v["share_contrast"] < 0.31
+         # \U0001f534 both guards fired and must keep saying so
+         and v["ceiling_breached"] and v["availability_failed"]
+         and v["unannotated_frac"] > 0.50),
+     {"docs/LOCALIZATION_CONTROL_PREREGISTRATION.md":
+      "**R = 5.356 [5.108, 5.604]** on 650M and **5.130 [4.814, 5.446]** on 35M.",
+      "paper/MANUSCRIPT.md":
+      "VFDB virulence factors are still flagged at **73.49%**"},
+     # \U0001f534 The share of the gap that localization buys (22.1%) and the share provenance buys
+     # (22.7%) are NOT additive: pathogen-derived proteins are themselves enriched for secretion, so
+     # the two controls overlap by construction and the joint decomposition has not been run. These
+     # forbid the sum in the forms it would be written in. They are deliberately long enough that
+     # they cannot collide with the sentences in the documents that WARN against the sum.
+     ["45% of the benign-to-virulence gap",
+      "together explain about half of the gap",
+      "together account for about half of the separation"]),
     ("pathogen origin is worth a threefold elevation and about a quarter of the gap",
      provenance_control,
      lambda v: v is None or (

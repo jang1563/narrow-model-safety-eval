@@ -186,7 +186,8 @@ whatever arrives.
 
 🔴 **And what arrives is not housekeeping proteins.** Run the same probe, with the same 118-point
 calibration, against **4,218 non-toxin virulence factors** from VFDB — pathogen-produced, largely
-secreted, the two features a provenance probe already reads at AUROC 0.818:
+secreted, the two features a provenance probe already reads at AUROC 0.818 and the two that the
+controls below quantify:
 
 | nominal 5% | `np.quantile` | conformal |
 |---|---|---|
@@ -204,6 +205,28 @@ pathogen proteins from benign housekeeping ones**. ⚠️ It does not say the pr
 these proteins are not benign in any operational sense — but it does say the 5% budget is not met against
 them, and that a false-positive rate quoted against housekeeping proteins **does not transfer to the
 population a screen would actually meet**.
+
+🔴 **And two controls have since measured how much of that separation is not about virulence at all.**
+Both hold the probe and its calibration fixed and vary only what the proteins are
+(`docs/PROVENANCE_CONTROL_PREREGISTRATION.md`, `docs/LOCALIZATION_CONTROL_PREREGISTRATION.md`):
+
+| control | benign comparison | share of the pool→VFDB gap |
+|---|---|---:|
+| **pathogen origin** — 106 pathogen-derived non-VFDB proteins | 6.98% → **22.08%** | **22.7%** |
+| **localization** — benign *extracellular* vs the pool | 7.08% → **21.73%** | **22.1%** |
+
+🔴 **The localization gradient is the larger finding of the two, and it is adverse.** Among benign
+Bacteria and Archaea in the pool, a **secreted or surface-exposed** protein is flagged at **21.73%**
+against **4.15%** for a cytoplasmic one — a **5.36×** ratio [5.11, 5.60], replicating at **5.13×** on
+ESM-2 35M and surviving 1:1 length matching at **4.38×** and **3.40×**. ⚠️ **So the nominal 5% is not
+merely exceeded on virulence factors; it is exceeded fourfold on ordinary benign secreted proteins.**
+
+🔒 **What survives.** Against a *localization-matched* benign baseline of 21.73% rather than the pool's
+7.08%, VFDB virulence factors are still flagged at **73.49%**, so **roughly three quarters of the
+separation is not localization** — the same fraction provenance left over. ⚠️ **The two shares cannot be
+added**: pathogen-derived proteins are themselves enriched for secretion, and the joint decomposition has
+not been run. **What is established is that neither confound explains most of the gap, and that neither
+has been shown to explain the rest either.**
 
 🔴 **Criterion 12 fails, and the failure was expensive twice.** The first preregistration carried a floor
 and no ceiling. Adding ceilings to the second one is what made its NOT SUPPORTED verdict readable — and
