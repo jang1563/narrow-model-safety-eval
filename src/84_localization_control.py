@@ -195,7 +195,13 @@ def main():
     P = np.load(RES / f"embeddings_class_axis_positives{sfx}.npy")
     POOL = np.load(RES / f"embeddings_pool_large_{a.arm}.npy")
     union = json.loads(SCREEN.read_text())["admitted_rows"]
-    y = np.r_[np.ones(P.shape[0]), np.zeros(N_TRAIN)]
+    # 🔴 src/83 takes a fallback branch here and src/84 and src/85 did not, so for one commit the
+    # three studies used different folds while all three asserted they used the same one. The screen
+    # rejects 32 of the 1,500 partition rows for similarity to positives, leaving 1,468 -- FEWER than
+    # N_TRAIN + N_CAL -- so a fixed 1000/500 slice silently calibrated on 468. Entry 55.
+    n_tr, n_ca = (N_TRAIN, N_CAL) if len(union) >= N_TRAIN + N_CAL else \
+        (2 * len(union) // 3, len(union) - 2 * len(union) // 3)
+    y = np.r_[np.ones(P.shape[0]), np.zeros(n_tr)]
     rows = np.array(test)
 
     per = {s: [] for s in STRATA}
@@ -211,8 +217,8 @@ def main():
     for seed in range(a.seeds):
         r = np.random.default_rng(seed)
         perm = r.permutation(len(union))
-        tr = [union[i] for i in perm[:N_TRAIN]]
-        ca = [union[i] for i in perm[N_TRAIN:N_TRAIN + N_CAL]]
+        tr = [union[i] for i in perm[:n_tr]]
+        ca = [union[i] for i in perm[n_tr:n_tr + n_ca]]
         model = clf().fit(np.vstack([P, POOL[tr]]), y)
         t = float(np.quantile(model.predict_proba(POOL[ca])[:, 1], SPEC))
         flag = model.predict_proba(POOL[rows])[:, 1] >= t

@@ -227,3 +227,33 @@ no longer. `docs/JOINT_DECOMPOSITION_PREREGISTRATION.md` ran it: provenance and 
 **together they span 42.1% of the pool→VFDB gap on 650M and 32.2% on 35M** — measured, not summed.
 🔴 **22.7% + 22.1% remains wrong** and remains forbidden by claim 98. The text above is left as
 written rather than edited, per this repository's append-only rule.
+
+---
+
+## 🔴 Amendment 2 — 2026-09-28: this study did not use the fold it said it used
+
+`src/83` takes a fallback branch that `src/84` and `src/85` did not have. The screen rejects 32 of the
+1,500 partition rows for similarity to positives, leaving **1,468 admitted rows — fewer than
+`N_TRAIN + N_CAL`** — so `src/83` splits 978 train / 490 calibrate, while a fixed `perm[:1000]` /
+`perm[1000:1500]` slice silently trained on 1,000 and **calibrated on 468**.
+
+🔴 **"Study B's fold unchanged" was therefore false** in this document, in the script's docstring, in
+entries 53 and 54, in the manuscript and in two commit messages. Corrected in `src/84` and `src/85`,
+which now take the same fallback, and everything re-run on both arms.
+
+🟢 **Nothing it affected changed a verdict.** Every quantity moved in the third decimal; the largest
+single move was 35M's RR, by −0.037. **The corrected numbers are below and supersede the tables above.**
+
+| stratum | *n* | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|---:|
+| ⭐ **extracellular** | **652** | **21.75% [20.46, 23.05]** | **15.30% [14.47, 16.12]** |
+| membrane | 495 | 16.90% [15.55, 18.25] | 13.89% [12.90, 14.89] |
+| ⭐ **intracellular** | **1,666** | **4.13% [3.77, 4.49]** | **3.08% [2.82, 3.34]** |
+| unannotated | 3,434 | 4.28% [3.90, 4.66] | 2.52% [2.33, 2.70] |
+| all eligible | 6,247 | 7.06% | 4.90% |
+
+🔒 **Corrected E-1 / E-2: R = 5.381 [5.134, 5.628] on 650M and 5.151 [4.786, 5.516] on 35M.** Both
+still in the adverse band, so the verdict and its § 2 obligation are unchanged. Length-matched
+**4.382** and **3.430**, both still over the 3.0 ceiling. Length AUROC **0.607**, unannotated
+**55.0%**, availability **0.41** / **0.32** — every guard resolves exactly as before.
+🔒 **E-3 is unchanged at one decimal**: **26.5%** as § 3 wrote it, **22.1%** in study D's arithmetic.

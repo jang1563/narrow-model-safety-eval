@@ -220,3 +220,8 @@ no longer. `docs/JOINT_DECOMPOSITION_PREREGISTRATION.md` ran it: provenance and 
 **together they span 42.1% of the pool→VFDB gap on 650M and 32.2% on 35M** — measured, not summed.
 🔴 **22.7% + 22.1% remains wrong** and remains forbidden by claim 98. The text above is left as
 written rather than edited, per this repository's append-only rule.
+
+🔒 **Figures above superseded 2026-09-28 by entry 55** — `src/84` and `src/85` did not use `src/83`'s
+fold, which falls back to 978/490 because the screen admits only 1,468 rows. Every number moved in the
+third decimal and **no verdict changed**; the corrected tables are in the two preregistrations'
+amendments.

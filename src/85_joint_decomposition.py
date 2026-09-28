@@ -134,6 +134,19 @@ def main():
 
     pathogen_all = cells[("pathogen", "extracellular")] + cells[("pathogen", "intracellular")]
 
+    # ---- study B's fold, unchanged ---------------------------------------------------------------
+    sfx = "" if a.arm == "esm2_650M" else f"_{a.arm}"
+    P = np.load(RES / f"embeddings_class_axis_positives{sfx}.npy")
+    POOL = np.load(RES / f"embeddings_pool_large_{a.arm}.npy")
+    union = json.loads(SCREEN.read_text())["admitted_rows"]
+    # 🔴 src/83 takes a fallback branch here and src/84 and src/85 did not, so for one commit the
+    # three studies used different folds while all three asserted they used the same one. The screen
+    # rejects 32 of the 1,500 partition rows for similarity to positives, leaving 1,468 -- FEWER than
+    # N_TRAIN + N_CAL -- so a fixed 1000/500 slice silently calibrated on 468. Entry 55.
+    n_tr, n_ca = (N_TRAIN, N_CAL) if len(union) >= N_TRAIN + N_CAL else \
+        (2 * len(union) // 3, len(union) - 2 * len(union) // 3)
+    y = np.r_[np.ones(P.shape[0]), np.zeros(n_tr)]
+
     # 🔴 The exclusion above prompted the count nobody had run. Recorded here because this is the
     # script that found it: the benign pool is not VFDB-free, and 12 of the contaminants are in the
     # 500 proteins that set the 95% threshold, where only 25 sit above the cut. The bias is
@@ -145,16 +158,29 @@ def main():
     contam["whole_pool"] = sum(1 for q in pool if q["sequence"] in vf_seqs)
     contam["n"] = {"train": len(part["train_rows"]), "calibrate": len(part["calibrate_rows"]),
                    "test": len(part["test_rows"]), "whole_pool": len(pool)}
-    print("  pool contamination by exact VFDB sequence: "
-          + ", ".join(f"{k} {contam[k]}/{contam['n'][k]}"
-                      for k in ("train", "calibrate", "test", "whole_pool")))
+    # 🔴 train/calibrate above are the BUILD partition, which is not what gets fitted: the rows are
+    # drawn per seed from the screen's admitted set, so no contaminant is fixed in either. What
+    # matters is how many survive the screen. Entry 55.
+    trca = set(part["train_rows"]) | set(part["calibrate_rows"])
+    adm = set(union)
+    contam["partition_rows"] = sum(1 for i in trca if pool[i]["sequence"] in vf_seqs)
+    contam["admitted"] = sum(1 for i in adm if pool[i]["sequence"] in vf_seqs)
+    contam["screened_out"] = contam["partition_rows"] - contam["admitted"]
+    contam["n"]["partition_rows"], contam["n"]["admitted"] = len(trca), len(adm)
+    # 🟢 the screen was built to drop pool rows too similar to the positives, and the positives ARE
+    # VFDB representatives, so it removes contaminants far above its base rate -- an incidental
+    # safeguard nobody designed, quantified here rather than assumed.
+    contam["screen_enrichment"] = round(
+        (contam["screened_out"] / max(contam["partition_rows"], 1))
+        / ((len(trca) - len(adm)) / len(trca)), 2)
+    contam["expected_in_calibration_per_seed"] = round(contam["admitted"] * n_ca / len(adm), 1)
+    print(f"  pool contamination by exact VFDB sequence: whole pool {contam['whole_pool']}/{len(pool)}, "
+          f"test {contam['test']}/{contam['n']['test']}, partition rows "
+          f"{contam['partition_rows']}/{len(trca)} of which the screen removed "
+          f"{contam['screened_out']} ({contam['screen_enrichment']}x its base rate), leaving "
+          f"{contam['admitted']}/{len(adm)} fitted and about "
+          f"{contam['expected_in_calibration_per_seed']} in each seed's {n_ca}-protein calibration")
 
-    # ---- study B's fold, unchanged ---------------------------------------------------------------
-    sfx = "" if a.arm == "esm2_650M" else f"_{a.arm}"
-    P = np.load(RES / f"embeddings_class_axis_positives{sfx}.npy")
-    POOL = np.load(RES / f"embeddings_pool_large_{a.arm}.npy")
-    union = json.loads(SCREEN.read_text())["admitted_rows"]
-    y = np.r_[np.ones(P.shape[0]), np.zeros(N_TRAIN)]
     rows = np.array(test)
 
     per = {k: [] for k in cells}
@@ -164,8 +190,8 @@ def main():
     for seed in range(a.seeds):
         r = np.random.default_rng(seed)
         perm = r.permutation(len(union))
-        tr = [union[i] for i in perm[:N_TRAIN]]
-        ca = [union[i] for i in perm[N_TRAIN:N_TRAIN + N_CAL]]
+        tr = [union[i] for i in perm[:n_tr]]
+        ca = [union[i] for i in perm[n_tr:n_tr + n_ca]]
         model = clf().fit(np.vstack([P, POOL[tr]]), y)
         t = float(np.quantile(model.predict_proba(POOL[ca])[:, 1], SPEC))
         flag = model.predict_proba(POOL[rows])[:, 1] >= t

@@ -204,3 +204,59 @@ that defines it.
 so they push the threshold **up**, and every flag rate this repository reports is **too low**, not too
 high. ⚠️ **Direction is not magnitude**, and this study does not establish the magnitude — a
 decontaminated re-run does, and is the next thing run rather than an acknowledgement left standing.
+
+---
+
+## 🔴 Amendment 1 — 2026-09-28: this study did not use the fold it said it used
+
+`src/83` takes a fallback branch that `src/84` and `src/85` did not have. The screen rejects 32 of the
+1,500 partition rows for similarity to positives, leaving **1,468 admitted rows — fewer than
+`N_TRAIN + N_CAL`** — so `src/83` splits 978 train / 490 calibrate, while a fixed `perm[:1000]` /
+`perm[1000:1500]` slice silently trained on 1,000 and **calibrated on 468**.
+
+🔴 **"Study B's fold unchanged" was therefore false** in this document, in the script's docstring, in
+entries 53 and 54, in the manuscript and in two commit messages. Corrected in `src/84` and `src/85`,
+which now take the same fallback, and everything re-run on both arms.
+
+🟢 **Nothing it affected changed a verdict.** Every quantity moved in the third decimal; the largest
+single move was 35M's RR, by −0.037. **The corrected numbers are below and supersede the tables above.**
+
+| cell | *n* | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|---:|
+| **pathogen × extracellular** | 171 | **35.09% [33.41, 36.76]** | **27.39% [26.12, 28.66]** |
+| pathogen × intracellular | 597 | 6.33% [5.79, 6.87] | 4.82% [4.47, 5.17] |
+| benign-species × extracellular | 444 | 13.17% [12.09, 14.25] | 8.84% [8.17, 9.50] |
+| **benign-species × intracellular** | 1,049 | **2.36% [2.10, 2.62]** | **2.03% [1.81, 2.26]** |
+
+🔒 **Corrected F-1 / F-2: RR = 1.009 [0.934, 1.084] on 650M and 1.327 [1.216, 1.438] on 35M.** Both
+still inside the frozen independent band, and 35M's interval **still excludes 1.0**.
+🔒 **Corrected F-3: 42.2%** of the gap on 650M, **32.8%** on 35M.
+🔒 **Corrected F-4: 12.73%** and **9.84%**, both still far below study D's 22.08% — the bound holds.
+🔒 **Corrected F-5: 2.685×** and **2.369×**. Localization is worth 5.54× / 5.58× within pathogen and
+benign species on 650M; provenance 2.66× within extracellular. **Every reading is the one above.**
+
+---
+
+## 🔴 Amendment 2 — 2026-09-28: § 5.1 counted the wrong rows, and the screen turns out to help
+
+§ 5.1 said **"twelve true virulence factors are in the 500 proteins that set the 95% threshold"**.
+That is wrong twice.
+
+1. 🔴 **Those are the *build partition's* rows, and nothing draws from them.** Train and calibrate are
+   sampled per seed from the **screen's admitted set**, so no contaminant is fixed in either — the 30
+   seeds each shuffle them.
+2. 🟢 **The similarity screen had already removed some.** It exists to drop pool rows too close to the
+   positives, and the positives *are* VFDB representatives, so it catches contaminants far above its
+   own base rate — **nobody designed that safeguard and it is worth naming.**
+
+| | count | |
+|---|---:|---|
+| partition rows (train + calibrate) | 25 / 1,500 | |
+| ⭐ **removed by the similarity screen** | **7** | at **13.1×** its 2.1% base rate |
+| **surviving into the admitted set** | **18 / 1,468** | 1.23%, the rows actually fitted |
+| expected in any one seed's calibration | **≈ 6 / 490** | not 12 / 500 |
+
+🔒 The whole-pool figure (**133 / 8,259**) and the test figure (**108 / 6,758**) are unchanged, and so
+is the conservative direction: contaminants score high, raise the threshold, and make every flag rate
+here **too low**. ⚠️ **Six of 490 still sit in a tail of about 25 proteins**, so the decontaminated
+re-run is still worth doing — this amendment reduces the number, not the reason.

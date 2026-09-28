@@ -213,16 +213,16 @@ Both hold the probe and its calibration fixed and vary only what the proteins ar
 | control | benign comparison | share of the pool→VFDB gap |
 |---|---|---:|
 | **pathogen origin** — 106 pathogen-derived non-VFDB proteins | 6.98% → **22.08%** | **22.7%** |
-| **localization** — benign *extracellular* vs the pool | 7.08% → **21.73%** | **22.1%** |
+| **localization** — benign *extracellular* vs the pool | 7.06% → **21.75%** | **22.1%** |
 
 🔴 **The localization gradient is the larger finding of the two, and it is adverse.** Among benign
-Bacteria and Archaea in the pool, a **secreted or surface-exposed** protein is flagged at **21.73%**
-against **4.15%** for a cytoplasmic one — a **5.36×** ratio [5.11, 5.60], replicating at **5.13×** on
-ESM-2 35M and surviving 1:1 length matching at **4.38×** and **3.40×**. ⚠️ **So the nominal 5% is not
+Bacteria and Archaea in the pool, a **secreted or surface-exposed** protein is flagged at **21.75%**
+against **4.13%** for a cytoplasmic one — a **5.38×** ratio [5.13, 5.63], replicating at **5.15×** on
+ESM-2 35M and surviving 1:1 length matching at **4.38×** and **3.43×**. ⚠️ **So the nominal 5% is not
 merely exceeded on virulence factors; it is exceeded fourfold on ordinary benign secreted proteins.**
 
-🔒 **What survives.** Against a *localization-matched* benign baseline of 21.73% rather than the pool's
-7.08%, VFDB virulence factors are still flagged at **73.49%**, so **roughly three quarters of the
+🔒 **What survives.** Against a *localization-matched* benign baseline of 21.75% rather than the pool's
+7.06%, VFDB virulence factors are still flagged at **73.49%**, so **roughly three quarters of the
 separation is not localization** — the same fraction provenance left over.
 
 ⚠️ **The two shares must not be added, and the joint decomposition says what they actually buy.**
@@ -232,17 +232,17 @@ benign side:
 
 | benign cell | *n* | ESM-2 650M | ESM-2 35M |
 |---|---:|---:|---:|
-| pathogen species × extracellular | 171 | **35.03%** | **26.88%** |
-| pathogen species × intracellular | 597 | 6.37% | 4.67% |
-| benign species × extracellular | 444 | 13.14% | 8.46% |
-| benign species × intracellular | 1,049 | **2.36%** | **1.95%** |
+| pathogen species × extracellular | 171 | **35.09%** | **27.39%** |
+| pathogen species × intracellular | 597 | 6.33% | 4.82% |
+| benign species × extracellular | 444 | 13.17% | 8.84% |
+| benign species × intracellular | 1,049 | **2.36%** | **2.03%** |
 
-🟢 **The two are multiplicatively independent** — ratio of ratios **1.001 [0.923, 1.079]** on 650M and
-**1.364 [1.249, 1.480]** on 35M, both inside a band frozen in advance. Localization is worth ≈5.5× and
+🟢 **The two are multiplicatively independent** — ratio of ratios **1.009 [0.934, 1.084]** on 650M and
+**1.327 [1.216, 1.438]** on 35M, both inside a band frozen in advance. Localization is worth ≈5.5× and
 provenance ≈2.7×, each roughly constant across the other's levels. ⚠️ 35M's interval excludes 1.0, so
 the arms agree on the band and not on the point estimate.
 
-⭐ **Together they span 42.1% of the pool→VFDB gap on 650M and 32.2% on 35M** — measured, not summed;
+⭐ **Together they span 42.2% of the pool→VFDB gap on 650M and 32.8% on 35M** — measured, not summed;
 **22.7% + 22.1% is not a quantity this repository has.** 🔑 **So the majority of the separation still
 belongs to neither confound**, and what it does belong to is not established here.
 

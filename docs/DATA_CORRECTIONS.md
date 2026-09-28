@@ -4648,3 +4648,63 @@ Claim 99 was written with two pins to the same document, the second keyed with a
 get past the dict. The audit reported it as an *absent document*, correctly. The contamination count is
 held by the predicate against the artifact instead, and the second pin now points at the manuscript.
 **A pin that silently does nothing is worse than no pin**, and a trailing-space key is exactly that.
+
+---
+
+## 2026-09-28 (fifty-fifth entry) — Three studies said they used one fold and used two, and entry 54 counted rows nothing draws from
+
+Both defects were found by asking a question about the *next* study — which rows a decontaminated
+re-run would have to clean — rather than by re-reading what had just been committed. 🔑 **Neither
+would have been found by checking the numbers; both were found by checking what the numbers were
+computed on.**
+
+### 🔴 Defect 1 — "study B's fold unchanged" was false in six places
+
+`src/83` carries a fallback that `src/84` and `src/85` did not:
+
+```
+n_tr, n_ca = (N_TRAIN, N_CAL) if len(union) >= N_TRAIN + N_CAL else \
+    (2 * len(union) // 3, len(union) - 2 * len(union) // 3)
+```
+
+The similarity screen rejects 32 of the 1,500 partition rows, leaving **1,468 admitted — fewer than
+the 1,500 a fixed `perm[:1000]` / `perm[1000:1500]` slice assumes.** So `src/83` trained on 978 and
+calibrated on **490**, while studies E and F trained on 1,000 and calibrated on **468**, all three
+asserting they used the same fold.
+
+🔴 The false assertion appeared in **both preregistrations, both script docstrings, entries 53 and 54,
+`paper/MANUSCRIPT.md` and two commit messages.** Fixed in `src/84` and `src/85`; all four runs redone.
+
+🟢 **Nothing changed a verdict.** Every quantity moved in the third decimal — the largest single move
+was 35M's ratio of ratios, by **−0.037**. R is 5.381 / 5.151 (was 5.356 / 5.130), RR is 1.009 / 1.327
+(was 1.001 / 1.364), the joint share is 42.2% / 32.8% (was 42.1% / 32.2%), and **E-3 is identical at
+one decimal.** Corrected tables are in both preregistrations' amendments; the manuscript is corrected
+in place and the claim pins now follow the corrected sentences.
+
+⚠️ **That it did not matter is a fact about this data, not a defence.** A calibration set 4.5% smaller
+than stated is the kind of difference that is invisible until it is not.
+
+### 🔴 Defect 2 — entry 54's contamination table described rows nothing is drawn from
+
+Entry 54 said **"twelve true virulence factors are in the 500 proteins that set the 95% threshold."**
+Wrong twice: those are the **build partition's** rows, and train/calibrate are resampled **per seed**
+from the screen's admitted set, so no contaminant is fixed in either.
+
+🟢 **And the correction turned up something better than the error.** The similarity screen exists to
+drop pool rows too close to the positives — and the positives *are* VFDB representatives, so it
+catches contaminants at far above its own base rate. **An incidental safeguard nobody designed:**
+
+| | count | |
+|---|---:|---|
+| partition rows (train + calibrate) | 25 / 1,500 | |
+| ⭐ **removed by the similarity screen** | **7** | at **13.1×** its 2.1% base rate |
+| **surviving into the admitted set** | **18 / 1,468** | 1.23% — the rows actually fitted |
+| expected in any one seed's calibration | **≈ 6 / 490** | not 12 / 500 |
+
+🔒 Unchanged: the whole pool holds **133 / 8,259** exact VFDB sequences and the test partition
+**108 / 6,758**, and the bias direction is still conservative — contaminants score high, raise the
+threshold, and make **every flag rate in this repository too low.**
+
+⚠️ **The decontaminated re-run is still owed.** Six contaminants in a 490-protein calibration set
+still fall into a tail of roughly 25 proteins. **This entry reduces the number, not the reason** — and
+saying so is the difference between a correction and a retreat.

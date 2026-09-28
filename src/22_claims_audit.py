@@ -1140,8 +1140,12 @@ def joint_decomposition():
     "independent" without that would be smoothing an arm difference away.
 
     \u26a0\ufe0f It also pins the pool contamination this study found: 133 exact VFDB sequences in
-    the benign pool, 12 of them in the 500 proteins that set the threshold. The direction is
-    conservative, which is exactly why it could be quietly dropped.
+    the benign pool. \U0001f534 The first telling said "12 of the 500 proteins that set the
+    threshold", which was wrong twice -- those are BUILD-partition rows, and train/calibrate are
+    redrawn from the screen's admitted set every seed, so no contaminant is fixed in either. The
+    numbers pinned here are the ones that describe what is fitted: 25 in the partition rows, 7
+    removed by the similarity screen, 18 surviving into the 1,468 admitted rows, about 6 in each
+    seed's 490-protein calibration. Entry 55.
     """
     a = j("../results/joint_decomposition.json")
     b = j("../results/joint_decomposition_esm2_35M.json")
@@ -3433,16 +3437,21 @@ CLAIMS = [
          and v["f5_within_intracellular"]["35M"] > 2.0
          and 0.33 < v["path_extra"]["650M"] < 0.37
          and 0.02 < v["benign_intra"]["650M"] < 0.03
-         # 🔴 the contamination this study found, pinned so it cannot be dropped
+         # 🔴 the contamination this study found, pinned so it cannot be dropped, and pinned on the
+         # rows that are actually fitted rather than on a partition nothing draws from
          and v["contamination"]["whole_pool"] == 133
-         and v["contamination"]["calibrate"] == 12
-         and v["contamination"]["train"] == 13),
+         and v["contamination"]["partition_rows"] == 25
+         and v["contamination"]["screened_out"] == 7
+         and v["contamination"]["admitted"] == 18
+         # 🟢 the similarity screen removes contaminants at 13x its own base rate, incidentally
+         and v["contamination"]["screen_enrichment"] > 10
+         and 5.0 < v["contamination"]["expected_in_calibration_per_seed"] < 7.0),
      # 🔴 One pin per document -- a second key for the same document was briefly written here with a
      # trailing space to dodge the dict, which the gate caught as an absent document. The contamination
      # count is held by the predicate against the artifact instead, and the manuscript carries the
      # measured joint share that stands in for the forbidden sum.
      {"docs/JOINT_DECOMPOSITION_PREREGISTRATION.md":
-      "**RR = 1.001 [0.923, 1.079]** on 650M and **1.364 [1.249, 1.480]** on 35M.",
+      "**Corrected F-1 / F-2: RR = 1.009 [0.934, 1.084] on 650M and 1.327 [1.216, 1.438] on 35M.**",
       "paper/MANUSCRIPT.md":
       "**22.7% + 22.1% is not a quantity this repository has.**"},
      []),
@@ -3466,7 +3475,7 @@ CLAIMS = [
          and v["ceiling_breached"] and v["availability_failed"]
          and v["unannotated_frac"] > 0.50),
      {"docs/LOCALIZATION_CONTROL_PREREGISTRATION.md":
-      "**R = 5.356 [5.108, 5.604]** on 650M and **5.130 [4.814, 5.446]** on 35M.",
+      "**Corrected E-1 / E-2: R = 5.381 [5.134, 5.628] on 650M and 5.151 [4.786, 5.516] on 35M.**",
       "paper/MANUSCRIPT.md":
       "VFDB virulence factors are still flagged at **73.49%**"},
      # \U0001f534 The share of the gap that localization buys (22.1%) and the share provenance buys
