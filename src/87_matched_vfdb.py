@@ -24,7 +24,6 @@ Usage:
 import argparse
 import importlib.util
 import json
-import re
 import time
 from pathlib import Path
 
@@ -41,7 +40,6 @@ SCREEN = ROOT / "results" / "external_class_axis_screen.json"
 OUT_STEM = ROOT / "results" / "matched_vfdb"
 SEEDS, N_TRAIN, N_CAL, SPEC = 30, 1000, 500, 0.95
 FLOOR, BAND_LO, BAND_HI = 25, 1.2, 2.0
-SPECIES_RE = re.compile(r"\[([A-Z][a-z]+ [a-z]+)")
 
 
 def _load(stem):
@@ -96,13 +94,7 @@ def main():
     pool = json.loads(POOL_JSON.read_text())["proteins"]
     test = json.loads(BUILD.read_text())["pool_partition"]["test_rows"]
     vf_seqs = M83.vfdb_sequences()
-    vfdb_species = set()
-    for name in ("VFDB_setA_pro.fas", "VFDB_setB_pro.fas"):
-        for line in (ROOT / "data/external/vfdb" / name).read_text(errors="replace").splitlines():
-            if line.startswith(">"):
-                m = SPECIES_RE.search(line)
-                if m:
-                    vfdb_species.add(m.group(1))
+    vfdb_species = M83.vfdb_species()
 
     # ---- 🔒 the positive-side check, which has never been run --------------------------------------
     sfx = "" if a.arm == "esm2_650M" else f"_{a.arm}"

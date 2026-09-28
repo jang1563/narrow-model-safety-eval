@@ -4832,3 +4832,57 @@ moved a cell *up* toward its floor and that is the direction that should have to
 ⚠️ **The same synonym problem runs the other way in studies F and G**, whose provenance factor is
 "species appears in VFDB": renamed pathogens were scored as benign-species, which **dilutes** their
 measured provenance effect. Conservative direction, **and not quantified.**
+
+---
+
+## 2026-09-28 (fifty-eighth entry) — Four scripts shared a regex by copy, and so shared its bug
+
+Found while building the taxid study: the resolver's first output listed **"Accessory secretion"**,
+**"Acid phosphatase"** and **"Achromobactin biosynthesis"** as VFDB *species*.
+
+A VFDB header carries **two** bracket groups:
+
+```
+>VFG037176(gb|WP_001081735) (plc1) phospholipase C [Phospholipase C (VF0470) - Exotoxin (VFC0235)] [Acinetobacter baumannii ACICU]
+```
+
+and `src/85` through `src/88` each held their own copy of `re.search(r"\[([A-Z][a-z]+ [a-z]+)")`,
+which takes the **first** match. 🔴 **Any VF name shaped "Capitalized lowercase" won the header
+outright.**
+
+| | |
+|---|---:|
+| records where a **non-organism** was captured | **4,185 / 34,970 = 12.0%** |
+| junk strings in the "species" set | **133** of 405 |
+| real organisms **missing** from it | **11** |
+
+The lost organisms are *Helicobacter bilis*, *H. canis*, *H. cinaedi*, *H. flexispira*, *H. pullorum*,
+*Francisella* sp./cf., *Haemophilus* sp., *Staphylococcus caprae*, *Streptococcus* sp. and
+*Mycobacterium* sp. — pathogens whose pool proteins would be scored **benign**.
+
+🔒 **Fixed once, not four times.** `vfdb_species()` now lives in `src/83_provenance_control.py`, which
+already owns VFDB parsing, and takes the **last** bracket group; `src/85`, `86`, `87` and `88` import
+it. **Four scripts sharing a regex by copy is how they came to share a bug.**
+
+### 🟢 Zero measured impact — and that is verified, not reasoned
+
+Studies F, G and H re-run on both arms after the fix. **Every quantity is identical to four decimal
+places**: RR 1.009 / 1.327, joint share 0.4219 / 0.3279, F-5 2.6854 / 2.3694, G's clean R 5.074 /
+4.347, H's C/A 1.974 / 1.497, H-5 0.9193. All four 2×2 cells unchanged at 171 / 597 / 444 / 1,049.
+
+🔒 **The mechanism was then checked rather than assumed**, in three steps:
+
+1. None of the **133** junk strings matches **any** pool organism name — so they never created a false
+   positive.
+2. Of the **11** recovered organisms, **10 contribute zero pool proteins**; only *Mycobacterium* sp.
+   has any, with **12** in the test partition.
+3. Those 12 sit in the **membrane (1)** and **unannotated (11)** strata, and the 2×2 admits only
+   extracellular and intracellular. **So none of them could reach a cell.**
+
+⚠️ **A defect with no effect is still a defect.** It was wrong on 12% of records, it would have bitten
+the moment a *Helicobacter* protein entered a stratum, and the only reason to report "no change" with
+any confidence is that the re-run and the three-step trace were both done.
+
+🔑 **And it was found by a study that had not started yet** — the resolver printing a nonsense species
+name. That is the third defect this session found by building the *next* thing rather than by
+re-reading the last one.

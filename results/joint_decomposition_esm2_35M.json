@@ -1,8 +1,8 @@
 {
-  "built": "2026-09-28 14:58:31",
+  "built": "2026-09-28 17:51:01",
   "arm": "esm2_35M",
   "seeds": 30,
-  "n_vfdb_species": 405,
+  "n_vfdb_species": 283,
   "n_eligible": 6247,
   "n_excluded_as_vfdb": 57,
   "excluded_as_vfdb": [

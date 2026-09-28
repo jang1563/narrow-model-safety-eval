@@ -21,7 +21,6 @@ Usage:
 import argparse
 import importlib.util
 import json
-import re
 import time
 from pathlib import Path
 
@@ -38,7 +37,6 @@ SCREEN = ROOT / "results" / "external_class_axis_screen.json"
 OUT_STEM = ROOT / "results" / "decontamination_sensitivity"
 SEEDS, N_TRAIN, N_CAL, SPEC = 30, 1000, 500, 0.95
 VFDB_RATE = 0.7348585427532796
-SPECIES_RE = re.compile(r"\[([A-Z][a-z]+ [a-z]+)")
 FLOOR_CELL, FLOOR_STRATUM, R_FLOOR, RR_LO, RR_HI = 150, 300, 3.0, 0.67, 1.5
 
 
@@ -105,13 +103,7 @@ def main():
     accs = [pool[i]["uniprot"] for i in test]
     kw = M84.fetch_keywords(accs)
     vf_seqs = M83.vfdb_sequences()
-    vfdb_species = set()
-    for name in ("VFDB_setA_pro.fas", "VFDB_setB_pro.fas"):
-        for line in (ROOT / "data/external/vfdb" / name).read_text(errors="replace").splitlines():
-            if line.startswith(">"):
-                m = SPECIES_RE.search(line)
-                if m:
-                    vfdb_species.add(m.group(1))
+    vfdb_species = M83.vfdb_species()
 
     # ---- the two conditions differ only in whether contaminants are present --------------------
     union_dirty = json.loads(SCREEN.read_text())["admitted_rows"]

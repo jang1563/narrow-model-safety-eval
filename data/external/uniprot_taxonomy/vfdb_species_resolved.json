@@ -1,0 +1,1002 @@
+{
+ "Accessory secretion": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Achromobactin biosynthesis": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Acid phosphatase": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Acinetobacter baumannii": {
+  "taxid": 470,
+  "canonical": "Acinetobacter baumannii",
+  "how": "scientific"
+ },
+ "Acinetobacter haemolyticus": {
+  "taxid": 29430,
+  "canonical": "Acinetobacter haemolyticus",
+  "how": "scientific"
+ },
+ "Actinobacillus pleuropneumoniae": {
+  "taxid": 715,
+  "canonical": "Actinobacillus pleuropneumoniae",
+  "how": "scientific"
+ },
+ "Actinomyces naeslundii": {
+  "taxid": 1655,
+  "canonical": "Actinomyces naeslundii",
+  "how": "scientific"
+ },
+ "Actinomyces viscosus": {
+  "taxid": 1656,
+  "canonical": "Actinomyces viscosus",
+  "how": "scientific"
+ },
+ "Acylhomoserine lactone": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Adherence and": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Adhesion and": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Adhesive factor": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Adhesive fimbriae": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Aeromonas enteropelogenes": {
+  "taxid": 29489,
+  "canonical": "Aeromonas enteropelogenes",
+  "how": "scientific"
+ },
+ "Aeromonas hydrophila": {
+  "taxid": 644,
+  "canonical": "Aeromonas hydrophila",
+  "how": "scientific"
+ },
+ "Aeromonas punctata": {
+  "taxid": 648,
+  "canonical": "Aeromonas caviae",
+  "how": "synonym"
+ },
+ "Aeromonas salmonicida": {
+  "taxid": 645,
+  "canonical": "Aeromonas salmonicida",
+  "how": "scientific"
+ },
+ "Aeromonas sobria": {
+  "taxid": 646,
+  "canonical": "Aeromonas sobria",
+  "how": "scientific"
+ },
+ "Aeromonas veronii": {
+  "taxid": 654,
+  "canonical": "Aeromonas veronii",
+  "how": "scientific"
+ },
+ "Afimbrial adhesin": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Agglutinin receptor": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Aggregatibacter actinomycetemcomitans": {
+  "taxid": 714,
+  "canonical": "Aggregatibacter actinomycetemcomitans",
+  "how": "scientific"
+ },
+ "Aggregatibacter aphrophilus": {
+  "taxid": 732,
+  "canonical": "Aggregatibacter aphrophilus",
+  "how": "scientific"
+ },
+ "Aggregatibacter kilianii": {
+  "taxid": 2025884,
+  "canonical": "Aggregatibacter kilianii",
+  "how": "scientific"
+ },
+ "Agrobacterium tumefaciens": {
+  "taxid": 358,
+  "canonical": "Agrobacterium tumefaciens",
+  "how": "scientific"
+ },
+ "Alkaline protease": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Allantion utilization": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Anaplasma centrale": {
+  "taxid": 769,
+  "canonical": "Anaplasma centrale",
+  "how": "scientific"
+ },
+ "Anaplasma marginale": {
+  "taxid": 770,
+  "canonical": "Anaplasma marginale",
+  "how": "scientific"
+ },
+ "Anaplasma phagocytophilum": {
+  "taxid": 948,
+  "canonical": "Anaplasma phagocytophilum",
+  "how": "scientific"
+ },
+ "Anthrax toxin": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Arcanobacterium pyogenes": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Autolysin alt": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Bacillus anthracis": {
+  "taxid": 1392,
+  "canonical": "Bacillus anthracis",
+  "how": "scientific"
+ },
+ "Bacillus cereus": {
+  "taxid": 1396,
+  "canonical": "Bacillus cereus",
+  "how": "scientific"
+ },
+ "Bacillus clausii": {
+  "taxid": 79880,
+  "canonical": "Shouchella clausii",
+  "how": "synonym"
+ },
+ "Bacillus halodurans": {
+  "taxid": 86665,
+  "canonical": "Halalkalibacterium halodurans",
+  "how": "synonym"
+ },
+ "Bacillus licheniformis": {
+  "taxid": 1402,
+  "canonical": "Bacillus licheniformis",
+  "how": "scientific"
+ },
+ "Bacillus subtilis": {
+  "taxid": 1423,
+  "canonical": "Bacillus subtilis",
+  "how": "scientific"
+ },
+ "Bacillus thuringiensis": {
+  "taxid": 1428,
+  "canonical": "Bacillus thuringiensis",
+  "how": "scientific"
+ },
+ "Bacillus weihenstephanensis": {
+  "taxid": 1405,
+  "canonical": "Bacillus mycoides",
+  "how": "synonym"
+ },
+ "Bacteroides fragilis": {
+  "taxid": 817,
+  "canonical": "Bacteroides fragilis",
+  "how": "scientific"
+ },
+ "Bacteroides thetaiotaomicron": {
+  "taxid": 818,
+  "canonical": "Bacteroides thetaiotaomicron",
+  "how": "scientific"
+ },
+ "Bacteroides uniformis": {
+  "taxid": 820,
+  "canonical": "Bacteroides uniformis",
+  "how": "scientific"
+ },
+ "Bartonella bacilliformis": {
+  "taxid": 774,
+  "canonical": "Bartonella bacilliformis",
+  "how": "scientific"
+ },
+ "Bartonella henselae": {
+  "taxid": 38323,
+  "canonical": "Bartonella henselae",
+  "how": "scientific"
+ },
+ "Bartonella quintana": {
+  "taxid": 803,
+  "canonical": "Bartonella quintana",
+  "how": "scientific"
+ },
+ "Bartonella tribocorum": {
+  "taxid": 85701,
+  "canonical": "Bartonella tribocorum",
+  "how": "scientific"
+ },
+ "Bartonella vinsonii": {
+  "taxid": 33047,
+  "canonical": "Bartonella vinsonii",
+  "how": "scientific"
+ },
+ "Bcp pili": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Biotin synthesis": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Bordetella avium": {
+  "taxid": 521,
+  "canonical": "Bordetella avium",
+  "how": "scientific"
+ },
+ "Bordetella bronchiseptica": {
+  "taxid": 518,
+  "canonical": "Bordetella bronchiseptica",
+  "how": "scientific"
+ },
+ "Bordetella parapertussis": {
+  "taxid": 519,
+  "canonical": "Bordetella parapertussis",
+  "how": "scientific"
+ },
+ "Bordetella pertussis": {
+  "taxid": 520,
+  "canonical": "Bordetella pertussis",
+  "how": "scientific"
+ },
+ "Borrelia afzelii": {
+  "taxid": 29518,
+  "canonical": "Borreliella afzelii",
+  "how": "synonym"
+ },
+ "Borrelia bavariensis": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Borrelia burgdorferi": {
+  "taxid": 139,
+  "canonical": "Borreliella burgdorferi",
+  "how": "synonym"
+ },
+ "Borrelia garinii": {
+  "taxid": 29519,
+  "canonical": "Borreliella garinii",
+  "how": "synonym"
+ },
+ "Borrelia hermsii": {
+  "taxid": 140,
+  "canonical": "Borrelia hermsii",
+  "how": "scientific"
+ },
+ "Borrelia mayonii": {
+  "taxid": 1674146,
+  "canonical": "Borreliella mayonii",
+  "how": "synonym"
+ },
+ "Borrelia recurrentis": {
+  "taxid": 44449,
+  "canonical": "Borrelia recurrentis",
+  "how": "scientific"
+ },
+ "Borrelia valaisiana": {
+  "taxid": 62088,
+  "canonical": "Borreliella valaisiana",
+  "how": "synonym"
+ },
+ "Brevibacillus brevis": {
+  "taxid": 1393,
+  "canonical": "Brevibacillus brevis",
+  "how": "scientific"
+ },
+ "Brucella abortus": {
+  "taxid": 235,
+  "canonical": "Brucella abortus",
+  "how": "scientific"
+ },
+ "Brucella canis": {
+  "taxid": 36855,
+  "canonical": "Brucella canis",
+  "how": "scientific"
+ },
+ "Brucella melitensis": {
+  "taxid": 29459,
+  "canonical": "Brucella melitensis",
+  "how": "scientific"
+ },
+ "Brucella ovis": {
+  "taxid": 236,
+  "canonical": "Brucella ovis",
+  "how": "scientific"
+ },
+ "Brucella suis": {
+  "taxid": 29461,
+  "canonical": "Brucella suis",
+  "how": "scientific"
+ },
+ "Burkholderia cenocepacia": {
+  "taxid": 95486,
+  "canonical": "Burkholderia cenocepacia",
+  "how": "scientific"
+ },
+ "Burkholderia mallei": {
+  "taxid": 13373,
+  "canonical": "Burkholderia mallei",
+  "how": "scientific"
+ },
+ "Burkholderia pseudomallei": {
+  "taxid": 28450,
+  "canonical": "Burkholderia pseudomallei",
+  "how": "scientific"
+ },
+ "Burkholderia thailandensis": {
+  "taxid": 57975,
+  "canonical": "Burkholderia thailandensis",
+  "how": "scientific"
+ },
+ "Cable pilus": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Campylobacter coli": {
+  "taxid": 195,
+  "canonical": "Campylobacter coli",
+  "how": "scientific"
+ },
+ "Campylobacter fetus": {
+  "taxid": 196,
+  "canonical": "Campylobacter fetus",
+  "how": "scientific"
+ },
+ "Campylobacter hyointestinalis": {
+  "taxid": 198,
+  "canonical": "Campylobacter hyointestinalis",
+  "how": "scientific"
+ },
+ "Campylobacter jejuni": {
+  "taxid": 197,
+  "canonical": "Campylobacter jejuni",
+  "how": "scientific"
+ },
+ "Campylobacter lari": {
+  "taxid": 201,
+  "canonical": "Campylobacter lari",
+  "how": "scientific"
+ },
+ "Campylobacter upsaliensis": {
+  "taxid": 28080,
+  "canonical": "Campylobacter upsaliensis",
+  "how": "scientific"
+ },
+ "Capsular polysaccharide": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Cell surface": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Cell wall": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Chlamydia muridarum": {
+  "taxid": 83560,
+  "canonical": "Chlamydia muridarum",
+  "how": "scientific"
+ },
+ "Chlamydia trachomatis": {
+  "taxid": 813,
+  "canonical": "Chlamydia trachomatis",
+  "how": "scientific"
+ },
+ "Chlamydophila abortus": {
+  "taxid": 83555,
+  "canonical": "Chlamydia abortus",
+  "how": "synonym"
+ },
+ "Chlamydophila caviae": {
+  "taxid": 83557,
+  "canonical": "Chlamydia caviae",
+  "how": "synonym"
+ },
+ "Chlamydophila felis": {
+  "taxid": 83556,
+  "canonical": "Chlamydia felis",
+  "how": "synonym"
+ },
+ "Chlamydophila pneumoniae": {
+  "taxid": 83558,
+  "canonical": "Chlamydia pneumoniae",
+  "how": "synonym"
+ },
+ "Chromobacterium violaceum": {
+  "taxid": 536,
+  "canonical": "Chromobacterium violaceum",
+  "how": "scientific"
+ },
+ "Citrobacter freundii": {
+  "taxid": 546,
+  "canonical": "Citrobacter freundii",
+  "how": "scientific"
+ },
+ "Citrobacter rodentium": {
+  "taxid": 67825,
+  "canonical": "Citrobacter rodentium",
+  "how": "scientific"
+ },
+ "Ciu iron": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Clostridium acetobutylicum": {
+  "taxid": 1488,
+  "canonical": "Clostridium acetobutylicum",
+  "how": "scientific"
+ },
+ "Clostridium beijerinckii": {
+  "taxid": 1520,
+  "canonical": "Clostridium beijerinckii",
+  "how": "scientific"
+ },
+ "Clostridium bifermentans": {
+  "taxid": 1490,
+  "canonical": "Paraclostridium bifermentans",
+  "how": "synonym"
+ },
+ "Clostridium botulinum": {
+  "taxid": 1491,
+  "canonical": "Clostridium botulinum",
+  "how": "scientific"
+ },
+ "Clostridium butyricum": {
+  "taxid": 1492,
+  "canonical": "Clostridium butyricum",
+  "how": "scientific"
+ },
+ "Clostridium difficile": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Clostridium limosum": {
+  "taxid": 1536,
+  "canonical": "Hathewaya limosa",
+  "how": "synonym"
+ },
+ "Clostridium novyi": {
+  "taxid": 1542,
+  "canonical": "Clostridium novyi",
+  "how": "scientific"
+ },
+ "Clostridium perfringens": {
+  "taxid": 1502,
+  "canonical": "Clostridium perfringens",
+  "how": "scientific"
+ },
+ "Clostridium septicum": {
+  "taxid": 1504,
+  "canonical": "Clostridium septicum",
+  "how": "scientific"
+ },
+ "Clostridium sordellii": {
+  "taxid": 1505,
+  "canonical": "Paraclostridium sordellii",
+  "how": "synonym"
+ },
+ "Clostridium spiroforme": {
+  "taxid": 29348,
+  "canonical": "Thomasclavelia spiroformis",
+  "how": "synonym"
+ },
+ "Clostridium tetani": {
+  "taxid": 1513,
+  "canonical": "Clostridium tetani",
+  "how": "scientific"
+ },
+ "Clostridium thermocellum": {
+  "taxid": 1515,
+  "canonical": "Acetivibrio thermocellus",
+  "how": "synonym"
+ },
+ "Clumping factor": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Collagen binding": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Colonization factor": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Copper exporter": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Corynebacterium diphtheriae": {
+  "taxid": 1717,
+  "canonical": "Corynebacterium diphtheriae",
+  "how": "scientific"
+ },
+ "Corynebacterium efficiens": {
+  "taxid": 152794,
+  "canonical": "Corynebacterium efficiens",
+  "how": "scientific"
+ },
+ "Corynebacterium glutamicum": {
+  "taxid": 1718,
+  "canonical": "Corynebacterium glutamicum",
+  "how": "scientific"
+ },
+ "Corynebacterium jeikeium": {
+  "taxid": 38289,
+  "canonical": "Corynebacterium jeikeium",
+  "how": "scientific"
+ },
+ "Corynebacterium pseudotuberculosis": {
+  "taxid": 1719,
+  "canonical": "Corynebacterium pseudotuberculosis",
+  "how": "scientific"
+ },
+ "Coxiella burnetii": {
+  "taxid": 777,
+  "canonical": "Coxiella burnetii",
+  "how": "scientific"
+ },
+ "Csu fimbriae": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Curli fibers": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Cytadherence organelle": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Cytolethal distending": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Desulfovibrio vulgaris": {
+  "taxid": 881,
+  "canonical": "Nitratidesulfovibrio vulgaris",
+  "how": "synonym"
+ },
+ "Dichelobacter nodosus": {
+  "taxid": 870,
+  "canonical": "Dichelobacter nodosus",
+  "how": "scientific"
+ },
+ "Dickeya dadantii": {
+  "taxid": 204038,
+  "canonical": "Dickeya dadantii",
+  "how": "scientific"
+ },
+ "Diphtheria toxin": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Direct heme": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Dr adhesins": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Ebp pili": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Edwardsiella tarda": {
+  "taxid": 636,
+  "canonical": "Edwardsiella tarda",
+  "how": "scientific"
+ },
+ "Ehrlichia chaffeensis": {
+  "taxid": 945,
+  "canonical": "Ehrlichia chaffeensis",
+  "how": "scientific"
+ },
+ "Enh loci": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Enhanced intracellular": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Enteroaggregative immunoglobulin": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Enterobacter asburiae": {
+  "taxid": 61645,
+  "canonical": "Enterobacter asburiae",
+  "how": "scientific"
+ },
+ "Enterobacter chengduensis": {
+  "taxid": 2494701,
+  "canonical": "Enterobacter chengduensis",
+  "how": "scientific"
+ },
+ "Enterobacter cloacae": {
+  "taxid": 550,
+  "canonical": "Enterobacter cloacae",
+  "how": "scientific"
+ },
+ "Enterobacter hormaechei": {
+  "taxid": 158836,
+  "canonical": "Enterobacter hormaechei",
+  "how": "scientific"
+ },
+ "Enterobacter kobei": {
+  "taxid": 208224,
+  "canonical": "Enterobacter kobei",
+  "how": "scientific"
+ },
+ "Enterobacter roggenkampii": {
+  "taxid": 1812935,
+  "canonical": "Enterobacter roggenkampii",
+  "how": "scientific"
+ },
+ "Enterobactin receptor": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Enterobactin synthesis": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Enterococcus faecalis": {
+  "taxid": 1351,
+  "canonical": "Enterococcus faecalis",
+  "how": "scientific"
+ },
+ "Enterococcus faecium": {
+  "taxid": 1352,
+  "canonical": "Enterococcus faecium",
+  "how": "scientific"
+ },
+ "Epidermal cell": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Erwinia amylovora": {
+  "taxid": 552,
+  "canonical": "Erwinia amylovora",
+  "how": "scientific"
+ },
+ "Erwinia chrysanthemi": {
+  "taxid": 556,
+  "canonical": "Dickeya chrysanthemi",
+  "how": "synonym"
+ },
+ "Erysipelothrix rhusiopathiae": {
+  "taxid": 1648,
+  "canonical": "Erysipelothrix rhusiopathiae",
+  "how": "scientific"
+ },
+ "Escherichia albertii": {
+  "taxid": 208962,
+  "canonical": "Escherichia albertii",
+  "how": "scientific"
+ },
+ "Escherichia coli": {
+  "taxid": 562,
+  "canonical": "Escherichia coli",
+  "how": "scientific"
+ },
+ "Eut locus": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Exfoliative toxin": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Extracellular factor": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Extracellular hemolysin": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Ferric enterobactin": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Ferrous iron": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Fibrinogen binding": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Flagellar glycosylation": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Francisella cf": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Francisella noatunensis": {
+  "taxid": 657445,
+  "canonical": "Francisella noatunensis",
+  "how": "scientific"
+ },
+ "Francisella novicida": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Francisella philomiragia": {
+  "taxid": 28110,
+  "canonical": "Francisella philomiragia",
+  "how": "scientific"
+ },
+ "Francisella sp": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Francisella tularensis": {
+  "taxid": 263,
+  "canonical": "Francisella tularensis",
+  "how": "scientific"
+ },
+ "Fused nitrate": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Fusobacterium animalis": {
+  "taxid": 76859,
+  "canonical": "Fusobacterium animalis",
+  "how": "scientific"
+ },
+ "Fusobacterium canifelinum": {
+  "taxid": 285729,
+  "canonical": "Fusobacterium canifelinum",
+  "how": "scientific"
+ },
+ "Fusobacterium necrophorum": {
+  "taxid": 859,
+  "canonical": "Fusobacterium necrophorum",
+  "how": "scientific"
+ },
+ "Fusobacterium nucleatum": {
+  "taxid": 851,
+  "canonical": "Fusobacterium nucleatum",
+  "how": "scientific"
+ },
+ "Fusobacterium paranimalis": {
+  "taxid": 3453848,
+  "canonical": "Fusobacterium paranimalis",
+  "how": "scientific"
+ },
+ "Fusobacterium polymorphum": {
+  "taxid": 76857,
+  "canonical": "Fusobacterium nucleatum subsp. polymorphum",
+  "how": "synonym"
+ },
+ "Fusobacterium vincentii": {
+  "taxid": 155615,
+  "canonical": "Fusobacterium vincentii",
+  "how": "scientific"
+ },
+ "Ghf fimbriae": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Glutamine synthesis": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Haemagglutinating pili": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Haemophilus ducreyi": {
+  "taxid": 730,
+  "canonical": "Haemophilus ducreyi",
+  "how": "scientific"
+ },
+ "Haemophilus influenzae": {
+  "taxid": 727,
+  "canonical": "Haemophilus influenzae",
+  "how": "scientific"
+ },
+ "Haemophilus somnus": {
+  "taxid": 731,
+  "canonical": "Histophilus somni",
+  "how": "synonym"
+ },
+ "Hda adhesin": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Helicobacter acinonychis": {
+  "taxid": 212,
+  "canonical": "Helicobacter acinonychis",
+  "how": "scientific"
+ },
+ "Helicobacter hepaticus": {
+  "taxid": 32025,
+  "canonical": "Helicobacter hepaticus",
+  "how": "scientific"
+ },
+ "Helicobacter pylori": {
+  "taxid": 210,
+  "canonical": "Helicobacter pylori",
+  "how": "scientific"
+ },
+ "Heme binding": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Heme biosynthesis": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Heme receptor": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Heme uptake": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Hmu system": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Hus system": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Hyaluronate lyase": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Hyaluronic acid": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Hydrogen cyanide": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Insecticidal crystalline": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Intercellular adhesion": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Isocitrate lyase": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Kfc fimbriae": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Klebsiella oxytoca": {
+  "taxid": 571,
+  "canonical": "Klebsiella oxytoca",
+  "how": "scientific"
+ },
+ "Klebsiella pneumoniae": {
+  "taxid": 573,
+  "canonical": "Klebsiella pneumoniae",
+  "how": "scientific"
+ },
+ "Klebsiella variicola": {
+  "taxid": 244366,
+  "canonical": "Klebsiella variicola",
+  "how": "scientific"
+ },
+ "Lactobacillus iners": {
+  "taxid": 147802,
+  "canonical": "Lactobacillus iners",
+  "how": "scientific"
+ },
+ "Lateral flagella": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Legionella longbeachae": {
+  "taxid": 450,
+  "canonical": "Legionella longbeachae",
+  "how": "scientific"
+ }
+}

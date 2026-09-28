@@ -73,6 +73,30 @@ def vfdb_sequences():
     return seqs
 
 
+def vfdb_species():
+    r"""The organism of every VFDB record, at species resolution.
+
+    \U0001f534 A VFDB header carries TWO bracket groups -- `[VF name (VFxxxx) - Category (VFCxxxx)]`
+    and then `[Organism strain]` -- and src/85 through src/88 each had their own copy of
+    `re.search(r"\[([A-Z][a-z]+ [a-z]+)")`, which takes the FIRST match. Any VF name shaped
+    "Capitalized lowercase" therefore won a header outright: "Accessory secretion", "Acid phosphatase",
+    "Adhesive fimbriae". 12.0% of records captured a non-organism, the set held 133 such strings and
+    was MISSING 11 real pathogens -- Helicobacter bilis, H. canis, H. cinaedi, H. pullorum among them --
+    whose proteins were then scored benign. Entry 58.
+
+    The organism is the LAST bracket group. Defined here, once, because four scripts sharing a
+    regex by copy is how they came to share a bug.
+    """
+    out = set()
+    for name in ("VFDB_setA_pro.fas", "VFDB_setB_pro.fas"):
+        for line in (ROOT / "data/external/vfdb" / name).read_text(errors="replace").splitlines():
+            if line.startswith(">"):
+                groups = re.findall(r"\[([^\]]*)\]", line)
+                if groups:
+                    out.add(" ".join(groups[-1].split()[:2]))
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", default="esm2_650M", choices=["esm2_650M", "esm2_35M"])

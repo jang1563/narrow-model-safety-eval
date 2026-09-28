@@ -19,7 +19,6 @@ Usage:
 import argparse
 import importlib.util
 import json
-import re
 import time
 from pathlib import Path
 
@@ -37,7 +36,6 @@ OUT_STEM = ROOT / "results" / "joint_decomposition"
 SEEDS, N_TRAIN, N_CAL, SPEC = 30, 1000, 500, 0.95
 VFDB_RATE, STUDY_D_RATE = 0.7348585427532796, 0.2207547169811321
 FLOOR, BAND_LO, BAND_HI = 150, 0.67, 1.5
-SPECIES_RE = re.compile(r"\[([A-Z][a-z]+ [a-z]+)")
 
 
 def _load(stem):
@@ -99,13 +97,7 @@ def main():
     kw = M84.fetch_keywords(accs)
 
     # ---- the two frozen factors ------------------------------------------------------------------
-    vfdb_species = set()
-    for name in ("VFDB_setA_pro.fas", "VFDB_setB_pro.fas"):
-        for line in (ROOT / "data/external/vfdb" / name).read_text(errors="replace").splitlines():
-            if line.startswith(">"):
-                m = SPECIES_RE.search(line)
-                if m:
-                    vfdb_species.add(m.group(1))
+    vfdb_species = M83.vfdb_species()
     vf_seqs = M83.vfdb_sequences()
 
     cells = {(p, s): [] for p in ("pathogen", "benign_species")
