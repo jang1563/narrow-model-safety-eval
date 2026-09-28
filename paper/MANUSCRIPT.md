@@ -223,10 +223,28 @@ merely exceeded on virulence factors; it is exceeded fourfold on ordinary benign
 
 🔒 **What survives.** Against a *localization-matched* benign baseline of 21.73% rather than the pool's
 7.08%, VFDB virulence factors are still flagged at **73.49%**, so **roughly three quarters of the
-separation is not localization** — the same fraction provenance left over. ⚠️ **The two shares cannot be
-added**: pathogen-derived proteins are themselves enriched for secretion, and the joint decomposition has
-not been run. **What is established is that neither confound explains most of the gap, and that neither
-has been shown to explain the rest either.**
+separation is not localization** — the same fraction provenance left over.
+
+⚠️ **The two shares must not be added, and the joint decomposition says what they actually buy.**
+Pathogen-derived proteins are themselves enriched for secretion, so the controls overlap by
+construction. Crossing them (`docs/JOINT_DECOMPOSITION_PREREGISTRATION.md`) gives a clean 2×2 on the
+benign side:
+
+| benign cell | *n* | ESM-2 650M | ESM-2 35M |
+|---|---:|---:|---:|
+| pathogen species × extracellular | 171 | **35.03%** | **26.88%** |
+| pathogen species × intracellular | 597 | 6.37% | 4.67% |
+| benign species × extracellular | 444 | 13.14% | 8.46% |
+| benign species × intracellular | 1,049 | **2.36%** | **1.95%** |
+
+🟢 **The two are multiplicatively independent** — ratio of ratios **1.001 [0.923, 1.079]** on 650M and
+**1.364 [1.249, 1.480]** on 35M, both inside a band frozen in advance. Localization is worth ≈5.5× and
+provenance ≈2.7×, each roughly constant across the other's levels. ⚠️ 35M's interval excludes 1.0, so
+the arms agree on the band and not on the point estimate.
+
+⭐ **Together they span 42.1% of the pool→VFDB gap on 650M and 32.2% on 35M** — measured, not summed;
+**22.7% + 22.1% is not a quantity this repository has.** 🔑 **So the majority of the separation still
+belongs to neither confound**, and what it does belong to is not established here.
 
 🔴 **Criterion 12 fails, and the failure was expensive twice.** The first preregistration carried a floor
 and no ceiling. Adding ceilings to the second one is what made its NOT SUPPORTED verdict readable — and

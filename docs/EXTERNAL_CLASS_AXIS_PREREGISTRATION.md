@@ -381,3 +381,14 @@ like a localization detector**, and the recoveries in this document have to be r
 flagged at 73.49%, and against the pathogen-matched baseline of 22.08% likewise — so **neither confound
 explains most of the separation.** ⚠️ **Nor may the two shares be added** — pathogen-derived proteins are
 enriched for secretion, and the joint decomposition has not been run.
+
+---
+
+## 🔒 Superseded on this point — 2026-09-28, later the same day
+
+The sentence above saying the joint decomposition **has not been run** was true when written and is
+no longer. `docs/JOINT_DECOMPOSITION_PREREGISTRATION.md` ran it: provenance and localization are
+**multiplicatively independent** (RR = 1.001 on 650M, 1.364 on 35M, both inside the frozen band), and
+**together they span 42.1% of the pool→VFDB gap on 650M and 32.2% on 35M** — measured, not summed.
+🔴 **22.7% + 22.1% remains wrong** and remains forbidden by claim 98. The text above is left as
+written rather than edited, per this repository's append-only rule.

@@ -4584,3 +4584,67 @@ the three forms it would be written in.
 instead of the pool's 7.08%, VFDB virulence factors are still flagged at **73.49%**. Roughly three
 quarters of the separation is not localization — the same fraction provenance left over. **Two
 independent confounds have each been measured at about a quarter, and neither has taken the result.**
+
+---
+
+## 2026-09-28 (fifty-fourth entry) — The two confounds compose, buy 42% together, and the pool is not clean
+
+Entry 53 forbade adding 22.7% to 22.1% and said the joint decomposition had not been run. 🔒 **It has
+now**, and it replaces the forbidden sum with a measured number.
+
+`docs/JOINT_DECOMPOSITION_PREREGISTRATION.md`, frozen after a **declared** feasibility count — the cell
+sizes were looked at and disclosed before freezing, because three rules in an earlier preregistration
+had to be amended for being frozen before anyone checked they could execute. Study B's fold unchanged,
+30 seeds, **no new inference** for the third study running.
+
+| benign cell | *n* | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|---:|
+| **pathogen species × extracellular** | 171 | **35.03%** | **26.88%** |
+| pathogen species × intracellular | 597 | 6.37% | 4.67% |
+| benign species × extracellular | 444 | 13.14% | 8.46% |
+| **benign species × intracellular** | 1,049 | **2.36%** | **1.95%** |
+
+🟢 **They are multiplicatively independent.** Ratio of ratios **1.001 [0.923, 1.079]** on 650M and
+**1.364 [1.249, 1.480]** on 35M, both inside the frozen band. Localization is worth ≈5.5× and
+provenance ≈2.7×, each roughly constant across the other's levels. ⚠️ **35M's interval excludes 1.0**
+— the arms agree on the band and not on the point estimate, and that is reported rather than absorbed
+into the word "independent".
+
+⭐ **Together they span 42.1% of the pool→VFDB gap (32.2% on 35M)** — measured, not summed.
+🔴 **22.7% + 22.1% is still not a quantity this repository has**, and claim 98 still forbids it.
+🔑 **The majority of the separation belongs to neither confound.** What it does belong to is not
+established.
+
+### 🟢 Study D's upper bound was real, and the prediction record improved
+
+The pool's VFDB-species proteins are flagged at **12.75%** (650M) and **9.61%** (35M), against study
+D's **22.08%** from *curated hard* negatives. Study D declared 22.08% an upper bound **before running**
+and it is — the unbiased figure is about half. Entry 52 needs no correction.
+
+🔒 **Frozen predictions: 3½ of 4** (F-1 band right and direction wrong, F-3/F-4/F-5 all right) — better
+than study D's band-right/characterisation-wrong and much better than study E's miss by a factor of
+nearly three.
+
+### 🔴 And the exclusion count found something nobody had checked: the benign pool contains 133 VFDB proteins
+
+| partition | rows | exact VFDB matches | |
+|---|---:|---:|---|
+| **train** | 1,000 | **13** | fitted as negatives |
+| **calibrate** | 500 | **12** | 🔴 **they set the threshold** |
+| test | 6,758 | 108 | |
+| **whole pool** | **8,259** | **133** | 1.61% |
+
+🔴 **Twelve true virulence factors sit in the 500 proteins that define the 95% cut**, where only 25
+proteins are above it at all.
+
+🔒 **The direction is knowable in advance and is conservative**: contaminants score high, push the
+threshold up, and so **every flag rate in this repository is too low, not too high.** ⚠️ **Direction is
+not magnitude.** A decontaminated re-run is the next thing run, rather than an acknowledgement left
+standing — which is the failure mode this log has recorded six times.
+
+### ⚠️ The gate caught a bad pin, which is the third time it has caught the pin and not the number
+
+Claim 99 was written with two pins to the same document, the second keyed with a **trailing space** to
+get past the dict. The audit reported it as an *absent document*, correctly. The contamination count is
+held by the predicate against the artifact instead, and the second pin now points at the manuscript.
+**A pin that silently does nothing is worse than no pin**, and a trailing-space key is exactly that.

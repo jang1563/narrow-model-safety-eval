@@ -1,0 +1,151 @@
+{
+  "built": "2026-09-28 14:23:59",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "n_vfdb_species": 405,
+  "n_eligible": 6247,
+  "n_excluded_as_vfdb": 57,
+  "excluded_as_vfdb": [
+    "P9WK16",
+    "P47543",
+    "Q9ZGM4",
+    "P05431",
+    "A5U2B3",
+    "P0A609",
+    "O33635",
+    "Q6GAG0",
+    "P0A521",
+    "E3PJ86",
+    "P69997",
+    "O33125",
+    "P23568",
+    "A5U8S6",
+    "P0DB18",
+    "Q8NX62",
+    "P18316",
+    "Q02GC2",
+    "P35755",
+    "P18314",
+    "E8XDJ8",
+    "P18315",
+    "Q7WFT9",
+    "Q05861",
+    "P0A4G2",
+    "Q8CPQ1",
+    "Q9HXJ2",
+    "P9WFK6",
+    "P29698",
+    "P04042",
+    "Q6GI31",
+    "Q9RBS0",
+    "Q05862",
+    "Q49575",
+    "Q8NX96",
+    "Q93UJ2",
+    "Q8XL08",
+    "Q9MCI8",
+    "Q2FZE9",
+    "B1MH83",
+    "P72097",
+    "O52956",
+    "P31951",
+    "P58248",
+    "Q7A827",
+    "A5EWR9",
+    "P11461",
+    "B1MH84",
+    "P0C2T2",
+    "A1KQD8",
+    "Q9RQJ2",
+    "Q8DQ36",
+    "P0ADI6",
+    "P0A4G4",
+    "Q8KQR1",
+    "Q81L50",
+    "Q5HH31"
+  ],
+  "cell_n": {
+    "pathogen|extracellular": 171,
+    "pathogen|intracellular": 597,
+    "benign_species|extracellular": 444,
+    "benign_species|intracellular": 1049
+  },
+  "floor": 150,
+  "floor_met": true,
+  "rates": {
+    "pathogen|extracellular": {
+      "mean": 0.26881091617933717,
+      "sd": 0.03567047598739839,
+      "ci": [
+        0.2560464002803108,
+        0.28157543207836355
+      ]
+    },
+    "pathogen|intracellular": {
+      "mean": 0.046677833612506985,
+      "sd": 0.010133975504284281,
+      "ci": [
+        0.04305143705165147,
+        0.050304230173362496
+      ]
+    },
+    "benign_species|extracellular": {
+      "mean": 0.0846096096096096,
+      "sd": 0.01716979978813807,
+      "ci": [
+        0.07846547566375998,
+        0.09075374355545922
+      ]
+    },
+    "benign_species|intracellular": {
+      "mean": 0.019542421353670163,
+      "sd": 0.005471934101716499,
+      "ci": [
+        0.017584314883084793,
+        0.021500527824255534
+      ]
+    },
+    "pool_all": {
+      "mean": 0.04736140013873326,
+      "sd": 0.00836452466316998,
+      "ci": [
+        0.04436819342939328,
+        0.05035460684807324
+      ]
+    },
+    "pathogen_all": {
+      "mean": 0.09613715277777776,
+      "sd": 0.014132184751774137,
+      "ci": [
+        0.0910800154125313,
+        0.10119429014302422
+      ]
+    }
+  },
+  "F1_ratio_of_ratios": {
+    "mean": 1.364462758556359,
+    "sd": 0.32200755048982893,
+    "ci": [
+      1.2492338364840538,
+      1.479691680628664
+    ]
+  },
+  "band": "multiplicatively independent",
+  "F3_joint_share": 0.3221097257196345,
+  "F4_pathogen_pool_rate": 0.09613715277777776,
+  "F4_study_d_rate": 0.2207547169811321,
+  "F4_bound_holds": true,
+  "F5_provenance_within_intracellular": 2.3885389004643818,
+  "pool_contamination": {
+    "train": 13,
+    "calibrate": 12,
+    "test": 108,
+    "whole_pool": 133,
+    "n": {
+      "train": 1000,
+      "calibrate": 500,
+      "test": 6758,
+      "whole_pool": 8259
+    }
+  }
+}

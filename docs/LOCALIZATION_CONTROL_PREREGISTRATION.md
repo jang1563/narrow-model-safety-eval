@@ -216,3 +216,14 @@ everywhere it appears.
 quarter of it. Provenance accounted for about another quarter. **The two have not been shown to be
 independent** — pathogen-derived proteins are themselves enriched for secretion, so these shares
 cannot simply be added, and the joint decomposition has not been run.
+
+---
+
+## 🔒 Superseded on this point — 2026-09-28, later the same day
+
+The sentence above saying the joint decomposition **has not been run** was true when written and is
+no longer. `docs/JOINT_DECOMPOSITION_PREREGISTRATION.md` ran it: provenance and localization are
+**multiplicatively independent** (RR = 1.001 on 650M, 1.364 on 35M, both inside the frozen band), and
+**together they span 42.1% of the pool→VFDB gap on 650M and 32.2% on 35M** — measured, not summed.
+🔴 **22.7% + 22.1% remains wrong** and remains forbidden by claim 98. The text above is left as
+written rather than edited, per this repository's append-only rule.

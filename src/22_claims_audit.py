@@ -82,7 +82,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # frozen rule returned an ADVERSE verdict, so it is the document most likely to be softened
           # in a retelling -- and the only place the 5.4x gradient and the 22.1% share are stated
           # together, which is the pairing the claim exists to hold.
-          "docs/LOCALIZATION_CONTROL_PREREGISTRATION.md"]
+          "docs/LOCALIZATION_CONTROL_PREREGISTRATION.md",
+          # Added 2026-09-28 with the document. It carries the one number this repository will quote
+          # for "how much do both confounds explain" -- the measured 42.1%, standing in for a sum that
+          # claim 98 forbids -- and the pool contamination count that the same study turned up.
+          "docs/JOINT_DECOMPOSITION_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1123,6 +1127,47 @@ def localization_control():
         "ceiling_breached": not a["gate"]["ceiling_unannotated_met"],
         "availability_failed": not a["gate"]["availability_ok"],
         "band": a["band"],
+    }
+
+
+def joint_decomposition():
+    """Do provenance and localization overlap, and what do they buy together?
+
+    \U0001f534 This claim's job is to hold the MEASURED joint share in place of the forbidden sum.
+    22.7% + 22.1% is not 45%; the two confounds compose multiplicatively and together span 42.1% of
+    the gap on 650M. The ratio-of-ratios is pinned on both arms because the band verdict agrees while
+    the point estimates do not -- 35M's interval excludes 1.0 -- and a retelling that said
+    "independent" without that would be smoothing an arm difference away.
+
+    \u26a0\ufe0f It also pins the pool contamination this study found: 133 exact VFDB sequences in
+    the benign pool, 12 of them in the 500 proteins that set the threshold. The direction is
+    conservative, which is exactly why it could be quietly dropped.
+    """
+    a = j("../results/joint_decomposition.json")
+    b = j("../results/joint_decomposition_esm2_35M.json")
+    if None in (a, b):
+        return None
+    ra, rb = a["rates"], b["rates"]
+    return {
+        "cells": a["cell_n"], "floor_met": a["floor_met"],
+        "n_excluded_as_vfdb": a["n_excluded_as_vfdb"],
+        "path_extra": {"650M": round(ra["pathogen|extracellular"]["mean"], 4),
+                       "35M": round(rb["pathogen|extracellular"]["mean"], 4)},
+        "benign_intra": {"650M": round(ra["benign_species|intracellular"]["mean"], 4),
+                         "35M": round(rb["benign_species|intracellular"]["mean"], 4)},
+        "RR": {"650M": round(a["F1_ratio_of_ratios"]["mean"], 3),
+               "35M": round(b["F1_ratio_of_ratios"]["mean"], 3)},
+        # \u26a0\ufe0f the arms agree on the band and not on the point estimate
+        "RR_ci_35M_excludes_1": bool(b["F1_ratio_of_ratios"]["ci"][0] > 1.0),
+        "band_agrees": a["band"] == b["band"],
+        "joint_share": {"650M": round(a["F3_joint_share"], 4),
+                        "35M": round(b["F3_joint_share"], 4)},
+        "f4_pathogen_pool": {"650M": round(a["F4_pathogen_pool_rate"], 4),
+                             "35M": round(b["F4_pathogen_pool_rate"], 4)},
+        "f4_bound_holds": a["F4_bound_holds"] and b["F4_bound_holds"],
+        "f5_within_intracellular": {"650M": round(a["F5_provenance_within_intracellular"], 3),
+                                    "35M": round(b["F5_provenance_within_intracellular"], 3)},
+        "contamination": a["pool_contamination"],
     }
 
 
@@ -3368,6 +3413,39 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("provenance and localization compose, and together span 42% not 45%",
+     joint_decomposition,
+     lambda v: v is None or (
+         v["floor_met"] and min(v["cells"].values()) >= 150
+         and v["n_excluded_as_vfdb"] == 57
+         # 🟢 multiplicatively independent on both arms, by the frozen band
+         and v["band_agrees"] and 0.67 <= v["RR"]["650M"] <= 1.5
+         and 0.67 <= v["RR"]["35M"] <= 1.5
+         # ⚠️ and the arms differ inside it: 35M's interval excludes 1.0
+         and v["RR_ci_35M_excludes_1"]
+         # ⭐ the measured joint share, which is what replaces the forbidden sum
+         and 0.38 < v["joint_share"]["650M"] < 0.46
+         and 0.28 < v["joint_share"]["35M"] < 0.37
+         # 🟢 study D's declared upper bound holds: the unbiased figure is about half of it
+         and v["f4_bound_holds"] and v["f4_pathogen_pool"]["650M"] < 0.15
+         # 🟢 provenance survives with localization held fixed
+         and v["f5_within_intracellular"]["650M"] > 2.0
+         and v["f5_within_intracellular"]["35M"] > 2.0
+         and 0.33 < v["path_extra"]["650M"] < 0.37
+         and 0.02 < v["benign_intra"]["650M"] < 0.03
+         # 🔴 the contamination this study found, pinned so it cannot be dropped
+         and v["contamination"]["whole_pool"] == 133
+         and v["contamination"]["calibrate"] == 12
+         and v["contamination"]["train"] == 13),
+     # 🔴 One pin per document -- a second key for the same document was briefly written here with a
+     # trailing space to dodge the dict, which the gate caught as an absent document. The contamination
+     # count is held by the predicate against the artifact instead, and the manuscript carries the
+     # measured joint share that stands in for the forbidden sum.
+     {"docs/JOINT_DECOMPOSITION_PREREGISTRATION.md":
+      "**RR = 1.001 [0.923, 1.079]** on 650M and **1.364 [1.249, 1.480]** on 35M.",
+      "paper/MANUSCRIPT.md":
+      "**22.7% + 22.1% is not a quantity this repository has.**"},
+     []),
     ("localization is a 5.4x gradient and about a quarter of the gap",
      localization_control,
      lambda v: v is None or (
