@@ -1,5 +1,5 @@
 {
-  "built": "2026-09-28 17:51:01",
+  "built": "2026-09-28 21:27:12",
   "arm": "esm2_35M",
   "seeds": 30,
   "n_vfdb_species": 283,
@@ -131,7 +131,7 @@
     ]
   },
   "band": "multiplicatively independent",
-  "F3_joint_share": 0.3278750130957412,
+  "F3_joint_share": 0.34064399333604906,
   "F4_pathogen_pool_rate": 0.09843749999999998,
   "F4_study_d_rate": 0.2207547169811321,
   "F4_bound_holds": true,

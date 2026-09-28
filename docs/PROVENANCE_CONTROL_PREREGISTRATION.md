@@ -155,3 +155,22 @@ written rather than edited, per this repository's append-only rule.
 fold, which falls back to 978/490 because the screen admits only 1,468 rows. Every number moved in the
 third decimal and **no verdict changed**; the corrected tables are in the two preregistrations'
 amendments.
+
+---
+
+## 🔴 Superseded on the share-of-gap figures — 2026-09-28, entry 61
+
+**542 of the 4,218 VFDB negatives share a sequence with one of the 746 class-axis positives.**
+`src/74` screened that set against the **panel** positives, which is what study A1 needed, and nothing
+screened it against the **class-axis** positives that came later — so every evaluation of the study-B
+probe on this population was scoring the probe's own training data on **12.85%** of the rows.
+
+The VFDB reference drops from **76.95% to 74.09%** on 650M under study G's clean fold (and study D's
+own figure from **73.49% to 70.91%**). Every share-of-gap divides by `(vfdb − pool)`, so **all of them
+were about 4.3% too small**. 🔒 **No ratio moved** — R, RR, C/A, D/B and F-5 do not involve the
+reference and are unchanged to four decimals.
+
+| this document's figures | before | after |
+|---|---:|---:|
+| VFDB reference rate | 73.49% | **70.91%** |
+| provenance share of the gap | 22.7% | **23.6%** |

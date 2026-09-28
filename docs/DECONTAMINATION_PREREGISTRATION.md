@@ -154,3 +154,27 @@ arms, the joint share moves under 10 pp, and the provenance effect **grows** fro
 650M. ⚠️ **But the ratio of ratios moves from 1.009 to 0.692 on 650M and 1.327 to 1.133 on 35M**, so
 "almost exactly independent" was a property of the defective factor. The numbers above are left as
 written, per the append-only rule; the corrected ones are in that document's results.
+
+---
+
+## 🔴 Superseded on the share-of-gap figures — 2026-09-28, entry 61
+
+**542 of the 4,218 VFDB negatives share a sequence with one of the 746 class-axis positives.**
+`src/74` screened that set against the **panel** positives, which is what study A1 needed, and nothing
+screened it against the **class-axis** positives that came later — so every evaluation of the study-B
+probe on this population was scoring the probe's own training data on **12.85%** of the rows.
+
+The VFDB reference drops from **76.95% to 74.09%** on 650M under study G's clean fold (and study D's
+own figure from **73.49% to 70.91%**). Every share-of-gap divides by `(vfdb − pool)`, so **all of them
+were about 4.3% too small**. 🔒 **No ratio moved** — R, RR, C/A, D/B and F-5 do not involve the
+reference and are unchanged to four decimals.
+
+| this document's figures | before | after |
+|---|---:|---:|
+| clean joint share, 650M | 46.0% | **47.9%** |
+| clean joint share, 35M | 32.2% | **33.4%** |
+
+⚠️ The § "coincidence that must not be read as a vindication" section compared 46.0% with a
+forbidden sum of 44.8%. On the corrected reference the figures are **47.9%** and **46.6%**, so the
+coincidence is *closer*, and the reason it is still a coincidence is unchanged: the 35M arm puts
+the same quantity at **33.4%**.

@@ -1257,6 +1257,7 @@ def matched_vfdb():
                          "35M": round(rb["A_benign_extra"]["mean"], 4)},
         "vfdb_full_650M": round(ra["vfdb_full"]["mean"], 4),
         "membership_closes_residual": round(a["H5_membership_closes"], 4),
+        "n_vfdb_reference_circular": a["n_vfdb_reference_circular"],
         "n_renamed_genus": len(a["renamed_genus_dropped_from_benign_side"]),
     }
 
@@ -3621,7 +3622,7 @@ CLAIMS = [
       "paper/MANUSCRIPT.md":
       "**\"Almost exactly independent\" was a property of the defective\nfactor**"},
      []),
-    ("VFDB membership closes 92% of the residual, and the band says partial",
+    ("VFDB membership closes 99% of the residual, and the band says partial",
      matched_vfdb,
      lambda v: v is None or (
          # 🔴 the circularity check ran and found 13; it had never run anywhere before
@@ -3638,14 +3639,16 @@ CLAIMS = [
          # 🟢 and the substantive result, on a subset declared biased against it
          and 0.72 < v["vfdb_extra"]["650M"] < 0.76
          and 0.36 < v["benign_extra"]["650M"] < 0.39
-         and v["vfdb_full_650M"] > 0.75
-         and 0.88 < v["membership_closes_residual"] < 0.95
+         and 0.73 < v["vfdb_full_650M"] < 0.76
+         and 0.96 < v["membership_closes_residual"] < 1.02
+         # 🔴 the reference excludes the 542 rows that are class-axis positives (entry 61)
+         and v["n_vfdb_reference_circular"] == 542
          # ⚠️ the genus-rename problem that Amendment 1 records
          and v["n_renamed_genus"] == 12),
      {"docs/MATCHED_VFDB_PREREGISTRATION.md":
       "**91.9% of the way.**",
       "paper/MANUSCRIPT.md":
-      "**91.9%** of the distance from that matched cell to the full VFDB rate"},
+      "**99.1%** of the distance from that matched cell to the full VFDB rate"},
      # 🔴 H-5 is a share of the RESIDUAL INSIDE the matched cell. Restating it against the whole
      # pool-to-VFDB gap would roughly quadruple what it claims, and is the misreading a summary
      # produces. Banned in the forms it would be written in.
@@ -3705,7 +3708,7 @@ CLAIMS = [
      {"docs/JOINT_DECOMPOSITION_PREREGISTRATION.md":
       "**Corrected F-1 / F-2: RR = 1.009 [0.934, 1.084] on 650M and 1.327 [1.216, 1.438] on 35M.**",
       "paper/MANUSCRIPT.md":
-      "**22.7% + 22.1% is not a quantity this repository has.**"},
+      "**23.6% + 23.0% is not a quantity this repository has.**"},
      []),
     ("localization is a 5.4x gradient and about a quarter of the gap",
      localization_control,
@@ -3729,13 +3732,16 @@ CLAIMS = [
      {"docs/LOCALIZATION_CONTROL_PREREGISTRATION.md":
       "**Corrected E-1 / E-2: R = 5.381 [5.134, 5.628] on 650M and 5.151 [4.786, 5.516] on 35M.**",
       "paper/MANUSCRIPT.md":
-      "VFDB virulence factors are still flagged at **73.49%**"},
+      "VFDB virulence factors are still flagged at **70.91%**"},
      # \U0001f534 The share of the gap that localization buys (22.1%) and the share provenance buys
      # (22.7%) are NOT additive: pathogen-derived proteins are themselves enriched for secretion, so
      # the two controls overlap by construction and the joint decomposition has not been run. These
      # forbid the sum in the forms it would be written in. They are deliberately long enough that
      # they cannot collide with the sentences in the documents that WARN against the sum.
      ["45% of the benign-to-virulence gap",
+      # 🔴 the shares moved with entry 61's corrected reference, so the sum a retelling would write
+      # moved too; both spellings are banned rather than the old one alone
+      "46.6% of the benign-to-virulence gap",
       "together explain about half of the gap",
       "together account for about half of the separation"]),
     ("pathogen origin is worth a threefold elevation and about a quarter of the gap",

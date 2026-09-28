@@ -1,5 +1,5 @@
 {
-  "built": "2026-09-28 14:01:00",
+  "built": "2026-09-28 21:25:55",
   "arm": "esm2_650M",
   "seeds": 30,
   "nominal": 0.050000000000000044,
@@ -11,6 +11,7 @@
     ">sp|Q9A1S2|PILIN_STRP1",
     ">sp|P45779|GSPD_VIBCH"
   ],
+  "n_vfdb_circular": 542,
   "species_counts": {
     "Escherichia coli": 20,
     "Pseudomonas aeruginosa": 7,
@@ -51,6 +52,14 @@
       ]
     },
     "vfdb": {
+      "mean": 0.7091494377947044,
+      "sd": 0.04623709451768093,
+      "ci": [
+        0.692603706016294,
+        0.7256951695731149
+      ]
+    },
+    "vfdb_with_circular": {
       "mean": 0.7348585427532796,
       "sd": 0.05125330938971341,
       "ci": [

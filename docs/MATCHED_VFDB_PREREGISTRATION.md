@@ -224,3 +224,28 @@ The finding is a verdict on the band, not on the magnitude.
 | D/B ≈ 2.5 | | 3.204 / 1.311 | straddles it, underpowered |
 | H-3 bridge below the full set | | 73.77% < 76.95% | ✅ |
 | wide intervals on small cells | | yes | ✅ |
+
+---
+
+## 🔴 Superseded on the share-of-gap figures — 2026-09-28, entry 61
+
+**542 of the 4,218 VFDB negatives share a sequence with one of the 746 class-axis positives.**
+`src/74` screened that set against the **panel** positives, which is what study A1 needed, and nothing
+screened it against the **class-axis** positives that came later — so every evaluation of the study-B
+probe on this population was scoring the probe's own training data on **12.85%** of the rows.
+
+The VFDB reference drops from **76.95% to 74.09%** on 650M under study G's clean fold (and study D's
+own figure from **73.49% to 70.91%**). Every share-of-gap divides by `(vfdb − pool)`, so **all of them
+were about 4.3% too small**. 🔒 **No ratio moved** — R, RR, C/A, D/B and F-5 do not involve the
+reference and are unchanged to four decimals.
+
+| this document's figures | before | after |
+|---|---:|---:|
+| full VFDB reference | 76.95% (4,218) | **74.09% (3,676)** |
+| ⭐ **H-5, membership closes** | 91.9% | **99.1%** |
+
+🔑 **H-5 is the figure this changes most.** With pathogen origin and extracellular localization
+both held fixed, VFDB membership covers **essentially all** of the remaining distance to the
+decontaminated full-VFDB rate — 73.77% against a reference of 74.09%. ⚠️ **The three
+qualifications are untouched**: the band is still *partial* (C/A 1.974 and 1.497, unchanged), D/B
+still sits one protein under its floor, and study E is still not softened.

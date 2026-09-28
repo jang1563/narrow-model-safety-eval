@@ -212,8 +212,8 @@ Both hold the probe and its calibration fixed and vary only what the proteins ar
 
 | control | benign comparison | share of the pool→VFDB gap |
 |---|---|---:|
-| **pathogen origin** — 106 pathogen-derived non-VFDB proteins | 6.98% → **22.08%** | **22.7%** |
-| **localization** — benign *extracellular* vs the pool | 7.06% → **21.75%** | **22.1%** |
+| **pathogen origin** — 106 pathogen-derived non-VFDB proteins | 6.98% → **22.08%** | **23.6%** |
+| **localization** — benign *extracellular* vs the pool | 7.06% → **21.75%** | **23.0%** |
 
 🔴 **The localization gradient is the larger finding of the two, and it is adverse.** Among benign
 Bacteria and Archaea in the pool, a **secreted or surface-exposed** protein is flagged at **21.75%**
@@ -231,7 +231,7 @@ Removing every one of them from fitting, calibration and evaluation
 extracellular rate is **20.90%**, so the fourfold overshoot of the nominal budget is unaffected.
 
 🔒 **What survives.** Against a *localization-matched* benign baseline of 21.75% rather than the pool's
-7.06%, VFDB virulence factors are still flagged at **73.49%**, so **roughly three quarters of the
+7.06%, VFDB virulence factors are still flagged at **70.91%**, so **roughly three quarters of the
 separation is not localization** — the same fraction provenance left over.
 
 ⚠️ **The two shares must not be added, and the joint decomposition says what they actually buy.**
@@ -260,8 +260,8 @@ straddle 1.0 in opposite directions. The composition claim survives its frozen b
 than it looked. 🟢 The correction strengthens provenance itself, as predicted in advance: with
 localization held fixed it rises from **2.63× to 3.47×**.
 
-⭐ **Together they span 42.2% of the pool→VFDB gap on 650M and 32.8% on 35M** — measured, not summed;
-**22.7% + 22.1% is not a quantity this repository has.** 🔑 **So the majority of the separation belongs
+⭐ **Together they span 43.9% of the pool→VFDB gap on 650M and 34.1% on 35M** — measured, not summed;
+**23.6% + 23.0% is not a quantity this repository has.** 🔑 **So the majority of the separation belongs
 to neither confound.**
 
 🟢 **And a matched test attributes most of that majority to virulence-factor membership itself.** 133
@@ -274,9 +274,15 @@ extracellular localization fixed and varying only membership:
 |---|---:|---:|---:|
 | benign × extracellular | 171 | 37.52% | 26.90% |
 | ⭐ **VFDB × extracellular** | **38** | **73.77%** | **40.70%** |
-| *reference*: full VFDB set | 4,218 | 76.95% | — |
+| *reference*: full VFDB set, non-circular | 3,676 | 74.09% | — |
 
-Membership alone covers **91.9%** of the distance from that matched cell to the full VFDB rate, and it
+🔴 **That reference excludes 542 of the 4,218.** They share a sequence with one of the 746 class-axis
+positives, so scoring them scored the probe's own training data; `src/74` screened this set against the
+*panel* positives, which is what study A1 needed, and nothing screened it against the class-axis
+positives that came later. Including them put the reference at 76.95% and made every share-of-gap
+figure in this paper about 4.3% too small.
+
+Membership alone covers **99.1%** of the distance from that matched cell to the full VFDB rate, and it
 does so on a subset **selected against the hypothesis**: the pool's build query excludes the
 *Virulence*, *Toxin*, *Cytolysis*, *Hemolysis*, *Bacteriocin* and *Bacteriolytic enzyme* keywords, so
 every one of these 38 is a virulence factor **UniProt declines to call virulent** — and they still land

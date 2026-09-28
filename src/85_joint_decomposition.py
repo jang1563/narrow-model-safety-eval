@@ -34,7 +34,11 @@ BUILD = ROOT / "results" / "external_class_axis_build.json"
 SCREEN = ROOT / "results" / "external_class_axis_screen.json"
 OUT_STEM = ROOT / "results" / "joint_decomposition"
 SEEDS, N_TRAIN, N_CAL, SPEC = 30, 1000, 500, 0.95
-VFDB_RATE, STUDY_D_RATE = 0.7348585427532796, 0.2207547169811321
+# 🔴 Study D's VFDB reference, with the 542 class-axis positives removed from the 4,218. It was
+# 0.7348585427532796 until entry 61, which is the same figure computed while scoring the probe's own
+# training data on 12.85% of the rows. Every share-of-gap below divides by (VFDB_RATE - pool_rate),
+# so the old constant made all of them about 4.3% too small.
+VFDB_RATE, STUDY_D_RATE = 0.7091494377947044, 0.2207547169811321
 FLOOR, BAND_LO, BAND_HI = 150, 0.67, 1.5
 
 

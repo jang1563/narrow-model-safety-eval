@@ -97,6 +97,23 @@ def vfdb_species():
     return out
 
 
+def vfdb_noncircular_mask():
+    r"""Boolean mask over the 4,218 VFDB negatives, False where the protein is a class-axis positive.
+
+    🔴 542 of the 4,218 (12.85%) share a sequence with one of the 746 class-axis positives.
+    src/74 screened them against the PANEL positives, which is what study A1 needed, and nobody
+    screened them against the class-axis positives that came later -- so every evaluation of the
+    study-B probe on this set was scoring its own training data on 12.85% of the rows. It lifts the
+    VFDB reference from 74.09% to 76.95% on 650M under study G's clean fold, and every share-of-gap
+    figure divides by (vfdb - pool), so all of them were about 4.3% too small. Entry 61.
+
+    Row order is the manifest's, which is the admitted order in results/vfdb_negative_set.json.
+    """
+    pos = {q for _, q in read_fasta(ROOT / "data/sequences/vfdb_class_axis_positives.fasta")}
+    seqs = read_fasta(ROOT / "data/sequences/vfdb_negatives.fasta")
+    return np.array([q not in pos for _, q in seqs], dtype=bool)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", default="esm2_650M", choices=["esm2_650M", "esm2_35M"])
@@ -140,7 +157,13 @@ def main():
         (2 * len(union) // 3, len(union) - 2 * len(union) // 3)
 
     # ---- study B's fold, unchanged, scoring three populations ----------------------------------
-    rates = {k: [] for k in ("pool_test", "pathogen_nonvf", "vfdb")}
+    rates = {k: [] for k in ("pool_test", "pathogen_nonvf", "vfdb", "vfdb_with_circular")}
+    NONCIRC = vfdb_noncircular_mask() if VFDB is not None else None
+    if VFDB is not None:
+        if NONCIRC.shape[0] != VFDB.shape[0]:
+            raise SystemExit(f"mask is {NONCIRC.shape[0]} rows, embedding {VFDB.shape[0]}")
+        print(f"  excluding {int((~NONCIRC).sum())} of {NONCIRC.shape[0]} VFDB negatives that are "
+              f"class-axis positives — scoring training data")
     t0 = time.time()
     y = np.r_[np.ones(P.shape[0]), np.zeros(n_tr)]
     for seed in range(a.seeds):
@@ -153,7 +176,9 @@ def main():
         rates["pool_test"].append(float((model.predict_proba(POOL[test])[:, 1] >= t).mean()))
         rates["pathogen_nonvf"].append(float((model.predict_proba(NEG[keep])[:, 1] >= t).mean()))
         if VFDB is not None:
-            rates["vfdb"].append(float((model.predict_proba(VFDB)[:, 1] >= t).mean()))
+            pv = model.predict_proba(VFDB)[:, 1] >= t
+            rates["vfdb"].append(float(pv[NONCIRC].mean()))
+            rates["vfdb_with_circular"].append(float(pv.mean()))
     print(f"  {time.time() - t0:.0f}s")
 
     def stat(v):
@@ -165,6 +190,7 @@ def main():
            "nominal": 1 - SPEC, "n_control": len(keep),
            "control_species": len(set(orgs)),
            "excluded_as_vfdb": dropped_vfdb,
+           "n_vfdb_circular": int((~NONCIRC).sum()) if VFDB is not None else None,
            "species_counts": dict(collections.Counter(orgs).most_common()),
            "rates": {k: stat(v) for k, v in rates.items() if v}}
     dest = Path(f"{OUT_STEM}{sfx}.json")

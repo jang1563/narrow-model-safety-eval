@@ -1,5 +1,5 @@
 {
-  "built": "2026-09-28 17:50:59",
+  "built": "2026-09-28 21:27:04",
   "arm": "esm2_650M",
   "seeds": 30,
   "n_excluded_as_positive": 13,
@@ -20,6 +20,7 @@
   ],
   "circularity_check_ran": true,
   "n_positive_sequences": 745,
+  "n_vfdb_reference_circular": 542,
   "group_n": {
     "A_benign_extra": 171,
     "B_benign_intra": 597,
@@ -95,10 +96,10 @@
       ]
     },
     "vfdb_full": {
-      "mean": 0.7695353247984826,
+      "mean": 0.7409140369967356,
       "ci": [
-        0.7580256038585901,
-        0.7810450457383752
+        0.7296310130047469,
+        0.7521970609887244
       ]
     }
   },
@@ -145,5 +146,5 @@
     "Salmonella typhi",
     "Salmonella typhimurium"
   ],
-  "H5_membership_closes": 0.9193083958551851
+  "H5_membership_closes": 0.991263337165635
 }

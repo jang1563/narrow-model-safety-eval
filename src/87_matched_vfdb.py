@@ -171,6 +171,12 @@ def main():
     P = np.load(RES / f"embeddings_class_axis_positives{sfx}.npy")
     POOL = np.load(RES / f"embeddings_pool_large_{a.arm}.npy")
     VFDB = np.load(RES / "embeddings_vfdb_neg_esm2_650M.npy") if a.arm == "esm2_650M" else None
+    NONCIRC = M83.vfdb_noncircular_mask() if VFDB is not None else None
+    if VFDB is not None:
+        if NONCIRC.shape[0] != VFDB.shape[0]:
+            raise SystemExit(f"mask is {NONCIRC.shape[0]} rows, embedding {VFDB.shape[0]}")
+        print(f"  reference set: {int(NONCIRC.sum())} of {NONCIRC.shape[0]} VFDB negatives, "
+              f"{int((~NONCIRC).sum())} excluded as class-axis positives")
     union = [i for i in json.loads(SCREEN.read_text())["admitted_rows"]
              if pool[i]["sequence"] not in vf_seqs]
     n_tr, n_ca = fold_sizes(len(union))
@@ -191,7 +197,10 @@ def main():
             per[k].append(float((model.predict_proba(POOL[rows])[:, 1] >= t).mean())
                           if rows else float("nan"))
         if VFDB is not None:
-            per["vfdb_full"].append(float((model.predict_proba(VFDB)[:, 1] >= t).mean()))
+            # 🔴 542 of the 4,218 are class-axis positives; scoring them is scoring training data,
+            # and this population is H-5's DENOMINATOR. Entry 61.
+            per["vfdb_full"].append(
+                float((model.predict_proba(VFDB)[:, 1] >= t)[NONCIRC].mean()))
     print(f"  {time.time() - t0:.0f}s")
 
     def ratio(num, den):
@@ -204,6 +213,7 @@ def main():
     res = {"built": time.strftime("%Y-%m-%d %H:%M:%S"), "arm": a.arm, "seeds": a.seeds,
            "n_excluded_as_positive": len(circular), "excluded_as_positive": circular,
            "circularity_check_ran": True, "n_positive_sequences": len(pos_seqs),
+           "n_vfdb_reference_circular": int((~NONCIRC).sum()) if VFDB is not None else None,
            "group_n": {k: len(v) for k, v in groups.items()},
            "floor": FLOOR, "floor_met": bool(floor_met),
            "clean_fold": [n_tr, n_ca], "n_union": len(union),

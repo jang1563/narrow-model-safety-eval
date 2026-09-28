@@ -275,7 +275,10 @@ def main():
     # another. `contrast` is § 3 as written (extracellular over intracellular). `study_d_form` is the
     # arithmetic study D actually used -- (control - pool) / (vfdb - pool) -- which is the one that is
     # commensurable with its 22.7%. Both are reported; neither replaces the other.
-    vfdb = 0.7348585427532796 if a.arm == "esm2_650M" else None
+    # 🔴 Study D's VFDB reference with the 542 class-axis positives removed; it was
+    # 0.7348585427532796 until entry 61, which scored the probe's own training data on 12.85%
+    # of that population and made every share-of-gap here about 4.3% too small.
+    vfdb = 0.7091494377947044 if a.arm == "esm2_650M" else None
     e3 = None
     if vfdb:
         gap = vfdb - np.mean(per["all"])
@@ -310,7 +313,7 @@ def main():
     if e3 is not None:
         print(f"E-3  localization spans {e3['contrast'] * 100:.1f}% of the pool->VFDB gap "
               f"(§ 3 as written), {e3['study_d_form'] * 100:.1f}% in study D's arithmetic "
-              f"(its provenance figure was 22.7%)")
+              f"(study D's own figure is 23.6% on the same corrected reference)")
     print(f"\nwrote {dest.relative_to(ROOT)}")
 
 

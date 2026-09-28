@@ -5009,3 +5009,56 @@ and this is the first time the check **cancelled** the study rather than redirec
 should not run is a result** — and the check that cancels it has to be held to the same standard as the
 study would have been, which is why this one is a script with a selftest and a pinned claim rather than
 the throwaway that first produced it.
+
+---
+
+## 2026-09-28 (sixty-first entry) — The VFDB reference population contained 542 of the probe's own training positives
+
+Found while preparing the scale-up of study H: **542 of the 4,218 VFDB negatives (12.85%) share a
+sequence with one of the 746 class-axis positives.**
+
+`src/74` built that set for **study A1** and screened it against the **panel** positives, which is what
+A1 needed. The **class-axis** positives came later, with study B, and nothing ever screened the two
+against each other — so every evaluation of the study-B probe on this population was **scoring the
+probe's own training data on an eighth of the rows.**
+
+| | before | after |
+|---|---:|---:|
+| study D's VFDB rate (650M) | 73.49% | **70.91%** |
+| study H's full-VFDB reference (clean fold) | 76.95% (4,218) | **74.09% (3,676)** |
+
+🔴 **Every share-of-gap divides by `(vfdb − pool)`, so all of them were about 4.3% too small:**
+
+| | before | after |
+|---|---:|---:|
+| provenance (study D) | 22.7% | **23.6%** |
+| localization (study E, study D's arithmetic) | 22.1% | **23.0%** |
+| joint, 650M / 35M (study F) | 42.2% / 32.8% | **43.9% / 34.1%** |
+| joint on the clean fold (study G) | 46.0% / 32.2% | **47.9% / 33.4%** |
+| joint on the taxid factor (study I) | 41.2% / 27.6% | **42.8% / 28.7%** |
+| ⭐ **H-5, membership closes** | 91.9% | **99.1%** |
+
+🔒 **No ratio moved.** R, RR, C/A, D/B and F-5 do not involve the reference and are unchanged to four
+decimal places — verified by re-running all five studies on both arms, not asserted.
+
+### ⭐ What it does to the headline
+
+**H-5 is the figure this changes most.** With pathogen origin **and** extracellular localization both
+held fixed, VFDB membership takes a protein to **73.77%** against a decontaminated full-VFDB reference
+of **74.09%** — **99.1% of the remaining distance.** 🟢 **The residual the four confound studies could
+not attribute is, as far as this design can see, entirely about being a virulence factor.**
+
+⚠️ **The three qualifications on that result are untouched**: the frozen band still reads **partial**
+(C/A 1.974 and 1.497, unchanged), D/B still sits **one protein** under its floor of 25, and **study E is
+not softened** — a benign secreted protein is still flagged at 37.5% against 6.9% cytoplasmic.
+
+### 🔒 How it was caught, and the one guard that would have caught it earlier
+
+Study H's own preregistration required a circularity check on **its** VFDB side, and that check found
+13 circular proteins in the 133-protein bridge (entry 57). 🔴 **The same check was never applied to the
+4,218-protein reference the same study divides by.** The rule now lives in one place —
+`vfdb_noncircular_mask()` in `src/83` — and `src/83`, `84`, `85`, `86`, `87` and `88` all use it.
+
+⚠️ **This is the fourth defect this session found by preparing the next study rather than by re-reading
+the last one**, and the third where the next study could not have been trusted without it. **The
+scale-up that found it has not been run yet.**
