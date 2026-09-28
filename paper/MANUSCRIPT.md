@@ -241,15 +241,24 @@ benign side:
 
 | benign cell | *n* | ESM-2 650M | ESM-2 35M |
 |---|---:|---:|---:|
-| pathogen species × extracellular | 171 | **35.09%** | **27.39%** |
-| pathogen species × intracellular | 597 | 6.33% | 4.82% |
-| benign species × extracellular | 444 | 13.17% | 8.84% |
-| benign species × intracellular | 1,049 | **2.36%** | **2.03%** |
+| pathogen species × extracellular | 171 → **201** | **35.09%** | **27.39%** |
+| pathogen species × intracellular | 597 → **679** | 6.33% | 4.82% |
+| benign species × extracellular | 444 → **414** | 13.17% | 8.84% |
+| benign species × intracellular | 1,049 → **967** | **2.36%** | **2.03%** |
 
-🟢 **The two are multiplicatively independent** — ratio of ratios **1.009 [0.934, 1.084]** on 650M and
-**1.327 [1.216, 1.438]** on 35M, both inside a band frozen in advance. Localization is worth ≈5.5× and
-provenance ≈2.7×, each roughly constant across the other's levels. ⚠️ 35M's interval excludes 1.0, so
-the arms agree on the band and not on the point estimate.
+🟢 **The two compose within a band frozen in advance** — ratio of ratios **0.692 [0.649, 0.735]** on
+650M and **1.133 [1.048, 1.219]** on 35M. Localization is worth ≈5.5× and provenance ≈3.5×, each
+roughly constant across the other's levels.
+
+⚠️ **These replace an earlier, tidier pair.** Deciding "pathogen-derived" by whether the organism's
+name appears in VFDB's species list misses every pathogen UniProt has since **renamed**, and rebuilding
+the factor on canonical species (`docs/TAXID_PROVENANCE_PREREGISTRATION.md`) moved **5.05%** of
+eligible proteins — **112 genuine pathogen proteins were in the benign cells**. The ratios were 1.009
+and 1.327 under the name test. 🔴 **"Almost exactly independent" was a property of the defective
+factor**: on the corrected one 650M's interval **crosses the band floor**, and the two arms now
+straddle 1.0 in opposite directions. The composition claim survives its frozen band and is narrower
+than it looked. 🟢 The correction strengthens provenance itself, as predicted in advance: with
+localization held fixed it rises from **2.63× to 3.47×**.
 
 ⭐ **Together they span 42.2% of the pool→VFDB gap on 650M and 32.8% on 35M** — measured, not summed;
 **22.7% + 22.1% is not a quantity this repository has.** 🔑 **So the majority of the separation belongs

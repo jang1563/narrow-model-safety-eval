@@ -240,7 +240,17 @@ def main():
     cs, elig = cells_for("string")
     ct, _ = cells_for("taxid")
     moved_elig = [jj for jj in moved if jj in set(elig)]
-    print(f"  lineage fallback used for {n_fallback} of {len(test)} proteins")
+    # 🔒 A 31% fallback rate needs explaining, not reporting. UniProt's lineage lists ANCESTORS, so
+    # an organism that is itself at species rank has no "(species)" entry -- and for those the current
+    # organism name IS the canonical species name, which is exactly what the fallback returns. The
+    # check is whether a fallback name is two words with no strain suffix.
+    fb = [accs[jj] for jj, i in enumerate(test) if canonical_species(lin[accs[jj]])[1]]
+    fb_clean = sum(1 for x in fb if len(lin[x]["organism"].split()) == 2 and "(" not in lin[x]["organism"])
+    print(f"  lineage fallback used for {n_fallback} of {len(test)} proteins; "
+          f"{fb_clean} of them ({fb_clean / max(len(fb), 1) * 100:.1f}%) have a bare two-word organism "
+          f"name, i.e. are already at species rank")
+    if fb:
+        print(f"    examples: {[lin[x]['organism'] for x in fb[:3]]}")
     print(f"\n{'cell':<34}{'string':>9}{'taxid':>9}{'delta':>8}")
     for k in cs:
         print(f"  {k[0] + ' x ' + k[1]:<32}{len(cs[k]):>9}{len(ct[k]):>9}{len(ct[k]) - len(cs[k]):>+8}")
@@ -281,8 +291,8 @@ def main():
         pool_rate = float(np.mean(per["all"]))
         out[which] = {
             "cell_n": {f"{p}|{s}": len(v) for (p, s), v in cells.items()},
-            "rates": {f"{p}|{s}": float(np.mean(v)) for (p, s), v in per.items()
-                      if isinstance(p, str) and p != "all"} | {"all": pool_rate},
+            "rates": {("|".join(k) if isinstance(k, tuple) else k): float(np.mean(v))
+                      for k, v in per.items()},
             "RR": float(np.mean(rr)),
             "RR_ci": [float(np.mean(rr) - 1.96 * np.std(rr, ddof=1) / a.seeds ** 0.5),
                       float(np.mean(rr) + 1.96 * np.std(rr, ddof=1) / a.seeds ** 0.5)],
@@ -309,7 +319,7 @@ def main():
            "n_canonical_species": len(canon_set),
            "unresolved_frac": frac_un, "unresolved_ok": bool(frac_un <= UNRESOLVED_CEIL),
            "unresolved_names": unresolved,
-           "n_lineage_fallback": n_fallback,
+           "n_lineage_fallback": n_fallback, "n_fallback_bare_species_name": fb_clean,
            "n_eligible": len(elig), "n_moved": len(moved_elig),
            "moved_frac": len(moved_elig) / len(elig), "I1_band": band,
            "reproduction_gate_delta": gate,

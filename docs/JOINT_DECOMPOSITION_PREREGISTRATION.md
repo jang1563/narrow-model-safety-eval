@@ -260,3 +260,18 @@ That is wrong twice.
 is the conservative direction: contaminants score high, raise the threshold, and make every flag rate
 here **too low**. ⚠️ **Six of 490 still sit in a tail of about 25 proteins**, so the decontaminated
 re-run is still worth doing — this amendment reduces the number, not the reason.
+
+---
+
+## 🔒 Superseded on one number — 2026-09-28: the provenance factor matched on names
+
+This study decides "pathogen-derived" by testing whether the first two words of the organism string
+appear in VFDB's species list. 🔴 **That misses every pathogen UniProt has renamed.** Rebuilding the
+factor on canonical species (`docs/TAXID_PROVENANCE_PREREGISTRATION.md`) moves **5.05%** of eligible
+proteins and puts **112 genuine pathogen proteins** into the pathogen cells where they belong.
+
+Every frozen criterion here survives the rebuild — the ratio of ratios stays inside its band on both
+arms, the joint share moves under 10 pp, and the provenance effect **grows** from 2.63× to 3.47× on
+650M. ⚠️ **But the ratio of ratios moves from 1.009 to 0.692 on 650M and 1.327 to 1.133 on 35M**, so
+"almost exactly independent" was a property of the defective factor. The numbers above are left as
+written, per the append-only rule; the corrected ones are in that document's results.

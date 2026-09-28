@@ -998,5 +998,760 @@
   "taxid": 450,
   "canonical": "Legionella longbeachae",
   "how": "scientific"
+ },
+ "Francisella cf.": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Francisella sp.": {
+  "taxid": 2047875,
+  "canonical": "Francisella sp.",
+  "how": "scientific"
+ },
+ "Haemophilus sp.": {
+  "taxid": 740,
+  "canonical": "Haemophilus sp.",
+  "how": "scientific"
+ },
+ "Helicobacter bilis": {
+  "taxid": 37372,
+  "canonical": "Helicobacter bilis",
+  "how": "scientific"
+ },
+ "Helicobacter canis": {
+  "taxid": 29419,
+  "canonical": "Helicobacter canis",
+  "how": "scientific"
+ },
+ "Helicobacter cinaedi": {
+  "taxid": 213,
+  "canonical": "Helicobacter cinaedi",
+  "how": "scientific"
+ },
+ "Helicobacter flexispira": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Helicobacter pullorum": {
+  "taxid": 35818,
+  "canonical": "Helicobacter pullorum",
+  "how": "scientific"
+ },
+ "Legionella pneumophila": {
+  "taxid": 446,
+  "canonical": "Legionella pneumophila",
+  "how": "scientific"
+ },
+ "Leptospira interrogans": {
+  "taxid": 173,
+  "canonical": "Leptospira interrogans",
+  "how": "scientific"
+ },
+ "Listeria innocua": {
+  "taxid": 1642,
+  "canonical": "Listeria innocua",
+  "how": "scientific"
+ },
+ "Listeria ivanovii": {
+  "taxid": 1638,
+  "canonical": "Listeria ivanovii",
+  "how": "scientific"
+ },
+ "Listeria monocytogenes": {
+  "taxid": 1639,
+  "canonical": "Listeria monocytogenes",
+  "how": "scientific"
+ },
+ "Listeria seeligeri": {
+  "taxid": 1640,
+  "canonical": "Listeria seeligeri",
+  "how": "scientific"
+ },
+ "Listeria welshimeri": {
+  "taxid": 1643,
+  "canonical": "Listeria welshimeri",
+  "how": "scientific"
+ },
+ "Listonella anguillarum": {
+  "taxid": 55601,
+  "canonical": "Vibrio anguillarum",
+  "how": "synonym"
+ },
+ "Lysinibacillus sphaericus": {
+  "taxid": 1421,
+  "canonical": "Lysinibacillus sphaericus",
+  "how": "scientific"
+ },
+ "Mannheimia haemolytica": {
+  "taxid": 75985,
+  "canonical": "Mannheimia haemolytica",
+  "how": "scientific"
+ },
+ "Mesorhizobium loti": {
+  "taxid": 381,
+  "canonical": "Rhizobium loti",
+  "how": "synonym"
+ },
+ "Moraxella catarrhalis": {
+  "taxid": 480,
+  "canonical": "Moraxella catarrhalis",
+  "how": "scientific"
+ },
+ "Mycobacterium abscessus": {
+  "taxid": 36809,
+  "canonical": "Mycobacteroides abscessus",
+  "how": "synonym"
+ },
+ "Mycobacterium africanum": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Mycobacterium avium": {
+  "taxid": 1764,
+  "canonical": "Mycobacterium avium",
+  "how": "scientific"
+ },
+ "Mycobacterium bovis": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Mycobacterium canettii": {
+  "taxid": 78331,
+  "canonical": "Mycobacterium canetti",
+  "how": "synonym"
+ },
+ "Mycobacterium gilvum": {
+  "taxid": 1804,
+  "canonical": "Mycolicibacterium gilvum",
+  "how": "synonym"
+ },
+ "Mycobacterium indicus": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Mycobacterium intracellulare": {
+  "taxid": 1767,
+  "canonical": "Mycobacterium intracellulare",
+  "how": "scientific"
+ },
+ "Mycobacterium leprae": {
+  "taxid": 1769,
+  "canonical": "Mycobacterium leprae",
+  "how": "scientific"
+ },
+ "Mycobacterium liflandii": {
+  "taxid": 261524,
+  "canonical": "Mycobacterium liflandii",
+  "how": "scientific"
+ },
+ "Mycobacterium marinum": {
+  "taxid": 1781,
+  "canonical": "Mycobacterium marinum",
+  "how": "scientific"
+ },
+ "Mycobacterium smegmatis": {
+  "taxid": 1772,
+  "canonical": "Mycolicibacterium smegmatis",
+  "how": "synonym"
+ },
+ "Mycobacterium sp.": {
+  "taxid": 1785,
+  "canonical": "Mycobacterium sp.",
+  "how": "scientific"
+ },
+ "Mycobacterium tuberculosis": {
+  "taxid": 1773,
+  "canonical": "Mycobacterium tuberculosis",
+  "how": "scientific"
+ },
+ "Mycobacterium ulcerans": {
+  "taxid": 1809,
+  "canonical": "Mycobacterium ulcerans",
+  "how": "scientific"
+ },
+ "Mycobacterium vanbaalenii": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Mycobacterium yongonense": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Mycoplasma agalactiae": {
+  "taxid": 2110,
+  "canonical": "Mycoplasmopsis agalactiae",
+  "how": "synonym"
+ },
+ "Mycoplasma arthritidis": {
+  "taxid": 2111,
+  "canonical": "Metamycoplasma arthritidis",
+  "how": "synonym"
+ },
+ "Mycoplasma capricolum": {
+  "taxid": 2095,
+  "canonical": "Mycoplasma capricolum",
+  "how": "scientific"
+ },
+ "Mycoplasma conjunctivae": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Mycoplasma fermentans": {
+  "taxid": 2115,
+  "canonical": "Mycoplasmopsis fermentans",
+  "how": "synonym"
+ },
+ "Mycoplasma gallisepticum": {
+  "taxid": 2096,
+  "canonical": "Mycoplasmoides gallisepticum",
+  "how": "synonym"
+ },
+ "Mycoplasma genitalium": {
+  "taxid": 2097,
+  "canonical": "Mycoplasmoides genitalium",
+  "how": "synonym"
+ },
+ "Mycoplasma hominis": {
+  "taxid": 2098,
+  "canonical": "Metamycoplasma hominis",
+  "how": "synonym"
+ },
+ "Mycoplasma hyopneumoniae": {
+  "taxid": 2099,
+  "canonical": "Mesomycoplasma hyopneumoniae",
+  "how": "synonym"
+ },
+ "Mycoplasma mobile": {
+  "taxid": 2118,
+  "canonical": "[Mycoplasma] mobile",
+  "how": "synonym"
+ },
+ "Mycoplasma mycoides": {
+  "taxid": 2102,
+  "canonical": "Mycoplasma mycoides",
+  "how": "scientific"
+ },
+ "Mycoplasma penetrans": {
+  "taxid": 28227,
+  "canonical": "Malacoplasma penetrans",
+  "how": "synonym"
+ },
+ "Mycoplasma pneumoniae": {
+  "taxid": 2104,
+  "canonical": "Mycoplasmoides pneumoniae",
+  "how": "synonym"
+ },
+ "Mycoplasma pulmonis": {
+  "taxid": 2107,
+  "canonical": "Mycoplasmopsis pulmonis",
+  "how": "synonym"
+ },
+ "Mycoplasma synoviae": {
+  "taxid": 2109,
+  "canonical": "Mycoplasmopsis synoviae",
+  "how": "synonym"
+ },
+ "Neisseria gonorrhoeae": {
+  "taxid": 485,
+  "canonical": "Neisseria gonorrhoeae",
+  "how": "scientific"
+ },
+ "Neisseria lactamica": {
+  "taxid": 486,
+  "canonical": "Neisseria lactamica",
+  "how": "scientific"
+ },
+ "Neisseria meningitidis": {
+  "taxid": 487,
+  "canonical": "Neisseria meningitidis",
+  "how": "scientific"
+ },
+ "Neorickettsia sennetsu": {
+  "taxid": 951,
+  "canonical": "Ehrlichia sennetsu",
+  "how": "synonym"
+ },
+ "Paenibacillus alvei": {
+  "taxid": 44250,
+  "canonical": "Paenibacillus alvei",
+  "how": "scientific"
+ },
+ "Paenibacillus lentimorbus": {
+  "taxid": 78058,
+  "canonical": "Paenibacillus lentimorbus",
+  "how": "scientific"
+ },
+ "Paenibacillus popilliae": {
+  "taxid": 78057,
+  "canonical": "Paenibacillus popilliae",
+  "how": "scientific"
+ },
+ "Pantoea stewartii": {
+  "taxid": 66269,
+  "canonical": "Pantoea stewartii",
+  "how": "scientific"
+ },
+ "Pasteurella multocida": {
+  "taxid": 747,
+  "canonical": "Pasteurella multocida",
+  "how": "scientific"
+ },
+ "Pectobacterium atrosepticum": {
+  "taxid": 29471,
+  "canonical": "Pectobacterium atrosepticum",
+  "how": "scientific"
+ },
+ "Photorhabdus asymbiotica": {
+  "taxid": 291112,
+  "canonical": "Photorhabdus asymbiotica",
+  "how": "scientific"
+ },
+ "Photorhabdus luminescens": {
+  "taxid": 29488,
+  "canonical": "Photorhabdus luminescens",
+  "how": "scientific"
+ },
+ "Porphyromonas cangingivalis": {
+  "taxid": 36874,
+  "canonical": "Porphyromonas cangingivalis",
+  "how": "scientific"
+ },
+ "Porphyromonas crevioricanis": {
+  "taxid": 393921,
+  "canonical": "Porphyromonas crevioricanis",
+  "how": "scientific"
+ },
+ "Porphyromonas endodontalis": {
+  "taxid": 28124,
+  "canonical": "Porphyromonas endodontalis",
+  "how": "scientific"
+ },
+ "Porphyromonas gingivalis": {
+  "taxid": 837,
+  "canonical": "Porphyromonas gingivalis",
+  "how": "scientific"
+ },
+ "Pseudomonas aeruginosa": {
+  "taxid": 287,
+  "canonical": "Pseudomonas aeruginosa",
+  "how": "scientific"
+ },
+ "Pseudomonas entomophila": {
+  "taxid": 312306,
+  "canonical": "Pseudomonas entomophila",
+  "how": "scientific"
+ },
+ "Pseudomonas fluorescens": {
+  "taxid": 294,
+  "canonical": "Pseudomonas fluorescens",
+  "how": "scientific"
+ },
+ "Pseudomonas mendocina": {
+  "taxid": 300,
+  "canonical": "Ectopseudomonas mendocina",
+  "how": "synonym"
+ },
+ "Pseudomonas putida": {
+  "taxid": 303,
+  "canonical": "Pseudomonas putida",
+  "how": "scientific"
+ },
+ "Pseudomonas stutzeri": {
+  "taxid": 316,
+  "canonical": "Stutzerimonas stutzeri",
+  "how": "synonym"
+ },
+ "Pseudomonas syringae": {
+  "taxid": 317,
+  "canonical": "Pseudomonas syringae",
+  "how": "scientific"
+ },
+ "Ralstonia solanacearum": {
+  "taxid": 305,
+  "canonical": "Ralstonia solanacearum",
+  "how": "scientific"
+ },
+ "Rickettsia africae": {
+  "taxid": 35788,
+  "canonical": "Rickettsia africae",
+  "how": "scientific"
+ },
+ "Rickettsia akari": {
+  "taxid": 786,
+  "canonical": "Rickettsia akari",
+  "how": "scientific"
+ },
+ "Rickettsia australis": {
+  "taxid": 787,
+  "canonical": "Rickettsia australis",
+  "how": "scientific"
+ },
+ "Rickettsia bellii": {
+  "taxid": 33990,
+  "canonical": "Rickettsia bellii",
+  "how": "scientific"
+ },
+ "Rickettsia canadensis": {
+  "taxid": 788,
+  "canonical": "Rickettsia canadensis",
+  "how": "scientific"
+ },
+ "Rickettsia conorii": {
+  "taxid": 781,
+  "canonical": "Rickettsia conorii",
+  "how": "scientific"
+ },
+ "Rickettsia felis": {
+  "taxid": 42862,
+  "canonical": "Rickettsia felis",
+  "how": "scientific"
+ },
+ "Rickettsia heilongjiangensis": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Rickettsia japonica": {
+  "taxid": 35790,
+  "canonical": "Rickettsia japonica",
+  "how": "scientific"
+ },
+ "Rickettsia massiliae": {
+  "taxid": 35791,
+  "canonical": "Rickettsia massiliae",
+  "how": "scientific"
+ },
+ "Rickettsia parkeri": {
+  "taxid": 35792,
+  "canonical": "Rickettsia parkeri",
+  "how": "scientific"
+ },
+ "Rickettsia peacockii": {
+  "taxid": 47589,
+  "canonical": "Rickettsia peacockii",
+  "how": "scientific"
+ },
+ "Rickettsia philipii": {
+  "taxid": 1105106,
+  "canonical": "Rickettsia philipii",
+  "how": "scientific"
+ },
+ "Rickettsia prowazekii": {
+  "taxid": 782,
+  "canonical": "Rickettsia prowazekii",
+  "how": "scientific"
+ },
+ "Rickettsia rhipicephali": {
+  "taxid": 33992,
+  "canonical": "Rickettsia rhipicephali",
+  "how": "scientific"
+ },
+ "Rickettsia rickettsii": {
+  "taxid": 783,
+  "canonical": "Rickettsia rickettsii",
+  "how": "scientific"
+ },
+ "Rickettsia slovaca": {
+  "taxid": 35794,
+  "canonical": "Rickettsia slovaca",
+  "how": "scientific"
+ },
+ "Rickettsia typhi": {
+  "taxid": 785,
+  "canonical": "Rickettsia typhi",
+  "how": "scientific"
+ },
+ "Salmonella enterica": {
+  "taxid": 28901,
+  "canonical": "Salmonella enterica",
+  "how": "scientific"
+ },
+ "Serratia marcescens": {
+  "taxid": 615,
+  "canonical": "Serratia marcescens",
+  "how": "scientific"
+ },
+ "Serratia proteamaculans": {
+  "taxid": 28151,
+  "canonical": "Serratia proteamaculans",
+  "how": "scientific"
+ },
+ "Shigella boydii": {
+  "taxid": 621,
+  "canonical": "Shigella boydii",
+  "how": "scientific"
+ },
+ "Shigella dysenteriae": {
+  "taxid": 622,
+  "canonical": "Shigella dysenteriae",
+  "how": "scientific"
+ },
+ "Shigella flexneri": {
+  "taxid": 623,
+  "canonical": "Shigella flexneri",
+  "how": "scientific"
+ },
+ "Shigella sonnei": {
+  "taxid": 624,
+  "canonical": "Shigella sonnei",
+  "how": "scientific"
+ },
+ "Sinorhizobium fredii": {
+  "taxid": 380,
+  "canonical": "Rhizobium fredii",
+  "how": "synonym"
+ },
+ "Staphylococcus aureus": {
+  "taxid": 1280,
+  "canonical": "Staphylococcus aureus",
+  "how": "scientific"
+ },
+ "Staphylococcus caprae": {
+  "taxid": 29380,
+  "canonical": "Staphylococcus caprae",
+  "how": "scientific"
+ },
+ "Staphylococcus epidermidis": {
+  "taxid": 1282,
+  "canonical": "Staphylococcus epidermidis",
+  "how": "scientific"
+ },
+ "Staphylococcus haemolyticus": {
+  "taxid": 1283,
+  "canonical": "Staphylococcus haemolyticus",
+  "how": "scientific"
+ },
+ "Staphylococcus intermedius": {
+  "taxid": 1285,
+  "canonical": "Staphylococcus intermedius",
+  "how": "scientific"
+ },
+ "Staphylococcus saprophyticus": {
+  "taxid": 29385,
+  "canonical": "Staphylococcus saprophyticus",
+  "how": "scientific"
+ },
+ "Staphylococcus simulans": {
+  "taxid": 1286,
+  "canonical": "Staphylococcus simulans",
+  "how": "scientific"
+ },
+ "Staphylococcus warneri": {
+  "taxid": 1292,
+  "canonical": "Staphylococcus warneri",
+  "how": "scientific"
+ },
+ "Streptococcus agalactiae": {
+  "taxid": 1311,
+  "canonical": "Streptococcus agalactiae",
+  "how": "scientific"
+ },
+ "Streptococcus canis": {
+  "taxid": 1329,
+  "canonical": "Streptococcus canis",
+  "how": "scientific"
+ },
+ "Streptococcus cristatus": {
+  "taxid": 45634,
+  "canonical": "Streptococcus cristatus",
+  "how": "scientific"
+ },
+ "Streptococcus downei": {
+  "taxid": 1317,
+  "canonical": "Streptococcus downei",
+  "how": "scientific"
+ },
+ "Streptococcus dysgalactiae": {
+  "taxid": 1334,
+  "canonical": "Streptococcus dysgalactiae",
+  "how": "scientific"
+ },
+ "Streptococcus equi": {
+  "taxid": 1336,
+  "canonical": "Streptococcus equi",
+  "how": "scientific"
+ },
+ "Streptococcus gordonii": {
+  "taxid": 1302,
+  "canonical": "Streptococcus gordonii",
+  "how": "scientific"
+ },
+ "Streptococcus iniae": {
+  "taxid": 1346,
+  "canonical": "Streptococcus iniae",
+  "how": "scientific"
+ },
+ "Streptococcus intermedius": {
+  "taxid": 1338,
+  "canonical": "Streptococcus intermedius",
+  "how": "scientific"
+ },
+ "Streptococcus mitis": {
+  "taxid": 28037,
+  "canonical": "Streptococcus mitis",
+  "how": "scientific"
+ },
+ "Streptococcus mutans": {
+  "taxid": 1309,
+  "canonical": "Streptococcus mutans",
+  "how": "scientific"
+ },
+ "Streptococcus parasanguinis": {
+  "taxid": 1318,
+  "canonical": "Streptococcus parasanguinis",
+  "how": "scientific"
+ },
+ "Streptococcus pneumoniae": {
+  "taxid": 1313,
+  "canonical": "Streptococcus pneumoniae",
+  "how": "scientific"
+ },
+ "Streptococcus pseudopneumoiae": {
+  "taxid": null,
+  "canonical": null,
+  "how": "UNRESOLVED"
+ },
+ "Streptococcus pyogenes": {
+  "taxid": 1314,
+  "canonical": "Streptococcus pyogenes",
+  "how": "scientific"
+ },
+ "Streptococcus sanguinis": {
+  "taxid": 1305,
+  "canonical": "Streptococcus sanguinis",
+  "how": "scientific"
+ },
+ "Streptococcus sobrinus": {
+  "taxid": 1310,
+  "canonical": "Streptococcus sobrinus",
+  "how": "scientific"
+ },
+ "Streptococcus sp.": {
+  "taxid": 1306,
+  "canonical": "Streptococcus sp.",
+  "how": "scientific"
+ },
+ "Streptococcus suis": {
+  "taxid": 1307,
+  "canonical": "Streptococcus suis",
+  "how": "scientific"
+ },
+ "Streptococcus thermophilus": {
+  "taxid": 1308,
+  "canonical": "Streptococcus thermophilus",
+  "how": "scientific"
+ },
+ "Tannerella forsythia": {
+  "taxid": 28112,
+  "canonical": "Tannerella forsythia",
+  "how": "scientific"
+ },
+ "Treponema denticola": {
+  "taxid": 158,
+  "canonical": "Treponema denticola",
+  "how": "scientific"
+ },
+ "Vibrio anguillarum": {
+  "taxid": 55601,
+  "canonical": "Vibrio anguillarum",
+  "how": "scientific"
+ },
+ "Vibrio cholerae": {
+  "taxid": 666,
+  "canonical": "Vibrio cholerae",
+  "how": "scientific"
+ },
+ "Vibrio fischeri": {
+  "taxid": 668,
+  "canonical": "Aliivibrio fischeri",
+  "how": "synonym"
+ },
+ "Vibrio fluvialis": {
+  "taxid": 676,
+  "canonical": "Vibrio fluvialis",
+  "how": "scientific"
+ },
+ "Vibrio harveyi": {
+  "taxid": 669,
+  "canonical": "Vibrio harveyi",
+  "how": "scientific"
+ },
+ "Vibrio mimicus": {
+  "taxid": 674,
+  "canonical": "Vibrio mimicus",
+  "how": "scientific"
+ },
+ "Vibrio parahaemolyticus": {
+  "taxid": 670,
+  "canonical": "Vibrio parahaemolyticus",
+  "how": "scientific"
+ },
+ "Vibrio tubiashii": {
+  "taxid": 29498,
+  "canonical": "Vibrio tubiashii",
+  "how": "scientific"
+ },
+ "Vibrio vulnificus": {
+  "taxid": 672,
+  "canonical": "Vibrio vulnificus",
+  "how": "scientific"
+ },
+ "Xanthomonas axonopodis": {
+  "taxid": 53413,
+  "canonical": "Xanthomonas axonopodis",
+  "how": "scientific"
+ },
+ "Xanthomonas campestris": {
+  "taxid": 339,
+  "canonical": "Xanthomonas campestris",
+  "how": "scientific"
+ },
+ "Xanthomonas oryzae": {
+  "taxid": 347,
+  "canonical": "Xanthomonas oryzae",
+  "how": "scientific"
+ },
+ "Xenorhabdus bovienii": {
+  "taxid": 40576,
+  "canonical": "Xenorhabdus bovienii",
+  "how": "scientific"
+ },
+ "Xenorhabdus nematophila": {
+  "taxid": 628,
+  "canonical": "Xenorhabdus nematophila",
+  "how": "scientific"
+ },
+ "Xylella fastidiosa": {
+  "taxid": 2371,
+  "canonical": "Xylella fastidiosa",
+  "how": "scientific"
+ },
+ "Yersinia enterocolitica": {
+  "taxid": 630,
+  "canonical": "Yersinia enterocolitica",
+  "how": "scientific"
+ },
+ "Yersinia pestis": {
+  "taxid": 632,
+  "canonical": "Yersinia pestis",
+  "how": "scientific"
+ },
+ "Yersinia pseudotuberculosis": {
+  "taxid": 633,
+  "canonical": "Yersinia pseudotuberculosis",
+  "how": "scientific"
+ },
+ "Yersinia ruckeri": {
+  "taxid": 29486,
+  "canonical": "Yersinia ruckeri",
+  "how": "scientific"
  }
 }

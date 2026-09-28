@@ -1,0 +1,87 @@
+{
+  "built": "2026-09-28 17:59:10",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "n_vfdb_names": 283,
+  "resolved_by": {
+    "scientific": 224,
+    "synonym": 45,
+    "UNRESOLVED": 14
+  },
+  "n_canonical_species": 268,
+  "unresolved_frac": 0.04946996466431095,
+  "unresolved_ok": true,
+  "unresolved_names": [
+    "Arcanobacterium pyogenes",
+    "Borrelia bavariensis",
+    "Clostridium difficile",
+    "Francisella cf.",
+    "Francisella novicida",
+    "Helicobacter flexispira",
+    "Mycobacterium africanum",
+    "Mycobacterium bovis",
+    "Mycobacterium indicus",
+    "Mycobacterium vanbaalenii",
+    "Mycobacterium yongonense",
+    "Mycoplasma conjunctivae",
+    "Rickettsia heilongjiangensis",
+    "Streptococcus pseudopneumoiae"
+  ],
+  "n_lineage_fallback": 2122,
+  "n_fallback_bare_species_name": 941,
+  "n_eligible": 6139,
+  "n_moved": 310,
+  "moved_frac": 0.050496823586903404,
+  "I1_band": "I-1 > 5%, substantially wrong",
+  "reproduction_gate_delta": 0.00028666321918735527,
+  "string": {
+    "cell_n": {
+      "pathogen|extracellular": 171,
+      "pathogen|intracellular": 597,
+      "benign_species|extracellular": 444,
+      "benign_species|intracellular": 1049
+    },
+    "rates": {
+      "pathogen|extracellular": 0.26900584795321636,
+      "pathogen|intracellular": 0.050921273031825795,
+      "benign_species|extracellular": 0.084984984984985,
+      "benign_species|intracellular": 0.021671433110899266,
+      "all": 0.04784709779008524
+    },
+    "RR": 1.3577133367808127,
+    "RR_ci": [
+      1.2644123805731362,
+      1.4510142929884893
+    ],
+    "joint_share": 0.3219142152354964,
+    "F5": 2.3496956925389414
+  },
+  "taxid": {
+    "cell_n": {
+      "pathogen|extracellular": 201,
+      "pathogen|intracellular": 679,
+      "benign_species|extracellular": 414,
+      "benign_species|intracellular": 967
+    },
+    "rates": {
+      "pathogen|extracellular": 0.23731343283582088,
+      "pathogen|intracellular": 0.04923907707412863,
+      "benign_species|extracellular": 0.08703703703703702,
+      "benign_species|intracellular": 0.0203722854188211,
+      "all": 0.04784709779008524
+    },
+    "RR": 1.1332055216909616,
+    "RR_ci": [
+      1.0478568983688534,
+      1.2185541450130697
+    ],
+    "joint_share": 0.2757833751312338,
+    "F5": 2.416963834044791
+  },
+  "I2": {
+    "RR_in_band": true,
+    "joint_within_10pp": true,
+    "F5_above_1": true,
+    "floors_met": true
+  }
+}

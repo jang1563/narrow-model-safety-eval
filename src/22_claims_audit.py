@@ -95,7 +95,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # residual separation is virulence-related, and three qualifications that a retelling drops:
           # the band is partial not supported, D/B sits one protein under its floor, and H-5's 91.9% is
           # a share of the residual inside the matched cell rather than of the whole gap.
-          "docs/MATCHED_VFDB_PREREGISTRATION.md"]
+          "docs/MATCHED_VFDB_PREREGISTRATION.md",
+          # Added 2026-09-28 with the document. It supersedes a number in two other preregistrations
+          # and in the manuscript, and it is the only place recording that the tidy 1.009 came from a
+          # defective factor -- exactly the kind of sentence a later summary would drop.
+          "docs/TAXID_PROVENANCE_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1254,6 +1258,42 @@ def matched_vfdb():
         "vfdb_full_650M": round(ra["vfdb_full"]["mean"], 4),
         "membership_closes_residual": round(a["H5_membership_closes"], 4),
         "n_renamed_genus": len(a["renamed_genus_dropped_from_benign_side"]),
+    }
+
+
+def taxid_provenance():
+    """The provenance factor matched on names, and names change.
+
+    \U0001f534 This claim exists because the correction cuts both ways and a summary would keep one
+    half. The string factor was SUBSTANTIALLY WRONG -- 5.05% of eligible proteins changed side and 112
+    genuine pathogen proteins sat in the benign cells -- and the provenance effect GREW once the
+    dilution was removed, from 2.63x to 3.47x on 650M. But the ratio of ratios fell from 1.009 to
+    0.692, 650M's interval now crosses the band floor, and the two arms straddle 1.0 in opposite
+    directions, so "almost exactly independent" was a property of the defective factor.
+
+    \U0001f512 The reproduction gate is pinned too: under the string factor this script must return
+    study G's clean RR to within 0.02, or the two conditions are not the same analysis and the
+    comparison means nothing.
+    """
+    a = j("../results/taxid_provenance.json")
+    b = j("../results/taxid_provenance_esm2_35M.json")
+    if None in (a, b):
+        return None
+    return {
+        "n_vfdb_names": a["n_vfdb_names"], "resolved_by": a["resolved_by"],
+        "unresolved_frac": round(a["unresolved_frac"], 4), "unresolved_ok": a["unresolved_ok"],
+        "moved": a["n_moved"], "eligible": a["n_eligible"],
+        "moved_frac": round(a["moved_frac"], 4), "I1_band": a["I1_band"],
+        "repro_gate": round(max(a["reproduction_gate_delta"], b["reproduction_gate_delta"]), 4),
+        "RR_string": {"650M": round(a["string"]["RR"], 3), "35M": round(b["string"]["RR"], 3)},
+        "RR_taxid": {"650M": round(a["taxid"]["RR"], 3), "35M": round(b["taxid"]["RR"], 3)},
+        # ⚠️ the 650M interval crosses the frozen band floor of 0.67
+        "RR_650M_ci": [round(x, 3) for x in a["taxid"]["RR_ci"]],
+        "F5_string": {"650M": round(a["string"]["F5"], 3), "35M": round(b["string"]["F5"], 3)},
+        "F5_taxid": {"650M": round(a["taxid"]["F5"], 3), "35M": round(b["taxid"]["F5"], 3)},
+        "cells_taxid": a["taxid"]["cell_n"],
+        "I2": {"650M": a["I2"], "35M": b["I2"]},
+        "n_lineage_fallback": a["n_lineage_fallback"],
     }
 
 
@@ -3499,6 +3539,36 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("the name-matched provenance factor was substantially wrong",
+     taxid_provenance,
+     lambda v: v is None or (
+         v["n_vfdb_names"] == 283
+         and v["resolved_by"]["synonym"] >= 40 and v["unresolved_ok"]
+         and v["unresolved_frac"] < 0.10
+         # 🔒 the string condition reproduces study G's clean RR, or this is not one comparison
+         and v["repro_gate"] < 0.02
+         # 🔴 I-1 lands in the adverse band, over the frozen 5% boundary
+         and v["moved"] == 310 and v["moved_frac"] > 0.05
+         and v["I1_band"].startswith("I-1 > 5%")
+         and v["cells_taxid"]["pathogen|extracellular"] == 201
+         and v["cells_taxid"]["pathogen|intracellular"] == 679
+         # 🟢 every frozen I-2 criterion survives on both arms
+         and all(d["RR_in_band"] and d["joint_within_10pp"] and d["F5_above_1"] and d["floors_met"]
+                 for d in v["I2"].values())
+         # 🟢 provenance GREW once the dilution was removed, as predicted in advance
+         and v["F5_taxid"]["650M"] > v["F5_string"]["650M"] > 2.0
+         and v["F5_taxid"]["650M"] > 3.0
+         # ⚠️ and the independence finding weakened: RR fell on both arms, 650M's CI crosses 0.67,
+         # and the arms now straddle 1.0 in opposite directions
+         and v["RR_taxid"]["650M"] < v["RR_string"]["650M"]
+         and v["RR_taxid"]["35M"] < v["RR_string"]["35M"]
+         and v["RR_650M_ci"][0] < 0.67
+         and v["RR_taxid"]["650M"] < 1.0 < v["RR_taxid"]["35M"]),
+     {"docs/TAXID_PROVENANCE_PREREGISTRATION.md":
+      "**310 of 6,139 eligible proteins changed side = 5.05%**",
+      "paper/MANUSCRIPT.md":
+      "**\"Almost exactly independent\" was a property of the defective\nfactor**"},
+     []),
     ("VFDB membership closes 92% of the residual, and the band says partial",
      matched_vfdb,
      lambda v: v is None or (

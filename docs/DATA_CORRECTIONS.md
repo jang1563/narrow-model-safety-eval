@@ -4886,3 +4886,63 @@ any confidence is that the re-run and the three-step trace were both done.
 🔑 **And it was found by a study that had not started yet** — the resolver printing a nonsense species
 name. That is the third defect this session found by building the *next* thing rather than by
 re-reading the last one.
+
+---
+
+## 2026-09-28 (fifty-ninth entry) — The provenance factor matched on names, and 112 pathogens were in the benign cells
+
+Entry 57 recorded that studies F and G decide "pathogen-derived" with a string test and that renamed
+pathogens fail it — **dilution, therefore conservative, and not quantified.**
+🔒 `docs/TAXID_PROVENANCE_PREREGISTRATION.md` quantifies it.
+
+**The resolver had to be built carefully**, because the obvious routes are wrong: `scientific:"<name>"`
+alone matches only *current* names, so every renamed pathogen fails; and taking a free-text search's
+top hit maps **`Escherichia coli` → *Escherichia phage 1*** and **`Staphylococcus aureus` →
+*Staphylococcus phage P68***. 🔒 **The adopted resolver accepts a hit only when the queried name
+appears exactly in the entry's `scientificName`, `synonyms` or `otherNames`.** 283 names → 224 by
+scientific name, **45 by synonym**, 14 unresolved (4.9%, under the frozen 10% ceiling).
+
+🔒 **Reproduction gate**: under the string factor the script returns study G's clean RR to
+|Δ| ≤ 0.0003 on both arms, so the two conditions differ in one binary factor and nothing else.
+
+### 🔴 I-1: substantially wrong
+
+| cell | string | taxid | Δ |
+|---|---:|---:|---:|
+| pathogen × extracellular | 171 | **201** | **+30** |
+| pathogen × intracellular | 597 | **679** | **+82** |
+
+**310 of 6,139 = 5.05%** changed side, over the frozen 5% boundary. 🔴 **112 genuine pathogen proteins
+were sitting in the benign cells.**
+
+### 🟢 The conclusions survive, and provenance gets stronger
+
+Every frozen I-2 criterion passes on both arms. ⭐ **With localization held fixed, a pathogen protein
+is now 3.47× more likely to be flagged than a benign one on 650M, against 2.63× before** — the
+direction § 3 predicted, because removing dilution can only sharpen the contrast.
+
+### ⚠️ And the independence finding is weaker than it looked
+
+**RR falls from 1.009 to 0.692 on 650M and 1.327 to 1.133 on 35M.** Both stay inside the frozen band so
+I-2 passes as written, but 🔴 **650M's interval [0.649, 0.735] crosses the band floor of 0.67**, and
+🔴 **the arms now straddle 1.0 in opposite directions** where before they sat at 0.999 and 1.327.
+
+🔑 **"Almost exactly independent" was a property of the defective factor.** Entry 54's 1.009 is
+superseded by **0.692**; the manuscript and the two affected preregistrations are corrected in the same
+commit. **The composition claim survives its band and is narrower than it read.**
+
+### 🔒 Declared limitation: 5.05% is a lower bound
+
+2,122 of 6,758 proteins have no `(species)` lineage entry and fall back to the organism string. Of
+those, 941 are bare two-word names where the fallback is correct and 358 are unclassified *Genus* sp.,
+but ⚠️ **823 carry parenthetical synonyms — *Enterobacter agglomerans (Erwinia herbicola) (Pantoea
+agglomerans)* — where the first name is the superseded one.** That is the same defect, still present on
+the *pool* side. 🔒 **Fixing it would move more proteins, not fewer, so 5.05% is a floor and
+"substantially wrong" is the conservative reading.**
+
+### 🔒 Predictions
+
+I-1 was predicted at **1–5%** and came in at **5.05%** — ❌ missed **high** by 0.05 pp, and Amendment 1
+had predicted it would miss *low*. The other four held: provenance grew, RR stayed in band on both
+arms, the joint share moved 4.9 and 4.6 pp against a 5 pp prediction, and the guard that **"zero
+movement is a bug, not a finding"** was not triggered.
