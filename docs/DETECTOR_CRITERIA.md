@@ -668,7 +668,11 @@ Applied honestly, against its own criteria.
 | 18 reference set as attack surface | **Partial.** The panel's own negatives have a stated, reproducible selection rule (`02d`, `27`), which is the main ask. But the per-class before-and-after check was only run on 2026-09-21, long after the set was fixed, and it was run because the vulnerability was found rather than as a standing gate. One class, `rip_rrna_glycosidase`, loses 62.9 points to a supplement that moves the aggregate rate by 0.05 |
 
 Two fails (3, 12), four partials (1, 4, 5, 18) and one mixed (7) on eighteen criteria, on a framework whose
-headline aggregate number is 0.981. That ratio is the reason this document
+headline aggregate number is **0.974 ± 0.014**. 🔴 *That figure read 0.981 until 2026-09-28, found while
+assembling `paper/`: 0.981 is the **v1** separability that the 2026-09-03 screening correction
+superseded, and this repository's own instruction is to quote 0.974. The v1 membership is not shipped,
+contains two identical-sequence pairs, and predates the barnase/Cas9 class decision. The use at line 283
+is labelled v1 and is correct; this one was not labelled.* That ratio is the reason this document
 exists.
 
 🔴 **Criterion 1 moved from fail to partial on 2026-09-27, and the tally above changed with it.**

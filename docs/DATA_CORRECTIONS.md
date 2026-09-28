@@ -4146,3 +4146,54 @@ stated exactly, now measured rather than asserted. The bill: **+51 alerts per 10
 ⚠️ Both sides of that trade are ESM-2 650M only (§ 9.1.4), so it remains a measurement and not a
 recommendation. And the flat precision column is the honest summary of this whole line of work: **four
 reductions, three panels, two arms, and no configuration yet moves the screen's precision.**
+
+---
+
+## 2026-09-28 (forty-sixth entry) — A manuscript, and two things assembling it found
+
+The recommendation taken was to write the methodological paper on what exists rather than spend weeks
+enlarging the panel first, on the grounds that the argument for enlarging the panel **is** the paper's
+content. `paper/`, 3,560 words, ~7 pages, assembled from `paper/0*.md` into `paper/MANUSCRIPT.md`.
+
+**Its thesis is not the summary's.** `docs/DETECTOR_EVALUATION_SUMMARY.md` argues "the split comes first".
+The paper argues the distance between **AUROC 0.974** on the panel and **1.2% precision** in a deployment
+of ten thousand at a one-in-a-thousand hazard rate, and what three cheap practices did to make that
+distance visible: ceilings as well as floors, every geometric claim across representations, and an
+append-only log including the entries that hurt. The long documents become its supporting material rather
+than being restated.
+
+🔴 **It is on the audited surface**, which is the point of putting it there: a paper is the surface where a
+stale figure travels furthest. Claim 91 recomputes its headline pair from the artifacts rather than reading
+it out of the prose.
+
+### 🔴 What assembling it found, which is why it was worth doing first
+
+**1. The criteria scorecard was quoting a superseded number, unlabelled.** Its closing line read *"on a
+framework whose headline aggregate number is 0.981."* **0.981 is the v1 separability**, superseded by the
+2026-09-03 screening correction; `docs/BIOHUB_RESEARCH_BRIEF.md` carries the instruction to quote
+**0.974 ± 0.014** instead, because the v1 membership is not shipped, contains two identical-sequence pairs,
+and predates the barnase/Cas9 class decision. The other use of 0.981 in that document is explicitly
+labelled v1 and is fine; this one was not. Corrected, and the unlabelled form is now forbidden by the gate.
+
+⚠️ **Writing the argument is what surfaced it.** The number had been sitting in the scorecard's punchline
+through every run of the gate, because no claim pinned that sentence. A figure is protected by the audit
+only where a claim reaches it.
+
+**2. My own two figures disagreed by two alerts, and I nearly shipped both.** The abstract quoted 603
+alerts while citing the canonical arm's 7.87%; § 5's precision table also said 603. But § 5's table is
+built on the **residue-only** mean, the control the reductions are compared against, and the abstract's
+rate is the **published canonical** arm, which averages the special tokens in. The two differ by 0.014
+points of false-positive rate and **two alerts**. The claim function computed 604.5 from the canonical
+artifact and passed anyway, because I had written its tolerance as 600 to 606.
+
+🔴 **A tolerance wide enough to hide the inconsistency it was meant to catch is the same defect as the
+4/61 false-positive figure of entry forty-three**: a check that cannot distinguish what it is being used to
+distinguish. Abstract now says 605 from the canonical arm, § 5 states that its control differs and why, and
+the claim is tightened to ±1.0 alert.
+
+### What the paper does not yet have
+
+⚠️ A1's rate — the hard-negative test of criterion 1 — is still embedding, so the paper's § 3 carries the
+pool figures only. ⚠️ The criteria table is referenced rather than reproduced, which is right for a paper
+and means the eighteen verdicts are not independently pinned inside it. And it is a **draft**: nothing has
+been through an outside reading.

@@ -63,7 +63,12 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-27 with the document itself, for the same reason the mutation
           # preregistration is here: a frozen threshold that drifts is worse than no threshold, and
           # its amendment log now carries the delivered control set's composition.
-          "docs/NEGATIVE_EXPANSION_PREREGISTRATION.md"]
+          "docs/NEGATIVE_EXPANSION_PREREGISTRATION.md",
+          # Added 2026-09-28 with the manuscript. A paper is the surface where a stale figure travels
+          # furthest, and assembling it already found one: the criteria scorecard was quoting 0.981,
+          # the SUPERSEDED v1 separability, unlabelled. On the audited surface the manuscript's
+          # numbers fail the gate the same way the write-up's do.
+          "paper/MANUSCRIPT.md"]
 
 
 def j(p):
@@ -785,6 +790,40 @@ def out_of_sample_reductions():
                                     key=lambda a: -au[a])
                              == sorted(("mean_res", "win_best25", "win_best9", "win_max9"),
                                        key=lambda a: fp[a]["c"]["mean"])),
+    }
+
+
+def manuscript_headline():
+    """The manuscript's own headline pair, and that it quotes the screened panel and not the v1 figure.
+
+    \U0001f534 The paper is named after the distance between separability and deployment precision, so
+    those two numbers are the ones a later edit is most likely to round, soften or mix up. Both are
+    recomputed here from their own artifacts rather than read out of the prose, and the superseded v1
+    separability is forbidden below.
+    """
+    lomo = j("../results/v2/lomo_results.json")
+    ext = j("../results/v3/external_test_partition_canonical.json")
+    red = j("../results/v3/lomo_results_esm2_650M_mean_res.json")
+    if None in (lomo, ext, red):
+        return None
+    auroc, sd = lomo["baseline_auroc"][0], lomo["baseline_auroc"][1]
+    fp = ext["false_positives"]["0.05"]
+    v = [x["flagged_95_mean"] for x in red["leave_one_mechanism_out"].values()
+         if x.get("flagged_95_mean") is not None]
+    recall = sum(v) / len(v)
+    # section 10.8's deployment arithmetic, restated so the manuscript's table is recomputed
+    hz, n = 10.0, 10000
+    real = hz * recall
+    alerts = real + (n - hz) * fp["shift"]["conformal"]["mean"]
+    return {
+        "v2_baseline_auroc": round(auroc, 4), "v2_baseline_sd": round(sd, 4),
+        "oos_quantile": round(fp["shift"]["quantile"]["mean"], 5),
+        "oos_conformal": round(fp["shift"]["conformal"]["mean"], 5),
+        "oos_dedup": round(fp["shift_dedup"]["quantile"]["mean"], 5),
+        "recall": round(recall, 4),
+        "alerts": round(alerts, 1), "real": round(real, 1),
+        "precision": round(real / alerts, 4),
+        "pool_tested": ext["pool_n"], "calibration_n": ext["calibration_n"],
     }
 
 
@@ -3030,6 +3069,26 @@ CLAIMS = [
       # never claimed it had been given anything simpler than itself.
       "huggingface/README.md":
       "reaches Spearman **\u22120.746** against recovery at permutation *p* = **0.0034**"}, []),
+    ("the manuscript's headline pair is the screened panel's separability and a 1.2% precision",
+     manuscript_headline,
+     lambda v: v is None or (
+         # the screened v2 figure, NOT the superseded v1 0.981
+         abs(v["v2_baseline_auroc"] - 0.974) < 0.001 and abs(v["v2_baseline_sd"] - 0.014) < 0.001
+         # the out-of-sample rates the paper is named after
+         and abs(v["oos_quantile"] - 0.0787) < 0.001
+         and abs(v["oos_conformal"] - 0.0598) < 0.001
+         and abs(v["oos_dedup"] - 0.0964) < 0.001
+         and v["calibration_n"] == 118 and v["pool_tested"] == 8258
+         # and the deployment arithmetic the discussion turns on
+         # the abstract's figure, from the PUBLISHED canonical arm; section 5's table uses the
+         # residue-only control and says 603, two alerts lower, which that section states
+         and abs(v["alerts"] - 604.5) < 1.0 and 7.2 <= v["real"] <= 7.4
+         and abs(v["precision"] - 0.0121) < 0.0005),
+     {"paper/MANUSCRIPT.md":
+      "**605 alerts of which about 7 are real — a precision of\n1.2%**",
+      "docs/DETECTOR_CRITERIA.md": "headline aggregate number is **0.974 ± 0.014**"},
+     # the superseded v1 separability, which must not return unlabelled
+     ["framework whose\nheadline aggregate number is 0.981"]),
     ("section 8's mechanism is real for the reduction that gains, and the lower rates are not gains",
      out_of_sample_reductions,
      lambda v: v is None or (
