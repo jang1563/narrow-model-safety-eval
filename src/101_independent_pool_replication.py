@@ -85,12 +85,19 @@ def stat(v):
                    float(v.mean() + 1.96 * v.std(ddof=1) / len(v) ** 0.5)]}
 
 
-def measure(P, POOL, VFDB, union, test_idx, strat, vfdb_rows, seeds):
-    """Refit `seeds` folds and return the strata rates, R, and C/A against the VFDB cell."""
+def measure(P, POOL, VFDB, union, test_idx, strat, vfdb_rows, seeds, bK=None):
+    """Refit `seeds` folds and return the strata rates, R, and C/A against the VFDB cell.
+
+    🔴 TWO benign denominators, because the preregistration did not say which one S-2 meant and the
+    two differ by more than a factor of two. `CA_L` divides by study L's GO-augmented extracellular
+    stratum over all Bacteria and Archaea; `CA_K` divides by study K's cell -- KEYWORD strata,
+    Bacteria only, restricted to VFDB species, contaminants out -- which is the one study K's 2.617
+    can be compared against. Both are reported; neither replaces the other.
+    """
     n_tr, n_ca = fold_sizes(len(union))
     y = np.r_[np.ones(P.shape[0]), np.zeros(n_tr)]
     rows = np.array(test_idx)
-    acc = {k: [] for k in ("extracellular", "intracellular", "vfdb_extra")}
+    acc = {k: [] for k in ("extracellular", "intracellular", "vfdb_extra", "benign_K")}
     for seed in range(seeds):
         r = np.random.default_rng(seed)
         perm = r.permutation(len(union))
@@ -101,6 +108,7 @@ def measure(P, POOL, VFDB, union, test_idx, strat, vfdb_rows, seeds):
         flag = m.predict_proba(POOL[rows])[:, 1] >= t
         for s in ("extracellular", "intracellular"):
             acc[s].append(float(flag[strat[s]].mean()) if strat[s] else np.nan)
+        acc["benign_K"].append(float(flag[bK].mean()) if bK else np.nan)
         if VFDB is not None and len(vfdb_rows):
             fv = m.predict_proba(VFDB)[:, 1] >= t
             acc["vfdb_extra"].append(float(fv[vfdb_rows].mean()))
@@ -109,7 +117,12 @@ def measure(P, POOL, VFDB, union, test_idx, strat, vfdb_rows, seeds):
     inn = np.array(acc["intracellular"], float)
     out["R"] = stat(np.where(inn > 0, ex / inn, np.nan))
     if acc["vfdb_extra"]:
-        out["CA"] = stat(np.array(acc["vfdb_extra"], float) / np.where(ex > 0, ex, np.nan))
+        v = np.array(acc["vfdb_extra"], float)
+        out["CA_L"] = stat(v / np.where(ex > 0, ex, np.nan))
+        bk = np.array(acc["benign_K"], float)
+        if not np.all(np.isnan(bk)):
+            out["CA_K"] = stat(v / np.where(bk > 0, bk, np.nan))
+            out["benign_K"] = stat(bk)
     return out, (n_tr, n_ca)
 
 
@@ -169,30 +182,40 @@ def main():
         # condition does
         union = [i for i in part if proteins[i]["sequence"] not in vf_seqs]
         strat = {s: [] for s in M92.STRATA}
+        bK = []
+        vfdb_species = M83.vfdb_species()
         for k, i in enumerate(test_idx):
             if proteins[i]["kingdom"] not in M84.KINGDOMS or proteins[i]["sequence"] in vf_seqs:
                 continue
             g = go[accs[i]]
             strat[M92.stratum_of(g["go"], g["sig"], g["tm"], kw[accs[i]])].append(k)
+            # 🔒 study K's benign cell, built by ITS rule so its 2.617 has something comparable
+            sp = " ".join(proteins[i]["organism"].replace("(", "").split()[:2])
+            if (proteins[i]["kingdom"] == "Bacteria" and sp in vfdb_species
+                    and M84.stratum_of(kw[accs[i]]) == "extracellular"):
+                bK.append(k)
         t0 = time.time()
-        out, fold = measure(P, POOL, VFDB, union, test_idx, strat, vfdb_extra, a.seeds)
+        out, fold = measure(P, POOL, VFDB, union, test_idx, strat, vfdb_extra, a.seeds, bK)
         n_ex, n_in = len(strat["extracellular"]), len(strat["intracellular"])
         results[label] = {"n_pool": len(proteins), "n_union": len(union), "fold": list(fold),
                           "n_test": len(test_idx), "strata_n": {s: len(v) for s, v in strat.items()},
-                          "floors_met": bool(min(n_ex, n_in) >= FLOOR), **out,
+                          "floors_met": bool(min(n_ex, n_in) >= FLOOR),
+                          "n_benign_K": len(bK), **out,
                           "seconds": round(time.time() - t0)}
         print(f"  {label:<18} pool {len(proteins):>6}  union {len(union):>5} fold {fold}  "
               f"extra {n_ex:>5} intra {n_in:>5}  R {out['R']['mean']:>6.3f}"
-              + (f"  C/A {out['CA']['mean']:.3f}" if "CA" in out else ""))
+              + (f"  C/A_L {out['CA_L']['mean']:.3f}" if "CA_L" in out else "")
+              + (f"  C/A_K {out['CA_K']['mean']:.3f} (n={len(bK)})" if "CA_K" in out else ""))
 
     if "pool2" not in results:
         raise SystemExit("pool 2 embedding absent; nothing to report")
     p2 = results["pool2"]
     band_R = ("study E's verdict replicates" if p2["R"]["mean"] >= R_HI
               else "does not replicate" if p2["R"]["mean"] <= R_LO else "partial")
-    band_CA = ("the registration contrast replicates" if p2["CA"]["mean"] >= CA_HI
-               else "does not replicate" if p2["CA"]["mean"] <= CA_LO else "partial") \
-        if "CA" in p2 else "not measured"
+    # 🔒 the band is judged on study K's denominator, the only one comparable to its 2.617
+    band_CA = ("the registration contrast replicates" if p2["CA_K"]["mean"] >= CA_HI
+               else "does not replicate" if p2["CA_K"]["mean"] <= CA_LO else "partial") \
+        if "CA_K" in p2 else "not measured"
     res = {"built": time.strftime("%Y-%m-%d %H:%M:%S"), "arm": a.arm, "seeds": a.seeds,
            "single_arm_indicative": a.arm != "esm2_650M",
            "results": results, "S1_band": band_R, "S2_band": band_CA,
@@ -203,9 +226,12 @@ def main():
 
     print(f"\nS-1  pool 2 R = {p2['R']['mean']:.3f} "
           f"[{p2['R']['ci'][0]:.3f}, {p2['R']['ci'][1]:.3f}]  ->  {band_R}")
-    if "CA" in p2:
-        print(f"S-2  pool 2 C/A = {p2['CA']['mean']:.3f} "
-              f"[{p2['CA']['ci'][0]:.3f}, {p2['CA']['ci'][1]:.3f}]  ->  {band_CA}")
+    if "CA_K" in p2:
+        print(f"S-2  pool 2 C/A = {p2['CA_K']['mean']:.3f} "
+              f"[{p2['CA_K']['ci'][0]:.3f}, {p2['CA_K']['ci'][1]:.3f}]  ->  {band_CA}"
+              f"   (study K's denominator, n={p2['n_benign_K']}; study K itself: 2.617)")
+        print(f"     the other denominator, study L's strata: C/A = {p2['CA_L']['mean']:.3f} "
+              f"— reported because the preregistration did not say which one S-2 meant")
     print(f"     floors {'met' if p2['floors_met'] else 'NOT met'} "
           f"(extra {p2['strata_n']['extracellular']}, intra {p2['strata_n']['intracellular']}, "
           f"floor {FLOOR})")

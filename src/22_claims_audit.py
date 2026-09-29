@@ -127,7 +127,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-29 with the document. It retires the project's main positive claim in its
           # strong form, and it is the only place recording that Motility -- flagella -- is the most
           # flagged group of all, which is the observation the whole correction rests on.
-          "docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md"]
+          "docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md",
+          # Added 2026-09-29 with the document. It is the only place in this repository where a finding
+          # is tested on a population it has never seen, and the only place recording that the two
+          # headline results move in OPPOSITE directions when it is.
+          "docs/INDEPENDENT_POOL_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1637,6 +1641,47 @@ def hazard_vs_membership():
         "split_happened": a["split_happened"],
         # ⚠️ Motility's cells are below the frozen floor; it is indicative, declared in advance
         "motility_below_floor": a["cell_n"]["motility|extracellular"] < a["floor"],
+    }
+
+
+def independent_pool():
+    """Do the headline findings hold on a benign pool they have never seen?
+
+    \U0001f7e2 S-1, the adverse finding, replicates and GROWS: R = 10.235 on pool 2 against 6.059 from
+    the same script on pool 1, on a population sharing only 32% of its species. \U0001f534 S-2, the
+    positive finding, WEAKENS: C/A falls from 2.890 to 1.629, out of the supported band into partial.
+    Both are pinned because a summary keeping either one alone would invert the result's character.
+
+    \u26a0\ufe0f The denominator is pinned too. The preregistration did not say which benign cell S-2
+    meant and the two differ by more than a factor of two -- study K's rule gives 1.629, study L's
+    gives 2.296. The band is judged on study K's, the only one comparable to its 2.617, and the script
+    reproduces study K on pool 1 at 2.890, which is what makes the comparison legible.
+
+    \U0001f512 Also pinned: zero accession overlap with pool 1, and the partition rule reproducing
+    pool 1's published split -- without both, nothing here is independent or comparable.
+    """
+    v = j("../results/independent_pool_replication_esm2_35M.json")
+    c = j("../results/independent_pool_composition.json")
+    if None in (v, c):
+        return None
+    p2 = v["results"]["pool2"]
+    p1 = v["results"].get("pool1_unscreened", {})
+    return {
+        "n_pool2": p2["n_pool"], "n_pool1": p1.get("n_pool"),
+        "overlap_with_pool1": c["species_shared"],
+        "species_shared_frac": round(c["species_shared"] / c["distinct_species"][1], 3),
+        "bacteria_frac": [round(x, 3) for x in c["kingdom_frac"]["Bacteria"]],
+        "strata_pool2": p2["strata_n"], "floors_met": p2["floors_met"],
+        "n_benign_K": p2["n_benign_K"],
+        # 🟢 the adverse finding: replicates and grows
+        "R_pool2": round(p2["R"]["mean"], 3), "R_pool1": round(p1["R"]["mean"], 3) if p1 else None,
+        "S1_band": v["S1_band"],
+        # 🔴 the positive finding: drops out of the supported band
+        "CA_K_pool2": round(p2["CA_K"]["mean"], 3),
+        "CA_K_pool1": round(p1["CA_K"]["mean"], 3) if p1 else None,
+        "CA_L_pool2": round(p2["CA_L"]["mean"], 3),
+        "S2_band": v["S2_band"],
+        "single_arm_indicative": v["single_arm_indicative"],
     }
 
 
@@ -4039,6 +4084,30 @@ CLAIMS = [
          and v["matched_R"]["650M"] < 3.0 < v["matched_R"]["35M"]),
      {"docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md":
       "**Unannotated falls from 55.0% to 37.0%**, under the frozen 50%."},
+     []),
+    ("on an unseen pool the localization finding grows and the registration one shrinks",
+     independent_pool,
+     lambda v: v is None or (
+         v["n_pool2"] == 11301 and v["floors_met"]
+         # 🔒 genuinely a different population: a third of its species are shared, and the kingdom
+         # mix differs because pool 1 under-filled its eukaryote quota
+         and v["species_shared_frac"] < 0.40
+         and v["bacteria_frac"][0] > 0.85 and v["bacteria_frac"][1] < 0.70
+         and v["strata_pool2"]["extracellular"] >= 300
+         # 🟢 the adverse finding replicates and is LARGER than on pool 1
+         and v["S1_band"] == "study E's verdict replicates"
+         and v["R_pool2"] > 3.0 and v["R_pool2"] > v["R_pool1"]
+         # 🔴 the positive finding drops out of the supported band
+         and v["S2_band"] == "partial"
+         and 1.2 < v["CA_K_pool2"] < 2.0
+         and v["CA_K_pool2"] < v["CA_K_pool1"]
+         # ⚠️ the script reproduces study K on pool 1, which is what licenses the comparison
+         and abs(v["CA_K_pool1"] - 2.617) < 0.4
+         # ⚠️ and the denominator ambiguity is recorded, not resolved silently
+         and v["CA_L_pool2"] > v["CA_K_pool2"]
+         and v["single_arm_indicative"]),
+     {"docs/INDEPENDENT_POOL_PREREGISTRATION.md":
+      "**the registration contrast is about\n44% smaller on a benign population the probe has not seen.**"},
      []),
     ("the probe responds to VFDB registration, not to hazard",
      hazard_vs_membership,

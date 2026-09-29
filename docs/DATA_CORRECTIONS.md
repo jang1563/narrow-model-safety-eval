@@ -5510,3 +5510,68 @@ frozen band label inside studies H and K's preregistrations**, where those words
 narrowed to the manuscript's live sentence**, because a forbid that fires on a frozen band label would
 force an edit to a document this repository does not edit; the supersession notes appended to both are
 the right instrument there.
+
+---
+
+## 2026-09-29 (seventieth entry) — On a pool it has never seen, the adverse finding grows and the positive one shrinks
+
+The step-by-step review's first structural criticism was that **eleven analysis scripts share one union
+and one test partition**: studies E through Q are re-analyses of **one fit on one population**, and the
+"second arm" this project leans on is a different *embedding of the same proteins*.
+`docs/INDEPENDENT_POOL_PREREGISTRATION.md` tests the two headline findings on data none of them has
+seen.
+
+🔑 **A disjoint sample was cheap because pool 1's own build log said so**: a per-organism cap of 30 had
+rejected **28,728** proteins the identical query already returned. Pool 2 is that tranche — same query,
+same filters, same cap, every pool-1 accession excluded, with a **hard guard that aborts the build on
+any overlap**. 11,301 proteins, 2,334 organisms, **32% species overlap**. The partition rule reproduces
+pool 1's published split at **100%**.
+
+| | pool 1 (same script) | **pool 2** |
+|---|---:|---:|
+| extracellular / intracellular | 619 / 2,708 | 320 / 3,441 |
+| ⭐ **localization `R`** | 6.059 | **10.235 [9.585, 10.884]** |
+| ⭐ **registration `C/A`** | 2.890 *(n=171)* | **1.629 [1.594, 1.664]** *(n=115)* |
+
+### 🟢 S-1: the adverse finding replicates and grows
+
+**R = 10.235** against a frozen band of ≥ 3.0, on a population sharing a third of its species. 🔒 **The
+localization gradient is not an artifact of one draw of Swiss-Prot** — it is larger on the unseen pool
+than on the one every earlier study used.
+
+### 🔴 S-2: the positive finding falls out of its band
+
+**C/A = 1.629**, in the **partial** band, where study K read **2.617** — supported. The same script on
+pool 1 gives **2.890**, so this is not a script difference: **the registration contrast is about 44%
+smaller on a benign population the probe has not seen.**
+
+🔒 The frozen retraction threshold was `C/A ≤ 1.2` and is **not** crossed, so nothing is withdrawn.
+⚠️ **But "supported on both arms" was a statement about one pool**, and that qualification is now on
+the finding in the manuscript.
+
+### 🔴 The preregistration did not say which benign cell S-2 meant
+
+Two exist and they differ by more than a factor of two: study K's rule (keyword strata, Bacteria,
+**restricted to VFDB species**) gives **1.629**; study L's (GO strata, all Bacteria and Archaea, no
+species restriction) gives **2.296**. 🔒 **The band is judged on study K's**, the only one comparable
+to its 2.617 — and the script reproduces study K on pool 1 at **2.890**, which is what makes the
+comparison legible. **The other is reported beside it**, because the ambiguity was mine and the
+favourable number should not stand unchallenged.
+
+⚠️ A second gap: floors were frozen for the localization strata and the pool size but **not for S-2's
+denominator cell**, which holds **115**.
+
+### 🔒 The skipped screen, measured rather than assumed
+
+Pool 1's 1,500 partition rows were screened against the positives by pairwise alignment; running that
+on pool 2 is 1.1M alignments. Instead pool 1 was refitted **without** its screen: `R` = **6.059**
+against study L's screened **5.353**. 🔑 **The screen is worth about 0.7 in the direction of lowering
+R**, so pool 2's 10.235 is if anything understated and the shortcut cannot explain the replication.
+
+### 🔒 Both primary predictions missed, in opposite directions
+
+`R` was predicted at 4–7 and came in at **10.235**; `C/A` was predicted at 2.0–3.0 and came in at
+**1.629**. ⚠️ **The finding I expected to be fragile held and grew; the one I was most confident in
+shrank.** The composition prediction — that trouble would show up there rather than in the ratios — was
+right: pool 1 is 87.5% bacterial against pool 2's 60.2%, because pool 1 under-filled its eukaryote
+quota when the cap exhausted eukaryotic Swiss-Prot.

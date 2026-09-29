@@ -123,3 +123,75 @@ probe has been applied.**
 each pool took. It is carried with every number this study produces, and the shared-species figure
 (**36%**) is the more informative one for a replication: **most of pool 2's organisms are not pool 1's
 organisms.**
+
+---
+
+## 🔴 Amendment 2 — 2026-09-29, on running it: § 2 did not say which benign cell S-2 meant
+
+§ 2 defined S-2 as *"`C/A` = VFDB-registered over pool 2's benign extracellular cell"*. 🔴 **There are
+two such cells and they differ by more than a factor of two.**
+
+| denominator | rule | pool 1 | pool 2 |
+|---|---|---:|---:|
+| **study K's** | keyword strata, Bacteria, **restricted to VFDB species**, contaminants out | **2.890** | **1.629** |
+| study L's | GO-augmented strata, all Bacteria + Archaea, no species restriction | 5.400 | 2.296 |
+
+🔒 **The band is judged on study K's**, because that is the only one comparable to the 2.617 this study
+is trying to replicate — and the script reproduces study K closely on pool 1 (**2.890** against 2.617,
+the residual being the similarity screen this study skips). **The other is reported beside it rather
+than dropped**, because the ambiguity was mine and hiding it would let the more favourable number stand
+unchallenged.
+
+⚠️ **A second gap in § 4**: floors were frozen for the localization strata (300) and for the pool size
+(4,000) but **not for S-2's denominator cell**, which holds **115** in pool 2 against 171 in pool 1.
+**S-2 is therefore reported with that number attached.**
+
+---
+
+## Results, 2026-09-29 — ESM-2 35M, single arm, indicative
+
+`src/101_independent_pool_replication.py`. Pool 2: 11,301 proteins, **zero overlap** with pool 1, the
+partition rule reproducing pool 1's published split at **100%**.
+
+| | pool 1 (same script) | **pool 2** |
+|---|---:|---:|
+| union / fold | 1,475 → (983, 492) | 1,483 → (988, 495) |
+| extracellular / intracellular | 619 / 2,708 | **320 / 3,441** |
+| ⭐ **S-1, localization `R`** | 6.059 | **10.235 [9.585, 10.884]** |
+| ⭐ **S-2, `C/A`** (study K's denominator) | 2.890 *(n=171)* | **1.629 [1.594, 1.664]** *(n=115)* |
+
+### 🟢 S-1: the adverse finding replicates, and strengthens
+
+**R = 10.235** against a frozen band of ≥ 3.0. 🔒 **On a population that shares only 32% of its species
+with pool 1, the localization gradient is not merely present but larger than on the pool every earlier
+study used.** Floors met (320 and 3,441 against 300).
+
+### 🔴 S-2: the positive finding weakens from supported to partial
+
+**C/A = 1.629**, in the **partial** band, where study K read **2.617** — *supported*. The same script on
+pool 1 returns **2.890**, so this is not a script difference: **the registration contrast is about
+44% smaller on a benign population the probe has not seen.**
+
+🔒 **The frozen obligation does not fire** — it was written for `C/A ≤ 1.2` — so nothing is retracted.
+⚠️ **But "supported on both arms" was a statement about one pool**, and on a second pool of the same
+construction it is partial. **That qualification belongs on the finding and is added to it.**
+
+### 🔒 What the skipped similarity screen was worth, measured
+
+Pool 1 refitted **without** its screen gives `R` = **6.059** against study L's screened, decontaminated
+**5.353** — so the screen is worth about **0.7** on this quantity, in the direction of *lowering* it.
+🔑 **Pool 2's 10.235 is therefore, if anything, understated relative to a screened comparison**, and
+the procedural shortcut cannot explain the replication.
+
+### 🔒 Scoring the frozen predictions — both primaries missed, in opposite directions
+
+| | frozen | actual | |
+|---|---|---|---|
+| S-1 `R` between 4 and 7 | | **10.235** | ❌ replicates, but far above the band |
+| S-2 `C/A` between 2.0 and 3.0 | | **1.629** | ❌ below it |
+| the composition check is where I expect trouble | | kingdom mix 87.5% vs 60.2% bacterial | ✅ |
+| any overlap ⇒ the exclusion failed | | 0 | ✅ guard silent |
+
+⚠️ **I predicted both headline quantities would land in narrow bands and neither did.** The direction
+that matters: **the finding I expected to be fragile held and grew; the finding I was most confident in
+shrank.**
