@@ -30,8 +30,12 @@ BUILD = ROOT / "results" / "external_class_axis_build.json"
 # 🔑 --arm added 2026-09-28. § 10.6's standing rule is that a geometric claim runs across
 # representations, and § 9.1.4 records three findings that looked clean on 650M and vanished on 35M.
 # Study B and the organism-stratified follow-up are both one arm, which their own write-ups say.
+# 🔒 esm2_150M and esm2_8M added 2026-09-29 for the size-scaling study; the gate for each is the
+# published panel-negative array at that arm, which already exists for both.
 ARMS = {"esm2_650M": ("facebook/esm2_t33_650M_UR50D", "", ""),
-        "esm2_35M": ("facebook/esm2_t12_35M_UR50D", "_esm2_35M", "_esm2_35M")}
+        "esm2_150M": ("facebook/esm2_t30_150M_UR50D", "_esm2_150M", "_esm2_150M"),
+        "esm2_35M": ("facebook/esm2_t12_35M_UR50D", "_esm2_35M", "_esm2_35M"),
+        "esm2_8M": ("facebook/esm2_t6_8M_UR50D", "_esm2_8M", "_esm2_8M")}
 TOL = 5e-5
 
 

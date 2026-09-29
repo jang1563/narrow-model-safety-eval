@@ -5339,3 +5339,54 @@ what the already-recorded numbers implied.** That is the difference, and it is c
 ⚠️ **One thing this did not predict**: 35M's observed U-index is **18.66**, more than twice 650M's
 8.38. The length effect is **stronger on the smaller model**, which is unexplained and joins the
 standing question of why 35M behaves differently throughout this project.
+
+---
+
+## 2026-09-29 (sixty-seventh entry) — The length-U is a size trend, and it closes from below
+
+Four studies recorded the same thing as unexplained: ESM-2 35M shows **stronger** coarse effects than
+650M — length U-index 18.66 against 8.38, localization `R` 5.86 against 5.18, matched-VFDB `C/A` 2.617
+against 2.418. 🔑 **Two points cannot tell a size trend from an arm quirk.** The pool and the
+class-axis positives were embedded at **esm2_8M** and **esm2_150M**, giving four arms over about 80× in
+parameters. 🔒 esm2_3B was excluded for cost and the document says so.
+
+🔒 **Both new arms passed a post-hoc gate**, declared as post-hoc because `src/35`'s pool embedding has
+none of its own: the 296 panel negatives re-embedded through that path match the published arrays at
+**0.000e+00** (8M) and **1.907e-06** (150M). Cells are identical at every arm — 274 / 849 / 657 / 2,739
+— so no arm can differ because its population differed.
+
+| arm | dim | short | mid | **U-index** | `R` |
+|---|---:|---:|---:|---:|---:|
+| esm2_8M | 320 | 16.13% | **0.36%** | **44.66** | 6.93 |
+| esm2_35M | 480 | 12.69% | 0.68% | 18.68 | 5.67 |
+| esm2_150M | 640 | 14.51% | 1.50% | 9.65 | 4.50 |
+| esm2_650M | 1280 | 14.15% | **1.69%** | **8.38** | 5.15 |
+
+### 🔴 Strictly monotone, at the best *p* four points can give
+
+Spearman **ρ = −1.00** against log parameters, one-tailed permutation *p* = **0.0417** — **the smallest
+value n = 4 can produce**, which § 2 stated before the data existed. 🔒 **The arm gaps four studies
+recorded as unexplained are a size trend on the length outcome.**
+
+### ⭐ And it closes from below — the half that matters
+
+The short-band rate is **flat** across all four arms (12.69–16.13%, no trend). What moves is the
+**mid-band** rate: **0.36% → 0.68% → 1.50% → 1.69%**, strictly increasing, a factor of **4.7**.
+
+🔑 **Bigger models do not flag short proteins less. They flag mid-length proteins more.** The U-index
+improves with scale because its **denominator gets worse**. ⚠️ **"Use a bigger model" is not what this
+licenses** — the quantity that improves is a ratio, and the false-positive *rate* that scale changes
+goes **up**. Claim 109 pins the short and mid series together for exactly that reason.
+
+### ⚠️ `R` does not follow, and the document predicted that
+
+**ρ = −0.80**: 650M (5.15) sits above 150M (4.50). 🔒 § 3 predicted `R` would be the noisy outcome and
+gave the reason — its arm gap was 0.68 against the U-index's 10.3 — and § 4 required the two outcomes to
+be reported separately rather than as "a trend in general".
+
+### 🔒 Predictions
+
+The U-index's ρ was called exactly. ❌ **Its magnitudes were not**: 8M was predicted at ≈25 and came in
+at **44.66**. The interpolation assumed the curve was roughly linear in log-parameters and it is not —
+the 8M→35M step drops 26 points, the 150M→650M step drops 1.3. `R`'s ρ was predicted at −1.0 and came in
+at −0.80, which is the outcome the document had already flagged as the unreliable one.

@@ -274,6 +274,28 @@ its median **inverts** it — the short band falls to **0.00%** and the mid band
 proteins nearer the virulence-factor direction, and a linear probe reads that as hazard** — a second
 population for which the nominal 5% is wrong, carried by a different mechanism than localization.
 
+🔴 **And the effect is a function of model size.** Running the same measurement on four ESM-2 arms
+spanning 80× in parameters gives a strictly monotone U-index — **44.66 → 18.68 → 9.65 → 8.38** for 8M,
+35M, 150M and 650M, Spearman **−1.00** against log parameters (`docs/SIZE_SCALING_PREREGISTRATION.md`).
+🔒 With four arms the smallest achievable one-tailed *p* is **0.0417**, which is what this returns, and
+the study was frozen saying so.
+
+⚠️ **It closes from below, which is the opposite of reassuring.** The short-band rate is **flat** across
+all four arms (12.69–16.13%); what rises is the **mid-band** rate, **0.36% → 1.69%**, a factor of 4.7.
+🔑 **Larger models do not flag short proteins less — they flag mid-length proteins more.** The ratio
+improves with scale because the denominator gets worse. **"Use a bigger model" is not what this
+licenses.**
+
+| arm | short | mid | U-index | `R` |
+|---|---:|---:|---:|---:|
+| esm2_8M | 16.13% | **0.36%** | **44.66** | 6.93 |
+| esm2_35M | 12.69% | 0.68% | 18.68 | 5.67 |
+| esm2_150M | 14.51% | 1.50% | 9.65 | 4.50 |
+| esm2_650M | 14.15% | **1.69%** | **8.38** | 5.15 |
+
+⚠️ The localization ratio `R` does **not** follow strictly — 650M sits above 150M, Spearman −0.80 — and
+the preregistration predicted it would be the noisy outcome and said why.
+
 ⚠️ **Part of that ratio was contamination, and the corrected figure is the one to quote.** The benign
 pool holds **133 exact VFDB sequences** (1.61%), and they are **differentially** distributed across
 exactly this contrast — 5.67% of the extracellular stratum against 1.20% of the intracellular one.

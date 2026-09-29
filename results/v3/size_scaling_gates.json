@@ -1,0 +1,12 @@
+{
+  "esm2_8M": {
+    "max_abs_delta": 0.0,
+    "error": null,
+    "passes": true
+  },
+  "esm2_150M": {
+    "max_abs_delta": 1.9073486328125e-06,
+    "error": null,
+    "passes": true
+  }
+}

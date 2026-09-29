@@ -119,7 +119,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-29 with the document. It is the only place establishing that the length-U is
           # a property of the representation's DIRECTION rather than its scale, and the only place
           # recording that magnitude pushes the other way — the half a summary would drop.
-          "docs/SCORE_DECOMPOSITION_PREREGISTRATION.md"]
+          "docs/SCORE_DECOMPOSITION_PREREGISTRATION.md",
+          # Added 2026-09-29 with the document. It resolves arm gaps that four earlier studies recorded
+          # as unexplained, and it is the only place recording that the U closes from below — the fact
+          # that turns "scale fixes it" into "scale raises the mid-band false-positive rate".
+          "docs/SIZE_SCALING_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1550,6 +1554,41 @@ def score_decomposition():
         "cos_short": round(c["cos_short"], 4), "cos_mid": round(c["cos_mid"], 4),
         "verdict": a["verdict"], "verdict_agrees": a["verdict"] == b["verdict"],
         "reproduces_observed": a["reproduces_observed"],
+    }
+
+
+def size_scaling():
+    """Are the arm gaps a size trend? On the length outcome, yes -- strictly monotone over 80x.
+
+    \U0001f534 The U-index falls 44.66 -> 18.68 -> 9.65 -> 8.38 across esm2_8M, 35M, 150M and 650M
+    without an inversion, Spearman -1.00 against log parameters, one-tailed permutation p = 0.0417 --
+    the smallest value n = 4 can produce, which the preregistration said in advance.
+
+    \u2b50 The half a summary would drop: it closes FROM BELOW. The short-band rate is flat across all
+    four arms (12.69-16.13%) while the mid-band rate rises strictly, 0.36% -> 1.69%, a factor of 4.7.
+    Bigger models do not flag short proteins less; they flag mid-length ones MORE. Both are pinned,
+    because "the effect weakens with scale" is true of the ratio and false of the rate.
+
+    \u26a0\ufe0f R gives -0.80, not -1.00: the 650M arm sits above 150M. The document predicted R
+    would be the noisy outcome and said why, and the two are pinned separately.
+    """
+    v = j("../results/size_scaling.json")
+    if v is None:
+        return None
+    arms = v["arms_used"]
+    per = v["per_arm"]
+    return {
+        "arms": arms, "n_arms": len(arms), "dropped": v["arms_dropped"],
+        "cells": v["cells"], "duplicate_U_index": v["duplicate_U_index"],
+        "gates_pass": all(g["passes"] for g in v["gates"].values()),
+        "U_by_arm": {a: round(per[a]["U_index"], 2) for a in arms},
+        "R_by_arm": {a: round(per[a]["R"], 2) for a in arms},
+        "short_by_arm": {a: round(per[a]["rates"]["short"], 4) for a in arms},
+        "mid_by_arm": {a: round(per[a]["rates"]["mid"], 4) for a in arms},
+        "rho_U": v["P1"]["U_index"]["rho"], "p_U": round(v["P1"]["U_index"]["perm_p"], 4),
+        "rho_R": v["P1"]["R"]["rho"],
+        "band_U": v["P1"]["U_index"]["band"], "band_R": v["P1"]["R"]["band"],
+        "best_available_p": round(v["best_available_p_at_n4"], 4),
     }
 
 
@@ -3845,6 +3884,26 @@ CLAIMS = [
       "**310 of 6,139 eligible proteins changed side = 5.05%**",
       "paper/MANUSCRIPT.md":
       "**\"Almost exactly independent\" was a property of the defective\nfactor**"},
+     []),
+    ("the length-U is a size trend, and it closes from below",
+     size_scaling,
+     lambda v: v is None or (
+         v["n_arms"] == 4 and not v["dropped"] and v["gates_pass"]
+         and not v["duplicate_U_index"]
+         and v["cells"] == {"short": 274, "mid": 849, "extra": 657, "intra": 2739}
+         # 🔴 strictly monotone in model size, at the smallest p four points can give
+         and v["rho_U"] == -1.0 and v["p_U"] == v["best_available_p"]
+         and v["band_U"].startswith("strictly monotone")
+         and v["U_by_arm"]["esm2_8M"] > 40 and v["U_by_arm"]["esm2_650M"] < 10
+         # ⭐ and it closes from BELOW: short flat, mid strictly rising by more than 4x
+         and max(v["short_by_arm"].values()) / min(v["short_by_arm"].values()) < 1.4
+         and v["mid_by_arm"]["esm2_8M"] < v["mid_by_arm"]["esm2_35M"]
+         < v["mid_by_arm"]["esm2_150M"] < v["mid_by_arm"]["esm2_650M"]
+         and v["mid_by_arm"]["esm2_650M"] / v["mid_by_arm"]["esm2_8M"] > 4.0
+         # ⚠️ R is NOT strictly monotone, and pinning that stops the two being merged
+         and v["rho_R"] > -1.0 and not v["band_R"].startswith("strictly monotone")),
+     {"docs/SIZE_SCALING_PREREGISTRATION.md":
+      "🔑 **The U-index falls because bigger models flag mid-length proteins *more*, not because they flag"},
      []),
     ("the length-U is directional, and magnitude works against it",
      score_decomposition,

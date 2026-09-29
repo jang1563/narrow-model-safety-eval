@@ -75,7 +75,11 @@ SEQ = ROOT / "data" / "sequences"
 # of the load with 78 MB resident and no CPU activity. An earlier hang was misdiagnosed as a
 # network stall and "fixed" with offline mode; the constraint is memory. --model and --tag
 # therefore exist so a small arm can run here while the canonical arm waits for the HPC.
+# 🔒 esm2_150M added 2026-09-29 so the pool exists at four sizes rather than two. Study O found the
+# length-U is more than twice as strong on 35M as on 650M, and two points cannot tell a size trend
+# from an arm quirk. Nothing about the 650M path changes.
 ARMS = {"esm2_650M": "facebook/esm2_t33_650M_UR50D",
+        "esm2_150M": "facebook/esm2_t30_150M_UR50D",
         "esm2_35M": "facebook/esm2_t12_35M_UR50D",
         "esm2_8M": "facebook/esm2_t6_8M_UR50D"}
 POOL_FASTA = SEQ / "benign_pool_large.fasta"
