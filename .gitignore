@@ -140,3 +140,11 @@ data/external/uniprot_localization_go/
 # service's output, regenerable with `python src/90_vfdb_uniprot_map.py --map`, and the chosen entries
 # it produces are tracked in results/vfdb_uniprot_map.json.
 data/external/uniprot_idmap/
+
+# The independent pool's records and FASTA: 11,301 Swiss-Prot sequences, the same class of artifact as
+# _scaled_negative_pool.json above and ignored for the same reasons — it is a mirror of a public
+# database rather than a release artifact, and it is regenerable with
+# `python src/100_independent_pool.py --target 11300`. The composition tallies anything cites are in
+# results/independent_pool_composition.json, which is tracked.
+data/sequences/_independent_pool.json
+data/sequences/benign_pool_independent.fasta

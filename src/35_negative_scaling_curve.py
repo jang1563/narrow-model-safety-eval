@@ -93,7 +93,7 @@ def pool_npy(tag):
     return V3 / f"embeddings_pool_large_{tag}.npy"
 
 
-def embed_pool(tag, batch_size=8):
+def embed_pool(tag, batch_size=8, fasta=None, out_tag=None):
     """Embed the pool with one arm.
 
     ⚠️ Which arm can answer what. The canonical 650M arm is where every published number lives
@@ -106,7 +106,10 @@ def embed_pool(tag, batch_size=8):
     from transformers import AutoModel, AutoTokenizer
     sys.path.insert(0, str(ROOT / "src"))
     m02 = import_module("02b_esm2_embed_v2")
-    recs = m02.read_fasta(POOL_FASTA)
+    # 🔒 `fasta` and `out_tag` added 2026-09-29 for the independent pool. Both default to None, so
+    # every existing invocation embeds benign_pool_large.fasta to embeddings_pool_large_{tag}.npy
+    # exactly as before; nothing about the published arrays changes.
+    recs = m02.read_fasta(Path(fasta) if fasta else POOL_FASTA)
     dev = ("cuda" if torch.cuda.is_available()
            else "mps" if getattr(torch.backends, "mps", None)
            and torch.backends.mps.is_available() else "cpu")
@@ -115,11 +118,13 @@ def embed_pool(tag, batch_size=8):
     tok = AutoTokenizer.from_pretrained(mdl)
     model = AutoModel.from_pretrained(mdl).to(dev).eval()
     X = m02.embed(recs, model, tok, dev, batch_size)
-    np.save(pool_npy(tag), X)
-    json.dump({"model": mdl, "tag": tag, "n": int(X.shape[0]), "dim": int(X.shape[1]),
+    ot = out_tag or f"pool_large_{tag}"
+    np.save(V3 / f"embeddings_{ot}.npy", X)
+    json.dump({"model": mdl, "tag": tag, "out_tag": ot, "n": int(X.shape[0]),
+               "dim": int(X.shape[1]), "source_fasta": str(fasta or POOL_FASTA),
                "rows": [r[0] for r in recs]},
-              open(V3 / f"embedding_manifest_pool_large_{tag}.json", "w"), indent=2)
-    print(f"wrote {pool_npy(tag)} {X.shape}")
+              open(V3 / f"embedding_manifest_{ot}.json", "w"), indent=2)
+    print(f"wrote embeddings_{ot}.npy {X.shape}")
 
 
 def recovery(P, N, hi, tri, seeds=SEEDS):
@@ -140,10 +145,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--embed", action="store_true")
     ap.add_argument("--arm", default="esm2_650M", choices=sorted(ARMS))
+    ap.add_argument("--pool-fasta", default=None)
+    ap.add_argument("--out-tag", default=None)
     a = ap.parse_args()
     tag = a.arm
     if a.embed:
-        embed_pool(tag)
+        embed_pool(tag, fasta=a.pool_fasta, out_tag=a.out_tag)
         return
     if not pool_npy(tag).exists():
         raise SystemExit(f"{pool_npy(tag)} absent; run with --embed --arm {tag} first")
