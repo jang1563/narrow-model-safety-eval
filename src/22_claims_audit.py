@@ -115,7 +115,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-29 with the document. It eliminates the most obvious mechanical explanation
           # for the length-U and is the only place recording that its own control was uninformative
           # rather than passed -- the sentence a summary would upgrade.
-          "docs/POOLING_ARTIFACT_PREREGISTRATION.md"]
+          "docs/POOLING_ARTIFACT_PREREGISTRATION.md",
+          # Added 2026-09-29 with the document. It is the only place establishing that the length-U is
+          # a property of the representation's DIRECTION rather than its scale, and the only place
+          # recording that magnitude pushes the other way — the half a summary would drop.
+          "docs/SCORE_DECOMPOSITION_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1507,6 +1511,45 @@ def pooling_artifact():
         "displacement_pct_short": round(g["displacement_pct_of_norm_short"], 3),
         "projection_pct": round(g["projection_pct_of_displacement"], 2),
         "score_shift_pct_of_iqr": round(g["score_shift_pct_of_iqr"], 3),
+    }
+
+
+def score_decomposition():
+    """Is the length-U a magnitude effect or a direction effect? Direction, on both arms.
+
+    \u2b50 The probe is linear on standardized features so the score factors exactly as
+    ||z|| * cos(z,w) * ||w||. Holding the magnitude at its pooled median leaves the U almost intact
+    (7.61 against an observed 8.38); holding the DIRECTION at its median destroys it and inverts the
+    sign -- the short band goes to 0.00% while the mid band rises to ~20%.
+
+    \U0001f511 So magnitude works AGAINST the U. Short proteins have larger standardized norms and
+    would be flagged LESS if that were all; what lifts them is a less negative cosine. Both numbers are
+    pinned because dropping either one turns a mechanism into a correlation.
+
+    \u26a0\ufe0f 35M's observed U-index is 18.66, more than twice 650M's, which is unexplained and
+    pinned so the arm difference is not smoothed away.
+    """
+    a = j("../results/score_decomposition.json")
+    b = j("../results/score_decomposition_esm2_35M.json")
+    if None in (a, b):
+        return None
+    va, vb, c = a["variants"], b["variants"], a["components"]
+    return {
+        "n_short": a["n_short"], "n_mid": a["n_mid"], "floors_met": a["floors_met"],
+        "observed_U": {"650M": round(va["observed"]["U_index"], 2),
+                       "35M": round(vb["observed"]["U_index"], 2)},
+        "direction_only_U": {"650M": round(va["direction_only"]["U_index"], 2),
+                             "35M": round(vb["direction_only"]["U_index"], 2)},
+        "magnitude_only_U": {"650M": round(va["magnitude_only"]["U_index"], 2),
+                             "35M": round(vb["magnitude_only"]["U_index"], 2)},
+        # 🔑 the inversion: holding direction fixed sends the short band to zero
+        "magnitude_only_short_rate": round(va["magnitude_only"]["short"], 4),
+        "magnitude_only_mid_rate": round(va["magnitude_only"]["mid"], 4),
+        # ⭐ and the components that explain it: bigger norm, less negative cosine
+        "zn_short": round(c["zn_short"], 2), "zn_mid": round(c["zn_mid"], 2),
+        "cos_short": round(c["cos_short"], 4), "cos_mid": round(c["cos_mid"], 4),
+        "verdict": a["verdict"], "verdict_agrees": a["verdict"] == b["verdict"],
+        "reproduces_observed": a["reproduces_observed"],
     }
 
 
@@ -3802,6 +3845,27 @@ CLAIMS = [
       "**310 of 6,139 eligible proteins changed side = 5.05%**",
       "paper/MANUSCRIPT.md":
       "**\"Almost exactly independent\" was a property of the defective\nfactor**"},
+     []),
+    ("the length-U is directional, and magnitude works against it",
+     score_decomposition,
+     lambda v: v is None or (
+         v["floors_met"] and v["n_short"] == 274 and v["n_mid"] == 849
+         and v["verdict_agrees"] and v["verdict"] == "the U is directional"
+         and v["reproduces_observed"]
+         # ⭐ direction alone nearly reproduces the observed U on both arms
+         and v["direction_only_U"]["650M"] >= 4.0 and v["direction_only_U"]["35M"] >= 4.0
+         and abs(v["direction_only_U"]["650M"] - v["observed_U"]["650M"]) < 2.0
+         # 🔑 and holding direction fixed does not merely weaken the U, it inverts it
+         and v["magnitude_only_U"]["650M"] < 1.0 and v["magnitude_only_U"]["35M"] < 1.0
+         and v["magnitude_only_short_rate"] == 0.0
+         and v["magnitude_only_mid_rate"] > 0.15
+         # ⭐ the components: short proteins have the LARGER norm and the LESS negative cosine
+         and v["zn_short"] > v["zn_mid"]
+         and v["cos_short"] > v["cos_mid"]
+         # ⚠️ the arm difference, pinned rather than smoothed
+         and v["observed_U"]["35M"] > 2 * v["observed_U"]["650M"] - 1.0),
+     {"docs/SCORE_DECOMPOSITION_PREREGISTRATION.md":
+      "🔑 **So magnitude works *against* the U.**"},
      []),
     ("the length-U is not a pooling artifact, and the displacement is orthogonal to the probe",
      pooling_artifact,

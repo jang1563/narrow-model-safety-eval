@@ -5290,3 +5290,52 @@ obvious mechanical explanation is now eliminated. Why proteins under 250 residue
 flagged several times more often than mid-length ones is **not explained by anything in this
 repository**. ⚠️ Single-arm and therefore indicative: a second arm needs the 8,259-protein pool
 re-embedded at 35M with residue-only pooling.
+
+---
+
+## 2026-09-29 (sixty-sixth entry) — The length-U is directional, and magnitude works against it
+
+Studies M and N left the U-shape unexplained: real, replicated, not a pooling artifact. A third
+candidate was checked and refuted **before** this study was frozen — **proximity to the class-axis
+positives does not explain it**, because the maximum cosine to a positive runs **0.9612 → 0.9679 →
+0.9723** from the short band to the long one inside the intracellular stratum, *lowest* where the flag
+rate is *highest*. 🔒 **Recorded because it was checked and killed.**
+
+The probe is linear on standardized features, so the score factors exactly as `‖z‖·cos(z,w)·‖w‖`.
+Holding each factor at its pooled median in turn, with the threshold recalibrated under each so every
+version keeps a 5% nominal rate:
+
+| variant | 650M short | 650M mid | **650M U** | **35M U** |
+|---|---:|---:|---:|---:|
+| observed | 14.15% | 1.69% | **8.38** | **18.66** |
+| ⭐ **direction-only** | 13.48% | 1.77% | **7.61** | **14.19** |
+| **magnitude-only** | **0.00%** | 20.69% | **0.00** | **0.00** |
+
+### 🔴 The U is directional, on both arms
+
+Holding the magnitude fixed leaves the U almost intact. Holding the **direction** fixed does not
+weaken it — it **inverts** it, sending the short band to **0.00%**.
+
+🔑 **Magnitude works against the U.** Short proteins have the *larger* standardized norm — **38.28**
+against 30.62 — and a large ‖z‖ times a typical negative cosine drives the score *further below* the
+threshold. What lifts them over it is a **less negative cosine**: **−0.0198** against −0.0339.
+
+⭐ **So ESM-2's mean-pooled representation places short and long bacterial proteins nearer the
+virulence-factor direction than mid-length ones, and a linear probe reads that as hazard.** Three
+mechanical explanations are now eliminated: pooling, norm, and homology to the training positives.
+
+⚠️ **For deployment this compounds study E rather than qualifying it.** The nominal 5% is wrong for
+secreted proteins by about sevenfold and wrong again at both ends of the length range, and the two
+effects are carried by different components, so neither explains the other.
+
+### 🔒 Four of four, and why
+
+Every frozen prediction held — direction-only in 4–12 (7.61), magnitude-only below 1.0 (0.00), the
+verdict, and the bug guard. 🔑 **The reason is that § 3 worked the arithmetic of § 0.1 forward rather
+than guessing.** The two studies whose predictions failed worst — N's artifact at 3–6 against an actual
+8.41, M's AUROC at ≥0.70 against an actual 0.437 — both **guessed at a mechanism instead of computing
+what the already-recorded numbers implied.** That is the difference, and it is cheap to repeat.
+
+⚠️ **One thing this did not predict**: 35M's observed U-index is **18.66**, more than twice 650M's
+8.38. The length effect is **stronger on the smaller model**, which is unexplained and joins the
+standing question of why 35M behaves differently throughout this project.

@@ -1,0 +1,33 @@
+{
+  "built": "2026-09-29 09:27:46",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "n_short": 274,
+  "n_mid": 849,
+  "floors_met": true,
+  "variants": {
+    "observed": {
+      "short": 0.12676399026763993,
+      "mid": 0.006792304672163329,
+      "U_index": 18.662883422640398
+    },
+    "direction_only": {
+      "short": 0.12871046228710462,
+      "mid": 0.009069493521790341,
+      "U_index": 14.191582140487249
+    },
+    "magnitude_only": {
+      "short": 0.0,
+      "mid": 0.18555162936788375,
+      "U_index": 0.0
+    }
+  },
+  "verdict": "the U is directional",
+  "components": {
+    "zn_short": 22.344754473368326,
+    "zn_mid": 18.94795831044515,
+    "cos_short": -0.015205371935448169,
+    "cos_mid": -0.03137198141326754
+  },
+  "reproduces_observed": true
+}

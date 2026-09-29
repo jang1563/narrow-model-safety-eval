@@ -257,6 +257,23 @@ predicting the flag is **0.437**, below 0.5, for a relationship this strong. The
 cleared length in the first place measured a monotone quantity, and would have cleared it however
 strong the U was.
 
+🔑 **The U is a directional property of the representation, and two mechanical explanations have been
+eliminated.** It is not the special tokens: the include-specials mean displaces an embedding by
+`[(cls+eos) − 2·m_res]/(L+2)`, five times more for a short protein than a long one, but that
+displacement is **0.34% of the embedding norm** and only **2.1%** of it lies along the probe's decision
+direction, and refitting on residue-only embeddings leaves every rate unchanged to two decimals
+(`docs/POOLING_ARTIFACT_PREREGISTRATION.md`). It is not proximity to the training positives either —
+the maximum cosine to a class-axis positive is **lowest** in the band flagged most.
+
+⭐ **What it is**: the score factors exactly as `‖z‖·cos(z,w)·‖w‖`, and holding the magnitude at its
+median leaves the U almost intact (**7.61** against an observed 8.38) while holding the **direction** at
+its median **inverts** it — the short band falls to **0.00%** and the mid band rises to 20.69%
+(`docs/SCORE_DECOMPOSITION_PREREGISTRATION.md`). Short proteins have the *larger* standardized norm,
+38.28 against 30.62, so magnitude pushes them **away** from the threshold; what lifts them over it is a
+**less negative cosine**, −0.0198 against −0.0339. ⚠️ **So ESM-2 places short and long bacterial
+proteins nearer the virulence-factor direction, and a linear probe reads that as hazard** — a second
+population for which the nominal 5% is wrong, carried by a different mechanism than localization.
+
 ⚠️ **Part of that ratio was contamination, and the corrected figure is the one to quote.** The benign
 pool holds **133 exact VFDB sequences** (1.61%), and they are **differentially** distributed across
 exactly this contrast — 5.67% of the extracellular stratum against 1.20% of the intracellular one.
