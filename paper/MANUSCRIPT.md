@@ -579,6 +579,37 @@ first — fourteen categories, of which **Exotoxin is one and 4% of the records*
 own warning, because a virulence-factor axis is not a toxin axis, and adopting it changes what the screen
 is for.
 
+### Where this sits against data-governance proposals
+
+The **Biosecurity Data Level** framework (Bloomfield, Berke, Pannu *et al.*,
+[arXiv 2602.08061](https://arxiv.org/abs/2602.08061), endorsed by more than 100 researchers at the 50th
+anniversary Asilomar conference) proposes tiered access control over the data AI models are trained on.
+🔒 **It classifies data, not pathogens** — sequence data, functional annotations, functional assays,
+protein–protein interaction data and model weights — and the tiers are set by what a model could learn
+from them: **BDL-3** covers human-infecting viral families' *transmissibility, virulence, immune evasion
+and resistance to medical countermeasures*; **BDL-4** covers data on pandemic-capable viral variants
+showing those properties **enhanced relative to wild-type**.
+
+⚠️ **This work is bacterial and sits outside those tier definitions**, which are written for viral
+families. It is not an evaluation of BDL and does not test it.
+
+🔑 **What it does bear on is an assumption underneath any such control**: that a model trained on
+annotated pathogen data acquires a representation of the properties that made the data sensitive. This
+paper measures that directly for one bacterial analogue, and the answer is unflattering. A linear probe
+on ESM-2 separates **VFDB-registered proteins from matched benign ones at 2.3–2.7×** with provenance and
+localization held fixed — but the separation **does not track harm**: the non-hazardous categories score
+2.410 against the partly-hazardous 2.356, and **Motility — flagella, no toxic function — is the
+most-flagged group of all at a 99.05% rate**. What the representation does respond to strongly is
+**secretion** (5×) and **protein length** (a U-shaped effect that strengthens monotonically as the model
+shrinks).
+
+🔴 **The limit on that reading matters more than the finding.** A linear probe failing to separate hazard
+does **not** show the model lacks the information; it shows this probe, on this representation, does not
+expose it linearly. **Absence of linear separability is not absence of capability**, and a data-control
+argument that leaned on this result in either direction would be leaning on the wrong thing. What the
+result does support is narrower and still useful: **"the model was trained on virulence annotations, so
+it represents virulence" is an assumption that can be checked, and here it did not hold.**
+
 ---
 
 ## 9. Reproduction
