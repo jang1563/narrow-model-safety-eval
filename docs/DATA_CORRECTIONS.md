@@ -5441,3 +5441,72 @@ document. **The twelve patches were applied consistently.**
 `| *reference*: full VFDB set | 4,218 | 76.95% |`. **Not the digits**, which legitimately appear in the
 explanatory sentences, which is the rule this log has applied to every superseded figure since entry
 33.
+
+---
+
+## 2026-09-29 (sixty-ninth entry) — The probe responds to VFDB registration, not to hazard
+
+The step-by-step review earlier today named study K's result as the claim most at risk of overreach:
+**VFDB membership is a curator label, not a hazard label**, and VFDB contains **Motility** — flagellar
+and chemotaxis proteins, surface structures with no toxic function. ⚠️ Study B had already put
+Motility's recovery at **0.8481**, the highest of all 13 categories and above Exotoxin's 0.7944, and
+nothing had followed it up. `docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md` follows it up.
+
+🔒 **The category split is a domain judgment and is frozen in § 1.1 with its reasoning**: non-hazardous
+= Motility, Nutritional/Metabolic factor, Regulation, Stress survival; partly-hazardous = Effector
+delivery system, Immune modulation, Invasion, Enzyme. **Adherence, the third largest class, is in
+neither** — forcing the largest ambiguous class into either arm would decide the result by that choice.
+
+| | *n* | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|---:|
+| benign × extracellular | 171 | 37.52% | 26.90% |
+| ⭐ **non-hazardous × extracellular** | 42 | **89.60%** | **61.67%** |
+| ⭐ **Motility alone** | 28 | **99.05%** | **71.55%** |
+| partly-hazardous × extracellular | 143 | 87.67% | 67.16% |
+
+| `C/A` | 650M | 35M |
+|---|---:|---:|
+| **non-hazardous** | **2.410** | **2.309** |
+| partly-hazardous | 2.356 | 2.530 |
+| study K, all categories | 2.418 | 2.617 |
+| ⭐ **Motility alone** | **2.665** | **2.682** |
+
+### 🔴 There is no hazard gradient
+
+On 650M the **non-hazardous** group's 2.410 is **indistinguishable from study K's all-category 2.418**
+and sits **above** the partly-hazardous 2.356. Non-hazardous over partly-hazardous is **1.022** and
+**0.919** extracellularly — parity. ⭐ **Motility is the most-flagged group on both arms**, at a raw
+**99.05%**: essentially every flagellar protein is flagged. ⚠️ Its cells are 28 and 23 against a floor
+of **30**, so Q-3 is **indicative — declared in § 5 before the run**.
+
+### 🔒 The obligation, executed
+
+§ 2 committed in advance: *if `C/A` ≥ 2.0 for the non-hazardous group on both arms, restate "VFDB
+membership matters beyond both confounds" as "the probe responds to VFDB registration".* **It does.**
+`paper/MANUSCRIPT.md` and the two matched-VFDB preregistrations are amended in this commit.
+
+🔑 **I predicted this outcome and wrote the obligation for it before running** (§ 4 predicted
+`C/A` ≈ 2.2–2.6, indistinguishable from study K). **That is the only reason this reads as a result
+rather than a retreat.**
+
+### 🔒 A second correction, owed regardless of the result
+
+`src/74` built the 4,218-protein population from **"VFDB setA, non-Exotoxin records"**. 🔴 **Exotoxins
+were never in it.** Study K's finding was therefore never about membership in general; it is about
+**non-toxin** virulence factors, and it is restated that way everywhere.
+
+### ⚠️ What still stands
+
+**The contrast is real and large.** VFDB-registered proteins are flagged **2.3–2.7×** above matched
+benign ones with provenance and localization held fixed, and **7–9×** inside the intracellular stratum.
+🔑 **What changed is what it is evidence for** — registration, not hazard.
+
+### 🔒 The forbid caught what the manual amendment missed
+
+Claim 110's forbid fired on **two** surviving instances of the retired wording after I had amended the
+documents by hand. One was a live sentence in the manuscript and is fixed. ⚠️ **The other was the
+frozen band label inside studies H and K's preregistrations**, where those words are the text of a
+**preregistered rule** rather than a claim — and those documents are append-only. 🔒 **The forbid was
+narrowed to the manuscript's live sentence**, because a forbid that fires on a frozen band label would
+force an edit to a document this repository does not edit; the supersession notes appended to both are
+the right instrument there.

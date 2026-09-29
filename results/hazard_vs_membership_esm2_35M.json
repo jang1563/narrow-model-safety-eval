@@ -1,0 +1,151 @@
+{
+  "built": "2026-09-29 13:39:17",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "n_kept": 778,
+  "floor": 30,
+  "cell_n": {
+    "non_hazardous|extracellular": 42,
+    "non_hazardous|intracellular": 33,
+    "partly_hazardous|extracellular": 143,
+    "partly_hazardous|intracellular": 83,
+    "ambiguous|extracellular": 79,
+    "ambiguous|intracellular": 18,
+    "motility|extracellular": 28,
+    "motility|intracellular": 23,
+    "benign|extracellular": 171,
+    "benign|intracellular": 597
+  },
+  "floors_met": {
+    "non_hazardous|extracellular": true,
+    "non_hazardous|intracellular": true,
+    "partly_hazardous|extracellular": true,
+    "partly_hazardous|intracellular": true,
+    "ambiguous|extracellular": true,
+    "ambiguous|intracellular": false,
+    "motility|extracellular": false,
+    "motility|intracellular": false
+  },
+  "rates": {
+    "non_hazardous|extracellular": {
+      "mean": 0.6166666666666667,
+      "ci": [
+        0.5752065348683278,
+        0.6581267984650055
+      ]
+    },
+    "non_hazardous|intracellular": {
+      "mean": 0.4656565656565657,
+      "ci": [
+        0.44261229898958326,
+        0.48870083232354816
+      ]
+    },
+    "partly_hazardous|extracellular": {
+      "mean": 0.6715617715617717,
+      "ci": [
+        0.6526805729762202,
+        0.6904429701473231
+      ]
+    },
+    "partly_hazardous|intracellular": {
+      "mean": 0.27349397590361446,
+      "ci": [
+        0.2582972341359991,
+        0.28869071767122984
+      ]
+    },
+    "ambiguous|extracellular": {
+      "mean": 0.7759493670886075,
+      "ci": [
+        0.7596325117606235,
+        0.7922662224165915
+      ]
+    },
+    "ambiguous|intracellular": {
+      "mean": 0.4166666666666668,
+      "ci": [
+        0.3841673079715281,
+        0.4491660253618055
+      ]
+    },
+    "motility|extracellular": {
+      "mean": 0.7154761904761903,
+      "ci": [
+        0.6632131877310485,
+        0.767739193221332
+      ]
+    },
+    "motility|intracellular": {
+      "mean": 0.518840579710145,
+      "ci": [
+        0.48541300764642364,
+        0.5522681517738662
+      ]
+    },
+    "benign|extracellular": {
+      "mean": 0.26900584795321636,
+      "ci": [
+        0.2564980685709807,
+        0.28151362733545204
+      ]
+    },
+    "benign|intracellular": {
+      "mean": 0.050921273031825795,
+      "ci": [
+        0.047180963460071314,
+        0.054661582603580276
+      ]
+    }
+  },
+  "Q1_non_hazardous_CA": {
+    "mean": 2.3091001057488385,
+    "ci": [
+      2.1558127553449533,
+      2.4623874561527237
+    ]
+  },
+  "Q1_intracellular_DB": {
+    "mean": 9.432719316527134,
+    "ci": [
+      8.771993579509594,
+      10.093445053544674
+    ]
+  },
+  "Q3_motility_CA": {
+    "mean": 2.682423132634622,
+    "ci": [
+      2.483608083680344,
+      2.8812381815889
+    ]
+  },
+  "partly_hazardous_CA": {
+    "mean": 2.5297644022912538,
+    "ci": [
+      2.4155822641632665,
+      2.643946540419241
+    ]
+  },
+  "Q4_non_over_partly": {
+    "extracellular": {
+      "mean": 0.9187888376144072,
+      "ci": [
+        0.861528420974594,
+        0.9760492542542204
+      ]
+    },
+    "intracellular": {
+      "mean": 1.7343892746205645,
+      "ci": [
+        1.6260370680883525,
+        1.8427414811527765
+      ]
+    }
+  },
+  "band": "the probe responds to membership, not hazard",
+  "study_K_CA": {
+    "650M": 2.418,
+    "35M": 2.617
+  },
+  "split_happened": true
+}

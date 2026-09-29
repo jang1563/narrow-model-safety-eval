@@ -272,3 +272,28 @@ indicative 3.204 to a verdict of **7.988**.
 ⚠️ **The reason the bridge read lower is the selection § 0.2 declared in advance**: the 228
 *Virulence*-keyword members that the pool's build query excluded are flagged **19.2 points** above the
 rest.
+
+---
+
+## 🔴 Superseded on what the effect IS — 2026-09-29, entry 69
+
+This document reads its result as **VFDB membership mattering beyond provenance and localization**.
+`docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md` split the same population by whether a category is a
+mechanism of harm, and the effect **does not track hazard at all**:
+
+| | 650M | 35M |
+|---|---:|---:|
+| non-hazardous categories (Motility, Nutritional/Metabolic, Regulation, Stress survival) | **2.410** | **2.309** |
+| partly-hazardous (Effector delivery, Immune modulation, Invasion, Enzyme) | 2.356 | 2.530 |
+| ⭐ **Motility alone** — flagella, no toxic function | **2.665** | **2.682** |
+
+🔴 **Motility is the most-flagged group on both arms, at a 99.05% raw rate on 650M.** The correct
+statement is that **the probe responds to VFDB registration**, not to hazard.
+
+🔒 **And a second correction owed regardless**: `src/74` built this population from *"VFDB setA,
+non-Exotoxin records"*, so **exotoxins were never in it**. Every claim here is about **non-toxin**
+virulence factors and is restated that way.
+
+⚠️ **What still stands**: the *contrast* is real and large — VFDB-registered proteins are flagged
+2.3–2.7× above matched benign ones with provenance and localization held fixed, and 7–9× inside the
+intracellular stratum. **What changed is what it is evidence for.**

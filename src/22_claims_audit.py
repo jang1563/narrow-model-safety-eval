@@ -123,7 +123,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-29 with the document. It resolves arm gaps that four earlier studies recorded
           # as unexplained, and it is the only place recording that the U closes from below — the fact
           # that turns "scale fixes it" into "scale raises the mid-band false-positive rate".
-          "docs/SIZE_SCALING_PREREGISTRATION.md"]
+          "docs/SIZE_SCALING_PREREGISTRATION.md",
+          # Added 2026-09-29 with the document. It retires the project's main positive claim in its
+          # strong form, and it is the only place recording that Motility -- flagella -- is the most
+          # flagged group of all, which is the observation the whole correction rests on.
+          "docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1589,6 +1593,50 @@ def size_scaling():
         "rho_R": v["P1"]["R"]["rho"],
         "band_U": v["P1"]["U_index"]["band"], "band_R": v["P1"]["R"]["band"],
         "best_available_p": round(v["best_available_p_at_n4"], 4),
+    }
+
+
+def hazard_vs_membership():
+    """Does the probe respond to hazard, or to VFDB registration? Registration.
+
+    \U0001f534 This claim exists to keep the project's main positive result from being restated as
+    something stronger than it is. Splitting study K's population by whether a category is a mechanism
+    of harm gives 2.410 for the NON-hazardous categories against 2.356 for the partly-hazardous ones on
+    650M -- and the non-hazardous figure is indistinguishable from study K's all-category 2.418. There
+    is no hazard gradient.
+
+    \u2b50 Motility is pinned by name because it is the whole argument: flagellar proteins, which have
+    no toxic function, are the most-flagged group on both arms at a 99.05% raw rate. A summary that
+    dropped Motility could restate this as a hazard finding.
+
+    \u26a0\ufe0f Also pinned: src/74 built this population from VFDB setA NON-EXOTOXIN records, so
+    exotoxins were never in it and every claim from it is about non-toxin virulence factors.
+    """
+    a = j("../results/hazard_vs_membership.json")
+    b = j("../results/hazard_vs_membership_esm2_35M.json")
+    if None in (a, b):
+        return None
+    ra, rb = a["rates"], b["rates"]
+    return {
+        "n_kept": a["n_kept"], "floor": a["floor"],
+        "cells": {k: a["cell_n"][k] for k in ("non_hazardous|extracellular",
+                                              "partly_hazardous|extracellular",
+                                              "motility|extracellular", "benign|extracellular")},
+        "non_haz_CA": {"650M": round(a["Q1_non_hazardous_CA"]["mean"], 3),
+                       "35M": round(b["Q1_non_hazardous_CA"]["mean"], 3)},
+        "partly_haz_CA": {"650M": round(a["partly_hazardous_CA"]["mean"], 3),
+                          "35M": round(b["partly_hazardous_CA"]["mean"], 3)},
+        "motility_CA": {"650M": round(a["Q3_motility_CA"]["mean"], 3),
+                        "35M": round(b["Q3_motility_CA"]["mean"], 3)},
+        "motility_rate": {"650M": round(ra["motility|extracellular"]["mean"], 4),
+                          "35M": round(rb["motility|extracellular"]["mean"], 4)},
+        "study_K_CA": a["study_K_CA"],
+        "Q4_non_over_partly": {"650M": round(a["Q4_non_over_partly"]["extracellular"]["mean"], 3),
+                               "35M": round(b["Q4_non_over_partly"]["extracellular"]["mean"], 3)},
+        "band": a["band"], "band_agrees": a["band"] == b["band"],
+        "split_happened": a["split_happened"],
+        # ⚠️ Motility's cells are below the frozen floor; it is indicative, declared in advance
+        "motility_below_floor": a["cell_n"]["motility|extracellular"] < a["floor"],
     }
 
 
@@ -3992,6 +4040,37 @@ CLAIMS = [
      {"docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md":
       "**Unannotated falls from 55.0% to 37.0%**, under the frozen 50%."},
      []),
+    ("the probe responds to VFDB registration, not to hazard",
+     hazard_vs_membership,
+     lambda v: v is None or (
+         v["n_kept"] == 778 and v["split_happened"]
+         and v["band_agrees"] and v["band"] == "the probe responds to membership, not hazard"
+         # 🔴 non-hazardous categories clear the same 2.0 band study K's all-category set did
+         and v["non_haz_CA"]["650M"] >= 2.0 and v["non_haz_CA"]["35M"] >= 2.0
+         # 🔴 and on 650M they are indistinguishable from study K's 2.418, and ABOVE the hazardous ones
+         and abs(v["non_haz_CA"]["650M"] - v["study_K_CA"]["650M"]) < 0.1
+         and v["non_haz_CA"]["650M"] > v["partly_haz_CA"]["650M"]
+         # ⭐ Motility -- flagella, no toxic function -- is the most-flagged group on both arms
+         and v["motility_CA"]["650M"] > v["non_haz_CA"]["650M"]
+         and v["motility_CA"]["35M"] > v["non_haz_CA"]["35M"]
+         and v["motility_rate"]["650M"] > 0.98
+         # ⚠️ and it is indicative: its cells sit below the frozen floor, declared before the run
+         and v["motility_below_floor"]
+         # 🔴 no hazard gradient: the non/partly ratio sits at parity on both arms
+         and 0.85 < v["Q4_non_over_partly"]["650M"] < 1.2
+         and 0.85 < v["Q4_non_over_partly"]["35M"] < 1.2),
+     {"docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md":
+      "🔑 **Essentially every flagellar protein in this set is flagged.**",
+      "paper/MANUSCRIPT.md":
+      "🔒 **So the finding is that the probe responds to VFDB *registration*.**"},
+     # 🔴 The unqualified forms of a claim this study retired. The manuscript and the two
+     # preregistrations now say "registration"; these ban the sentence that said otherwise.
+     # 🔴 Only the manuscript's live sentence is forbidden. The same words appear in study H's and
+     # study K's FROZEN BAND TABLES, where they are the label of a preregistered rule rather than a
+     # claim, and those documents are append-only -- the supersession notes appended to them are the
+     # right instrument there. A forbid that fired on a frozen band label would force an edit to a
+     # document this repository does not edit.
+     ["attributes most of that majority to virulence-factor membership itself"]),
     ("without the bridge's selection the matched contrast is supported, not partial",
      matched_vfdb_scaleup,
      lambda v: v is None or (

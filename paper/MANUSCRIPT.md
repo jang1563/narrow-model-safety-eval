@@ -339,7 +339,7 @@ localization held fixed it rises from **2.63× to 3.47×**.
 **23.6% + 23.0% is not a quantity this repository has.** 🔑 **So the majority of the separation belongs
 to neither confound.**
 
-🟢 **And a matched test attributes most of that majority to virulence-factor membership itself.** 133
+🟢 **And a matched test attributes most of that majority to VFDB registration.** 133
 pool proteins are exact VFDB sequence matches, which makes them the only population here that is both a
 virulence factor *and* a Swiss-Prot entry carrying UniProt localization; they are held out under the
 decontaminated fold (`docs/MATCHED_VFDB_PREREGISTRATION.md`). Holding pathogen origin **and**
@@ -379,8 +379,20 @@ remain:
 partial. And `D/B` = **7.988** and **6.875** on cells of 134 against a floor of 100: **within the
 intracellular stratum, where neither secretion nor surface exposure can be doing the work, a VFDB
 protein is seven to eight times more likely to be flagged than a benign one from the same kind of
-organism.** ⭐ The 228 *Virulence*-keyword members are flagged **+19.2** and **+15.2 points** above the
-rest, which is the selection the bridge was missing, measured.
+organism.**
+
+🔴 **That effect does not track hazard, and calling it a hazard signal would be wrong.** Splitting the
+same population by whether a category is a mechanism of harm
+(`docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md`) gives **2.410** for the *non-hazardous* categories —
+Motility, Nutritional/Metabolic factor, Regulation, Stress survival — against **2.356** for the
+partly-hazardous ones, on 650M. ⭐ **Motility alone is the most-flagged group on both arms** (2.665 and
+2.682), at a raw rate of **99.05%**: essentially every flagellar protein is flagged, and flagella are
+surface structures with no toxic function.
+
+🔒 **So the finding is that the probe responds to VFDB *registration*.** ⚠️ And the population never
+contained exotoxins — `src/74` built it from *"VFDB setA, non-Exotoxin records"* — so every claim in
+this section is about **non-toxin** virulence factors. **The contrast is real and large; what it is
+evidence for is narrower than membership-beyond-confounds suggested.**
 
 🔴 **One earlier framing does not survive this.** Expressing membership's effect as a fraction of the
 distance to the full-VFDB rate gave 99.1% at bridge scale and gives **143%** and **188%** here — a
