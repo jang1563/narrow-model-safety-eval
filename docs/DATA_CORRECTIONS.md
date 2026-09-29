@@ -5390,3 +5390,54 @@ The U-index's ρ was called exactly. ❌ **Its magnitudes were not**: 8M was pre
 at **44.66**. The interpolation assumed the curve was roughly linear in log-parameters and it is not —
 the 8M→35M step drops 26 points, the 150M→650M step drops 1.3. `R`'s ρ was predicted at −1.0 and came in
 at −0.80, which is the outcome the document had already flagged as the unreliable one.
+
+---
+
+## 2026-09-29 (sixty-eighth entry) — The manuscript survived twelve patches, and the tool I built to check that could not have told me
+
+`paper/MANUSCRIPT.md` has been patched more than a dozen times since entry 52: the VFDB reference
+moved, five share-of-gap figures moved, H-5 was withdrawn as a share, and the length section was
+written and then rewritten twice. `src/22` pins individual **sentences**, so it catches a pinned figure
+that drifts and cannot catch a stale figure nobody pinned. I built `src/98` to close that gap.
+
+### 🔴 It cannot. The tool passes a wrong number 94% of the time
+
+`src/98` extracts every numeric token in the manuscript and asks whether any artifact holds a value
+that rounds to it. Its **null calibration** — perturb each matched token until it must round
+differently, then re-test — gives:
+
+| significant digits | tokens | false-pass rate |
+|---|---:|---:|
+| 2 | 28 | **96%** |
+| 3 | 119 | **94%** |
+| 4 | 67 | **48%** |
+
+🔑 **The cause is structural and tightening does not fix it**: 16,748 of the 19,171 artifact values lie
+in **[0, 1)**, so any two-to-four-significant-figure rate finds a neighbour by coincidence — and two to
+four significant figures is what a manuscript quotes. Excluding long arrays (per-seed lists, bootstrap
+draws) cut the value space from 47,833 to 19,171 and the false-pass rate from 93.5% to 85.3%. **Not
+enough to matter.**
+
+🔒 **So the tool is kept but reframed as what it can do** — list figures that appear in **no** artifact,
+which catches a number invented from nothing rather than one merely out of date. It found **8**, all
+external: three other papers' dataset sizes and five arXiv identifiers. **A match now means almost
+nothing and the docstring says so, with the calibration printed on every run.**
+
+⚠️ **This is the eighth "check that cannot fail" recorded this session and the first I built myself.**
+The others were caught by running them; this one was caught by asking what its pass rate would be on
+deliberately wrong input — which is a question none of the previous seven were asked in advance.
+
+### 🟢 The coherence question it was meant to answer, answered directly
+
+Checking the **known-superseded values** by name rather than by coincidence: **76.95%**, **91.9%**,
+**73.49%**, **42.2%**, **32.8%**, **46.0%**, **22.7%**, **22.1%**, **41.2%**, **5.36×**, **5.13×**.
+
+🟢 **Exactly one survives — 76.95%, in the sentence that explains why it was wrong.** That is this
+repository's house style for a superseded figure, and no other stale value is present anywhere in the
+document. **The twelve patches were applied consistently.**
+
+🔒 **And the lasting mechanism is the one that already existed**: claim 101 now forbids the two
+**live-claim phrasings** — `Membership alone covers **99.1%** of the distance` and the old table row
+`| *reference*: full VFDB set | 4,218 | 76.95% |`. **Not the digits**, which legitimately appear in the
+explanatory sentences, which is the rule this log has applied to every superseded figure since entry
+33.

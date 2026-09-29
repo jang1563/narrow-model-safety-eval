@@ -4044,7 +4044,14 @@ CLAIMS = [
      # 🔴 H-5 is a share of the RESIDUAL INSIDE the matched cell. Restating it against the whole
      # pool-to-VFDB gap would roughly quadruple what it claims, and is the misreading a summary
      # produces. Banned in the forms it would be written in.
-     ["91.9% of the gap", "91.9% of the pool", "membership explains the entire separation"]),
+     # 🔴 Added 2026-09-29. Both corrected figures legitimately SURVIVE in sentences that explain the
+     # correction -- the manuscript names 76.95% as what including the training positives produced,
+     # and 99.1% as what the withdrawn share meant. So these forbid the phrasing only a LIVE claim
+     # would use, never the digits, which is this repository's rule for a figure that is superseded
+     # rather than wrong. Entry 68.
+     ["91.9% of the gap", "91.9% of the pool", "membership explains the entire separation",
+      "Membership alone covers **99.1%** of the distance",
+      "| *reference*: full VFDB set | 4,218 | 76.95% |"]),
     ("the localization verdict survives decontamination, smaller",
      decontamination_sensitivity,
      lambda v: v is None or (

@@ -1,0 +1,106 @@
+{
+  "built": "2026-09-29 13:22:40",
+  "null_calibration": {
+    "n_tested": 211,
+    "n_false_pass": 180,
+    "false_pass_rate": 0.8530805687203792
+  },
+  "n_artifacts": 431,
+  "n_artifact_values": 19171,
+  "n_distinct_tokens": 232,
+  "n_allowlisted": 9,
+  "n_unmatched": 12,
+  "unmatched": [
+    {
+      "token": "12,989",
+      "lines": [
+        100
+      ],
+      "n_occurrences": 1
+    },
+    {
+      "token": "13,384",
+      "lines": [
+        96,
+        522
+      ],
+      "n_occurrences": 2
+    },
+    {
+      "token": "1810.00113",
+      "lines": [
+        126
+      ],
+      "n_occurrences": 1
+    },
+    {
+      "token": "2204.06507",
+      "lines": [
+        128
+      ],
+      "n_occurrences": 1
+    },
+    {
+      "token": "2509.03487",
+      "lines": [
+        110,
+        110
+      ],
+      "n_occurrences": 2
+    },
+    {
+      "token": "2606.10080",
+      "lines": [
+        115,
+        115
+      ],
+      "n_occurrences": 2
+    },
+    {
+      "token": "2606.12209",
+      "lines": [
+        105,
+        105
+      ],
+      "n_occurrences": 2
+    },
+    {
+      "token": "3,576",
+      "lines": [
+        89,
+        92
+      ],
+      "n_occurrences": 2
+    },
+    {
+      "token": "3,676",
+      "lines": [
+        352
+      ],
+      "n_occurrences": 1
+    },
+    {
+      "token": "33,456",
+      "lines": [
+        96,
+        522
+      ],
+      "n_occurrences": 2
+    },
+    {
+      "token": "4,088",
+      "lines": [
+        201
+      ],
+      "n_occurrences": 1
+    },
+    {
+      "token": "4,910",
+      "lines": [
+        89,
+        92
+      ],
+      "n_occurrences": 2
+    }
+  ]
+}
