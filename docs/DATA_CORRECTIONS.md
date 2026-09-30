@@ -5661,3 +5661,62 @@ audit > /tmp/a.txt 2>&1; rc=$?
 pytest tests/ -q > /tmp/t.txt 2>&1; tc=$?
 [ $rc -eq 0 ] && [ $tc -eq 0 ] || exit 1
 ```
+
+---
+
+## 2026-09-30 (seventy-third entry) — The availability guard is still unexplained, and three candidates are out
+
+The step-by-step review's second criticism was a guard that has **failed every time it has run** —
+study E's availability check, requiring the unannotated stratum's flag rate over the annotated rate to
+sit in [0.67, 1.5], returned **0.41, 0.32, 0.48 and 0.52**. Doubling the annotated fraction from 45% to
+66% did not fix it. **Reported four times, explained none.**
+
+| | ESM-2 **650M** | ESM-2 **35M** |
+|---|---:|---:|
+| crude unannotated / annotated | 0.482 | 0.520 |
+| length-adjusted (Mantel–Haenszel, 10 deciles) | 0.532 | 0.522 |
+| ⭐ **share of the gap that closes** | **10%** | **0%** |
+| direction-only counterfactual | 0.508 | 0.547 |
+| magnitude-only counterfactual | 0.421 | 0.355 |
+| mean cosine to 10 nearest neighbours | +0.0004 | **−0.0007** |
+
+### 🔴 Length is not it, and my own band label says otherwise
+
+The adjusted ratio lands where the frozen bands read *"length explains part of it"* — but adjustment
+moves it **10%** of the way to parity on one arm and **0%** on the other. 🔴 **That is a defect in the
+bands I froze**: they were set on the adjusted ratio's *level* and labelled with a conclusion about *how
+much length explains*. **Exactly the error study E's § 2 made** — bands on a ratio, labels about a
+share. 🔒 **The honest number is the explained fraction, and it is at most a tenth.**
+
+⚠️ **The forward arithmetic was wrong too.** § 4 computed a 1.35× difference in high-flag-band share
+against an observed 2.1× and predicted "roughly half the gap". It ignored that **the rate inside each
+decile also differs between the groups** — which is precisely what adjustment removes.
+
+### 🔴 The decomposition does not localise it, and rules out one unification
+
+Neither counterfactual approaches parity — direction-only 0.508 / 0.547, magnitude-only 0.421 / 0.355.
+🔑 **Both factors carry the gap roughly equally**, which is *unlike* the length-U, where holding
+direction fixed **inverted** the effect and magnitude worked against it (entry 66). **So the
+availability gap and the length-U are not the same phenomenon**, which was worth establishing.
+
+### 🟢 The uncomfortable hypothesis is refuted
+
+The hypothesis § 3 named — that a protein UniProt has localized is one that has been *studied*, so the
+probe may be reading **family recognisability** — predicted annotated proteins in denser embedding
+regions. The mean cosine to the ten nearest pool neighbours differs by **+0.0004** and **−0.0007**:
+**zero, with the sign flipping between arms.** 🔒 **So the qualification § 5 would have owed the
+localization finding is not owed**, and that is recorded because the preregistration committed to it
+before the data existed.
+
+### 🔒 What this establishes
+
+**A negative result of the useful kind**: three candidate causes are eliminated or bounded — length at
+**≤ 10%**, a single score component at **neither**, embedding density at **zero**. ⚠️ **The cause remains
+unknown and the guard stays failed**, reported wherever the localization numbers appear. 🔒 And the
+localization finding itself is untouched: it compares extracellular against intracellular, **both
+annotated**, and the unannotated stratum is not in that ratio.
+
+⚠️ **Every mechanism I guessed at here was wrong, and so was the one quantity I computed forward.** The
+fourth study in this sequence where guessing failed — and the difference from entry 66, where four of
+four predictions held, is that there the arithmetic ran forward from **measured rates** and here it ran
+forward from **composition** while ignoring that the rates within each stratum differ too.

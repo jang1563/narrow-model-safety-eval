@@ -131,7 +131,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-29 with the document. It is the only place in this repository where a finding
           # is tested on a population it has never seen, and the only place recording that the two
           # headline results move in OPPOSITE directions when it is.
-          "docs/INDEPENDENT_POOL_PREREGISTRATION.md"]
+          "docs/INDEPENDENT_POOL_PREREGISTRATION.md",
+          # Added 2026-09-30 with the document. It is the only place recording that a guard which has
+          # failed four times is still unexplained after three candidates were tested, and the only
+          # place where a frozen band label is contradicted by the study's own explained-fraction.
+          "docs/ANNOTATION_AVAILABILITY_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1692,6 +1696,45 @@ def independent_pool():
         "CA_L_pool2": round(p2["CA_L"]["mean"], 3),
         "S2_band": v["S2_band"],
         "single_arm_indicative": v["single_arm_indicative"],
+    }
+
+
+def annotation_availability():
+    """Why are unannotated proteins flagged at half the rate? Still unknown -- three candidates out.
+
+    \U0001f534 This claim's job is to stop a band label standing in for a result. The frozen bands call
+    0.532 "length explains part of it", but adjusting for length moves the ratio by 10% of the distance
+    to parity on 650M and 0% on 35M. The explained FRACTION is pinned alongside the level, because the
+    level is what the band reads and the fraction is what the sentence means.
+
+    \U0001f7e2 Two hypotheses are refuted rather than merely unsupported. The score decomposition does
+    not localise the gap -- both factors carry it, unlike the length-U where holding direction fixed
+    inverted the effect -- so the two are NOT the same phenomenon. And embedding density is zero, with
+    the sign flipping between arms, so "the probe reads family recognisability" is not supported and the
+    qualification the preregistration would have owed the localization finding is not owed.
+    """
+    a = j("../results/annotation_availability.json")
+    b = j("../results/annotation_availability_esm2_35M.json")
+    if None in (a, b):
+        return None
+    return {
+        "n_annotated": a["n_annotated"], "n_unannotated": a["n_unannotated"],
+        "deciles_used": a["n_deciles_used"], "verdict_eligible": a["verdict_eligible"],
+        "crude": {"650M": round(a["crude_ratio"]["mean"], 3),
+                  "35M": round(b["crude_ratio"]["mean"], 3)},
+        "adjusted": {"650M": round(a["T1_mantel_haenszel"]["mean"], 3),
+                     "35M": round(b["T1_mantel_haenszel"]["mean"], 3)},
+        # ⭐ the number the band label does not carry
+        "explained_fraction": {"650M": round(a["explained_fraction"], 3),
+                               "35M": round(b["explained_fraction"], 3)},
+        "band": a["band"], "band_agrees": a["band"] == b["band"],
+        "direction_only": {"650M": round(a["T2_counterfactual_ratios"]["direction_only"], 3),
+                           "35M": round(b["T2_counterfactual_ratios"]["direction_only"], 3)},
+        "magnitude_only": {"650M": round(a["T2_counterfactual_ratios"]["magnitude_only"], 3),
+                           "35M": round(b["T2_counterfactual_ratios"]["magnitude_only"], 3)},
+        # 🟢 density refuted: near zero, and the sign flips between arms
+        "knn_delta": {"650M": round(a["T3_delta"], 4), "35M": round(b["T3_delta"], 4)},
+        "stratified": a["stratified"],
     }
 
 
@@ -4094,6 +4137,26 @@ CLAIMS = [
          and v["matched_R"]["650M"] < 3.0 < v["matched_R"]["35M"]),
      {"docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md":
       "**Unannotated falls from 55.0% to 37.0%**, under the frozen 50%."},
+     []),
+    ("the availability gap is not length, not one score component, and not density",
+     annotation_availability,
+     lambda v: v is None or (
+         v["n_annotated"] == 3933 and v["n_unannotated"] == 2314
+         and v["deciles_used"] == 10 and v["verdict_eligible"] and v["stratified"]
+         # 🔴 the guard still fails after adjustment, on both arms
+         and v["adjusted"]["650M"] < 0.67 and v["adjusted"]["35M"] < 0.67
+         # ⭐ and length buys almost nothing: a tenth on one arm, nothing on the other
+         and v["explained_fraction"]["650M"] < 0.15
+         and v["explained_fraction"]["35M"] < 0.05
+         # 🔴 neither counterfactual approaches parity, so the decomposition does not localise it --
+         # unlike the length-U, where magnitude worked AGAINST the effect
+         and v["direction_only"]["650M"] < 0.67 and v["magnitude_only"]["650M"] < 0.67
+         and v["direction_only"]["35M"] < 0.67 and v["magnitude_only"]["35M"] < 0.67
+         # 🟢 density is zero and the sign flips between arms
+         and abs(v["knn_delta"]["650M"]) < 0.002 and abs(v["knn_delta"]["35M"]) < 0.002
+         and v["knn_delta"]["650M"] * v["knn_delta"]["35M"] < 0),
+     {"docs/ANNOTATION_AVAILABILITY_PREREGISTRATION.md":
+      "🔒 **The honest statement is the explained fraction: length accounts for at most a tenth"},
      []),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
      independent_pool,

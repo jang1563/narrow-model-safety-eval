@@ -1,0 +1,51 @@
+{
+  "built": "2026-09-30 09:26:21",
+  "arm": "esm2_650M",
+  "seeds": 30,
+  "n_annotated": 3933,
+  "n_unannotated": 2314,
+  "n_deciles_used": 10,
+  "verdict_eligible": true,
+  "crude_ratio": {
+    "mean": 0.4816019140091327,
+    "ci": [
+      0.4650835797229858,
+      0.4981202482952796
+    ]
+  },
+  "T1_mantel_haenszel": {
+    "mean": 0.5319250882586729,
+    "ci": [
+      0.5142478690806873,
+      0.5496023074366585
+    ]
+  },
+  "band": "length explains part of it",
+  "explained_fraction": 0.09707438281403445,
+  "T2_counterfactual_ratios": {
+    "observed": 0.4843206484978152,
+    "direction_only": 0.5078262982830777,
+    "magnitude_only": 0.4207260155574762
+  },
+  "T2_rates": {
+    "observed": {
+      "ann": 0.09535553860496652,
+      "una": 0.04618265629501584
+    },
+    "direction_only": {
+      "ann": 0.09533858801593359,
+      "una": 0.04841544223566695
+    },
+    "magnitude_only": {
+      "ann": 0.07309941520467837,
+      "una": 0.030754825698645925
+    }
+  },
+  "T3_knn_cosine": {
+    "annotated": 0.9835761189460754,
+    "unannotated": 0.9831728935241699
+  },
+  "T3_delta": 0.0004032254219055176,
+  "knn": 10,
+  "stratified": true
+}
