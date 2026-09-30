@@ -1964,6 +1964,16 @@ def external_validation_record():
         "paper_reports_failures": "failed on two external panels" in man,
         "paper_separates_them": "one clear failure and one uninformative panel" in man,
         "abstract_not_overclaiming": "only result here that replicated everywhere we looked" not in man,
+        # 🔴 Added 2026-09-30. Entry 81 corrected the abstract to "It is not externally validated" and
+        # entry 83 then built an obligation on that sentence. Both were wrong: the CLASS-level claim --
+        # the one the paper makes -- has its own external record, supported at +0.681, ruled
+        # uninterpretable by a frozen confound rule, then reinstated for ordering at +0.375 / +0.411
+        # with 8 of 10 species strata positive. The audit now requires all three to be stated.
+        "abstract_not_undercalling": "It is not externally validated" not in man,
+        "paper_states_class_level": "+0.6813" in man and "0.00590" in man,
+        "paper_states_confound_fired": "+0.7613" in man,
+        "paper_states_reinstatement": "+0.3750" in man and "+0.4107" in man,
+        "paper_states_narrow": "reinstated as a claim about ordering" in man,
     }
 
 
@@ -4935,7 +4945,7 @@ CLAIMS = [
      # ⚠️ the seed interval must never be presented as the uncertainty on a recovery rate again
      ["beta-lactamase reaches **15.5% [11.0, 19.9]**",
       "recovery is 15.5% with 95% confidence"]),
-    ("the only external validation failed once and was uninformative once, and the paper says so",
+    ("the external record is three tests with three verdicts, and the paper states all of them",
      external_validation_record,
      lambda v: v is None or (
          # 🔒 two recorded NOT SUPPORTED outcomes, against a frozen commit and a passing gate
@@ -4946,15 +4956,22 @@ CLAIMS = [
          and v["a2_all_100"] and v["a2_flaw_recorded"] and v["a2_uninformative_word"]
          # 🔒 and the paper must carry the distinction, not just the count
          and v["paper_reports_failures"] and v["paper_separates_them"]
-         and v["abstract_not_overclaiming"]),
+         # 🔒 neither over- nor under-claiming: the abstract may not say it replicated everywhere, and
+         # may not say it is not externally validated either
+         and v["abstract_not_overclaiming"] and v["abstract_not_undercalling"]
+         and v["paper_states_class_level"] and v["paper_states_confound_fired"]
+         and v["paper_states_reinstatement"] and v["paper_states_narrow"]),
      {"docs/EXTERNAL_VALIDATION_PREREGISTRATION.md":
       "🔴 **NOT SUPPORTED, and the honest summary registered in Amendment 2 now reads: failed on a self-drawn",
       "paper/MANUSCRIPT.md":
-      "⚠️ **And the \"two external failures\" should be read as one clear failure and one uninformative panel**,"},
+      "🟢 **The design that separates them was then run.** `docs/ORGANISM_STRATIFIED_PREREGISTRATION.md` holds"},
      # ⚠️ the abstract must never again say the margin result replicated everywhere, and the external
      # outcome must never be softened to a partial success
+     # ⚠️ Neither direction: the margin result did not replicate everywhere, and it is not true that it
+     # has no external evidence. The third entry bans the flat claim the class-level test cannot support.
      ["only result here that replicated everywhere we looked",
-      "the external validation partly supported", "externally validated at the class level"]),
+      "It is not externally validated",
+      "the absolute recoveries are externally validated"]),
     ("the paper's corrections count matches the log, and the log's own numbering restarted twice",
      corrections_log_census,
      lambda v: v is None or (
@@ -4970,7 +4987,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 88"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 89"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

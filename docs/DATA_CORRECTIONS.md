@@ -6584,3 +6584,64 @@ count resolved something an interval could not** — the first was "7 of 30 spli
 ratios. ⚠️ **None has per-row flags stored**, so each needs its study re-run with rows retained; the
 large-*n* ones will widen by roughly **2×** and the small-*n* ones by more. 🔒 **Listed so the remaining work
 is enumerated rather than described.**
+
+---
+
+## 2026-09-30 (eighty-fifth entry) — Item 1 of 2: the external validation was already done, and my last two entries said otherwise
+
+Entry 83 named *"a powered external validation"* as one of two things needing new compute. 🔴 **That was
+wrong, and it was wrong because entry 81 had already overcorrected the abstract in the other direction.**
+This entry is the retraction of both.
+
+### 🔴 What entry 81 did
+
+It found the abstract claiming the margin result *"replicated everywhere we looked"* while § 4 reported two
+**member-level** external failures, and rewrote the abstract to say **"It is not externally validated"**.
+🔒 The first half of that was right. 🔴 **The second half is false.**
+
+### 🔒 The external record is three tests with three verdicts
+
+| # | test | result | verdict |
+|---|---|---|---|
+| 1 | **member-level** margin holdout, 2 attempts | 82% against a predicted ≤ 40%; then 100% on every arm | 🔴 failed once, **uninformative** once by its own criteria |
+| 2 | **class-level** margin on VFDB — 746 proteins, 13 held-out categories, 30 seeds, both arms | *ρ* = **+0.6813**, permutation *p* = **0.00590**, inside a band frozen at +0.4 to +0.8 | 🟢 SUPPORTED, then 🔴 **UNINTERPRETABLE** — a frozen confound rule fired at exclusivity *ρ* +0.7613, *p* = 0.0042 |
+| 3 | **organism-stratified** follow-up — 10 species strata, 48 cells | mean within-species *ρ* = **+0.3750** (*p* = 0.0104) and **+0.4107** (*p* = 0.0069), **8 of 10** strata positive on both arms | 🟢 **B-1 reinstated, for ordering only** |
+
+🔑 **Test 2 is the class-level claim — the one the paper actually makes — and it was externally tested,
+ruled uninterpretable by a rule written in advance, and then rescued by the exact follow-up design that
+document called for.** ⚠️ **The confound's sign was wrong for leakage**: higher same-species-in-training
+went with *lower* recovery, which is stated in the record without being used as a rescue.
+
+⚠️ **The reinstatement is narrow and stays narrow**: it covers **ordering**, not the absolute recoveries,
+which remain compatible with the pathogen and localization separations at **42.1%** of the gap jointly.
+
+### 🔴 So both of my statements were wrong, in opposite directions
+
+| | said | actual |
+|---|---|---|
+| the original abstract | replicated **everywhere we looked** | the member-level version failed externally |
+| **entry 81's fix** | **not externally validated** | the class-level version was tested, supported, ruled uninterpretable, reinstated for ordering |
+| **entry 83's obligation** | a powered external validation is **needed** | it was run on 2026-09-28, twice, and its confound rule has a resolved follow-up |
+
+🔑 **The mechanism of my error is worth naming: I read § 4, found the member-level failures, and stopped.**
+`docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md` and `docs/ORGANISM_STRATIFIED_PREREGISTRATION.md` were both
+**already on the audited surface** and both hold artifacts. ⚠️ **A review that greps for the word it expects
+will find the sentence it expects**, and the fix is to enumerate documents rather than search for phrases —
+which is exactly what surfaced the unaudited prereg in entry 81 and is what I failed to do one step later.
+
+### 🔒 What the paper says now, and what the gate enforces
+
+§ 4 states all three tests with their numbers, and the abstract says *"Its external record is mixed and is
+three tests, not one."* 🔒 **Claim 120 now forbids both directions**: the abstract may not say the result
+replicated everywhere, and may not say it is not externally validated. Null-calibrated on both forbids plus
+a third that bans claiming the **absolute recoveries** are externally validated, and on a changed
+reinstatement figure. **All four fail the gate.**
+
+### ⚠️ What is genuinely still open on this front
+
+1. **The absolute recoveries have no external validation** — only the ordering does. The class-level test's
+   own addendum says so, and § 6's confound shares are the reason.
+2. **No external test in this project has had a power or ceiling check.** Attempt 2's 100%-everywhere panel
+   is the case that needed one; the class-level test did not need one (recoveries span 38.7–84.8%) but was
+   not protected either. 🔒 **Any future external run in this project must state a power check before the
+   panel is scored**, which is the one procedural thing the record still lacks.

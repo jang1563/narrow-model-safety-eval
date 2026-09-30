@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 88 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 89 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -16,7 +16,7 @@ one-in-a-thousand hazard rate it produces **605 alerts of which about 7 are real
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 88
+written because it caught something. The evidence is a **dated, append-only corrections log of 89
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -38,9 +38,13 @@ compatible with a screen that cannot see two whole families.
 recovery at Spearman **+0.894** (permutation *p* = 0.00015), places both failures at the bottom, and
 survives **fourteen model arms** and **fifteen re-poolings** of one arm (*ρ* +0.536 to +0.941, 14 of 15
 significant). It replicated across **every internal variation we tried**, and it is the only result here
-that did. ⚠️ **It is not externally validated**: the member-level version of the same claim was
-preregistered and **failed two external panels** (§ 4), and it is also **mis-calibrated** —
-over-predicting beta-lactamase recovery by 34 points.
+that did. ⚠️ **Its external record is mixed and is three tests, not one.** The **member-level** version was
+preregistered and **failed** externally. The **class-level** version — the one this paper claims — was
+preregistered on **VFDB's 13 categories** and came back at *ρ* **+0.681** (*p* = 0.0059), where a frozen
+confound rule then fired and made it **uninterpretable**; a targeted follow-up holding organism identity
+constant reinstated it **as an ordering claim only**, at *ρ* **+0.375** and **+0.411** with **8 of 10**
+species strata positive on both arms (§ 4). ⚠️ It is also **mis-calibrated** — over-predicting
+beta-lactamase recovery by 34 points.
 
 **Third, and the finding we did not want: nothing we tried moves the screen's precision.** Four
 classifier heads, fourteen representations, three panels, fifteen pooling reductions and a supervised
@@ -635,7 +639,22 @@ deployment score.
 **8 to 11%** of a failure the geometry predicts at *ρ* = +0.894. Knowing which class will fail does not
 tell you how to fix it.
 
-⚠️ **And the "two external failures" should be read as one clear failure and one uninformative panel**,
+🔒 **The class-level claim has its own external record, and it is not the member-level one.**
+`docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md` froze a test on **746** VFDB proteins in **13** held-out
+categories, 30 seeds, both arms: **B-1 Spearman(margin, recovery) = +0.6813**, permutation *p* =
+**0.00590**, inside a band frozen at +0.4 to +0.8. 🔴 **And a frozen confound rule fired** — exclusivity
+correlates with recovery at **+0.7613** (*p* = 0.0042) — so B-1 was reported **UNINTERPRETABLE**, which
+is what the rule said to do. ⚠️ **The correlation's sign is wrong for leakage**: higher
+same-species-in-training goes with *lower* recovery.
+
+🟢 **The design that separates them was then run.** `docs/ORGANISM_STRATIFIED_PREREGISTRATION.md` holds
+organism identity constant inside each of **10 species strata** (48 cells): mean within-species *ρ* =
+**+0.3750** (*p* = 0.0104) on 650M and **+0.4107** (*p* = 0.0069) on 35M, **8 of 10 strata positive** on
+both. 🔒 **B-1 is reinstated as a claim about ordering** — inside a species the organism cannot produce the
+ordering — **and the reinstatement is narrow**: it covers ordering, not the absolute recoveries, which stay
+compatible with the pathogen and localization separations § 6 quantifies at **42.1%** of the gap jointly.
+
+⚠️ **And the "two external failures" of the member-level version should be read as one clear failure and one uninformative panel**,
 because the preregistration says so about its own criteria. Attempt 2 returned **100% on every arm**: the
 falsification rules specified a floor but **no ceiling**, so a panel with no room to move was scored NOT
 SUPPORTED when *uninformative* is the accurate word
