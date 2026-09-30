@@ -6917,3 +6917,52 @@ command including `echo`, for about ten minutes. 🔒 **Nothing was written duri
 finished by reading artifacts directly, and the documents were left untouched until the three-way gate
 could run — **a change that cannot be gated does not go in**, which is the rule this repository has had
 since entry 72 and the first time it has been tested by the environment rather than by me.
+
+---
+
+## 2026-09-30 (ninetieth entry) — Review segment 6 of 12, deployment framing: the headline precision is a corner
+
+Segment 6 covers **the precision claim the paper is named after**. The conclusion survives and the number
+is the most favourable of four.
+
+### 🔴 6.1 Recall in the deployment arithmetic is an unweighted class mean
+
+§ 10.8 says *"recall taken from the v3 panel mean"*. It is the **unweighted mean over twelve classes**:
+**73.12%**. Weighted by **members** it is **60.43%**.
+
+🔑 **The gap has a cause and the cause is the paper's own first finding.** The two failing classes hold
+**46 of the panel's 141 proteins — a third of it — while being two of twelve classes.** Averaging over
+classes gives a 4-member class the same weight as a 32-member one, and the two biggest under-recovered
+classes are exactly what that under-weights.
+
+### 🔴 6.2 Crossed with the estimator choice, the published figure is the maximum of four
+
+| recall | conformal 5.98% | `np.quantile` 7.87% |
+|---|---:|---:|
+| **unweighted, 73.12%** | **1.21%** ← published | 0.92% |
+| member-weighted, 60.43% | 1.00% | **0.76%** |
+
+⚠️ **Two arbitrary choices, both made the favourable way.** 🔒 **Neither weighting is obviously right** —
+unweighted assumes hazards arrive uniformly across mechanism classes, member-weighted assumes they arrive
+in proportion to known members, and a deployment fixes neither. **That is why both are now printed.**
+
+### 🟢 6.3 And the paper's conclusion is strengthened by the axis that embarrasses its number
+
+*"Nothing we tried moves the screen's precision"* was supported across four classifier heads, fourteen
+representations, three panels, fifteen reductions and a supervised ranking, at **0.97–1.26%**. Adding the
+estimator and the weighting gives **[0.76%, 1.26%]** — still flat, still about **1%**, now across three
+kinds of variation instead of one. 🔒 **The correction makes the claim broader and the headline number
+smaller**, which is the shape most of this review's findings have had.
+
+### 🔴 6.4 And the 0.97–1.26% span had no claim attached
+
+It is in the **abstract** and in § 10.8, and `0.0097`, `0.0126` and any precision-floor field appear
+**nowhere** in the audit. ⚠️ **Entry 81's unaudited-number defect, in the number the paper is named
+after.** 🔒 Claim 128 now recomputes the whole box from the artifacts and requires the published corner to
+be the maximum — so a later edit that quietly drops the unfavourable corners fails the gate.
+
+### 🔒 What did not need changing
+
+🟢 The **0.9915 specificity ceiling** is right: 118 calibration negatives make 1/118 = 0.847% the finest
+achievable tail, so every specificity above **99.15%** is extrapolation, and § 7 already says so.
+🟢 The one-in-a-thousand hazard rate is a stipulation and is labelled as one.

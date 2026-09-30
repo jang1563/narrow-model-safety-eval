@@ -1807,6 +1807,53 @@ def length_band_sensitivity():
     }
 
 
+def precision_box():
+    """The headline precision is one corner of a 2x2 the paper made silently.
+
+    🔴 Recall in the deployment arithmetic is the UNWEIGHTED mean over twelve classes. Weighting
+    by members gives 60.43% instead of 73.12%, because the two failing classes hold 46 of the panel's 141
+    proteins -- a third of it -- while being two of twelve classes. Crossed with the conformal and
+    interpolating false-positive estimates, precision spans 0.76% to 1.21% and the published figure is
+    the maximum.
+
+    ⭐ And the paper's own conclusion survives it: flatness across reductions, estimators AND
+    weightings. Pinned together, because the 0.76% alone reads as a retraction of a claim the extra axis
+    actually strengthens.
+
+    ⚠️ The 0.97-1.26% span was in the abstract and in section 10.8 with no claim attached --
+    entry 81's unaudited-number defect, in the number the paper is named after.
+    """
+    red = j("../results/v3/lomo_results_esm2_650M_mean_res.json")
+    ext = j("../results/v3/external_test_partition_canonical.json")
+    if None in (red, ext):
+        return None
+    rows = [(v["n"], v["flagged_95_mean"])
+            for v in red["leave_one_mechanism_out"].values()
+            if v.get("flagged_95_mean") is not None]
+    n_total = sum(n for n, _ in rows)
+    unw = sum(r for _, r in rows) / len(rows)
+    wt = sum(n * r for n, r in rows) / n_total
+    fail = sum(n for n, r in rows if r < 0.25)
+    fp = ext["false_positives"]["0.05"]["shift"]
+    hz, n10 = 10.0, 10000
+
+    def prec(rec, est):
+        real = hz * rec
+        return real / (real + (n10 - hz) * fp[est]["mean"])
+
+    box = {f"{w}|{e}": round(prec(r, e) * 100, 2)
+           for w, r in (("unweighted", unw), ("weighted", wt))
+           for e in ("conformal", "quantile")}
+    return {"n_classes": len(rows), "n_members": n_total,
+            "members_in_failing_classes": fail,
+            "unweighted_recall": round(unw * 100, 2),
+            "weighted_recall": round(wt * 100, 2),
+            "box": box,
+            "published_is_max": box["unweighted|conformal"] == max(box.values()),
+            "span_lo": min(box.values()), "span_hi": max(box.values()),
+            "all_near_one_pct": all(0.5 < v < 1.5 for v in box.values())}
+
+
 def margin_transfer():
     """The ordering transfers; which classes sit at the floor transfers less.
 
@@ -5023,6 +5070,27 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("the headline precision is the most favourable corner of a 2x2, and the flatness survives it",
+     precision_box,
+     lambda v: v is None or (
+         v["n_classes"] == 12 and v["n_members"] == 141
+         # 🔴 a third of the panel's proteins sit in the two failing classes
+         and v["members_in_failing_classes"] == 46
+         and abs(v["unweighted_recall"] - 73.12) < 0.05
+         and abs(v["weighted_recall"] - 60.43) < 0.05
+         and v["unweighted_recall"] > v["weighted_recall"]
+         # ⭐ the published figure is the maximum of the four
+         and v["published_is_max"]
+         and abs(v["box"]["unweighted|conformal"] - 1.21) < 0.02
+         and abs(v["box"]["weighted|quantile"] - 0.76) < 0.02
+         # 🔒 and the paper's conclusion -- precision is flat near 1% -- survives the extra axis
+         and v["all_near_one_pct"]
+         and v["span_hi"] / v["span_lo"] < 2.0),
+     {"paper/MANUSCRIPT.md":
+      "⚠️ **Two choices in that arithmetic are arbitrary, and both were made the favourable way.** Recall is the"},
+     # ⚠️ the published corner must not be presented as the precision, and the extra axis must not be
+     # read as overturning the flatness
+     ["deployment precision is 1.2%", "the weighting choice overturns the precision floor"]),
     ("margin's ordering transfers across arms; its two-class floor property does not",
      margin_transfer,
      lambda v: v is None or (
@@ -5219,7 +5287,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 93"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 94"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

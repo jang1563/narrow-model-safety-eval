@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 93 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 94 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 93
+written because it caught something. The evidence is a **dated, append-only corrections log of 94
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -53,7 +53,11 @@ beta-lactamase recovery by 34 points.
 
 **Third, and the finding we did not want: nothing we tried moves the screen's precision.** Four
 classifier heads, fourteen representations, three panels, fifteen pooling reductions and a supervised
-residue ranking later, deployment precision sits between **0.97% and 1.26%** in every configuration.
+residue ranking later, deployment precision sits between **0.97% and 1.26%** across reductions — and
+**0.76% to 1.26%** once the two arbitrary choices in the arithmetic are varied too: whether the
+false-positive rate is the conformal or the interpolating estimate, and whether recall is averaged over
+**classes** or over **proteins**. ⚠️ **The headline 1.2% is the most favourable corner of that box**, and
+the flatness is what survives all three axes.
 One reduction moves one of the two failing classes — a consistent **+5 of 32** members on the phage class,
 against a net **+1 of 14** on beta-lactamase, where a paired member-level test finds mostly swapping rather
 than gain — and pays for it in the negatives'
@@ -743,7 +747,8 @@ replicates at −45.2. The supervised ranking behaves the same way: it raises th
 **no *k* raises it on 35M**. 🔑 **Every gain in this line is one representation; every cost is general.**
 
 **The number that settles it.** In a deployment of ten thousand sequences at a one-in-a-thousand hazard
-rate, with recall taken from the v3 panel mean and the false-positive rate measured out of sample:
+rate, with recall taken from the v3 panel's **unweighted class mean** and the false-positive rate measured
+out of sample:
 
 | | conformal FPR | recall | alerts | real hits | **precision** |
 |---|---|---|---|---|---|
@@ -760,6 +765,23 @@ says 603.*
 🔴 **Precision is flat.** The reduction with the lowest false-positive rate buys it with nineteen points of
 recall — a move along the same ROC curve, obtainable by raising a threshold and requiring no new method.
 **A change that lowers the false-positive rate and the recovery together has not improved calibration.**
+
+⚠️ **Two choices in that arithmetic are arbitrary, and both were made the favourable way.** Recall is the
+**unweighted mean over twelve classes**; weighting by **members** gives **60.43%** instead of **73.12%**,
+because the two failing classes hold **46 of the panel's 141 proteins** — a third of it — while being two
+of twelve classes. And the false-positive rate can be the conformal estimate or the interpolating one
+(§ 1). The four combinations:
+
+| recall | conformal 5.98% | `np.quantile` 7.87% |
+|---|---:|---:|
+| **unweighted class mean, 73.12%** | **1.21%** ← published | 0.92% |
+| member-weighted, 60.43% | 1.00% | **0.76%** |
+
+🔒 **Neither weighting is obviously right** — unweighted assumes hazards arrive uniformly across mechanism
+classes, member-weighted assumes they arrive in proportion to how many members each class has, and a
+deployment fixes neither. ⭐ **The flatness is strengthened, not weakened, by the extra axis**: precision
+stays inside **[0.76%, 1.26%]** across reductions, estimators *and* weightings. ⚠️ **The headline 1.2% is
+the corner of that box most favourable to the screen.**
 
 ---
 
@@ -893,7 +915,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**127 claims** and fails if any number in a public document drifts from the artifact that produced
+**128 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and
