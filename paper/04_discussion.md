@@ -1,4 +1,7 @@
 
+
+> ⚠️ **SUPERSEDED 2026-09-30.** This file is a frozen partition of an earlier draft. `paper/MANUSCRIPT.md` is the live document, it has grown well past these sections, and it is the only one the claims audit reads. Kept for history; do not cite from it.
+
 ---
 
 ## 6. Two repairs that grew the wrong side

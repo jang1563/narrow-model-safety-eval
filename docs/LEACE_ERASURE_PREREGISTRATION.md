@@ -283,10 +283,51 @@ a defect of the implementation** — § 3 said so and then predicted otherwise a
 
 ### ⭐ And the one number that survived every configuration
 
-`R` is **above 4.5 in all of it**: INLP at k = 0 … 160, LEACE whitened and unwhitened, label counts 200 …
-1,664, both arms. Range across the label curve **[4.57, 5.48]** and **[4.67, 5.15]**.
+`R` spans **[3.35, 7.30]** across **47 measured values**: INLP at k = 0 … 160, LEACE whitened and
+unwhitened, label counts 200 … 1,664, both arms. ⚠️ **Amendment 2 corrects the first version of this
+sentence**, which said "above 4.5 in all of it" — **14 of the 47 are below 4.5**, all of them INLP. Above
+4.5 holds for every **LEACE** configuration (minimum **4.546**) and for the label curve
+(**[4.57, 5.48]**, **[4.67, 5.15]**).
 
 🔒 **The localization gradient does not depend on which diagnosis is right.** ⚠️ **And it is not a
 mitigation story in either direction**: an erasure that is provably exact in-sample leaves the flag-rate
 ratio above 4.5, so orthogonalization is not a repair, and the reason it is not has now been measured
 three ways instead of guessed at once.
+
+
+---
+
+## 12. Amendment 2 (2026-09-30) — a review found an overclaim and an interval that was not one
+
+### 🔴 "`R` above 4.5 in every configuration" was false
+
+A census of **every** `R` this study and study Y produced — 47 values across both arms, both erasure
+methods, the INLP k-grid and the label curve — gives **minimum 3.347, maximum 7.301, and 14 values below
+4.5**, all of them INLP. 🔒 § 11 and `paper/MANUSCRIPT.md` now state **[3.35, 7.30] over 47 values**, and
+the ≥ 4.5 claim is kept only where it is true: **every LEACE configuration, minimum 4.546.**
+
+⚠️ **The claims audit did not catch it, and the reason is instructive**: claim 117's predicate checked
+`min` over *study Z's* values, while the sentence it guarded said *"every configuration tried"* and named
+INLP. 🔑 **The predicate's scope was narrower than its sentence's words** — entry 68's defect exactly, a
+check that cannot distinguish what it is used to distinguish. The forbid now bans the phrasing outright.
+
+### 🔴 And the interval on `R` was a standard error of a mean
+
+`stat()` in this repository returns **mean ± 1.96 · SE over probe seeds on a fixed row set.** That answers
+where the seed mean is, not how uncertain `R` is — and cross-fitting the localization axis left only **73
+and 98** extracellular rows to measure on. `src/110_row_level_ci.py` resamples rows within stratum as well
+as seeds:
+
+| | published `stat()` | seed percentiles | **row + seed** | widening |
+|---|---|---|---|---:|
+| **650M** | 4.791 [4.622, 4.960] | [3.749, 6.126] | **[2.747, 9.286]** | **19.3×** |
+| **35M** | 4.954 [4.587, 5.321] | [3.033, 8.955] | **[2.313, 13.029]** | **14.6×** |
+
+🔒 **Both honest intervals exclude 1.5, so Z-1's verdict that the gradient is not removed stands, and its
+frozen prediction `R` > 1.5 holds robustly.** ⚠️ **Neither excludes 3.0**, so § 4's hedge — "quite possibly
+> 3.0" — is where the evidence actually sits, and the band label *"survives a provable mean-erasure"* is
+the **point estimate's** verdict, not the interval's. **Reported that way from here on.**
+
+⚠️ **Scope of the defect**: acute here because cross-fitting cut the strata by 8×. Studies E, L and M
+measure `R` on the full **652–1,666** strata, where row uncertainty is a few percent — this does not
+retract them, and it does mean their intervals are also narrower than the quantity deserves.

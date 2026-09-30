@@ -6205,3 +6205,107 @@ Claim 117 pins both documents, forbids three phrasings that would read the guara
 was null-calibrated on seven wrong inputs — a low `R`, a non-exact in-fold correlation, a passing
 generalization flag, a stronger 650M Spearman, a curve reaching zero, and both forbidden phrases. All seven
 fail.
+
+---
+
+## 2026-09-30 (eightieth entry) — A review of the whole session: an overclaim, an interval that was not one, and a count stale by 23
+
+Nine findings, in descending order of how much they change what the paper says.
+
+### 🔴 1. "`R` above 4.5 in every configuration" was false
+
+A census of **every** `R` value studies Y and Z produced — **47** across two arms, two erasure methods, an
+INLP k-grid and a label curve — gives **minimum 3.347**, **maximum 7.301**, and **14 of 47 below 4.5**, all
+INLP. The manuscript, the preregistration and entry 79 all said *above 4.5 in every configuration tried*
+and then **named INLP in the same sentence.**
+
+🔒 All three now say **[3.35, 7.30] over 47 values**, with ≥ 4.5 kept only where it holds: **every LEACE
+configuration, minimum 4.546.** ⚠️ **What the claim actually supports is `R` nowhere near 1.5, which is the
+load-bearing part and is unaffected.**
+
+🔴 **The audit passed it.** Claim 117's predicate took `min` over **study Z's three values** while the
+sentence it guarded said *every configuration* and named the other study. 🔑 **The predicate's scope was
+narrower than its sentence's words** — entry 68's defect exactly.
+
+### 🔴 2. The interval on `R` was a standard error of a mean
+
+`stat()` returns **mean ± 1.96 · SE over probe seeds on a fixed row set.** That locates the seed mean; it
+does not bound `R`. And cross-fitting the localization axis left **73 and 98** extracellular rows to
+measure on. `src/110_row_level_ci.py` resamples rows within stratum as well as seeds:
+
+| | as published | seed percentiles | **row + seed** | |
+|---|---|---|---|---:|
+| **650M** | 4.791 [4.622, 4.960] | [3.749, 6.126] | **[2.747, 9.286]** | **19.3×** |
+| **35M** | 4.954 [4.587, 5.321] | [3.033, 8.955] | **[2.313, 13.029]** | **14.6×** |
+
+🔒 **Both exclude 1.5** — the gradient is not removed, and Z-1's frozen prediction holds robustly.
+⚠️ **Neither excludes 3.0**, so "survives a provable mean-erasure" is the **point estimate's** verdict and
+is now labelled as such. ⚠️ **Scope**: acute here because cross-fitting cut the strata 8×. Studies E, L and
+M use the full 652–1,666 strata, so this does not retract them — **and their intervals are narrower than
+their quantities deserve too.**
+
+### 🔴 3. The paper's corrections count was stale by 23, in its title, and unaudited
+
+`paper/MANUSCRIPT.md` said **"sixty corrections"** in its **title** and *"log of sixty entries"* in its
+abstract. The log holds **83**. 🔴 **Nothing audited it**, so it drifted for nineteen entries through every
+gate this session ran.
+
+🔒 It is now a **numeral** rather than a word, and claim 119 checks the paper's numeral **equals** the
+header count in both places — deliberately **without** hard-coding the total, so the next entry fails the
+gate until the paper is updated. **That is the point of it.**
+
+### ⚠️ 4. And the log's own numbering restarted twice
+
+**83** dated headers, **78** distinct ordinals, highest **"seventy-ninth"**, and **"first" never used**.
+`second`, `third` and `fourth` each head **more than one** entry — the sequence restarted on **2026-09-11**
+and again on **2026-09-18** before merging into one run. 🔒 **Recorded, not renumbered**: the log is
+append-only, and the auditable quantity is the header count. ⚠️ **Every "nth entry" cross-reference in this
+file is therefore ambiguous for n ∈ {2, 3, 4}.**
+
+### ⚠️ 5. Four files in `paper/` were a superseded draft outside the audited surface
+
+`paper/0{1,2,3,4}_*.md` are a frozen **2026-09-28** partition, ~24.7 KB against `MANUSCRIPT.md`'s 49.5 KB.
+🟢 **Checked for divergence and they have not diverged** — 248 of 250 substantive lines appear verbatim in
+`MANUSCRIPT.md`, and the two that do not are reflowed wording, not different numbers. ⚠️ **But they carried
+the stale "sixty" and the audit never read them.** Each now opens with a **SUPERSEDED** banner naming the
+live document.
+
+### 🔴 6. The abstract omitted the session's largest adverse finding
+
+It announced **"three results"** and did not mention localization at all — no `R`, no metadata baseline, no
+erasure. 🔒 A **fourth result** is now stated there: `R` = **5.07**, surviving coverage expansion, length
+adjustment, residue-only pooling and an independent pool; the **0.8096** metadata floor and its **+0.0007**
+increment; and `R` = **4.79 [2.75, 9.29]** after a provably exact erasure.
+
+### 🔴 7. My own review script measured nothing, twice, before it measured anything
+
+Its synthetic drew **new rows for every seed**, so the "seed interval" already contained the row variation
+it existed to lack — **the comparison was vacuous.** Rewritten to fix rows and vary only the threshold.
+🔴 **Then its second version asserted the two intervals converge at large n, and that is also false**: the
+seed interval is set by threshold jitter and is **blind to row count**, while the row interval scales as
+1/√n. They do not converge; the ratio falls from ~18 to ~2. 🔒 **The third version asserts the three
+properties that are actually true**, each checked: row-dominance at few rows, row-interval shrinkage with
+n, and the seed interval's **non**-response to n.
+
+### 🔴 8. An ordinal table that stopped one entry short, and a crash reported as a false claim
+
+`corrections_log_census` built ordinal words from a table ending at **70**, so `ordinal(80)` raised
+`KeyError`. ⚠️ **The audit reported that as a failed claim**, with no exception in the output — from the
+gate's text, a crashing loader is indistinguishable from a paper that is wrong. 🔒 It fails **safe**, and
+the table now reaches 99 and raises a **named** error past it. **The eightieth entry is this one.**
+
+### 🔴 9. A forbid matched its own disclaimer. Third time this session.
+
+The first drafts were `"above 4.5 in every configuration"` and `"R is above 4.5 in all of it"` — and both
+fired on the amendment sentence that **quotes them in order to retract them.** 🔑 Same shape as entry 78's
+capital letter and entry 76's `"their reported numbers are inflated"`. 🔒 Rewritten in **assertion form**
+(`stays above 4.5 …`), and this time **calibrated in both directions**: the assertion form fails the gate,
+**and the retraction form passes it.** ⚠️ **Checking only that a forbid fires is half a calibration**, and
+it is the half I had been doing.
+
+### 🔒 What the review did not find
+
+🟢 The 117 pre-existing claims all still agree with their artifacts. 🟢 Studies W and X survive scrutiny:
+their strata are 778/1,988 and 2,314/2,739, large enough that finding 2 does not bite, and their headline
+numbers are cross-validated or Mantel–Haenszel-pooled rather than seed-averaged. 🟢 No artifact was stale
+relative to its code. 🟢 The three-way gate has been run and captured by exit code on every commit.

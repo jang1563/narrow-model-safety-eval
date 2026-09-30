@@ -31,6 +31,7 @@ Usage:
 
 import json
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -1792,6 +1793,47 @@ def length_band_sensitivity():
     }
 
 
+def corrections_log_census():
+    """How many entries does the log hold, and does the paper say the same number?
+
+    🔴 The paper claimed "sixty" for nineteen entries, in its TITLE and its abstract, and nothing
+    audited it. The count is now a numeral so it can be checked, and it is checked here.
+
+    ⚠️ The log's own numbering restarted twice -- on 2026-09-11 and 2026-09-18 -- so "second",
+    "third" and "fourth" each head more than one entry: 83 dated headers, 78 distinct ordinals, highest
+    "seventy-ninth", and "first" never used. The auditable quantity is the number of HEADERS, and the
+    discrepancy is recorded rather than renumbered, because the log is append-only.
+    """
+    log = (ROOT / "docs/DATA_CORRECTIONS.md").read_text()
+    hdrs = re.findall(r"^## \d{4}-\d{2}-\d{2} \((\w+(?:-\w+)?) entry\)", log, re.M)
+    words = ("first second third fourth fifth sixth seventh eighth ninth tenth eleventh twelfth "
+             "thirteenth fourteenth fifteenth sixteenth seventeenth eighteenth nineteenth").split()
+    # 🔴 This map stopped at 70 and ordinal(80) raised KeyError, which the audit reported as a FAILED
+    # CLAIM rather than as a crash -- indistinguishable, from the output, from the paper being wrong.
+    # It fails safe, but the eightieth entry was one entry away.
+    tens = {20: "twent", 30: "thirt", 40: "fort", 50: "fift", 60: "sixt", 70: "sevent",
+            80: "eight", 90: "ninet"}
+
+    def ordinal(n):
+        if n < 20:
+            return words[n - 1]
+        t, u = divmod(n, 10)
+        if t * 10 not in tens:
+            raise ValueError(f"no ordinal word for {n}; extend `tens` past {max(tens)}")
+        return tens[t * 10] + "ieth" if u == 0 else f"{tens[t * 10]}y-{words[u - 1]}"
+
+    have = set(hdrs)
+    highest = max((n for n in range(1, 100) if ordinal(n) in have), default=0)
+    man = (ROOT / "paper/MANUSCRIPT.md").read_text()
+    return {"headers": len(hdrs), "distinct": len(have), "highest_ordinal": highest,
+            "duplicated": sorted({o for o in have if hdrs.count(o) > 1}),
+            "unused": [ordinal(n) for n in range(1, highest + 1) if ordinal(n) not in have],
+            "paper_states_header_count": f"log of {len(hdrs)}" in man,
+            "title_states_header_count": f"and {len(hdrs)} corrections found" in man,
+            # 🔴 the stale word this replaced, which must not come back
+            "stale_word_gone": "corrections log of sixty" not in man}
+
+
 def leace_erasure():
     """A provably exact linear erasure, and R is still 4.79.
 
@@ -1841,6 +1883,35 @@ def leace_erasure():
         "reaches_zero": bool(ca["reaches_zero"] or cb["reaches_zero"]),
         "R_range": {"650M": ca["R_range"], "35M": cb["R_range"]},
         "grid": ca["grid"],
+    }
+
+
+def row_level_ci():
+    """Is the published interval on R a seed interval or a row interval? A seed interval.
+
+    🔴 `stat()` returns mean +/- 1.96 * SE over probe SEEDS on a FIXED row set, and studies Y and
+    Z cross-fit the localization axis, which cut their measurement strata to 73 and 98 extracellular
+    rows. A bootstrap over rows as well as seeds is 19x wider on 650M and 15x on 35M.
+
+    ⭐ Both honest intervals still exclude 1.5, so the gradient is not removed. ⚠️ Neither
+    excludes 3.0, so "survives" is the point estimate's verdict and not the interval's -- pinned, because
+    the point estimate alone reads as stronger than the evidence.
+    """
+    a = j("../results/row_level_ci.json")
+    b = j("../results/row_level_ci_esm2_35M.json")
+    if None in (a, b):
+        return None
+    return {
+        "n_extracellular": {"650M": a["n_extracellular_measured"],
+                            "35M": b["n_extracellular_measured"]},
+        "strata": {"650M": a["strata_per_fold"], "35M": b["strata_per_fold"]},
+        "published": {"650M": a["published_stat_interval"]["ci"],
+                      "35M": b["published_stat_interval"]["ci"]},
+        "honest": {"650M": a["row_and_seed_interval"]["ci"],
+                   "35M": b["row_and_seed_interval"]["ci"]},
+        "widening": {"650M": a["widening_factor"], "35M": b["widening_factor"]},
+        "excludes_1_5": bool(a["excludes_1_5"] and b["excludes_1_5"]),
+        "excludes_3_0": bool(a["excludes_3_0"] or b["excludes_3_0"]),
     }
 
 
@@ -4558,7 +4629,7 @@ CLAIMS = [
      ["orthogonalizing against localization fixes", "the projection repairs the probe",
       "membership survives localization removal, so the probe",
       "localization is not a removable direction", "not linearly removable within"]),
-    ("a provably exact linear erasure leaves the localization gradient above 4.5",
+    ("a provably exact linear erasure leaves the localization gradient at 4.79",
      leace_erasure,
      lambda v: v is None or (
          # 🔒 the guarantee is real to numerical precision, on all three runs
@@ -4588,9 +4659,53 @@ CLAIMS = [
       "🔒 **The localization gradient does not depend on which diagnosis is right.**",
       "paper/MANUSCRIPT.md":
       "on the rows the eraser was fitted to, a secreted benign protein is still flagged **4.79×** as often as a"},
-     # ⚠️ the guarantee must never be read as transferring, and Y-2 must stay open
+     # ⚠️ the guarantee must never be read as transferring, and Y-2 must stay open. The last two are
+     # added 2026-09-30 after a review found the "above 4.5" sentence was false: 14 of 47 measured R
+     # values are below 4.5 and the minimum is 3.347, so the phrasing is banned outright.
      ["the erasure generalizes, so membership", "LEACE removes localization out of sample",
-      "a provable erasure settles Y-2"]),
+      "a provable erasure settles Y-2",
+      # 🔴 Third time in this session a forbid has matched its own disclaimer: the first drafts were
+      # "above 4.5 in every configuration" and "R is above 4.5 in all of it", and both fired on the
+      # amendment sentence that QUOTES them to say they were false. Assertion form only -- the verb is
+      # what a live claim carries and a retraction does not.
+      "stays above 4.5 in every configuration", "`R` is above 4.5 in all of it",
+      "R stays above 4.5 in all"]),
+    ("the interval on R is a seed interval, and the honest one is an order wider",
+     row_level_ci,
+     lambda v: v is None or (
+         # 🔴 the strata are small, which is the cause
+         v["n_extracellular"]["650M"] == 171 and v["n_extracellular"]["35M"] == 171
+         and v["strata"]["650M"] == [[73, 317], [98, 280]]
+         # ⭐ and the honest interval is an order of magnitude wider than the published one
+         and v["widening"]["650M"] > 10 and v["widening"]["35M"] > 10
+         and (v["published"]["650M"][1] - v["published"]["650M"][0]) < 0.5
+         and (v["honest"]["650M"][1] - v["honest"]["650M"][0]) > 5.0
+         # 🔒 it still excludes 1.5 on both arms -- the gradient is not removed
+         and v["excludes_1_5"]
+         # ⚠️ and it does NOT exclude 3.0 on either, which is the part a point estimate hides
+         and not v["excludes_3_0"]),
+     {"paper/MANUSCRIPT.md":
+      "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
+     # ⚠️ the seed interval must never be quoted as the interval on R again
+     ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("the paper's corrections count matches the log, and the log's own numbering restarted twice",
+     corrections_log_census,
+     lambda v: v is None or (
+         # 🔒 Self-maintaining by design: the totals are NOT hard-coded, because hard-coding them
+         # would mean every new entry fails the gate for the wrong reason. What is asserted is that
+         # the paper's numeral equals whatever the count currently is -- in the abstract AND the
+         # title -- so the next entry fails the gate until the paper is updated, which is the point.
+         v["paper_states_header_count"] and v["title_states_header_count"]
+         and v["stale_word_gone"]
+         # ⚠️ and the structural facts about the numbering, which are stable and are not tidied away
+         and v["headers"] > v["distinct"]
+         and v["duplicated"] == ["fourth", "second", "third"]
+         and v["unused"] == ["first"]
+         and v["highest_ordinal"] < v["headers"]),
+     {"paper/MANUSCRIPT.md":
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 84"},
+     # 🔴 the stale count, in both the forms it appeared in
+     ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
      independent_pool,
      lambda v: v is None or (

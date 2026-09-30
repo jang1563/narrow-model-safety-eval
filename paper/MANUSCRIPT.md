@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and sixty corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 84 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -16,10 +16,10 @@ one-in-a-thousand hazard rate it produces **605 alerts of which about 7 are real
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of sixty
+written because it caught something. The evidence is a **dated, append-only corrections log of 84
 entries** in which a published number moved, including entries that retract our own findings.
 
-Three results matter beyond this panel.
+Four results matter beyond this panel.
 
 **First, the aggregate is uninformative and the per-class picture is bimodal.** Holding out an entire
 mechanism class, recovery runs from **100% to 10%**: four classes are fully recovered without ever
@@ -40,6 +40,15 @@ residue ranking later, deployment precision sits between **0.97% and 1.26%** in 
 One reduction moves the two failing classes by +15 to +20 points — and pays for it in the negatives'
 scores exactly as a fixed-budget argument predicts, and does so **only on one of two representations
 tested**.
+
+**Fourth, the screen's benign-side behaviour is graded by protein localization, and that does not go
+away.** Among benign bacterial and archaeal proteins, a secreted or surface-exposed one is flagged
+**5.07×** as often as a cytoplasmic one; the ratio survives expanding annotation coverage, adjusting for
+length, residue-only pooling, and an independent protein pool where it **grows**. Two metadata fields with
+no sequence information — localization stratum and log length — reach **AUROC 0.8096** on an analogous
+virulence task against the embedding's 0.9323, and add **+0.0007** on top of it. And the obvious
+mitigation fails: after a **provably exact** linear erasure of the localization axis, the ratio is still
+**4.79 [2.75, 9.29]**, because erasure equalizes class means while the screen fires on a tail.
 
 We close on a structural observation about evaluation rather than about protein models. Twice we
 diagnosed a limit, built the repair, and found the limit was on the other side of the comparison: both
@@ -260,9 +269,19 @@ linear score of the erased representation is **3.1e-06**, against **0.58** unera
 
 🔴 **`R` is 4.79 after it.** On a representation that is **provably free of a linear localization signal**
 on the rows the eraser was fitted to, a secreted benign protein is still flagged **4.79×** as often as a
-cytoplasmic one (control 5.70; **4.55** unwhitened, **4.95** on 35M). ⭐ **And `R` stays above 4.5 in every
-configuration tried** — INLP at 0 to 160 directions, LEACE with and without whitening, concept directions
-estimated from 200 to 1,664 labels, both arms.
+cytoplasmic one (control 5.70; **4.55** unwhitened, **4.95** on 35M).
+
+⚠️ **The honest interval on that 4.79 is [2.75, 9.29], not the ±0.17 a seed spread gives.** Cross-fitting
+the localization axis leaves only **73 and 98** extracellular rows to measure on, so row sampling dominates,
+and a bootstrap over rows as well as probe seeds is **19× wider** than the seed standard error this
+repository reports by default (**14×** on 35M; `docs/LEACE_ERASURE_PREREGISTRATION.md`). 🔒 **It still
+excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so "survives"
+is the point estimate's verdict and not the interval's.
+
+⭐ **Across every erasure configuration tried** — INLP at 0 to 160 directions, LEACE with and without
+whitening, concept directions from 200 to 1,664 labels, both arms — **`R` spans [3.35, 7.30] over 47
+measured values and never approaches 1.5.** ⚠️ **It is above 4.5 in every LEACE configuration (minimum
+4.55) but not in every INLP one**, where 14 of 47 values fall below 4.5.
 
 🔑 **The reason is that erasure equalizes class means while the screen fires on a tail.** Out of sample the
 guarantee does not transfer — erasure removes **29–53%** of the mean-based correlation, and a classifier

@@ -1,0 +1,46 @@
+{
+  "built": "2026-09-30 11:00:33",
+  "arm": "esm2_650M",
+  "seeds": 30,
+  "B": 4000,
+  "strata_per_fold": [
+    [
+      73,
+      317
+    ],
+    [
+      98,
+      280
+    ]
+  ],
+  "n_extracellular_measured": 171,
+  "published_stat_interval": {
+    "mean": 4.7906,
+    "ci": [
+      4.6216,
+      4.9597
+    ]
+  },
+  "seed_percentile_interval": {
+    "mean": 4.7906,
+    "ci": [
+      3.7489,
+      6.126
+    ]
+  },
+  "row_and_seed_interval": {
+    "mean": 5.0603,
+    "ci": [
+      2.7473,
+      9.2857
+    ]
+  },
+  "widths": {
+    "stat_se": 0.3381,
+    "seed_pct": 2.3771,
+    "row_seed": 6.5385
+  },
+  "widening_factor": 19.339,
+  "excludes_1_5": true,
+  "excludes_3_0": false
+}
