@@ -448,7 +448,20 @@ what later exposed that the same comparison was confounded by annotation provena
 🟢 **Criterion 14 is where the corrections log earns its place.** Baselines reported because they make the
 model look worse: amino-acid composition alone reaches **AUROC 0.754**; shuffled labels **0.506**; a probe
 trained on lab-strain provenance with the hazard label ignored reaches **0.818**, and the organism label
-agrees with the hazard label on only 53.4% of v2. A label-free typicality proxy — mean cosine to the
+agrees with the hazard label on only 53.4% of v2.
+
+⭐ **And one baseline aimed at the comparison the literature makes.** § 1.2 cites DeepVF at 0.896, DTVF at
+0.921 and DeepVIC at 0.954, and none of those papers reports what a model with **no sequence information**
+achieves. On an analogous task here — 778 VFDB proteins against 1,988 matched benign, five-fold
+cross-validated — **localization stratum plus log length reaches AUROC 0.8096**, against the ESM-2
+embedding's **0.9323** (`docs/METADATA_BASELINE_PREREGISTRATION.md`). 🔑 **And the two are not additive:
+metadata on top of the embedding adds +0.0007**, so those fields are not information the model lacks but a
+cheap approximation of something it already has. **A paper reporting 0.93 has not shown that 0.81 of it
+needed a protein language model.**
+
+⚠️ **This is not their benchmark and does not re-analyse their numbers** — their negatives were chosen by
+their own rules over different populations. **The claim is that a baseline of this kind is missing from
+that literature**, shown on a task of the same shape. A label-free typicality proxy — mean cosine to the
 benign pool's centroid — reaches **−0.746 against recovery at *p* = 0.0034** on the canonical arm, which
 we had not tested until a paper we had missed prompted it.
 

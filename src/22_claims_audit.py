@@ -139,7 +139,12 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-30 with the document. It retires study P's headline in its strong form and is
           # the only place holding the U-index's band-sensitivity range, without which that statistic
           # reads as far more stable than it is.
-          "docs/LENGTH_BAND_SENSITIVITY_PREREGISTRATION.md"]
+          "docs/LENGTH_BAND_SENSITIVITY_PREREGISTRATION.md",
+          # Added 2026-09-30 with the document. It holds the only baseline in this repository that bears
+          # on the published virulence-factor classifiers, together with the limitation that stops it
+          # becoming a claim about their numbers -- and the sub-chance shuffled floor that would
+          # otherwise read as leakage.
+          "docs/METADATA_BASELINE_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1773,6 +1778,46 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def metadata_baseline():
+    """How much of the virulence-factor task do two metadata features do? Most of it.
+
+    \u2b50 Localization stratum plus log length -- one UniProt field and one integer, no sequence
+    information -- reach AUROC 0.8096 against the ESM-2 embedding's 0.9323. And adding both together
+    gives 0.9330, so the metadata is not information the model lacks; it is a cheap approximation of
+    something it already has. Both numbers are pinned, because the floor alone reads as a critique of
+    the model and the +0.0007 reads as the opposite, and the pair is the actual finding.
+
+    \U0001f534 The shuffled-label floor is NOT 0.50 for this design -- 0.4455 over 20 shuffles, interval
+    excluding 0.50 -- and three controls at 0.5013, 0.5030 and 0.4990 establish the procedure is clean.
+    The cause is class dispersion: VFDB embeddings have median standardized norm 39.87 against the
+    benign 32.52. Pinned so nobody reads the sub-chance null as leakage.
+
+    \u26a0\ufe0f And pinned with `not_their_benchmark`, because the one thing this must not become is a
+    claim that DeepVF's or DeepVIC's reported numbers are inflated.
+    """
+    a = j("../results/metadata_baseline.json")
+    b = j("../results/metadata_baseline_esm2_35M.json")
+    if None in (a, b):
+        return None
+    return {
+        "n_positive": a["n_positive"], "n_negative": a["n_negative"],
+        "folds": a["folds"], "floors_met": a["floors_met"],
+        "metadata": {"650M": round(a["metadata_auroc"], 4), "35M": round(b["metadata_auroc"], 4)},
+        "esm2": {"650M": round(a["esm2_auroc"], 4), "35M": round(b["esm2_auroc"], 4)},
+        "increment": {"650M": round(a["increment"], 4), "35M": round(b["increment"], 4)},
+        # ⭐ the half that cuts the other way: metadata adds nothing the embedding lacks
+        "both": round(a["results"]["metadata_plus_esm2"]["auroc"], 4),
+        "metadata_adds_to_esm2": round(a["results"]["metadata_plus_esm2"]["auroc"]
+                                       - a["esm2_auroc"], 4),
+        # 🔴 the null is not 0.50, and that is the data rather than a leak
+        "shuffled": {"650M": round(a["results"]["shuffled_labels"]["auroc"], 4),
+                     "35M": round(b["results"]["shuffled_labels"]["auroc"], 4)},
+        "shuffled_reps": a["shuffled_reps"], "shuffled_covers_half": a["shuffled_ok"],
+        "band": a["band"], "band_agrees": a["band"] == b["band"],
+        "not_their_benchmark": a["not_their_benchmark"],
     }
 
 
@@ -4176,6 +4221,41 @@ CLAIMS = [
      {"docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md":
       "**Unannotated falls from 55.0% to 37.0%**, under the frozen 50%."},
      []),
+    ("two annotation fields reach 0.81 on the virulence task, and the embedding subsumes them",
+     metadata_baseline,
+     lambda v: v is None or (
+         v["n_positive"] == 778 and v["n_negative"] == 1988
+         and v["folds"] == 5 and v["floors_met"]
+         # ⭐ a metadata-only floor of 0.81, with no sequence information at all
+         and 0.78 < v["metadata"]["650M"] < 0.85
+         and v["metadata"]["650M"] == v["metadata"]["35M"]
+         # and the embedding above it on both arms, by about a tenth
+         and v["esm2"]["650M"] > 0.90 and v["esm2"]["35M"] > 0.88
+         and 0.08 < v["increment"]["650M"] < 0.15
+         and 0.08 < v["increment"]["35M"] < 0.15
+         # ⭐ metadata adds essentially nothing ON TOP of the embedding
+         and abs(v["metadata_adds_to_esm2"]) < 0.005
+         # 🔴 the shuffled floor is below 0.50 and its interval excludes it -- data, not a leak
+         and v["shuffled"]["650M"] < 0.48 and v["shuffled"]["35M"] < 0.48
+         and v["shuffled_reps"] == 20 and not v["shuffled_covers_half"]
+         and v["band_agrees"]
+         # ⚠️ and the limitation is carried in the artifact
+         and v["not_their_benchmark"]),
+     # 🔴 Both public surfaces carry the two-sided reading, so neither can keep the floor without the
+     # subsumption or the subsumption without the disclaimer. The manuscript pin is the increment
+     # sentence because that is the one a later edit would be tempted to soften.
+     {"docs/METADATA_BASELINE_PREREGISTRATION.md":
+      "are a cheap approximation of something it already has**, which is the more interesting reading and the",
+      "paper/MANUSCRIPT.md":
+      "metadata on top of the embedding adds +0.0007**, so those fields are not information the model lacks but a"},
+     # ⚠️ The floor is about a missing baseline in that literature, NOT about their reported numbers.
+     # 🔴 My first list here banned "their reported numbers are inflated" and FAILED THE GATE on the
+     # sentence that disclaims exactly that: "not that their reported numbers are inflated". A forbid
+     # written as the bare claim also matches its own negation, so every entry below is a phrasing
+     # that only a live claim can carry -- a subject plus an assertive verb, which a disclaimer of
+     # this kind does not produce.
+     ["so DeepVF's 0.896 is inflated", "the published AUROCs are overstated",
+      "this study re-analyses their benchmark"]),
     ("the length-U survives band removal but its index and size trend do not",
      length_band_sensitivity,
      lambda v: v is None or (

@@ -5774,3 +5774,84 @@ qualitatively** — "the trend should survive", "the index should be robust" —
 was derived from something already in the record**: a relationship that defeated an AUROC by being
 non-monotone is a positive quadratic by definition. **That is the fifth time this session the
 distinction has decided whether a prediction held.**
+
+---
+
+## 2026-09-30 (seventy-fifth entry) — Two metadata fields reach 0.81, and adding them to the embedding buys +0.0007
+
+🔴 **The literature this manuscript cites does not report a no-sequence baseline.** § 1.2 quotes DeepVF at
+0.896, DTVF at 0.921 and DeepVIC at 0.954. **None of those papers states what a model with no residues at
+all achieves on its own split.** Study W (`src/105_metadata_baseline.py`,
+`docs/METADATA_BASELINE_PREREGISTRATION.md`) asks that question on a task of the same shape here: 778 VFDB
+proteins against 1,988 length-matched benign, five-fold cross-validated, two features only — **localization
+stratum (study E's frozen rule) and log length**.
+
+### 🔴 The floor is 0.8096
+
+| | 650M | 35M |
+|---|---:|---:|
+| metadata only (2 features) | **0.8096** | **0.8096** |
+| ESM-2 embedding | 0.9323 | 0.9035 |
+| metadata **+** embedding | 0.9330 | 0.9042 |
+| increment of the embedding over metadata | +0.1227 | +0.0939 |
+| **increment of metadata over the embedding** | **+0.0007** | **+0.0007** |
+
+🔑 **The two numbers that matter are the last two rows, and they say opposite things about who is carrying
+what.** The embedding adds real signal over metadata — +0.12 and +0.09, and W-2's band held on the 650M
+arm. **But metadata adds +0.0007 over the embedding**, on both arms, four decimal places down. ⚠️ **So
+these fields are not information the model lacks. They are a cheap approximation of something it already
+has** — which is the more interesting reading of the same table, and the one that ties study W back to
+studies E and M: the localization gradient and the length-U are not artifacts bolted onto a sequence
+model, **they are visible in the model's own geometry**, and two columns of metadata recover 0.81 of it.
+
+🔒 **The claim this licenses is narrow and is stated that way in `paper/MANUSCRIPT.md` § 14**: a baseline
+of this kind is **missing from that literature**, shown on an analogous task. ⚠️ **It is not a re-analysis
+of their numbers** — their negatives came from their own rules over different populations — and the
+manuscript says so in the same paragraph.
+
+### 🔴 The shuffled-label null is not 0.50, and the guard was wrong twice
+
+Permuting labels gives **0.4455** (650M) and **0.4668** (35M) over 20 repetitions, with intervals that
+**exclude 0.50**. My first reading was that the procedure leaked. It does not:
+
+- random features at the same shapes and imbalance → **0.5013**
+- random features with a real class offset → **0.5030**
+- balanced classes → **0.4990**
+
+🔑 **The cause is class dispersion, and it is measurable.** Standardized over the pooled set, VFDB
+embeddings are more spread out: ‖z‖ median **39.87** against **32.52**, per-dimension SD **1.106** against
+**0.931**. Under permuted labels the fit lands on a high-leverage direction, and **the more dispersed class
+sits at one end of it systematically**, which puts the null below 0.50 rather than at it.
+
+⚠️ **So the guard failed for two independent reasons**: its tolerance (±0.03) was **tighter than its own
+estimator's spread**, and it was written against **0.50 when this design's null is not 0.50**. Neither
+threatens W-1 or W-2 — both sit far above either floor — **but a guard that fires on a correct result is
+the same failure mode as one that passes on a wrong one**, and this session has now hit that mode from both
+sides (entry 68's 94% false-pass rate, this entry's false alarm).
+
+### 🔒 Predictions: two of four
+
+✅ W-1 (0.78 – 0.85) → **0.8096**. ✅ W-2 (0.10 – 0.20) on the 650M arm (+0.1227), ❌ below it on 35M
+(+0.0939). ❌ **I expected the middle band and got the stronger one, on both arms.** ❌ The shuffled null
+missed its band — **and there the prediction was right about the data and wrong about the yardstick**.
+
+⚠️ **The pattern from entry 74 repeats.** W-1 was derived from something already in the record — studies E
+and M had both shown these two fields are strongly graded — **and it held**. W-2's band and the
+"middle-band" expectation were qualitative, **and both missed**. That is the sixth time this session the
+distinction between a prediction derived from a measurement and one reasoned about in prose has decided
+whether the prediction held.
+
+### 🔴 And the forbid list I wrote for this claim banned its own disclaimer
+
+Claim 114's first `forbid` entry was the bare phrase **"their reported numbers are inflated"**. The gate
+failed immediately — on `docs/METADATA_BASELINE_PREREGISTRATION.md` line 161, which reads **"not that their
+reported numbers are inflated"**. 🔑 **A forbid written as the claim also matches every sentence that
+denies it**, and the sentence most likely to contain the words is the disclaimer.
+
+🔒 The three replacements are phrasings **only a live claim can carry** — subject plus assertive verb —
+and all three were **null-calibrated**: pasted into a public document one at a time, each drives the audit
+to exit 1, and the manuscript pin does the same when a single digit of +0.0007 is changed. ⚠️ **That check
+is not optional any more.** Entry 68 found a self-built check with a **94% false-pass rate**, entry 73
+found an `assert ... or True`, and study W's own shuffled-label guard fired on a **correct** result. **Four
+guards in this session, four different ways of being wrong; the only thing that found any of them was
+running the guard against input it was supposed to reject.**
