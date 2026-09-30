@@ -132,6 +132,104 @@ reported as indicative in every arm.**
 
 ---
 
-## 9. Results
+## 9. Results — the guarantee is exact in-sample and transfers only partly
 
-*(to be appended after the run, append-only)*
+**Run 2026-09-30**, 30 seeds, two cross-fitted folds. `results/leace_erasure{,_esm2_35M,_nowhiten}.json`.
+
+| | 650M whitened | 650M **no whitening** | 35M whitened |
+|---|---:|---:|---:|
+| **Z-0** in-fold \|corr\| (tol 0.02) | **3.1e-06** ✅ | **1.5e-08** ✅ | **3.5e-06** ✅ |
+| the same check, unerased control | 0.580 / 0.572 | 0.580 / 0.572 | 0.529 / 0.526 |
+| **Z-0 out-of-fold \|corr\|** | **0.400 / 0.354** | 0.524 / 0.429 | **0.262 / 0.247** |
+| out-of-fold control | 0.562 / 0.597 | 0.562 / 0.597 | 0.517 / 0.525 |
+| **Z-0** unseen-row AUROC | 0.809 / 0.879 | 0.826 / 0.846 | 0.803 / 0.856 |
+| unseen-row control | 0.895 / 0.980 | 0.896 / 0.980 | 0.901 / 0.987 |
+| Z-0 band | ❌ does not generalize | ❌ | ❌ |
+| **Z-1** `R` (control) | **4.791** (5.695) | **4.546** (5.641) | **4.954** (5.808) |
+| **Z-2** ρ | 1.162 | 1.185 | 1.103 |
+| **Z-3** control ρ | 1.002 ✅ | 1.007 ✅ | 1.010 ✅ |
+| **Z-4** Δ | +0.051 | +0.056 | −0.190 |
+
+### 🟢 The guarantee is real, and the check can fail
+
+In-fold residual correlation is **3.1e-06** whitened and **1.5e-08** unwhitened — exact to numerical
+precision — while the same check on the unerased representation returns **0.53–0.58**. 🔒 **So Z-0's
+in-fold half is a working measurement, not a tautology.**
+
+### 🔴 And it transfers only partly, which is the finding
+
+Out-of-fold, erasure removes **29%** and **41%** of the mean-based correlation on 650M
+(0.562→0.400, 0.597→0.354) and **49%** and **53%** on 35M. **Unseen-row AUROC falls 0.90→0.81 and
+0.98→0.88.** ⚠️ **A provably exact linear erasure leaves a classifier refitted on unseen rows at 0.81.**
+
+🔑 **The decisive diagnostic is the out-of-fold correlation, and it rules out the interesting
+explanation.** If the residual separation were *not* mean-based — classes with equal means and different
+covariances — out-of-fold \|corr\| would be near zero while AUROC stayed high. **It is 0.25–0.52.** So the
+mean difference is still there out-of-fold: **the estimate did not transfer.**
+
+### 🔴 Whitening is not the amplifier, and the direction of the effect names the cause
+
+I expected whitening to amplify estimation error in low-variance directions. ❌ **Wrong**: whitened
+transfers **better** than unwhitened (0.400/0.354 against 0.524/0.429). 🔑 **What does track is dimension**
+— 35M (**480** dims) erases about half the out-of-fold correlation, 650M (**1,280** dims) about a third,
+with the same 619/2,708 labels.
+
+⚠️ **That points at estimating the concept direction, not at the erasure algorithm** — and it supersedes
+*both* earlier diagnoses: entry 77's "redundantly encoded" and entry 78's "INLP's known under-erasure".
+🔴 **It also rests on two dimension points, which is the inference that has missed repeatedly in this
+session.** § 10 tests it before it is asserted.
+
+### 🟢 Z-1 is the result that does not depend on any of that
+
+`R` = **4.79 / 4.55 / 4.95** against controls of **5.70 / 5.64 / 5.81**, so the ablation costs some of the
+gradient and **nowhere near all of it**. ⭐ **In-sample the representation is provably free of a linear
+localization signal, and the flag-rate ratio is still above 4.5.** 🔑 **That is the dissociation § 4
+predicted from three measurements, and it held.**
+
+⚠️ **Z-2's ρ of 1.10–1.19 is not an answer to Y-2**, because Z-0's out-of-fold half failed: a contrast that
+survives an erasure which did not transfer has not survived an erasure. 🔒 **Y-2 stays open**, and the
+artifacts carry `answers_Y2: false`.
+
+### 🔒 Predictions
+
+| | frozen | actual | |
+|---|---|---|---|
+| Z-0 in-fold \|corr\| ≤ 0.02 | | 3.1e-06 / 1.5e-08 / 3.5e-06 | ✅ |
+| Z-0 out-of-fold AUROC ≤ 0.55 | | **0.81 – 0.88** | ❌ |
+| **Z-1 `R` > 1.5, "quite possibly > 3.0"** | | **4.55 – 4.95** | ✅ **and beyond the hedge** |
+| Z-2 ρ ≥ 0.30 | | 1.10 – 1.19 | ⚠️ inside, uninterpretable |
+| Z-3 ρ_random ≥ 0.85 | | 1.002 – 1.010 | ✅ |
+| Z-4 \|Δ\| ≤ 0.20 | | +0.051, +0.056, −0.190 | ✅ all three, 35M barely |
+
+🔑 **Z-1 was derived from three measurements and held with room to spare. Z-0's second half was derived
+from a theorem — and the theorem is about the sample it was fitted on**, which § 3 said in its own words
+("which no theorem covers") and then predicted ≤ 0.55 anyway. ⚠️ **Eighth time: the prediction that came
+from measurements held, the one that came from an argument did not.**
+
+---
+
+## 10. Amendment 1 — frozen 2026-09-30, before the label curve was computed
+
+🔒 **The claim "it is the concept-direction estimate, not the algorithm" rests on two dimension points and
+is not asserted until tested.** If the cause is estimation error in the mean difference, then **holding
+dimension fixed and varying the number of labels must move the out-of-fold correlation monotonically.**
+
+- **Grid**: n_labels ∈ {200, 400, 800, 1600, all}, subsampled from the fitting fold at a fixed seed,
+  class balance preserved. Both arms. Whitened. 10 seeds for `R`.
+- **Reported at each n**: out-of-fold \|corr\|, unseen-row AUROC, and `R`.
+- **Read-off**, frozen: Spearman ρ between n and out-of-fold \|corr\| across the grid.
+
+| band | reading |
+|---|---|
+| **ρ ≤ −0.80 on both arms** | the obstacle is the concept-direction estimate |
+| −0.80 < ρ ≤ −0.40 | partly the estimate |
+| **ρ > −0.40** | ❌ not an estimation-error story; the earlier diagnoses are not superseded |
+
+🔒 **Prediction: ρ ≤ −0.80 on both arms, and the curve does not reach zero at the largest n.** Derived from
+the two facts in hand: the 480-dimension arm transfers better than the 1,280-dimension arm at equal labels,
+and the unwhitened variant — which has *less* noise amplification and *more* bias — transfers worse, so the
+binding constraint behaves like variance in the estimate rather than like a property of the geometry.
+
+⚠️ **If the curve is flat, the estimation-error account is wrong and this document says so** — and the
+reason it would matter is that a flat curve would mean more labels cannot fix it, which is a statement
+about the representation after all.

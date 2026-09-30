@@ -1,0 +1,94 @@
+{
+  "built": "2026-09-30 10:48:37",
+  "arm": "esm2_650M",
+  "dim": 1280,
+  "labels": "coverage",
+  "cov": "pool",
+  "seeds": 30,
+  "n_axis_labels": {
+    "extracellular": 619,
+    "intracellular": 2708
+  },
+  "n_vfdb_extracellular": {
+    "all": 264,
+    "non_hazardous": 42,
+    "partly_hazardous": 143,
+    "motility": 28
+  },
+  "floors_met": {
+    "all": true,
+    "non_hazardous": true,
+    "partly_hazardous": true,
+    "motility": false
+  },
+  "CA_original": 2.418,
+  "Z0_infold_corr": [
+    3.09e-06,
+    2.96e-06
+  ],
+  "Z0_infold_ok": true,
+  "Z0_infold_control": [
+    0.5802,
+    0.5717
+  ],
+  "whiten": true,
+  "Z0_outfold_corr": [
+    0.4002,
+    0.3539
+  ],
+  "Z0_outfold_control": [
+    0.5619,
+    0.597
+  ],
+  "Z0_unseen_auroc": [
+    0.8088,
+    0.8793
+  ],
+  "Z0_unseen_control": [
+    0.8954,
+    0.9804
+  ],
+  "Z0_generalized": false,
+  "Z0_band": "the erasure does not generalize either",
+  "Z1_R": {
+    "mean": 4.790616446235961,
+    "ci": [
+      4.621566096244577,
+      4.959666796227345
+    ]
+  },
+  "Z1_R_control": {
+    "mean": 5.694958756803779,
+    "ci": [
+      5.434568712612175,
+      5.955348800995384
+    ]
+  },
+  "Z2_CA": {
+    "mean": 2.6471344413833338,
+    "ci": [
+      2.5699388977095037,
+      2.724329985057164
+    ]
+  },
+  "Z3_CA": {
+    "mean": 2.4212146675511708,
+    "ci": [
+      2.361623610640183,
+      2.4808057244621584
+    ]
+  },
+  "Z1_band": "the gradient survives a provable mean-erasure",
+  "Z2_rho": 1.1616,
+  "Z3_rho": 1.0023,
+  "Z2_band": "membership survives localization erasure",
+  "Z3_control_clean": true,
+  "Z4_rho": {
+    "non_hazardous": 1.1809,
+    "partly_hazardous": 1.1302,
+    "motility": 1.3841
+  },
+  "Z4_delta": 0.0507,
+  "Z4_band": "no more hazard-shaped than what went in",
+  "answers_Y2": false
+}
