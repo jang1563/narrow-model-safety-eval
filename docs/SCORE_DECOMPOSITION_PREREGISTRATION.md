@@ -142,3 +142,27 @@ implied.
 ⚠️ **One number this did not predict**: 35M's observed U-index is **18.66**, more than twice 650M's.
 The length effect is **stronger on the smaller model**, which is unexplained and joins the standing
 question of why 35M behaves differently throughout this project.
+
+---
+
+## 🔴 Superseded on what the trend is in — 2026-09-30, entry 74
+
+This document reads its result as **"the length effect is a size trend"**.
+`docs/LENGTH_BAND_SENSITIVITY_PREREGISTRATION.md` removed the bands entirely — regressing the outcome on
+`log L` and `(log L)²`, which contains no boundaries — and **the trend does not survive**:
+
+| | 8M | 35M | 150M | 650M | ρ |
+|---|---:|---:|---:|---:|---:|
+| band-based **U-index** (this document) | 44.66 | 18.68 | 9.65 | 8.38 | **−1.00** |
+| band-free **curvature** | +0.284 | +0.212 | +0.244 | +0.329 | **+0.40** |
+
+🔑 **And this document's own observation reconciles them.** It found the U-index falls because the
+**trough rises** — the mid-band rate 0.36% → 1.69%, a factor of 4.7 — while the short band stays flat.
+**A ratio whose denominator grows shrinks even when the shape does not.**
+
+🔒 **So the correct statement is narrower than the one above**: the **U-index** falls with model size
+because its denominator rises; the **curvature** does not fall, and is positive on all four arms. The
+U-shape is real and band-free; **its trend with scale is a property of the statistic, not of the shape.**
+
+⚠️ **And the U-index is band-sensitive**: across six boundary grids on 650M it ranges **2.32 to 8.65**,
+falling below 3.0 at one of them. Every quotation of it carries that range from here on.

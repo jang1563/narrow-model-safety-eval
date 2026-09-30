@@ -5720,3 +5720,57 @@ annotated**, and the unannotated stratum is not in that ratio.
 fourth study in this sequence where guessing failed — and the difference from entry 66, where four of
 four predictions held, is that there the arithmetic ran forward from **measured rates** and here it ran
 forward from **composition** while ignoring that the rates within each stratum differ too.
+
+---
+
+## 2026-09-30 (seventy-fourth entry) — The length-U survives band removal; its index and its size trend do not
+
+The step-by-step review's last untested item: studies M, N, O and P all measure the length effect
+through residue cuts **chosen once in study M and reused four times without a sensitivity check**.
+
+🔑 **Perturbing the cuts is the weak test; removing them is the strong one.** A U-shape in length *is* a
+positive quadratic coefficient in a regression on `log L` and `(log L)²`, which contains no boundaries.
+
+| arm | dim | quadratic on the score | quadratic on the flag | U-index as published |
+|---|---:|---:|---:|---:|
+| esm2_8M | 320 | +5.499 | +0.284 | 54.38 |
+| esm2_35M | 480 | +5.622 | +0.212 | 24.54 |
+| esm2_150M | 640 | +3.884 | +0.244 | 11.66 |
+| esm2_650M | 1280 | +10.463 | +0.329 | 8.65 |
+
+### 🟢 The U-shape is real and band-free
+
+**Positive on all four arms**, on the score and on the scale-free flag alike. 🔒 **The curvature is in
+the data, not in the boundaries** — studies M, N and O stand on this count.
+
+### 🔴 Study P's size trend does not survive
+
+| | 8M | 35M | 150M | 650M | ρ |
+|---|---:|---:|---:|---:|---:|
+| band-based **U-index** (study P) | 44.66 | 18.68 | 9.65 | 8.38 | **−1.00** |
+| band-free **curvature** | +0.284 | +0.212 | +0.244 | +0.329 | **+0.40** |
+
+**ρ = +0.40 on both measures**, so the differing score scales across dimensions (√dim 17.9 → 35.8) do
+not explain it. 🔑 **And study P's own finding reconciles them**: it observed the U-index falls because
+the **trough rises** — the mid-band rate 0.36% → 1.69%, a factor of 4.7 — while the short band stays
+flat. **A ratio whose denominator grows shrinks even when the shape does not.**
+
+🔒 **So "the length effect is a size trend" is retired.** The U-**index** falls with model size because
+its denominator rises; the **curvature** does not fall. `paper/MANUSCRIPT.md` and the studies O and P
+preregistrations are amended in this commit.
+
+### 🔴 And the U-index is band-sensitive by a factor of 3.7
+
+650M across six frozen grids: **8.65** as published, 7.32 and 7.60 at ±50, 6.29 on quintiles, and
+**2.32** at +100 — one grid fell under the 100-protein floor and is excluded. **Range [2.32, 8.65]**, and
+at one boundary choice it drops **below 3.0**, the level study E's bands use to separate "a major
+driver" from "partial" for a related quantity. ⚠️ **The U-index is quoted with that range from here on.**
+
+### 🔒 Predictions: one of three
+
+U-1 held. ❌ **U-2 was predicted at ρ = −1.0 and came in at +0.40 — the wrong sign.** ❌ U-3 was predicted
+to stay above 3.0 everywhere and dips to 2.32. ⚠️ **Both misses were on things I reasoned about
+qualitatively** — "the trend should survive", "the index should be robust" — while **the one that held
+was derived from something already in the record**: a relationship that defeated an AUROC by being
+non-monotone is a positive quadratic by definition. **That is the fifth time this session the
+distinction has decided whether a prediction held.**

@@ -1,0 +1,119 @@
+{
+  "built": "2026-09-30 09:31:59",
+  "seeds": 30,
+  "n_intracellular": 2739,
+  "per_arm": {
+    "esm2_8M": {
+      "params": 8000000.0,
+      "dim": 320,
+      "quad_flag": 0.2843562601622095,
+      "quad_flag_ci": [
+        0.25507828670281896,
+        0.31363423362160003
+      ],
+      "quad_score": 5.499108335309789,
+      "quad_score_ci": [
+        4.72508930718333,
+        6.273127363436249
+      ],
+      "U_index_by_grid": {
+        "as published": 54.38395868541226,
+        "shift -100": null,
+        "shift -50": 38.049337647306395,
+        "shift +50": 24.848572320174753,
+        "shift +100": 10.012258498410368,
+        "quintiles": 18.963807785888083
+      },
+      "seconds": 1
+    },
+    "esm2_35M": {
+      "params": 35000000.0,
+      "dim": 480,
+      "quad_flag": 0.21162369522901273,
+      "quad_flag_ci": [
+        0.19255869974785633,
+        0.23068869071016912
+      ],
+      "quad_score": 5.622145450605491,
+      "quad_score_ci": [
+        4.61168699568506,
+        6.632603905525922
+      ],
+      "U_index_by_grid": {
+        "as published": 24.537650909512227,
+        "shift -100": null,
+        "shift -50": 18.474020268977657,
+        "shift +50": 16.06668326039523,
+        "shift +100": 4.889447399527185,
+        "quintiles": 15.76565202563189
+      },
+      "seconds": 1
+    },
+    "esm2_150M": {
+      "params": 150000000.0,
+      "dim": 640,
+      "quad_flag": 0.24446364672853532,
+      "quad_flag_ci": [
+        0.22236082067271948,
+        0.2665664727843512
+      ],
+      "quad_score": 3.8838687151617277,
+      "quad_score_ci": [
+        3.0429975021026525,
+        4.724739928220803
+      ],
+      "U_index_by_grid": {
+        "as published": 11.658280558141987,
+        "shift -100": null,
+        "shift -50": 8.909595663426604,
+        "shift +50": 6.560998552901667,
+        "shift +100": 1.7716019922502637,
+        "quintiles": 7.425238532756782
+      },
+      "seconds": 1
+    },
+    "esm2_650M": {
+      "params": 650000000.0,
+      "dim": 1280,
+      "quad_flag": 0.32871209900115544,
+      "quad_flag_ci": [
+        0.30541768908519096,
+        0.35200650891711993
+      ],
+      "quad_score": 10.462538265041166,
+      "quad_score_ci": [
+        9.767823679263548,
+        11.157252850818784
+      ],
+      "U_index_by_grid": {
+        "as published": 8.652876708522133,
+        "shift -100": null,
+        "shift -50": 7.320147807729648,
+        "shift +50": 7.603624663814975,
+        "shift +100": 2.3195021037374763,
+        "quintiles": 6.286558862872732
+      },
+      "seconds": 2
+    }
+  },
+  "U1_all_positive": true,
+  "U1_650M_positive": true,
+  "U1_verdict": "the U is not a cut-point artifact",
+  "U2_rho": 0.4,
+  "U2_perm_p": null,
+  "U2_verdict": "the trend was a band artifact",
+  "U3_650M_range": [
+    2.3195021037374763,
+    8.652876708522133
+  ],
+  "U3_650M_min_above_3": false,
+  "U3_grids": [
+    "as published",
+    "shift -100",
+    "shift -50",
+    "shift +50",
+    "shift +100",
+    "quintiles"
+  ],
+  "duplicate_quad": false
+}

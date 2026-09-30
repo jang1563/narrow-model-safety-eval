@@ -135,7 +135,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-30 with the document. It is the only place recording that a guard which has
           # failed four times is still unexplained after three candidates were tested, and the only
           # place where a frozen band label is contradicted by the study's own explained-fraction.
-          "docs/ANNOTATION_AVAILABILITY_PREREGISTRATION.md"]
+          "docs/ANNOTATION_AVAILABILITY_PREREGISTRATION.md",
+          # Added 2026-09-30 with the document. It retires study P's headline in its strong form and is
+          # the only place holding the U-index's band-sensitivity range, without which that statistic
+          # reads as far more stable than it is.
+          "docs/LENGTH_BAND_SENSITIVITY_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1735,6 +1739,40 @@ def annotation_availability():
         # 🟢 density refuted: near zero, and the sign flips between arms
         "knn_delta": {"650M": round(a["T3_delta"], 4), "35M": round(b["T3_delta"], 4)},
         "stratified": a["stratified"],
+    }
+
+
+def length_band_sensitivity():
+    """Is the length-U an artifact of where the bands were drawn? The shape is not; the index is.
+
+    \U0001f7e2 U-1: the quadratic coefficient on log-length is POSITIVE on all four arms, on the score
+    and on the scale-free flag alike, so the curvature is in the data rather than in the cut points.
+
+    \U0001f534 U-2: study P's size trend does NOT survive band removal. The band-based U-index gives
+    Spearman -1.00 against log parameters; the band-free curvature gives +0.40, on BOTH measures, so the
+    differing score scales across dimensions do not explain it. The two reconcile through study P's own
+    finding that the trough rises: a ratio whose denominator grows shrinks even when the shape does not.
+    Both rho values are pinned, because keeping only the first would restate a property of the statistic
+    as a property of the representation.
+
+    \U0001f534 U-3: the U-index ranges 2.32 to 8.65 across six boundary grids and falls below 3.0 at
+    one of them. The range is pinned so the index cannot be quoted bare again.
+    """
+    v = j("../results/length_band_sensitivity.json")
+    if v is None:
+        return None
+    arms = ["esm2_8M", "esm2_35M", "esm2_150M", "esm2_650M"]
+    return {
+        "n_intracellular": v["n_intracellular"],
+        "quad_score": {a: round(v["per_arm"][a]["quad_score"], 3) for a in arms},
+        "quad_flag": {a: round(v["per_arm"][a]["quad_flag"], 4) for a in arms},
+        "all_positive": v["U1_all_positive"], "U1_verdict": v["U1_verdict"],
+        # 🔴 the band-free trend, against study P's band-based -1.00
+        "U2_rho": v["U2_rho"], "U2_verdict": v["U2_verdict"],
+        "U3_range": [round(x, 2) for x in v["U3_650M_range"]],
+        "U3_min_above_3": v["U3_650M_min_above_3"],
+        "n_grids": len(v["U3_grids"]),
+        "duplicate_quad": v["duplicate_quad"],
     }
 
 
@@ -4137,6 +4175,28 @@ CLAIMS = [
          and v["matched_R"]["650M"] < 3.0 < v["matched_R"]["35M"]),
      {"docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md":
       "**Unannotated falls from 55.0% to 37.0%**, under the frozen 50%."},
+     []),
+    ("the length-U survives band removal but its index and size trend do not",
+     length_band_sensitivity,
+     lambda v: v is None or (
+         v["n_intracellular"] == 2739 and not v["duplicate_quad"]
+         # 🟢 U-1: curvature positive on every arm, on both the score and the scale-free flag
+         and v["all_positive"]
+         and all(x > 0 for x in v["quad_score"].values())
+         and all(x > 0 for x in v["quad_flag"].values())
+         and v["U1_verdict"] == "the U is not a cut-point artifact"
+         # 🔴 U-2: the band-free trend is POSITIVE where study P's band-based one was -1.00
+         and v["U2_rho"] > 0
+         and v["U2_verdict"] == "the trend was a band artifact"
+         # 🔴 U-3: the index spans a factor of more than three and dips under 3.0
+         and v["n_grids"] == 6
+         and not v["U3_min_above_3"]
+         and v["U3_range"][0] < 3.0 < v["U3_range"][1]
+         and v["U3_range"][1] / v["U3_range"][0] > 3.0),
+     {"docs/LENGTH_BAND_SENSITIVITY_PREREGISTRATION.md":
+      "\"the length effect is a size trend\" is wrong as stated; the correct statement is that the U-INDEX falls",
+      "paper/MANUSCRIPT.md":
+      "🔒 **So the U-index falls with scale; the curvature does not.**"},
      []),
     ("the availability gap is not length, not one score component, and not density",
      annotation_availability,

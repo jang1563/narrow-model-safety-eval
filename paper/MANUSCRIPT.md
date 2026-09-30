@@ -274,11 +274,20 @@ its median **inverts** it — the short band falls to **0.00%** and the mid band
 proteins nearer the virulence-factor direction, and a linear probe reads that as hazard** — a second
 population for which the nominal 5% is wrong, carried by a different mechanism than localization.
 
-🔴 **And the effect is a function of model size.** Running the same measurement on four ESM-2 arms
-spanning 80× in parameters gives a strictly monotone U-index — **44.66 → 18.68 → 9.65 → 8.38** for 8M,
-35M, 150M and 650M, Spearman **−1.00** against log parameters (`docs/SIZE_SCALING_PREREGISTRATION.md`).
-🔒 With four arms the smallest achievable one-tailed *p* is **0.0417**, which is what this returns, and
-the study was frozen saying so.
+🔴 **And the U-index is a function of model size, though the shape is not.** Running the same
+measurement on four ESM-2 arms spanning 80× in parameters gives a strictly monotone U-index —
+**44.66 → 18.68 → 9.65 → 8.38** for 8M, 35M, 150M and 650M, Spearman **−1.00** against log parameters
+(`docs/SIZE_SCALING_PREREGISTRATION.md`). 🔒 With four arms the smallest achievable one-tailed *p* is
+**0.0417**, which is what this returns.
+
+⚠️ **Removing the bands removes the trend.** Regressing the outcome on `log L` and `(log L)²` — which
+contains no boundaries — gives a **positive** quadratic coefficient on **all four arms**, so the
+curvature is in the data and not in the cut points; but its magnitude runs **+0.284, +0.212, +0.244,
++0.329**, Spearman **+0.40** (`docs/LENGTH_BAND_SENSITIVITY_PREREGISTRATION.md`). 🔑 **The two are
+reconciled by the mechanism above**: a ratio whose denominator grows shrinks even when the shape does
+not. 🔒 **So the U-index falls with scale; the curvature does not.** ⚠️ And the U-index is itself
+band-sensitive — across six boundary grids on 650M it ranges **2.32 to 8.65** — so it is quoted with
+that range.
 
 ⚠️ **It closes from below, which is the opposite of reassuring.** The short-band rate is **flat** across
 all four arms (12.69–16.13%); what rises is the **mid-band** rate, **0.36% → 1.69%**, a factor of 4.7.
