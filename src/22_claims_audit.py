@@ -5308,7 +5308,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 96"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 97"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

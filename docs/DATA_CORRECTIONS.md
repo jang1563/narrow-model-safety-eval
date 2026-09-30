@@ -7084,3 +7084,50 @@ anyway, seven entries later.**
 (**5.98%**), while the manuscript now leads with both — an inconsistency of presentation across entry
 points, recorded rather than fixed, because the README's figure is not wrong and a rewrite of its Key
 Results belongs with the internal-code pass entry 88 deferred.
+
+---
+
+## 2026-10-01 (ninety-third entry) — Review segment 12 of 12, tests: thirty-six selftests that nothing ran
+
+Segment 12 covers **the pytest leg of the three-way gate**. The suite was sound and small; what it did not
+cover was almost everything.
+
+### 🔴 12.1 The gate exercised five of 157 source modules
+
+**17** test functions, **48** parameterized cases, and between them they load
+`08_evaluation_report`, `09_negative_controls`, `10_fsi_temperature_sensitivity`, `16_screening_evasion`
+and `20_validate_results`. 🔴 **Not one study script.** Everything from `src/83` onward — provenance,
+localization, the joint decomposition, the metadata baseline, both erasures, the row-level interval, the
+paired member test — was outside the gate entirely.
+
+### 🔴 12.2 And thirty-six scripts carry a `--selftest` that nothing ran
+
+Every study from `src/84` onward plus several earlier ones has a `--selftest` flag, most of them written
+with the defect they were meant to catch named in a comment. 🔴 **No test, no script and no CI step
+invoked any of them.** 🟢 **All 36 pass**, in **142 seconds** — so this closed a rot path rather than
+fixing a break, and the rot path was wide: a selftest that is never run degrades to a comment.
+
+🔒 `tests/test_selftests.py` now runs all of them, **discovering the list by scanning for the flag** so a
+new study is covered the day it lands, with a floor of 36 that can only be raised. The suite goes from
+**48 to 85** cases. Null-calibrated by breaking `src/96`'s selftest: **pytest exit 1**, restored exit 0,
+both captured.
+
+### ⚠️ 12.3 The gate prints no test count, and I had been quoting one I never saw
+
+`pyproject.toml` sets `addopts = "--tb=short -q"`, and every invocation in this session added `-q` again.
+🔴 **Two `-q` suppress the summary line entirely**, so `pytest tests/ -q` prints progress dots and nothing
+else. ⚠️ **Every commit message in this session says "pytest 48 passed", and I never observed that number**
+— it came from context and was repeated twenty times. 🟢 **It was correct** (85 − 37 = 48), which is luck
+rather than method. The count is now read from the progress output until the flag duplication is removed.
+
+### ⚠️ 12.4 Two false alarms from my own tooling, in one segment
+
+- A test with **no `assert`** — `test_blastp_operational_failure_raises` — which uses `pytest.raises` and
+  is a real check. My scanner looked only for the keyword.
+- **All 36 selftests reported as failing**, because my runner used `timeout`, which macOS does not have.
+  🔴 **I very nearly wrote down "36 of 36 selftests fail."**
+
+🔑 **Four times in this review my own detector has been wrong** — the manifest-naming sweep, the
+trivial-predicate scan, the `timeout` runner and the assert scanner — **and every one of them failed
+loudly rather than quietly.** ⚠️ That is the direction to be grateful for and not the direction to rely
+on: a scanner that under-reports looks exactly like a clean result.
