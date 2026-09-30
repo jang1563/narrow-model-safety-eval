@@ -168,3 +168,25 @@ reported wherever the localization numbers appear.
 This is the fourth study in the sequence where guessing at a mechanism failed; the difference from
 study O is that there the arithmetic ran forward from *measured rates*, and here it ran forward from
 *composition* while ignoring that the rates within each stratum also differ.
+
+---
+
+## Amendment 2026-09-30 — the quantity this study explained did not need explaining
+
+🔴 **This study searched for the cause of a ratio whose denominator was wrong.** T-1, T-2 and T-3
+eliminated length (**≤ 10%**), both score factors, and embedding density (**zero**) as explanations of the
+unannotated-over-**pooled-annotated** rate ratio. Study X
+(`docs/AVAILABILITY_DENOMINATOR_PREREGISTRATION.md`) recomputes that ratio against **intracellular alone**
+and finds **parity**: 1.066 and 1.171 length-adjusted, AUROC 0.5226 and 0.5371 between the two groups,
+and an availability indicator worth at most **+0.0074** AUROC over localization class.
+
+🔒 **T-1, T-2 and T-3 are not retracted and their numbers are unchanged.** They are correct measurements
+whose target was mis-specified: they eliminated three causes of a gap that is a **comparison-class
+artifact**. ⚠️ **What is retracted is this document's framing** — the opening premise that "it sits
+underneath every localization number here" and the closing verdict that "the cause remains unknown".
+🔒 **The cause is known: the denominator pooled three classes spanning a factor of five.**
+
+🔑 **One result here gains value from the correction.** T-3 refuted the family-recognisability hypothesis
+with a density difference of **+0.0004 / −0.0007**, and § 5 had committed to qualifying the localization
+finding if it held. **That refutation still stands on its own**, independently of the denominator, because
+it compares embedding neighbourhoods and never touches the ratio.

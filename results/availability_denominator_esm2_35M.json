@@ -1,0 +1,90 @@
+{
+  "built": "2026-09-30 10:08:48",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "strata_n": {
+    "extracellular": 657,
+    "membrane": 537,
+    "intracellular": 2739,
+    "unannotated": 2314
+  },
+  "n_deciles_used": 10,
+  "verdict_eligible": true,
+  "X1_crude_vs_intracellular": {
+    "mean": 1.2495354401716938,
+    "ci": [
+      1.1816149481195197,
+      1.317455932223868
+    ]
+  },
+  "X1_mh_vs_intracellular": {
+    "mean": 1.171421244444067,
+    "ci": [
+      1.1095631087139892,
+      1.2332793801741448
+    ]
+  },
+  "X1_band": "unannotated is indistinguishable from intracellular",
+  "X1_in_guard_band": true,
+  "X1_in_tight_band": true,
+  "X2_auroc_localization_only": {
+    "mean": 0.6708516159817683,
+    "ci": [
+      0.6661412202078644,
+      0.6755620117556723
+    ]
+  },
+  "X2_auroc_plus_availability": {
+    "mean": 0.6782776438702126,
+    "ci": [
+      0.6709670122413834,
+      0.6855882754990418
+    ]
+  },
+  "X2_delta_auroc": 0.007426027888444264,
+  "X2_unannotated_coef": {
+    "mean": 0.15813193114499022,
+    "ci": [
+      0.10947462221215012,
+      0.2067892400778303
+    ]
+  },
+  "X2_band": "availability adds a little",
+  "X2_coef_in_band": true,
+  "X3_auroc_unannotated_vs_intracellular": {
+    "mean": 0.5370553072538059,
+    "ci": [
+      0.5308728059547768,
+      0.543237808552835
+    ]
+  },
+  "X3_band": "the probe does not separate them",
+  "X3_in_guard_band": true,
+  "X3_in_tight_band": true,
+  "X4_pooled_denominator": {
+    "mean": 0.5197288720245568,
+    "ci": [
+      0.5033284488385327,
+      0.5361292952105808
+    ]
+  },
+  "X4_pooled_rejected": true,
+  "X4_extracellular_vs_intracellular": {
+    "mean": 4.707005920723607,
+    "ci": [
+      4.441903192793087,
+      4.972108648654127
+    ]
+  },
+  "X4_extracellular_rejected": true,
+  "X4_shuffled_strata": {
+    "mean": 1.0240257338330918,
+    "ci": [
+      0.9846622809284138,
+      1.0633891867377698
+    ]
+  },
+  "X4_shuffled_accepted": true,
+  "X4_shuffled_obligation_was_misspecified": true,
+  "X4_guard_reportable": true
+}

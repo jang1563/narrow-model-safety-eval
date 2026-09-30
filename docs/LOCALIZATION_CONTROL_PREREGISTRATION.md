@@ -276,3 +276,30 @@ reference and are unchanged to four decimals.
 |---|---:|---:|
 | E-3, § 3 as written | 26.5% | **27.6%** |
 | E-3, study D's arithmetic | 22.1% | **23.0%** |
+
+---
+
+## Amendment 2026-09-30 — § 2.2's availability check had the wrong denominator
+
+🔴 **The check frozen in § 2.2 compares the unannotated flag rate to the *pooled* annotated rate.** That
+pool averages three classes this very document reports as differing by a factor of five, so the check
+measured the unannotated stratum against a **composition**, and it failed four times across two stratum
+rules and two arms: **0.41, 0.32, 0.48, 0.52**.
+
+Study X (`docs/AVAILABILITY_DENOMINATOR_PREREGISTRATION.md`, `src/106_availability_denominator.py`)
+re-reads it against **intracellular alone**. Length-adjusted over 10 deciles, the ratio is **1.066**
+(650M) and **1.171** (35M) — inside the frozen [0.67, 1.5] and inside a tighter [0.80, 1.25]. An
+availability indicator adds **+0.0025 / +0.0074** AUROC over localization class, with a coefficient that
+**flips sign between arms**, and the probe separates unannotated from length-matched intracellular at
+AUROC **0.5226 / 0.5371**.
+
+⚠️ **The reading above was already in this document and I did not follow it.** The note after the guard
+table says the unannotated rate "sits almost exactly on the intracellular rate (4.15%)" and calls it a
+reading rather than a demonstration. **It was the denominator, in plain sight, four failures and one whole
+study before anyone checked it.**
+
+🔒 **The check is amended for future runs**: the comparison class is **intracellular**, not pooled
+annotated. 🔒 **The four failing values stay in the record above, unedited** — they were correctly
+computed against a wrongly chosen baseline, and deleting them would hide the error rather than fix it.
+🔒 **The 50% ceiling is untouched and still breached**, and E-1 is unaffected either way: it contrasts
+extracellular against intracellular, **both annotated**, and the unannotated stratum is in neither term.

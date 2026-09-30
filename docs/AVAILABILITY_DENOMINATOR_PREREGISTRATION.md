@@ -152,4 +152,99 @@ the artifact must record that the new one **fails on input it should reject**:
 
 ## 8. Results
 
-*(to be appended after the run, append-only)*
+**Run 2026-09-30**, 30 seeds, both arms, `results/availability_denominator{,_esm2_35M}.json`. All 10 length
+deciles contributed on both arms, so both verdicts are eligible.
+
+### 🟢 X-1 — the ratio against intracellular is at parity
+
+| | 650M | 35M |
+|---|---:|---:|
+| crude unannotated / intracellular | 0.990 [0.956, 1.023] | 1.250 [1.182, 1.317] |
+| length-adjusted (Mantel–Haenszel, 10 deciles) | **1.066** [1.029, 1.104] | **1.171** [1.110, 1.233] |
+| in the guard's band [0.67, 1.50] | ✅ | ✅ |
+| in the tight band [0.80, 1.25] | ✅ | ✅ |
+
+🔒 **Both arms land in the tight band, which § 3 declined to predict.** The departure from parity falls
+from **0.518 → 0.066** on 650M and from **0.480 → 0.171** on 35M. ⚠️ **The two residuals have opposite
+signs** — 650M sits below parity, 35M above — which is stated rather than averaged, because a mean of a
+sign-flip is a number about nothing.
+
+### 🟡 X-2 — availability adds nothing on one arm and a little on the other
+
+| | 650M | 35M |
+|---|---:|---:|
+| AUROC, localization dummies only | 0.6674 | 0.6709 |
+| AUROC, plus the availability indicator | 0.6699 | 0.6783 |
+| **ΔAUROC** | **+0.0025** | **+0.0074** |
+| band | adds nothing | ⚠️ adds a little |
+| unannotated coefficient | **−0.043** [−0.077, −0.008] | **+0.158** [+0.109, +0.207] |
+
+❌ **The prediction was < 0.005 on both arms and the 35M arm returned +0.0074**, which is the second band
+up. 🔑 **But the coefficient is what settles the reading: it is negative on one arm and positive on the
+other**, both inside ±0.25, so the residual is not a stable availability effect in either direction — it
+is small, and it does not agree with itself across arms.
+
+⭐ **An unpreregistered number worth recording**: localization class alone predicts the probe's own flag at
+**AUROC 0.67**. That is not a band and is not scored; it is context for how much of this probe's behaviour
+three categorical labels already account for.
+
+### 🟢 X-3 — the test that could have failed, did not
+
+**AUROC of the probe score, unannotated against 1:1 length-matched intracellular**: **0.5226**
+[0.5188, 0.5265] on 650M and **0.5371** [0.5309, 0.5432] on 35M. 🔒 **Both inside the tight band [0.45,
+0.55], which § 5 explicitly declined to predict** on the grounds that agreement in one tail does not imply
+agreement of distributions.
+
+🔑 **It now does imply it, because the AUROC was measured and it is at chance.** ⚠️ The intervals exclude
+0.50 on both arms, so the separation is **non-zero and negligible** — the same distinction study W's
+shuffled null required, and it is stated the same way here.
+
+### 🟢 X-4 — the replacement guard rejects what it should and accepts what it should
+
+| fed | 650M | 35M | required | |
+|---|---:|---:|---|---|
+| pooled annotated denominator | 0.482 | 0.520 | reject | ✅ |
+| extracellular vs intracellular | 3.982 | 4.707 | reject | ✅ |
+| shuffled stratum assignment | 1.009 | 1.024 | **accept** | ✅ |
+
+### 🔴 Amendment — § 6.2's obligation was mis-specified, and the guard is not what changed
+
+§ 6.2 required the replacement guard to **fail** on shuffled strata. 🔴 **That is the wrong sign**, and it
+was caught writing the code rather than by running it: **shuffling destroys any real difference between
+the groups, so the ratio must go to 1 and a correct guard must pass.** Shuffling is a **positive** control
+here, not a rejection test, and the rejection test it was standing in for is the extracellular-against-
+intracellular row above, which the frozen document did not ask for and which was added.
+
+🔒 **The control was not bent to match the obligation. The obligation is recorded as wrong**, the artifact
+carries `X4_shuffled_obligation_was_misspecified: true`, and the run reports all three.
+
+### 🔒 Predictions: two and a half of three
+
+| | frozen | actual | |
+|---|---|---|---|
+| X-1 inside [0.67, 1.50], tight band declined | | **1.066 / 1.171**, both tight | ✅ and better |
+| X-2 ΔAUROC < 0.005, coefficient within ±0.25 | | +0.0025 / **+0.0074**; −0.043 / +0.158 | ❌ 35M band, ✅ coefficients |
+| X-3 inside [0.40, 0.60], tight band declined | | **0.5226 / 0.5371**, both tight | ✅ and better |
+
+🔑 **Both declined bands landed, and the one flat prediction missed.** The pattern from entries 73–75
+holds again: X-1 and X-3 were derived from measurements already in the record and were stated
+conservatively; X-2's threshold was reasoned about — "an indicator that re-labels part of a class whose
+rate it matches cannot add discrimination" — and 35M's rate does **not** match intracellular's as closely
+(crude 1.250), which the reasoning skipped over. **The argument was available before the run and I did not
+follow it through.**
+
+### 🔒 What this establishes, and what it does not
+
+**Establishes**: the availability check's four failures are a **denominator artifact**. Against
+intracellular, the ratio is at parity on both arms after length adjustment, an availability indicator adds
+at most 0.007 AUROC over localization, and the probe cannot separate the two groups at all. ⚠️ **The cause
+entry 73 could not find was not a cause. It was a comparison class.**
+
+**Does not establish** that the unannotated stratum *is* cytoplasmic — that is the § 2.1 reasoning, and it
+remains reasoning. What is measured is that **this probe treats the two identically**, which is what the
+guard needed to know and all the guard ever needed to know.
+
+⚠️ **This does not revive anything.** Study E's localization finding never used the unannotated stratum
+(it compares extracellular against intracellular, both annotated), and the three causes entry 73
+eliminated stay eliminated — they were eliminated as explanations of a quantity that turns out not to need
+one.
