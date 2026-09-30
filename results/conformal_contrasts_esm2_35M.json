@@ -1,0 +1,80 @@
+{
+  "built": "2026-09-30 14:16:56",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "alpha": 0.05,
+  "calibration_n": 484,
+  "conformal_k": [
+    24
+  ],
+  "n_benign": {
+    "extracellular": 171,
+    "intracellular": 597
+  },
+  "n_vfdb_extra": 264,
+  "quantile": {
+    "R": {
+      "mean": 5.42519,
+      "ci": [
+        5.09984,
+        5.75054
+      ]
+    },
+    "CA": {
+      "mean": 2.61728,
+      "ci": [
+        2.49499,
+        2.73957
+      ]
+    },
+    "fpr": {
+      "mean": 0.05165,
+      "ci": [
+        0.05165,
+        0.05165
+      ]
+    },
+    "thr": {
+      "mean": 0.94967,
+      "ci": [
+        0.9396,
+        0.95974
+      ]
+    }
+  },
+  "conformal": {
+    "R": {
+      "mean": 5.45902,
+      "ci": [
+        5.0922,
+        5.82584
+      ]
+    },
+    "CA": {
+      "mean": 2.66552,
+      "ci": [
+        2.53884,
+        2.79221
+      ]
+    },
+    "fpr": {
+      "mean": 0.04959,
+      "ci": [
+        0.04959,
+        0.04959
+      ]
+    },
+    "thr": {
+      "mean": 0.95642,
+      "ci": [
+        0.94765,
+        0.96519
+      ]
+    }
+  },
+  "rel_change_R_pct": 0.624,
+  "rel_change_CA_pct": 1.843,
+  "conformal_threshold_higher": true,
+  "conformal_fpr_lower": true,
+  "band": "the contrasts do not depend on the estimator"
+}

@@ -164,7 +164,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/EXTERNAL_VALIDATION_PREREGISTRATION.md",
           # Added 2026-09-30. It holds the truncation boundary, the bound that rules it out, and the
           # arm-inversion that stops the 700+ band's composition being a finding.
-          "docs/TRUNCATION_BAND_PREREGISTRATION.md"]
+          "docs/TRUNCATION_BAND_PREREGISTRATION.md",
+          # Added 2026-09-30. It holds the first use of the conformal operating point on a contrast, and
+          # the calibration-size explanation of why the FPR gap is large and the contrast gap is not.
+          "docs/CONFORMAL_CONTRAST_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1798,6 +1801,39 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def conformal_contrasts():
+    """The estimator src/48 calls "validated and never used" has now been used on the contrasts.
+
+    🔒 48 files threshold with np.quantile(s_cal, 0.95). On the studies' own 484-point fold the
+    conformal threshold is higher, its realized calibration FPR is 4.96% against 5.17%, and R moves 0.81%
+    and 0.62% while C/A moves 2.43% and 1.84%. Every verdict is unchanged.
+
+    ⭐ And C/A under np.quantile reproduces study K's published 2.418 and 2.617 to three decimals from
+    an independently written script -- not preregistered, reported as a reproduction.
+
+    🔑 The 7.87 / 5.98 FPR gap and the tiny contrast gap are the same fact at two calibration
+    sizes: k = 5 of 118 against k = 24 of 484. Pinned together, because the large gap alone reads as a
+    broken operating point and the small one alone reads as licence to ignore it.
+    """
+    a = j("../results/conformal_contrasts.json")
+    b = j("../results/conformal_contrasts_esm2_35M.json")
+    if None in (a, b):
+        return None
+    return {
+        "calibration_n": a["calibration_n"], "conformal_k": a["conformal_k"],
+        "rel_R": {"650M": a["rel_change_R_pct"], "35M": b["rel_change_R_pct"]},
+        "rel_CA": {"650M": a["rel_change_CA_pct"], "35M": b["rel_change_CA_pct"]},
+        "thr_higher": bool(a["conformal_threshold_higher"] and b["conformal_threshold_higher"]),
+        "fpr_lower": bool(a["conformal_fpr_lower"] and b["conformal_fpr_lower"]),
+        "fpr_q": round(a["quantile"]["fpr"]["mean"] * 100, 2),
+        "fpr_c": round(a["conformal"]["fpr"]["mean"] * 100, 2),
+        # ⭐ the unplanned reproduction of study K's published contrast
+        "CA_q": {"650M": round(a["quantile"]["CA"]["mean"], 3),
+                 "35M": round(b["quantile"]["CA"]["mean"], 3)},
+        "band": {"650M": a["band"], "35M": b["band"]},
     }
 
 
@@ -4924,6 +4960,26 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("the conformal operating point moves the headline contrasts by under 3%",
+     conformal_contrasts,
+     lambda v: v is None or (
+         v["calibration_n"] == 484 and v["conformal_k"] == [24]
+         # 🔒 the contrasts do not care, on both arms
+         and max(v["rel_R"].values()) < 5.0 and max(v["rel_CA"].values()) < 5.0
+         and all(x == "the contrasts do not depend on the estimator" for x in v["band"].values())
+         # 🔒 and the estimator behaves as its docstring says: higher threshold, FPR inside the budget
+         and v["thr_higher"] and v["fpr_lower"]
+         and v["fpr_c"] < 5.0 < v["fpr_q"]
+         # ⭐ the unplanned reproduction of study K's 2.418 / 2.617
+         and abs(v["CA_q"]["650M"] - 2.418) < 0.001
+         and abs(v["CA_q"]["35M"] - 2.617) < 0.001),
+     {"docs/CONFORMAL_CONTRAST_PREREGISTRATION.md":
+      "🔑 **Conformal lands inside the 5% budget and `np.quantile` does not** — the overshoot `src/48`'s docstring",
+      "paper/MANUSCRIPT.md":
+      "⚠️ **The two estimators are named because the abstract's two numbers use different ones**: 7.87% is"},
+     # ⚠️ the small contrast gap must not become licence to call the operating point validated
+     ["the operating point is validated for this design",
+      "np.quantile is equivalent to the conformal threshold"]),
     ("truncation is ruled out, the boundary drop is composition, and the band inverts by arm",
      truncation_band,
      lambda v: v is None or (
@@ -5068,7 +5124,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 90"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 91"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

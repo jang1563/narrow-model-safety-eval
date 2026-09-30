@@ -6725,3 +6725,72 @@ forbade the document's own conditional reading. 🔒 Replaced with assertion-onl
 ways**: three assertions fail the gate, the retraction phrasing passes. ⚠️ **Fourth time** — entries 76, 78,
 83 and this. **The rule is now explicit in the registry: a band label is a conditional, a claim is a
 predicate, and only predicates may be forbidden.**
+
+---
+
+## 2026-09-30 (eighty-seventh entry) — Review segment 3 of 12, probe and calibration: mostly clean, one mixed abstract
+
+Segment 3 covers **the probe, the operating point and the thresholds**. Five findings, and this is the
+first segment where most of what I looked for was already right.
+
+### 🟢 3.1 The probe really is the same probe
+
+**26** `clf()` definitions across `src/`, and every one is
+`make_pipeline(StandardScaler(), LogisticRegression(max_iter=5000, C=1.0))`. One omits `C=1.0` and gets it
+by default; one carries the docstring *"src/03b's pipeline, unchanged."* 🔒 **"The same probe" is literally
+true**, which is not what I expected to find across 153 scripts and 270 commits.
+
+### ⚠️ 3.2 The abstract's two headline numbers use different estimators
+
+*"at a nominal 5% false-positive budget the same probe returns **7.87%**"* is `np.quantile`.
+*"produces **605 alerts** … precision **1.2%**"* is **conformal**, which is 5.98%. 🔴 **A reader multiplying
+7.87% by 9,990 gets 786 alerts and a precision of 0.92%, not 605 and 1.2%.**
+
+🔒 **§ 10.8 discloses it** — its table column is headed *conformal FPR* — **and § 1 did not.** The abstract
+now names both estimators for both numbers. ⚠️ **The mixing is not systematically self-serving**: the worse
+FPR and the better precision, one each way.
+
+### 🟢 3.3 The estimator the code calls "validated and never used" has now been used
+
+`src/48`'s docstring: *"the estimator that was validated and never used"*, and *"`np.quantile` interpolates
+instead, which is why it misses nominal from below."* **48 files** threshold with `np.quantile`. No contrast
+in the paper had ever been recomputed at the conformal threshold. Now, on the studies' own **484**-point
+fold with conformal **k = 24**:
+
+| | threshold | realized calibration FPR | `R` | `C/A` |
+|---|---:|---:|---:|---:|
+| 650M `np.quantile` | 0.89525 | **5.17%** | 5.529 | 2.418 |
+| 650M conformal | 0.91498 | **4.96%** | 5.574 | 2.477 |
+| 35M `np.quantile` | 0.94967 | **5.17%** | 5.425 | 2.617 |
+| 35M conformal | 0.95642 | **4.96%** | 5.459 | 2.666 |
+
+🔒 `R` moves **0.81%** and **0.62%**; `C/A` moves **2.43%** and **1.84%**. **Every verdict is unchanged on
+both arms.** 🔑 And the estimator behaves as documented: **conformal lands inside the 5% budget at 4.96%
+and `np.quantile` does not, at 5.17%.**
+
+### 🔑 3.4 The large FPR gap and the small contrast gap are one fact at two sample sizes
+
+| calibration n | conformal rank | `np.quantile` rank | consequence |
+|---|---|---|---|
+| **118** — the published FPR table | 5th largest | ≈ 6.9th | **7.87% vs 5.98%** |
+| **484** — every study's fold | 24th largest | ≈ 25.5th | **0.6–2.4%** on the contrasts |
+
+🔒 So *"the probe overshoots its budget by 2.9 points"* and *"the contrasts do not care which estimator is
+used"* are both true and are not in tension. ⚠️ **Neither licenses calling the operating point validated for
+this design** — panel and pool are non-exchangeable with the calibration set, the guarantee is marginal, and
+claim 125 forbids that reading.
+
+### ⭐ 3.5 An unplanned reproduction
+
+`C/A` under `np.quantile` came out at **2.418** and **2.617** — **study K's published figures to three
+decimals**, from a script written today on a different code path, with study K's exclusions re-derived
+rather than imported. 🔒 **Not preregistered and reported as what it is**: a reproduction that had no reason
+to succeed if either implementation were wrong. ⚠️ **It is the first independent check of a headline
+contrast in this review**, and every other number I have verified this session came from re-reading the
+artifact that produced it.
+
+### 🔒 Predictions
+
+Both held on both arms, and both were **derived** rather than reasoned — from the order statistics in § 2
+and from the arithmetic that a ratio of two rates moving the same way absorbs most of a threshold shift.
+🔑 **Tenth prediction this session, and the pattern has not broken: derived held, reasoned missed.**

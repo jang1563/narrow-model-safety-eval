@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 90 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 91 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -10,13 +10,18 @@ claims. Section references without a document name are to `docs/MECHANISM_GENERA
 
 A protein-language-model embedding separates a curated hazard panel from its negatives at **AUROC
 0.974 ± 0.014**. Screened against 8,258 held-out benign proteins at a nominal 5% false-positive budget
-the same probe returns **7.87%**, and translated into a deployment of ten thousand sequences at a
-one-in-a-thousand hazard rate it produces **605 alerts of which about 7 are real — a precision of
-1.2%**. This paper is about the distance between those two numbers, and about what it takes to see it.
+the same probe returns **7.87%** with the interpolating `np.quantile` estimator and **5.98%** with the
+conformal one, and translated into a deployment of ten thousand sequences at a one-in-a-thousand hazard rate
+the conformal figure produces **605 alerts of which about 7 are real — a precision of
+1.2%**. ⚠️ **The two estimators are named because the abstract's two numbers use different ones**: 7.87% is
+the interpolating estimator and 605 alerts is the conformal one, so 7.87% × 9,990 gives 786 and not 605.
+🔒 The gap is a calibration-size effect — it is 2.9 points on the 118-point panel fold and **0.6–2.4%** on
+the 484-point fold every contrast in this paper uses, where the headline ratios are unchanged
+(`docs/CONFORMAL_CONTRAST_PREREGISTRATION.md`). This paper is about the distance between those two numbers, and about what it takes to see it.
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 90
+written because it caught something. The evidence is a **dated, append-only corrections log of 91
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
