@@ -7322,3 +7322,67 @@ the pin wrapped after *"set the"*, which is the **fifth** instance of that defec
 
 🔒 Claim 132 null-calibrated three ways — the quote weakened, the bullet moved out of first place, and an
 external-validation claim the paper does not have appended — **all three fail.**
+
+---
+
+## 2026-10-01 (ninety-eighth entry) — Coverage was raised three times and the largest remaining cost was never added up
+
+Asked why the matched population is small and whether raising it had been tried. 🔴 **The premise needed
+correcting in the project's favour, and then a real finding fell out of the correction.**
+
+### 🟢 98.1 It was raised, three times, each time preregistered
+
+- **Study H** reached VFDB through the **benign pool's build query**, which *excludes virulence-annotated
+  proteins* — so its population was VFDB records that had survived a filter designed to remove exactly
+  what the study was about.
+- **Study K** replaced that bridge with UniProt's ID-mapping service: **seven times the size**, and the
+  verdict moved **PARTIAL → SUPPORTED**. Its K-3 test says why — the **228** Virulence-keyword members the
+  pool query had excluded are flagged **19.2** and **15.2** points above the rest.
+- **Study L** raised localization annotation coverage from **45% to 66%** and reported the ceiling it
+  breached.
+
+🔒 **So coverage was a first-class quantity three times.** ⚠️ **What was never done is add up what the
+remaining rules cost.**
+
+### 🔴 98.2 The ledger, and one rule is most of the loss
+
+`docs/COVERAGE_LEDGER.md`. **4,218 VFDB records become 778 — 18.4%.**
+
+| | rows | share |
+|---|---:|---:|
+| reviewed Swiss-Prot hit | 966 | 22.9% |
+| ⭐ **unreviewed-only — excluded by the rule** | **2,295** | **54.4%** |
+| no UniProt hit at all | 957 | 22.7% |
+| non-circularity costs | 178 | buys no training-data leakage |
+| length-identity costs | 10 | buys no mapping error |
+
+🔑 **The reviewed-only rule alone is 54.4% of the loss. Spending it takes the mapped population from 966 to
+3,261 — 22.9% to 77.3%.** ⚠️ **`n_unreviewed_only` was written into `results/vfdb_uniprot_map.json` on
+2026-09-28, the day the rule was frozen, and no study has spent it.**
+
+🔒 **And it buys the least of the five**: the fields it protects — **length** and **organism** — are
+present on unreviewed entries too. The two cheap exclusions cost 178 and 10 and should stay.
+
+### ⚠️ 98.3 But it only grows the numerator
+
+`C/A` is **264 / 171**. The benign 171 is structural — the cell is restricted to Bacteria whose organism
+appears in VFDB's species list, which *is* the provenance match the contrast exists to hold fixed. 🔑 So
+spending the rule narrows study AC's honest interval **[1.904, 3.252]** by about **√3.4 on one side
+only**. ⚠️ **Growing the other side needs a second pool**, and one exists: the independent 11,301-protein
+draw would roughly double it.
+
+### 🔴 98.4 And it explains why the hazard axis has nowhere to come from
+
+**7 of 966** carry the **Toxin** keyword — 0.7%. Two frozen choices compose to produce it: `src/74` built
+the negative set from **non-Exotoxin** records, and reviewed-only then kept the best-curated fifth of what
+remained. ⚠️ **Both were right individually.** 🔒 A hazard axis has to come from the class-axis set's
+**102** Exotoxin representatives, the 80-protein panel, or an external regulatory list — **not from UniProt
+keywords on this population.**
+
+### 🔑 98.5 What the ledger says about the design
+
+**Five exclusions, each individually correct, compose to 18.4%.** ⚠️ **The project bought
+precision-of-definition with population five times and priced it once** — this session, when the honest
+intervals came out **8 to 12×** wider than the seed ones. 🔒 **The conclusion is not that a rule was wrong.
+It is that the next expansion can now be chosen by what it costs**, and the cheapest large one is the rule
+whose protected fields survive without it.

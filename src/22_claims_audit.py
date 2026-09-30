@@ -179,7 +179,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/HEADLINE_INTERVALS_PREREGISTRATION.md",
           # Added 2026-10-01. It separates the crude and length-adjusted localization verdicts, which
           # the paper had stated as one surviving the other.
-          "docs/ADJUSTED_INTERVALS_PREREGISTRATION.md"]
+          "docs/ADJUSTED_INTERVALS_PREREGISTRATION.md",
+          # Added 2026-10-01. It adds up what the frozen exclusions cost, which no document did, and
+          # locates 54.4% of the loss in one rule whose protected fields exist on the rows it excludes.
+          "docs/COVERAGE_LEDGER.md"]
 
 
 def j(p):
@@ -1813,6 +1816,46 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def coverage_ledger():
+    """What each frozen exclusion costs, added up for the first time.
+
+    🔴 4,218 VFDB records become 778 -- 18.4%. The reviewed-only rule alone costs 2,295 rows
+    (54.4%), and `n_unreviewed_only` was written into the mapping artifact on the day the rule was
+    frozen and never spent. The other two exclusions cost 178 and 10 and buy freedom from training-data
+    leakage and mapping error.
+
+    ⭐ And the hazard-label side explains why a hazard axis cannot come from UniProt on this
+    population: 7 of 966 carry the Toxin keyword, because the set was built from non-Exotoxin records
+    and then filtered to the best-curated fifth.
+
+    ⚠️ Pinned with the benign denominator, because C/A is 264/171 and spending the rule grows
+    only the numerator.
+    """
+    mp = j("../results/vfdb_uniprot_map.json")
+    sc = j("../results/matched_vfdb_scaleup.json")
+    lc = j("../results/localization_coverage.json")
+    if None in (mp, sc, lc):
+        return None
+    admitted = mp["n_admitted"]
+    return {
+        "admitted": admitted,
+        "reviewed": mp["n_mapped_reviewed"],
+        "unreviewed_only": mp["n_unreviewed_only"],
+        "no_hit": mp["n_no_hit"],
+        "kept": sc["n_kept"],
+        "kept_share_pct": round(sc["n_kept"] / admitted * 100, 1),
+        "rule_cost_pct": round(mp["n_unreviewed_only"] / admitted * 100, 1),
+        "reachable_pct": round((mp["n_mapped_reviewed"] + mp["n_unreviewed_only"]) / admitted * 100, 1),
+        "cheap_exclusions": [sc["n_dropped_circular"], sc["n_dropped_length"]],
+        "benign_denominator": sc["cell_n"]["B_extracellular"],
+        "vfdb_numerator": sc["cell_n"]["V_extracellular"],
+        "study_L_extracellular": lc["strata_n"]["extracellular"],
+        "toxin_keyword": mp["n_with_toxin_keyword"],
+        "virulence_keyword": mp["n_with_virulence_keyword"],
+        "parts_sum": mp["n_mapped_reviewed"] + mp["n_unreviewed_only"] + mp["n_no_hit"] == admitted,
     }
 
 
@@ -5227,6 +5270,26 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("the frozen exclusions cost 81.6% of the VFDB population, and one rule is 54.4% of it",
+     coverage_ledger,
+     lambda v: v is None or (
+         # 🔒 the three mapping outcomes must partition the admitted set, or the ledger does not add up
+         v["parts_sum"] and v["admitted"] == 4218
+         and v["reviewed"] == 966 and v["unreviewed_only"] == 2295 and v["no_hit"] == 957
+         # 🔴 18.4% survives, and one rule is more than half the loss
+         and v["kept"] == 778 and v["kept_share_pct"] == 18.4
+         and v["rule_cost_pct"] > 50.0 and v["reachable_pct"] > 75.0
+         # 🔒 the two cheap exclusions stay cheap: 178 and 10
+         and v["cheap_exclusions"] == [178, 10]
+         # ⚠️ C/A's denominator is the smaller half and the rule does not grow it
+         and v["benign_denominator"] == 171 and v["vfdb_numerator"] == 264
+         and v["benign_denominator"] < v["study_L_extracellular"]
+         # ⭐ and the hazard axis cannot come from UniProt keywords here
+         and v["toxin_keyword"] == 7 and v["virulence_keyword"] == 300),
+     {"docs/COVERAGE_LEDGER.md":
+      "🔑 **The reviewed-only rule alone costs 2,295 rows.** Spending it would take the mapped population from"},
+     # ⚠️ the ledger must not be read as a defect in the rules, nor the rule as free to drop
+     ["the exclusions were a mistake", "dropping the reviewed-only rule is free"]),
     ("the limitation that bounds every number is stated in the paper and not only in a preregistration",
      bounding_limitation_stated,
      lambda v: v is None or (
@@ -5512,7 +5575,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 101"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 102"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
