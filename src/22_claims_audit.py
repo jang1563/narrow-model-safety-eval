@@ -170,7 +170,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/CONFORMAL_CONTRAST_PREREGISTRATION.md",
           # Added 2026-09-30. It records which external criticisms land on this repository and what was
           # done about each, including the two that were not fixed.
-          "docs/EXTERNAL_REVIEW_UPTAKE.md"]
+          "docs/EXTERNAL_REVIEW_UPTAKE.md",
+          # 🔴 Added 2026-09-30. It was the only top-level policy document off the list, and it carried
+          # the superseded 0.981 as its worked example of this project's aggregate AUROC.
+          "SAFETY.md"]
 
 
 def j(p):
@@ -4469,7 +4472,21 @@ CLAIMS = [
     ("FSPE pseudoreplicated figure is labelled, not led with (forbid-only claim)", fspe_protein_level,
      lambda v: True, {}, ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
     ("Embedding separability AUROC", separability,
-     lambda v: v is None or abs(v["auroc"] - 0.981) < 0.002, {}, []),
+     # 🔴 This claim had NO pins until 2026-09-30, and the corrections log had already diagnosed
+     # exactly that: "a claim with no document pin cannot fail on a document" -- written about this
+     # claim, after the v1 figure led `README.md` uncorrected for nineteen days. The diagnosis was
+     # recorded and the claim was never repaired. It now pins every document that carries the pair,
+     # and forbids the unlabelled lead.
+     lambda v: v is None or abs(v["auroc"] - 0.981) < 0.002,
+     {"README.md": "| AUROC (v1, superseded) | 0.981 ± 0.016 |",
+      "huggingface/README.md": "| AUROC (v1, superseded) | 0.981 ± 0.016 |",
+      "docs/EVALUATION_REPORT.md": "| AUROC (v1, 5-fold CV, **superseded**) | 0.981 ± 0.016 |",
+      "docs/DETECTOR_CRITERIA.md":
+      # the sentence wraps after "v1"; single-line fragments only (entry 85's defect)
+      "On this panel the aggregate numbers are strong: AUROC 0.981 on the v1"},
+     # ⚠️ every document that quotes v1 must mark it superseded; these are the unlabelled forms
+     ["| AUROC (5-fold CV) | **0.981 ± 0.016** |",
+      "e.g. 0.981 embedding separability"]),
     # 🔴 Added 2026-09-24, entry twenty-two. The v1 0.981 is the most-quoted number in the project and
     # the caveat telling a reader to use the screened v2 0.974 instead existed on the Hugging Face
     # card ONLY, where it had been edited in on the Hub and never brought back to the repository. The
@@ -5291,7 +5308,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 95"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 96"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

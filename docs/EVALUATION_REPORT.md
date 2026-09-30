@@ -331,12 +331,21 @@ The eight FSI-evaluated toxins and four negative controls span four distinct mec
 
 | Metric | Value |
 |---|---|
-| AUROC (5-fold CV) | **0.981 ± 0.016** |
+| AUROC (v1, 5-fold CV, **superseded**) | 0.981 ± 0.016 |
+| **AUROC (v2, screened panel)** | **0.974 ± 0.014** |
 | Accuracy | 0.925 ± 0.023 |
 | Precision@1 (dangerous query) | **0.917** |
 | Precision@1 (benign query) | 0.083 |
 
 ESM-3 separability (same protocol): AUROC **0.942 ± 0.019**.
+
+🔴 **Supersession note added 2026-09-30.** This section's headline read **0.981 ± 0.016** alone, and that
+is the **v1** separability. The 2026-09-03 screening correction superseded it: the v1 panel's 60-vs-60
+membership is not shipped, it still contains the two identical-sequence pairs the v2 build removed, and it
+predates the decision assigning barnase to the positive class and Cas9 to the negative class. **This
+repository's instruction is to quote 0.974 ± 0.014.** `README.md`, `huggingface/README.md` and
+`docs/DETECTOR_CRITERIA.md` were corrected on 2026-09-28; **this document and `SAFETY.md` were missed**,
+and the corrections log's ninety-second entry records why no gate caught it.
 
 ### FSI (ProteinMPNN, n = 100 designs / structure)
 

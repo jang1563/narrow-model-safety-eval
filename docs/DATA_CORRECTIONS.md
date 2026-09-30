@@ -7026,3 +7026,61 @@ are cross-artifact consistency checks — *"every dated entry cited by a documen
 *"every annotation file covers every panel member"* — where there is no single sentence to pin, and that is
 the right design. 🟢 **90** claims carry no forbids, which is expected: a forbid is for a phrasing that has
 already gone wrong once.
+
+---
+
+## 2026-09-30 (ninety-second entry) — Review segment 11 of 12, the release surface: a diagnosis recorded and never acted on
+
+Segment 11 covers **the documents a reader actually opens**. One clean sweep, one finding, and the finding
+is that this log already contained its own diagnosis.
+
+### 🟢 11.1 Every file path a public document cites exists
+
+**544** references to `src/`, `docs/`, `results/`, `data/`, `tests/`, `paper/`, `huggingface/` files across
+**38** public documents, and **zero** point at something that is not there. 🔒 **No link rot**, in a
+repository of 153 scripts that has renamed files repeatedly.
+
+### 🔴 11.2 Two documents still led with the superseded separability figure
+
+The 2026-09-03 screening correction moved the quotable separability from **0.981 ± 0.016** (v1) to
+**0.974 ± 0.014** (v2, screened). `README.md`, `huggingface/README.md` and `docs/DETECTOR_CRITERIA.md` were
+corrected on 2026-09-28 and carry both rows with v1 marked superseded. 🔴 **Two were missed:**
+
+- **`docs/EVALUATION_REPORT.md`** — § 5, headed *"Headline Results (corrected panel, 2026-05)"*, showed
+  `| AUROC (5-fold CV) | **0.981 ± 0.016** |` and the document never mentioned 0.974. **17 claims pin this
+  document and none covered its headline.**
+- **`SAFETY.md`** — used *"e.g. 0.981 embedding separability"* as its worked example of this project's
+  aggregate AUROC, never mentioned 0.974, and was **the only top-level policy document not on the audited
+  surface at all.**
+
+🔒 Both now carry the pair with v1 marked superseded, and `SAFETY.md` is on the surface.
+
+### 🔴 11.3 And this log had already diagnosed exactly why no gate caught it
+
+From the entry written when `README.md` was found leading with 0.981 for nineteen days:
+
+> *"No gate could notice: the `Embedding separability AUROC` claim recomputed 0.981 from its artifact and
+> pinned it to **no document at all**, and a claim with no document pin cannot fail on a document."*
+
+🔴 **That claim still had no pins today.** It recomputed 0.9807, asserted it was ≈ 0.981, and connected it
+to nothing — so the same figure could sit unlabelled in any number of documents and the gate would keep
+printing OK. 🔑 **The diagnosis was correct, was written down, named the claim, and the claim was never
+repaired.** ⚠️ **Recording a defect is not fixing it**, and this is the clearest case of that distinction
+in the project.
+
+🔒 The claim now pins **four** documents — the two READMEs, the evaluation report and the criteria doc —
+and forbids the two unlabelled forms. Null-calibrated by stripping the supersession label from each of
+three documents in turn: **all three fail the gate.**
+
+### ⚠️ 11.4 And the pin wrapped, on the first try
+
+The `docs/DETECTOR_CRITERIA.md` pin spanned a line break and read absent. 🔒 **Fourth instance in this
+review** — entry 85 named it and the rule is single-line fragments only. **I wrote a two-line fragment
+anyway, seven entries later.**
+
+### 🔒 What else segment 11 checked
+
+⚠️ `README.md` quotes the interpolating false-positive rate (**7.9%**) and not the conformal one
+(**5.98%**), while the manuscript now leads with both — an inconsistency of presentation across entry
+points, recorded rather than fixed, because the README's figure is not wrong and a rewrite of its Key
+Results belongs with the internal-code pass entry 88 deferred.
