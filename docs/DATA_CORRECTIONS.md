@@ -5950,3 +5950,98 @@ each.
 space**. That space was reflex: an earlier claim needed one to carry the same document twice, and **here
 there was no duplicate to work around.** ⚠️ **The same habit, a different defect** — and the only reason
 it surfaced in seconds is that the gate distinguishes *absent document* from *missing sentence*.
+
+---
+
+## 2026-09-30 (seventy-seventh entry) — The mitigation does not work, and my gate said it did
+
+Nine studies decomposed the probe's score. 🔑 **None asked the constructive question**: with the
+localization axis removed from the representation, does VFDB membership survive, and is what survives any
+more hazard-shaped? Study Y (`docs/LOCALIZATION_NULLSPACE_PREREGISTRATION.md`,
+`src/107_localization_nullspace.py`, `src/108_localization_nullspace_curve.py`) asks it by iterative
+nullspace projection, cross-fitted so the rows that fit the axis never measure it.
+
+### 🔴 The frozen run's verdict is refused, and its own letter permitted it
+
+| | 650M | 35M |
+|---|---:|---:|
+| **Y-0** localization AUROC before → after | 0.998 → **0.544** | 0.998 → **0.497** |
+| Y-0's gate [≤ 0.55] | ✅ **met** | ✅ **met** |
+| **Y-0b** the same question on rows the axis never saw | **0.778** | **0.825** |
+| the random-ablation control, same measure | 0.958 | 0.967 |
+| **Y-1** `R` after projection (band ceiling 3.0) | **4.590** ❌ | **4.313** ❌ |
+| **Y-2** ρ (≥ 0.70 = "survives") | 1.160 | 1.318 |
+| **Y-3** control ρ (≥ 0.85 = clean) | 1.017 ✅ | 0.987 ✅ |
+
+⚠️ **Read literally: gate met, control clean, ρ above the top band. § 5's wording, "membership survives
+localization removal", was available.** 🔒 **It is refused, because localization was not removed.**
+
+🔑 **The mechanism is a stopping rule selecting on its own noise.** Y-0 halts at the **first** iteration
+where a held-out AUROC dips below 0.55, on an inner holdout of ~21 extracellular against ~75 intracellular
+rows — noise of about ±0.07. **A minimum over a noisy sequence is biased downward**, so the gate's final
+value is optimistic by construction. Y-0b, which is the same measurement on rows the stopping rule never
+touched, is **0.23 to 0.35 higher.**
+
+⚠️ **§ 8's first obligation keys on Y-0, and Y-0 passed.** The intent was that no survival claim be made
+unless localization was really removed, and **the intent is what was followed**. 🔒 That is recorded
+because the alternative — taking a verdict the letter allowed — would have been defensible on the frozen
+text and wrong.
+
+### 🟢 More labels ruled out the obvious explanation
+
+The keyword strata give only **171** extracellular rows, so directions are fitted on ~128 points in 1,280
+dimensions. Study L's strata give **619** and **2,708** — used for the **axis only**, every measured rate
+still on the keyword strata so 2.418 stays the comparator. 🔴 **Y-0b got worse: 0.778 → 0.890**, against a
+random-ablation control of 0.939. **Not a sample-size problem.**
+
+### 🔒 Y-5 — drop the stopping rule, and the answer is that the axis is not removable
+
+No stopping rule, a frozen k grid, nested directions from one pass, 10 seeds per point. Worse of the two
+folds' unseen-row AUROC:
+
+| k | 0 | 2 | 5 | 10 | 20 | 40 | 80 | 160 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| **650M** (1,280 dims) | 0.980 | 0.892 | 0.882 | 0.888 | 0.889 | 0.827 | **0.698** | 0.784 |
+| **35M** (480 dims) | 0.987 | 0.909 | 0.911 | 0.914 | 0.837 | 0.827 | **0.739** | — |
+
+🔴 **`k*` does not exist within the frozen d/4 cap on either arm.** Best **0.698** at k = 80 — **6.25% of
+the space** — against a gate of 0.55. ⚠️ **And the curve is not monotone**: 650M rises back to **0.784** at
+k = 160, because once the fitted directions are mostly the fitting fold's noise the projection is
+effectively random while still costing rank.
+
+🔴 **`R` never falls below 3.35 anywhere on either arm, and rises to 7.30** — higher than the 4.86 it
+started at. **ρ never falls below 0.86.** So ablation is not damaging the membership contrast; it is not
+touching the gradient either.
+
+### 🔒 What this establishes
+
+🔒 **Localization is not a removable direction in this representation.** It is redundantly encoded enough
+that projecting out **12.5%** of the dimensions leaves a classifier refitted on unseen rows at **0.70**.
+🔑 **The consequence is about mitigation and it is negative**: orthogonalizing this probe against
+localization does not work, and the reason is a property of the **representation**, not of the probe or of
+the fitting procedure. ⚠️ **Y-2 stays unanswered** — whether membership would survive genuine removal is
+**not decidable by this method**, and the manuscript says so rather than guessing.
+
+### 🔒 Predictions, and the seventh time the same distinction decided one
+
+Y-3's band was derived from study N's measured 2.1%-along-w perturbation: **held**. Y-1's was reasoned
+about: **missed, on both arms**. ⚠️ **And Y-1's miss was foreseeable from § 4's own sentence** — having
+written that a chance AUROC and a parity tail-rate are different claims, I predicted a band for `R` from a
+gate about AUROC anyway. 🔴 **Y-5's single scoreable prediction is the one § 10 flagged in advance as
+"reasoned, not derived" and warned would be the one to miss. It missed.** **Seven times this session; the
+first time the warning and the prediction were in the same sentence.**
+
+### ⚠️ Two defects fixed before the run rather than after
+
+🔴 **The control's gate was not the treatment's gate.** The first draft scored the control arm by
+projecting onto the **treatment's** first direction — a single-direction projection, not a refitted
+classifier's held-out AUROC — and printed both under one heading. **Two different quantities, one field
+name.** Fixed by making `loc_auroc` the single definition with three callers, and the treatment's own
+number is now re-derived through it and asserted identical.
+
+🔒 **And `--labels coverage` writes to its own artifact**, so the frozen keyword run stays the record of
+§ 2 instead of being overwritten by the amendment that questioned it.
+
+Claim 116 pins both documents, forbids three phrasings — two that would call this a fix, one that would
+answer Y-2 — and was null-calibrated on six wrong inputs: a fabricated `k*`, a monotone curve, a low `R`,
+a passing generalization flag, and both forbidden phrases pasted into a public document. All six fail.

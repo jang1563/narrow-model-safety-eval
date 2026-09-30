@@ -148,7 +148,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-30 with the document. It is the only place that resolves a guard this
           # repository reported as failed four times, and it carries the amendment saying its own
           # shuffled-control obligation was written with the wrong sign.
-          "docs/AVAILABILITY_DENOMINATOR_PREREGISTRATION.md"]
+          "docs/AVAILABILITY_DENOMINATOR_PREREGISTRATION.md",
+          # Added 2026-09-30 with the document. It holds the only tried-and-failed mitigation in this
+          # repository, the refusal of a verdict its own frozen letter permitted, and the reason the
+          # question it asked stays open.
+          "docs/LOCALIZATION_NULLSPACE_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1782,6 +1786,64 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def localization_nullspace():
+    """Can the localization axis be projected out? No, and the frozen gate said yes by mistake.
+
+    🔴 Study Y's gate stopped at the first iteration where a noisy inner-holdout AUROC crossed
+    0.55 -- a minimum over noise. It was MET on all four runs (0.497-0.545) while a classifier refitted
+    on rows the axis never saw still reached 0.778-0.890, and R stayed at 4.30-4.67 against a band
+    ceiling of 3.0. So the letter of the preregistration permitted "membership survives localization
+    removal" with rho 1.16-1.32 and a clean control, and that verdict is REFUSED.
+
+    ⭐ Y-5 dropped the stopping rule for a curve over a frozen k grid. No k reaches 0.55 within d/4:
+    the best is 0.698 at k=80 on 650M and 0.739 on 35M, and the 650M curve RISES again to 0.784 at
+    k=160. R never falls below 3.35 on either arm and reaches 7.30.
+
+    🔑 All of it is pinned together, because each half alone is misleading: the gate numbers
+    alone say the projection worked, and the curve alone does not show why the first design failed.
+
+    ⚠️ Forbidden: any sentence calling this a fix or a mitigation that works, and any claim that
+    membership survives -- the question is not decidable by this method and the artifacts say so.
+    """
+    a = j("../results/localization_nullspace.json")
+    b = j("../results/localization_nullspace_esm2_35M.json")
+    ca = j("../results/localization_nullspace_curve.json")
+    cb = j("../results/localization_nullspace_curve_esm2_35M.json")
+    if None in (a, b, ca, cb):
+        return None
+    worse = {"650M": [round(max(r["auroc"]), 4) for r in ca["curve"]],
+             "35M": [round(max(r["auroc"]), 4) for r in cb["curve"]]}
+    return {
+        # the frozen run: gate met, generalization failed, verdict refused
+        "gate_met": {"650M": a["Y0_gate_met"], "35M": b["Y0_gate_met"]},
+        "gate_after": {"650M": round(a["Y0_auroc_after"]["mean"], 4),
+                       "35M": round(b["Y0_auroc_after"]["mean"], 4)},
+        "generalized": {"650M": a["Y0b_generalized"], "35M": b["Y0b_generalized"]},
+        "measfold": {"650M": round(a["Y0b_auroc_measfold"]["mean"], 4),
+                     "35M": round(b["Y0b_auroc_measfold"]["mean"], 4)},
+        "measfold_control": {"650M": round(a["Y0b_auroc_measfold_control"]["mean"], 4),
+                             "35M": round(b["Y0b_auroc_measfold_control"]["mean"], 4)},
+        "R_frozen": {"650M": round(a["Y1_R_projected"]["mean"], 4),
+                     "35M": round(b["Y1_R_projected"]["mean"], 4)},
+        "rho_frozen": {"650M": a["Y2_rho"], "35M": b["Y2_rho"]},
+        "control_clean": {"650M": a["Y3_control_clean"], "35M": b["Y3_control_clean"]},
+        "verdict_eligible": {"650M": a["verdict_eligible"], "35M": b["verdict_eligible"]},
+        # ⭐ Y-5: no k* within the cap, and the curve is not monotone
+        "k_star": {"650M": ca["k_star"], "35M": cb["k_star"]},
+        "removable": {"650M": ca["removable_within_cap"], "35M": cb["removable_within_cap"]},
+        "min_auroc": {"650M": ca["min_auroc_reached"], "35M": cb["min_auroc_reached"]},
+        "grid": {"650M": ca["grid"], "35M": cb["grid"]},
+        "worse_fold_auroc": worse,
+        "monotone_650M": worse["650M"] == sorted(worse["650M"], reverse=True),
+        "R_min": {"650M": round(min(x for r in ca["curve"] for x in r["R"]), 4),
+                  "35M": round(min(x for r in cb["curve"] for x in r["R"]), 4)},
+        "R_max": {"650M": round(max(x for r in ca["curve"] for x in r["R"]), 4),
+                  "35M": round(max(x for r in cb["curve"] for x in r["R"]), 4)},
+        "rho_min": {"650M": round(min(x for r in ca["curve"] for x in r["rho"]), 4),
+                    "35M": round(min(x for r in cb["curve"] for x in r["rho"]), 4)},
     }
 
 
@@ -4399,6 +4461,40 @@ CLAIMS = [
      # ⚠️ the three eliminated causes are not revived and study T's numbers are not retracted
      ["study T's measurements were wrong", "the density result is retracted",
       "length explains the availability gap after all"]),
+    ("the localization axis is not linearly removable, and study Y's gate said otherwise",
+     localization_nullspace,
+     lambda v: v is None or (
+         # 🔴 the frozen gate was MET on both arms and the projection did NOT generalize
+         v["gate_met"]["650M"] and v["gate_met"]["35M"]
+         and v["gate_after"]["650M"] <= 0.55 and v["gate_after"]["35M"] <= 0.55
+         and not v["generalized"]["650M"] and not v["generalized"]["35M"]
+         and v["measfold"]["650M"] > 0.55 and v["measfold"]["35M"] > 0.55
+         # the random-ablation control stays near the unprojected level, which is the contrast
+         and v["measfold_control"]["650M"] > 0.95 and v["measfold_control"]["35M"] > 0.95
+         # ⚠️ rho exceeds the "survives" band on both arms and the verdict is refused anyway
+         and v["rho_frozen"]["650M"] > 0.70 and v["rho_frozen"]["35M"] > 0.70
+         and v["control_clean"]["650M"] and v["control_clean"]["35M"]
+         and not v["verdict_eligible"]["650M"] and not v["verdict_eligible"]["35M"]
+         # 🔴 Y-1 failed its widest band on both arms
+         and v["R_frozen"]["650M"] > 3.0 and v["R_frozen"]["35M"] > 3.0
+         # ⭐ Y-5: no k* within d/4, on either arm, and the grid reached at least 80
+         and v["k_star"]["650M"] is None and v["k_star"]["35M"] is None
+         and not v["removable"]["650M"] and not v["removable"]["35M"]
+         and v["min_auroc"]["650M"] > 0.55 and v["min_auroc"]["35M"] > 0.55
+         and max(v["grid"]["650M"]) >= 160 and max(v["grid"]["35M"]) >= 80
+         # 🔑 the curve is NOT monotone in k, which is the mechanism for the whole failure
+         and not v["monotone_650M"]
+         # and neither R nor rho is what ablation damages
+         and v["R_min"]["650M"] > 3.0 and v["R_min"]["35M"] > 3.0
+         and v["R_max"]["650M"] > v["R_frozen"]["650M"]
+         and v["rho_min"]["650M"] > 0.30 and v["rho_min"]["35M"] > 0.30),
+     {"docs/LOCALIZATION_NULLSPACE_PREREGISTRATION.md":
+      "🔒 **`k*` does not exist within the frozen d/4 cap on either arm.** The best value reached is **0.698** at",
+      "paper/MANUSCRIPT.md":
+      "representation.** ⚠️ **That makes the gradient harder to dismiss and it leaves one question open**:"},
+     # ⚠️ the two things this must never become: a working mitigation, or an answer to Y-2
+     ["orthogonalizing against localization fixes", "the projection repairs the probe",
+      "membership survives localization removal, so the probe"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
      independent_pool,
      lambda v: v is None or (

@@ -242,6 +242,19 @@ intracellular at AUROC **0.5226 / 0.5371** — chance
 cytoplasmic one, and `R` never used it**: it contrasts extracellular against intracellular, both
 annotated.
 
+⭐ **The obvious mitigation was tried, and it does not work.** If the probe reads localization, one could
+orthogonalize the representation against the localization axis and ask what is left. Iterative nullspace
+projection, with directions fitted on benign strata and cross-fitted so the rows that fit the axis never
+measure it, **does not remove it**: across a frozen grid up to **160 of 1,280 dimensions (12.5%)**, the
+best localization AUROC a classifier refitted on unseen rows reaches is **0.698**, against 0.980
+unprojected and a frozen target of 0.55. 🔴 **And `R` never falls below 3.35 on either arm** — at k = 80 it
+is **7.24**, *higher* than the 4.86 it started at (`docs/LOCALIZATION_NULLSPACE_PREREGISTRATION.md`).
+
+🔑 **So localization is not a removable direction here; it is encoded redundantly across the
+representation.** ⚠️ **That makes the gradient harder to dismiss and it leaves one question open**:
+whether VFDB membership would survive genuine removal of localization is **not decidable by this method**,
+and this paper does not claim it either way.
+
 ⚠️ **Length was the obvious alternative explanation, and adjusting for it costs about a quarter.**
 Pooling across ten length deciles gives a Mantel–Haenszel ratio of **3.98 [3.87, 4.09]** on 650M and
 **4.70 [4.44, 4.97]** on 35M against crude ratios of 5.18 and 5.86 — 🔒 **still above the frozen 3.0 on
