@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 100 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 101 corrections found
 
 > ⚠️ **SUPERSEDED 2026-09-30.** This file is a frozen partition of an earlier draft. `paper/MANUSCRIPT.md` is the live document, it has grown well past these sections, and it is the only one the claims audit reads. Kept for history; do not cite from it.
 
@@ -18,7 +18,7 @@ one-in-a-thousand hazard rate it produces **605 alerts of which about 7 are real
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 100
+written because it caught something. The evidence is a **dated, append-only corrections log of 101
 entries** in which a published number moved, including entries that retract our own findings.
 
 Three results matter beyond this panel.

@@ -7277,3 +7277,48 @@ check as unfalsifiable. 🔒 Recalibrated three ways — heading renamed away, t
 
 **Nothing scriptable.** The one remaining item is a **second annotator for the hazard taxonomy**, which
 § 7 states as a limitation and which no script can supply.
+
+---
+
+## 2026-10-01 (ninety-seventh entry) — The limitation that bounds every number was in a preregistration and not in the paper
+
+Asked to check whether anything here has been concluded too hastily. **One thing had**, and it is the
+largest of them: § 7 listed seven limitations and not the one that bounds the other six.
+
+### 🔴 97.1 The sentence that was never quoted
+
+`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md`, written 2026-09-04 before any external data was fetched:
+
+> *"Every result in this project is internal cross-validation on a panel built here, and that panel grew
+> from 91 to 100 to 154 negatives **in response to confounds the analysis itself found**. Each expansion
+> was principled and is documented, but the consequence is that **the final numbers sit on a panel shaped
+> by looking at intermediate results**. No amount of additional internal control fixes that; only a set
+> the project never touched can."*
+
+🔴 **The paper cited that document and never quoted the sentence.** § 7's seven bullets covered
+comparability, homology, the hazard taxonomy, competence boundaries, deployment readiness, what is being
+detected and corpus confounds — **not the panel's construction.** 🔒 It is now the **first** bullet, with
+the quote, and claim 132 requires it to stay first.
+
+### 🔒 97.2 What has actually been run against it, stated with the limitation
+
+- **An independent benign pool** drawn from the identical query with every pool-1 accession excluded:
+  11,301 proteins, 2,334 organisms, 32% species overlap. The localization gradient **grew** (10.24 and
+  11.77); the registration contrast **fell to partial** (1.59 and 1.63).
+- **An external class-axis test** on VFDB's 13 categories: *ρ* **+0.681**, then **uninterpretable** by a
+  frozen confound rule, then reinstated **for ordering only** at +0.375 and +0.411.
+- **A member-level external test**: **failed**, twice, one of those uninformative by its own criteria.
+
+⚠️ **No externally curated panel has reproduced the localization or the precision result.** 🔑 **The
+independent pool is a second draw from the same query, not a different curator's set**, and the paper now
+says which of the two it is in each place.
+
+### ⚠️ 97.3 And two mistakes of my own in writing this
+
+The loader's first version carried **literal newlines inside string literals** from a heredoc and left
+`src/22_claims_audit.py` **syntactically broken** — caught by `ruff` in the same breath, which is the
+first time this session the lint leg of the gate caught something the other two would have missed. And
+the pin wrapped after *"set the"*, which is the **fifth** instance of that defect in this review.
+
+🔒 Claim 132 null-calibrated three ways — the quote weakened, the bullet moved out of first place, and an
+external-validation claim the paper does not have appended — **all three fail.**

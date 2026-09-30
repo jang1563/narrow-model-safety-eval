@@ -1816,6 +1816,36 @@ def length_band_sensitivity():
     }
 
 
+def bounding_limitation_stated():
+    """The limitation that bounds every number here is in the paper, not only in a preregistration.
+
+    🔴 `docs/EXTERNAL_VALIDATION_PREREGISTRATION.md` says the panel "grew from 91 to 100 to 154
+    negatives in response to confounds the analysis itself found", so "the final numbers sit on a panel
+    shaped by looking at intermediate results". Until 2026-10-01 section 7 listed seven limitations and
+    not that one -- the paper cited the document and never quoted the sentence.
+
+    ⚠️ Pinned with what has been run against it, because the limitation alone reads as fatal and
+    the responses alone read as a fix: an independent pool from the identical query, and an external
+    class-axis test supported then ruled uninterpretable then reinstated for ordering only.
+    """
+    man = (ROOT / "paper/MANUSCRIPT.md").read_text()
+    pre = (ROOT / "docs/EXTERNAL_VALIDATION_PREREGISTRATION.md").read_text()
+    quote = "in response to confounds the analysis itself found"
+    return {
+        "in_preregistration": quote in pre,
+        "quoted_in_paper": quote in man,
+        # 🔒 single-line fragments only; the first version of these two carried real newlines from
+        # a heredoc and left the file syntactically broken.
+        "names_panel_growth": "to 100 to 154 negatives" in man,
+        "states_no_internal_fix": "No amount of additional internal control fixes that" in man,
+        "names_the_independent_pool": "independent benign pool" in man,
+        "names_the_external_ordering_limit": "for ordering only" in man,
+        "says_no_external_panel_reproduced": "No externally curated panel has ever" in man,
+        "is_first_limitation": man.find("Not measured on a panel the analysis never touched")
+                               < man.find("Not a better classifier"),
+    }
+
+
 def notation_precedes_use():
     """Every symbol the paper uses is defined before its first use, in one table.
 
@@ -5197,6 +5227,21 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("the limitation that bounds every number is stated in the paper and not only in a preregistration",
+     bounding_limitation_stated,
+     lambda v: v is None or (
+         v["in_preregistration"] and v["quoted_in_paper"]
+         and v["states_no_internal_fix"]
+         and v["names_the_independent_pool"] and v["names_the_external_ordering_limit"]
+         and v["says_no_external_panel_reproduced"]
+         # 🔒 and it leads section 7, because a limitation that bounds the others belongs first
+         and v["is_first_limitation"]),
+     {"paper/MANUSCRIPT.md":
+      # single-line fragment: the quote wraps after "set the"
+      "  project never touched can.\"* ⚠️ **What has since been run against that**: an independent benign pool"},
+     # ⚠️ the paper must not claim external reproduction it does not have
+     ["externally reproduced on a curated panel",
+      "the localization result has been externally validated"]),
     ("every symbol the paper uses is defined in one table before its first use",
      notation_precedes_use,
      lambda v: v is None or (
@@ -5467,7 +5512,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 100"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 101"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

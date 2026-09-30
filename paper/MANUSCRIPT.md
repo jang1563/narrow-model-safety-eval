@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 100 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 101 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 100
+written because it caught something. The evidence is a **dated, append-only corrections log of 101
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -867,6 +867,19 @@ the diagnosis was in the record before the repair was built; both times it named
 
 ## 7. What this does not claim
 
+- 🔴 **Not measured on a panel the analysis never touched, and this is the limitation that bounds every
+  other number here.** `docs/EXTERNAL_VALIDATION_PREREGISTRATION.md` states it in its own words: *"Every
+  result in this project is internal cross-validation on a panel built here, and that panel grew from 91
+  to 100 to 154 negatives **in response to confounds the analysis itself found**. Each expansion was
+  principled and is documented, but the consequence is that the final numbers sit on a panel shaped by
+  looking at intermediate results. No amount of additional internal control fixes that; only a set the
+  project never touched can."* ⚠️ **What has since been run against that**: an independent benign pool
+  drawn from the identical query with every pool-1 accession excluded, where the localization gradient
+  **grew** and the registration contrast fell to partial; and an external class-axis test on VFDB's 13
+  categories, supported at *ρ* +0.681, ruled uninterpretable by a frozen confound rule, and reinstated
+  **for ordering only** by the organism-stratified follow-up. 🔒 **No externally curated panel has ever
+  reproduced the localization or precision results**, and the member-level margin test that was tried
+  externally **failed**.
 - **Not a better classifier.** DeepVIC reports AUROC 0.954 on a 13,384-sequence holdout from 33,456 VFs.
   Our figures are on a self-built panel of 234 or 445 and are **not comparable**.
 - **Not novel on homology control.** Homology-clustered evaluation is established practice.
@@ -957,7 +970,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**131 claims** and fails if any number in a public document drifts from the artifact that produced
+**132 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and
