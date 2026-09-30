@@ -1816,6 +1816,48 @@ def length_band_sensitivity():
     }
 
 
+def notation_precedes_use():
+    """Every symbol the paper uses is defined before its first use, in one table.
+
+    🔴 There was no notation table until 2026-10-01, and `R`, `C/A`, `D/B`, `B-1` and `A1` each
+    appeared first inside a results table with no definition anywhere. Reviewer S4zR's criticism of a
+    different paper -- define abbreviations before use, drop internal experiment codes -- landed here,
+    though far more lightly than entry 88 claimed: the manuscript uses eight such labels, not "almost
+    entirely" as that entry said.
+
+    ⚠️ The check is positional, not cosmetic: the table's line must come before the first use of
+    every symbol outside it, so adding a symbol to the prose above the table fails the gate.
+    """
+    t = (ROOT / "paper/MANUSCRIPT.md").read_text()
+    tab = t.find("### Notation")
+    if tab < 0:
+        return {"table": False}
+    end = t.find("\n\n\U0001f534", tab)
+    end = end if end > tab else tab + 2600
+    body = t[tab:end]
+    out = {"table": True, "table_line": t[:tab].count("\n") + 1, "defined": {}, "before_use": {}}
+    # 🔴 `margin` is a WORD, not a symbol: the abstract defines it inline at its first use, which is
+    # what the criterion asks for. Requiring it to appear after the table failed the claim on its first
+    # run and would have forced the abstract to stop defining it. Symbols need the table; words need a
+    # definition at first use, and the two are checked separately.
+    symbols = ("`R`", "`R_MH`", "`C/A`", "`D/B`", "B-1", "A1")
+    for code in symbols + ("margin",):
+        out["defined"][code] = code in body
+        i = t.find(code)
+        out["before_use"][code] = bool(i < 0 or i >= tab)
+    out["all_defined"] = all(out["defined"].values())
+    out["all_before_use"] = all(out["before_use"][c] for c in symbols)
+    # the word's inline definition, in the sentence that first uses it
+    mi = t.find("margin")
+    out["margin_defined_inline"] = bool(
+        mi >= 0 and "nearest other-class hazard minus nearest negative" in t[mi:mi + 400])
+    out["study_letters_glossed"] = all(
+        x in body for x in ("localization control", "matched VFDB", "localization coverage",
+                            "length adjustment"))
+    out["panels_glossed"] = "149/296" in body and "80/154" in body
+    return out
+
+
 def adjusted_intervals():
     """The length-adjusted ratio does not clear its band on an honest interval; the crude one does.
 
@@ -5155,6 +5197,16 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("every symbol the paper uses is defined in one table before its first use",
+     notation_precedes_use,
+     lambda v: v is None or (
+         v["table"] and v["all_defined"] and v["all_before_use"]
+         and v["margin_defined_inline"]
+         and v["study_letters_glossed"] and v["panels_glossed"]),
+     {"paper/MANUSCRIPT.md":
+      "⚠️ **The study letters are file labels, not a taxonomy.** Each names the document that froze its"},
+     # ⚠️ entry 88 said the paper was written almost entirely in internal codes; it uses eight labels
+     ["written almost entirely in internal codes"]),
     ("the length-adjusted ratio crosses its band on honest intervals while the crude one holds",
      adjusted_intervals,
      lambda v: v is None or (
@@ -5415,7 +5467,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 99"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 100"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

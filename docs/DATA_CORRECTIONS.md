@@ -7223,3 +7223,57 @@ paper's **0.692** and an artifact's **1.0087** that turned out to be the correct
 superseded name-based one, which the manuscript explains two paragraphs later. 🔑 **Every one of the five
 resolved toward "the project is fine", and every one was caught by reading the thing rather than the
 summary of it.**
+
+---
+
+## 2026-10-01 (ninety-sixth entry) — The internal-code debt was small, and entry 88 overstated it
+
+Entry 88 recorded reviewer S4zR's criticism of a **different** paper — *define abbreviations before use,
+remove internal experiment codes* — as landing "squarely" here, and called this manuscript *"written
+almost entirely in them"*, deferring the fix as editorial debt across 36 documents and 130 claims.
+
+### 🔴 96.1 That was an overstatement, measured
+
+Counted in `paper/MANUSCRIPT.md`:
+
+| code | uses | distinct |
+|---|---:|---:|
+| `study <letter>` | **3** | K, L, M |
+| `` `R` `` | 10 | 1 |
+| `` `C/A` `` | 3 | 1 |
+| `` `D/B` `` | 1 | 1 |
+| `B-1` | 3 | 1 |
+| `A1` | 1 | 1 |
+
+🔑 **Eight labels, twenty-one uses.** ⚠️ **I asserted the paper's style from the corrections log's style**
+— the log *is* written almost entirely in internal codes — **and never counted the paper.** 🔒 A rename
+across 36 documents was never the right fix, and the actual fix is one table.
+
+### 🔴 96.2 But none of them was defined anywhere, and the check for that was also wrong
+
+`R`, `R_MH`, `C/A`, `D/B`, `B-1` and `A1` each appeared **first inside a results table with no definition
+in the document at all**. ⚠️ **My scan for an existing glossary returned "present"** because the regex for
+*notation* matched **"an·notation"** — a word this paper uses 30 times. 🔑 **Sixth first reading wrong in
+this review, and caught the same way as the other five: by looking at the hit instead of the count.**
+
+🔒 A **Notation** table now sits at § 3, before the first use of every symbol, defining the six symbols,
+the three panel builds, the four study letters by the document that froze each, and the two numbered
+hypotheses. Claim 131 checks it **positionally** — the table's offset must precede every symbol's first
+occurrence — so putting a symbol in the prose above it fails the gate.
+
+### ⚠️ 96.3 And symbols are not words
+
+The claim failed on its first run over **`margin`**, which the abstract defines inline at its first use —
+*"nearest other-class hazard minus nearest negative in embedding space"* — which is exactly what the
+criterion asks for. 🔴 **Requiring it after the table would have forced the abstract to stop defining it.**
+🔒 Symbols are checked against the table; the one word is checked against its inline definition.
+
+⚠️ **And my first calibration of that claim was weak**: renaming the heading to *"### Notation REMOVED"*
+left the anchor `### Notation` matching as a prefix, so the gate passed and I nearly recorded a working
+check as unfalsifiable. 🔒 Recalibrated three ways — heading renamed away, table deleted entirely,
+`margin`'s inline definition removed — **all three fail.**
+
+### 🔒 What is left of the debt
+
+**Nothing scriptable.** The one remaining item is a **second annotator for the hazard taxonomy**, which
+§ 7 states as a limitation and which no script can supply.

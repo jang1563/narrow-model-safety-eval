@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 99 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 100 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 99
+written because it caught something. The evidence is a **dated, append-only corrections log of 100
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -306,6 +306,25 @@ pathogen proteins from benign housekeeping ones**. ⚠️ It does not say the pr
 these proteins are not benign in any operational sense — but it does say the 5% budget is not met against
 them, and that a false-positive rate quoted against housekeeping proteins **does not transfer to the
 population a screen would actually meet**.
+
+### Notation
+
+Every symbol and short label used below, in one place, because each one is introduced in a table
+elsewhere and none was defined before its first use:
+
+| | what it is |
+|---|---|
+| **`R`** | extracellular over intracellular flag rate, among **benign** proteins. The localization gradient. Band frozen at ≥ 3.0 for "a major driver" |
+| **`R_MH`** | the same ratio pooled over ten length deciles by Mantel–Haenszel — `R` with length held fixed |
+| **`C/A`** | VFDB-extracellular over benign-extracellular flag rate. The registration contrast, with provenance and localization held fixed by stratification. Bands: ≥ 2.0 supported, ≥ 1.5 partial |
+| **`D/B`** | the same contrast inside the **intracellular** stratum, where neither secretion nor surface exposure can be doing the work |
+| **margin** | for a class *C*, the mean over its members of (max cosine to a hazard outside *C* − max cosine to any negative). Computable before *C* is trained on |
+| **panels v1 / v2 / v3** | the three internal panel builds: 71/62, **80/154**, **149/296** hazard/benign proteins. v2 → v3 is strictly nested; v1 is superseded and is not quoted here |
+| **studies E, K, L, M** | the preregistered confound studies, named by the file that froze each: **E** localization control, **K** matched VFDB at scale, **L** localization coverage, **M** length adjustment |
+| **A1, B-1** | numbered hypotheses inside a preregistration — **A1** the hard-negative test of criterion 1, **B-1** the external class-axis test's primary Spearman |
+
+⚠️ **The study letters are file labels, not a taxonomy.** Each names the document that froze its
+protocol before the run, and the document is cited wherever its number is used.
 
 🔴 **And two controls have since measured how much of that separation is not about virulence at all.**
 Both hold the probe and its calibration fixed and vary only what the proteins are
@@ -938,7 +957,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**130 claims** and fails if any number in a public document drifts from the artifact that produced
+**131 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and
