@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 102 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 103 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 102
+written because it caught something. The evidence is a **dated, append-only corrections log of 103
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -584,7 +584,21 @@ intervals*.
 **[1.931, 3.938]** — **8.5× and 8.2× wider**, and **both cross the 2.0 band**
 (`docs/HEADLINE_INTERVALS_PREREGISTRATION.md`). 🔒 **Study K's verdict on its own panel is therefore
 partial, not supported** — which is where the independent pool had already put it, at 1.59 and 1.63.
-⚠️ **The point estimates do not move; only the intervals do.** 🔑 **The adverse finding survives the same
+⚠️ **The point estimates do not move; only the intervals do.**
+
+🔒 **And that verdict has since been tested on 2.7× the population rather than left on the interval.**
+Dropping the reviewed-only requirement on the VFDB side takes the numerator from **264 to 703**, and
+pooling the independent benign draw takes the denominator from **171 to 301**
+(`docs/SPENT_RULE_PREREGISTRATION.md`). `C/A` becomes **2.106** [1.772, 2.541] and **2.277**
+[1.821, 3.223] — **partial on both arms, confirmed rather than overturned**, and above the frozen
+retraction threshold of 1.2.
+
+⭐ **The two expansions are informative in opposite ways.** Expanding the VFDB side 2.7× moves the point
+estimate by **0.009** and **0.049** — **whether a VFDB protein has a curated Swiss-Prot entry does not
+predict whether this probe flags it**, so a rule that cost **54.4%** of the population bought nothing
+here. Pooling a second benign draw moves it by **0.30 on both arms**, between 6× and 33× as much.
+🔑 **The denominator is the lever**, which is the conclusion the field reached independently when
+negative-set choice alone swung AUPRC from 0.62 to 0.87 (§ 1.2). 🔑 **The adverse finding survives the same
 treatment**: `R` = 5.53 and 5.43 with honest intervals **[3.714, 8.534]** and **[3.242, 9.839]**, clearing
 the frozen 3.0 on both arms.
 
@@ -970,7 +984,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**133 claims** and fails if any number in a public document drifts from the artifact that produced
+**134 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

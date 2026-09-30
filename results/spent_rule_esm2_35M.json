@@ -1,0 +1,78 @@
+{
+  "built": "2026-10-01 08:37:38",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "B": 20000,
+  "n": {
+    "benign_pool1": 171,
+    "benign_pool2": 130,
+    "benign_pooled": 301,
+    "vfdb_reviewed": 264,
+    "vfdb_expanded": 703,
+    "length_mismatch_drops": 10,
+    "accessions_mapped": 3261
+  },
+  "cells": {
+    "as published (reviewed VFDB / pool1 benign)": {
+      "point": 2.6173,
+      "seed_ci": [
+        2.495,
+        2.7396
+      ],
+      "row_ci": [
+        1.9432,
+        3.9403
+      ],
+      "verdict": "partial",
+      "n_num": 264,
+      "n_den": 171
+    },
+    "numerator only (expanded VFDB / pool1)": {
+      "point": 2.5685,
+      "seed_ci": [
+        2.4484,
+        2.6886
+      ],
+      "row_ci": [
+        1.9338,
+        3.9211
+      ],
+      "verdict": "partial",
+      "n_num": 703,
+      "n_den": 171
+    },
+    "denominator only (reviewed VFDB / pooled)": {
+      "point": 2.3194,
+      "seed_ci": [
+        2.2253,
+        2.4134
+      ],
+      "row_ci": [
+        1.8242,
+        3.2516
+      ],
+      "verdict": "partial",
+      "n_num": 264,
+      "n_den": 301
+    },
+    "both (expanded VFDB / pooled benign)": {
+      "point": 2.2771,
+      "seed_ci": [
+        2.182,
+        2.3722
+      ],
+      "row_ci": [
+        1.8215,
+        3.2225
+      ],
+      "verdict": "partial",
+      "n_num": 703,
+      "n_den": 301
+    }
+  },
+  "point_fell": true,
+  "interval_narrowed": true,
+  "narrowing_factor": 1.43,
+  "final_verdict": "partial",
+  "above_retraction_threshold": true
+}

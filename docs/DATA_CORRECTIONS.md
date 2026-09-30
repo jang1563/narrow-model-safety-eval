@@ -7386,3 +7386,49 @@ precision-of-definition with population five times and priced it once** — this
 intervals came out **8 to 12×** wider than the seed ones. 🔒 **The conclusion is not that a rule was wrong.
 It is that the next expansion can now be chosen by what it costs**, and the cheapest large one is the rule
 whose protected fields survive without it.
+
+---
+
+## 2026-10-01 (ninety-ninth entry) — The rule cost 54.4% of the population and moved the estimate by 0.05
+
+Study AE (`docs/SPENT_RULE_PREREGISTRATION.md`, `src/117_spent_rule.py`) spends the rule entry 98 priced
+and settles the verdict study AC opened. Both expansions came from data already on disk: the ID-mapping
+file holds **3,601** unreviewed rows with **Keywords on 96.9%** and **Length on 100%**, and the
+independent pool was already embedded. **No new fetch.**
+
+| cell | 650M | honest | 35M | honest |
+|---|---:|---|---:|---|
+| as published (reviewed / pool 1) | 2.418 | [1.904, 3.239] | 2.617 | [1.943, 3.940] |
+| **numerator only** (264 → **703**) | **2.409** | [1.904, 3.223] | **2.568** | [1.934, 3.921] |
+| **denominator only** (171 → **301**) | **2.114** | [1.775, 2.571] | **2.319** | [1.824, 3.252] |
+| **both** | **2.106** | **[1.772, 2.541]** | **2.277** | **[1.821, 3.223]** |
+
+### 🔒 The verdict settles: partial, confirmed
+
+All four cells on both arms land on **partial**, honest lower bounds **1.772** and **1.821**, comfortably
+above the frozen retraction threshold of **1.2**. ✅ **All three frozen predictions held and all three were
+derived** — the pooled point in [1.6, 2.3] (**2.106**), the lower bound between 1.5 and 2.0 (**1.772**),
+and the interval narrowing about 1.7× (**1.74×**).
+
+### ⭐ And the rule was inert
+
+Expanding the VFDB numerator **2.7×** moved the point estimate by **0.009** and **0.049**. 🔑 **Whether a
+VFDB protein has a curated Swiss-Prot entry does not predict whether this probe flags it.** ⚠️ **So a rule
+that cost 54.4% of the population bought nothing for this contrast** — which is not that it was wrong when
+frozen, because nothing had measured it. **This is the measurement.**
+
+🔒 **It is also the reason to trust the expansion**: 439 of the 703 rows now come from unreviewed entries
+whose stratum is automatic annotation, and the two columns agree to within 0.05. **An expansion that
+changed the answer would have been indistinguishable from an expansion that added noise; one that does not
+change it is evidence about both.**
+
+### 🔑 What does move it is the benign draw
+
+A second independent draw moved the point estimate by **0.30 on both arms** — between **6×** and **33×**
+the numerator effect. 🔒 **The denominator is the lever**, which is where the field independently arrived:
+negative-set choice alone swings AUPRC **0.62 → 0.87**
+([Brief Bioinform 21(5) 1596](https://academic.oup.com/bib/article/21/5/1596/5574719)).
+
+⚠️ **Read together with entry 95, the shape of the registration result is now settled**: partial on its own
+panel's honest interval, partial on an independent draw, partial on 2.7× the population, and insensitive to
+the curation rule that was costing most of it. 🔒 **Four different ways of asking, one answer.**

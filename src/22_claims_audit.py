@@ -182,7 +182,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/ADJUSTED_INTERVALS_PREREGISTRATION.md",
           # Added 2026-10-01. It adds up what the frozen exclusions cost, which no document did, and
           # locates 54.4% of the loss in one rule whose protected fields exist on the rows it excludes.
-          "docs/COVERAGE_LEDGER.md"]
+          "docs/COVERAGE_LEDGER.md",
+          # Added 2026-10-01. It spends the rule the ledger priced and settles C/A's verdict on 2.7x
+          # the VFDB population, with the numerator's inertness as the reason to trust the expansion.
+          "docs/SPENT_RULE_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1816,6 +1819,42 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def spent_rule():
+    """The reviewed-only rule cost 54.4% of the population and moved the estimate by 0.05.
+
+    ⭐ Expanding the VFDB numerator from 264 to 703 moves C/A by 0.009 on 650M and 0.049 on 35M --
+    curation status does not predict flagging. Pooling a second independent benign draw moves it by 0.30
+    on both arms, between 6x and 33x as much. The denominator is the lever.
+
+    🔒 And the verdict settles: C/A is PARTIAL on 2.7x the VFDB population and 1.8x the benign
+    one, honest intervals [1.772, 2.541] and [1.821, 3.223], both above the frozen retraction threshold
+    of 1.2. Pinned together with the numerator's inertness, because that inertness is what makes the
+    expansion trustworthy rather than merely larger.
+    """
+    a = j("../results/spent_rule.json")
+    b = j("../results/spent_rule_esm2_35M.json")
+    if None in (a, b):
+        return None
+    pub = "as published (reviewed VFDB / pool1 benign)"
+    num = "numerator only (expanded VFDB / pool1)"
+    den = "denominator only (reviewed VFDB / pooled)"
+    both = "both (expanded VFDB / pooled benign)"
+    return {
+        "n": a["n"],
+        "num_effect": {"650M": round(abs(a["cells"][num]["point"] - a["cells"][pub]["point"]), 4),
+                       "35M": round(abs(b["cells"][num]["point"] - b["cells"][pub]["point"]), 4)},
+        "den_effect": {"650M": round(abs(a["cells"][den]["point"] - a["cells"][pub]["point"]), 4),
+                       "35M": round(abs(b["cells"][den]["point"] - b["cells"][pub]["point"]), 4)},
+        "both_point": {"650M": a["cells"][both]["point"], "35M": b["cells"][both]["point"]},
+        "both_row_ci": {"650M": a["cells"][both]["row_ci"], "35M": b["cells"][both]["row_ci"]},
+        "verdicts": sorted({c["verdict"] for c in a["cells"].values()}
+                           | {c["verdict"] for c in b["cells"].values()}),
+        "narrowing": {"650M": a["narrowing_factor"], "35M": b["narrowing_factor"]},
+        "above_retraction": bool(a["above_retraction_threshold"] and b["above_retraction_threshold"]),
+        "point_fell": bool(a["point_fell"] and b["point_fell"]),
     }
 
 
@@ -5270,6 +5309,29 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("spending the reviewed-only rule confirms partial and shows the rule was inert",
+     spent_rule,
+     lambda v: v is None or (
+         # the expansion is real: 264 -> 703 VFDB rows, 171 -> 301 benign
+         v["n"]["vfdb_reviewed"] == 264 and v["n"]["vfdb_expanded"] == 703
+         and v["n"]["benign_pool1"] == 171 and v["n"]["benign_pooled"] == 301
+         and v["n"]["accessions_mapped"] == 3261
+         # ⭐ the numerator moved almost nothing on either arm
+         and max(v["num_effect"].values()) < 0.06
+         # 🔑 and the denominator moved it by an order more
+         and min(v["den_effect"].values()) > 0.25
+         and min(v["den_effect"].values()) > 5 * min(v["num_effect"].values())
+         # 🔒 every cell on both arms lands on partial, and above the retraction threshold
+         and v["verdicts"] == ["partial"]
+         and v["above_retraction"] and v["point_fell"]
+         and v["both_row_ci"]["650M"][0] > 1.5 and v["both_row_ci"]["650M"][1] < 3.0
+         and v["both_row_ci"]["35M"][0] > 1.5
+         and min(v["narrowing"].values()) > 1.3),
+     {"docs/SPENT_RULE_PREREGISTRATION.md":
+      "🔑 **Whether a VFDB protein has a curated Swiss-Prot entry does not predict whether this probe flags"},
+     # ⚠️ neither the confirmation nor the inertness may be read as the rule having been wrong
+     ["the reviewed-only rule was a mistake",
+      "expanding the population restored the supported verdict"]),
     ("the frozen exclusions cost 81.6% of the VFDB population, and one rule is 54.4% of it",
      coverage_ledger,
      lambda v: v is None or (
@@ -5575,7 +5637,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 102"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 103"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
