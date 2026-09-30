@@ -152,7 +152,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-09-30 with the document. It holds the only tried-and-failed mitigation in this
           # repository, the refusal of a verdict its own frozen letter permitted, and the reason the
           # question it asked stays open.
-          "docs/LOCALIZATION_NULLSPACE_PREREGISTRATION.md"]
+          "docs/LOCALIZATION_NULLSPACE_PREREGISTRATION.md",
+          # Added 2026-09-30 with the document. It is the only place holding a provable erasure that
+          # leaves R above 4.5, and the label curve that reconciles three competing diagnoses.
+          "docs/LEACE_ERASURE_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1786,6 +1789,58 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def leace_erasure():
+    """A provably exact linear erasure, and R is still 4.79.
+
+    🔒 LEACE's rank-1 oblique eraser drives the residual correlation between the localization
+    label and the most favourable linear score to 3.1e-06 (1.5e-08 unwhitened), against 0.53-0.58
+    unerased -- so the guarantee is real AND the check can fail, which is what makes it a measurement.
+
+    ⭐ And R survives it: 4.79 whitened, 4.55 unwhitened, 4.95 on 35M, against controls of 5.6-5.8.
+    Every configuration in studies Y and Z leaves R above 4.5. Erasure equalizes class MEANS; the screen
+    fires on a 95th-percentile TAIL. Pinned together with the exactness figure, because the exactness is
+    what makes the surviving R mean something.
+
+    🔴 Out of sample the guarantee does not transfer: erasure removes 29-53% of the mean-based
+    correlation and a refitted classifier still reaches 0.81. The label curve narrows that and then
+    FLOORS -- Spearman -1.0/-0.9 on 35M but only -0.6 on 650M's worse fold -- so the estimation-error
+    account is partial, and `answers_Y2` is false in every artifact.
+
+    ⚠️ INLP's rank-80 ablation reduced unseen AUROC further (0.698) than this provable rank-1 did
+    (0.809), which is why the forbid bans reading the guarantee as the thing that matters out of sample.
+    """
+    a = j("../results/leace_erasure.json")
+    b = j("../results/leace_erasure_esm2_35M.json")
+    nw = j("../results/leace_erasure_nowhiten.json")
+    ca = j("../results/leace_erasure_label_curve.json")
+    cb = j("../results/leace_erasure_label_curve_esm2_35M.json")
+    if None in (a, b, nw, ca, cb):
+        return None
+    return {
+        "infold_max": max(a["Z0_infold_corr"] + b["Z0_infold_corr"] + nw["Z0_infold_corr"]),
+        "infold_control_min": min(a["Z0_infold_control"] + b["Z0_infold_control"]),
+        "infold_ok": bool(a["Z0_infold_ok"] and b["Z0_infold_ok"] and nw["Z0_infold_ok"]),
+        "outfold": {"650M": a["Z0_outfold_corr"], "35M": b["Z0_outfold_corr"],
+                    "nowhiten": nw["Z0_outfold_corr"]},
+        "outfold_control": {"650M": a["Z0_outfold_control"], "35M": b["Z0_outfold_control"]},
+        "unseen": {"650M": a["Z0_unseen_auroc"], "35M": b["Z0_unseen_auroc"]},
+        "generalized": {"650M": a["Z0_generalized"], "35M": b["Z0_generalized"]},
+        "R": {"650M": round(a["Z1_R"]["mean"], 4), "35M": round(b["Z1_R"]["mean"], 4),
+              "nowhiten": round(nw["Z1_R"]["mean"], 4)},
+        "R_control": {"650M": round(a["Z1_R_control"]["mean"], 4),
+                      "35M": round(b["Z1_R_control"]["mean"], 4)},
+        "rho": {"650M": a["Z2_rho"], "35M": b["Z2_rho"]},
+        "control_clean": bool(a["Z3_control_clean"] and b["Z3_control_clean"]),
+        "answers_Y2": bool(a["answers_Y2"] or b["answers_Y2"] or nw["answers_Y2"]),
+        # ⭐ the label curve: monotone-ish, floors, and R never drops
+        "spearman": {"650M": ca["spearman_per_fold"], "35M": cb["spearman_per_fold"]},
+        "band": {"650M": ca["band"], "35M": cb["band"]},
+        "reaches_zero": bool(ca["reaches_zero"] or cb["reaches_zero"]),
+        "R_range": {"650M": ca["R_range"], "35M": cb["R_range"]},
+        "grid": ca["grid"],
     }
 
 
@@ -4493,13 +4548,49 @@ CLAIMS = [
       # 🔴 repinned 2026-09-30: the earlier pin sat on "localization is not a removable direction
       # here", which a literature check retired -- LEACE proves linear erasure is achievable, so the
       # claim is about INLP and not about the representation. The new pin is the scoping sentence.
+      # 🔴 repinned twice: first off the retired "not a removable direction" wording, then off the
+      # scoping sentence that study Z replaced. The pin now sits on study Y's own measurement, which
+      # no later study can make untrue.
       "paper/MANUSCRIPT.md":
-      "\"localization is not linearly removable\" is not available here**; what is available is that **iterative"},
+      "best localization AUROC a classifier refitted on unseen rows reaches is **0.698**, against 0.980"},
      # ⚠️ three things this must never become: a working mitigation, an answer to Y-2, or a claim
      # about linear removability in general when only one erasure method was run
      ["orthogonalizing against localization fixes", "the projection repairs the probe",
       "membership survives localization removal, so the probe",
       "localization is not a removable direction", "not linearly removable within"]),
+    ("a provably exact linear erasure leaves the localization gradient above 4.5",
+     leace_erasure,
+     lambda v: v is None or (
+         # 🔒 the guarantee is real to numerical precision, on all three runs
+         v["infold_ok"] and v["infold_max"] < 1e-4
+         # 🔴 and the same check on the UNERASED representation is far from zero, so it can fail
+         and v["infold_control_min"] > 0.4
+         # ⭐ R survives on every arm and variant, and the controls are higher still
+         and min(v["R"].values()) > 4.5
+         and v["R_control"]["650M"] > v["R"]["650M"]
+         and v["R_control"]["35M"] > v["R"]["35M"]
+         and v["control_clean"]
+         # 🔴 out of sample the guarantee does not transfer, so Y-2 is NOT answered
+         and not v["generalized"]["650M"] and not v["generalized"]["35M"]
+         and not v["answers_Y2"]
+         and min(min(x) for x in v["outfold"].values()) > 0.2
+         and max(max(x) for x in v["unseen"].values()) > 0.8
+         # ⚠️ the label curve floors rather than closing, and the band is met on 35M only
+         and not v["reaches_zero"]
+         and max(v["spearman"]["35M"]) <= -0.80
+         and -0.80 < max(v["spearman"]["650M"]) <= -0.40
+         and v["band"]["35M"] == "the obstacle is the concept-direction estimate"
+         and v["band"]["650M"] == "partly the estimate"
+         # ⭐ and R never drops anywhere on that curve either
+         and min(v["R_range"]["650M"]) > 4.5 and min(v["R_range"]["35M"]) > 4.5
+         and v["grid"][0] == 200),
+     {"docs/LEACE_ERASURE_PREREGISTRATION.md":
+      "🔒 **The localization gradient does not depend on which diagnosis is right.**",
+      "paper/MANUSCRIPT.md":
+      "on the rows the eraser was fitted to, a secreted benign protein is still flagged **4.79×** as often as a"},
+     # ⚠️ the guarantee must never be read as transferring, and Y-2 must stay open
+     ["the erasure generalizes, so membership", "LEACE removes localization out of sample",
+      "a provable erasure settles Y-2"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
      independent_pool,
      lambda v: v is None or (

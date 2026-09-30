@@ -149,6 +149,84 @@ def selftest():
     print("selftest PASS")
 
 
+N_GRID = (200, 400, 800, 1600, None)      # 🔒 frozen in Amendment 1; None means every label
+CURVE_SEEDS = 10
+RHO_STRONG, RHO_PARTLY = -0.80, -0.40
+
+
+def spearman(x, y):
+    """Spearman rho with average ranks, written out because the grid is five points."""
+    def rank(v):
+        o = np.argsort(np.argsort(v, kind="mergesort"), kind="mergesort").astype(float)
+        for u in set(v):
+            m = [i for i, t in enumerate(v) if t == u]
+            if len(m) > 1:
+                o[m] = np.mean(o[m])
+        return o
+    rx, ry = rank(list(x)), rank(list(y))
+    rx, ry = rx - rx.mean(), ry - ry.mean()
+    dn = np.linalg.norm(rx) * np.linalg.norm(ry)
+    # 🔴 A constant input made this return nan, and nan <= -0.80 is False, so the band would have read
+    # "not an estimation-error story" from a degenerate input rather than from evidence. Name it.
+    if dn < 1e-12:
+        return float("nan")
+    return float((rx @ ry) / dn)
+
+
+def label_curve(a, d, halves, lab_rows, lab, T, POOL, key_ex, key_in, rates, sfx):
+    """Amendment 1: out-of-fold erasure quality against the number of labels, dimension held fixed."""
+    rows = []
+    for n_lab in N_GRID:
+        corrs, aus, Rs = [], [], []
+        for f in (0, 1):
+            fit_i = halves[f]
+            if n_lab is not None and n_lab < len(fit_i):
+                # 🔒 class balance preserved, fixed seed, so the only thing varying is the count
+                r = np.random.default_rng(FOLD_SEED + 500)
+                pos = [i for i in fit_i if lab[i] == 1]
+                neg = [i for i in fit_i if lab[i] == 0]
+                frac = n_lab / len(fit_i)
+                take = np.r_[r.permutation(pos)[:max(int(round(len(pos) * frac)), 2)],
+                             r.permutation(neg)[:max(int(round(len(neg) * frac)), 2)]]
+            else:
+                take = np.asarray(fit_i)
+            Xf, yf = T[lab_rows[take]], lab[take]
+            fitted = set(lab_rows[take].tolist())
+            m_ex = np.array(sorted(key_ex - fitted))
+            m_in = np.array(sorted(key_in - fitted))
+            d_rows = np.r_[m_ex, m_in]
+            d_lab = np.r_[np.ones(len(m_ex)), np.zeros(len(m_in))].astype(int)
+            dtr, dho = inner_split(len(d_lab), FOLD_SEED + 200 + f)
+            A, mu = leace(POOL, Xf, yf)
+            Te = erase(T[d_rows], A, mu)
+            corrs.append(residual_corr(Te, d_lab))
+            aus.append(loc_auroc(Te, d_lab, dtr, dho))
+            Rs += rates(A, mu, m_ex, m_in, CURVE_SEEDS)[0]
+        rows.append({"n_labels": int(len(take)) if n_lab is None else n_lab,
+                     "outfold_corr": [round(x, 4) for x in corrs],
+                     "unseen_auroc": [round(x, 4) for x in aus],
+                     "R": round(float(np.nanmean(Rs)), 4)})
+        print(f"  n={rows[-1]['n_labels']:>5}: out-of-fold |corr| "
+              f"{corrs[0]:.4f} / {corrs[1]:.4f}   unseen AUROC {aus[0]:.4f} / {aus[1]:.4f}   "
+              f"R {rows[-1]['R']:.3f}")
+    ns = [r["n_labels"] for r in rows]
+    rho_f = [spearman(ns, [r["outfold_corr"][f] for r in rows]) for f in (0, 1)]
+    worst = max(rho_f)
+    res = {"built": time.strftime("%Y-%m-%d %H:%M:%S"), "arm": a.arm, "dim": int(d),
+           "grid": ns, "curve": rows, "seeds": CURVE_SEEDS,
+           "spearman_per_fold": [round(x, 4) for x in rho_f],
+           "band": ("the obstacle is the concept-direction estimate" if worst <= RHO_STRONG
+                    else "partly the estimate" if worst <= RHO_PARTLY
+                    else "not an estimation-error story"),
+           "reaches_zero": bool(min(min(r["outfold_corr"]) for r in rows) < 0.05),
+           "R_range": [round(min(r["R"] for r in rows), 4), round(max(r["R"] for r in rows), 4)]}
+    dest = Path(f"{OUT_STEM}_label_curve{sfx}.json")
+    dest.write_text(json.dumps(res, indent=2) + "\n")
+    print(f"\nSpearman(n, out-of-fold |corr|) per fold: {res['spearman_per_fold']}  ->  {res['band']}")
+    print(f"reaches zero: {res['reaches_zero']}   R across the grid: {res['R_range']}")
+    print(f"wrote {dest.relative_to(ROOT)}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", default="esm2_650M", choices=["esm2_650M", "esm2_35M"])
@@ -159,6 +237,9 @@ def main():
     # the RAW mean-difference direction instead, which is the same rank-1 ablation without the
     # Sigma^(-1/2) that amplifies estimation error in low-variance directions.
     ap.add_argument("--no-whiten", action="store_true")
+    # 🔒 Amendment 1: hold dimension fixed and vary the label count. If the obstacle is estimating the
+    # concept direction, out-of-fold |corr| must fall monotonically in n.
+    ap.add_argument("--label-curve", action="store_true")
     ap.add_argument("--seeds", type=int, default=SEEDS)
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
@@ -250,6 +331,10 @@ def main():
             for g, rr in vrows.items():
                 CA[g].append(float(fv[rr].mean()) / be if be > 0 else np.nan)
         return R, CA
+
+    if a.label_curve:
+        return label_curve(a, d, halves, lab_rows, lab, T, POOL, key_ex, key_in,
+                           lambda A, mu, m_ex, m_in, seeds: rates(A, mu, m_ex, m_in, seeds), sfx)
 
     arms = {k: {"R": [], "CA": {g: [] for g in vrows}, "gen": [], "infold": [], "outfold": []}
             for k in ("leace", "control")}

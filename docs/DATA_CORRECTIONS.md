@@ -6102,3 +6102,106 @@ are **>25% annotated "function unknown"** — a possible bias toward unannotated
 decompose the axes**: no localization, length, provenance or registration analysis, and no metadata
 baseline. 🔑 **That is the precedent for "the negatives decide the result" and the gap our decomposition
 fills — and its COG-S note is the same axis studies T and X measured**, six years earlier and unmeasured.
+
+---
+
+## 2026-09-30 (seventy-ninth entry) — A provably exact erasure, and `R` is still 4.79
+
+Entry 78 retired entry 77's conclusion and named the route: **LEACE** ([Belrose et al., NeurIPS
+2023](https://arxiv.org/abs/2306.03819)) is closed-form, rank-1 for a binary concept, and **provably**
+prevents every linear classifier from recovering it. Study Z ran it
+(`docs/LEACE_ERASURE_PREREGISTRATION.md`, `src/109_leace_erasure.py`).
+
+### 🟢 The guarantee is real, and the check can fail
+
+Residual correlation between the localization label and the **most favourable** linear score of the erased
+representation — maximized over linear scores, because that is what the theorem is about:
+
+| | 650M whitened | 650M no whitening | 35M whitened |
+|---|---:|---:|---:|
+| in-fold, after erasure | **3.1e-06** | **1.5e-08** | **3.5e-06** |
+| the same check, unerased | 0.580 / 0.572 | 0.580 / 0.572 | 0.529 / 0.526 |
+
+🔒 **Exact to numerical precision, and 0.53–0.58 when there is nothing to find.** That is a working
+measurement rather than a tautology — the distinction entries 68, 73 and 76 were all about.
+
+### ⭐ And the gradient survives it
+
+| | `R` after erasure | control |
+|---|---:|---:|
+| 650M whitened | **4.791** [4.622, 4.960] | 5.695 |
+| 650M no whitening | **4.546** | 5.641 |
+| 35M whitened | **4.954** | 5.808 |
+
+🔑 **On a representation provably free of a linear localization signal, a secreted benign protein is still
+flagged 4.79× as often as a cytoplasmic one.** ⭐ **And `R` is above 4.5 in every configuration across both
+studies** — INLP at k = 0 … 160, LEACE with and without whitening, concept directions from 200 to 1,664
+labels, both arms; label-curve range **[4.57, 5.48]** and **[4.67, 5.15]**.
+
+🔒 **The mechanism is stated and was predicted from three measurements: erasure equalizes class MEANS, and
+the screen fires on a 95th-percentile TAIL.** ✅ **Z-1's prediction — `R` > 1.5, "quite possibly > 3.0" —
+held with room to spare**, and it was derived from entry 76's AUROC-versus-tail distinction, study X's
+dispersion numbers (‖z‖ median 39.87 against 32.52), and study O's magnitude factor.
+
+### 🔴 Out of sample the guarantee does not transfer, so Y-2 stays open
+
+❌ **Z-0's second half predicted unseen-row AUROC ≤ 0.55 and got 0.81–0.88.** Erasure removes **29–41%** of
+the out-of-fold mean-based correlation on 650M and **49–53%** on 35M.
+
+🔑 **The decisive diagnostic ruled out the interesting explanation.** Had the residual separation not been
+mean-based — equal means, different covariances — the out-of-fold correlation would be near zero with AUROC
+high. **It is 0.25–0.52.** The mean difference is still there; **the estimate did not transfer.**
+
+⚠️ **§ 3 of the frozen document said in its own words that "no theorem covers" the out-of-fold half, and
+then predicted ≤ 0.55 anyway.** 🔴 **Eighth time this session**: the prediction from measurements held, the
+one from an argument did not.
+
+### 🔴 I was wrong about whitening, and the label curve floors
+
+I expected whitening to amplify estimation error. ❌ **It transfers better** than unwhitened (0.400/0.354
+against 0.524/0.429). What tracks instead is **dimension** at equal labels — 480 dims erase about half the
+out-of-fold correlation, 1,280 dims about a third.
+
+That rests on two points, so Amendment 1 froze a label curve **before** asserting it. Out-of-fold |corr| by
+label count:
+
+| n | 200 | 400 | 800 | 1,600 | all |
+|---|---:|---:|---:|---:|---:|
+| 650M | 0.493 / 0.519 | 0.449 / 0.475 | 0.381 / 0.388 | 0.382 / 0.344 | 0.400 / 0.354 |
+| 35M | 0.395 / 0.412 | 0.328 / 0.341 | 0.280 / 0.268 | 0.270 / 0.239 | 0.262 / 0.247 |
+
+**Spearman(n, |corr|)**: 35M **−1.0 / −0.9** ✅ meets the ≤ −0.80 band; 650M **−0.6 / −0.9** ❌ only
+*partly the estimate*. ⚠️ **The band was predicted on both arms and is met on one.** ✅ The prediction that
+the curve would not reach zero held — **but the shape is a floor**, not a slow descent: 650M flattens after
+n = 800 and ticks back up.
+
+### 🔒 Three diagnoses, none right alone
+
+1. **Entry 77 — "redundantly encoded."** There *is* a floor, so something survives. But it concerns the
+   mean-difference direction being unestimable out of sample, **not** linear removability in principle,
+   which LEACE settles in-sample at 3e-06.
+2. **Entry 78 — "INLP's known under-erasure."** True and published, and **not the binding cause**: ⭐
+   **INLP's rank-80 ablation reduced unseen AUROC further (0.698) than this provable rank-1 did (0.809).**
+   A guarantee bought exactness on the fitted sample, not transfer.
+3. **This study — "the concept-direction estimate."** Supported on 35M, partial on 650M, with a floor.
+
+🔒 **The synthesis: out-of-sample erasure is governed by rank and by estimation quality, and a guarantee is
+neither** — it is in-sample by construction, which is a property of the theorem and not a defect of the
+implementation. ⚠️ **Three entries, three diagnoses, and the honest statement is the conjunction.**
+
+🔒 **What does not depend on any of it is `R`.** The localization gradient survives every erasure attempted,
+guaranteed or not, at every rank and every label count. **Orthogonalization is not a repair**, and that is
+now measured three ways instead of guessed at once.
+
+### ⚠️ And an `or True` in my own verification, again
+
+The Spearman helper's first test ended `assert abs(...) < 1e-12 or True` — **entry 73's defect verbatim**,
+in a check written minutes after citing it. 🔴 The helper also returned **nan** on a constant input, and
+`nan <= −0.80` is `False`, so a degenerate curve would have printed *"not an estimation-error story"* as
+though it were evidence. Both fixed: nan is named and returned deliberately, and the helper now carries
+**four** assertions including a ties case and the degenerate case, **none vacuous**.
+
+Claim 117 pins both documents, forbids three phrasings that would read the guarantee as transferring, and
+was null-calibrated on seven wrong inputs — a low `R`, a non-exact in-fold correlation, a passing
+generalization flag, a stronger 650M Spearman, a curve reaching zero, and both forbidden phrases. All seven
+fail.

@@ -250,18 +250,26 @@ best localization AUROC a classifier refitted on unseen rows reaches is **0.698*
 unprojected and a frozen target of 0.55. 🔴 **And `R` never falls below 3.35 on either arm** — at k = 80 it
 is **7.24**, *higher* than the 4.86 it started at (`docs/LOCALIZATION_NULLSPACE_PREREGISTRATION.md`).
 
-🔴 **The claim this licenses is about the method, not about the representation.** INLP's under-erasure is
-a **known** limitation — R-LACE ([Ravfogel et al., ICML 2022](https://proceedings.mlr.press/v162/ravfogel22a/ravfogel22a.pdf))
-and **LEACE** ([Belrose et al., NeurIPS 2023](https://arxiv.org/abs/2306.03819)) were built for it, and
-LEACE *provably* prevents every linear classifier from recovering a binary concept, in closed form. ⚠️ **So
-"localization is not linearly removable" is not available here**; what is available is that **iterative
-nullspace projection does not remove it at up to 12.5% of the dimensions**, and that whether a
-guaranteed-erasure method changes `R` is **untested in this work**.
+⭐ **A provable erasure was then run, because INLP's under-erasure is a known limitation** — R-LACE
+([Ravfogel et al., ICML 2022](https://proceedings.mlr.press/v162/ravfogel22a/ravfogel22a.pdf)) and
+**LEACE** ([Belrose et al., NeurIPS 2023](https://arxiv.org/abs/2306.03819)) exist for it, and LEACE's
+rank-1 oblique eraser *provably* stops every linear classifier from recovering a binary concept. 🔒 **It
+does what it promises**: the residual correlation between the localization label and the most favourable
+linear score of the erased representation is **3.1e-06**, against **0.58** unerased
+(`docs/LEACE_ERASURE_PREREGISTRATION.md`).
 
-🔑 **What the result does establish is that the gradient is not a thin artifact**: a rank-160 ablation
-along repeatedly refitted localization directions leaves the flag-rate ratio **above 3.35 and rising**.
-⚠️ **And Y-2 stays open**: whether VFDB membership would survive genuine removal of localization is not
-decidable from this, and this paper does not claim it either way.
+🔴 **`R` is 4.79 after it.** On a representation that is **provably free of a linear localization signal**
+on the rows the eraser was fitted to, a secreted benign protein is still flagged **4.79×** as often as a
+cytoplasmic one (control 5.70; **4.55** unwhitened, **4.95** on 35M). ⭐ **And `R` stays above 4.5 in every
+configuration tried** — INLP at 0 to 160 directions, LEACE with and without whitening, concept directions
+estimated from 200 to 1,664 labels, both arms.
+
+🔑 **The reason is that erasure equalizes class means while the screen fires on a tail.** Out of sample the
+guarantee does not transfer — erasure removes **29–53%** of the mean-based correlation, and a classifier
+refitted on unseen rows still reaches **0.81** — and a label curve shows that gap **narrowing and then
+flooring** rather than closing. ⚠️ **So orthogonalizing against localization is not a repair**, and whether
+VFDB membership would survive an erasure that *did* transfer remains open; this paper does not claim it
+either way.
 
 ⚠️ **Length was the obvious alternative explanation, and adjusting for it costs about a quarter.**
 Pooling across ten length deciles gives a Mantel–Haenszel ratio of **3.98 [3.87, 4.09]** on 650M and

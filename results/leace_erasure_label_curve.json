@@ -1,0 +1,85 @@
+{
+  "built": "2026-09-30 10:51:31",
+  "arm": "esm2_650M",
+  "dim": 1280,
+  "grid": [
+    200,
+    400,
+    800,
+    1600,
+    1664
+  ],
+  "curve": [
+    {
+      "n_labels": 200,
+      "outfold_corr": [
+        0.4928,
+        0.5194
+      ],
+      "unseen_auroc": [
+        0.9293,
+        0.9614
+      ],
+      "R": 5.4654
+    },
+    {
+      "n_labels": 400,
+      "outfold_corr": [
+        0.4494,
+        0.4753
+      ],
+      "unseen_auroc": [
+        0.9411,
+        0.9656
+      ],
+      "R": 5.4774
+    },
+    {
+      "n_labels": 800,
+      "outfold_corr": [
+        0.3808,
+        0.3882
+      ],
+      "unseen_auroc": [
+        0.8946,
+        0.8767
+      ],
+      "R": 5.4096
+    },
+    {
+      "n_labels": 1600,
+      "outfold_corr": [
+        0.382,
+        0.3435
+      ],
+      "unseen_auroc": [
+        0.8713,
+        0.8241
+      ],
+      "R": 4.5739
+    },
+    {
+      "n_labels": 1664,
+      "outfold_corr": [
+        0.4002,
+        0.3539
+      ],
+      "unseen_auroc": [
+        0.8088,
+        0.8793
+      ],
+      "R": 4.6935
+    }
+  ],
+  "seeds": 10,
+  "spearman_per_fold": [
+    -0.6,
+    -0.9
+  ],
+  "band": "partly the estimate",
+  "reaches_zero": false,
+  "R_range": [
+    4.5739,
+    5.4774
+  ]
+}

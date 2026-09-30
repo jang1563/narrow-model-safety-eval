@@ -1,0 +1,85 @@
+{
+  "built": "2026-09-30 10:51:43",
+  "arm": "esm2_35M",
+  "dim": 480,
+  "grid": [
+    200,
+    400,
+    800,
+    1600,
+    1664
+  ],
+  "curve": [
+    {
+      "n_labels": 200,
+      "outfold_corr": [
+        0.3946,
+        0.4116
+      ],
+      "unseen_auroc": [
+        0.941,
+        0.9137
+      ],
+      "R": 5.1531
+    },
+    {
+      "n_labels": 400,
+      "outfold_corr": [
+        0.3277,
+        0.3411
+      ],
+      "unseen_auroc": [
+        0.9239,
+        0.9289
+      ],
+      "R": 4.6678
+    },
+    {
+      "n_labels": 800,
+      "outfold_corr": [
+        0.2799,
+        0.2675
+      ],
+      "unseen_auroc": [
+        0.8515,
+        0.8571
+      ],
+      "R": 5.0678
+    },
+    {
+      "n_labels": 1600,
+      "outfold_corr": [
+        0.2695,
+        0.239
+      ],
+      "unseen_auroc": [
+        0.8656,
+        0.8394
+      ],
+      "R": 4.9031
+    },
+    {
+      "n_labels": 1664,
+      "outfold_corr": [
+        0.2619,
+        0.2468
+      ],
+      "unseen_auroc": [
+        0.8028,
+        0.8558
+      ],
+      "R": 4.6649
+    }
+  ],
+  "seeds": 10,
+  "spearman_per_fold": [
+    -1.0,
+    -0.9
+  ],
+  "band": "the obstacle is the concept-direction estimate",
+  "reaches_zero": false,
+  "R_range": [
+    4.6649,
+    5.1531
+  ]
+}

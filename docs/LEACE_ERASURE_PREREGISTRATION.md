@@ -233,3 +233,60 @@ binding constraint behaves like variance in the estimate rather than like a prop
 ⚠️ **If the curve is flat, the estimation-error account is wrong and this document says so** — and the
 reason it would matter is that a flat curve would mean more labels cannot fix it, which is a statement
 about the representation after all.
+
+
+---
+
+## 11. Amendment 1 Results — the estimate is part of it, and there is a floor
+
+**Run 2026-09-30**, `results/leace_erasure_label_curve{,_esm2_35M}.json`, 10 seeds for `R`.
+
+Out-of-fold \|corr\| per fold, and `R`, against the number of labels used for the concept direction:
+
+| n labels | 200 | 400 | 800 | 1,600 | 1,664 (all) |
+|---|---:|---:|---:|---:|---:|
+| **650M** out-of-fold \|corr\| | 0.493 / 0.519 | 0.449 / 0.475 | 0.381 / 0.388 | 0.382 / 0.344 | 0.400 / 0.354 |
+| **650M** unseen AUROC | 0.929 / 0.961 | 0.941 / 0.966 | 0.895 / 0.877 | 0.871 / 0.824 | 0.809 / 0.879 |
+| **650M** `R` | 5.47 | 5.48 | 5.41 | **4.57** | 4.69 |
+| **35M** out-of-fold \|corr\| | 0.395 / 0.412 | 0.328 / 0.341 | 0.280 / 0.268 | 0.270 / 0.239 | 0.262 / 0.247 |
+| **35M** unseen AUROC | 0.941 / 0.914 | 0.924 / 0.929 | 0.852 / 0.857 | 0.866 / 0.839 | 0.803 / 0.856 |
+| **35M** `R` | 5.15 | 4.67 | 5.07 | 4.90 | 4.67 |
+
+**Spearman(n, out-of-fold \|corr\|)**: 650M **−0.6 / −0.9**, 35M **−1.0 / −0.9**.
+
+### 🟡 The frozen band is met on one arm, not both
+
+❌ **The prediction was ρ ≤ −0.80 on both arms.** 35M gives −1.0 / −0.9 → *the obstacle is the
+concept-direction estimate*; 650M's worse fold gives **−0.6** → *partly the estimate*. 🔒 **So the
+estimation-error account is supported on the 480-dimension arm and only partly on the 1,280-dimension
+one**, which is the direction the § 10 reasoning predicted but not the strength.
+
+### 🔴 And the curves plateau, which no earlier diagnosis anticipated
+
+More labels help, then stop helping. 650M runs **0.493 → 0.449 → 0.381** and then **flattens and ticks
+back up** (0.382, 0.400); 35M runs **0.395 → 0.328 → 0.280** and settles near **0.26**. ✅ **The frozen
+prediction that the curve would not reach zero held** — but the shape is a **floor**, not a slow descent.
+
+🔑 **That floor is the reconciliation of three diagnoses, none of which was right alone:**
+
+1. Entry 77 said **redundantly encoded**. There *is* a floor, so something of this survives — but it is
+   about the mean-difference direction being unestimable out-of-sample, **not** about linear removability
+   in principle, which LEACE settles in-sample at **3e-06**.
+2. Entry 78 said **INLP's known under-erasure**. True and published, but **not the binding cause**: ⭐
+   **INLP's rank-80 ablation reduced unseen AUROC further (0.698) than LEACE's provable rank-1 did
+   (0.809).** A guarantee bought exactness on the fitted sample, not transfer.
+3. This study said **the concept-direction estimate**. Supported on 35M, partial on 650M, with a floor.
+
+🔒 **The honest synthesis is that out-of-sample erasure is governed by rank and by estimation quality, and
+a guarantee is neither.** ⚠️ **It is in-sample by construction, and that is a property of the theorem, not
+a defect of the implementation** — § 3 said so and then predicted otherwise anyway.
+
+### ⭐ And the one number that survived every configuration
+
+`R` is **above 4.5 in all of it**: INLP at k = 0 … 160, LEACE whitened and unwhitened, label counts 200 …
+1,664, both arms. Range across the label curve **[4.57, 5.48]** and **[4.67, 5.15]**.
+
+🔒 **The localization gradient does not depend on which diagnosis is right.** ⚠️ **And it is not a
+mitigation story in either direction**: an erasure that is provably exact in-sample leaves the flag-rate
+ratio above 4.5, so orthogonalization is not a repair, and the reason it is not has now been measured
+three ways instead of guessed at once.
