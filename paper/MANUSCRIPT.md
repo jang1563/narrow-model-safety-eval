@@ -250,10 +250,18 @@ best localization AUROC a classifier refitted on unseen rows reaches is **0.698*
 unprojected and a frozen target of 0.55. 🔴 **And `R` never falls below 3.35 on either arm** — at k = 80 it
 is **7.24**, *higher* than the 4.86 it started at (`docs/LOCALIZATION_NULLSPACE_PREREGISTRATION.md`).
 
-🔑 **So localization is not a removable direction here; it is encoded redundantly across the
-representation.** ⚠️ **That makes the gradient harder to dismiss and it leaves one question open**:
-whether VFDB membership would survive genuine removal of localization is **not decidable by this method**,
-and this paper does not claim it either way.
+🔴 **The claim this licenses is about the method, not about the representation.** INLP's under-erasure is
+a **known** limitation — R-LACE ([Ravfogel et al., ICML 2022](https://proceedings.mlr.press/v162/ravfogel22a/ravfogel22a.pdf))
+and **LEACE** ([Belrose et al., NeurIPS 2023](https://arxiv.org/abs/2306.03819)) were built for it, and
+LEACE *provably* prevents every linear classifier from recovering a binary concept, in closed form. ⚠️ **So
+"localization is not linearly removable" is not available here**; what is available is that **iterative
+nullspace projection does not remove it at up to 12.5% of the dimensions**, and that whether a
+guaranteed-erasure method changes `R` is **untested in this work**.
+
+🔑 **What the result does establish is that the gradient is not a thin artifact**: a rank-160 ablation
+along repeatedly refitted localization directions leaves the flag-rate ratio **above 3.35 and rising**.
+⚠️ **And Y-2 stays open**: whether VFDB membership would survive genuine removal of localization is not
+decidable from this, and this paper does not claim it either way.
 
 ⚠️ **Length was the obvious alternative explanation, and adjusting for it costs about a quarter.**
 Pooling across ten length deciles gives a Mantel–Haenszel ratio of **3.98 [3.87, 4.09]** on 650M and

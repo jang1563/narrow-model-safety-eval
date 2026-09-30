@@ -245,8 +245,9 @@ failed, and replaces it with a **curve**.
 - **Read-off rule, frozen**: `k*` is the smallest grid k whose unseen-row AUROC is **≤ 0.55 on both
   folds**. At `k*`, everything is recomputed at **30 seeds**, with a random-direction control of the same
   rank, and Y-1's and Y-2's **existing bands** apply unchanged.
-- **If no grid k reaches 0.55**, that is the result: **the localization axis is not linearly removable
-  within d/4 directions**, and Y-2 is not answerable by this method. 🔒 **Reported as a finding, not as a
+- **If no grid k reaches 0.55**, that is the result: **this method does not remove the localization axis
+  within d/4 directions**, and Y-2 is not answerable by it. ⚠️ **Scope corrected in Amendment 3** — the
+  frozen wording said "not linearly removable", which claims more than one erasure method can support. 🔒 **Reported as a finding, not as a
   failed run.**
 
 ### 🔒 Predictions
@@ -263,7 +264,7 @@ failed, and replaces it with a **curve**.
 
 ---
 
-## 11. Y-5 Results — the axis is not linearly removable, on either arm
+## 11. Y-5 Results — this method does not remove the axis, on either arm
 
 **Run 2026-09-30**, `src/108_localization_nullspace_curve.py`, no stopping rule, 10 seeds per curve point,
 `results/localization_nullspace_curve{,_esm2_35M}.json`.
@@ -298,14 +299,14 @@ contrast is not what ablation damages.
 
 ### 🔒 What Y-5 establishes
 
-🔒 **Localization is not a removable direction in this representation.** It is encoded redundantly enough
-that a linear nullspace projection of up to **12.5%** of the dimensions leaves a classifier refitted on
-unseen rows at **AUROC 0.70**, and leaves the flag-rate gradient **above 3.35 everywhere and higher than it
-started at large k**.
+🔒 **Iterative nullspace projection does not remove localization here.** A projection of up to **12.5%** of
+the dimensions leaves a classifier refitted on unseen rows at **AUROC 0.70**, and leaves the flag-rate
+gradient **above 3.35 everywhere and higher than it started at large k**. ⚠️ **Amendment 3 retires the
+stronger reading** this paragraph originally carried, about the representation rather than the method.
 
-🔑 **The consequence is about mitigation, and it is negative**: orthogonalizing this probe against
-localization does not work, and the reason is a property of the representation rather than of the probe or
-of the fitting procedure. ⚠️ **That is the strongest statement available here, and it is not a fix** — no
+🔑 **The consequence is about mitigation, and it is negative for this method**: orthogonalizing this probe
+against localization **by INLP** does not work. ⚠️ **Amendment 3**: attributing that to the representation
+rather than to the method was wrong, and a guaranteed-erasure method is untested here. ⚠️ **That is the strongest statement available here, and it is not a fix** — no
 sentence in this study describes one.
 
 ⚠️ **Y-2 therefore stays unanswered.** Whether VFDB membership would survive genuine removal of
@@ -324,3 +325,35 @@ evidence that ablation did not damage the contrast.
 🔑 **The one prediction that could be scored is the one § 10 flagged as "reasoned, not derived" and warned
 would be the one to miss.** ⚠️ **That is now the seventh time this session the distinction has decided a
 prediction**, and the first time the warning was written into the same sentence as the prediction.
+
+
+---
+
+## 12. Amendment 3 (2026-09-30) — a literature check retires the stronger reading
+
+🔴 **§§ 10–11 concluded that the localization axis "is not linearly removable". That claim is retired.**
+It was written from one erasure method, and **INLP's under-erasure is a known, published limitation**:
+
+- **INLP** — *Null It Out* ([Ravfogel et al., ACL 2020](https://aclanthology.org/2020.acl-main.647/)) — is
+  the method Y-5 ran.
+- **R-LACE** ([Ravfogel et al., ICML 2022](https://proceedings.mlr.press/v162/ravfogel22a/ravfogel22a.pdf))
+  was built because INLP is **not optimal**; a counterexample shows it under-removes in the linear
+  regression case.
+- **LEACE** ([Belrose et al., NeurIPS 2023](https://arxiv.org/abs/2306.03819)) is **closed-form** and
+  **provably prevents all linear classifiers** from recovering the concept, using an *oblique* projection
+  that changes the embedding minimally.
+
+🔑 **So the honest statement is method-scoped**: INLP at up to 12.5% of the dimensions does not remove
+localization on unseen rows, and **whether a guaranteed-erasure method would is untested in this work.**
+⚠️ **Everything measured stays exactly as reported** — the curve, the non-monotonicity, `R` ≥ 3.35, ρ ≥
+0.86. What changes is the inference drawn from them.
+
+🔒 **Y-2 remains open, and the route to it is now specific**: LEACE's guarantee is about the *optimal linear
+predictor*, while `R` is a ratio of **tail rates** under a probe fitted on finite data — the same
+distinction entry 76 established and entry 77's Y-1 miss repeated. **A LEACE run would settle Y-0b by
+construction and would still have to measure `R` separately.** That is the next study, and this document
+does not anticipate its result.
+
+⚠️ **The claims audit gained a forbid for the retired phrasing**, and the mechanism gained a check: see
+the corrections log's seventy-eighth entry for why the first version of that forbid could never have
+fired.

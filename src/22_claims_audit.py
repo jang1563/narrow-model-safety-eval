@@ -4490,11 +4490,16 @@ CLAIMS = [
          and v["rho_min"]["650M"] > 0.30 and v["rho_min"]["35M"] > 0.30),
      {"docs/LOCALIZATION_NULLSPACE_PREREGISTRATION.md":
       "🔒 **`k*` does not exist within the frozen d/4 cap on either arm.** The best value reached is **0.698** at",
+      # 🔴 repinned 2026-09-30: the earlier pin sat on "localization is not a removable direction
+      # here", which a literature check retired -- LEACE proves linear erasure is achievable, so the
+      # claim is about INLP and not about the representation. The new pin is the scoping sentence.
       "paper/MANUSCRIPT.md":
-      "representation.** ⚠️ **That makes the gradient harder to dismiss and it leaves one question open**:"},
-     # ⚠️ the two things this must never become: a working mitigation, or an answer to Y-2
+      "\"localization is not linearly removable\" is not available here**; what is available is that **iterative"},
+     # ⚠️ three things this must never become: a working mitigation, an answer to Y-2, or a claim
+     # about linear removability in general when only one erasure method was run
      ["orthogonalizing against localization fixes", "the projection repairs the probe",
-      "membership survives localization removal, so the probe"]),
+      "membership survives localization removal, so the probe",
+      "localization is not a removable direction", "not linearly removable within"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
      independent_pool,
      lambda v: v is None or (
@@ -5811,6 +5816,17 @@ def main():
             if hit:
                 print(f"     XX still present in {hit}: {s!r}")
                 failures.append(f"{label}: stale {s}")
+                continue
+            # 🔴 Added 2026-09-30. A forbid added that day read "localization is not a removable
+            # direction" while the document said "Localization is not a removable direction" -- one
+            # capital letter, and the forbid could never fire. Matching stays exact, because some
+            # forbids here distinguish an assertion from its disclaimer by casing; what changes is
+            # that a case-only near-miss is now a NAMED failure instead of silence. Either the
+            # variant is the live claim, or the forbid is misspelled. Both deserve to fail.
+            near = [d for d, t in docs.items() if s.lower() in t.lower()]
+            if near:
+                print(f"     XX forbid matches {near} only when case is ignored: {s!r}")
+                failures.append(f"{label}: case-only forbid miss {s}")
 
     print()
     if failures:

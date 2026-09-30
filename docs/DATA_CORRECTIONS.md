@@ -6045,3 +6045,60 @@ number is now re-derived through it and asserted identical.
 Claim 116 pins both documents, forbids three phrasings — two that would call this a fix, one that would
 answer Y-2 — and was null-calibrated on six wrong inputs: a fabricated `k*`, a monotone curve, a low `R`,
 a passing generalization flag, and both forbidden phrases pasted into a public document. All six fail.
+
+---
+
+## 2026-09-30 (seventy-eighth entry) — A literature check retired yesterday's conclusion, and the forbid I wrote for it could never have fired
+
+Entry 77 concluded that **"localization is not a removable direction in this representation."** 🔴 **That is
+retired.** It was inferred from **one** erasure method, and that method's under-erasure is published:
+
+- **INLP** — *Null It Out* ([Ravfogel et al., ACL 2020](https://aclanthology.org/2020.acl-main.647/)) — is
+  what study Y ran.
+- **R-LACE** ([Ravfogel et al., ICML 2022](https://proceedings.mlr.press/v162/ravfogel22a/ravfogel22a.pdf))
+  exists **because INLP is not optimal**; a counterexample shows it under-removes even in linear
+  regression.
+- **LEACE** ([Belrose et al., NeurIPS 2023](https://arxiv.org/abs/2306.03819)) is **closed-form** and
+  **provably prevents every linear classifier** from recovering a binary concept, via an oblique
+  projection that perturbs the embedding minimally.
+
+🔑 **So the failure Y-5 measured is a property of INLP, not of the representation**, and the correct claim
+is method-scoped. ⚠️ **Nothing measured changes**: the curve, its non-monotonicity, `R` ≥ 3.35 everywhere,
+ρ ≥ 0.86. **The inference changes.** `paper/MANUSCRIPT.md` and the study Y preregistration are both
+rewritten, and the preregistration carries Amendment 3 with the reasoning.
+
+🔒 **And the route to Y-2 is now specific rather than closed.** LEACE's guarantee is about the **optimal
+linear predictor**; `R` is a ratio of **tail rates** under a probe fitted on finite data. **A LEACE run
+would satisfy Y-0b by construction and would still have to measure `R` separately** — which is entry 76's
+distinction for the third time, and the reason a guaranteed erasure is not automatically an answer.
+
+### 🔴 The forbid written to prevent the retired claim could not fire
+
+Claim 116 gained `"localization is not a removable direction"`. The audit passed. 🔴 **The document said
+"**L**ocalization is not a removable direction"** — one capital letter, and `s in t` is case-sensitive, so
+the forbid was **unfirable from the moment it was written.**
+
+⚠️ **A forbid that cannot fire is worse than no forbid**: it reads, in the registry, as protection. 🔒 **The
+matching semantics were not loosened** — several forbids here separate an assertion from its disclaimer by
+casing, so making all comparisons case-insensitive would break them. **What changed is that a case-only
+near-miss is now a named failure**: either the variant present is the live claim, or the forbid is
+misspelled, and both deserve to fail.
+
+🔒 Null-calibrated in three casings: exact lowercase → `stale`, capitalised → `case-only forbid miss`,
+upper-case → `case-only forbid miss`. **The defect that hid for one commit now cannot hide at all.**
+
+### ⚠️ What the same literature check confirmed rather than retired
+
+🟢 **Study W's claim survives, and got sharper.** DeepVIC reports a one-hot-encoding baseline at **AUROC
+0.858** against its own 0.943, XGBoost/RF/SVM/1D-CNN comparisons, six SOTA predictors and BLASTP — and
+**no** metadata-only baseline, **no** composition-only baseline, and **no** shuffled-label control. It
+reports VF length distributions but **does not compare** length or localization between positives and
+negatives. ⭐ **So study W's 0.8096 sits in a gap that paper opens and does not close.**
+
+🟢 **And the negative-set finding has a 2020 precedent that strengthens it.** *Evaluation of machine
+learning and negative data strategies* ([Brief Bioinform 21(5) 1596](https://academic.oup.com/bib/article/21/5/1596/5574719))
+swings AUPRC from **0.62 to 0.87** on negative-set choice alone, and flags that its recommended negatives
+are **>25% annotated "function unknown"** — a possible bias toward unannotated sequences. ⚠️ **It does not
+decompose the axes**: no localization, length, provenance or registration analysis, and no metadata
+baseline. 🔑 **That is the precedent for "the negatives decide the result" and the gap our decomposition
+fills — and its COG-S note is the same axis studies T and X measured**, six years earlier and unmeasured.
