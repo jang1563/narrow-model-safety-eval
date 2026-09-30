@@ -143,6 +143,119 @@ projection acting on the shared axis should move them together.
 
 ---
 
-## 9. Results
+## 9. Results — the frozen run, and why its verdict is refused
 
-*(to be appended after the run, append-only)*
+**Run 2026-09-30**, 30 seeds, two cross-fitted folds, both arms.
+`results/localization_nullspace{,_esm2_35M}.json`.
+
+| | 650M | 35M |
+|---|---:|---:|
+| directions removed, per fold | 9, 13 (**1.0%** of 1,280) | 8, 12 (**2.5%** of 480) |
+| **Y-0** localization AUROC before → after | 0.9979 → **0.5443** | 0.9982 → **0.4966** |
+| **Y-0 gate [≤ 0.55]** | ✅ **met** | ✅ **met** |
+| **Y-1** `R` after projection | **4.590** [4.335, 4.845] | **4.313** [3.989, 4.638] |
+| Y-1 band | ❌ **did not remove the gradient** | ❌ **did not remove the gradient** |
+| **Y-2** CA after projection, ρ | 2.645, **ρ = 1.160** | 3.131, **ρ = 1.318** |
+| **Y-3** control ρ | 1.017 ✅ clean | 0.987 ✅ clean |
+| **Y-4** Δ(non-haz − partly) | +0.071 | −0.353 |
+
+🔴 **Read literally, this document's § 5 now says "membership survives localization removal" with a clean
+control.** ⚠️ **That claim is refused, and the reason is a check § 3 did not contain.**
+
+### 🔴 Amendment 1 — Y-0b, and why the frozen gate was optimistic
+
+§ 3's gate is measured on a **holdout of the fitting fold**, and the procedure **stops at the first
+iteration where that estimate crosses 0.55**. 🔑 **A stopping rule that halts when a noisy held-out
+estimate first dips below a threshold guarantees an optimistic final value** — it is a minimum over a
+noisy sequence, and with 21 extracellular against 75 intracellular rows in the inner holdout, that noise
+is around ±0.07.
+
+**Y-0b asks the same question on rows the axis never saw**: fit a fresh localization classifier on the
+residual of the *measurement* rows, hold out a quarter, report its AUROC. Nothing is tuned on it; it
+decides only whether Y-1 and Y-2 are interpretable.
+
+| | 650M | 35M |
+|---|---:|---:|
+| Y-0's gate, on the fitting fold's holdout | 0.5443 | 0.4966 |
+| **Y-0b, on rows the axis never saw** | **0.7780** [0.706, 0.850] | **0.8247** [0.726, 0.923] |
+| the random-direction control, same measure | 0.9582 | 0.9674 |
+
+🔴 **The projection removed some localization and nowhere near enough.** ⚠️ **Y-1 is the same fact in a
+different statistic**: `R` = 4.59 at a gate-measured AUROC of 0.544, which is precisely the dissociation
+§ 4 declined the tight band for.
+
+🔒 **So the verdict is refused**: Y-1, Y-2 and Y-4 are **indicative only**, and no claim is made that
+membership survives localization removal — **because localization was not removed.** The artifacts carry
+`Y0b_generalized: false` and `verdict_eligible: false`. ⚠️ **§ 8's first obligation keys on Y-0, which
+passed, so the letter of this document permitted the claim. Its intent did not, and the intent is what is
+followed.**
+
+### 🔴 Amendment 2 — more labels did not help, which rules out one explanation
+
+The obvious reading of Y-0b is **too few labels**: the keyword rule gives only **171** extracellular rows,
+so directions are fitted on ~128 points in 1,280 dimensions. Study L's GO-augmented strata give **619**
+and **2,708**. Re-run with those for the **axis only** — every measured rate stays on the keyword strata,
+so 2.418 remains the comparator (`--labels coverage`,
+`results/localization_nullspace{,_esm2_35M}_coverage_axis.json`):
+
+| | 650M | 35M |
+|---|---:|---:|
+| axis labels | 619 / 2,708 | 619 / 2,708 |
+| directions removed | 13, 15 | 18, 17 |
+| Y-0 gate | 0.5452 ✅ | 0.5380 ✅ |
+| **Y-0b on unseen rows** | **0.8901** | **0.8143** |
+| Y-1 `R` | 4.670 | 4.300 |
+| Y-2 ρ | 1.189 | 1.203 |
+
+🔴 **Y-0b got *worse* on the larger arm, not better** — 0.778 → 0.890, against a control of 0.939. 🔑 **So
+the failure is not a sample-size problem.** With 3.6× the labels and more directions removed, held-out
+localization is **nearly as separable as under a random ablation of the same rank**.
+
+🔒 **What that leaves is redundancy**: localization is encoded across enough of the space that removing
+13–18 linear directions — 1–4% of it — does not flatten it, and a classifier refitted on the residual
+finds it again. ⚠️ **This is a statement about the representation, not about the probe**, and it is the one
+thing the frozen run does establish.
+
+### 🔒 Predictions, scored honestly
+
+| | frozen | actual | |
+|---|---|---|---|
+| Y-0 gate met at k ≤ 20 | | met, k = 8–18 | ✅ on its own terms |
+| Y-1 ≤ 3.0, tight band declined | | **4.30 – 4.67** | ❌ **missed the wide band** |
+| Y-2 ρ ≥ 0.30, ≥ 0.70 declined | | 1.16 – 1.32 | ⚠️ inside, but uninterpretable |
+| Y-3 ρ_random ≥ 0.85 | | 0.987 – 1.017 | ✅ |
+| Y-4 \|Δ\| ≤ 0.20 | | +0.071, −0.353, +0.012, +0.099 | ⚠️ 3 of 4, and none is a verdict |
+
+🔑 **Y-3's band was derived from study N's measured 2.1%-along-w perturbation and held. Y-1's was reasoned
+about, and missed.** ⚠️ **And Y-1's miss was foreseeable from § 4's own sentence**: having written that a
+chance AUROC and a parity tail-rate are different claims, I still predicted a band for `R` from a gate
+about AUROC. **The argument was in the document and I did not apply it to my own prediction.**
+
+---
+
+## 10. Y-5 — frozen 2026-09-30, after the run above and before any curve was computed
+
+🔒 **The question survives its first method.** Y-5 removes the stopping rule, which is the thing that
+failed, and replaces it with a **curve**.
+
+- **No stopping rule, so no selection.** The iterative procedure runs to the largest grid value, giving a
+  **nested** sequence of directions, and every prefix is read off the same pass.
+- **Grid**: k ∈ {0, 2, 5, 10, 20, 40, 80, 160}, capped at **d / 4** (320 on 650M, 120 on 35M).
+- **At each k**: Y-0b's unseen-row localization AUROC, `R`, and CA with ρ. 10 seeds on the curve.
+- **Read-off rule, frozen**: `k*` is the smallest grid k whose unseen-row AUROC is **≤ 0.55 on both
+  folds**. At `k*`, everything is recomputed at **30 seeds**, with a random-direction control of the same
+  rank, and Y-1's and Y-2's **existing bands** apply unchanged.
+- **If no grid k reaches 0.55**, that is the result: **the localization axis is not linearly removable
+  within d/4 directions**, and Y-2 is not answerable by this method. 🔒 **Reported as a finding, not as a
+  failed run.**
+
+### 🔒 Predictions
+
+- 🔒 **`k*` exists and lands in [20, 160] on 650M.** ⚠️ **This one is reasoned, not derived** — 13
+  directions leave AUROC at 0.890, and flattening a redundantly encoded concept is known to take tens of
+  directions — **and this session's record says reasoned predictions are the ones that miss.**
+- 🔒 **At `k*`, `R` > 1.5.** Derived: `R` is 4.59 at AUROC 0.778 and 4.67 at 0.890, so the two statistics
+  are already visibly decoupled, and entry 76 established why they can be.
+- 🔒 **ρ at `k*` ≥ 0.30.** ⚠️ Wide on purpose; the record cannot narrow it.
+- 🔒 **The control at `k*` keeps ρ_random ≥ 0.85**, and if `k*` is large enough that it does not, **the
+  curve is reported and Y-2 stays unanswered** rather than being read off a damaged representation.

@@ -1,0 +1,104 @@
+{
+  "built": "2026-09-30 10:23:33",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "dim": 480,
+  "k_per_fold": [
+    8,
+    12
+  ],
+  "k_fraction_of_dim": 0.025,
+  "n_benign": {
+    "extracellular": 171,
+    "intracellular": 597
+  },
+  "n_vfdb_extracellular": {
+    "all": 264,
+    "non_hazardous": 42,
+    "partly_hazardous": 143,
+    "motility": 28
+  },
+  "floors_met": {
+    "all": true,
+    "non_hazardous": true,
+    "partly_hazardous": true,
+    "motility": false
+  },
+  "CA_original": 2.617,
+  "labels": "keyword",
+  "n_axis_labels": {
+    "extracellular": 171,
+    "intracellular": 597
+  },
+  "Y0_auroc_before": {
+    "mean": 0.9982138743857494,
+    "ci": [
+      0.9971209305896807,
+      0.9993068181818181
+    ]
+  },
+  "Y0_auroc_after": {
+    "mean": 0.4965976274570025,
+    "ci": [
+      0.48029752764127764,
+      0.5128977272727273
+    ]
+  },
+  "Y0_gate_met": true,
+  "Y0b_auroc_measfold": {
+    "mean": 0.824671052631579,
+    "ci": [
+      0.7260263157894739,
+      0.9233157894736842
+    ]
+  },
+  "Y0b_auroc_measfold_control": {
+    "mean": 0.9674342105263158,
+    "ci": [
+      0.9216578947368421,
+      1.0132105263157896
+    ]
+  },
+  "Y0b_generalized": false,
+  "Y1_R_projected": {
+    "mean": 4.313365868647801,
+    "ci": [
+      3.9889166020185356,
+      4.637815135277066
+    ]
+  },
+  "Y1_R_control": {
+    "mean": 5.64440258118292,
+    "ci": [
+      5.34975216057735,
+      5.93905300178849
+    ]
+  },
+  "Y2_CA": {
+    "mean": 3.131427677337896,
+    "ci": [
+      2.9730083497675466,
+      3.2898470049082453
+    ]
+  },
+  "Y2_rho": 1.3181,
+  "Y3_CA": {
+    "mean": 2.5953199196777845,
+    "ci": [
+      2.4928440370825595,
+      2.6977958022730095
+    ]
+  },
+  "Y3_rho": 0.9866,
+  "Y4_rho": {
+    "non_hazardous": 0.9954,
+    "partly_hazardous": 1.3489,
+    "motility": 1.1463
+  },
+  "Y4_delta": -0.3535,
+  "Y1_band": "the projection did not remove the gradient",
+  "Y2_band": "membership survives localization removal",
+  "Y3_control_clean": true,
+  "Y4_band": "projection preferentially removes the non-hazardous signal",
+  "verdict_eligible": false
+}

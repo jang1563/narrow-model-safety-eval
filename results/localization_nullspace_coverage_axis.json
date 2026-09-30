@@ -1,0 +1,104 @@
+{
+  "built": "2026-09-30 10:22:10",
+  "arm": "esm2_650M",
+  "seeds": 30,
+  "dim": 1280,
+  "k_per_fold": [
+    13,
+    15
+  ],
+  "k_fraction_of_dim": 0.0117,
+  "n_benign": {
+    "extracellular": 171,
+    "intracellular": 597
+  },
+  "n_vfdb_extracellular": {
+    "all": 264,
+    "non_hazardous": 42,
+    "partly_hazardous": 143,
+    "motility": 28
+  },
+  "floors_met": {
+    "all": true,
+    "non_hazardous": true,
+    "partly_hazardous": true,
+    "motility": false
+  },
+  "CA_original": 2.418,
+  "labels": "coverage",
+  "n_axis_labels": {
+    "extracellular": 619,
+    "intracellular": 2708
+  },
+  "Y0_auroc_before": {
+    "mean": 0.9911082856016964,
+    "ci": [
+      0.9824413712661583,
+      0.9997751999372345
+    ]
+  },
+  "Y0_auroc_after": {
+    "mean": 0.5451893337880607,
+    "ci": [
+      0.544789988918643,
+      0.5455886786574783
+    ]
+  },
+  "Y0_gate_met": true,
+  "Y0b_auroc_measfold": {
+    "mean": 0.8900613333229033,
+    "ci": [
+      0.8561340580513187,
+      0.9239886085944878
+    ]
+  },
+  "Y0b_auroc_measfold_control": {
+    "mean": 0.9385830190179802,
+    "ci": [
+      0.8565619006767831,
+      1.0206041373591774
+    ]
+  },
+  "Y0b_generalized": false,
+  "Y1_R_projected": {
+    "mean": 4.6702933343864945,
+    "ci": [
+      4.475823842214714,
+      4.864762826558275
+    ]
+  },
+  "Y1_R_control": {
+    "mean": 5.623032613915702,
+    "ci": [
+      5.378878348039754,
+      5.8671868797916495
+    ]
+  },
+  "Y2_CA": {
+    "mean": 2.6853820653495575,
+    "ci": [
+      2.615735063844398,
+      2.755029066854717
+    ]
+  },
+  "Y2_rho": 1.1886,
+  "Y3_CA": {
+    "mean": 2.428750608867235,
+    "ci": [
+      2.3678025677178614,
+      2.4896986500166083
+    ]
+  },
+  "Y3_rho": 1.0076,
+  "Y4_rho": {
+    "non_hazardous": 1.1875,
+    "partly_hazardous": 1.1756,
+    "motility": 1.4152
+  },
+  "Y4_delta": 0.0119,
+  "Y1_band": "the projection did not remove the gradient",
+  "Y2_band": "membership survives localization removal",
+  "Y3_control_clean": true,
+  "Y4_band": "no more hazard-shaped than what went in",
+  "verdict_eligible": false
+}
