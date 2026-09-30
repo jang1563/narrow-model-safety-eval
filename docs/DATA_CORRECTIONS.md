@@ -6392,3 +6392,71 @@ The fragment pinning attempt 2's recorded flaw **spanned a line break** and sile
 after *"a floor"*. 🔴 **Third instance of this exact failure in the project** (entry 47's forbid, study
 W's pin, this). 🔒 Single-line fragments only, and the loader was inspected field-by-field before the claim
 was written rather than after it failed.
+
+---
+
+## 2026-09-30 (eighty-second entry) — Review segment 1 of 12, panel construction: the headline pair came from two panels
+
+A section-by-section review, this entry covering **data and panel construction** only. Six findings.
+
+### 🔴 1.1 The published per-class table mixes two panels and does not say which row is which
+
+§ 3's recovery table is **v2 at five seeds** for nine classes, with **bacteriocin, phage and Cry from
+v3** — phage is **absent from the v2 30-seed run entirely** (9 classes against v3's 12). The table row
+labels do not distinguish them. 🔒 § 3 now says so above the table.
+
+### 🔴 1.2 A single-panel, single-seed-count table existed and was never published
+
+`results/v3/supervised_pooling_v3_30seeds.json` holds all **twelve** classes at **thirty** seeds. The
+headline pair the abstract carried for two months was assembled across panels *and* seed counts:
+
+| | published | panel / seeds | **v3, 30 seeds** |
+|---|---:|---|---:|
+| phage peptidoglycan hydrolase | **10.0%** | v3, **5** seeds | **12.29%** |
+| beta-lactamase | **15.5%** | **v2**, 30 seeds | **20.95%** |
+
+⚠️ **Both published figures are the more pessimistic of the available options.** Not by selection — each
+was quoted from whatever run was current when its sentence was written — **but the effect is the same as
+selection, and nothing in the pipeline would have caught it.** 🔒 The full twelve-class v3 table is now
+printed in § 3 and the abstract leads with **12.3% and 21.0%**.
+
+### ⚠️ 1.3 "7 of 30 splits at exactly 0%" is v2-specific
+
+On v3 at the same thirty seeds it is **2 of 30**. 🔒 The published sentence is kept and labelled with both.
+
+### 🔴 1.4 Per-class recovery is panel-dependent by up to thirty points
+
+| class | v2 band, 5 seeds | **v3, 30 seeds** |
+|---|---|---:|
+| pore-forming cytolysin | 69–80% | **100%** |
+| contact-dependent inhibition | 35–50% | **72.5%** |
+| RIP rRNA glycosidase | 100% | 95.2% |
+
+🔒 **The bimodality survives**: beta-lactamase and phage are the two lowest on **both** panels, and three
+classes sit at exactly 100% on v3. ⚠️ **Which classes sit where in the middle does not survive**, so the
+claim available is "two families are missed", not "these are the recovery rates".
+
+### 🟢 1.5 v2 and v3 are clean; v1 is not, and the paper never cites it
+
+- **v2 → v3 is strictly nested** — 80/80 positives and 154/154 negatives retained, 69 and 142 added.
+- **v2 and v3 are positive/negative disjoint by sequence**, with **zero** duplicate sequences and **zero**
+  duplicate accessions.
+- 🔴 **v1 is not**: `benign_homologs.fasta` has **62 records for 51 accessions (11 duplicated)`,
+  `toxins_positive.fasta` has **71 records for 69 accessions** plus **2 duplicate sequences**, and **2
+  sequences appear in both v1 positives and v1 negatives**. 🔒 **v1 → v2 is also not nested** (one positive
+  and one negative dropped). ⚠️ **The paper never mentions v1**, so this is historical — recorded because
+  "the earliest panel was dirty" is the kind of fact a reader should not have to rediscover.
+
+### 🟢 1.6 The leakage note is explicit and correct
+
+Both 30-seed artifacts carry it in the file: *the direction is fitted on mean-pooled positives excluding
+the held-out class plus the training negatives only, so it sees neither the held-out class nor the
+calibration negatives.* 🔒 **That is the right invariant, stated where the numbers are**, and the gate
+field records the worst per-class drift against the published figures (**0.060** on v2, **0.080** on v3).
+
+### ⚠️ And a second arithmetic slip in my own review code
+
+Claim 122's loader briefly read `sum((1 for x in [0]), 0) + ...`, left over from an edit, which added
+exactly **1** and reported phage's five-seed figure as **11.0%** instead of 10.0%. 🔒 It **failed** the
+claim rather than passing it, and the field-by-field inspection that found it is now how these loaders get
+checked. ⚠️ **Second such slip in two entries.**

@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 85 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 86 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -16,18 +16,20 @@ one-in-a-thousand hazard rate it produces **605 alerts of which about 7 are real
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 85
+written because it caught something. The evidence is a **dated, append-only corrections log of 86
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
 
 **First, the aggregate is uninformative and the per-class picture is bimodal.** Holding out an entire
-mechanism class, recovery runs from **100% to 10%**: four classes are fully recovered without ever
-being trained on, while beta-lactamase reaches **15.5%** at thirty seeds — 2.2 of its 14 members, and
-member-level resampling puts that at **[0, 36]** — and a 32-member phage peptidoglycan hydrolase class
-reaches **10%**. ⚠️ The bimodality is what survives: 100% and [0, 36] are disjoint, while the *precision*
-of any single low number here is limited by class size. An AUROC of 0.974 is compatible with a screen that
-cannot see two whole families.
+mechanism class, recovery runs from **100% to 12%**: three classes are fully recovered without ever being
+trained on, while a 32-member phage peptidoglycan hydrolase class reaches **12.3%** and beta-lactamase
+**21.0%** — on one panel, at thirty seeds, which is the internally consistent comparison. ⚠️ **The figures
+this project published for two months were 10% and 15.5%, assembled from two different panels at two
+different seed counts**, and they are the more pessimistic of the available pairs (§ 3). ⚠️ Member-level
+resampling puts beta-lactamase at **[0, 36]**, so the *bimodality* is what survives — 100% and [0, 36] are
+disjoint — while the precision of any single low number is limited by class size. An AUROC of 0.974 is
+compatible with a screen that cannot see two whole families.
 
 **Second, a quantity computable before training predicts which class will fail.** Class-level
 **margin** — nearest other-class hazard minus nearest negative in embedding space — ranks classes by
@@ -156,7 +158,9 @@ calibrate a threshold on held-out negatives, and ask how much of the unseen clas
 650M, mean pooling, logistic regression, five seeds for the published table and thirty for every
 stability claim.
 
-**Result.** Baseline separability is **AUROC 0.974 ± 0.014**. Per class, at 95% specificity:
+**Result.** Baseline separability is **AUROC 0.974 ± 0.014**. Per class, at 95% specificity — ⚠️ **this
+table is v2 at five seeds for nine classes, with bacteriocin, phage and Cry from v3, and it does not mark
+which row is which**:
 
 | recovered | classes |
 |---|---|
@@ -165,9 +169,37 @@ stability claim.
 | 35–50% | contact-dependent inhibition, the labelled virulence control |
 | **🔴 10–21%** | **phage peptidoglycan hydrolase (n = 32), beta-lactamase (n = 14)** |
 
+🔴 **A single-panel table exists and was never published, so here it is.** All twelve classes on **v3 at
+thirty seeds** (`results/v3/supervised_pooling_v3_30seeds.json`, leakage note: the direction is fitted on
+positives excluding the held-out class plus the training negatives only):
+
+| class | n | recovered | sd | splits at exactly 0% |
+|---|---:|---:|---:|---:|
+| phage peptidoglycan hydrolase | 32 | **12.29%** | 6.30 | 0 |
+| beta-lactamase | 14 | **20.95%** | 12.99 | **2** |
+| virulence-associated non-toxin | 10 | 32.00% | 13.75 | 0 |
+| contact-dependent inhibition | 4 | 72.50% | 7.63 | 0 |
+| Cry insecticidal | 22 | 79.24% | 16.87 | 0 |
+| T3SS effector apparatus | 10 | 80.00% | 0.00 | 0 |
+| bacteriocin | 15 | 86.44% | 3.71 | 0 |
+| RIP rRNA glycosidase | 7 | 95.24% | 6.85 | 0 |
+| superantigen enterotoxin | 7 | 95.24% | 9.44 | 0 |
+| ADP-ribosyl AB toxin | 7 | 100.00% | 0.00 | 0 |
+| clostridial neurotoxin | 6 | 100.00% | 0.00 | 0 |
+| pore-forming cytolysin | 7 | 100.00% | 0.00 | 0 |
+
+🔴 **Per-class recovery is panel-dependent by up to thirty points.** Pore-forming cytolysin moves from the
+**69–80%** band above to **100%**; contact-dependent inhibition from **35–50%** to **72.5%**; RIP from
+100% to 95.2%. 🔒 **The bimodality survives the move** — phage and beta-lactamase are the two lowest on both
+panels, and three classes sit at exactly 100% — **but which classes sit where in the middle does not.**
+
+⚠️ **And "7 of 30 splits at exactly 0%" is a v2 figure.** On v3 at the same thirty seeds it is **2 of 30**.
+The sentence below is kept because it was published, and it is now labelled.
+
 🔴 **Neither failure is a small-*n* artifact.** The phage class is the **largest** eligible class in v3,
-and beta-lactamase is the largest in v2. At thirty seeds beta-lactamase is **15.5%** with **7 of 30
-splits recovering it at exactly 0%**, and it is the only class where plain Smith-Waterman alignment beats
+and beta-lactamase is the largest in v2. At thirty seeds **on v2** beta-lactamase is **15.5%** with **7 of
+30 splits recovering it at exactly 0%** (**v3: 20.95%, 2 of 30**), and it is the only class where plain
+Smith-Waterman alignment beats
 the probe (**29.5%** against 15.5%). Profile methods do not: `phmmer` reaches 5% there and `jackhmmer` 0%.
 
 ⚠️ **The interval on that 15.5% needs stating precisely, because the obvious reading is wrong.** The

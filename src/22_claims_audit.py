@@ -1798,6 +1798,52 @@ def length_band_sensitivity():
     }
 
 
+def panel_version_consistency():
+    """The published per-class table mixes two panels; the single-panel one was never published.
+
+    🔴 The v2 30-seed run holds NINE classes and phage is absent from it; the v3 30-seed run holds
+    all TWELVE. The paper's headline pair was beta-lactamase 15.48% (v2, 30 seeds) beside phage 10.0%
+    (v3, FIVE seeds) -- two panels, two seed counts, and the more pessimistic of the available options.
+    On v3 at thirty seeds they are 20.95% and 12.29%.
+
+    ⚠️ "7 of 30 splits at exactly 0%" is v2's `zero_seeds`. On v3 it is 2.
+
+    🔒 The bimodality survives the move -- the same two classes are lowest on both panels and
+    three sit at exactly 100% -- but the middle does NOT: pore-forming cytolysin goes from the 69-80%
+    band to 100%, contact-dependent inhibition from 35-50% to 72.5%. Pinned together, because the
+    surviving bimodality alone would excuse the mixing and the mixing alone would read as a retraction.
+    """
+    a = j("../results/v2/supervised_pooling_v2_30seeds.json")
+    b = j("../results/v3/supervised_pooling_v3_30seeds.json")
+    c = j("../results/v3/lomo_results.json")
+    if None in (a, b, c):
+        return None
+    k2, k3 = a["by_k"]["0"], b["by_k"]["0"]
+    low3 = sorted(k3, key=lambda k: k3[k]["flagged_95_mean"])[:2]
+    full3 = sorted(k for k, v in k3.items() if v["flagged_95_mean"] == 1.0)
+    return {
+        "panels": [a["panel"], b["panel"]], "seeds": [a["seeds"], b["seeds"]],
+        "n_classes": [len(k2), len(k3)],
+        "phage_in_v2": "phage_peptidoglycan_hydrolase" in k2,
+        "bl_v2": round(k2["beta_lactamase"]["flagged_95_mean"] * 100, 2),
+        "bl_v3": round(k3["beta_lactamase"]["flagged_95_mean"] * 100, 2),
+        "phage_v3": round(k3["phage_peptidoglycan_hydrolase"]["flagged_95_mean"] * 100, 2),
+        "bl_zero_seeds": [k2["beta_lactamase"]["zero_seeds"], k3["beta_lactamase"]["zero_seeds"]],
+        # 🔒 the bimodality, on the single-panel table
+        "two_lowest_v3": sorted(low3), "full_recovery_v3": full3,
+        # 🔴 and the middle that moves: v3 30-seed values for two classes the paper bands differently
+        "pore_forming_v3": round(k3["pore_forming_cytolysin"]["flagged_95_mean"] * 100, 2),
+        "cdi_v3": round(k3["contact_dependent_inhibition"]["flagged_95_mean"] * 100, 2),
+        # the 5-seed v3 phage figure the abstract used to quote
+        # 🔴 this line briefly read `sum((1 for x in [0]), 0) + ...`, left over from an edit, which
+        # added exactly 1 and made the field 11.0. It failed the claim rather than passing it, which is
+        # the safe direction, and it is the second arithmetic slip this review has made in its own code.
+        "phage_v3_5seed": round(c["leave_one_mechanism_out"][
+            "phage_peptidoglycan_hydrolase"]["flagged_95_mean"] * 100, 2),
+        "leakage_documented": bool(a.get("leakage") and b.get("leakage")),
+    }
+
+
 def lomo_member_ci():
     """The published LOMO intervals locate seed means; two are impossible on their face.
 
@@ -4768,6 +4814,28 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("the published per-class table mixes two panels, and the single-panel one agrees on the shape",
+     panel_version_consistency,
+     lambda v: v is None or (
+         v["panels"] == ["v2", "v3"] and v["seeds"] == [30, 30]
+         # 🔴 v2 has nine classes and phage is not one of them
+         and v["n_classes"] == [9, 12] and not v["phage_in_v2"]
+         # ⭐ the published pair against the internally consistent one
+         and v["bl_v2"] == 15.48 and v["bl_v3"] == 20.95 and v["phage_v3"] == 12.29
+         and v["phage_v3_5seed"] == 10.0
+         and v["bl_v3"] > v["bl_v2"] and v["phage_v3"] > v["phage_v3_5seed"]
+         # ⚠️ and the vivid detail is panel-specific
+         and v["bl_zero_seeds"] == [7, 2]
+         # 🔒 the bimodality holds on the single panel: same two lowest, three at exactly 100%
+         and v["two_lowest_v3"] == ["beta_lactamase", "phage_peptidoglycan_hydrolase"]
+         and len(v["full_recovery_v3"]) == 3
+         # 🔴 the middle moves by up to thirty points
+         and v["pore_forming_v3"] == 100.0 and v["cdi_v3"] == 72.5
+         and v["leakage_documented"]),
+     {"paper/MANUSCRIPT.md":
+      "🔴 **Per-class recovery is panel-dependent by up to thirty points.** Pore-forming cytolysin moves from the"},
+     # ⚠️ the mixed pair must never be presented as one comparison again
+     ["recovery runs from **100% to 10%**", "beta-lactamase 15.5% and phage 10% on the same"]),
     ("the published LOMO intervals locate seed means, and the bimodality survives without them",
      lomo_member_ci,
      lambda v: v is None or (
@@ -4824,7 +4892,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 85"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 86"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
