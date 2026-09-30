@@ -5575,3 +5575,43 @@ R**, so pool 2's 10.235 is if anything understated and the shortcut cannot expla
 shrank.** The composition prediction — that trouble would show up there rather than in the ratios — was
 right: pool 1 is 87.5% bacterial against pool 2's 60.2%, because pool 1 under-filled its eukaryote
 quota when the cap exhausted eukaryotic Swiss-Prot.
+
+---
+
+## 2026-09-30 (seventy-first entry) — The second arm arrives, and both readings become verdicts
+
+Entry 70 reported the independent pool on ESM-2 35M alone and called it indicative. `src/102` embedded
+pool 2 at **650M** with shard checkpointing — gate **9.060e-06**, and the run was **stopped once at the
+user's request and resumed from shard 2**, the first real exercise of this project's checkpointing.
+
+| | pool 1 (same script) | **pool 2** | |
+|---|---:|---:|---|
+| **`R`** — 35M | 6.059 | **10.235** | replicates |
+| **`R`** — 650M | 7.682 | **11.774 [10.423, 13.125]** | replicates |
+| **`C/A`** — 35M | 2.890 | **1.629** | partial |
+| **`C/A`** — 650M | 2.813 | **1.594 [1.567, 1.620]** | partial |
+
+### 🟢 S-1 is a verdict: the adverse finding replicates and grows on both arms
+
+**10.235 and 11.774** against a frozen band of ≥ 3.0, both **larger** than the same script returns on
+pool 1. 🔒 **The localization gradient is not a property of one draw of Swiss-Prot**, and this is no
+longer indicative.
+
+### 🔴 S-2 is a verdict too, and it is *partial*
+
+**1.629 and 1.594**, where studies K read **2.617** and **2.418** as *supported*. The same script on
+pool 1 gives **2.890** and **2.813**, reproducing study K closely, so **the drop is the population, not
+the code.** 🔒 The frozen retraction threshold of `C/A ≤ 1.2` is not crossed on either arm — nothing is
+withdrawn — ⚠️ **but "supported on both arms" described one pool, and on a second pool of identical
+construction the same quantity is partial on both.**
+
+### 🔴 And a correction to entry 70's own text
+
+Entry 70 said the skipped similarity screen was "worth about 0.7" on `R`. 🔴 **That was arm-specific and
+I did not say so.** Pool 1 refitted without the screen gives 6.059 on 35M against study L's screened
+5.353, and **7.682 on 650M against 4.965** — about **0.7** on one arm and **2.7** on the other.
+
+🔒 **What holds on both arms is the direction**: the screen *lowers* `R`, so pool 2's figures are
+conservative relative to a screened comparison and the shortcut cannot manufacture the replication.
+⚠️ **The magnitude is arm-dependent and must not be quoted as one number** — which is the same error,
+in miniature, as quoting a single figure for a quantity that varies by length (entry 64).

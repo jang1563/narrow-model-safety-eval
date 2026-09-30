@@ -195,3 +195,42 @@ the procedural shortcut cannot explain the replication.
 ⚠️ **I predicted both headline quantities would land in narrow bands and neither did.** The direction
 that matters: **the finding I expected to be fragile held and grew; the finding I was most confident in
 shrank.**
+
+---
+
+## Results, second arm — ESM-2 650M, 2026-09-30
+
+`src/102` embedded pool 2 at 650M with shard checkpointing, its gate passing at **9.060e-06**; the run
+was stopped once at the user's request and **resumed from shard 2**, which is the first time this
+project's checkpointing has been exercised for real.
+
+| | pool 1 (same script) | **pool 2** | |
+|---|---:|---:|---|
+| **S-1, `R`** — 35M | 6.059 | **10.235 [9.585, 10.884]** | replicates |
+| **S-1, `R`** — 650M | 7.682 | **11.774 [10.423, 13.125]** | replicates |
+| **S-2, `C/A`** — 35M | 2.890 | **1.629 [1.594, 1.664]** | partial |
+| **S-2, `C/A`** — 650M | 2.813 | **1.594 [1.567, 1.620]** | partial |
+
+### 🔴 Both primaries now have two-arm verdicts, and they point opposite ways
+
+🟢 **S-1 replicates on both arms and is larger on the unseen pool on both** — 10.235 against 6.059, and
+11.774 against 7.682, against a frozen band of ≥ 3.0. 🔒 **The localization gradient is not a property
+of one draw of Swiss-Prot.** This is no longer indicative; it is a verdict.
+
+🔴 **S-2 lands in the *partial* band on both arms** — 1.629 and 1.594, where study K read **2.617** and
+**2.418** as *supported*. The same script on pool 1 returns **2.890** and **2.813**, reproducing study K
+closely, so **the drop is the population and not the code.** 🔒 The frozen retraction threshold of
+`C/A ≤ 1.2` is **not crossed on either arm**, so nothing is withdrawn — but **"supported on both arms"
+described one pool**, and on a second pool of identical construction the same quantity is partial on
+both arms.
+
+### ⚠️ The skipped screen is worth more on 650M than I said on 35M
+
+Pool 1 refitted without its similarity screen gives `R` = **6.059** on 35M against study L's screened
+5.353, and **7.682** on 650M against study L's screened 4.965 — so the screen is worth about **0.7** on
+one arm and **2.7** on the other. 🔴 **My 35M write-up called it "about 0.7" without saying that was
+arm-specific, and it is not.**
+
+🔒 **What holds on both arms is the direction**: the screen *lowers* `R`, so pool 2's 10.235 and 11.774
+are conservative relative to a screened comparison and the procedural shortcut cannot manufacture the
+replication. ⚠️ **The magnitude is arm-dependent and is not to be quoted as a single number.**

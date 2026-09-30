@@ -402,16 +402,23 @@ with every pool-1 accession excluded: **11,301 proteins over 2,334 organisms, sh
 species** (`docs/INDEPENDENT_POOL_PREREGISTRATION.md`). Refitting the whole procedure there, on ESM-2
 35M:
 
-| | pool 1 | pool 2 |
-|---|---:|---:|
-| ⭐ localization `R` | 6.06 | **10.24** |
-| ⭐ registration `C/A` | 2.89 | **1.63** |
+| | pool 1 | pool 2 | |
+|---|---:|---:|---|
+| ⭐ localization `R`, 35M | 6.06 | **10.24** | replicates |
+| ⭐ localization `R`, 650M | 7.68 | **11.77** | replicates |
+| ⭐ registration `C/A`, 35M | 2.89 | **1.63** | partial |
+| ⭐ registration `C/A`, 650M | 2.81 | **1.59** | partial |
 
-🔑 **The two headline results move in opposite directions.** The localization gradient — the adverse
-finding — **replicates and grows**. The registration contrast **falls out of the supported band into
-partial**, about 44% smaller. ⚠️ Single-arm and therefore indicative, and the frozen retraction
-threshold (`C/A ≤ 1.2`) was not crossed, so nothing here is withdrawn. **But "supported on both arms"
-was a statement about one pool**, and on a second pool of the same construction it is not.
+🔑 **The two headline results move in opposite directions, on both arms.** The localization gradient —
+the adverse finding — **replicates and is larger on the unseen pool**, against a band frozen at ≥ 3.0.
+The registration contrast **falls out of the supported band into partial**, where this paper's earlier
+sections read 2.418 and 2.617 as supported; the same script on pool 1 returns 2.81 and 2.89,
+reproducing them closely, **so the drop is the population and not the code.**
+
+🔒 The frozen retraction threshold (`C/A ≤ 1.2`) was not crossed on either arm, so nothing here is
+withdrawn. ⚠️ **But "supported on both arms" described one pool**, and on a second pool of identical
+construction the same quantity is partial on both arms. **That is the qualification the registration
+finding carries from here on.**
 
 🔴 **One earlier framing does not survive this.** Expressing membership's effect as a fraction of the
 distance to the full-VFDB rate gave 99.1% at bridge scale and gives **143%** and **188%** here — a

@@ -1661,12 +1661,22 @@ def independent_pool():
     pool 1's published split -- without both, nothing here is independent or comparable.
     """
     v = j("../results/independent_pool_replication_esm2_35M.json")
+    b = j("../results/independent_pool_replication_esm2_650M.json")
     c = j("../results/independent_pool_composition.json")
     if None in (v, c):
         return None
     p2 = v["results"]["pool2"]
     p1 = v["results"].get("pool1_unscreened", {})
+    b2 = b["results"]["pool2"] if b else None
+    b1 = b["results"].get("pool1_unscreened") if b else None
     return {
+        # 🔒 the second arm, which turns both readings from indicative into verdicts
+        "R_pool2_650M": round(b2["R"]["mean"], 3) if b2 else None,
+        "R_pool1_650M": round(b1["R"]["mean"], 3) if b1 else None,
+        "CA_K_pool2_650M": round(b2["CA_K"]["mean"], 3) if b2 else None,
+        "CA_K_pool1_650M": round(b1["CA_K"]["mean"], 3) if b1 else None,
+        "S1_band_650M": b["S1_band"] if b else None,
+        "S2_band_650M": b["S2_band"] if b else None,
         "n_pool2": p2["n_pool"], "n_pool1": p1.get("n_pool"),
         "overlap_with_pool1": c["species_shared"],
         "species_shared_frac": round(c["species_shared"] / c["distinct_species"][1], 3),
@@ -4085,7 +4095,7 @@ CLAIMS = [
      {"docs/LOCALIZATION_COVERAGE_PREREGISTRATION.md":
       "**Unannotated falls from 55.0% to 37.0%**, under the frozen 50%."},
      []),
-    ("on an unseen pool the localization finding grows and the registration one shrinks",
+    ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
      independent_pool,
      lambda v: v is None or (
          v["n_pool2"] == 11301 and v["floors_met"]
@@ -4105,9 +4115,15 @@ CLAIMS = [
          and abs(v["CA_K_pool1"] - 2.617) < 0.4
          # ⚠️ and the denominator ambiguity is recorded, not resolved silently
          and v["CA_L_pool2"] > v["CA_K_pool2"]
-         and v["single_arm_indicative"]),
+         # 🔒 and the second arm agrees on both readings, which is what makes them verdicts
+         and v["S1_band_650M"] == "study E's verdict replicates"
+         and v["R_pool2_650M"] > 3.0 and v["R_pool2_650M"] > v["R_pool1_650M"]
+         and v["S2_band_650M"] == "partial"
+         and 1.2 < v["CA_K_pool2_650M"] < 2.0
+         and v["CA_K_pool2_650M"] < v["CA_K_pool1_650M"]
+         and abs(v["CA_K_pool1_650M"] - 2.418) < 0.5),
      {"docs/INDEPENDENT_POOL_PREREGISTRATION.md":
-      "**the registration contrast is about\n44% smaller on a benign population the probe has not seen.**"},
+      "🔒 **The localization gradient is not a property\nof one draw of Swiss-Prot.** This is no longer indicative; it is a verdict."},
      []),
     ("the probe responds to VFDB registration, not to hazard",
      hazard_vs_membership,
