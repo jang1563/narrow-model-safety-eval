@@ -259,3 +259,68 @@ failed, and replaces it with a **curve**.
 - 🔒 **ρ at `k*` ≥ 0.30.** ⚠️ Wide on purpose; the record cannot narrow it.
 - 🔒 **The control at `k*` keeps ρ_random ≥ 0.85**, and if `k*` is large enough that it does not, **the
   curve is reported and Y-2 stays unanswered** rather than being read off a damaged representation.
+
+
+---
+
+## 11. Y-5 Results — the axis is not linearly removable, on either arm
+
+**Run 2026-09-30**, `src/108_localization_nullspace_curve.py`, no stopping rule, 10 seeds per curve point,
+`results/localization_nullspace_curve{,_esm2_35M}.json`.
+
+### 🔴 No grid k reaches the gate
+
+Worse of the two folds' unseen-row localization AUROC, by number of directions removed:
+
+| k | 0 | 2 | 5 | 10 | 20 | 40 | 80 | 160 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| **650M** (1,280 dims) | 0.980 | 0.892 | 0.882 | 0.888 | 0.889 | 0.827 | **0.698** | 0.784 |
+| **35M** (480 dims) | 0.987 | 0.909 | 0.911 | 0.914 | 0.837 | 0.827 | **0.739** | — |
+
+🔒 **`k*` does not exist within the frozen d/4 cap on either arm.** The best value reached is **0.698** at
+k = 80 on 650M — **6.25% of the space removed** — and **0.739** at k = 80 on 35M. The frozen gate is 0.55.
+
+⚠️ **And the curve is not monotone**: 650M rises from 0.698 at k = 80 back to **0.784** at k = 160.
+🔑 **Removing more directions can make localization *more* separable on unseen rows**, which is what
+happens once the fitted directions are mostly the fitting fold's noise — at that point the projection is
+effectively random with respect to the population axis while still costing rank.
+
+### 🔴 `R` does not fall either, and at large k it rises
+
+| | k = 0 | k = 40 | k = 80 | k = 160 |
+|---|---|---|---|---|
+| **650M** `R`, fold 0 / fold 1 | 4.86 / 6.38 | 4.13 / 3.55 | **7.24 / 6.30** | **7.30 / 5.04** |
+| **35M** `R`, fold 0 / fold 1 | 4.91 / 6.33 | 3.70 / 3.94 | **5.07 / 4.32** | — |
+
+**Across the whole grid, both arms, `R` never falls below 3.35**, against the ≤ 1.5 band for removal and
+the ≤ 3.0 band for partial removal. ⚠️ **ρ never falls below 0.86 and reaches 1.85**, so the membership
+contrast is not what ablation damages.
+
+### 🔒 What Y-5 establishes
+
+🔒 **Localization is not a removable direction in this representation.** It is encoded redundantly enough
+that a linear nullspace projection of up to **12.5%** of the dimensions leaves a classifier refitted on
+unseen rows at **AUROC 0.70**, and leaves the flag-rate gradient **above 3.35 everywhere and higher than it
+started at large k**.
+
+🔑 **The consequence is about mitigation, and it is negative**: orthogonalizing this probe against
+localization does not work, and the reason is a property of the representation rather than of the probe or
+of the fitting procedure. ⚠️ **That is the strongest statement available here, and it is not a fix** — no
+sentence in this study describes one.
+
+⚠️ **Y-2 therefore stays unanswered.** Whether VFDB membership would survive genuine removal of
+localization is **not decidable by this method**, and the ρ values in §§ 9 and 11 are reported only as
+evidence that ablation did not damage the contrast.
+
+### 🔒 Predictions
+
+| | frozen | actual | |
+|---|---|---|---|
+| `k*` exists in [20, 160] on 650M | | **no `k*` exists**; best 0.698 | ❌ |
+| at `k*`, `R` > 1.5 | | not evaluable; **min `R` = 3.35** across the grid | ⚠️ spirit held |
+| ρ at `k*` ≥ 0.30 | | not evaluable; **ρ ≥ 0.86** everywhere | ⚠️ spirit held |
+| control at `k*` keeps ρ_random ≥ 0.85 | | not evaluable | ⚠️ |
+
+🔑 **The one prediction that could be scored is the one § 10 flagged as "reasoned, not derived" and warned
+would be the one to miss.** ⚠️ **That is now the seventh time this session the distinction has decided a
+prediction**, and the first time the warning was written into the same sentence as the prediction.
