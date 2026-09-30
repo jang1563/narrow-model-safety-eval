@@ -167,7 +167,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/TRUNCATION_BAND_PREREGISTRATION.md",
           # Added 2026-09-30. It holds the first use of the conformal operating point on a contrast, and
           # the calibration-size explanation of why the FPR gap is large and the contrast gap is not.
-          "docs/CONFORMAL_CONTRAST_PREREGISTRATION.md"]
+          "docs/CONFORMAL_CONTRAST_PREREGISTRATION.md",
+          # Added 2026-09-30. It records which external criticisms land on this repository and what was
+          # done about each, including the two that were not fixed.
+          "docs/EXTERNAL_REVIEW_UPTAKE.md"]
 
 
 def j(p):
@@ -1802,6 +1805,24 @@ def length_band_sensitivity():
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
     }
+
+
+def audit_self_size():
+    """How many claims does this audit check, and does the paper say the same number?
+
+    🔴 § 9 said "90 claims" while the registry held 125 -- a number in a public document with no
+    claim attached, which is the exact defect this file exists to catch, in its own description. It went
+    unnoticed for as long as it did because nothing here measured the registry.
+
+    ⚠️ My first count used a regex over the source and returned 126: the pattern matched one line
+    that is not a claim. The registry is measured directly instead, which is the only count that cannot
+    disagree with what actually runs.
+    """
+    man = (ROOT / "paper/MANUSCRIPT.md").read_text()
+    n = len(CLAIMS)
+    return {"n_claims": n,
+            "paper_states_it": f"**{n} claims** and fails" in man,
+            "stale_90_gone": "**90 claims**" not in man}
 
 
 def conformal_contrasts():
@@ -4960,6 +4981,14 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("the paper states the audit's own size, and the audit measures it",
+     audit_self_size,
+     # 🔒 Self-maintaining like claim 119: no hard-coded total, so adding a claim fails the gate until
+     # § 9 is updated. That is the point, and it is why this claim exists at all.
+     lambda v: v is None or (v["paper_states_it"] and v["stale_90_gone"] and v["n_claims"] > 100),
+     {"paper/MANUSCRIPT.md":
+      "⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the"},
+     ["which currently checks\n**90 claims**"]),
     ("the conformal operating point moves the headline contrasts by under 3%",
      conformal_contrasts,
      lambda v: v is None or (
@@ -5124,7 +5153,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 91"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 92"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 91 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 92 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 91
+written because it caught something. The evidence is a **dated, append-only corrections log of 92
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -785,6 +785,12 @@ the diagnosis was in the record before the repair was built; both times it named
 - **Not a better classifier.** DeepVIC reports AUROC 0.954 on a 13,384-sequence holdout from 33,456 VFs.
   Our figures are on a self-built panel of 234 or 445 and are **not comparable**.
 - **Not novel on homology control.** Homology-clustered evaluation is established practice.
+- 🔴 **Not an externally validated hazard taxonomy.** § 6's narrowing from *hazard* to *VFDB registration*
+  rests on a four-category non-hazardous group — Motility, Nutritional/Metabolic factor, Regulation, Stress
+  survival — which `docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md` § 1.1 states is **one author's domain
+  judgment**, frozen in advance with its reasoning and with the largest ambiguous class deliberately
+  excluded. ⚠️ **There is no second annotator and no agreement statistic.** Disclosing the judgment is not
+  the same as validating it, and the narrowing is only as good as the split.
 - **Not a competence boundary.** The held-out class is removed from the *probe's* training, not from the
   foundation model's pretraining, and every class here is in the public databases these models saw.
 - **Not deployment-ready.** § 10.8 of the long write-up puts it quantitatively: every specificity above
@@ -866,18 +872,49 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**90 claims** and fails if any number in a public document drifts from the artifact that produced it. The
+**126 claims** and fails if any number in a public document drifts from the artifact that produced
+it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
+same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and
 the scorecard in `docs/DETECTOR_CRITERIA.md`; the preregistrations in
 `docs/MUTATION_EXTENSION_PREREGISTRATION.md` and `docs/NEGATIVE_EXPANSION_PREREGISTRATION.md`; and the
 dated record of every number that moved in `docs/DATA_CORRECTIONS.md`.
 
-🔴 **Status, 2026-09-28: this is an outline of an argument, not a submittable paper.** § 4 rests on a
-single positive result — margin — that has **never been tested on classes this project did not define**,
-and § 5 reports that nothing improved the screen.
-`docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md` freezes the external test, on VFDB's 13 eligible categories over 740 redundancy-deduplicated representatives, and
-states in advance that a null there means §§ 4 and 6 of this draft must be rewritten as a panel-specific
-observation. **This manuscript stays a draft until that returns, either way.**
+🔴 **Status, 2026-09-30: this is an outline of an argument, not a submittable paper.** § 5 reports that
+nothing improved the screen, and § 4 rests on a single positive result — margin.
+
+🔒 **The external test that paragraph was waiting for has returned.**
+`docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md` froze it on VFDB's **13** eligible categories over **740**
+redundancy-deduplicated representatives, and stated in advance that a null there means §§ 4 and 6 become
+panel-specific observations. It returned *ρ* **+0.6813** (*p* = 0.00590), a frozen confound rule then fired
+and made it **uninterpretable**, and the organism-stratified follow-up that document called for reinstated
+it **for ordering only** at *ρ* +0.3750 and +0.4107 with 8 of 10 strata positive (§ 4). ⚠️ **So "never
+tested on classes this project did not define" is no longer true**, and it stood in this section until
+2026-09-30.
+
+### What kind of reproducibility this is
+
+🔒 Using Gundersen's vocabulary ([*Phil. Trans. R. Soc. A* 379, 2021](https://arxiv.org/abs/2011.10098)),
+this project is **R4** — text, code and data — and the claims audit **verifies** rather than **validates**:
+it checks that no error entered the running or the reporting, not that the experiments answer the research
+question. 🔑 **Every defect the audit has ever caught is a verification defect**; §§ 6 and 7 are where
+validation lives, and they are where the adverse findings are.
+
+⭐ **Two of this project's results are best described in that paper's three degrees.** The per-class
+recovery table is **not outcome-reproducible across panels** — three classes move 19 to 40 points between
+v2 and v3 — while it is **interpretation-reproducible**: the same two classes are lowest on both, and three
+sit at exactly 100%. 🔒 And study K's `C/A` contrast was reproduced at **2.418** and **2.617** by a script
+written independently on a different code path, which is a reproduction from the *description* rather than
+by re-running the code — by that paper's argument the stronger of the two, because it shows the result does
+not depend on the original implementation.
+
+⚠️ **And the audit is one layer, not a guarantee.** Following Acuna's framing of layered defence, the thing
+to report is the **residual error** of each check: this repository has measured one directly — a
+manuscript-figure audit with a **94% false-pass rate** at three significant figures (`docs/DATA_CORRECTIONS.md`,
+sixty-eighth entry) — and a single review pass in September 2026 found four further blind-spot classes:
+predicates scoped narrower than the sentences they guard, numbers in public documents with no claim at all,
+forbid strings that match their own disclaimers, and intervals that answer a different question from the one
+the prose asks.
 
 ⚠️ **It is a draft and is on the audited surface**, which means a figure here that drifts
 from its artifact fails the gate in the same way a figure in the write-up does. It is assembled from

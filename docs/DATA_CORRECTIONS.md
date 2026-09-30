@@ -6794,3 +6794,69 @@ artifact that produced it.
 Both held on both arms, and both were **derived** rather than reasoned — from the order statistics in § 2
 and from the arithmetic that a ratio of two rates moving the same way absorbs most of a threshold shift.
 🔑 **Tenth prediction this session, and the pattern has not broken: derived held, reasoned missed.**
+
+---
+
+## 2026-09-30 (eighty-eighth entry) — Three rejected-paper reviews and a conference week, applied to this repository
+
+Read the three NeurIPS 2026 reviews of a **different** project (BioReview-Bench, submission 1932, ratings
+**2 / 2 / 2**, confidence 4 / 4 / 3), the AI4Sci Korea 2026 session notes for 28–30 September, and the
+FLMSec 2026 review form, and checked which criticisms land here.
+`docs/EXTERNAL_REVIEW_UPTAKE.md` holds the full mapping. Four things changed.
+
+### 🔴 1. The audit had no claim about its own size, and § 9 said 90
+
+§ 9 read *"which currently checks **90 claims**"*. The registry held **125**. 🔴 **A number in a public
+document with no claim attached — the exact defect this file exists to catch, in its own description.**
+
+🔒 Claim 126 now measures `len(CLAIMS)` directly and requires the paper to state it, **without hard-coding
+a total**, so adding a claim fails the gate until § 9 is updated. ⭐ **It fired on its own first run**: the
+claim that measures the registry is itself in the registry, so adding it made the paper's freshly corrected
+125 stale. That is the designed behaviour and it is why the claim is worth having.
+
+⚠️ **And my first count was wrong too**: a regex over the source returned **126** because it matched one
+line that is not a claim. The registry is measured, not parsed.
+
+### 🔴 2. § 9 still said the margin result had never been tested on outside classes
+
+*"has never been tested on classes this project did not define"* — false since 2026-09-28, and entry 85
+established the full record three entries ago. 🔒 Corrected with the three verdicts.
+
+### 🔴 3. The reviewers' release-blocking criticism lands on study Q
+
+Their gap was structured targets never validated by blinded annotators, with a validation file whose human
+fields were **identical to the machine labels by construction**. 🔑 **The analogue here is the hazard
+taxonomy** that § 6's narrowing from *hazard* to *VFDB registration* rests on.
+
+🟢 **Better here in two ways**: `docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md` § 1.1 states in bold that
+the assignment is **one author's judgment**, and it was frozen before the run with the largest ambiguous
+class excluded so it could not decide the result. 🔴 **Worse in one**: **no second annotator, no agreement
+statistic.** ⚠️ **Disclosure is not validation.** § 7 now carries it as a limitation.
+
+### ⭐ 4. Gundersen's vocabulary names two things this project had only described
+
+- **Verify vs validate** — *verify*: no errors in running or reporting; *validate*: the experiments answer
+  the question. 🔑 **Every defect this audit has ever caught is a verification defect.** §§ 6–7 are where
+  validation lives, which is where the adverse findings are.
+- **Outcome / analysis / interpretation reproducible** — 🔒 **this names entry 82's finding exactly**: the
+  per-class table is **not outcome-reproducible** across panels (19–40 points) and **is
+  interpretation-reproducible** (same two classes lowest, three at 100%). I wrote that distinction
+  informally three entries ago without knowing it had a name.
+- **R1–R4, and "a reproduction from less documentation is stronger"** — 🔒 study K's `C/A` at **2.418 /
+  2.617** came from a script on a different code path, which is a reproduction from the *description*.
+  Entry 87 called it "an unplanned verification"; it has a name and a reason to count for more.
+
+### ⚠️ 5. And Acuna's framing says what § 9 was missing
+
+*"No single check catches everything; combine complementary checks and **measure their residual errors and
+shared blind spots**."* 🔴 **§ 9 reported the gate's size and never its residual error.** It now reports
+both: the **94% false-pass rate** measured in entry 68, and the four blind-spot classes this review found —
+predicates scoped narrower than their sentences, public numbers with no claim, forbid strings matching
+their own disclaimers, and intervals answering a different question from the prose.
+
+### 🔒 What was not fixed
+
+- **The internal-code vocabulary.** *study K*, *B-1*, *A1*, *§ 6l*, *C/A*, *S1b* — reviewer S4zR's
+  criticism lands squarely, and renaming across 36 documents and 126 audited claims needs its own pass with
+  the gate green at each step. **Recorded as editorial debt, not deferred silently.**
+- **A second annotator for the hazard split.** The one item here that needs work no script can do.
