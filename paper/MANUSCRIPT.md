@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 98 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 99 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 98
+written because it caught something. The evidence is a **dated, append-only corrections log of 99
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -384,8 +384,19 @@ either way.
 
 ⚠️ **Length was the obvious alternative explanation, and adjusting for it costs about a quarter.**
 Pooling across ten length deciles gives a Mantel–Haenszel ratio of **3.98 [3.87, 4.09]** on 650M and
-**4.70 [4.44, 4.97]** on 35M against crude ratios of 5.18 and 5.86 — 🔒 **still above the frozen 3.0 on
-both arms** (`docs/LENGTH_ADJUSTMENT_PREREGISTRATION.md`).
+**4.70 [4.44, 4.97]** on 35M against crude ratios of 5.18 and 5.86, above the frozen 3.0 on both arms
+(`docs/LENGTH_ADJUSTMENT_PREREGISTRATION.md`).
+
+🔴 **On honest intervals the adjusted ratio does not clear that band, and the crude one does.** Resampling
+the rows inside each decile and re-pooling gives **[2.871, 5.200]** and **[2.885, 7.116]** — 7.8 to 9.6×
+wider, and **crossing 3.0 on both arms** (`docs/ADJUSTED_INTERVALS_PREREGISTRATION.md`). The crude ratio's
+honest interval is **[3.714, 8.534]** and **[3.242, 9.839]**, which clears it.
+
+🔒 **So the two verdicts separate and are stated separately from here on**: the localization gradient is a
+**major driver** on the crude contrast and **partial** once length is adjusted for — *"survives adjustment
+but not as a major driver"*, which is the middle band study M froze in advance. ⚠️ **The point estimates
+are unchanged**; what changed is that the interval on a nine-cell stratified estimator was a seed standard
+error.
 
 ⭐ **The ratio is not constant in length, which is what reconciles three different estimates of it.**
 On 650M it runs from **1.40** in the longest band to **11.30** in the middle:
@@ -927,7 +938,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**129 claims** and fails if any number in a public document drifts from the artifact that produced
+**130 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

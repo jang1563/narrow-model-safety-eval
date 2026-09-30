@@ -176,7 +176,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "SAFETY.md",
           # Added 2026-10-01. It holds the honest intervals for the two headline contrasts and the
           # verdict change they force on the registration one.
-          "docs/HEADLINE_INTERVALS_PREREGISTRATION.md"]
+          "docs/HEADLINE_INTERVALS_PREREGISTRATION.md",
+          # Added 2026-10-01. It separates the crude and length-adjusted localization verdicts, which
+          # the paper had stated as one surviving the other.
+          "docs/ADJUSTED_INTERVALS_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1810,6 +1813,36 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def adjusted_intervals():
+    """The length-adjusted ratio does not clear its band on an honest interval; the crude one does.
+
+    🔴 R_MH is 3.890 [2.871, 5.200] and 4.386 [2.885, 7.116] once rows are resampled inside each
+    decile and re-pooled -- 7.8 to 9.6x wider than the seed interval, crossing 3.0 on BOTH arms. The
+    verdict becomes study M's frozen middle band: survives adjustment but not as a major driver.
+
+    🔒 Pinned together with the crude figures from study AC, because the separation is the point:
+    the same instrument leaves the crude contrast inside the band and moves the adjusted one out, and the
+    paper had stated the adjusted verdict as a survival of the crude one.
+    """
+    a = j("../results/adjusted_intervals.json")
+    b = j("../results/adjusted_intervals_esm2_35M.json")
+    c = j("../results/headline_intervals.json")
+    d = j("../results/headline_intervals_esm2_35M.json")
+    if None in (a, b, c, d):
+        return None
+    return {
+        "deciles": [a["deciles_used"], b["deciles_used"]],
+        "MH_point": {"650M": a["MH_point"], "35M": b["MH_point"]},
+        "MH_row_lo": {"650M": a["MH_row_ci"][0], "35M": b["MH_row_ci"][0]},
+        "MH_clears": {"650M": a["clears_major"], "35M": b["clears_major"]},
+        "widening": {"650M": a["widening"], "35M": b["widening"]},
+        "verdict": {"650M": a["verdict"], "35M": b["verdict"]},
+        # the crude contrast from study AC, which DOES clear, on the same treatment
+        "crude_row_lo": {"650M": c["R"]["row_ci"][0], "35M": d["R"]["row_ci"][0]},
+        "crude_clears": bool(c["R_clears_band"] and d["R_clears_band"]),
     }
 
 
@@ -5122,6 +5155,28 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("the length-adjusted ratio crosses its band on honest intervals while the crude one holds",
+     adjusted_intervals,
+     lambda v: v is None or (
+         v["deciles"] == [9, 9]
+         # 🔴 the adjusted ratio crosses 3.0 on BOTH arms
+         and not v["MH_clears"]["650M"] and not v["MH_clears"]["35M"]
+         and v["MH_row_lo"]["650M"] < 3.0 and v["MH_row_lo"]["35M"] < 3.0
+         and v["MH_row_lo"]["650M"] > 2.5 and v["MH_row_lo"]["35M"] > 2.5
+         and all(x.startswith("partial") for x in v["verdict"].values())
+         and min(v["widening"].values()) > 7.0
+         # 🔒 while the crude contrast, on the same treatment, still clears it
+         and v["crude_clears"]
+         and v["crude_row_lo"]["650M"] > 3.0 and v["crude_row_lo"]["35M"] > 3.0
+         # ⚠️ and the point estimates are the published ones
+         and 3.8 < v["MH_point"]["650M"] < 4.0 and 4.3 < v["MH_point"]["35M"] < 4.5),
+     {"docs/ADJUSTED_INTERVALS_PREREGISTRATION.md":
+      "§ 4 said: *\"If `R_MH` crosses 3.0 on both arms, the adjusted claim is partial everywhere.\"* It crosses on",
+      "paper/MANUSCRIPT.md":
+      "🔴 **On honest intervals the adjusted ratio does not clear that band, and the crude one does.** Resampling"},
+     # ⚠️ the adjusted verdict must not be restated as a survival of the crude one
+     ["still above the frozen 3.0 on\nboth arms",
+      "localization is a major driver independent of length on honest intervals"]),
     ("on honest intervals the localization gradient holds its band and the registration contrast does not",
      headline_intervals,
      lambda v: v is None or (
@@ -5360,7 +5415,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 98"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 99"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

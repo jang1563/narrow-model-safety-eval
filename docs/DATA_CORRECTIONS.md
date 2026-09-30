@@ -7171,3 +7171,55 @@ The same treatment, applied to both headline results on both arms, leaves the **
 band and moves the **positive** one out of its. 🔒 **No point estimate moved.** ⚠️ **Seven of entry 84's
 eleven intervals are still seed intervals** — the ratio of ratios, the two Mantel–Haenszel ratios and the
 deduplicated rates — and they are labelled as such rather than quietly left.
+
+---
+
+## 2026-10-01 (ninety-fifth entry) — The length-adjusted ratio crosses its band too, and now both headline findings are narrowed
+
+Study AD (`docs/ADJUSTED_INTERVALS_PREREGISTRATION.md`, `src/116_adjusted_intervals.py`) finishes the
+banded quantities entry 84 enumerated.
+
+| | point | seed interval | **row + seed** | wider | clears 3.0 |
+|---|---:|---|---|---:|---|
+| **650M** `R_MH` | 3.890 | [3.769, 4.011] | **[2.871, 5.200]** | 9.6× | ❌ |
+| **35M** `R_MH` | 4.386 | [4.114, 4.659] | **[2.885, 7.116]** | 7.8× | ❌ |
+
+### 🔴 The obligation's first branch fires, on both arms
+
+§ 4 said *"if `R_MH` crosses 3.0 on both arms, the adjusted claim is partial everywhere"*. It does.
+🔒 **The verdict is the middle band study M froze in advance** — *"survives adjustment but not as a major
+driver"* — and § 6 now states the crude and adjusted verdicts **separately**, where it had stated the
+adjusted one as a survival of the crude one.
+
+✅ **The prediction held and was derived, not reasoned.** § 3 took study AC's transfer — an honest lower
+bound at **67%** of the point estimate — and computed **2.67**. It landed at **2.871** and **2.885**. ⚠️ It
+hedged to *"at least one arm"* because the estimator is stratified over nine cells; it crossed on both.
+
+### 🔑 Both headline findings are now narrowed, by the same instrument
+
+| | verdict before | verdict now |
+|---|---|---|
+| **localization**, crude | major driver | **major driver**, honest [3.714, 8.534] / [3.242, 9.839] |
+| **localization**, length-adjusted | major driver | 🔴 **partial** |
+| **registration** `C/A` | supported | 🔴 **partial**, honest [1.904, 3.252] / [1.931, 3.938] |
+
+🔒 **No point estimate moved in any of it.** ⚠️ **And this is not a retraction of either finding**: a
+nine-cell stratified ratio whose honest interval runs [2.87, 5.20] is a large effect, and the middle band
+existed precisely for this case. 🔑 **What it retracts is a class of interval**, and the class covered
+every banded quantity in the paper.
+
+### 🔒 One left, and it is labelled rather than fixed
+
+The provenance × localization `RR` — **0.692** and **1.133** from `results/taxid_provenance.json` — stays
+on its seed interval. ⚠️ The manuscript already reports 650M's interval crossing its band floor, so the
+reading does not turn on the widening. **Last of entry 84's eleven, and the only one left.**
+
+### ⚠️ Five first readings, five wrong, in one review
+
+Segment 11 and this entry between them produced: a manifest-naming sweep that reported 71 false mismatches,
+a trivial-predicate scan that under-counted by one, a selftest runner that reported 36 false failures, an
+assert scanner that flagged a `pytest.raises` test, and — today — a suspected number-drift between the
+paper's **0.692** and an artifact's **1.0087** that turned out to be the corrected taxid factor against the
+superseded name-based one, which the manuscript explains two paragraphs later. 🔑 **Every one of the five
+resolved toward "the project is fine", and every one was caught by reading the thing rather than the
+summary of it.**
