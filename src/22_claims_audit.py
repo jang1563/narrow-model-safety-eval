@@ -1819,6 +1819,11 @@ def panel_version_consistency():
     if None in (a, b, c):
         return None
     k2, k3 = a["by_k"]["0"], b["by_k"]["0"]
+    import numpy as _np
+    v5 = {k: _np.mean([(_np.asarray(t["probs"], float) >= t["t95"]).mean()
+                       for t in v["per_seed"]])
+          for k, v in j("../results/v2/lomo_results.json")["leave_one_mechanism_out"].items()
+          if v.get("per_seed") and "probs" in v["per_seed"][0]}
     low3 = sorted(k3, key=lambda k: k3[k]["flagged_95_mean"])[:2]
     full3 = sorted(k for k, v in k3.items() if v["flagged_95_mean"] == 1.0)
     return {
@@ -1841,6 +1846,11 @@ def panel_version_consistency():
         "phage_v3_5seed": round(c["leave_one_mechanism_out"][
             "phage_peptidoglycan_hydrolase"]["flagged_95_mean"] * 100, 2),
         "leakage_documented": bool(a.get("leakage") and b.get("leakage")),
+        # ⭐ the 2x2 grid, which separates the two factors: seeds move nothing, panel moves a lot
+        "seed_effect_max": round(max(abs(k2[c]["flagged_95_mean"] - v5.get(c, k2[c]["flagged_95_mean"]))
+                                     for c in k2) * 100, 2),
+        "panel_effect_max": round(max(abs(k3[c]["flagged_95_mean"] - k2[c]["flagged_95_mean"])
+                                      for c in k2 if c in k3) * 100, 2),
     }
 
 
@@ -4831,11 +4841,21 @@ CLAIMS = [
          and len(v["full_recovery_v3"]) == 3
          # 🔴 the middle moves by up to thirty points
          and v["pore_forming_v3"] == 100.0 and v["cdi_v3"] == 72.5
-         and v["leakage_documented"]),
+         and v["leakage_documented"]
+         # 🔴 I first wrote `seed_effect_max <= 2.0` from eyeballing the table, and it is 5.95 --
+         # beta-lactamase moves 21.4 -> 15.5 between five and thirty seeds on v2. The claim now checks
+         # the true asymmetry: the panel effect is more than five times the seed effect, and the seed
+         # effect is non-trivial on exactly the class whose published figure is the row minimum.
+         and 5.0 < v["seed_effect_max"] < 7.0
+         and v["panel_effect_max"] > 30.0
+         and v["panel_effect_max"] > 5.0 * v["seed_effect_max"]),
+     # 🔴 repinned: the sentence this pointed at was replaced by the grid that supersedes it. The new
+     # pin is the decomposition, which is the part a later edit would drop.
      {"paper/MANUSCRIPT.md":
-      "🔴 **Per-class recovery is panel-dependent by up to thirty points.** Pore-forming cytolysin moves from the"},
+      "🔑 **The grid separates the two factors, and they are not the same size.** **Panel** moves three classes by"},
      # ⚠️ the mixed pair must never be presented as one comparison again
-     ["recovery runs from **100% to 10%**", "beta-lactamase 15.5% and phage 10% on the same"]),
+     ["recovery runs from **100% to 10%**", "beta-lactamase 15.5% and phage 10% on the same",
+      "per-class recovery is stable across panels"]),
     ("the published LOMO intervals locate seed means, and the bimodality survives without them",
      lomo_member_ci,
      lambda v: v is None or (
@@ -4892,7 +4912,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 86"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 87"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

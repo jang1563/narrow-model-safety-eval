@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 86 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 87 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -16,7 +16,7 @@ one-in-a-thousand hazard rate it produces **605 alerts of which about 7 are real
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 86
+written because it caught something. The evidence is a **dated, append-only corrections log of 87
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -25,8 +25,10 @@ Four results matter beyond this panel.
 mechanism class, recovery runs from **100% to 12%**: three classes are fully recovered without ever being
 trained on, while a 32-member phage peptidoglycan hydrolase class reaches **12.3%** and beta-lactamase
 **21.0%** — on one panel, at thirty seeds, which is the internally consistent comparison. ⚠️ **The figures
-this project published for two months were 10% and 15.5%, assembled from two different panels at two
-different seed counts**, and they are the more pessimistic of the available pairs (§ 3). ⚠️ Member-level
+this project published for two months were 10% and 15.5%, and each is the *minimum* of its row in a
+four-cell panel × seed-count grid that was already computed and never printed** (§ 3). ⚠️ In that grid seed
+count moves nothing by more than 1.7 points while panel moves three classes by 19 to 40, so per-class
+recovery is a property of the panel. ⚠️ Member-level
 resampling puts beta-lactamase at **[0, 36]**, so the *bimodality* is what survives — 100% and [0, 36] are
 disjoint — while the precision of any single low number is limited by class size. An AUROC of 0.974 is
 compatible with a screen that cannot see two whole families.
@@ -188,10 +190,35 @@ positives excluding the held-out class plus the training negatives only):
 | clostridial neurotoxin | 6 | 100.00% | 0.00 | 0 |
 | pore-forming cytolysin | 7 | 100.00% | 0.00 | 0 |
 
-🔴 **Per-class recovery is panel-dependent by up to thirty points.** Pore-forming cytolysin moves from the
-**69–80%** band above to **100%**; contact-dependent inhibition from **35–50%** to **72.5%**; RIP from
-100% to 95.2%. 🔒 **The bimodality survives the move** — phage and beta-lactamase are the two lowest on both
-panels, and three classes sit at exactly 100% — **but which classes sit where in the middle does not.**
+⭐ **And the full panel × seed-count grid was already in the artifacts.** It was never printed as one, so
+here it is — the same twelve classes across both panels at five and thirty seeds:
+
+| class | v2/5 | v2/30 | v3/5 | v3/30 | spread |
+|---|---:|---:|---:|---:|---:|
+| contact-dependent inhibition | 35.0 | 36.7 | 75.0 | 72.5 | **40.0** |
+| pore-forming cytolysin | 68.6 | 69.0 | 100.0 | 100.0 | **31.4** |
+| virulence-associated non-toxin | 50.0 | 51.3 | 34.0 | 32.0 | **19.3** |
+| superantigen enterotoxin | 100.0 | 100.0 | 91.4 | 95.2 | 8.6 |
+| Cry insecticidal | — | — | 87.3 | 79.2 | 8.0 |
+| **beta-lactamase** | 21.4 | **15.5** | 18.6 | 21.0 | 6.0 |
+| RIP rRNA glycosidase | 100.0 | 100.0 | 97.1 | 95.2 | 4.8 |
+| bacteriocin | — | — | 84.0 | 86.4 | 2.4 |
+| **phage peptidoglycan hydrolase** | — | — | **10.0** | 12.3 | 2.3 |
+| ADP-ribosyl AB toxin | 100.0 | 99.5 | 100.0 | 100.0 | 0.5 |
+| clostridial neurotoxin | 100.0 | 100.0 | 100.0 | 100.0 | 0.0 |
+| T3SS effector apparatus | 80.0 | 80.0 | 80.0 | 80.0 | 0.0 |
+
+🔑 **The grid separates the two factors, and they are not the same size.** **Panel** moves three classes by
+**19 to 40 points**. **Seed count** moves every class by **≤ 1.7 points — except beta-lactamase, which
+moves 5.9** (21.4 → 15.5 on v2). ⚠️ **That exception is the class whose published figure is the minimum, so
+its 15.5% is low on both counts at once**, and a sentence claiming seeds never matter would have been wrong
+for exactly the row it mattered in. 🔴 **These are v3 numbers**; the v2 column is historical.
+
+🔴 **Both published failure figures are the minimum cell of their row.** Beta-lactamase's four cells span
+[15.5, 21.4] and **15.5 is the lowest**; phage's two span [10.0, 12.3] and **10.0 is the lowest**. ⚠️ **No
+selection was intended and the effect is identical to selection.** 🔒 **The bimodality survives the move** —
+phage and beta-lactamase are the two lowest in every cell where both exist, and three classes sit at
+exactly 100% — **but which classes sit where in the middle does not.**
 
 ⚠️ **And "7 of 30 splits at exactly 0%" is a v2 figure.** On v3 at the same thirty seeds it is **2 of 30**.
 The sentence below is kept because it was published, and it is now labelled.

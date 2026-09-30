@@ -6460,3 +6460,66 @@ Claim 122's loader briefly read `sum((1 for x in [0]), 0) + ...`, left over from
 exactly **1** and reported phage's five-seed figure as **11.0%** instead of 10.0%. 🔒 It **failed** the
 claim rather than passing it, and the field-by-field inspection that found it is now how these loaders get
 checked. ⚠️ **Second such slip in two entries.**
+
+---
+
+## 2026-09-30 (eighty-third entry) — The ablation was already there; it had never been printed as a grid
+
+Asked whether this needs an ablation study, and the answer is no — **it needs the one it already has,
+tabulated.**
+
+### 🟢 What ablation exists
+
+**46** LOMO arms (ESM-2 8M/35M/150M/650M/3B, ESM-3, ESM-C 300M/600M/6B, ProtT5, SaProt, CLS/max/mean,
+`mean_res`, nine windowed, ten top-*k*, eight attention), **4** classifier heads, a **7**-point
+supervised-feature grid, **14** coverage-strictness arms, **14** negative-difficulty arms, **3** panels, and
+studies E–Z on localization, length, provenance, annotation availability, pooling, score decomposition,
+size scaling, registration, an independent pool, a metadata floor and two erasure methods.
+
+🔒 **Adding another arm would answer a question nobody asked.** What was missing was a **table**.
+
+### ⭐ The panel × seed-count grid, from artifacts that already existed
+
+| class | v2/5 | v2/30 | v3/5 | v3/30 | spread |
+|---|---:|---:|---:|---:|---:|
+| contact-dependent inhibition | 35.0 | 36.7 | 75.0 | 72.5 | **40.0** |
+| pore-forming cytolysin | 68.6 | 69.0 | 100.0 | 100.0 | **31.4** |
+| virulence-associated non-toxin | 50.0 | 51.3 | 34.0 | 32.0 | **19.3** |
+| superantigen enterotoxin | 100.0 | 100.0 | 91.4 | 95.2 | 8.6 |
+| Cry insecticidal | — | — | 87.3 | 79.2 | 8.0 |
+| **beta-lactamase** | 21.4 | **15.5** | 18.6 | 21.0 | 6.0 |
+| RIP rRNA glycosidase | 100.0 | 100.0 | 97.1 | 95.2 | 4.8 |
+| bacteriocin | — | — | 84.0 | 86.4 | 2.4 |
+| **phage peptidoglycan hydrolase** | — | — | **10.0** | 12.3 | 2.3 |
+| ADP-ribosyl AB toxin | 100.0 | 99.5 | 100.0 | 100.0 | 0.5 |
+| clostridial neurotoxin | 100.0 | 100.0 | 100.0 | 100.0 | 0.0 |
+| T3SS effector apparatus | 80.0 | 80.0 | 80.0 | 80.0 | 0.0 |
+
+🔴 **Both published failure figures are the minimum cell of their row.** ⚠️ **No selection was intended and
+the effect is identical to selection**, and the reason nothing caught it is that no single artifact holds
+two cells.
+
+🔑 **The decomposition**: **panel** moves three classes by **19–40 points**; **seed count** moves every
+class by **≤ 1.7 — except beta-lactamase, at 5.9** (21.4 → 15.5 on v2). ⚠️ **That exception is the row whose
+published value is the minimum, so 15.5% is low on both counts at once.**
+
+### 🔴 And I got that wrong on the first pass, in the paper
+
+I wrote *"Seed count moves no class by more than 1.7 points"* into § 3 and into claim 122's predicate,
+**from the table printed directly above it**, and the audit returned **5.95**. 🔴 **Third arithmetic slip in
+this review**, and the same shape as the print-string defects of entries 62 and 66: **a summary sentence
+that outlived the numbers it was summarising by about four minutes.** 🔒 The claim now checks the real
+asymmetry — panel effect **> 5×** seed effect, seed effect in (5.0, 7.0) — so the exception is asserted
+rather than smoothed over.
+
+### 🔒 What would actually need new compute
+
+Two things, neither an ablation:
+
+1. **External validation that is powered.** The only external test ran twice, failed once and was
+   uninformative once **by its own criteria** (entry 81). A third attempt needs a **power check before the
+   panel is scored** — the missing ceiling is named in that preregistration and has never been added.
+2. **Member-level intervals throughout.** Entry 81 fixed the LOMO table; the same construction underlies
+   **21 intervals** in the paper from **14** source files.
+
+⚠️ **Neither is answered by varying a representation, and this project has varied representations 46 ways.**
