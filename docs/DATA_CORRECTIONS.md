@@ -6966,3 +6966,63 @@ be the maximum — so a later edit that quietly drops the unfavourable corners f
 🟢 The **0.9915 specificity ceiling** is right: 118 calibration negatives make 1/118 = 0.847% the finest
 achievable tail, so every specificity above **99.15%** is extrapolation, and § 7 already says so.
 🟢 The one-in-a-thousand hazard rate is a stipulation and is labelled as one.
+
+---
+
+## 2026-09-30 (ninety-first entry) — Review segment 10 of 12, the audit itself: a deleted artifact passed the gate
+
+Segment 10 audits the auditor. Two defects, one of them the most consequential thing this review has
+found, because it is in the mechanism every other finding was measured against.
+
+### 🔴 10.1 A missing artifact passed
+
+`j()` returns `None` for a file that is not there, and **59 of 128** predicates are written
+`lambda v: v is None or (...)`. So a **deleted or renamed artifact made its claim pass.**
+
+🔒 **Demonstrated rather than reasoned**: `results/conformal_contrasts.json` was moved aside and the gate
+printed **"all 128 claims agree with their artifacts and with the public documents"** and exited **0**.
+
+🔑 **The absence of the artifact is exactly the case this file exists to catch, and it was the one case it
+permitted.** A number in a public document is supposed to be backed by a recomputation; with the artifact
+gone there is no recomputation at all, and the gate said the number agreed with it.
+
+🔒 **Fixed in the loop rather than in 59 predicates**: a loader returning `None` is now a named failure —
+*"artifact missing: the loader returned None"* — and the same hidden file now yields **exit 1**. Verified
+on two different claims by captured exit code. ⚠️ **Nothing was passing vacuously today** — all 128
+loaders return a value — so this closes a latent mode rather than correcting a live number.
+
+### 🔴 10.2 A claim labelled "figures match the artifact" compared nothing
+
+`("LOMO figures quoted in the document match the artifact", …, lambda v: True, …)`. The loader computes
+**eleven** values — baseline AUROC 0.9738, panel 80/154, beta-lactamase (0.2143, 0.0143), its AUROC 0.751,
+the provenance AUROC 0.818, organism agreement 0.53 — and the predicate asserted **none of them**.
+
+⚠️ **Its pin does not cover this.** A pin checks that a sentence exists in a document; the artifact could
+have drifted in either direction and the sentence would still be there. 🔑 **The label promised agreement
+and the implementation checked existence.**
+
+🔒 Replaced with a predicate over the four figures in the pinned row plus the panel and the two confound
+AUROCs, and null-calibrated: moving beta-lactamase from 21% to 40% now fails the gate. ⚠️ **Third instance
+of the cannot-fail class** — entry 68's 94% false-pass rate, entry 73's `assert … or True`, this.
+
+### 🟢 10.3 The other `lambda v: True` is by design, and is now labelled
+
+The registry's second always-true predicate is a **forbid-only** claim: empty pins, and its whole job is
+banning two stale phrasings about a pooled meta-analysis. 🔒 Kept and renamed *"(forbid-only claim)"* so a
+reader does not have to work out which kind it is.
+
+### ⚠️ 10.4 And my own detector under-counted
+
+The scan that found 10.2 looked for predicates with no comparison operator and reported **one**. There are
+**two**; it missed the forbid-only claim because `inspect.getsource` on a one-line lambda returns the whole
+registry line, and that line's **forbid strings** contain the word *"is"*, which the operator regex
+matched. 🔑 **A detector reading its target's neighbours instead of its target** — the same shape as the
+positional-cache defect of entry 57, and it was caught only because the count of one looked too low.
+
+### 🔒 What segment 10 confirmed
+
+🟢 All **128** loaders currently return a value; nothing is vacuous today. 🟢 The **8** claims with no pins
+are cross-artifact consistency checks — *"every dated entry cited by a document exists in the log"*,
+*"every annotation file covers every panel member"* — where there is no single sentence to pin, and that is
+the right design. 🟢 **90** claims carry no forbids, which is expected: a forbid is for a phrasing that has
+already gone wrong once.

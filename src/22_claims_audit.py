@@ -4462,7 +4462,11 @@ CLAIMS = [
       "docs/MECHANISM_GENERALIZATION.md":
       "| panel to pool, deployment shift | 7.87% [7.57, 8.16] exceeds | 5.98% [5.73, 6.23] **exceeds** |"},
      []),
-    ("FSPE pseudoreplicated figure is labelled, not led with", fspe_protein_level,
+    # 🔒 The second `lambda v: True` in this registry, and unlike the one above it that is the design:
+    # this claim's whole job is the forbid list, its pins are deliberately empty, and its label is a
+    # statement about the DOCUMENT rather than about a number. Kept, and labelled so a reader does not
+    # have to work out which kind it is.
+    ("FSPE pseudoreplicated figure is labelled, not led with (forbid-only claim)", fspe_protein_level,
      lambda v: True, {}, ["Pooled meta-analysis: p = 2.6", "meta-analysis (p = 2.6 × 10⁻⁸) is the better-powered"]),
     ("Embedding separability AUROC", separability,
      lambda v: v is None or abs(v["auroc"] - 0.981) < 0.002, {}, []),
@@ -5287,7 +5291,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 94"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 95"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -5923,7 +5927,24 @@ CLAIMS = [
       # the standalone summary quotes the alignment comparison; pinned so it cannot drift
       "docs/DETECTOR_EVALUATION_SUMMARY.md": 'beats Smith-Waterman by **+55.9 points**. On beta-lactamase alignment wins, **29.5% against 21.4%**.'}, []),
     ("LOMO figures quoted in the document match the artifact", lomo_class_recovery,
-     lambda v: True,
+     # 🔴 This predicate was `lambda v: True` until 2026-09-30. The label promises the figures "match
+     # the artifact" and nothing compared them: the loader computed eleven values and asserted none, so
+     # the pinned row could have drifted from the artifact in either direction and the gate would have
+     # passed. A pin checks that a sentence exists; only a predicate can check a number.
+     lambda v: v is None or (
+         # the figures in the pinned row, in the order the row prints them
+         round(v["beta_lactamase"][0] * 100) == 21
+         and round(v["beta_lactamase"][1] * 100) == 1
+         and abs(v["beta_lactamase_auroc"] - 0.751) < 0.001
+         # the panel it is computed on
+         and v["n_pos"] == 80 and v["n_neg"] == 154
+         and abs(v["baseline_auroc"] - 0.9738) < 0.001
+         # the fully recovered classes and the one at 80%, from the same table
+         and v["superantigen"] == (1.0, 1.0) and v["clostridial"] == (1.0, 1.0)
+         and v["t3ss"][0] == 0.8
+         # and the two confound figures this document also quotes
+         and abs(v["provenance_auroc"] - 0.818) < 0.001
+         and abs(v["organism_agreement"] - 0.53) < 0.005),
      {"docs/MECHANISM_GENERALIZATION.md": "| **beta_lactamase** | 14 | **21%** | **1%** | 0.751 |"},
      []),
     ("AMR-category test v1: the number reproduces, the refutation it was read as does not",
@@ -6580,6 +6601,16 @@ def main():
         except Exception as e:
             print(f"  XX {label:<48} artifact error: {type(e).__name__}")
             failures.append(label)
+            continue
+        # 🔴 Added 2026-09-30. `j()` returns None for a file that is not there, and 59 of these
+        # predicates are written (counted 2026-09-30; the first version of this comment said 58,
+        # from a count taken before the claim added minutes earlier) `lambda v: v is None or (...)`, so a DELETED OR RENAMED ARTIFACT made
+        # its claim pass. Demonstrated by hiding `results/conformal_contrasts.json`: the gate printed
+        # "all 128 claims agree" and exited 0. The absence of the artifact is exactly the case this
+        # file exists to catch, and it was the one case it permitted.
+        if v is None:
+            print(f"  XX {label:<48} artifact missing: the loader returned None")
+            failures.append(f"{label}: artifact missing")
             continue
         good = ok(v)
         detail = ", ".join(f"{k}={round(x, 4) if isinstance(x, float) else x}"
