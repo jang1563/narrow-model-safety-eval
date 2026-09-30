@@ -185,7 +185,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/COVERAGE_LEDGER.md",
           # Added 2026-10-01. It spends the rule the ledger priced and settles C/A's verdict on 2.7x
           # the VFDB population, with the numerator's inertness as the reason to trust the expansion.
-          "docs/SPENT_RULE_PREREGISTRATION.md"]
+          "docs/SPENT_RULE_PREREGISTRATION.md",
+          # Added 2026-10-01. It is the test that could have invalidated every interval in studies
+          # AC-AE and did not, and it records a prediction made against this project's own evidence.
+          "docs/ORGANISM_CLUSTER_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1819,6 +1822,45 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def organism_cluster():
+    """Organism clustering is negligible, so the protein-level intervals stand.
+
+    🔒 Design effects 1.09-1.18 on both contrasts and both arms, under the 1.2 frozen as
+    negligible. C/A stays PARTIAL on clustered lower bounds 1.870 and 1.893, above the retraction
+    threshold of 1.2; R clears its 3.0 band at 3.469 and 3.282.
+
+    🔴 Both halves of the frozen prediction were wrong: the ratio was predicted above 1.3 and is
+    1.09-1.18, and C/A's was predicted to exceed R's and does not on 650M. The model was wrong -- a
+    design effect is 1 + (mean cluster - 1)*ICC and I reasoned from the cluster size while treating the
+    ICC as free. The ICC is small, and the evidence for that was already in the organism-stratified
+    study's within-species result.
+
+    ⭐ And study AE's leftover question is answered: the 0.30 between-pool gap sits inside the
+    clustered half-width on both arms, so it is draw noise at the organism level.
+    """
+    a = j("../results/organism_cluster.json")
+    b = j("../results/organism_cluster_esm2_35M.json")
+    if None in (a, b):
+        return None
+    return {
+        "n": a["n"],
+        "design": {"CA_650M": a["contrasts"]["CA"]["design_effect"],
+                   "R_650M": a["contrasts"]["R"]["design_effect"],
+                   "CA_35M": b["contrasts"]["CA"]["design_effect"],
+                   "R_35M": b["contrasts"]["R"]["design_effect"]},
+        "band": {"650M": a["width_band"], "35M": b["width_band"]},
+        "CA_cluster_lo": {"650M": a["contrasts"]["CA"]["cluster_ci"][0],
+                          "35M": b["contrasts"]["CA"]["cluster_ci"][0]},
+        "CA_verdict": {"650M": a["CA_verdict"], "35M": b["CA_verdict"]},
+        "R_cluster_lo": {"650M": a["contrasts"]["R"]["cluster_ci"][0],
+                         "35M": b["contrasts"]["R"]["cluster_ci"][0]},
+        "R_clears": bool(a["R_clears_band"] and b["R_clears_band"]),
+        "pool_gap_inside": bool(a["pool_gap_inside"] and b["pool_gap_inside"]),
+        "ca_ratio_below_r_650M": bool(a["contrasts"]["CA"]["design_effect"]
+                                      < a["contrasts"]["R"]["design_effect"]),
     }
 
 
@@ -5309,6 +5351,27 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("organism clustering is negligible, so the protein-level intervals stand",
+     organism_cluster,
+     lambda v: v is None or (
+         # 🔒 every design effect under the 1.2 frozen as negligible
+         max(v["design"].values()) < 1.2 and min(v["design"].values()) > 1.0
+         and all(x == "organism clustering is negligible" for x in v["band"].values())
+         # 🔴 and the prediction's second half was wrong: C/A's ratio is BELOW R's on 650M
+         and v["ca_ratio_below_r_650M"]
+         # 🔒 both verdicts survive the clustered interval
+         and all(x == "partial" for x in v["CA_verdict"].values())
+         and min(v["CA_cluster_lo"].values()) > 1.5
+         and v["R_clears"] and min(v["R_cluster_lo"].values()) > 3.0
+         # ⭐ and study AE's between-pool gap is inside it on both arms
+         and v["pool_gap_inside"]
+         # the cells are clustered enough for the question to be meaningful
+         and v["n"]["vfdb_organisms"] == 65 and v["n"]["benign_ca_organisms"] == 65),
+     {"docs/ORGANISM_CLUSTER_PREREGISTRATION.md":
+      "🔴 **I predicted a large organism design effect against a result this project"},
+     # ⚠️ a negligible design effect must not become a claim that clustering was never a risk
+     ["organism clustering was never a concern",
+      "the intervals are cluster-robust by construction"]),
     ("spending the reviewed-only rule confirms partial and shows the rule was inert",
      spent_rule,
      lambda v: v is None or (

@@ -7432,3 +7432,47 @@ negative-set choice alone swings AUPRC **0.62 → 0.87**
 ⚠️ **Read together with entry 95, the shape of the registration result is now settled**: partial on its own
 panel's honest interval, partial on an independent draw, partial on 2.7× the population, and insensitive to
 the curation rule that was costing most of it. 🔒 **Four different ways of asking, one answer.**
+
+---
+
+## 2026-10-01 (one hundredth entry) — Organism clustering is negligible, and I predicted otherwise against this project's own evidence
+
+Study AF (`docs/ORGANISM_CLUSTER_PREREGISTRATION.md`, `src/118_organism_cluster.py`) asks whether the
+protein-level intervals of studies AC–AE are themselves too narrow, because proteins from the same
+organism share provenance, secretion machinery and homology — **the three things § 6 identifies as driving
+the flag.**
+
+| | point | protein-level | **organism-clustered** | design effect |
+|---|---:|---|---|---:|
+| **650M** `C/A` | 2.409 | [1.903, 3.231] | [1.870, 3.337] | **1.11** |
+| **650M** `R` | 4.965 | [3.679, 6.702] | [3.469, 7.033] | **1.18** |
+| **35M** `C/A` | 2.568 | [1.938, 3.892] | [1.893, 4.089] | **1.12** |
+| **35M** `R` | 5.353 | [3.468, 8.750] | [3.282, 9.062] | **1.09** |
+
+### 🟢 The protein-level intervals stand
+
+Design effects **1.09 – 1.18**, all under the 1.2 frozen as *negligible*. 🔒 **Studies AC–AE do not need
+restating**, and § 4's first obligation — restate everything if the ratio exceeded 1.2 — was written for
+the other outcome. **Both verdicts survive**: `C/A` partial at clustered lower bounds **1.870** and
+**1.893**, above the retraction threshold of 1.2; `R` clears 3.0 at **3.469** and **3.282**.
+
+### 🔴 Both halves of the prediction were wrong, and the correct prior was one document away
+
+❌ Predicted ratio **> 1.3**; got **1.09 – 1.18**. ❌ Predicted `C/A`'s ratio above `R`'s because its
+numerator's mean cluster is **10.8** against 1.8 and 3.9; on 650M it is **the other way round**.
+
+🔑 **The model was wrong, not the arithmetic.** A design effect is 1 + (m̄ − 1)·ICC and I reasoned from m̄
+while treating the ICC as free. **The ICC is small: organism identity does not carry the flag.**
+
+🔴 **And this project had already established that.** `docs/ORGANISM_STRATIFIED_PREREGISTRATION.md` found
+margin's ordering holds **within species** — mean *ρ* **+0.3750** and **+0.4107**, 8 of 10 strata positive
+— which says directly that organism identity is not what the score tracks. ⚠️ **I predicted a large
+organism design effect against a result in a document already on the audited surface.** 🔑 **Every previous
+prediction miss this session came from reasoning where a measurement existed; this one came from reasoning
+where a *finding* existed, which is worse.**
+
+### 🔒 And study AE's leftover question is closed
+
+The **0.30** between-pool gap sits inside a clustered half-width of **0.734** and **1.098**. 🔒 **Draw
+noise at the organism level, both arms.** ⚠️ **The third benign draw I proposed at the end of entry 99 is
+therefore not worth running** — it would estimate a variance this already bounds.

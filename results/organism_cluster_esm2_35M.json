@@ -1,0 +1,48 @@
+{
+  "built": "2026-10-01 08:50:57",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "B": 20000,
+  "n": {
+    "vfdb": 703,
+    "vfdb_organisms": 65,
+    "benign_ca": 171,
+    "benign_ca_organisms": 65,
+    "r_extra": 619,
+    "r_extra_organisms": 339,
+    "r_intra": 2708,
+    "r_intra_organisms": 687
+  },
+  "contrasts": {
+    "CA": {
+      "point": 2.5685,
+      "protein_ci": [
+        1.9385,
+        3.8921
+      ],
+      "cluster_ci": [
+        1.8932,
+        4.0886
+      ],
+      "design_effect": 1.124
+    },
+    "R": {
+      "point": 5.3534,
+      "protein_ci": [
+        3.4683,
+        8.7496
+      ],
+      "cluster_ci": [
+        3.2822,
+        9.0624
+      ],
+      "design_effect": 1.094
+    }
+  },
+  "width_band": "organism clustering is negligible",
+  "CA_verdict": "partial",
+  "R_clears_band": true,
+  "pool_gap": 0.3,
+  "pool_gap_inside": true,
+  "pool_gap_verdict": "draw noise at the organism level"
+}
