@@ -6860,3 +6860,60 @@ their own disclaimers, and intervals answering a different question from the pro
   criticism lands squarely, and renaming across 36 documents and 126 audited claims needs its own pass with
   the gate green at each step. **Recorded as editorial debt, not deferred silently.**
 - **A second annotator for the hazard split.** The one item here that needs work no script can do.
+
+---
+
+## 2026-09-30 (eighty-ninth entry) — Review segment 5 of 12, margin: the ordering transfers, the floor property does not
+
+Segment 5 covers **margin and prediction**, the paper's one positive result. The result is robust in its
+ranking form and the paper overstated a different, adjacent property.
+
+### 🔴 5.1 "The two lowest-margin classes are exactly the two failures" is one arm
+
+§ 4's table states it unqualified, with chance 1/66. It is the **canonical arm on v3**. On v3 — the only
+panel where both failures exist — across all ten embedded arms:
+
+| | |
+|---|---:|
+| both failures in the bottom two | 🔴 **3 of 10** (canonical, ESM-2 3B, SaProt) |
+| bottom two are beta-lactamase + **virulence-associated non-toxin** | **7 of 10** |
+| the study's own preregistered P1 | **`majority: False`** |
+
+⚠️ **A preregistered test returned majority-false and the paper stated the property as though it held.**
+
+### 🔴 5.2 And "it transfers" was evidenced on a panel with only one failure class
+
+The fourteen-arm evidence is **v2**, where `k = 1` and the failure set is **beta-lactamase alone**. So the
+transfer sentence and the two-class table row above it are **different properties on different panels**,
+stated adjacently — 🔑 **entry 82's panel-mixing defect, in a second place, found by reading the artifact's
+own `k` field.**
+
+### 🔒 5.3 What does transfer
+
+| | panel | arms | significant | beta-lactamase lowest |
+|---|---|---:|---:|---:|
+| ordering, *ρ*(margin, recovery) | v2, k = 1 | 14 | **13 / 14**, *ρ* 0.588 – 0.957 | **12 / 14** |
+| ordering | v3, k = 2 | 10 | **10 / 10**, *ρ* 0.739 – 0.954 | **9 / 10** |
+
+🔒 **The ordering is the claim that survives**, and the beta-lactamase floor with it. § 4 now carries the
+table rather than one sentence.
+
+### 🟢 5.4 And the ordering is not carried by the two extreme points
+
+I expected *ρ* = +0.894 on twelve classes to be dragged by two outliers. It is not, and the check already
+existed: **leave-one-class-out *ρ* = +0.8325** (permutation *p* = 0.0006, 20,000 permutations), LOOCV
+**MAE 0.134** against a **0.284** baseline, and a fit on the nine pre-expansion classes ranks the phage
+class lowest of the three v3 added.
+
+⭐ **That artifact carries a `disclosure` field of its own**: *"a retrodiction with a model whose
+parameters exclude the test classes, not a sealed prediction; the author knew the answers."* 🔒 **Reported
+after the leave-one-out figure and not instead of it**, because the leave-one-out number is the one that
+does not depend on who knew what.
+
+### ⚠️ And a shell that could not fork
+
+The segment stalled mid-way: the shell returned `fork failed: resource temporarily unavailable` on every
+command including `echo`, for about ten minutes. 🔒 **Nothing was written during it.** The analysis was
+finished by reading artifacts directly, and the documents were left untouched until the three-way gate
+could run — **a change that cannot be gated does not go in**, which is the rule this repository has had
+since entry 72 and the first time it has been tested by the environment rather than by me.

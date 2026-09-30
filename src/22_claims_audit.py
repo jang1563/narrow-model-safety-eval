@@ -1807,6 +1807,48 @@ def length_band_sensitivity():
     }
 
 
+def margin_transfer():
+    """The ordering transfers; which classes sit at the floor transfers less.
+
+    🔴 The paper's table row -- "the two lowest-margin classes of twelve are exactly the two
+    failures" -- is the CANONICAL arm. On v3, the only panel where both failures exist, that holds on 3 of
+    10 arms and the study's own preregistered P1 records majority: False. On seven of the ten the bottom
+    two are beta-lactamase and virulence-associated non-toxin.
+
+    🔒 What does transfer is the ordering: significant on 13 of 14 v2 arms and 10 of 10 v3 arms,
+    with beta-lactamase lowest on 12 of 14 and 9 of 10. The paper stated "it transfers" once, against the
+    v2 evidence, next to a v3 two-class property -- the panel-mixing of entry 82, in a second place.
+
+    ⭐ And the ordering is not carried by the two extreme points: leave-one-class-out rho = +0.8325
+    (p = 0.0006), LOOCV MAE 0.134 against a 0.284 baseline. Pinned together, because the 3-of-10 figure
+    alone reads as a retraction of a result that is in fact robust in its ranking form.
+    """
+    a = j("../results/v3/margin_across_arms.json")
+    b = j("../results/v2/margin_across_arms.json")
+    c = j("../results/v3/margin_predicts_new_classes.json")
+    if None in (a, b, c):
+        return None
+
+    def tally(d):
+        arms = d["arms"]
+        items = arms if isinstance(arms, list) else list(arms.values())
+        return {"k": d["k"], "n_arms": len(items),
+                "locates": sum(1 for x in items if x["locates_failure"]),
+                "betalac_lowest": sum(1 for x in items
+                                      if x["lowest_margin_class"] == "beta_lactamase"),
+                "n_sig": len(d["P2"]["arms_significant"]),
+                "p1_majority": d["P1"]["majority"],
+                "rho_lo": round(min(x["rho"] for x in items), 4),
+                "rho_hi": round(max(x["rho"] for x in items), 4)}
+
+    return {"v3": tally(a), "v2": tally(b),
+            "loocv_rho": round(c["P3"]["loocv_spearman"], 4),
+            "loocv_p": c["P3"]["perm_p"],
+            "loocv_mae": round(c["P2"]["loocv_mae"], 4),
+            "baseline_mae": round(c["P2"]["baseline_mae"], 4),
+            "retrodiction_disclosed": "not a sealed prediction" in c["disclosure"]}
+
+
 def audit_self_size():
     """How many claims does this audit check, and does the paper say the same number?
 
@@ -4981,6 +5023,30 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("margin's ordering transfers across arms; its two-class floor property does not",
+     margin_transfer,
+     lambda v: v is None or (
+         # 🔴 the floor property holds on 3 of 10 v3 arms and its own P1 says majority False
+         v["v3"]["k"] == 2 and v["v3"]["n_arms"] == 10
+         and v["v3"]["locates"] == 3 and not v["v3"]["p1_majority"]
+         # 🔒 while the ORDERING is significant on every v3 arm and 13 of 14 v2 arms
+         and v["v3"]["n_sig"] == 10
+         and v["v2"]["n_arms"] == 14 and v["v2"]["n_sig"] == 13 and v["v2"]["p1_majority"]
+         # 🔒 and beta-lactamase is lowest on the large majority of both
+         and v["v3"]["betalac_lowest"] == 9 and v["v2"]["betalac_lowest"] == 12
+         # ⚠️ v2 has ONE failure class, which is why its P1 can be true where v3's is false
+         and v["v2"]["k"] == 1
+         and v["v2"]["rho_lo"] < 0.60 and v["v3"]["rho_lo"] > 0.70
+         # ⭐ the ordering is not carried by the two extremes
+         and v["loocv_rho"] > 0.80 and v["loocv_p"] < 0.01
+         and v["loocv_mae"] < 0.5 * v["baseline_mae"]
+         and v["retrodiction_disclosed"]),
+     {"paper/MANUSCRIPT.md":
+      "🔒 **What does transfer is the ordering and the beta-lactamase floor**: significant on 13 of 14 arms on v2"},
+     # ⚠️ the unqualified transfer sentence must not come back, and the floor property must not be
+     # generalised from the canonical arm to all of them
+     ["🟢 **It transfers.** The ordering holds in **fourteen model arms**",
+      "every arm places both failures at the bottom"]),
     ("the paper states the audit's own size, and the audit measures it",
      audit_self_size,
      # 🔒 Self-maintaining like claim 119: no hard-coded total, so adding a claim fails the gate until
@@ -5153,7 +5219,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 92"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 93"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 92 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 93 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 92
+written because it caught something. The evidence is a **dated, append-only corrections log of 93
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -634,15 +634,36 @@ Both failures share a geometric property computable **before** the class is trai
 | | |
 |---|---|
 | ranks classes by recovery | **Spearman +0.894**, permutation *p* = **0.00015** |
-| the two lowest-margin classes of twelve | **exactly the two failures** (chance 1/66) |
+| the two lowest-margin classes of twelve | **exactly the two failures** (chance 1/66) — ⚠️ **canonical arm; 3 of 10 arms, see below** |
 | beats each of its own parts | nearest-positive alone, nearest-negative alone |
 | class size runs the other way | −0.564 |
 | **both failing classes** | **negative margin**: closer to a benign protein than to any trained hazard class |
 
-🟢 **It transfers.** The ordering holds in **fourteen model arms** — ESM-2 at five scales, ESM-C at three,
-ESM-3, ProtT5, SaProt, and two pooling variants — and, separately, across **fifteen re-poolings of one
-arm** (*ρ* +0.536 to +0.941, **14 of 15** significant at *p* < 0.05, **12 of 15** placing beta-lactamase at
-the margin floor). Those are two different kinds of variation and it survives both.
+🟢 **The ordering transfers. Which classes sit at the floor transfers less, and the two are different
+claims.**
+
+| | panel | arms | significant | the floor property |
+|---|---|---:|---:|---|
+| **ordering**, *ρ*(margin, recovery) | v2, k = 1 | 14 | **13 / 14** (*ρ* 0.588 – 0.957) | beta-lactamase lowest on **12 / 14** |
+| **ordering** | v3, k = 2 | 10 | **10 / 10** (*ρ* 0.739 – 0.954) | beta-lactamase lowest on **9 / 10** |
+| **both failures in the bottom two** | v3, k = 2 | 10 | — | 🔴 **3 / 10** |
+
+🔴 **The table row above is the canonical arm.** On the only panel where both failures exist, the property
+*"the two lowest-margin classes are exactly the two failures"* holds on **three arms of ten** — canonical,
+ESM-2 3B and SaProt — and the study's own preregistered test records **`majority: False`**. On **seven** of
+the ten the bottom two are beta-lactamase and **virulence-associated non-toxin**, not the phage class.
+
+🔒 **What does transfer is the ordering and the beta-lactamase floor**: significant on 13 of 14 arms on v2
+and 10 of 10 on v3, with beta-lactamase lowest on 12 of 14 and 9 of 10. ⚠️ **"It transfers" was previously
+stated once, against the v2 evidence, next to a v3 two-class property** — the same panel-mixing this paper
+corrects in § 3.
+
+🟢 **And the ordering is not carried by the two extreme points.** Leave-one-class-out gives *ρ* =
+**+0.8325** (permutation *p* = 0.0006, 20,000 permutations) with a leave-one-out mean absolute error of
+**0.134** against a **0.284** baseline; fitting on the nine pre-expansion classes and predicting the three
+v3 added ranks the phage class lowest (chance 1/3). ⚠️ **That last one is a retrodiction and its artifact
+says so** — *"not a sealed prediction; the author knew the answers"* — which is why it is reported after the
+leave-one-out figure and not instead of it.
 
 🔴 **It is a ranking, not a calibration.** Margin over-predicts beta-lactamase recovery by **34 points**
 and errs optimistic on every out-of-sample class. And the member-level version of the same claim was
@@ -872,7 +893,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**126 claims** and fails if any number in a public document drifts from the artifact that produced
+**127 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and
