@@ -5615,3 +5615,49 @@ I did not say so.** Pool 1 refitted without the screen gives 6.059 on 35M agains
 conservative relative to a screened comparison and the shortcut cannot manufacture the replication.
 ⚠️ **The magnitude is arm-dependent and must not be quoted as one number** — which is the same error,
 in miniature, as quoting a single figure for a quantity that varies by length (entry 64).
+
+---
+
+## 2026-09-30 (seventy-second entry) — Entry 71 went out with a red test, because the gate was on the wrong line
+
+Entry 71's commit `a62e232` was made while `tests/test_release_integrity.py::test_result_validator_cli_passes`
+was **failing**. 🔴 **The cause is mine and it is embarrassing given what this log has been cataloguing.**
+The command was:
+
+```
+ruff check src/ tests/ >/dev/null && pytest tests/ -q | tail -1
+git add -A && git commit ...
+```
+
+`git add` is on a **new line**, so it ran regardless of pytest's exit status. 🔒 Entry 51's lesson —
+*capture the exit code rather than pipe it* — had been applied to the **claims audit** on every commit
+since, and **never extended to the test suite**. The audit was gated; the tests were merely printed.
+
+### 🟢 What the test was actually complaining about, and it is not a regression
+
+```
+FileNotFoundError: [Errno 2] No such file or directory: 'python'
+```
+
+The test invoked a **bare `python`**, and this environment holds only `/usr/bin/python3`. ⚠️ **Nothing
+about the validator changed** — run directly it exits 0 with `Result validation passed.` — and nothing
+in entry 71's work touched it. **It is a latent dependency on whatever the PATH happens to hold**, which
+had been satisfied earlier in the session and was not at that moment.
+
+🔒 **Fixed properly rather than worked around**: the test now uses `sys.executable`, the interpreter
+already running the suite, which cannot go missing. Suite back to **48 passing**.
+
+### 🔑 Why this one is worse than the eight before it
+
+The previous eight were checks that *could not fail*. This was a check that **did** fail, ran, printed
+its failure, and was **ignored by the surrounding command**. ⚠️ **A working check with a broken gate is
+more dangerous than a broken check**, because the output looks like diligence — the failure was right
+there in the terminal above the commit hash.
+
+🔒 Every commit from here gates on **both** exit codes:
+
+```
+audit > /tmp/a.txt 2>&1; rc=$?
+pytest tests/ -q > /tmp/t.txt 2>&1; tc=$?
+[ $rc -eq 0 ] && [ $tc -eq 0 ] || exit 1
+```

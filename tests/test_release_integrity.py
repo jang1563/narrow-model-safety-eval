@@ -3,6 +3,7 @@
 import importlib.util
 import json
 import re
+import sys
 import subprocess
 from pathlib import Path
 
@@ -263,8 +264,12 @@ def test_dashboard_filters_esm3_fspe_by_model():
 
 
 def test_result_validator_cli_passes():
+    # 🔴 This invoked a bare "python", which is a latent dependency on whatever the PATH happens to
+    # hold: on 2026-09-30 this environment had only /usr/bin/python3 and the test failed with
+    # FileNotFoundError while nothing about the validator had changed. sys.executable is the
+    # interpreter already running the suite, so it cannot go missing. Entry 72.
     result = subprocess.run(
-        ["python", "src/20_validate_results.py"],
+        [sys.executable, "src/20_validate_results.py"],
         cwd=ROOT,
         capture_output=True,
         text=True,
