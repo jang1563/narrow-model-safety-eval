@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 87 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 88 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -16,7 +16,7 @@ one-in-a-thousand hazard rate it produces **605 alerts of which about 7 are real
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 87
+written because it caught something. The evidence is a **dated, append-only corrections log of 88
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -45,7 +45,9 @@ over-predicting beta-lactamase recovery by 34 points.
 **Third, and the finding we did not want: nothing we tried moves the screen's precision.** Four
 classifier heads, fourteen representations, three panels, fifteen pooling reductions and a supervised
 residue ranking later, deployment precision sits between **0.97% and 1.26%** in every configuration.
-One reduction moves the two failing classes by +15 to +20 points — and pays for it in the negatives'
+One reduction moves one of the two failing classes — a consistent **+5 of 32** members on the phage class,
+against a net **+1 of 14** on beta-lactamase, where a paired member-level test finds mostly swapping rather
+than gain — and pays for it in the negatives'
 scores exactly as a fixed-budget argument predicts, and does so **only on one of two representations
 tested**.
 
@@ -657,8 +659,28 @@ Ensembles of alignment with embedding, and of two language models.
 
 **What happened.** One reduction — the most deviant 25-residue window — moves both failing classes:
 beta-lactamase **15.5% → 35.0% [31.6, 38.4]** and the phage class **12.3% → 27.3% [23.3, 31.3]** at thirty
-seeds, intervals disjoint, the first pooling choice here whose interval clears alignment's 29.5%. It costs
-**43.8 points** on superantigens and **9.5** on the panel mean.
+seeds, the first pooling choice here whose interval clears alignment's 29.5%. It costs **43.8 points** on
+superantigens and **9.5** on the panel mean.
+
+🔴 **Those intervals were called disjoint, and they are seed standard errors.** A **paired** test on the
+same members — the correct analysis, since both arms score the same proteins
+(`src/112_paired_member_test.py`) — separates the two classes:
+
+| | members gained / lost per seed | net median | paired Δ |
+|---|---|---:|---|
+| **phage peptidoglycan hydrolase** (n = 32) | gains **10, 4, 4, 7, 10**; loses 1, 2, 1, 2, 2 | **+5 of 32** | +17.0 [−3.1, 40.6] |
+| **beta-lactamase** (n = 14) | gains 2, 2, 3, 5, 3; **loses 3, 2, 2, 0, 2** | **+1 of 14** | +8.6 [−28.6, 50.0] |
+
+🔑 **On the phage class the reduction gains more than it loses in every seed**, and the effect is a
+consistent **+5 of 32** members. ⚠️ **On beta-lactamase it mostly swaps members**: the net is **+1 of 14**,
+one seed is negative, and the published +19.5 points does not appear. 🔒 **So the repair is real on one of
+the two classes, not both**, and the member-level intervals **overlap** in both cases ([0.0, 50.0] against
+[7.1, 57.1]; [0.0, 25.0] against [6.2, 53.1]).
+
+⚠️ **Caveat, stated because it bounds the claim**: only **five** seeds of per-member decisions were stored,
+against the published thirty. The gain/loss counts are directionally consistent across all five for phage
+and inconsistent for beta-lactamase, which is a pattern rather than a point estimate — **but a thirty-seed
+re-run retaining per-member flags is what would settle it, and it has not been done.**
 
 🔴 **And it does not survive a change of representation.** On ESM-2 35M the same reduction costs
 beta-lactamase 9.5 points and **no reduction clears its own control**, while the superantigen cost

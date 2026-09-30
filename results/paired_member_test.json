@@ -1,0 +1,135 @@
+{
+  "built": "2026-09-30 11:41:29",
+  "B": 20000,
+  "cases": [
+    {
+      "class": "beta_lactamase",
+      "panel": "v2",
+      "n_members": 14,
+      "seeds_available": 5,
+      "published_30seed": [
+        15.48,
+        35.0
+      ],
+      "published_seed_se_ci": [
+        [
+          11.0,
+          19.9
+        ],
+        [
+          31.6,
+          38.4
+        ]
+      ],
+      "published_disjoint": true,
+      "five_seed_means": [
+        21.43,
+        30.0
+      ],
+      "member_ci_control": [
+        0.0,
+        50.0
+      ],
+      "member_ci_reduction": [
+        7.1,
+        57.1
+      ],
+      "member_intervals_overlap": true,
+      "paired_delta": 8.62,
+      "paired_delta_ci": [
+        -28.6,
+        50.0
+      ],
+      "paired_excludes_zero": false,
+      "gain_per_seed": [
+        2,
+        2,
+        3,
+        5,
+        3
+      ],
+      "loss_per_seed": [
+        3,
+        2,
+        2,
+        0,
+        2
+      ],
+      "net_members_per_seed": [
+        -1,
+        0,
+        1,
+        5,
+        1
+      ],
+      "median_net_members": 1.0,
+      "one_member_pp": 7.1,
+      "max_discordant": 5
+    },
+    {
+      "class": "phage_peptidoglycan_hydrolase",
+      "panel": "v3",
+      "n_members": 32,
+      "seeds_available": 5,
+      "published_30seed": [
+        12.29,
+        27.29
+      ],
+      "published_seed_se_ci": [
+        [
+          10.0,
+          14.5
+        ],
+        [
+          23.3,
+          31.3
+        ]
+      ],
+      "published_disjoint": true,
+      "five_seed_means": [
+        10.0,
+        26.88
+      ],
+      "member_ci_control": [
+        0.0,
+        25.0
+      ],
+      "member_ci_reduction": [
+        6.2,
+        53.1
+      ],
+      "member_intervals_overlap": true,
+      "paired_delta": 17.01,
+      "paired_delta_ci": [
+        -3.1,
+        40.6
+      ],
+      "paired_excludes_zero": false,
+      "gain_per_seed": [
+        10,
+        4,
+        4,
+        7,
+        10
+      ],
+      "loss_per_seed": [
+        1,
+        2,
+        1,
+        2,
+        2
+      ],
+      "net_members_per_seed": [
+        9,
+        2,
+        3,
+        5,
+        8
+      ],
+      "median_net_members": 5.0,
+      "one_member_pp": 3.1,
+      "max_discordant": 12
+    }
+  ],
+  "verdict": "the repair does not survive a paired member-level test on every case"
+}

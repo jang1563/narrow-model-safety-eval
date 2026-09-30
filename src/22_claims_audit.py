@@ -1798,6 +1798,44 @@ def length_band_sensitivity():
     }
 
 
+def paired_member_test():
+    """The one repair that worked survives on one class, not both.
+
+    🔴 `win_best25`'s "intervals disjoint" rests on seed standard errors on classes of 14 and 32
+    members. Paired over the shared members -- the correct analysis, since both arms score the same
+    proteins -- the member intervals OVERLAP in both cases and neither paired delta excludes zero.
+
+    ⭐ But the two classes are not alike, and a seed-robust COUNT separates them: on the phage class
+    the reduction gains more members than it loses in every one of the five seeds, a consistent +5 of 32.
+    On beta-lactamase it mostly swaps -- net +1 of 14, one seed negative -- and the published +19.5
+    points does not appear.
+
+    ⚠️ Only five seeds of per-member decisions were stored against the published thirty, so this
+    is pinned together with that bound; a thirty-seed re-run retaining per-member flags is outstanding.
+    """
+    d = j("../results/paired_member_test.json")
+    if d is None:
+        return None
+    by = {c["class"]: c for c in d["cases"]}
+    ph, bl = by["phage_peptidoglycan_hydrolase"], by["beta_lactamase"]
+    return {
+        "n": {"phage": ph["n_members"], "beta": bl["n_members"]},
+        "seeds_stored": ph["seeds_available"],
+        "published_disjoint": [ph["published_disjoint"], bl["published_disjoint"]],
+        "member_overlap": [ph["member_intervals_overlap"], bl["member_intervals_overlap"]],
+        "paired_excludes_zero": [ph["paired_excludes_zero"], bl["paired_excludes_zero"]],
+        # ⭐ the seed-robust counts that separate the two classes
+        "phage_gain": ph["gain_per_seed"], "phage_loss": ph["loss_per_seed"],
+        "beta_gain": bl["gain_per_seed"], "beta_loss": bl["loss_per_seed"],
+        "phage_net_median": ph["median_net_members"], "beta_net_median": bl["median_net_members"],
+        "phage_gain_beats_loss_every_seed": all(
+            g > x for g, x in zip(ph["gain_per_seed"], ph["loss_per_seed"])),
+        "beta_gain_beats_loss_every_seed": all(
+            g > x for g, x in zip(bl["gain_per_seed"], bl["loss_per_seed"])),
+        "verdict": d["verdict"],
+    }
+
+
 def panel_version_consistency():
     """The published per-class table mixes two panels; the single-panel one was never published.
 
@@ -4824,6 +4862,26 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("the one repair that worked survives a paired member test on one class, not both",
+     paired_member_test,
+     lambda v: v is None or (
+         v["n"] == {"phage": 32, "beta": 14} and v["seeds_stored"] == 5
+         # 🔴 the published verdict was disjoint on both, and at member level both OVERLAP
+         and v["published_disjoint"] == [True, True]
+         and v["member_overlap"] == [True, True]
+         and v["paired_excludes_zero"] == [False, False]
+         # ⭐ and the seed-robust counts separate them: phage gains > losses every seed, beta does not
+         and v["phage_gain_beats_loss_every_seed"]
+         and not v["beta_gain_beats_loss_every_seed"]
+         and v["phage_net_median"] >= 5.0 and v["beta_net_median"] <= 1.0
+         and min(v["beta_gain"][i] - v["beta_loss"][i] for i in range(5)) < 0),
+     {"paper/MANUSCRIPT.md":
+      "🔑 **On the phage class the reduction gains more than it loses in every seed**, and the effect is a",
+      "docs/MECHANISM_GENERALIZATION.md":
+      "⚠️ **\"Intervals disjoint\" is withdrawn for both rows**: at member level they **overlap**. 🔑 **The"},
+     # ⚠️ the withdrawn verdict must not return, and the phage result must not be generalised to both
+     ["intervals disjoint, the first pooling choice",
+      "moves the two failing classes by +15 to +20 points"]),
     ("the published per-class table mixes two panels, and the single-panel one agrees on the shape",
      panel_version_consistency,
      lambda v: v is None or (
@@ -4912,7 +4970,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 87"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 88"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

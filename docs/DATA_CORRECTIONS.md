@@ -6523,3 +6523,64 @@ Two things, neither an ablation:
    **21 intervals** in the paper from **14** source files.
 
 ⚠️ **Neither is answered by varying a representation, and this project has varied representations 46 ways.**
+
+---
+
+## 2026-09-30 (eighty-fourth entry) — Item 2 of 2: the one repair that worked survives on one class, not both
+
+Processing the two obligations named in entry 83. This entry is **item 2, member-level intervals**. The
+census found **29** bracketed intervals in the paper; the new ones and the frozen bands are fine, and
+**twelve** are seed standard errors. 🔑 **One of the twelve is load-bearing for a whole section**, so it went
+first.
+
+### 🔴 The "+19.5 points, intervals disjoint" claim is a seed standard error
+
+`win_best25` — the most deviant 25-residue window — is the project's **only** successful repair. The tables
+in `docs/MECHANISM_GENERALIZATION.md` report **15.5% → 35.0% [31.6, 38.4]** on beta-lactamase and
+**12.3% → 27.3% [23.3, 31.3]** on the phage class, **"intervals disjoint"**. 🔴 **Every one of those is
+`mean ± 1.96·sd/√30` on a class of 14 or 32 members.**
+
+### 🔒 The correct test is paired, and it splits the two classes
+
+Both arms score **the same proteins**, so resampling belongs on the shared member axis
+(`src/112_paired_member_test.py`):
+
+| | gains / losses per seed | net median | paired Δ | member intervals |
+|---|---|---:|---|---|
+| **phage** (n = 32) | **10, 4, 4, 7, 10** / 1, 2, 1, 2, 2 | **+5 of 32** | +17.0 [−3.1, 40.6] | [0.0, 25.0] vs [6.2, 53.1] |
+| **beta-lactamase** (n = 14) | 2, 2, 3, 5, 3 / **3, 2, 2, 0, 2** | **+1 of 14** | +8.6 [−28.6, 50.0] | [0.0, 50.0] vs [7.1, 57.1] |
+
+⚠️ **"Disjoint" is withdrawn for both rows** — at member level they **overlap**, and neither paired Δ
+excludes zero.
+
+🔑 **But the classes are not alike, and a count decides it rather than an interval.** On phage the reduction
+**gains more members than it loses in every one of five seeds**, a consistent **+5 of 32**. 🔴 **On
+beta-lactamase it mostly swaps**: net **+1 of 14**, one seed **negative**, and the published **+19.5 points
+does not appear**. 🔒 **So the repair is real on one class of two**, and the abstract now says so.
+
+### ⚠️ The bound on this, stated because it is the whole weakness
+
+Only **five** seeds of per-member decisions were stored, against the published **thirty**. 🔑 **The member
+component does not shrink with seeds** — with 14 members one protein is **7.1 points** — so more seeds
+cannot close the interval. ⚠️ **But the point estimate can move**, and at five seeds beta-lactamase's Δ is
+**+8.6** against the published **+19.5**. 🔒 **A thirty-seed re-run retaining per-member flags is the
+outstanding obligation**, named here rather than left implicit, and every number above is labelled
+five-seed where it appears.
+
+### 🔒 Why a count is the right instrument here
+
+An interval on a rate over 14 members cannot resolve better than **7.1 points** no matter how it is
+computed, so an interval was never going to settle a claim of **+19.5**. ⭐ **Gains and losses per seed are
+integers, they are directionally consistent for one class and not the other, and they are unaffected by how
+many seeds were averaged.** ⚠️ **That is the second time in this review that replacing an interval with a
+count resolved something an interval could not** — the first was "7 of 30 splits at exactly 0%".
+
+### 🔒 Remaining eleven
+
+`7.87% [7.57, 8.16]` and `5.98% [5.73, 6.23]` (pool FPR, n = 8,258), `46.70% [45.93, 47.47]` and
+`40.84% [40.01, 41.68]` (VFDB, n = 4,218), `5.38× [5.13, 5.63]` and `R = 5.07 [4.91, 5.24]`
+(localization, 652/1,666), `0.692 [0.649, 0.735]` and `1.133 [1.048, 1.219]` (ratio of ratios),
+`2.418 [2.339, 2.497]` and `2.617 [2.495, 2.740]` (matched VFDB, 264 rows), and the two Mantel–Haenszel
+ratios. ⚠️ **None has per-row flags stored**, so each needs its study re-run with rows retained; the
+large-*n* ones will widen by roughly **2×** and the small-*n* ones by more. 🔒 **Listed so the remaining work
+is enumerated rather than described.**

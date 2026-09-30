@@ -3362,3 +3362,30 @@ moves each class's margin in its **eighth significant figure**, for example beta
 −0.008177275769 against −0.008177250624, while every reported quantity is identical: the rank correlations,
 the permutation p-values, the lowest-margin class and the bottom-two membership on all five arms. §10.6.1
 quotes margins to four decimals, four orders of magnitude above that noise.
+
+---
+
+## Amendment 2026-09-30 — the "disjoint" column is a seed standard error
+
+🔴 **Every `[lo, hi]` in the `win_best25` tables above is `mean ± 1.96·sd/√30`**, a standard error of the
+seed mean on classes of **14** and **32** members. Entry 81 showed that construction can be narrower than
+one protein; on beta-lactamase its half-width is **0.62 of one member**.
+
+🔒 **The correct test is paired**, because both arms score the same proteins
+(`src/112_paired_member_test.py`, `results/paired_member_test.json`):
+
+| | gains / losses per seed | net median | paired Δ | member intervals |
+|---|---|---:|---|---|
+| phage peptidoglycan hydrolase (n = 32) | **10, 4, 4, 7, 10** / 1, 2, 1, 2, 2 | **+5 of 32** | +17.0 [−3.1, 40.6] | [0.0, 25.0] vs [6.2, 53.1] |
+| beta-lactamase (n = 14) | 2, 2, 3, 5, 3 / **3, 2, 2, 0, 2** | **+1 of 14** | +8.6 [−28.6, 50.0] | [0.0, 50.0] vs [7.1, 57.1] |
+
+⚠️ **"Intervals disjoint" is withdrawn for both rows**: at member level they **overlap**. 🔑 **The
+phage result stands on a different footing** — gains exceed losses in **every** seed, a consistent +5 of 32.
+🔴 **Beta-lactamase's does not**: the reduction mostly **swaps** members, the net is **+1 of 14**, and one
+seed is negative.
+
+⚠️ **Bound on this amendment**: only **five** seeds of per-member decisions were stored against the
+published thirty. The gain/loss direction is consistent across all five for phage and inconsistent for
+beta-lactamase, which is a pattern rather than a point estimate. 🔒 **A thirty-seed re-run retaining
+per-member flags is the outstanding obligation**, and the numbers above are labelled five-seed everywhere
+they appear.
