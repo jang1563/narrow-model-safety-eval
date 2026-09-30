@@ -230,6 +230,18 @@ result carried the caveat that the annotated contrast might not represent the po
 to **2,739**, and `R` is **5.18** and **5.86** — **4.97** and **5.35** once VFDB contaminants are
 dropped from the strata. 🔒 **The caveat is lifted and the finding is unchanged.**
 
+🔴 **A second guard on the same strata failed four times and turned out to be measuring the wrong
+thing**, which is reported here because the preregistrations carry the four failures. The check compared
+the **unannotated** stratum's flag rate to the **pooled annotated** rate and returned **0.41, 0.32, 0.48
+and 0.52** against a frozen [0.67, 1.5]. ⚠️ **The pool it divided by averages three classes that differ by
+a factor of five.** Against **intracellular alone** the ratio is **1.066** and **1.171** length-adjusted
+over ten deciles, an availability indicator adds **+0.0025 / +0.0074** AUROC over localization class with
+a coefficient that **flips sign between arms**, and the probe separates unannotated from length-matched
+intracellular at AUROC **0.5226 / 0.5371** — chance
+(`docs/AVAILABILITY_DENOMINATOR_PREREGISTRATION.md`). 🔒 **The unannotated stratum behaves like the
+cytoplasmic one, and `R` never used it**: it contrasts extracellular against intracellular, both
+annotated.
+
 ⚠️ **Length was the obvious alternative explanation, and adjusting for it costs about a quarter.**
 Pooling across ten length deciles gives a Mantel–Haenszel ratio of **3.98 [3.87, 4.09]** on 650M and
 **4.70 [4.44, 4.97]** on 35M against crude ratios of 5.18 and 5.86 — 🔒 **still above the frozen 3.0 on

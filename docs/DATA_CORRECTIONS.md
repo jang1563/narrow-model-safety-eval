@@ -5855,3 +5855,98 @@ is not optional any more.** Entry 68 found a self-built check with a **94% false
 found an `assert ... or True`, and study W's own shuffled-label guard fired on a **correct** result. **Four
 guards in this session, four different ways of being wrong; the only thing that found any of them was
 running the guard against input it was supposed to reject.**
+
+---
+
+## 2026-09-30 (seventy-sixth entry) — The guard that failed four times was dividing by the wrong thing, and study E said so
+
+🔴 **Entry 73 reported that a guard had failed four times and that the cause was unknown.** Study E's
+availability check divides the **unannotated** stratum's flag rate by the **pooled annotated** rate and
+requires [0.67, 1.50]. It returned **0.409**, **0.322**, **0.484**, **0.518** across two stratum rules and
+two arms. Entry 73 eliminated length (**≤ 10%**), both score factors, and embedding density (**zero**),
+and closed by recording that no cause had been found.
+
+🔑 **There was no cause to find. The denominator pools three classes that study E itself reports as
+differing by a factor of five** — extracellular **0.239**, membrane **0.169**, intracellular **0.046** on
+650M. A ratio against that pool is a ratio against a **composition**.
+
+### 🔒 Against intracellular alone, all four values were always inside the band
+
+| stratum rule | arm | /extracellular | /membrane | **/intracellular** | /pooled |
+|---|---|---:|---:|---:|---:|
+| E (keywords) | 650M | 0.197 | 0.253 | **1.035** | 0.409 |
+| E (keywords) | 35M | 0.164 | 0.181 | **0.817** | 0.322 |
+| L (GO + signal + TM) | 650M | 0.193 | 0.274 | **0.994** | 0.484 |
+| L (GO + signal + TM) | 35M | 0.215 | 0.235 | **1.218** | 0.518 |
+
+⚠️ **This table is a re-reading of four artifact files written days ago**, and study X's § 2 records it as
+a derivation, **not** as a prediction, because the files were read before the preregistration was written.
+**Re-readings are cheap and this one is not the finding.**
+
+### 🟢 Three measurements, and the one that could have failed did not
+
+Study X (`src/106_availability_denominator.py`, `docs/AVAILABILITY_DENOMINATOR_PREREGISTRATION.md`), 30
+seeds, both arms, all 10 deciles contributing:
+
+| | 650M | 35M | frozen band | |
+|---|---:|---:|---|---|
+| **X-1** length-adjusted unannotated / intracellular | **1.066** | **1.171** | [0.67, 1.50], tight [0.80, 1.25] declined | ✅ both tight |
+| **X-2** ΔAUROC of an availability indicator over localization | +0.0025 | **+0.0074** | < 0.005 | ❌ 35M |
+| X-2 unannotated coefficient | **−0.043** | **+0.158** | within ±0.25 | ✅ |
+| **X-3** AUROC unannotated vs length-matched intracellular | **0.5226** | **0.5371** | [0.40, 0.60], tight [0.45, 0.55] declined | ✅ both tight |
+
+🔑 **X-3 is the one that mattered.** Equal flag rates at the 95th percentile do **not** imply equal
+distributions — two populations can agree in one tail and differ everywhere else — so the preregistration
+declined the tight band and called X-3 the open question. **It came back at chance.** 🔒 The departure from
+parity falls from **0.518 → 0.066** on 650M and **0.480 → 0.171** on 35M. ⚠️ **The two residuals have
+opposite signs and so does X-2's coefficient**, which is why the residual is reported as *small and not
+self-consistent* rather than averaged into one number.
+
+❌ **X-2's band was missed on 35M, and the argument against it was available before the run**: the
+prediction rested on the unannotated rate matching intracellular's, and on 35M the crude ratio is
+**1.250**, which is not a match. **The reasoning was in the preregistration's own § 2 table and I did not
+carry it into § 4.**
+
+### 🔴 Study E already contained the reading, and three studies walked past it
+
+Study E's own results section, after the guard table: *the unannotated rate sits almost exactly on the
+intracellular rate*, called **"a reading, not a demonstration."** 🔴 **It was the denominator, in plain
+sight — four failures, one full study, and one corrections entry declaring the cause unknown.** ⚠️ **The
+failure mode is not a missing measurement. It is a note written and then not used**, and it is the second
+time this session that the next study's premise was already refuted in the record (entry 60 was the
+first).
+
+### 🔒 What is retracted, and what is not
+
+🔒 **Study T's measurements stand, unchanged.** They correctly eliminated three causes; their **target**
+was mis-specified. ⚠️ **What is retracted is framing**: study T's premise that the gap "sits underneath
+every localization number here", and entry 73's verdict that the cause is unknown. 🔑 **T-3's refutation
+of family-recognisability gains value** — it compares embedding neighbourhoods and never touches the
+ratio, so it is independent of all of this. 🔒 **Study E's `R` is untouched**: it contrasts extracellular
+against intracellular, **both annotated**, and the unannotated stratum appears in neither term. 🔒 **The
+four failing values stay in the record** in studies E and T, unedited, with append-only amendments.
+
+### 🔴 The frozen obligation for the guard's null calibration had the wrong sign
+
+§ 6.2 of study X required the replacement guard to **fail** on shuffled strata. 🔴 **Wrong direction** —
+shuffling destroys any real difference between the groups, so the ratio must go to **1** and a correct
+guard must **pass** (it returns 1.009 and 1.024). **Shuffling is a positive control, not a rejection
+test.** The rejection test it was standing in for — **extracellular against intracellular**, which must
+fail — was missing from the frozen document and was added: **3.982** and **4.707**.
+
+🔒 **The control was not bent to fit the obligation.** The obligation is recorded as wrong, the artifact
+carries `X4_shuffled_obligation_was_misspecified`, and all three rows are reported. ⭐ **And the rejection
+test is a free verification**: its **3.9823** reproduces `src/93`'s published length-adjusted `R` of
+**3.98** to four decimals, so the helper X-1 depends on agrees with an existing one on a question whose
+answer was already known.
+
+### ⚠️ Claim 115, and a defect fixed once coming back in a new form
+
+Claim 115 pins **four** documents and forbids three revivals. It was null-calibrated on four wrong values
+— the tight band, the separability AUROC, the shuffled acceptance, and the coefficient sign — and fails on
+each.
+
+🔴 **Its pins dict first reported study T's document as absent**, because I gave the key a **trailing
+space**. That space was reflex: an earlier claim needed one to carry the same document twice, and **here
+there was no duplicate to work around.** ⚠️ **The same habit, a different defect** — and the only reason
+it surfaced in seconds is that the gate distinguishes *absent document* from *missing sentence*.

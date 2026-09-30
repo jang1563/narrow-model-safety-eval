@@ -144,7 +144,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # on the published virulence-factor classifiers, together with the limitation that stops it
           # becoming a claim about their numbers -- and the sub-chance shuffled floor that would
           # otherwise read as leakage.
-          "docs/METADATA_BASELINE_PREREGISTRATION.md"]
+          "docs/METADATA_BASELINE_PREREGISTRATION.md",
+          # Added 2026-09-30 with the document. It is the only place that resolves a guard this
+          # repository reported as failed four times, and it carries the amendment saying its own
+          # shuffled-control obligation was written with the wrong sign.
+          "docs/AVAILABILITY_DENOMINATOR_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1778,6 +1782,61 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def availability_denominator():
+    """The availability guard failed four times because its denominator pooled three classes.
+
+    🔴 Study E's check divides the unannotated flag rate by the POOLED annotated rate, a pool
+    averaging extracellular 0.239, membrane 0.169 and intracellular 0.046 -- a factor of five. It
+    returned 0.41, 0.32, 0.48 and 0.52 against a frozen [0.67, 1.5], and study T then eliminated three
+    causes of a quantity that turns out to be a comparison-class artifact.
+
+    ⭐ Against intracellular alone: 1.066 and 1.171 length-adjusted over ten deciles, both inside a
+    tight [0.80, 1.25] the preregistration declined to predict; an availability indicator worth +0.0025
+    and +0.0074 AUROC over localization class, with a coefficient that FLIPS SIGN between arms; and
+    AUROC 0.5226 / 0.5371 between unannotated and length-matched intracellular.
+
+    🔑 All three are pinned together. The ratio alone reads as a fix, and the AUROC is what makes
+    it a finding: equal flag rates at one quantile do not imply equal distributions, and X-3 is the
+    measurement that closed that gap rather than assuming it.
+
+    ⚠️ The 35M arm MISSED X-2's frozen band, and `X2_band` carries that rather than the
+    conclusion. The guard's own rejection test reproduces the published length-adjusted R to four
+    decimals (3.9823 against the manuscript's 3.98), which is checked here because a helper that agrees
+    with src/93 on a known answer is the reason to trust it on an unknown one.
+    """
+    a = j("../results/availability_denominator.json")
+    b = j("../results/availability_denominator_esm2_35M.json")
+    if None in (a, b):
+        return None
+    return {
+        "strata_n": a["strata_n"],
+        "eligible": bool(a["verdict_eligible"] and b["verdict_eligible"]),
+        "deciles": [a["n_deciles_used"], b["n_deciles_used"]],
+        "mh": {"650M": round(a["X1_mh_vs_intracellular"]["mean"], 4),
+               "35M": round(b["X1_mh_vs_intracellular"]["mean"], 4)},
+        "tight": {"650M": a["X1_in_tight_band"], "35M": b["X1_in_tight_band"]},
+        "d_auroc": {"650M": round(a["X2_delta_auroc"], 4), "35M": round(b["X2_delta_auroc"], 4)},
+        "coef": {"650M": round(a["X2_unannotated_coef"]["mean"], 4),
+                 "35M": round(b["X2_unannotated_coef"]["mean"], 4)},
+        "x2_band": {"650M": a["X2_band"], "35M": b["X2_band"]},
+        "sep": {"650M": round(a["X3_auroc_unannotated_vs_intracellular"]["mean"], 4),
+                "35M": round(b["X3_auroc_unannotated_vs_intracellular"]["mean"], 4)},
+        "sep_tight": {"650M": a["X3_in_tight_band"], "35M": b["X3_in_tight_band"]},
+        # 🔴 the replacement guard must reject two things and accept one
+        "pooled": {"650M": round(a["X4_pooled_denominator"]["mean"], 4),
+                   "35M": round(b["X4_pooled_denominator"]["mean"], 4)},
+        "rejects_pooled": bool(a["X4_pooled_rejected"] and b["X4_pooled_rejected"]),
+        "rejects_extracellular": bool(a["X4_extracellular_rejected"]
+                                      and b["X4_extracellular_rejected"]),
+        "accepts_shuffled": bool(a["X4_shuffled_accepted"] and b["X4_shuffled_accepted"]),
+        "reportable": bool(a["X4_guard_reportable"] and b["X4_guard_reportable"]),
+        "shuffled_obligation_was_misspecified": bool(
+            a["X4_shuffled_obligation_was_misspecified"]),
+        # the rejection test reproduces src/93's published number, which is why X-1 is credible
+        "reproduces_published_R": round(a["X4_extracellular_vs_intracellular"]["mean"], 4),
     }
 
 
@@ -4298,6 +4357,48 @@ CLAIMS = [
      {"docs/ANNOTATION_AVAILABILITY_PREREGISTRATION.md":
       "🔒 **The honest statement is the explained fraction: length accounts for at most a tenth"},
      []),
+    ("the availability guard failed four times on its denominator, not on a phenomenon",
+     availability_denominator,
+     lambda v: v is None or (
+         v["strata_n"]["intracellular"] == 2739 and v["strata_n"]["unannotated"] == 2314
+         and v["eligible"] and v["deciles"] == [10, 10]
+         # ⭐ X-1: at parity against intracellular, inside a band the prereg declined to predict
+         and 0.80 <= v["mh"]["650M"] <= 1.25 and 0.80 <= v["mh"]["35M"] <= 1.25
+         and v["tight"]["650M"] and v["tight"]["35M"]
+         # ⚠️ X-2: the 35M arm MISSED its frozen band, and the band string says so
+         and abs(v["d_auroc"]["650M"]) < 0.005 and 0.005 < abs(v["d_auroc"]["35M"]) <= 0.020
+         and v["x2_band"]["650M"] == "availability adds nothing over localization"
+         and v["x2_band"]["35M"] == "availability adds a little"
+         # 🔑 and the residual does not agree with itself: the coefficient flips sign
+         and v["coef"]["650M"] * v["coef"]["35M"] < 0
+         and abs(v["coef"]["650M"]) < 0.25 and abs(v["coef"]["35M"]) < 0.25
+         # ⭐ X-3: the test that could have failed -- separability is at chance on both arms
+         and 0.45 <= v["sep"]["650M"] <= 0.55 and 0.45 <= v["sep"]["35M"] <= 0.55
+         and v["sep_tight"]["650M"] and v["sep_tight"]["35M"]
+         # 🔴 X-4: the guard rejects the pooled denominator it replaces AND a known real difference,
+         # and accepts shuffled strata, where the frozen obligation had asked it to fail
+         and v["pooled"]["650M"] < 0.67 and v["pooled"]["35M"] < 0.67
+         and v["rejects_pooled"] and v["rejects_extracellular"] and v["accepts_shuffled"]
+         and v["reportable"] and v["shuffled_obligation_was_misspecified"]
+         # the helper agrees with src/93's published length-adjusted R, which is why X-1 is credible
+         and abs(v["reproduces_published_R"] - 3.98) < 0.01),
+     # 🔴 Four documents, because this claim is a correction to three of them. The manuscript pin is
+     # the sentence that keeps `R` out of it; study E's is the admission that the reading was already
+     # in that document; study T's is that its target, not its measurements, was wrong.
+     {"docs/AVAILABILITY_DENOMINATOR_PREREGISTRATION.md":
+      "entry 73 could not find was not a cause. It was a comparison class.**",
+      "docs/LOCALIZATION_CONTROL_PREREGISTRATION.md":
+      "reading rather than a demonstration. **It was the denominator, in plain sight, four failures and one whole",
+      # 🔴 this key carried a trailing space, copied by reflex from the duplicate-key workaround in an
+      # earlier claim. There is no duplicate here, and the space made the gate report the document as
+      # absent -- the same reflex, a different defect.
+      "docs/ANNOTATION_AVAILABILITY_PREREGISTRATION.md":
+      "🔒 **The cause is known: the denominator pooled three classes spanning a factor of five.**",
+      "paper/MANUSCRIPT.md":
+      "cytoplasmic one, and `R` never used it**: it contrasts extracellular against intracellular, both"},
+     # ⚠️ the three eliminated causes are not revived and study T's numbers are not retracted
+     ["study T's measurements were wrong", "the density result is retracted",
+      "length explains the availability gap after all"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
      independent_pool,
      lambda v: v is None or (
