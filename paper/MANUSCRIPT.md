@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 97 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 98 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 97
+written because it caught something. The evidence is a **dated, append-only corrections log of 98
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -546,8 +546,19 @@ remain:
 | benign × intracellular | 597 | 6.87% | 5.09% |
 | ⭐ **VFDB × intracellular** | **134** | **54.08%** | **34.00%** |
 
-**C/A = 2.418 [2.339, 2.497]** and **2.617 [2.495, 2.740]** — 🟢 **supported on both arms**, not
-partial. And `D/B` = **7.988** and **6.875** on cells of 134 against a floor of 100: **within the
+**C/A = 2.418 [2.339, 2.497]** and **2.617 [2.495, 2.740]** — 🟢 **supported on both arms** *on those
+intervals*.
+
+🔴 **Those intervals are seed standard errors, and on honest ones the verdict is partial.** Resampling the
+**264** VFDB and **171** benign rows as well as the probe seeds gives **[1.904, 3.252]** and
+**[1.931, 3.938]** — **8.5× and 8.2× wider**, and **both cross the 2.0 band**
+(`docs/HEADLINE_INTERVALS_PREREGISTRATION.md`). 🔒 **Study K's verdict on its own panel is therefore
+partial, not supported** — which is where the independent pool had already put it, at 1.59 and 1.63.
+⚠️ **The point estimates do not move; only the intervals do.** 🔑 **The adverse finding survives the same
+treatment**: `R` = 5.53 and 5.43 with honest intervals **[3.714, 8.534]** and **[3.242, 9.839]**, clearing
+the frozen 3.0 on both arms.
+
+And `D/B` = **7.988** and **6.875** on cells of 134 against a floor of 100: **within the
 intracellular stratum, where neither secretion nor surface exposure can be doing the work, a VFDB
 protein is seven to eight times more likely to be flagged than a benign one from the same kind of
 organism.**
@@ -583,7 +594,8 @@ species** (`docs/INDEPENDENT_POOL_PREREGISTRATION.md`). Refitting the whole proc
 🔑 **The two headline results move in opposite directions, on both arms.** The localization gradient —
 the adverse finding — **replicates and is larger on the unseen pool**, against a band frozen at ≥ 3.0.
 The registration contrast **falls out of the supported band into partial**, where this paper's earlier
-sections read 2.418 and 2.617 as supported; the same script on pool 1 returns 2.81 and 2.89,
+sections read 2.418 and 2.617 as supported — 🔴 **and those sections were reading a seed standard error;
+on an honest interval the contrast is partial on its own panel too** (§ 5) — the same script on pool 1 returns 2.81 and 2.89,
 reproducing them closely, **so the drop is the population and not the code.**
 
 🔒 The frozen retraction threshold (`C/A ≤ 1.2`) was not crossed on either arm, so nothing here is
@@ -915,7 +927,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**128 claims** and fails if any number in a public document drifts from the artifact that produced
+**129 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

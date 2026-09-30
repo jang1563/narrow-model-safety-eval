@@ -173,7 +173,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/EXTERNAL_REVIEW_UPTAKE.md",
           # 🔴 Added 2026-09-30. It was the only top-level policy document off the list, and it carried
           # the superseded 0.981 as its worked example of this project's aggregate AUROC.
-          "SAFETY.md"]
+          "SAFETY.md",
+          # Added 2026-10-01. It holds the honest intervals for the two headline contrasts and the
+          # verdict change they force on the registration one.
+          "docs/HEADLINE_INTERVALS_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1807,6 +1810,34 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def headline_intervals():
+    """Row-inclusive intervals for the two contrasts the paper argues from.
+
+    🔒 R holds: honest lower bounds 3.714 and 3.242 against a band frozen at 3.0, despite widening
+    10-12x. 🔴 C/A does not: 1.904 and 1.931 against 2.0, so study K's supported verdict becomes
+    PARTIAL on its own panel -- where the independent pool had already put it at 1.59 and 1.63.
+
+    🔑 The asymmetry is the finding, and both halves are pinned: the same treatment leaves the
+    ADVERSE result inside its band and moves the POSITIVE one out of its. Point estimates do not move.
+    """
+    a = j("../results/headline_intervals.json")
+    b = j("../results/headline_intervals_esm2_35M.json")
+    if None in (a, b):
+        return None
+    return {
+        "n": a["n"],
+        "R_point": {"650M": a["R"]["point"], "35M": b["R"]["point"]},
+        "R_row_lo": {"650M": a["R"]["row_ci"][0], "35M": b["R"]["row_ci"][0]},
+        "R_clears": bool(a["R_clears_band"] and b["R_clears_band"]),
+        "CA_point": {"650M": a["CA"]["point"], "35M": b["CA"]["point"]},
+        "CA_row_lo": {"650M": a["CA"]["row_ci"][0], "35M": b["CA"]["row_ci"][0]},
+        "CA_verdict": {"650M": a["CA_verdict"], "35M": b["CA_verdict"]},
+        "CA_supported": bool(a["CA_clears_supported"] or b["CA_clears_supported"]),
+        "widening": {"R": a["R"]["widening"], "CA": a["CA"]["widening"],
+                     "pool": a["pool_fpr"]["widening"]},
     }
 
 
@@ -5091,6 +5122,27 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("on honest intervals the localization gradient holds its band and the registration contrast does not",
+     headline_intervals,
+     lambda v: v is None or (
+         v["n"]["vfdb_extracellular"] == 264 and v["n"]["benign_extracellular"] == 171
+         # 🟢 R clears the frozen 3.0 on both arms even after a 10-12x widening
+         and v["R_clears"]
+         and v["R_row_lo"]["650M"] > 3.0 and v["R_row_lo"]["35M"] > 3.0
+         and v["widening"]["R"] > 8.0
+         # 🔴 C/A does not clear 2.0 on either arm, so the verdict is partial on both
+         and not v["CA_supported"]
+         and v["CA_row_lo"]["650M"] < 2.0 and v["CA_row_lo"]["35M"] < 2.0
+         and v["CA_verdict"]["650M"] == "partial" and v["CA_verdict"]["35M"] == "partial"
+         # ⚠️ and the point estimates are unmoved: 2.418 and 2.617 as published
+         and abs(v["CA_point"]["650M"] - 2.418) < 0.001
+         and abs(v["CA_point"]["35M"] - 2.617) < 0.001),
+     {"docs/HEADLINE_INTERVALS_PREREGISTRATION.md":
+      "🔒 **Obligation § 4 fires: study K's supported verdict becomes partial on its own panel**, and § 5 of the",
+      "paper/MANUSCRIPT.md":
+      "🔒 **Study K's verdict on its own panel is therefore"},
+     # ⚠️ the supported verdict must not return, in either document
+     ["🟢 **supported on both arms**, not\npartial", "the registration contrast is supported on both arms"]),
     ("the headline precision is the most favourable corner of a 2x2, and the flatness survives it",
      precision_box,
      lambda v: v is None or (
@@ -5308,7 +5360,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 97"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 98"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

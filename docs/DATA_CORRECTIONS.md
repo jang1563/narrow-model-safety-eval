@@ -7131,3 +7131,43 @@ rather than method. The count is now read from the progress output until the fla
 trivial-predicate scan, the `timeout` runner and the assert scanner — **and every one of them failed
 loudly rather than quietly.** ⚠️ That is the direction to be grateful for and not the direction to rely
 on: a scanner that under-reports looks exactly like a clean result.
+
+---
+
+## 2026-10-01 (ninety-fourth entry) — The adverse finding survives an honest interval; the positive one does not
+
+Entry 84 enumerated **eleven** published intervals that are `mean ± 1.96 · SE over probe seeds on a fixed
+row set` and said each needs its study re-run with rows retained. 🔴 **They were listed and not fixed.**
+Study AC (`docs/HEADLINE_INTERVALS_PREREGISTRATION.md`, `src/115_headline_intervals.py`) fixes the four
+that carry the argument.
+
+| | point | seed interval | **row + seed** | wider |
+|---|---:|---|---|---:|
+| **650M** `R` | 5.529 | [5.325, 5.734] | **[3.714, 8.534]** | 11.8× |
+| **650M** `C/A` | 2.418 | [2.339, 2.497] | **[1.904, 3.252]** | 8.5× |
+| **35M** `R` | 5.425 | [5.100, 5.750] | **[3.242, 9.839]** | 10.1× |
+| **35M** `C/A` | 2.617 | [2.495, 2.740] | **[1.931, 3.938]** | 8.2× |
+| pool FPR, VFDB rate | — | — | 5.4 – 5.9× wider | |
+
+### 🟢 `R` clears its band on both arms
+
+Honest lower bounds **3.714** and **3.242** against a band frozen at **≥ 3.0**. ✅ The prediction held and
+was derived from the row counts. ⚠️ **The widening was larger than predicted — 10 to 12× rather than 2×**
+— and the verdict survives it anyway.
+
+### 🔴 `C/A` crosses 2.0 on both arms, and the obligation fires
+
+Honest lower bounds **1.904** and **1.931**, against **≥ 2.0 supported**. 🔒 **Study K's verdict on its own
+panel is partial, not supported.** § 5 of the manuscript now says so, and the sentence that read
+*"supported on both arms, not partial"* is forbidden.
+
+🔑 **The same contrast has now moved the same way twice.** The independent pool put it at **1.59** and
+**1.63** — partial — and the honest interval puts the original panel there too. ⚠️ **§ 3 declined to
+predict which side it would land on**, and gave that pool result as the reason.
+
+### 🔑 And the asymmetry is the finding
+
+The same treatment, applied to both headline results on both arms, leaves the **adverse** one inside its
+band and moves the **positive** one out of its. 🔒 **No point estimate moved.** ⚠️ **Seven of entry 84's
+eleven intervals are still seed intervals** — the ratio of ratios, the two Mantel–Haenszel ratios and the
+deduplicated rates — and they are labelled as such rather than quietly left.

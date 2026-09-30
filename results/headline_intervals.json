@@ -1,0 +1,65 @@
+{
+  "built": "2026-10-01 00:49:09",
+  "arm": "esm2_650M",
+  "seeds": 30,
+  "B": 20000,
+  "n": {
+    "benign_extracellular": 171,
+    "benign_intracellular": 597,
+    "vfdb_extracellular": 264,
+    "pool": 6758,
+    "vfdb_all": 4218
+  },
+  "R": {
+    "point": 5.5295,
+    "seed_ci": [
+      5.3254,
+      5.7335
+    ],
+    "row_ci": [
+      3.7141,
+      8.5341
+    ],
+    "widening": 11.81
+  },
+  "CA": {
+    "point": 2.418,
+    "seed_ci": [
+      2.3391,
+      2.4969
+    ],
+    "row_ci": [
+      1.9037,
+      3.2524
+    ],
+    "widening": 8.54
+  },
+  "pool_fpr": {
+    "point": 7.6127,
+    "seed_ci": [
+      7.2133,
+      8.0121
+    ],
+    "row_ci": [
+      5.7413,
+      10.4469
+    ],
+    "widening": 5.89
+  },
+  "vfdb_rate": {
+    "point": 76.9535,
+    "seed_ci": [
+      75.8026,
+      78.1045
+    ],
+    "row_ci": [
+      70.0332,
+      83.5704
+    ],
+    "widening": 5.88
+  },
+  "R_clears_band": true,
+  "CA_clears_supported": false,
+  "CA_clears_partial": true,
+  "CA_verdict": "partial"
+}
