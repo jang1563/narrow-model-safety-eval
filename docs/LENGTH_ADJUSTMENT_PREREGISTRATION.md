@@ -159,3 +159,20 @@ table above is the diagnostic that works, and it is now in the artifact.**
 The band table printed **"the ratio exceeds 1.5 in every band"** beside a computed minimum of **1.40**.
 🔒 Fixed to print the number rather than a claim about it. **A hardcoded assertion standing next to a
 figure that can contradict it is an assertion that will eventually be wrong.**
+
+---
+
+## Note 2026-09-30 — truncation exists, and this document never mentioned it
+
+ESM-2 truncates at **1,022 residues** (`max_len` in every embedding manifest; `src/02b` keeps `s[:1022]`).
+In the benign pool **293 of 8,259** proteins exceed it and are embedded from their first 1,022 residues —
+**27.5% of the 700+ length band**, which is the band the length-U rises in. 🔴 **This document contained
+neither the word nor the number.**
+
+🟢 **It is not the cause.** `docs/TRUNCATION_BAND_PREREGISTRATION.md` splits the band at the boundary and
+finds proteins over 1,022 flagged at **4.37%** (650M) and **2.50%** (35M), against a frozen bound of
+**39.8%** required for truncation to carry the rise. ⚠️ **And the apparent drop across the boundary is a
+localization-composition effect, not truncation**: within stratum the sign reverses, on 21 and 20 rows.
+
+⚠️ Recorded here so the next reader of this document does not have to rediscover that a context limit
+exists.

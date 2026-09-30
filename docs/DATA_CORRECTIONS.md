@@ -6645,3 +6645,83 @@ reinstatement figure. **All four fail the gate.**
    is the case that needed one; the class-level test did not need one (recoveries span 38.7–84.8%) but was
    not protected either. 🔒 **Any future external run in this project must state a power check before the
    panel is scored**, which is the one procedural thing the record still lacks.
+
+---
+
+## 2026-09-30 (eighty-sixth entry) — Review segment 2 of 12, representations: the model truncates and no length study knew
+
+Segment 2 covers **embeddings and representations**. Five findings.
+
+### 🟢 2.1 Embedding integrity is clean
+
+**88** manifests, every one resolving to its arrays, every row count consistent. ⚠️ **My first sweep
+reported 71 mismatches and 152 orphan arrays, and all of it was my own naming error** — one manifest covers
+`embeddings_positive_*` **and** `embeddings_negative_*`. **Corrected before it was written down**, and the
+single remaining flag was also my check's: 445 rows = 149 + 296.
+
+### 🔴 2.2 ESM-2 truncates at 1,022 residues and none of the three length studies mentioned it
+
+`max_len: 1022` sits in every manifest; `src/02b` keeps `s[:1022]`. **293 of 8,259** pool proteins exceed it
+— **27.5% of the 700+ band**, which is exactly the band the length-U rises in. 🔴 **`LENGTH_ADJUSTMENT`,
+`LENGTH_BAND_SENSITIVITY` and `POOLING_ARTIFACT` contained neither the word nor the number.** All three now
+carry a note.
+
+🟢 **And truncation is not the cause.** The bound frozen before running required proteins over 1,022 to be
+flagged at **39.8%** to carry the rise; they are at **4.37%** (650M) and **2.50%** (35M).
+
+### 🔴 2.3 The drop across the boundary is composition, and I nearly published it as a blind spot
+
+The truncated band's **4.37%** against the intact band's **12.32%** reads as a 2.8× suppression — **a
+context-limit blind spot in a hazard screen, with a crisp exploitable boundary.** 🔴 **It is a composition
+effect.** Holding localization fixed, the sign **reverses**:
+
+| | intact 700–1022 | >1022 truncated | n |
+|---|---:|---:|---|
+| extracellular | 12.76% | **24.76%** | 163 vs **21** |
+| intracellular | 2.02% | 0.83% | 79 vs **20** |
+
+Extracellular share: **30.5%** of the intact band, **11.2%** of the truncated one. ⚠️ **This is entry 76's
+denominator defect, in a new place, and the only reason it was caught is that entry 76 exists** — I checked
+composition because that mistake was three days old. **One paragraph away from a safety claim built on 21
+rows with the wrong sign.**
+
+### 🔴 2.4 The U's magnitude is 650M-dominated, and the paper quotes 650M only
+
+Study M's own artifacts, intracellular rate by band: **650M** 14.15 → … → **1.69** → **12.18**; **35M**
+12.69 → … → **0.68** → **2.03**. 🔒 **The shape replicates** — both rise from trough to last band — **the
+size does not**: **7.2×** the trough against **3.0×**, and 12.18% against 2.03%. ⚠️ § 6 now carries both.
+
+### 🔴 2.5 And the band's composition inverts between arms, so it gets no verdict
+
+Study M's 700+ intracellular band uses **study L's** rule. **189 of its 288 members** are proteins the
+keyword rule calls `unannotated` — **every single one**:
+
+| | n | 650M | 35M |
+|---|---:|---:|---:|
+| keyword-intracellular too | 99 | **1.78%** | 4.28% |
+| study-L-added | 189 | **14.27%** | **0.90%** |
+| ratio | | **7.99×** | **0.21×** |
+
+🔴 **Eight times higher on one arm, five times lower on the other.** 🔒 **No verdict, by the second-arm
+rule** — reported as an instability: **the right arm sits on a subpopulation whose behaviour is
+arm-dependent.**
+
+⚠️ **It qualifies study X.** Entry 76 put `unannotated` at parity with `intracellular` (length-adjusted
+**1.066**). That pooled ten deciles; **inside the 700+ band the two differ by 8× on 650M.** 🔒 **The
+aggregate equivalence holds. It does not hold band by band**, and a Mantel–Haenszel pool is exactly the
+instrument that would hide that.
+
+### 🔒 Predictions, and the ninth instance of the same pattern
+
+The **derived** bound (39.8%, arithmetic from published rates) **held on both arms**. The **reasoned**
+prediction — "truncation is a perturbation, and study N found perturbations move scores without reversing
+contrasts, so the truncated group will not be the lowest band" — **failed on both arms**: truncated is the
+**lowest of four** on 650M and on 35M. ⚠️ **Ninth time this session.**
+
+### ⚠️ And a fourth forbid self-collision
+
+`"the right arm is a truncation artifact"` is one of § 2's three **frozen band labels**, so forbidding it
+forbade the document's own conditional reading. 🔒 Replaced with assertion-only forms and **calibrated both
+ways**: three assertions fail the gate, the retraction phrasing passes. ⚠️ **Fourth time** — entries 76, 78,
+83 and this. **The rule is now explicit in the registry: a band label is a conditional, a claim is a
+predicate, and only predicates may be forbidden.**

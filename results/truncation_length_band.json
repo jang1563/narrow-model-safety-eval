@@ -1,0 +1,140 @@
+{
+  "built": "2026-09-30 13:24:08",
+  "arm": "esm2_650M",
+  "seeds": 30,
+  "max_len": 1022,
+  "bands": [
+    [
+      0,
+      250
+    ],
+    [
+      250,
+      700
+    ],
+    [
+      700,
+      1022
+    ],
+    [
+      1022,
+      1000000000
+    ]
+  ],
+  "cell_n": {
+    "Lintra700_all|-1": 288,
+    "Lintra700_agree|-1": 99,
+    "Lintra700_added|-1": 189,
+    "all|0": 710,
+    "extracellular|0": 80,
+    "intracellular|0": 143,
+    "all|1": 4707,
+    "extracellular|1": 351,
+    "intracellular|1": 1404,
+    "all|2": 535,
+    "extracellular|2": 163,
+    "intracellular|2": 79,
+    "all|3": 187,
+    "extracellular|3": 21,
+    "intracellular|3": 20
+  },
+  "n_truncated": 187,
+  "truncated_share_of_700plus": 0.259,
+  "rates_pct": {
+    "Lintra700_all|-1": 9.977,
+    "Lintra700_agree|-1": 1.785,
+    "Lintra700_added|-1": 14.268,
+    "all|0": 16.033,
+    "extracellular|0": 43.458,
+    "intracellular|0": 21.538,
+    "all|1": 4.951,
+    "extracellular|1": 19.307,
+    "intracellular|1": 2.55,
+    "all|2": 12.318,
+    "extracellular|2": 12.761,
+    "intracellular|2": 2.025,
+    "all|3": 4.367,
+    "extracellular|3": 24.762,
+    "intracellular|3": 0.833
+  },
+  "rates_ci_pct": {
+    "Lintra700_all|-1": [
+      9.482,
+      10.472
+    ],
+    "Lintra700_agree|-1": [
+      1.397,
+      2.172
+    ],
+    "Lintra700_added|-1": [
+      13.585,
+      14.951
+    ],
+    "all|0": [
+      15.357,
+      16.709
+    ],
+    "extracellular|0": [
+      41.371,
+      45.545
+    ],
+    "intracellular|0": [
+      20.629,
+      22.448
+    ],
+    "all|1": [
+      4.624,
+      5.279
+    ],
+    "extracellular|1": [
+      18.203,
+      20.41
+    ],
+    "intracellular|1": [
+      2.339,
+      2.761
+    ],
+    "all|2": [
+      11.719,
+      12.917
+    ],
+    "extracellular|2": [
+      12.207,
+      13.315
+    ],
+    "intracellular|2": [
+      1.587,
+      2.464
+    ],
+    "all|3": [
+      3.605,
+      5.129
+    ],
+    "extracellular|3": [
+      22.419,
+      27.104
+    ],
+    "intracellular|3": [
+      0.155,
+      1.512
+    ]
+  },
+  "L700_intra": {
+    "Lintra700_all": 9.977,
+    "Lintra700_agree": 1.785,
+    "Lintra700_added": 14.268
+  },
+  "L700_intra_n": {
+    "Lintra700_all": 288,
+    "Lintra700_agree": 99,
+    "Lintra700_added": 189
+  },
+  "added_all_keyword_unannotated": true,
+  "mid_band_pct": 4.951,
+  "intact_700_1022_pct": 12.318,
+  "truncated_pct": 4.367,
+  "frozen_bound_pct": 39.8,
+  "truncated_below_bound": true,
+  "intact_above_mid": true,
+  "band": "the rise is not truncation; it is in the intact proteins"
+}

@@ -161,7 +161,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # the frozen record of the only external validation this project ever ran, and of both of
           # its NOT SUPPORTED outcomes -- the most consequential negative result here, unguarded for
           # twenty-six days while every other preregistration was on the list.
-          "docs/EXTERNAL_VALIDATION_PREREGISTRATION.md"]
+          "docs/EXTERNAL_VALIDATION_PREREGISTRATION.md",
+          # Added 2026-09-30. It holds the truncation boundary, the bound that rules it out, and the
+          # arm-inversion that stops the 700+ band's composition being a finding.
+          "docs/TRUNCATION_BAND_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1795,6 +1798,55 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def truncation_band():
+    """Truncation is ruled out; the drop across the boundary is composition; the band inverts by arm.
+
+    🔒 ESM-2 truncates at 1,022 residues and 293 of 8,259 pool proteins are affected -- 27.5% of
+    the 700+ band. The frozen bound required them to be flagged at ~39.8% for truncation to carry the
+    length-U's right arm; they are at 4.37% and 2.50%. Ruled out on both arms.
+
+    🔴 The apparent drop across the boundary is a localization-composition effect: within stratum
+    the sign REVERSES (extracellular 12.76% -> 24.76%, intracellular 2.02% -> 0.83%) on 21 and 20 rows,
+    and the extracellular share is 30.5% against 11.2%. Entry 76's defect, one paragraph from being
+    rewritten.
+
+    🔴 And 189 of the 288 members of study M's 700+ intracellular band are keyword-UNANNOTATED
+    proteins that only study L's rule calls intracellular. Their rate relative to the rest is 7.99x on
+    650M and 0.21x on 35M -- inverted -- so the band's composition gets NO verdict by the second-arm rule.
+    """
+    a = j("../results/truncation_length_band.json")
+    b = j("../results/truncation_length_band_esm2_35M.json")
+    if None in (a, b):
+        return None
+    return {
+        "max_len": a["max_len"], "n_truncated": a["n_truncated"],
+        "truncated_share": a["truncated_share_of_700plus"],
+        "truncated_pct": {"650M": a["truncated_pct"], "35M": b["truncated_pct"]},
+        "intact_pct": {"650M": a["intact_700_1022_pct"], "35M": b["intact_700_1022_pct"]},
+        "bound": a["frozen_bound_pct"],
+        "below_bound": bool(a["truncated_below_bound"] and b["truncated_below_bound"]),
+        # 🔴 within-stratum signs across the boundary, which is what kills the suppression reading
+        "extra_intact": a["rates_pct"]["extracellular|2"],
+        "extra_trunc": a["rates_pct"]["extracellular|3"],
+        "intra_intact": a["rates_pct"]["intracellular|2"],
+        "intra_trunc": a["rates_pct"]["intracellular|3"],
+        "n_extra_trunc": a["cell_n"]["extracellular|3"], "n_intra_trunc": a["cell_n"]["intracellular|3"],
+        # 🔴 the arm inversion
+        "ratio_added_over_agree": {
+            "650M": round(a["L700_intra"]["Lintra700_added"]
+                          / a["L700_intra"]["Lintra700_agree"], 3),
+            "35M": round(b["L700_intra"]["Lintra700_added"]
+                         / b["L700_intra"]["Lintra700_agree"], 3)},
+        "added_n": a["L700_intra_n"]["Lintra700_added"],
+        "all_n": a["L700_intra_n"]["Lintra700_all"],
+        "added_all_unannotated": bool(a["added_all_keyword_unannotated"]
+                                      and b["added_all_keyword_unannotated"]),
+        "truncated_is_lowest": bool(
+            a["truncated_pct"] == min(a["rates_pct"][f"all|{i}"] for i in range(4))
+            and b["truncated_pct"] == min(b["rates_pct"][f"all|{i}"] for i in range(4))),
     }
 
 
@@ -4872,6 +4924,35 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("truncation is ruled out, the boundary drop is composition, and the band inverts by arm",
+     truncation_band,
+     lambda v: v is None or (
+         v["max_len"] == 1022 and v["n_truncated"] == 187
+         and 0.25 < v["truncated_share"] < 0.30
+         # 🟢 the frozen bound is met on both arms by a wide margin
+         and v["below_bound"] and v["bound"] == 39.8
+         and v["truncated_pct"]["650M"] < 6.0 and v["truncated_pct"]["35M"] < 4.0
+         # 🔴 within stratum the sign REVERSES across the boundary, on ~20 rows each
+         and v["extra_trunc"] > v["extra_intact"]
+         and v["intra_trunc"] < v["intra_intact"]
+         and v["n_extra_trunc"] <= 25 and v["n_intra_trunc"] <= 25
+         # 🔴 the arm inversion: above 1 on 650M, below 1 on 35M
+         and v["ratio_added_over_agree"]["650M"] > 5.0
+         and v["ratio_added_over_agree"]["35M"] < 0.5
+         and v["added_n"] == 189 and v["all_n"] == 288 and v["added_all_unannotated"]
+         # ❌ and the reasoned prediction failed on both arms
+         and v["truncated_is_lowest"]),
+     {"docs/TRUNCATION_BAND_PREREGISTRATION.md":
+      "🔴 **Eight times higher on one arm and five times lower on the other.** 🔒 **By this project's second-arm",
+      "paper/MANUSCRIPT.md":
+      "**7.99×** on 650M and **0.21×** on 35M — 🔴 **inverted between arms, so the band's composition gets no"},
+     # ⚠️ neither the ruled-out cause nor the no-verdict composition may become a finding
+     # 🔴 Fourth forbid self-collision in this review. "the right arm is a truncation artifact" is one of
+     # § 2's three FROZEN BAND LABELS, so banning it banned the document's own conditional reading. The
+     # replacements are assertion-only: a band label is a conditional, a claim is a predicate.
+     ["truncation explains the right arm",
+      "proteins over the context limit are systematically less likely to be flagged",
+      "the right arm is carried by proteins the keyword rule leaves unannotated"]),
     ("the one repair that worked survives a paired member test on one class, not both",
      paired_member_test,
      lambda v: v is None or (
@@ -4987,7 +5068,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 89"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 90"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

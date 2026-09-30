@@ -1,0 +1,140 @@
+{
+  "built": "2026-09-30 13:24:10",
+  "arm": "esm2_35M",
+  "seeds": 30,
+  "max_len": 1022,
+  "bands": [
+    [
+      0,
+      250
+    ],
+    [
+      250,
+      700
+    ],
+    [
+      700,
+      1022
+    ],
+    [
+      1022,
+      1000000000
+    ]
+  ],
+  "cell_n": {
+    "Lintra700_all|-1": 288,
+    "Lintra700_agree|-1": 99,
+    "Lintra700_added|-1": 189,
+    "all|0": 710,
+    "extracellular|0": 80,
+    "intracellular|0": 143,
+    "all|1": 4707,
+    "extracellular|1": 351,
+    "intracellular|1": 1404,
+    "all|2": 535,
+    "extracellular|2": 163,
+    "intracellular|2": 79,
+    "all|3": 187,
+    "extracellular|3": 21,
+    "intracellular|3": 20
+  },
+  "n_truncated": 187,
+  "truncated_share_of_700plus": 0.259,
+  "rates_pct": {
+    "Lintra700_all|-1": 2.06,
+    "Lintra700_agree|-1": 4.276,
+    "Lintra700_added|-1": 0.899,
+    "all|0": 15.042,
+    "extracellular|0": 32.75,
+    "intracellular|0": 21.212,
+    "all|1": 3.484,
+    "extracellular|1": 13.789,
+    "intracellular|1": 1.322,
+    "all|2": 3.414,
+    "extracellular|2": 4.233,
+    "intracellular|2": 2.954,
+    "all|3": 2.496,
+    "extracellular|3": 10.635,
+    "intracellular|3": 9.5
+  },
+  "rates_ci_pct": {
+    "Lintra700_all|-1": [
+      1.772,
+      2.348
+    ],
+    "Lintra700_agree|-1": [
+      3.814,
+      4.738
+    ],
+    "Lintra700_added|-1": [
+      0.527,
+      1.272
+    ],
+    "all|0": [
+      14.248,
+      15.837
+    ],
+    "extracellular|0": [
+      30.589,
+      34.911
+    ],
+    "intracellular|0": [
+      19.779,
+      22.645
+    ],
+    "all|1": [
+      3.263,
+      3.706
+    ],
+    "extracellular|1": [
+      13.117,
+      14.462
+    ],
+    "intracellular|1": [
+      1.152,
+      1.492
+    ],
+    "all|2": [
+      3.026,
+      3.803
+    ],
+    "extracellular|2": [
+      3.679,
+      4.787
+    ],
+    "intracellular|2": [
+      2.553,
+      3.354
+    ],
+    "all|3": [
+      2.292,
+      2.699
+    ],
+    "extracellular|3": [
+      9.242,
+      12.027
+    ],
+    "intracellular|3": [
+      8.413,
+      10.587
+    ]
+  },
+  "L700_intra": {
+    "Lintra700_all": 2.06,
+    "Lintra700_agree": 4.276,
+    "Lintra700_added": 0.899
+  },
+  "L700_intra_n": {
+    "Lintra700_all": 288,
+    "Lintra700_agree": 99,
+    "Lintra700_added": 189
+  },
+  "added_all_keyword_unannotated": true,
+  "mid_band_pct": 3.484,
+  "intact_700_1022_pct": 3.414,
+  "truncated_pct": 2.496,
+  "frozen_bound_pct": 39.8,
+  "truncated_below_bound": true,
+  "intact_above_mid": false,
+  "band": "neither: the right arm is not present in this cut"
+}

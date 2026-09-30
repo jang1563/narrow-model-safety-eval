@@ -148,3 +148,20 @@ prediction that it would stay above 3.0 under every perturbation is wrong.
 qualitatively — "the trend should survive", "the index should be robust" — rather than computing. The
 one that held was the one derived from a property already in the record: a non-monotone relationship
 that defeated an AUROC is a positive quadratic by definition.
+
+---
+
+## Note 2026-09-30 — truncation exists, and this document never mentioned it
+
+ESM-2 truncates at **1,022 residues** (`max_len` in every embedding manifest; `src/02b` keeps `s[:1022]`).
+In the benign pool **293 of 8,259** proteins exceed it and are embedded from their first 1,022 residues —
+**27.5% of the 700+ length band**, which is the band the length-U rises in. 🔴 **This document contained
+neither the word nor the number.**
+
+🟢 **It is not the cause.** `docs/TRUNCATION_BAND_PREREGISTRATION.md` splits the band at the boundary and
+finds proteins over 1,022 flagged at **4.37%** (650M) and **2.50%** (35M), against a frozen bound of
+**39.8%** required for truncation to carry the rise. ⚠️ **And the apparent drop across the boundary is a
+localization-composition effect, not truncation**: within stratum the sign reverses, on 21 and 20 rows.
+
+⚠️ Recorded here so the next reader of this document does not have to rediscover that a context limit
+exists.

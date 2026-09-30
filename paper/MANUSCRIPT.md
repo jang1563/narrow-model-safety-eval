@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 89 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 90 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -16,7 +16,7 @@ one-in-a-thousand hazard rate it produces **605 alerts of which about 7 are real
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 89
+written because it caught something. The evidence is a **dated, append-only corrections log of 90
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -393,6 +393,16 @@ length distribution, which piles up at both extremes where the ratio is lowest, 
 crude estimate is a third weighting. 🔒 **They are three weightings of one varying quantity, not three
 answers.** What no weighting changes: **the ratio exceeds 1.0 in every band on both arms** — there is
 no protein length at which the gradient disappears.
+
+⚠️ **Three qualifications on the U, before the numbers.** First, **the model truncates at 1,022
+residues** and **293 of 8,259** pool proteins — **27.5% of the 700+ band** — are embedded from their first
+1,022; 🟢 **truncation is ruled out as the cause** (those proteins are flagged at **4.37%** against a bound
+of 39.8% required to carry the rise, `docs/TRUNCATION_BAND_PREREGISTRATION.md`). Second, **the magnitude is
+650M-dominated**: the right arm reaches **12.18%** on 650M and **2.03%** on 35M, against troughs of 1.69%
+and 0.68%, so the shape replicates and the size does not. Third, **the 700+ intracellular band is 189 of
+288 proteins that only study L's rule calls intracellular**, and their rate relative to the rest is
+**7.99×** on 650M and **0.21×** on 35M — 🔴 **inverted between arms, so the band's composition gets no
+verdict.**
 
 🔴 **The flag rate is U-shaped in length inside both strata** — intracellular 14.15% → 1.69% → 12.18%,
 extracellular 46.12% → 17.10% → 17.08%. ⚠️ **A monotone summary cannot see that**: length's AUROC for
