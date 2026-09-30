@@ -6309,3 +6309,86 @@ it is the half I had been doing.
 their strata are 778/1,988 and 2,314/2,739, large enough that finding 2 does not bite, and their headline
 numbers are cross-validated or Mantel–Haenszel-pooled rather than seed-averaged. 🟢 No artifact was stale
 relative to its code. 🟢 The three-way gate has been run and captured by exit code on every commit.
+
+---
+
+## 2026-09-30 (eighty-first entry) — Project-wide review: the abstract's intervals were standard errors, and the external record was unguarded
+
+A review of the whole project rather than one session: 153 scripts, 270 commits since 2026-04-14, 36 docs,
+121 audited claims. Findings in descending order of consequence.
+
+### 🔴 1. The abstract's interval on the headline failure was a standard error of a seed mean
+
+**`beta-lactamase reaches 15.5% [11.0, 19.9]`** has been in the abstract, § 3 and two other documents for
+two months. Traced to `results/v2/supervised_pooling_v2_30seeds.json` → `.by_k.0`, it is
+**mean ± 1.96 · sd / √30**.
+
+| | |
+|---|---|
+| class size | **14 members** |
+| half-width | **4.46 pp = 0.62 of one protein** |
+| the seed spread it is derived from | **[−8.9, 39.9]** |
+| member resampling at the same rate | **[0, 35.7]** |
+
+🔴 **Two of the same intervals are impossible on their face.** Recomputed for all twelve holdout-eligible
+classes (`src/111_lomo_member_ci.py`): RIP rRNA glycosidase gets **[91.5, 102.7]** — above 100% for a
+bounded proportion — and contact-dependent inhibition gets **[75.0, 75.0]**, **zero width on four
+members.** ⚠️ **Nothing had ever printed those two side by side.**
+
+🔒 **The finding survives and the precision does not.** With members resampled, three classes sit at
+**[100, 100]** against phage peptidoglycan hydrolase at **[0, 21.9]** — disjoint, and "7 of 30 splits at
+exactly 0%" is a count, not an interval. ⚠️ **21 intervals in the paper and 14 source files use this
+construction**; they locate seed means and are now labelled as such.
+
+🔑 **This is the same defect entry 80 found in study Z, one day earlier and two orders of magnitude less
+prominent.** The session review caught it on a three-day-old number; it had been in the **abstract** since
+July. **Finding a defect in new work is not evidence the old work is clean, and I treated it as if it
+were.**
+
+### 🔴 2. The project's only external validation was off the audited surface
+
+`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md` — frozen at `f1a5860`, two preregistered attempts, **both
+NOT SUPPORTED**, with the scorer gated at 22 / 84 / 100 before it was allowed to touch the external panel —
+was **not in `PUBLIC`**, while every other preregistration was. 🔴 **The most consequential negative result
+in the project, unguarded for twenty-six days.** Now audited, with both outcomes and the frozen gate pinned.
+
+### 🔴 3. The abstract said the margin result replicated everywhere. It failed two external tests.
+
+The abstract read *"It is the only result here that replicated everywhere we looked."* § 4 reports the two
+external failures honestly and distinguishes member-level from class-level — **the abstract did not**, and
+"everywhere we looked" is unqualified when the project **did** look externally. 🔒 Rewritten: replicated
+across every **internal** variation, **not externally validated**, and the member-level form failed two
+panels.
+
+### ⚠️ 4. And § 4 was harsher than the record supports
+
+"Failed on two external panels" is not what the preregistration says about its own second attempt. Attempt
+2 returned **100% on every arm**, and the document records that its criteria had **a floor but no
+ceiling**, so a panel with no room to move was scored NOT SUPPORTED when **uninformative** is the accurate
+word. 🔒 § 4 now reads **one clear failure and one uninformative panel**. ⭐ **Attempt 1 stands**: 82%
+against a predicted ≤ 40% at the **same absolute margin** (−0.012 external, −0.015 internal). ⚠️ **A
+correction that makes the paper's own result look better is still a correction**, and this one had sat
+unmade because the harsher reading felt safer.
+
+### ⚠️ 5. Twenty-two markdown files are outside the audited surface
+
+Of 57 in the repo, 22 are unaudited. Most are policy or literature notes, but three carry results:
+`docs/FSI_NUMBERING_AUDIT.md` (11 figures), `research/hpc_rerun_snapshot_20260521/SUMMARY.md` (134), and
+`research/paper_review_rounds1-12.md` (32). 🔒 The external-validation prereg is now on the list; **the
+remaining three are named here rather than quietly left**, and the principle is that a document carrying
+figures is either audited or marked superseded.
+
+### 🔒 What the review confirmed
+
+🟢 **`15.5%` is traceable** — my first pass called it unreproducible after searching the wrong artifacts,
+and it is in `supervised_pooling_v2_30seeds.json` exactly. 🟢 The bimodal result, the margin ranking across
+14 arms and 15 re-poolings, the 18-criteria scorecard, and the precision-floor result all still agree with
+their artifacts. 🟢 `paper/0{1..4}_*.md` have **not** diverged from `MANUSCRIPT.md`. 🟢 121 claims pass.
+
+### ⚠️ 6. And a defect in this review's own loader
+
+The fragment pinning attempt 2's recorded flaw **spanned a line break** and silently read `False` —
+`"specified a floor (class-matched below 60% is inconclusive) but no ceiling"`, where the source wraps
+after *"a floor"*. 🔴 **Third instance of this exact failure in the project** (entry 47's forbid, study
+W's pin, this). 🔒 Single-line fragments only, and the loader was inspected field-by-field before the claim
+was written rather than after it failed.

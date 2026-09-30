@@ -1,0 +1,220 @@
+{
+  "built": "2026-09-30 11:24:06",
+  "B": 20000,
+  "classes": [
+    {
+      "class": "adp_ribosyl_ab_toxin",
+      "n": 7,
+      "seeds": 5,
+      "recovery": 100.0,
+      "seed_se_ci": [
+        100.0,
+        100.0
+      ],
+      "member_ci": [
+        100.0,
+        100.0
+      ],
+      "one_member_pp": 14.3,
+      "se_halfwidth_in_members": 0.0
+    },
+    {
+      "class": "bacteriocin",
+      "n": 15,
+      "seeds": 5,
+      "recovery": 84.0,
+      "seed_se_ci": [
+        80.8,
+        87.2
+      ],
+      "member_ci": [
+        60.0,
+        100.0
+      ],
+      "one_member_pp": 6.7,
+      "se_halfwidth_in_members": 0.48
+    },
+    {
+      "class": "beta_lactamase",
+      "n": 14,
+      "seeds": 5,
+      "recovery": 18.57,
+      "seed_se_ci": [
+        3.5,
+        33.6
+      ],
+      "member_ci": [
+        0.0,
+        57.1
+      ],
+      "one_member_pp": 7.1,
+      "se_halfwidth_in_members": 2.11
+    },
+    {
+      "class": "clostridial_neurotoxin",
+      "n": 6,
+      "seeds": 5,
+      "recovery": 100.0,
+      "seed_se_ci": [
+        100.0,
+        100.0
+      ],
+      "member_ci": [
+        100.0,
+        100.0
+      ],
+      "one_member_pp": 16.7,
+      "se_halfwidth_in_members": 0.0
+    },
+    {
+      "class": "contact_dependent_inhibition",
+      "n": 4,
+      "seeds": 5,
+      "recovery": 75.0,
+      "seed_se_ci": [
+        75.0,
+        75.0
+      ],
+      "member_ci": [
+        25.0,
+        100.0
+      ],
+      "one_member_pp": 25.0,
+      "se_halfwidth_in_members": 0.0
+    },
+    {
+      "class": "cry_insecticidal",
+      "n": 22,
+      "seeds": 5,
+      "recovery": 87.27,
+      "seed_se_ci": [
+        83.9,
+        90.6
+      ],
+      "member_ci": [
+        68.2,
+        100.0
+      ],
+      "one_member_pp": 4.5,
+      "se_halfwidth_in_members": 0.73
+    },
+    {
+      "class": "phage_peptidoglycan_hydrolase",
+      "n": 32,
+      "seeds": 5,
+      "recovery": 10.0,
+      "seed_se_ci": [
+        6.4,
+        13.6
+      ],
+      "member_ci": [
+        0.0,
+        21.9
+      ],
+      "one_member_pp": 3.1,
+      "se_halfwidth_in_members": 1.14
+    },
+    {
+      "class": "pore_forming_cytolysin",
+      "n": 7,
+      "seeds": 5,
+      "recovery": 100.0,
+      "seed_se_ci": [
+        100.0,
+        100.0
+      ],
+      "member_ci": [
+        100.0,
+        100.0
+      ],
+      "one_member_pp": 14.3,
+      "se_halfwidth_in_members": 0.0
+    },
+    {
+      "class": "rip_rrna_glycosidase",
+      "n": 7,
+      "seeds": 5,
+      "recovery": 97.14,
+      "seed_se_ci": [
+        91.5,
+        102.7
+      ],
+      "member_ci": [
+        71.4,
+        100.0
+      ],
+      "one_member_pp": 14.3,
+      "se_halfwidth_in_members": 0.39
+    },
+    {
+      "class": "superantigen_enterotoxin",
+      "n": 7,
+      "seeds": 5,
+      "recovery": 91.43,
+      "seed_se_ci": [
+        84.6,
+        98.3
+      ],
+      "member_ci": [
+        57.1,
+        100.0
+      ],
+      "one_member_pp": 14.3,
+      "se_halfwidth_in_members": 0.48
+    },
+    {
+      "class": "t3ss_effector_apparatus",
+      "n": 10,
+      "seeds": 5,
+      "recovery": 80.0,
+      "seed_se_ci": [
+        80.0,
+        80.0
+      ],
+      "member_ci": [
+        50.0,
+        100.0
+      ],
+      "one_member_pp": 10.0,
+      "se_halfwidth_in_members": 0.0
+    },
+    {
+      "class": "virulence_associated_non_toxin",
+      "n": 10,
+      "seeds": 5,
+      "recovery": 34.0,
+      "seed_se_ci": [
+        26.2,
+        41.8
+      ],
+      "member_ci": [
+        10.0,
+        70.0
+      ],
+      "one_member_pp": 10.0,
+      "se_halfwidth_in_members": 0.78
+    }
+  ],
+  "published_30seed_beta_lactamase": {
+    "recovery": 15.48,
+    "seeds": 30,
+    "published_ci": [
+      11.0,
+      19.9
+    ],
+    "seed_spread": [
+      -8.9,
+      39.9
+    ],
+    "halfwidth_pp": 4.46,
+    "one_member_pp": 7.1,
+    "halfwidth_in_members": 0.62,
+    "member_ci_at_this_rate": [
+      0.0,
+      35.7
+    ]
+  },
+  "n_classes": 12,
+  "n_low_classes": 3,
+  "bimodality_survives": true
+}

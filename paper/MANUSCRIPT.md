@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 84 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 85 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -16,23 +16,27 @@ one-in-a-thousand hazard rate it produces **605 alerts of which about 7 are real
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 84
+written because it caught something. The evidence is a **dated, append-only corrections log of 85
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
 
 **First, the aggregate is uninformative and the per-class picture is bimodal.** Holding out an entire
 mechanism class, recovery runs from **100% to 10%**: four classes are fully recovered without ever
-being trained on, while beta-lactamase reaches **15.5% [11.0, 19.9]** at thirty seeds and a
-32-member phage peptidoglycan hydrolase class reaches **10%**. An AUROC of 0.974 is compatible with a
-screen that cannot see two whole families.
+being trained on, while beta-lactamase reaches **15.5%** at thirty seeds — 2.2 of its 14 members, and
+member-level resampling puts that at **[0, 36]** — and a 32-member phage peptidoglycan hydrolase class
+reaches **10%**. ⚠️ The bimodality is what survives: 100% and [0, 36] are disjoint, while the *precision*
+of any single low number here is limited by class size. An AUROC of 0.974 is compatible with a screen that
+cannot see two whole families.
 
 **Second, a quantity computable before training predicts which class will fail.** Class-level
 **margin** — nearest other-class hazard minus nearest negative in embedding space — ranks classes by
 recovery at Spearman **+0.894** (permutation *p* = 0.00015), places both failures at the bottom, and
 survives **fourteen model arms** and **fifteen re-poolings** of one arm (*ρ* +0.536 to +0.941, 14 of 15
-significant). It is the only result here that replicated everywhere we looked. It is also
-**mis-calibrated**: it over-predicts beta-lactamase recovery by 34 points.
+significant). It replicated across **every internal variation we tried**, and it is the only result here
+that did. ⚠️ **It is not externally validated**: the member-level version of the same claim was
+preregistered and **failed two external panels** (§ 4), and it is also **mis-calibrated** —
+over-predicting beta-lactamase recovery by 34 points.
 
 **Third, and the finding we did not want: nothing we tried moves the screen's precision.** Four
 classifier heads, fourteen representations, three panels, fifteen pooling reductions and a supervised
@@ -162,10 +166,24 @@ stability claim.
 | **🔴 10–21%** | **phage peptidoglycan hydrolase (n = 32), beta-lactamase (n = 14)** |
 
 🔴 **Neither failure is a small-*n* artifact.** The phage class is the **largest** eligible class in v3,
-and beta-lactamase is the largest in v2. At thirty seeds beta-lactamase is **15.5% [11.0, 19.9]** with
-**7 of 30 splits recovering it at exactly 0%**, and it is the only class where plain Smith-Waterman
-alignment beats the probe (**29.5%** against 15.5%). Profile methods do not: `phmmer` reaches 5% there
-and `jackhmmer` 0%.
+and beta-lactamase is the largest in v2. At thirty seeds beta-lactamase is **15.5%** with **7 of 30
+splits recovering it at exactly 0%**, and it is the only class where plain Smith-Waterman alignment beats
+the probe (**29.5%** against 15.5%). Profile methods do not: `phmmer` reaches 5% there and `jackhmmer` 0%.
+
+⚠️ **The interval on that 15.5% needs stating precisely, because the obvious reading is wrong.** The
+figure this project reported for two months, **[11.0, 19.9]**, is `mean ± 1.96·sd/√30` — a standard error
+of the **seed mean**. On a **14-member** class its half-width of 4.5 points is **0.62 of one protein**, and
+the seed spread it is derived from is **[−8.9, 39.9]**. Resampling members puts the recovery rate at
+**[0, 36]**. 🔒 **The bimodal finding does not depend on this** — 100% and [0, 36] do not overlap, and
+7 of 30 splits at exactly 0% is a count, not an interval. ⚠️ **What does not survive is the apparent
+precision**, and the same construction underlies **21 intervals** in this paper from **14** source files;
+they locate seed means and should be read as such.
+
+🔴 **Two of them are impossible on their face.** Recomputed across all twelve holdout-eligible classes
+(`src/111_lomo_member_ci.py`), the same construction puts RIP rRNA glycosidase at **[91.5, 102.7]** — above
+100% for a bounded proportion — and contact-dependent inhibition at **[75.0, 75.0]**, a zero-width interval
+on a **four-member** class. 🔒 **The member-level intervals are disjoint where the finding needs them to
+be**: three classes at [100, 100] against phage peptidoglycan hydrolase at **[0, 21.9]**.
 
 ⚠️ **An aggregate of 0.974 is compatible with a screen blind to two families.** That is the first reason
 this paper exists.
@@ -555,6 +573,16 @@ deployment score.
 ⚠️ **Prediction and repair dissociate.** Removing the benign neighbours the geometry implicates repairs
 **8 to 11%** of a failure the geometry predicts at *ρ* = +0.894. Knowing which class will fail does not
 tell you how to fix it.
+
+⚠️ **And the "two external failures" should be read as one clear failure and one uninformative panel**,
+because the preregistration says so about its own criteria. Attempt 2 returned **100% on every arm**: the
+falsification rules specified a floor but **no ceiling**, so a panel with no room to move was scored NOT
+SUPPORTED when *uninformative* is the accurate word
+(`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md`). 🔒 Attempt 1 stands as a genuine failure — 82% against a
+predicted ≤ 40% at the **same absolute margin**, −0.012 external against −0.015 internal. ⚠️ The likely
+cause of attempt 2's ceiling is visible in it: its low-margin holdout was **10 phospholipases out of 38**
+in the panel, so margin — defined against out-of-class positives — came apart from a classifier that
+trains on the within-class ones.
 
 ---
 

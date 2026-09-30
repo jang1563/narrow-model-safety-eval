@@ -156,7 +156,12 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/LOCALIZATION_NULLSPACE_PREREGISTRATION.md",
           # Added 2026-09-30 with the document. It is the only place holding a provable erasure that
           # leaves R above 4.5, and the label curve that reconciles three competing diagnoses.
-          "docs/LEACE_ERASURE_PREREGISTRATION.md"]
+          "docs/LEACE_ERASURE_PREREGISTRATION.md",
+          # 🔴 Added 2026-09-30 by a project-wide review that found it OFF the audited surface. It is
+          # the frozen record of the only external validation this project ever ran, and of both of
+          # its NOT SUPPORTED outcomes -- the most consequential negative result here, unguarded for
+          # twenty-six days while every other preregistration was on the list.
+          "docs/EXTERNAL_VALIDATION_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1790,6 +1795,81 @@ def length_band_sensitivity():
         "U3_min_above_3": v["U3_650M_min_above_3"],
         "n_grids": len(v["U3_grids"]),
         "duplicate_quad": v["duplicate_quad"],
+    }
+
+
+def lomo_member_ci():
+    """The published LOMO intervals locate seed means; two are impossible on their face.
+
+    🔴 `[11.0, 19.9]` on beta-lactamase is mean +/- 1.96*sd/sqrt(30): a half-width of 4.46 points
+    on a 14-member class, which is 0.62 of one protein, from a seed spread of [-8.9, 39.9]. The same
+    construction puts rip_rrna_glycosidase at [91.5, 102.7] -- above 100% for a bounded proportion -- and
+    contact_dependent_inhibition at [75.0, 75.0], zero width on four members.
+
+    🔒 And the finding does not depend on it: with members resampled, three classes sit at
+    [100, 100] while phage peptidoglycan hydrolase sits at [0, 21.9]. Disjoint. Pinned together, because
+    the caveat alone reads as a retraction and the bimodality alone reads as more precise than it is.
+    """
+    d = j("../results/lomo_member_ci.json")
+    if d is None:
+        return None
+    by = {r["class"]: r for r in d["classes"]}
+    bl = d["published_30seed_beta_lactamase"]
+    return {
+        "n_classes": d["n_classes"],
+        "bimodality_survives": d["bimodality_survives"],
+        # 🔴 the two intervals that are impossible on their face
+        "rip_upper": by["rip_rrna_glycosidase"]["seed_se_ci"][1],
+        "cdi_width": by["contact_dependent_inhibition"]["seed_se_ci"][1]
+                     - by["contact_dependent_inhibition"]["seed_se_ci"][0],
+        "cdi_n": by["contact_dependent_inhibition"]["n"],
+        # ⭐ the published figure, its half-width in members, and the honest interval
+        "bl_recovery": bl["recovery"], "bl_published_ci": bl["published_ci"],
+        "bl_halfwidth_members": bl["halfwidth_in_members"],
+        "bl_seed_spread_low": bl["seed_spread"][0],
+        "bl_member_ci": bl["member_ci_at_this_rate"],
+        # 🔒 and the disjointness the bimodal claim rests on
+        "full_classes": sorted(k for k, r in by.items() if r["member_ci"][0] >= 99.0),
+        "phage_member_ci": by["phage_peptidoglycan_hydrolase"]["member_ci"],
+    }
+
+
+def external_validation_record():
+    """Both external attempts failed, and the second one had no power to do anything else.
+
+    🔴 The margin result's member-level form was preregistered at commit f1a5860 and run twice.
+    Attempt 1: low-margin holdout recovered 82% against a predicted <= 40%, at essentially the same
+    absolute margin (-0.012 external, -0.015 internal), and the gap came in at +13 against a predicted
+    >= 25. A genuine failure.
+
+    ⚠️ Attempt 2 returned 100% on EVERY arm, and the preregistration records that its own
+    falsification criteria had a floor but no ceiling, so a panel with no room to move was scored NOT
+    SUPPORTED when "uninformative" is the accurate word. Both are pinned, because "failed twice" reads
+    as stronger evidence than the record supports, and the paper now says one and one.
+
+    🔒 The frozen gate (22 / 84 / 100) is pinned too: the scorer refused to touch the external
+    panel until its copy of the margin reproduced the published internal numbers.
+    """
+    t = (ROOT / "docs/EXTERNAL_VALIDATION_PREREGISTRATION.md").read_text()
+    man = (ROOT / "paper/MANUSCRIPT.md").read_text()
+    return {
+        "outcomes": len(re.findall(r"^## OUTCOME.*NOT SUPPORTED", t, re.M)),
+        "frozen_commit": "f1a5860" in t,
+        "gate_pinned": "22 / 84 / 100" in t,
+        # attempt 1's numbers, which are the ones that carry evidential weight
+        "a1_low_margin": "**82%**" in t, "a1_predicted_ceiling": "\u2264 40%" in t or "≤ 40%" in t,
+        "a1_same_margin": "**\u22120.012 externally against \u22120.015 internally**" in t
+                          or "−0.012 externally against −0.015 internally" in t,
+        # attempt 2's own recorded flaw: no ceiling in the criteria
+        "a2_all_100": "**100%**" in t,
+        # 🔴 the first version of this fragment spanned a line break and read False; the sentence wraps
+        # after "a floor". Single-line fragments only.
+        "a2_flaw_recorded": "(class-matched below 60% is inconclusive) but no ceiling." in t,
+        "a2_uninformative_word": "uninformative" in t,
+        # 🔒 and the paper must carry the distinction rather than just the count
+        "paper_reports_failures": "failed on two external panels" in man,
+        "paper_separates_them": "one clear failure and one uninformative panel" in man,
+        "abstract_not_overclaiming": "only result here that replicated everywhere we looked" not in man,
     }
 
 
@@ -4688,6 +4768,47 @@ CLAIMS = [
       "excludes 1.5 on both arms — the gradient is not removed — and it does *not* exclude 3.0**, so \"survives\""},
      # ⚠️ the seed interval must never be quoted as the interval on R again
      ["R = 4.79 [4.622, 4.960]", "4.791 [4.622, 4.960] on both", "the interval on R is [4.62, 4.96]"]),
+    ("the published LOMO intervals locate seed means, and the bimodality survives without them",
+     lomo_member_ci,
+     lambda v: v is None or (
+         v["n_classes"] == 12
+         # 🔴 an interval above 100% for a proportion, and a zero-width one on four members
+         and v["rip_upper"] > 100.0
+         and v["cdi_width"] == 0.0 and v["cdi_n"] == 4
+         # ⭐ the published half-width is under one member, from a spread that goes negative
+         and v["bl_halfwidth_members"] < 1.0
+         and v["bl_published_ci"] == [11.0, 19.9]
+         and v["bl_seed_spread_low"] < 0.0
+         and v["bl_member_ci"][0] == 0.0 and v["bl_member_ci"][1] > 30.0
+         # 🔒 and the finding stands: three classes at [100, 100], phage strictly below 25
+         and len(v["full_classes"]) >= 3
+         and v["phage_member_ci"][1] < 25.0
+         and v["bimodality_survives"]),
+     {"paper/MANUSCRIPT.md":
+      "100% for a bounded proportion — and contact-dependent inhibition at **[75.0, 75.0]**, a zero-width interval"},
+     # ⚠️ the seed interval must never be presented as the uncertainty on a recovery rate again
+     ["beta-lactamase reaches **15.5% [11.0, 19.9]**",
+      "recovery is 15.5% with 95% confidence"]),
+    ("the only external validation failed once and was uninformative once, and the paper says so",
+     external_validation_record,
+     lambda v: v is None or (
+         # 🔒 two recorded NOT SUPPORTED outcomes, against a frozen commit and a passing gate
+         v["outcomes"] == 2 and v["frozen_commit"] and v["gate_pinned"]
+         # ⭐ attempt 1 is the one with evidential weight: 82% against <= 40% at the same margin
+         and v["a1_low_margin"] and v["a1_predicted_ceiling"] and v["a1_same_margin"]
+         # ⚠️ attempt 2 hit 100% everywhere and the preregistration records the missing ceiling itself
+         and v["a2_all_100"] and v["a2_flaw_recorded"] and v["a2_uninformative_word"]
+         # 🔒 and the paper must carry the distinction, not just the count
+         and v["paper_reports_failures"] and v["paper_separates_them"]
+         and v["abstract_not_overclaiming"]),
+     {"docs/EXTERNAL_VALIDATION_PREREGISTRATION.md":
+      "🔴 **NOT SUPPORTED, and the honest summary registered in Amendment 2 now reads: failed on a self-drawn",
+      "paper/MANUSCRIPT.md":
+      "⚠️ **And the \"two external failures\" should be read as one clear failure and one uninformative panel**,"},
+     # ⚠️ the abstract must never again say the margin result replicated everywhere, and the external
+     # outcome must never be softened to a partial success
+     ["only result here that replicated everywhere we looked",
+      "the external validation partly supported", "externally validated at the class level"]),
     ("the paper's corrections count matches the log, and the log's own numbering restarted twice",
      corrections_log_census,
      lambda v: v is None or (
@@ -4703,7 +4824,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 84"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 85"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
