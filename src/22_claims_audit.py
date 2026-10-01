@@ -192,7 +192,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           # Added 2026-10-01. It is the only matched, toxin-inclusive contrast in the project, on an
           # axis set by UniProt curators rather than by the author or by VFDB, and its bands were
           # frozen when nothing but the axis's coverage was known.
-          "docs/EXTERNAL_HAZARD_AXIS_PREREGISTRATION.md"]
+          "docs/EXTERNAL_HAZARD_AXIS_PREREGISTRATION.md",
+          # Added 2026-10-01. It is the only study in the project run on someone else's published
+          # benchmark, and it prices the circularity of doing so before any result exists.
+          "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1865,6 +1868,57 @@ def organism_cluster():
         "pool_gap_inside": bool(a["pool_gap_inside"] and b["pool_gap_inside"]),
         "ca_ratio_below_r_650M": bool(a["contrasts"]["CA"]["design_effect"]
                                       < a["contrasts"]["R"]["design_effect"]),
+    }
+
+
+def deepvic_metadata_baseline():
+    """21 no-semantics numbers reach 91.3% of the largest published benchmark's AUROC.
+
+    🔒 On DeepVIC's own 66,912 sequences, log length alone scores 0.7547 and log length plus
+    the twenty amino-acid frequencies scores 0.8705, against its published 0.954 -- so the
+    embedding's margin over features with no order, no position and no model is +0.0835. Every
+    one of five seeds clears both floors frozen before the study.
+
+    ⚠️ NOT on DeepVIC's partition. It states 80:20 and does not publish the split, so this is
+    our own 80:20 on a holdout of 13,382 against their 13,384. The comparison is across splits
+    and the claim says so.
+
+    🔒 And not circular: 239 of this project's 746 representatives are in DeepVIC, 0.71% of its
+    positives, and removing them moves the figures by -0.24pp and -0.08pp.
+    """
+    v = j("../results/deepvic_metadata_baseline.json")
+    b = j("../results/deepvic_build.json")
+    if None in (v, b):
+        return None
+    F, S = v["variants"]["full"], v["variants"]["shared_removed"]
+    return {
+        "prereg": v["preregistration"],
+        "published": v["deepvic_published_auroc"],
+        "bands": v["bands"],
+        "seeds": v["seeds"],
+        "n": F["n"],
+        "n_pos": F["n_positives"],
+        "n_neg": F["n_negatives"],
+        "n_labelled": b["n_labelled_positives"],
+        "n_classes": b["n_classes"],
+        "median_len": b["length"],
+        "auroc_len": F["auroc_length_only"],
+        "auroc_comp": F["auroc_length_plus_composition"],
+        "per_seed_len": F["per_seed_length_only"],
+        "per_seed_comp": F["per_seed_length_plus_composition"],
+        "verdict_len": F["verdict_length_only"],
+        "verdict_comp": F["verdict_composition"],
+        "gap": F["gap_to_published"],
+        "frac": F["frac_of_published"],
+        "auroc_len_shared_removed": S["auroc_length_only"],
+        "auroc_comp_shared_removed": S["auroc_length_plus_composition"],
+        "moves": v["ai4_shared_removal_moves"],
+        "n_shared": v["n_shared_with_our_panel"],
+        "frac_of_ours": b["overlap_with_this_project"]["frac_of_our_746"],
+        "frac_of_theirs": b["overlap_with_this_project"]["frac_of_deepvic_positives"],
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "pred_kinds": {k: w["kind"] for k, w in v["predictions"].items()},
+        "weights_recorded": sorted(b["files"]),
     }
 
 
@@ -5841,7 +5895,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 107"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 108"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -7262,6 +7316,58 @@ CLAIMS = [
       "the matched recovery difference is a verdict",
       "the probe separates toxins from length-matched non-toxins",
       "an externally validated hazard axis"]),
+    # 🔒 Added 2026-10-01. The first study here run on someone else's published benchmark. What it
+    # locks is the no-semantics score AND the two reasons it is not an overclaim: a different split,
+    # and a priced overlap.
+    ("no-semantics features reach 91.3% of DeepVIC's published AUROC on its own benchmark",
+     deepvic_metadata_baseline,
+     lambda v: v is None or (
+         "DEEPVIC_BENCHMARK_PREREGISTRATION" in v["prereg"]
+         and v["published"] == 0.954 and v["seeds"] == 5
+         # the benchmark as published: 66,912 sequences, 12,989 labelled in 14 classes
+         and v["n"] == 66912 and v["n_pos"] == 33456 and v["n_neg"] == 33456
+         and v["n_labelled"] == 12989 and v["n_classes"] == 14
+         # ⚠️ the composition fact that motivated the study, frozen before it
+         and v["median_len"]["positives_median"] == 549
+         and v["median_len"]["negatives_median"] == 268
+         # 🔒 both frozen floors cleared, and by EVERY seed, not just on the mean
+         and v["verdict_len"] == "confound band"
+         and v["verdict_comp"] == "confound band"
+         and v["auroc_len"] >= v["bands"]["length_confound_floor"]
+         and v["auroc_comp"] >= v["bands"]["composition_confound_floor"]
+         and all(x >= v["bands"]["length_confound_floor"] for x in v["per_seed_len"])
+         and all(x >= v["bands"]["composition_confound_floor"] for x in v["per_seed_comp"])
+         and len(v["per_seed_len"]) == 5 and len(v["per_seed_comp"]) == 5
+         and abs(v["auroc_len"] - 0.7547) < 0.0005
+         and abs(v["auroc_comp"] - 0.8705) < 0.0005
+         and abs(v["gap"] - 0.0835) < 0.0005
+         and abs(v["frac"] - 0.913) < 0.0005
+         # 🔒 not circular: the overlap is 0.71% of their positives and moving it moves nothing
+         and v["n_shared"] == 239
+         and abs(v["frac_of_ours"] - 0.320) < 0.002
+         and v["frac_of_theirs"] < 0.01
+         and abs(v["moves"]["length_only_pp"]) < 0.5
+         and abs(v["moves"]["composition_pp"]) < 0.5
+         and v["moves"]["under_2pp"] is True
+         and v["preds"]["P5_shared_removal_under_2pp"] is True
+         # ⭐ both derived predictions held, which is this project's usual direction
+         and v["preds"]["P1_length_only_clears_0.75"] is True
+         and v["preds"]["P2_composition_clears_0.85"] is True
+         and v["pred_kinds"]["P1_length_only_clears_0.75"] == "derived"
+         and v["pred_kinds"]["P2_composition_clears_0.85"] == "derived"
+         # 🔒 the downloaded artifacts are checksummed, including the trained weights
+         and v["weights_recorded"] == ["DLDB_33456.faa", "binary.keras",
+                                       "metadata.txt", "multiclass.keras"]),
+     {"paper/MANUSCRIPT.md":
+      "⚠️ **Not on DeepVIC's partition**: it states 80:20 but does not publish the split, so this is our own",
+      "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md":
+      "🔴 **The positives' median length is 2.05× the negatives'.** That is this paper's own"},
+     # 🔴 Five overclaims this result does not license, in assertion-only form.
+     ["this screen beats DeepVIC",
+      "DeepVIC reports an inflated AUROC",
+      "we evaluated on DeepVIC's published split",
+      "the published benchmark is a length classifier",
+      "our probe outperforms the published state of the art"]),
 ]
 
 

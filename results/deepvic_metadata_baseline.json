@@ -1,0 +1,103 @@
+{
+  "built": "2026-10-01 10:29:26",
+  "study": "AI-1 -- DeepVIC's benchmark scored with no sequence semantics",
+  "preregistration": "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md",
+  "deepvic_published_auroc": 0.954,
+  "bands": {
+    "length_confound_floor": 0.75,
+    "length_clean_ceiling": 0.6,
+    "composition_confound_floor": 0.85,
+    "composition_clean_ceiling": 0.7
+  },
+  "seeds": 5,
+  "test_fraction": 0.2,
+  "n_shared_with_our_panel": 239,
+  "median_length": {
+    "positives_median": 549,
+    "negatives_median": 268,
+    "labelled_median": 369
+  },
+  "variants": {
+    "full": {
+      "n": 66912,
+      "n_positives": 33456,
+      "n_negatives": 33456,
+      "auroc_length_only": 0.7546789501163034,
+      "sd_length_only": 0.0029694853778811214,
+      "auroc_length_plus_composition": 0.8705311714927756,
+      "sd_length_plus_composition": 0.0018354057076441239,
+      "per_seed_length_only": [
+        0.7584573420776459,
+        0.7514686546279207,
+        0.7524288822317737,
+        0.7540687619348735,
+        0.7569711097093035
+      ],
+      "per_seed_length_plus_composition": [
+        0.8704186306811101,
+        0.8676477802305617,
+        0.8714057429499524,
+        0.8705590678995887,
+        0.8726246357026648
+      ],
+      "verdict_length_only": "confound band",
+      "verdict_composition": "confound band",
+      "gap_to_published": 0.08346882850722437,
+      "frac_of_published": 0.9125064690699954
+    },
+    "shared_removed": {
+      "n": 66673,
+      "n_positives": 33217,
+      "n_negatives": 33456,
+      "auroc_length_only": 0.7522692102228632,
+      "sd_length_only": 0.0013828890771886036,
+      "auroc_length_plus_composition": 0.869725043682321,
+      "sd_length_plus_composition": 0.0024569798539891756,
+      "per_seed_length_only": [
+        0.7505173123789078,
+        0.7531750067500675,
+        0.7532820990785761,
+        0.751019612672031,
+        0.7533520202347332
+      ],
+      "per_seed_length_plus_composition": [
+        0.8683194829801549,
+        0.8680374178741788,
+        0.8740073004167939,
+        0.8695037722283391,
+        0.8687572449121379
+      ],
+      "verdict_length_only": "confound band",
+      "verdict_composition": "confound band",
+      "gap_to_published": 0.084274956317679,
+      "frac_of_published": 0.9116614713651163
+    }
+  },
+  "ai4_shared_removal_moves": {
+    "length_only_pp": -0.2409739893440177,
+    "composition_pp": -0.08061278104546377,
+    "under_2pp": true
+  },
+  "predictions": {
+    "P1_length_only_clears_0.75": {
+      "kind": "derived",
+      "value": 0.7546789501163034,
+      "held": true
+    },
+    "P2_composition_clears_0.85": {
+      "kind": "derived",
+      "value": 0.8705311714927756,
+      "held": true
+    },
+    "P5_shared_removal_under_2pp": {
+      "kind": "reasoned",
+      "value": {
+        "length_only_pp": -0.2409739893440177,
+        "composition_pp": -0.08061278104546377,
+        "under_2pp": true
+      },
+      "held": true
+    }
+  },
+  "seconds": 3.2
+}

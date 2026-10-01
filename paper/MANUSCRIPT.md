@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 107 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 108 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 107
+written because it caught something. The evidence is a **dated, append-only corrections log of 108
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -138,8 +138,25 @@ construction and is written here as one.* **DeepVIC** ([Bioinformatics Advances 
 ProtBert-BFD embeddings over **33,456 VFs**, **AUROC 0.954** on a 13,384-sequence holdout, plus
 multiclass assignment to **14 VFDB categories** at 0.838 accuracy.
 
-🔑 **The comparison we care about is not the AUROC.** DeepVIC carries a published 14-category class axis
-over 12,989 annotated VFs and runs **no leave-one-category-out evaluation**; its generalization check is
+🔑 **And the published AUROC is substantially length-separable.** DeepVIC's repository ships its
+sequences, so the benchmark can be scored with **no sequence semantics at all** (`src/122`, `src/123`;
+bands frozen in `docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md` before either was written). Its positives'
+median length is **549** against its negatives' **268** — a **2.05×** ratio. On the same 66,912
+sequences, **log length alone reaches AUROC 0.7547**, and **log length plus the twenty amino-acid
+frequencies reaches 0.8705** — twenty-one numbers per protein, no order, no position, no model, and
+**91.3%** of the published **0.954**. The embedding's margin over trivial features is **+0.0835**.
+⚠️ **Not on DeepVIC's partition**: it states 80:20 but does not publish the split, so this is our own
+80:20 at five seeds, on a holdout of **13,382** against their 13,384, and every seed clears both frozen
+floors. 🔒 **And it is not circular** — 239 of this project's 746 class-axis representatives appear in
+DeepVIC, **32.0% of ours but 0.71% of theirs**, and removing them moves these figures by **−0.24pp** and
+**−0.08pp**.
+
+🔑 **That is the same shape as § 5's finding on our own panel** — two metadata fields with no sequence
+information reaching **0.8096** against this project's embedding at 0.9323 — now measured on the largest
+published benchmark in the line instead of on a self-built panel of 445.
+
+🔑 **The comparison we care about is still not the AUROC.** DeepVIC carries a published 14-category class
+axis over 12,989 annotated VFs and runs **no leave-one-category-out evaluation**; its generalization check is
 recall on two organism-specific positive-only sets (71.4%, 45 of 63). The largest virulence-factor
 classifier in the literature therefore holds the class axis this work needs and does not ask the
 class-level question this work exists to ask. An adjacent paper does ask a question of that shape —
@@ -1092,7 +1109,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**137 claims** and fails if any number in a public document drifts from the artifact that produced
+**138 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

@@ -7642,3 +7642,66 @@ The hazard-taxonomy limitation is no longer *"no external validation"*. It is: t
 depends on** the author's four-category split, because a matched contrast on a third-party axis gives the
 same answer — ⚠️ on **31 pairs**, with **no second annotator** for the original split, and with a database
 keyword still not being a regulatory hazard designation.
+
+## 2026-10-01 (one hundred and fourth entry) — Twenty-one numbers reach 91% of the published benchmark
+
+§ 1 of the paper disclaims comparability: *"every number is on a self-built panel of 234 or 445 proteins
+that is **not comparable** to the virulence-factor benchmarks in § 1.2."* 🔴 **That disclaimer was doing
+work a measurement should do.** The gap it names — no comparable public benchmark — was the largest open
+item for a major venue.
+
+**DeepVIC's repository ships the sequences, the 14-category labels and the trained weights**
+(`github.com/ansontwk/DeepVIC`), so the gap is closable. `src/122` partitioned it and `src/123` scored it;
+bands were frozen in `docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md` with only the **composition** known.
+
+### 🔒 What is in the benchmark
+
+| | |
+|---|---:|
+| FASTA records | 66,912 |
+| positives / negatives | 33,456 / 33,456 |
+| positives carrying a class label | **12,989** in **14** classes |
+| source databases | UNIPROT 21,544 · VFDB 9,143 · VICTORS 1,752 · PATRIC 1,017 |
+| **median length, positives / negatives** | **549 / 268** = **2.05×** |
+
+🔴 **The 2.05× length ratio is this paper's own documented defect, in the published benchmark.** It was
+measured before freezing, which is why the *score* could be predicted rather than peeked.
+
+### 🔒 The result: 0.8705 against a published 0.954
+
+| | AUROC | frozen band |
+|---|---:|---|
+| **log length alone** | **0.7547** | ≥ 0.75 ⇒ confound ✅ |
+| **log length + 20 amino-acid frequencies** | **0.8705** | ≥ 0.85 ⇒ confound ✅ |
+| DeepVIC, published | 0.954 | — |
+
+**Twenty-one numbers per protein — no order, no position, no model — reach 91.3% of the published
+AUROC**, leaving the ProtBert-BFD embedding a margin of **+0.0835**. 🔒 **Every one of five seeds clears
+both floors** (length 0.7505–0.7585, composition 0.8676–0.8726), so neither verdict rests on a mean.
+
+⚠️ **Two things this is not.** It is **not on DeepVIC's partition** — DeepVIC states 80:20 and does not
+publish the split, so this is our own 80:20 on a holdout of **13,382** against their 13,384, and the
+comparison is across splits. And it is **not a claim that the published number is wrong**: a benchmark
+being length-separable does not make a classifier's score on it incorrect, it makes the score a weaker
+measure of what the classifier is being credited with.
+
+### 🔒 The circularity was priced before the result existed
+
+**239** of this project's 746 class-axis representatives are in DeepVIC — **32.0% of ours** but **0.71%
+of theirs**. Removing all 239 moves length-only by **−0.24pp** and composition by **−0.08pp**. ⭐ The
+preregistration required both variants precisely so this could not be waved away afterwards.
+
+### ⭐ Three predictions, three held
+
+- **P1 (derived** from the 549/268 ratio**)** — length-only clears 0.75. ✅ 0.7547.
+- **P2 (derived** from this project's own 0.8096 metadata baseline**)** — composition clears 0.85.
+  ✅ 0.8705.
+- **P5 (reasoned)** — removing the shared 239 moves nothing by 2pp. ✅ −0.24pp, −0.08pp.
+
+🔑 **The same shape as § 5's own finding, now on someone else's benchmark**: two metadata fields reached
+**0.8096** on our panel against the embedding's 0.9323. The finding was always that the *task*, not the
+representation, carries much of the separability — and it had only ever been shown on a panel we built.
+
+⚠️ **AI-2 and AI-3 are not done.** Leave-one-category-out over DeepVIC's 14 classes and the
+Motility-against-Exotoxin contrast at 1,121 against 1,126 members both need ESM-2 embeddings of ~46,000
+sequences, and both are preregistered. Only AI-1 and the AI-4 variant of AI-1 are reported here.
