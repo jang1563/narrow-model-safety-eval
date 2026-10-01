@@ -169,7 +169,13 @@ def main():
     m77 = load77()
     dev = ("cuda" if torch.cuda.is_available() else
            "mps" if torch.backends.mps.is_available() else "cpu")
-    print(f"model={MODEL}  device={dev}  pooling=src/02b's via src/77", flush=True)
+    # 🔴 "cuda" is not specific enough to stamp a checkpoint with. A preempted job requeued
+    # onto a different architecture -- h100 after a40 -- is still "cuda", and TF32 and cuDNN
+    # kernel selection differ by architecture at around 1e-06, under the 5e-05 gate. The
+    # stamp carries the actual device NAME so that resume is refused across hardware too.
+    devname = (torch.cuda.get_device_name(0) if dev == "cuda" else dev)
+    print(f"model={MODEL}  device={dev} ({devname})  "
+          f"pooling=src/02b's via src/77", flush=True)
     tok = AutoTokenizer.from_pretrained(MODEL)
     model = AutoModel.from_pretrained(MODEL).to(dev).eval()
 
@@ -186,12 +192,21 @@ def main():
     print(f"{len(recs):,} sequences in fixed order -> {SEQ_OUT.name}", flush=True)
 
     ck = RES / f"deepvic_ckpt{out_sfx}"
-    fp = hashlib.sha256(BUILD.read_bytes()).hexdigest()
+    # 🔴 src/80 stamps the BUILD only. That catches a resume across two positive sets and
+    # misses a resume across two DEVICES -- shards written on Apple MPS continued on CUDA
+    # would put two float backends in one array, below the 5e-05 gate tolerance and so
+    # invisible to every check here. The stamp carries the model and the device too.
+    fp = hashlib.sha256(
+        BUILD.read_bytes() + MODEL.encode() + devname.encode()).hexdigest()
     stamp = ck / "build.sha256"
-    if ck.exists() and stamp.exists() and stamp.read_text().strip() != fp:
+    prev = stamp.read_text().strip() if stamp.exists() else None
+    if ck.exists() and prev is not None and prev != fp:
+        n = len(list(ck.glob("shard_*.npz")))
         raise SystemExit(
-            f"{ck.name} holds shards from a different build; delete it and rerun -- "
-            "resuming would mix two sets and nothing downstream would notice.")
+            f"{ck.name} holds {n} shard(s) stamped {prev[:12]} but this run is "
+            f"{fp[:12]} ({MODEL} on {devname}). Delete the directory and rerun -- resuming "
+            "would mix two builds, two models or two float backends in one array, and "
+            "nothing downstream would notice.")
     ck.mkdir(parents=True, exist_ok=True)
     stamp.write_text(fp + "\n")
     arr = m77.embed(recs, tok, model, dev, a.batch, "deepvic", ck=ck)
@@ -202,6 +217,7 @@ def main():
         "n": int(arr.shape[0]), "dim": int(arr.shape[1]),
         "pooling": "src/02b's: mean over the full attention mask, <cls> and <eos> included",
         "gate": {"panel_negatives_vs_published": delta, "tolerance": TOL},
+        "device": devname,
         "no_homology_screen": ("DeepVIC's negatives are used as published; src/79's screen is "
                                "not applied, because evaluating on their benchmark means using "
                                "their partition"),

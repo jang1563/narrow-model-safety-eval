@@ -7756,3 +7756,54 @@ were null-calibrated, which is how the vacuous version was found.
 `src/30`'s and did, on every input without a tie. The only reason the project has one rho is that a
 selftest compared the two on a tied vector; nothing else in the pipeline would have noticed, and the
 disagreement would have shown up as a slightly different ρ in a table.
+
+## 2026-10-01 (one hundred and sixth entry) — A checkpoint stamp that could not see the hardware, and a `set -e` bug that fired on one arm only
+
+Moving study AI's embedding to Cayuga's GPUs found two defects. Neither reached a result.
+
+### 🔴 1. The checkpoint fingerprint stamped the build, not the float backend
+
+`src/80`'s guard — copied into `src/124` — stamps the checkpoint directory with the **build
+artifact's** hash, so a resume cannot mix two positive sets. ⚠️ **It cannot see the device.** The
+local run had banked **3,000** vectors on Apple **MPS**; continuing on **CUDA** would have put two
+float backends in one 46,445-row array, at a disagreement of order **1e-06** — comfortably under the
+pooling gate's own **5e-05** tolerance, and therefore invisible to every check in this repository.
+
+🔒 The stamp now hashes **build + model + device name**, and the name is
+`torch.cuda.get_device_name(0)`, not the string `"cuda"`. ⚠️ **`"cuda"` would not have been enough**:
+a job on `preempt_gpu` can be preempted and requeued onto a different architecture, and TF32 and
+cuDNN kernel selection differ between an A40 and an H100 at about the same 1e-06. The manifest now
+records the device too.
+
+⭐ **The 3,000 local vectors were discarded** rather than resumed, and both arms were started fresh
+on Cayuga so that each array comes from one device. The cost was fifteen minutes.
+
+### 🔴 2. A `set -e` interaction that killed the job silently, on the arm it did not name
+
+`slurm/deepvic_embed.sh` picked its gate target with
+
+```
+GATE="results/v3/embeddings_negative_v3$([[ $ARM == esm2_35M ]] && echo _esm2_35M).npy"
+```
+
+For `ARM=esm2_35M` the test is true, `echo` runs, the substitution exits 0. 🔴 **For
+`ARM=esm2_650M` the test is false, `&&` short-circuits, the command substitution returns 1, and
+`set -e` kills the script** — at the assignment, before the `echo` after it, **with nothing written
+to the log**. Job 3404058 died after **7 seconds** with a 137-byte log ending at the torch version.
+
+⚠️ **Three checks did not catch it.** `bash -n` passes — it is not a syntax error. The 35M arm
+passed — it is the arm the expression names. And a first attempt to reproduce it locally **appeared
+to show no failure**, because this session's shell is `zsh`; it reproduces on **bash 3.2.57** and on
+Cayuga's **bash 4.4.20**, which is what actually ran.
+
+🔒 Replaced with an explicit `case` over `$ARM` that has a `*)` arm which exits 1 on an unknown
+value, so an unrecognized arm fails **loudly** instead of selecting a wrong gate target or dying
+without a message.
+
+### 🔑 The common shape
+
+Both defects are guards that were **narrower than the thing they guarded**. The stamp covered the
+data but not the hardware; the gate-target expression covered one arm but not the other. ⚠️ And both
+failed in the direction that produces no error message — a silently mixed array, and a silently dead
+job. That is the same failure mode as entry 101's vacuous pass and entry 102's silent undercount:
+**the dangerous version of a broken check is the quiet one.**
