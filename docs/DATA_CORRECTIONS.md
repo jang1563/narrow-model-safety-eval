@@ -7807,3 +7807,80 @@ data but not the hardware; the gate-target expression covered one arm but not th
 failed in the direction that produces no error message — a silently mixed array, and a silently dead
 job. That is the same failure mode as entry 101's vacuous pass and entry 102's silent undercount:
 **the dangerous version of a broken check is the quiet one.**
+
+## 2026-10-01 (one hundred and seventh entry) — The margin ordering replicated externally and the hazard narrowing did not
+
+Study AI's fold ran on both arms of DeepVIC's published benchmark — **12,989** class-labelled virulence
+factors in **14** curator categories from UniProt, VFDB, VICTORS and PATRIC, against its own 33,456
+negatives. 650M on an H100 in 31 minutes, 35M on an A40 in 14, pooling gates **9.060e-06** and
+**3.099e-06** against the published panel arrays. Two results, of opposite sign.
+
+### 🔒 AI-2 replicates, and it is the first external confirmation of the one internal replication
+
+| pass | *ρ*(margin, recovery) | *p* | beats both controls |
+|---|---:|---:|:--:|
+| 650M full | **+0.9473** | 0.00005 | ✅ |
+| 650M shared removed | **+0.9341** | 0.00005 | ✅ |
+| 35M full | **+0.8857** | 0.00020 | ✅ |
+| 35M shared removed | **+0.8593** | 0.00020 | ✅ |
+
+All four clear the frozen **+0.60** floor at *p* below α = 0.0125, and on all four margin beats
+nearest-positive alone (+0.63 to +0.79) and nearest-negative alone (−0.52 to −0.80). ⚠️ **One rival was
+measured rather than assumed**: a class's truncation rate also tracks recovery, at +0.097 on 650M but
+**+0.365** on 35M. Margin exceeds it on every pass, so it is not a truncation proxy — but the correlation
+is not zero on the smaller arm, and that is stated.
+
+🔴 **The bimodality does not replicate.** Our own panel gives two disjoint clusters. Across DeepVIC's
+fourteen categories recovery is **graded**: spread 0.57, largest single jump **18–24%** of it, and that
+jump sits after rank 13 on 650M and after rank **1** on 35M. The arms do not agree where the gap is.
+
+### 🔴 AI-3 does not replicate, and the reading rule that says so was frozen first
+
+| variant | 650M | 35M | signs agree |
+|---|---:|---:|:--:|
+| all members | +2.87pp | **−15.04pp** | ❌ |
+| untruncated | +5.02pp | **−8.76pp** | ❌ |
+| **length-matched (primary)** | **+6.04pp** [+3.13, +8.96] | **−5.30pp** [−8.91, −1.58] | ❌ |
+
+🔴 **Both intervals exclude zero**, so the arms genuinely disagree about whether a held-out Exotoxin class
+is recovered more or less than a held-out Motility class of the same size. ⚠️ 35M does not reach the
+−20pp hazard band either, so it is **between bands**. Amendment 1 required the primary variant in the
+replication band on **both** arms. It is not.
+
+🔑 **The disagreement is one category.** Mean recovery across the fourteen is **41.4%** against **41.8%**
+and seven categories come out higher on each arm. **Exotoxin** swings **−13.7pp** (44.7% → 58.4%) while
+Motility swings +4.2pp, with across-seed SDs of 12.7 and 9.1 points and **no** zero-recovery seeds. So it
+is not a weaker arm and it is not seed noise: **how exotoxins sit relative to the rest of a registered
+set is representation-dependent**, and that is precisely the quantity § 6's narrowing is about.
+
+⚠️ **It does not contradict study AH, and the two must not be collapsed.** AH asks whether the screen can
+**order** a curated toxin above a length-matched non-toxin inside one fold — chance on both arms. AI-3
+asks whether a **held-out category** is recovered less at a fixed threshold, across two folds. A class can
+be recovered more often without being orderable above its comparator. § 6 now claims the first and
+explicitly declines the second.
+
+### 🔴 The prediction score, and a band I wrote badly
+
+**Derived 1 of 3, reasoned 0 of 1.**
+
+- **P3 (derived)** — AI-2 clears +0.60 on both arms. ✅
+- **P4 (derived)** — AI-3 ≥ 0 on both arms. ❌ 35M is −5.30pp.
+- **P6 (derived, amendment 1)** — the full-membership difference exceeds the matched one. ❌ on **all
+  four** passes; it is the other way round (+2.87 < +6.04, −15.04 < −5.30). ⚠️ My stated reason was that
+  truncation costs recovery and so flatters the narrowing. The measurement says the opposite: dropping
+  the 298 longest exotoxins **lowered** Exotoxin recovery, so the truncated members were being recovered
+  *better*. The amendment's conclusion was right for the wrong reason, and the matched variant is the
+  more favourable one rather than the more conservative one.
+- **P5 (reasoned)** — removing the 239 shared representatives moves no figure by more than 2pp. ❌ on the
+  frozen reading. 🔴 **The band was my drafting error**: § 2 wrote the tolerance in "pp" without saying
+  whether a **Spearman** counts in those units. Read as *ρ* × 100 the 35M arm moves **2.64**, over the
+  band. Every figure that *is* in percentage points — the two AUROCs and the two recovery differences —
+  moves under it, at most **1.62**. ⚠️ **Both readings are in the artifact and the literal one is the
+  verdict**, because reinterpreting a band after seeing the number is what bands exist to prevent.
+
+🔑 **Across studies AH and AI the derived-vs-reasoned record has gone.** It was about ten derived
+predictions holding and reasoned ones missing almost every time. AH: two derived missed, one reasoned
+held. AI: one derived of three, reasoned zero of one. **Derived 2 of 5 and reasoned 1 of 2 across the
+two.** The honest reading is not that reasoning improved but that these two studies left the panel the
+earlier predictions were derived *from*, and a derivation is only as good as the population it was
+derived on.

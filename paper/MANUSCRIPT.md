@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 110 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 111 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 110
+written because it caught something. The evidence is a **dated, append-only corrections log of 111
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -43,7 +43,10 @@ compatible with a screen that cannot see two whole families.
 recovery at Spearman **+0.894** (permutation *p* = 0.00015), places both failures at the bottom, and
 survives **fourteen model arms** and **fifteen re-poolings** of one arm (*ρ* +0.536 to +0.941, 14 of 15
 significant). It replicated across **every internal variation we tried**, and it is the only result here
-that did. ⚠️ **Its external record is mixed and is three tests, not one.** The **member-level** version was
+that did. 🔒 **It now also replicates on a published benchmark with someone else's labels** — *ρ* =
+**+0.947** and **+0.886** over DeepVIC's fourteen curator categories and 12,989 proteins, both arms, both
+clearing a floor frozen in advance (§ 4). ⚠️ **Its external record is otherwise mixed and is three further
+tests.** The **member-level** version was
 preregistered and **failed** externally. The **class-level** version — the one this paper claims — was
 preregistered on **VFDB's 13 categories** and came back at *ρ* **+0.681** (*p* = 0.0059), where a frozen
 confound rule then fired and made it **uninterpretable**; a targeted follow-up holding organism identity
@@ -81,7 +84,14 @@ the entire exotoxin category held out as well, are ordered at **chance**: AUROC 
 and **0.5247** on 35M, inside a registration band of 0.40–0.60 frozen before the study against a hazard
 floor of 0.70. The screen flags **three quarters** of those toxins, so it is not blind to them; it simply
 does not rank them above comparable non-toxins. ⚠️ The test rests on **31 pairs**, because only **30.6%**
-of the population carries a reviewed UniProt entry.
+of the population carries a reviewed UniProt entry. 🔴 **And the between-category form of the same claim
+does not replicate.** On DeepVIC's published axis, where Exotoxin and Motility hold 1,126 and 1,121
+members without any choosing, the length-matched recovery difference is **+6.04pp** on 650M and
+**−5.30pp** on 35M — both intervals excluding zero, against a reading rule frozen before the run that
+required both arms to agree. The disagreement is **exotoxins specifically**, which swing 13.7 points
+between the two representations while the fourteen-category means differ by 0.3. **The screen does not
+order toxins above matched non-toxins inside a fold; whether it recovers a held-out toxin category more
+or less than a non-toxin one depends on which representation you ask.**
 
 We close on a structural observation about evaluation rather than about protein models. Twice we
 diagnosed a limit, built the repair, and found the limit was on the other side of the comparison: both
@@ -742,6 +752,40 @@ toxins, along an axis this project did not define, with both groups unseen by th
 — and the screen orders toxins and length-matched non-toxins at chance. ⚠️ **On 31 pairs**, which is the
 limit of what 30.6% reviewed coverage allows.
 
+### And on a published benchmark at eleven times the toxin count, the narrowing does not replicate
+
+🔴 **This is the result we did not want, and it is reported because it was preregistered.** DeepVIC's
+axis carries **1,126 Exotoxin** against **1,121 Motility** — sizes matched within **0.5%** without any
+choosing — so study AI-3 asks § 6's question at **eleven times** the exotoxin count of study AH, on
+curator labels from four databases. Amendment 1 made the **length-matched** variant primary before the
+fold ran, because Exotoxin is truncated at 22.02% and Motility at 1.52% (§ 1.2).
+
+| variant | 650M | 35M | signs agree |
+|---|---:|---:|:--:|
+| all members (1,121 / 1,126) | +2.87pp | **−15.04pp** | ❌ |
+| untruncated only (1,104 / 878) | +5.02pp | **−8.76pp** | ❌ |
+| **length-matched, primary** (828 pairs, ratio 1.148) | **+6.04pp** [+3.13, +8.96] | **−5.30pp** [−8.91, −1.58] | ❌ |
+
+🔴 **The two arms disagree on the sign in all three variants, and both intervals exclude zero**, so this
+is not noise: on 650M Motility is recovered **more** than Exotoxin and on 35M **less**. ⚠️ Neither arm
+reaches the frozen hazard band of −20pp, so 35M is **between bands** rather than hazard-selective — but
+amendment 1's reading rule required the primary variant to land in the replication band on **both** arms,
+and it does not. 🔴 **AI-3 does not replicate § 6's narrowing.**
+
+🔑 **The disagreement is one category, not a weaker arm.** The two arms have near-identical mean recovery
+across the fourteen categories — **41.4%** against **41.8%** — and seven categories come out higher on
+each. **Exotoxin** swings **−13.7pp** between them (44.7% on 650M, **58.4%** on 35M) while Motility swings
++4.2pp, and it is not seed instability: Exotoxin's across-seed standard deviation is 12.7 and 9.1 points
+with **zero** zero-recovery seeds on either arm.
+
+⚠️ **This is not a contradiction of study AH, and the two should not be collapsed.** AH asks whether the
+screen can **order** a curated toxin above a length-matched non-toxin *inside one fold*, and the answer is
+chance on both arms. AI-3 asks whether a **held-out category** is recovered less than another held-out
+category at a fixed 95%-specificity threshold, in two different folds. A class can be recovered more often
+without being orderable above its comparator. 🔒 **What § 6 can claim is the first**: the narrowing holds
+as a within-fold ordering result on a third-party axis. 🔴 **What it cannot claim is the second**: the
+between-category version is representation-dependent, and on the smaller arm it points the other way.
+
 🔴 **And it is narrower again on a benign population the probe has never seen.** Every result above,
 and every result in the localization sections, is a re-analysis of **one fit on one pool of 8,259
 proteins** — the "second arm" throughout this paper is a different *embedding of the same proteins*,
@@ -839,6 +883,36 @@ the ten the bottom two are beta-lactamase and **virulence-associated non-toxin**
 and 10 of 10 on v3, with beta-lactamase lowest on 12 of 14 and 9 of 10. ⚠️ **"It transfers" was previously
 stated once, against the v2 evidence, next to a v3 two-class property** — the same panel-mixing this paper
 corrects in § 3.
+
+### The ordering replicates on a published benchmark, with someone else's labels
+
+🔒 **This is the first external confirmation of the ordering, and it is a verdict on both arms.** Study AI
+runs the same fold on **DeepVIC's** benchmark — **12,989** class-labelled virulence factors in **14**
+curator-maintained categories drawn from UniProt, VFDB, VICTORS and PATRIC, against its own 33,456
+negatives — because DeepVIC carries that class axis and runs **no leave-one-category-out evaluation** of
+its own (§ 1.2). Bands were frozen in `docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md` before `src/125` existed.
+
+| pass | *ρ*(margin, recovery) | permutation *p* | beats both controls |
+|---|---:|---:|:--:|
+| 650M, full | **+0.9473** | 0.00005 | ✅ |
+| 650M, shared removed | **+0.9341** | 0.00005 | ✅ |
+| 35M, full | **+0.8857** | 0.00020 | ✅ |
+| 35M, shared removed | **+0.8593** | 0.00020 | ✅ |
+
+🔒 **All four passes clear the frozen floor of +0.60 at *p* below α = 0.0125, and on all four margin beats
+both of the controls it is built from** — nearest-positive alone reaches +0.63 to +0.79 and
+nearest-negative alone −0.52 to −0.80. ⚠️ **One rival explanation is measured rather than assumed**: a
+class's ESM-2 **truncation rate** also tracks its recovery, at *ρ* = +0.097 on 650M but **+0.365** on 35M,
+so margin is not a truncation proxy — it exceeds that correlation on every pass — but the correlation is
+not zero on the smaller arm. 🔒 **And it is not circular**: 239 of the 746 representatives this project
+built its own panels from appear in DeepVIC, **0.71% of its positives**, and removing them moves *ρ* by
+**0.013** and **0.026**.
+
+🔴 **What does not replicate is the bimodality.** On our own panel the per-class picture is two clusters
+with 100% and [0, 36] disjoint (§ 2). Across DeepVIC's fourteen categories recovery is **graded**: the
+spread is 0.57 wide, the largest single jump is only **18–24%** of it, and that jump sits after rank 13 on
+650M and after rank **1** on 35M — ⚠️ **the arms do not even agree where the gap is.** The ordering
+transfers to a published benchmark; the shape of the failure distribution is a property of our panel.
 
 🟢 **And the ordering is not carried by the two extreme points.** Leave-one-class-out gives *ρ* =
 **+0.8325** (permutation *p* = 0.0006, 20,000 permutations) with a leave-one-out mean absolute error of
@@ -1038,6 +1112,14 @@ the diagnosis was in the record before the repair was built; both times it named
   database category is. 🔴 **There is still no second annotator for the author's four-category split**,
   and the honest statement is that the narrowing no longer depends on it rather than that it has been
   validated.
+- 🔴 **The narrowing does not replicate between categories on the largest published benchmark.** On
+  DeepVIC's axis — 1,126 Exotoxin against 1,121 Motility, sizes matched within 0.5% — the length-matched
+  recovery difference is **+6.04pp** on 650M and **−5.30pp** on 35M, both intervals excluding zero, so the
+  two representations disagree about which category is recovered more (§ 6). ⚠️ A reading rule frozen
+  before the run required both arms in the replication band, and this fails it. The disagreement is
+  **Exotoxin specifically** — it swings 13.7 points between arms while the fourteen-category means differ
+  by 0.3 — so what is representation-dependent is how exotoxins sit relative to the rest of a registered
+  set, which is exactly the quantity § 6's narrowing is about.
 - **Not a competence boundary.** The held-out class is removed from the *probe's* training, not from the
   foundation model's pretraining, and every class here is in the public databases these models saw.
 - **Not deployment-ready.** § 10.8 of the long write-up puts it quantitatively: every specificity above
@@ -1119,7 +1201,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**139 claims** and fails if any number in a public document drifts from the artifact that produced
+**140 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

@@ -1,0 +1,331 @@
+{
+  "built": "2026-10-01",
+  "study": "AI verdicts -- frozen bands, the second-arm rule, and the prediction score",
+  "preregistration": "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md",
+  "nothing_fitted": "every number is read from src/123 and src/125; nothing is fitted here",
+  "bands": {
+    "rho_replicate_floor": 0.6,
+    "rho_fail_ceiling": 0.2,
+    "rho_invert": -0.4,
+    "ai3_replicate_floor": 0.0,
+    "ai3_hazard_ceiling": -0.2
+  },
+  "AI2": {
+    "rho": {
+      "esm2_650M/full": 0.9472527472527472,
+      "esm2_650M/shared_removed": 0.9340659340659341,
+      "esm2_35M/full": 0.8857142857142857,
+      "esm2_35M/shared_removed": 0.8593406593406594
+    },
+    "perm_p": {
+      "esm2_650M/full": 4.999750012499375e-05,
+      "esm2_650M/shared_removed": 4.999750012499375e-05,
+      "esm2_35M/full": 0.000199990000499975,
+      "esm2_35M/shared_removed": 0.000199990000499975
+    },
+    "verdict_per_pass": {
+      "esm2_650M/full": "replicates",
+      "esm2_650M/shared_removed": "replicates",
+      "esm2_35M/full": "replicates",
+      "esm2_35M/shared_removed": "replicates"
+    },
+    "significant_per_pass": {
+      "esm2_650M/full": true,
+      "esm2_650M/shared_removed": true,
+      "esm2_35M/full": true,
+      "esm2_35M/shared_removed": true
+    },
+    "margin_beats_both_controls_per_pass": {
+      "esm2_650M/full": true,
+      "esm2_650M/shared_removed": true,
+      "esm2_35M/full": true,
+      "esm2_35M/shared_removed": true
+    },
+    "rho_truncation_vs_recovery": {
+      "esm2_650M/full": 0.0968097395497227,
+      "esm2_650M/shared_removed": 0.11001106767013943,
+      "esm2_35M/full": 0.3652367446648629,
+      "esm2_35M/shared_removed": 0.3608363019580573
+    },
+    "controls": {
+      "esm2_650M/full": {
+        "nearest_positive_alone": 0.6307692307692307,
+        "nearest_negative_alone": -0.5208791208791209
+      },
+      "esm2_650M/shared_removed": {
+        "nearest_positive_alone": 0.6483516483516484,
+        "nearest_negative_alone": -0.5340659340659341
+      },
+      "esm2_35M/full": {
+        "nearest_positive_alone": 0.7934065934065934,
+        "nearest_negative_alone": -0.7802197802197802
+      },
+      "esm2_35M/shared_removed": {
+        "nearest_positive_alone": 0.7802197802197802,
+        "nearest_negative_alone": -0.7978021978021977
+      }
+    },
+    "all_four_in_replication_band": true,
+    "all_four_significant": true,
+    "all_four_beat_both_controls": true,
+    "arms_agree": true,
+    "min_rho": 0.8593406593406594,
+    "max_perm_p": 0.000199990000499975,
+    "max_rho_truncation": 0.3652367446648629,
+    "margin_exceeds_truncation_rho_everywhere": true,
+    "bimodality": {
+      "esm2_650M/full": {
+        "gap_over_spread": 0.23748325961115715,
+        "gap_after_rank": 13,
+        "spread": 0.5684120617944148
+      },
+      "esm2_650M/shared_removed": {
+        "gap_over_spread": 0.2209240670253313,
+        "gap_after_rank": 13,
+        "spread": 0.5628642987249546
+      },
+      "esm2_35M/full": {
+        "gap_over_spread": 0.1788001364127243,
+        "gap_after_rank": 1,
+        "spread": 0.5696969696969698
+      },
+      "esm2_35M/shared_removed": {
+        "gap_over_spread": 0.19860386614355835,
+        "gap_after_rank": 1,
+        "spread": 0.5745327168277989
+      }
+    },
+    "bimodal_gap_location_agrees_across_arms": false,
+    "max_gap_over_spread": 0.23748325961115715,
+    "verdict": "REPLICATES on both arms"
+  },
+  "AI3": {
+    "a_all": {
+      "diff": {
+        "esm2_650M/full": 0.028666942365698445,
+        "esm2_650M/shared_removed": 0.042208296235417664,
+        "esm2_35M/full": -0.15035484366755764,
+        "esm2_35M/shared_removed": -0.1595879495098726
+      },
+      "ci": {
+        "esm2_650M/full": [
+          0.004342766782386383,
+          0.05263122640119275
+        ],
+        "esm2_650M/shared_removed": [
+          0.018494305673779743,
+          0.06652241081008785
+        ],
+        "esm2_35M/full": [
+          -0.18097523250882422,
+          -0.11928401370784043
+        ],
+        "esm2_35M/shared_removed": [
+          -0.19076810622886245,
+          -0.1279721837654086
+        ]
+      },
+      "verdict_per_pass": {
+        "esm2_650M/full": "replicates the narrowing",
+        "esm2_650M/shared_removed": "replicates the narrowing",
+        "esm2_35M/full": "between bands",
+        "esm2_35M/shared_removed": "between bands"
+      },
+      "excludes_zero_per_pass": {
+        "esm2_650M/full": true,
+        "esm2_650M/shared_removed": true,
+        "esm2_35M/full": true,
+        "esm2_35M/shared_removed": true
+      },
+      "arms_agree_on_verdict": false,
+      "arms_agree_on_sign": false,
+      "all_four_in_replication_band": false
+    },
+    "b_untruncated": {
+      "diff": {
+        "esm2_650M/full": 0.05020034828827041,
+        "esm2_650M/shared_removed": 0.06517612906827452,
+        "esm2_35M/full": -0.08761128167882659,
+        "esm2_35M/shared_removed": -0.09696679741183584
+      },
+      "ci": {
+        "esm2_650M/full": [
+          0.024900630550328498,
+          0.07557404289502939
+        ],
+        "esm2_650M/shared_removed": [
+          0.03932581433048132,
+          0.09031427998951763
+        ],
+        "esm2_35M/full": [
+          -0.11936816181649115,
+          -0.05572965498552935
+        ],
+        "esm2_35M/shared_removed": [
+          -0.1295232592704796,
+          -0.06402451285245984
+        ]
+      },
+      "verdict_per_pass": {
+        "esm2_650M/full": "replicates the narrowing",
+        "esm2_650M/shared_removed": "replicates the narrowing",
+        "esm2_35M/full": "between bands",
+        "esm2_35M/shared_removed": "between bands"
+      },
+      "excludes_zero_per_pass": {
+        "esm2_650M/full": true,
+        "esm2_650M/shared_removed": true,
+        "esm2_35M/full": true,
+        "esm2_35M/shared_removed": true
+      },
+      "arms_agree_on_verdict": false,
+      "arms_agree_on_sign": false,
+      "all_four_in_replication_band": false
+    },
+    "c_length_matched": {
+      "diff": {
+        "esm2_650M/full": 0.060426731078905116,
+        "esm2_650M/shared_removed": 0.07659662134322215,
+        "esm2_35M/full": -0.05297906602254426,
+        "esm2_35M/shared_removed": -0.058549649773382784
+      },
+      "ci": {
+        "esm2_650M/full": [
+          0.03128019323671499,
+          0.08961352657004829
+        ],
+        "esm2_650M/shared_removed": [
+          0.04725999175937373,
+          0.10535640708693855
+        ],
+        "esm2_35M/full": [
+          -0.08913144122383257,
+          -0.01582125603864737
+        ],
+        "esm2_35M/shared_removed": [
+          -0.09513803049031716,
+          -0.022373300370828186
+        ]
+      },
+      "verdict_per_pass": {
+        "esm2_650M/full": "replicates the narrowing",
+        "esm2_650M/shared_removed": "replicates the narrowing",
+        "esm2_35M/full": "between bands",
+        "esm2_35M/shared_removed": "between bands"
+      },
+      "excludes_zero_per_pass": {
+        "esm2_650M/full": true,
+        "esm2_650M/shared_removed": true,
+        "esm2_35M/full": true,
+        "esm2_35M/shared_removed": true
+      },
+      "arms_agree_on_verdict": false,
+      "arms_agree_on_sign": false,
+      "all_four_in_replication_band": false
+    },
+    "reading_rule": "amendment 1: AI-3 replicates section 6's narrowing only if AI-3c is in the replication band on BOTH arms",
+    "primary_is_c": true,
+    "verdict": "DOES NOT REPLICATE -- amendment 1's reading rule is not met",
+    "arm_difference_localization": {
+      "mean_recovery_650M": 0.41433949223074384,
+      "mean_recovery_35M": 0.4178250472606627,
+      "n_classes_where_35M_higher": 7,
+      "n_classes": 14,
+      "exotoxin_arm_gap_pp": -13.664890467732382,
+      "motility_arm_gap_pp": 4.237288135593226,
+      "largest_abs_arm_gap_class": "Antimicrobial activity/Competitive advantage",
+      "exotoxin_seed_sd": {
+        "650M": 0.1272308468618483,
+        "35M": 0.09130367127802393
+      },
+      "exotoxin_zero_seeds": {
+        "650M": 0,
+        "35M": 0
+      },
+      "note": "the arms have near-identical mean recovery and split 7/7 on direction, so AI-3's disagreement is not a globally weaker arm; it is Exotoxin specifically, and not seed instability either"
+    }
+  },
+  "AI4": {
+    "moves_pp": {
+      "ai2_rho_pp": {
+        "esm2_650M": -1.318681318681314,
+        "esm2_35M": -2.637362637362628
+      },
+      "ai3c_diff_pp": {
+        "esm2_650M": 1.6169890264317033,
+        "esm2_35M": -0.557058375083852
+      },
+      "ai1_length_pp": -0.2409739893440177,
+      "ai1_composition_pp": -0.08061278104546377
+    },
+    "max_abs_move_pp": 2.637362637362628,
+    "tolerance_pp": 2.0,
+    "all_under_tolerance": false,
+    "which_figure_exceeded": "ai2_rho/esm2_35M",
+    "rate_figures_only": {
+      "max_abs_move_pp": 1.6169890264317033,
+      "all_under_tolerance": true,
+      "note": "recovery differences and AUROCs, which ARE in percentage points. Every one moves under 2pp. The only figure over the band is the Spearman, read as rho x 100."
+    },
+    "spearman_moves_rho_units": {
+      "esm2_650M": -0.01318681318681314,
+      "esm2_35M": -0.02637362637362628
+    },
+    "band_ambiguity": "section 2 wrote the tolerance in pp without saying whether a correlation counts in those units; the literal reading is used for the verdict and the decomposition is reported",
+    "n_shared": 239
+  },
+  "predictions": {
+    "P3_AI2_clears_0.60_both_arms": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "esm2_650M/full": 0.9472527472527472,
+        "esm2_650M/shared_removed": 0.9340659340659341,
+        "esm2_35M/full": 0.8857142857142857,
+        "esm2_35M/shared_removed": 0.8593406593406594
+      }
+    },
+    "P4_AI3_nonnegative_both_arms": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "esm2_650M/full": 0.060426731078905116,
+        "esm2_650M/shared_removed": 0.07659662134322215,
+        "esm2_35M/full": -0.05297906602254426,
+        "esm2_35M/shared_removed": -0.058549649773382784
+      }
+    },
+    "P5_shared_removal_under_2pp": {
+      "kind": "reasoned",
+      "held": false,
+      "values": {
+        "ai2_rho_pp": {
+          "esm2_650M": -1.318681318681314,
+          "esm2_35M": -2.637362637362628
+        },
+        "ai3c_diff_pp": {
+          "esm2_650M": 1.6169890264317033,
+          "esm2_35M": -0.557058375083852
+        },
+        "ai1_length_pp": -0.2409739893440177,
+        "ai1_composition_pp": -0.08061278104546377
+      }
+    },
+    "P6_AI3a_exceeds_AI3c": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "esm2_650M/full": false,
+        "esm2_650M/shared_removed": false,
+        "esm2_35M/full": false,
+        "esm2_35M/shared_removed": false
+      }
+    }
+  },
+  "score": {
+    "derived_held": 1,
+    "derived_total": 3,
+    "reasoned_held": 0,
+    "reasoned_total": 1
+  }
+}

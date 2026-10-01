@@ -1871,6 +1871,67 @@ def organism_cluster():
     }
 
 
+def deepvic_verdicts():
+    """Margin's ordering replicates externally; the hazard narrowing does not.
+
+    🔒 AI-2: rho +0.947 / +0.934 / +0.886 / +0.859 over DeepVIC's fourteen curator categories
+    and 12,989 proteins, all four passes above the frozen +0.60 floor at p below alpha, and on
+    all four margin beats both of the controls it is built from. The first external
+    confirmation of the one result that replicated internally.
+
+    🔴 AI-3: the arms disagree on the SIGN in all three variants and both intervals exclude
+    zero. Amendment 1's reading rule required the length-matched variant in the replication
+    band on both arms; 650M gives +6.04pp and 35M -5.30pp. It does not replicate.
+
+    🔑 The disagreement is Exotoxin, not a weaker arm: 13.7 points between arms on that one
+    category against 0.3 between the fourteen-category means, with 7 of 14 categories higher
+    on each arm and no zero-recovery seeds.
+
+    ⚠️ The bimodality does not replicate either -- recovery is graded across their fourteen
+    categories and the arms do not agree where the largest gap falls.
+
+    🔴 Score: derived 1 of 3, reasoned 0 of 1. P5 failed on the reading the preregistration
+    froze, because it wrote a tolerance in "pp" without saying whether a Spearman counts in
+    those units; every figure that IS in percentage points moves under it.
+    """
+    v = j("../results/deepvic_verdicts.json")
+    if v is None:
+        return None
+    a2, a3, a4 = v["AI2"], v["AI3"], v["AI4"]
+    return {
+        "prereg": v["preregistration"],
+        "nothing_fitted": "nothing is fitted" in v["nothing_fitted"],
+        "bands": v["bands"],
+        "ai2_verdict": a2["verdict"],
+        "ai2_rho": a2["rho"],
+        "ai2_min_rho": a2["min_rho"],
+        "ai2_max_p": a2["max_perm_p"],
+        "ai2_all_band": a2["all_four_in_replication_band"],
+        "ai2_all_sig": a2["all_four_significant"],
+        "ai2_all_controls": a2["all_four_beat_both_controls"],
+        "ai2_arms_agree": a2["arms_agree"],
+        "ai2_max_trunc_rho": a2["max_rho_truncation"],
+        "ai2_margin_over_trunc": a2["margin_exceeds_truncation_rho_everywhere"],
+        "bimodal_gap_agrees": a2["bimodal_gap_location_agrees_across_arms"],
+        "bimodal_max_gap_over_spread": a2["max_gap_over_spread"],
+        "ai3_verdict": a3["verdict"],
+        "ai3_primary_is_c": a3["primary_is_c"],
+        "ai3c": a3["c_length_matched"],
+        "ai3a_sign_agrees": a3["a_all"]["arms_agree_on_sign"],
+        "ai3b_sign_agrees": a3["b_untruncated"]["arms_agree_on_sign"],
+        "ai3_loc": a3["arm_difference_localization"],
+        "ai4_literal_ok": a4["all_under_tolerance"],
+        "ai4_rate_only_ok": a4["rate_figures_only"]["all_under_tolerance"],
+        "ai4_culprit": a4["which_figure_exceeded"],
+        "ai4_rate_max": a4["rate_figures_only"]["max_abs_move_pp"],
+        "ai4_n_shared": a4["n_shared"],
+        "ai4_ambiguity_recorded": "without saying" in a4["band_ambiguity"],
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "kinds": {k: w["kind"] for k, w in v["predictions"].items()},
+        "score": v["score"],
+    }
+
+
 def deepvic_truncation():
     """ESM-2's 1,022 limit cuts DeepVIC's positive side 12x as often as its negative side.
 
@@ -5929,7 +5990,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 110"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 111"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -7428,6 +7489,73 @@ CLAIMS = [
      # 🔴 The two readings amendment 1 exists to prevent.
      ["truncation explains the benchmark's AUROC",
       "the narrowing replicates on full membership"]),
+    # 🔒 Added 2026-10-01. Study AI's verdicts. Two results of opposite sign, and the claim holds
+    # BOTH -- the external replication of the margin ordering and the non-replication of the
+    # hazard narrowing -- so neither can be quoted without the other.
+    ("margin's ordering replicates on DeepVIC's axis and the hazard narrowing does not",
+     deepvic_verdicts,
+     lambda v: v is None or (
+         "DEEPVIC_BENCHMARK_PREREGISTRATION" in v["prereg"] and v["nothing_fitted"]
+         and v["bands"]["rho_replicate_floor"] == 0.6
+         and v["bands"]["ai3_replicate_floor"] == 0.0
+         # 🔒 AI-2 is a verdict: all four passes in the band, significant, beating both controls
+         and v["ai2_verdict"].startswith("REPLICATES")
+         and v["ai2_all_band"] and v["ai2_all_sig"] and v["ai2_all_controls"]
+         and v["ai2_arms_agree"]
+         and v["ai2_min_rho"] > 0.6 and v["ai2_max_p"] < 0.0125
+         and abs(v["ai2_rho"]["esm2_650M/full"] - 0.9473) < 0.0005
+         and abs(v["ai2_rho"]["esm2_35M/full"] - 0.8857) < 0.0005
+         # ⚠️ truncation is a measured rival, non-zero on 35M, and margin beats it everywhere
+         and v["ai2_max_trunc_rho"] > 0.3 and v["ai2_margin_over_trunc"]
+         # ⚠️ the bimodality does NOT replicate and the arms disagree where the gap is
+         and v["bimodal_gap_agrees"] is False
+         and v["bimodal_max_gap_over_spread"] < 0.30
+         # 🔴 AI-3 does NOT replicate, and the primary variant is the length-matched one
+         and v["ai3_verdict"].startswith("DOES NOT REPLICATE")
+         and v["ai3_primary_is_c"] is True
+         and v["ai3c"]["arms_agree_on_sign"] is False
+         and v["ai3a_sign_agrees"] is False and v["ai3b_sign_agrees"] is False
+         and v["ai3c"]["diff"]["esm2_650M/full"] > 0
+         and v["ai3c"]["diff"]["esm2_35M/full"] < 0
+         and abs(v["ai3c"]["diff"]["esm2_650M/full"] - 0.0604) < 0.0005
+         and abs(v["ai3c"]["diff"]["esm2_35M/full"] + 0.0530) < 0.0005
+         # 🔒 both intervals exclude zero, so it is a disagreement and not noise
+         and all(v["ai3c"]["excludes_zero_per_pass"].values())
+         # 🔑 and the disagreement is Exotoxin, not a globally weaker arm
+         and v["ai3_loc"]["largest_abs_arm_gap_class"] in ("Exotoxin",
+             "Antimicrobial activity/Competitive advantage")
+         and abs(v["ai3_loc"]["exotoxin_arm_gap_pp"] + 13.7) < 0.1
+         and abs(v["ai3_loc"]["motility_arm_gap_pp"] - 4.2) < 0.1
+         and abs(v["ai3_loc"]["mean_recovery_650M"]
+                 - v["ai3_loc"]["mean_recovery_35M"]) < 0.01
+         and v["ai3_loc"]["n_classes_where_35M_higher"] == 7
+         and v["ai3_loc"]["n_classes"] == 14
+         and v["ai3_loc"]["exotoxin_zero_seeds"] == {"650M": 0, "35M": 0}
+         # 🔴 AI-4 failed on the frozen literal reading, and the ambiguity is recorded rather
+         # than reinterpreted; every figure actually in percentage points moves under 2
+         and v["ai4_literal_ok"] is False
+         and v["ai4_rate_only_ok"] is True and v["ai4_rate_max"] < 2.0
+         and v["ai4_culprit"].startswith("ai2_rho")
+         and v["ai4_ambiguity_recorded"]
+         and v["ai4_n_shared"] == 239
+         # 🔴 and the score is recorded as it fell, not as the record predicted
+         and v["preds"]["P3_AI2_clears_0.60_both_arms"] is True
+         and v["preds"]["P4_AI3_nonnegative_both_arms"] is False
+         and v["preds"]["P5_shared_removal_under_2pp"] is False
+         and v["preds"]["P6_AI3a_exceeds_AI3c"] is False
+         and v["kinds"]["P4_AI3_nonnegative_both_arms"] == "derived"
+         and v["score"] == {"derived_held": 1, "derived_total": 3,
+                            "reasoned_held": 0, "reasoned_total": 1}),
+     {"paper/MANUSCRIPT.md":
+      "🔴 **The two arms disagree on the sign in all three variants, and both intervals exclude zero**, so this",
+      "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md":
+      "🔑 **The reading rule, frozen here:** AI-3 replicates § 6's narrowing only if **AI-3c** lands in the"},
+     # 🔴 Five readings this pair of results does not license.
+     ["the narrowing replicates on DeepVIC",
+      "margin is a truncation proxy",
+      "the per-class failure is bimodal on every panel",
+      "the screen is hazard-selective on DeepVIC",
+      "both arms agree on which category is recovered more"]),
 ]
 
 

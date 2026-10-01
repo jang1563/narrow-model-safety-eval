@@ -1,0 +1,1215 @@
+{
+  "built": "2026-09-30 23:34:01",
+  "study": "AI-2/AI-3/AI-4 -- LOCO on DeepVIC's published class axis",
+  "preregistration": "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md",
+  "bands": {
+    "rho_replicate_floor": 0.6,
+    "rho_fail_ceiling": 0.2,
+    "rho_invert": -0.4,
+    "ai3_replicate_floor": 0.0,
+    "ai3_hazard_ceiling": -0.2
+  },
+  "arms": {
+    "esm2_650M": {
+      "full": {
+        "arm": "esm2_650M",
+        "drop_shared": false,
+        "seeds": 30,
+        "n_positives_used": 12989,
+        "n_negatives": 33456,
+        "n_union": 22304,
+        "n_test": 11152,
+        "n_targets": 14,
+        "below_floor": [],
+        "recovery": {
+          "Adherence": {
+            "n": 2259,
+            "mean": 0.5653681570016231,
+            "sd": 0.08166473980125491,
+            "zero_seeds": 0
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "n": 24,
+            "mean": 0.13194444444444445,
+            "sd": 0.14395686570160837,
+            "zero_seeds": 4
+          },
+          "Biofilm": {
+            "n": 226,
+            "mean": 0.4589970501474926,
+            "sd": 0.07351851706421589,
+            "zero_seeds": 0
+          },
+          "Effector delivery system": {
+            "n": 4266,
+            "mean": 0.45025785278949837,
+            "sd": 0.05927565096990102,
+            "zero_seeds": 0
+          },
+          "Exoenzyme": {
+            "n": 210,
+            "mean": 0.4214285714285715,
+            "sd": 0.10168453714031289,
+            "zero_seeds": 0
+          },
+          "Exotoxin": {
+            "n": 1126,
+            "mean": 0.4471284783895796,
+            "sd": 0.1272308468618483,
+            "zero_seeds": 0
+          },
+          "Immune modulation": {
+            "n": 1983,
+            "mean": 0.3097327281896117,
+            "sd": 0.05763587654059886,
+            "zero_seeds": 0
+          },
+          "Invasion": {
+            "n": 84,
+            "mean": 0.5555555555555556,
+            "sd": 0.10049788739451856,
+            "zero_seeds": 0
+          },
+          "Motility": {
+            "n": 1121,
+            "mean": 0.47579542075527803,
+            "sd": 0.08252686982269608,
+            "zero_seeds": 0
+          },
+          "Nutritional/Metabolic factor": {
+            "n": 1123,
+            "mean": 0.29545859305431876,
+            "sd": 0.07061260378857909,
+            "zero_seeds": 0
+          },
+          "Others": {
+            "n": 187,
+            "mean": 0.7003565062388593,
+            "sd": 0.06704904600111693,
+            "zero_seeds": 0
+          },
+          "Post-translational modification": {
+            "n": 66,
+            "mean": 0.2292929292929293,
+            "sd": 0.13427126488652408,
+            "zero_seeds": 0
+          },
+          "Regulation": {
+            "n": 128,
+            "mean": 0.2296875,
+            "sd": 0.10590635985713821,
+            "zero_seeds": 0
+          },
+          "Stress survival": {
+            "n": 186,
+            "mean": 0.5297491039426523,
+            "sd": 0.07672116131871096,
+            "zero_seeds": 0
+          }
+        },
+        "test_fpr": {
+          "Adherence": {
+            "mean": 0.049635341941654705,
+            "sd": 0.010424187765328137
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "mean": 0.0502899330463893,
+            "sd": 0.010480486686559288
+          },
+          "Biofilm": {
+            "mean": 0.050558943089430895,
+            "sd": 0.010083848102909042
+          },
+          "Effector delivery system": {
+            "mean": 0.05014347202295553,
+            "sd": 0.011887407534817826
+          },
+          "Exoenzyme": {
+            "mean": 0.050412482065997126,
+            "sd": 0.011045636965864348
+          },
+          "Exotoxin": {
+            "mean": 0.04975490196078431,
+            "sd": 0.010792838457453281
+          },
+          "Immune modulation": {
+            "mean": 0.05049019607843138,
+            "sd": 0.011101810961148614
+          },
+          "Invasion": {
+            "mean": 0.05056193208990913,
+            "sd": 0.010410054474754505
+          },
+          "Motility": {
+            "mean": 0.05112685318029651,
+            "sd": 0.01051542898756784
+          },
+          "Nutritional/Metabolic factor": {
+            "mean": 0.05336561453849833,
+            "sd": 0.010850793194899384
+          },
+          "Others": {
+            "mean": 0.05081898613103779,
+            "sd": 0.010168560903666003
+          },
+          "Post-translational modification": {
+            "mean": 0.05130021520803443,
+            "sd": 0.011629796643802308
+          },
+          "Regulation": {
+            "mean": 0.05091164514586322,
+            "sd": 0.010316438318651918
+          },
+          "Stress survival": {
+            "mean": 0.05060975609756097,
+            "sd": 0.009496313064244458
+          }
+        },
+        "margin": {
+          "Adherence": 0.009537990560780694,
+          "Antimicrobial activity/Competitive advantage": -0.0028241475423177085,
+          "Biofilm": 0.005978849081866509,
+          "Effector delivery system": 0.002356817436732432,
+          "Exoenzyme": 0.004583915642329624,
+          "Exotoxin": 0.0037112366772036783,
+          "Immune modulation": 0.0018911826388137364,
+          "Invasion": 0.008524294410433089,
+          "Motility": 0.012125199602503101,
+          "Nutritional/Metabolic factor": -0.00041588182865458733,
+          "Others": 0.01816222693193405,
+          "Post-translational modification": -0.002552558978398641,
+          "Regulation": -0.0019546481780707836,
+          "Stress survival": 0.005163222551345825
+        },
+        "nearest_positive": {
+          "Adherence": 0.9773521841812471,
+          "Antimicrobial activity/Competitive advantage": 0.9697020575404167,
+          "Biofilm": 0.9814591027994072,
+          "Effector delivery system": 0.9787248991712739,
+          "Exoenzyme": 0.9811416702611105,
+          "Exotoxin": 0.9803223821134381,
+          "Immune modulation": 0.9777648750423964,
+          "Invasion": 0.983529806137085,
+          "Motility": 0.9784748476600137,
+          "Nutritional/Metabolic factor": 0.9763840169431053,
+          "Others": 0.9876083747588377,
+          "Post-translational modification": 0.9722497183265109,
+          "Regulation": 0.9763571606017649,
+          "Stress survival": 0.9723582254943027
+        },
+        "nearest_negative": {
+          "Adherence": 0.9678141936204665,
+          "Antimicrobial activity/Competitive advantage": 0.9725262050827345,
+          "Biofilm": 0.9754802537175407,
+          "Effector delivery system": 0.9763680817345415,
+          "Exoenzyme": 0.9765577546187809,
+          "Exotoxin": 0.9766111454362344,
+          "Immune modulation": 0.9758736924035827,
+          "Invasion": 0.9750055117266518,
+          "Motility": 0.9663496480575106,
+          "Nutritional/Metabolic factor": 0.9767998987717599,
+          "Others": 0.9694461478269036,
+          "Post-translational modification": 0.9748022773049094,
+          "Regulation": 0.9783118087798357,
+          "Stress survival": 0.9671950029429569
+        },
+        "AI2": {
+          "rho": 0.9472527472527472,
+          "perm_p": 4.999750012499375e-05,
+          "alpha": 0.0125,
+          "rho_nearest_positive_alone": 0.6307692307692307,
+          "rho_nearest_negative_alone": -0.5208791208791209,
+          "margin_beats_both_controls": true,
+          "significant": true,
+          "verdict": "replicates",
+          "bimodality": {
+            "sorted": [
+              0.13194444444444445,
+              0.2292929292929293,
+              0.2296875,
+              0.29545859305431876,
+              0.3097327281896117,
+              0.4214285714285715,
+              0.4471284783895796,
+              0.45025785278949837,
+              0.4589970501474926,
+              0.47579542075527803,
+              0.5297491039426523,
+              0.5555555555555556,
+              0.5653681570016231,
+              0.7003565062388593
+            ],
+            "largest_gap": 0.13498834923723613,
+            "gap_after_rank": 13,
+            "spread": 0.5684120617944148,
+            "gap_over_spread": 0.23748325961115715
+          },
+          "rho_truncation_vs_recovery": 0.0968097395497227
+        },
+        "AI3a_all": {
+          "n_motility": 1121,
+          "n_exotoxin": 1126,
+          "rec_motility": 0.47579542075527803,
+          "rec_exotoxin": 0.4471284783895796,
+          "diff": 0.028666942365698445,
+          "ci": [
+            0.004342766782386383,
+            0.05263122640119275
+          ],
+          "excludes_zero": true,
+          "verdict": "replicates the narrowing",
+          "truncation_rate_motility": 0.015165031222123104,
+          "truncation_rate_exotoxin": 0.2202486678507993
+        },
+        "AI3b_untruncated": {
+          "n_motility": 1104,
+          "n_exotoxin": 878,
+          "rec_motility": 0.47001811594202897,
+          "rec_exotoxin": 0.41981776765375856,
+          "diff": 0.05020034828827041,
+          "ci": [
+            0.024900630550328498,
+            0.07557404289502939
+          ],
+          "excludes_zero": true,
+          "verdict": "replicates the narrowing"
+        },
+        "AI3c_length_matched": {
+          "n_motility": 828,
+          "n_exotoxin": 828,
+          "rec_motility": 0.47822061191626414,
+          "rec_exotoxin": 0.417793880837359,
+          "diff": 0.060426731078905116,
+          "ci": [
+            0.03128019323671499,
+            0.08961352657004829
+          ],
+          "excludes_zero": true,
+          "verdict": "replicates the narrowing",
+          "n_pairs": 828,
+          "n_dropped": 298,
+          "mean_length_ratio": 1.1476827069075182,
+          "primary": true,
+          "reading_rule": "amendment 1: AI-3 replicates section 6's narrowing only if AI-3c is in the replication band on BOTH arms"
+        },
+        "AI3_truncation_rates": {
+          "Adherence": 0.21336874723328905,
+          "Antimicrobial activity/Competitive advantage": 0.08333333333333333,
+          "Biofilm": 0.05309734513274336,
+          "Effector delivery system": 0.10337552742616034,
+          "Exoenzyme": 0.21904761904761905,
+          "Exotoxin": 0.2202486678507993,
+          "Immune modulation": 0.04135148764498235,
+          "Invasion": 0.16666666666666666,
+          "Motility": 0.015165031222123104,
+          "Nutritional/Metabolic factor": 0.07747105966162066,
+          "Others": 0.026737967914438502,
+          "Post-translational modification": 0.0,
+          "Regulation": 0.015625,
+          "Stress survival": 0.0
+        },
+        "AI3_P6_a_exceeds_c": false
+      },
+      "shared_removed": {
+        "arm": "esm2_650M",
+        "drop_shared": true,
+        "seeds": 30,
+        "n_positives_used": 12750,
+        "n_negatives": 33456,
+        "n_union": 22304,
+        "n_test": 11152,
+        "n_targets": 14,
+        "below_floor": [],
+        "recovery": {
+          "Adherence": {
+            "n": 2186,
+            "mean": 0.5760140286672766,
+            "sd": 0.08535272221781814,
+            "zero_seeds": 0
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "n": 24,
+            "mean": 0.1375,
+            "sd": 0.1582463463409762,
+            "zero_seeds": 4
+          },
+          "Biofilm": {
+            "n": 213,
+            "mean": 0.4773082942097026,
+            "sd": 0.0722532884761747,
+            "zero_seeds": 0
+          },
+          "Effector delivery system": {
+            "n": 4232,
+            "mean": 0.4496061751732829,
+            "sd": 0.06277097406883338,
+            "zero_seeds": 0
+          },
+          "Exoenzyme": {
+            "n": 192,
+            "mean": 0.43107638888888894,
+            "sd": 0.10964136399059031,
+            "zero_seeds": 0
+          },
+          "Exotoxin": {
+            "n": 1099,
+            "mean": 0.4350318471337579,
+            "sd": 0.13334834100324422,
+            "zero_seeds": 0
+          },
+          "Immune modulation": {
+            "n": 1957,
+            "mean": 0.3140350877192982,
+            "sd": 0.05846205256113349,
+            "zero_seeds": 0
+          },
+          "Invasion": {
+            "n": 74,
+            "mean": 0.5630630630630631,
+            "sd": 0.10421299231007214,
+            "zero_seeds": 0
+          },
+          "Motility": {
+            "n": 1116,
+            "mean": 0.47724014336917564,
+            "sd": 0.08564558872214308,
+            "zero_seeds": 0
+          },
+          "Nutritional/Metabolic factor": {
+            "n": 1106,
+            "mean": 0.2986437613019891,
+            "sd": 0.07486492964886066,
+            "zero_seeds": 0
+          },
+          "Others": {
+            "n": 183,
+            "mean": 0.7003642987249545,
+            "sd": 0.06413026031507131,
+            "zero_seeds": 0
+          },
+          "Post-translational modification": {
+            "n": 65,
+            "mean": 0.23230769230769235,
+            "sd": 0.13744691616887522,
+            "zero_seeds": 0
+          },
+          "Regulation": {
+            "n": 124,
+            "mean": 0.2333333333333333,
+            "sd": 0.10368651823595086,
+            "zero_seeds": 0
+          },
+          "Stress survival": {
+            "n": 179,
+            "mean": 0.5547486033519553,
+            "sd": 0.05941618348201891,
+            "zero_seeds": 0
+          }
+        },
+        "test_fpr": {
+          "Adherence": {
+            "mean": 0.049204925872788144,
+            "sd": 0.010992103893560642
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "mean": 0.0501195600191296,
+            "sd": 0.010417887378470016
+          },
+          "Biofilm": {
+            "mean": 0.050295911047345765,
+            "sd": 0.010807692784551412
+          },
+          "Effector delivery system": {
+            "mean": 0.050388570062171206,
+            "sd": 0.012431086092458323
+          },
+          "Exoenzyme": {
+            "mean": 0.05040052606408417,
+            "sd": 0.011422064463402565
+          },
+          "Exotoxin": {
+            "mean": 0.050295911047345765,
+            "sd": 0.011163760939870915
+          },
+          "Immune modulation": {
+            "mean": 0.05231647537063607,
+            "sd": 0.011277215914330882
+          },
+          "Invasion": {
+            "mean": 0.05092659014825442,
+            "sd": 0.011315266755197131
+          },
+          "Motility": {
+            "mean": 0.05078909612625537,
+            "sd": 0.011837463169684299
+          },
+          "Nutritional/Metabolic factor": {
+            "mean": 0.05285150645624103,
+            "sd": 0.011583434824585393
+          },
+          "Others": {
+            "mean": 0.05156922525107603,
+            "sd": 0.011169024982944638
+          },
+          "Post-translational modification": {
+            "mean": 0.05004184600669537,
+            "sd": 0.010998912291666711
+          },
+          "Regulation": {
+            "mean": 0.05108201817312292,
+            "sd": 0.010604340158041273
+          },
+          "Stress survival": {
+            "mean": 0.050558943089430895,
+            "sd": 0.011110228036459155
+          }
+        },
+        "margin": {
+          "Adherence": 0.009628996430246086,
+          "Antimicrobial activity/Competitive advantage": -0.005256307621796926,
+          "Biofilm": 0.0064830511388644365,
+          "Effector delivery system": 0.0022199960365637938,
+          "Exoenzyme": 0.004583154494563739,
+          "Exotoxin": 0.003802533362321793,
+          "Immune modulation": 0.0018204711015942028,
+          "Invasion": 0.00869094842189067,
+          "Motility": 0.012116278211275736,
+          "Nutritional/Metabolic factor": -0.00038499981973313507,
+          "Others": 0.018562320477324104,
+          "Post-translational modification": -0.0026425783450786883,
+          "Regulation": -0.0020799670488603652,
+          "Stress survival": 0.005427942928655187
+        },
+        "nearest_positive": {
+          "Adherence": 0.977199371648511,
+          "Antimicrobial activity/Competitive advantage": 0.9672698974609375,
+          "Biofilm": 0.9815348982810974,
+          "Effector delivery system": 0.9785944694945402,
+          "Exoenzyme": 0.9809807868053516,
+          "Exotoxin": 0.9802855695237671,
+          "Immune modulation": 0.9777328325706778,
+          "Invasion": 0.9834420012461172,
+          "Motility": 0.9784661613698501,
+          "Nutritional/Metabolic factor": 0.9764190409972482,
+          "Others": 0.9877562102724294,
+          "Post-translational modification": 0.9722151838816129,
+          "Regulation": 0.975954357174135,
+          "Stress survival": 0.9724070043537204
+        },
+        "nearest_negative": {
+          "Adherence": 0.9675703752182649,
+          "Antimicrobial activity/Competitive advantage": 0.9725262050827345,
+          "Biofilm": 0.975051847142233,
+          "Effector delivery system": 0.9763744734579765,
+          "Exoenzyme": 0.9763976323107878,
+          "Exotoxin": 0.9764830361614453,
+          "Immune modulation": 0.9759123614690837,
+          "Invasion": 0.9747510528242266,
+          "Motility": 0.9663498831585744,
+          "Nutritional/Metabolic factor": 0.9768040408169814,
+          "Others": 0.9691938897951053,
+          "Post-translational modification": 0.9748577622266916,
+          "Regulation": 0.9780343242229954,
+          "Stress survival": 0.9669790614250652
+        },
+        "AI2": {
+          "rho": 0.9340659340659341,
+          "perm_p": 4.999750012499375e-05,
+          "alpha": 0.0125,
+          "rho_nearest_positive_alone": 0.6483516483516484,
+          "rho_nearest_negative_alone": -0.5340659340659341,
+          "margin_beats_both_controls": true,
+          "significant": true,
+          "verdict": "replicates",
+          "bimodality": {
+            "sorted": [
+              0.1375,
+              0.23230769230769235,
+              0.2333333333333333,
+              0.2986437613019891,
+              0.3140350877192982,
+              0.43107638888888894,
+              0.4350318471337579,
+              0.4496061751732829,
+              0.47724014336917564,
+              0.4773082942097026,
+              0.5547486033519553,
+              0.5630630630630631,
+              0.5760140286672766,
+              0.7003642987249545
+            ],
+            "largest_gap": 0.12435027005767796,
+            "gap_after_rank": 13,
+            "spread": 0.5628642987249546,
+            "gap_over_spread": 0.2209240670253313
+          },
+          "rho_truncation_vs_recovery": 0.11001106767013943
+        },
+        "AI3a_all": {
+          "n_motility": 1116,
+          "n_exotoxin": 1099,
+          "rec_motility": 0.47724014336917564,
+          "rec_exotoxin": 0.435031847133758,
+          "diff": 0.042208296235417664,
+          "ci": [
+            0.018494305673779743,
+            0.06652241081008785
+          ],
+          "excludes_zero": true,
+          "verdict": "replicates the narrowing",
+          "truncation_rate_motility": 0.015232974910394265,
+          "truncation_rate_exotoxin": 0.22383985441310283
+        },
+        "AI3b_untruncated": {
+          "n_motility": 1099,
+          "n_exotoxin": 853,
+          "rec_motility": 0.4714285714285715,
+          "rec_exotoxin": 0.40625244236029695,
+          "diff": 0.06517612906827452,
+          "ci": [
+            0.03932581433048132,
+            0.09031427998951763
+          ],
+          "excludes_zero": true,
+          "verdict": "replicates the narrowing"
+        },
+        "AI3c_length_matched": {
+          "n_motility": 809,
+          "n_exotoxin": 809,
+          "rec_motility": 0.48067573135558306,
+          "rec_exotoxin": 0.4040791100123609,
+          "diff": 0.07659662134322215,
+          "ci": [
+            0.04725999175937373,
+            0.10535640708693855
+          ],
+          "excludes_zero": true,
+          "verdict": "replicates the narrowing",
+          "n_pairs": 809,
+          "n_dropped": 290,
+          "mean_length_ratio": 1.1492622769174414,
+          "primary": true,
+          "reading_rule": "amendment 1: AI-3 replicates section 6's narrowing only if AI-3c is in the replication band on BOTH arms"
+        },
+        "AI3_truncation_rates": {
+          "Adherence": 0.21363220494053065,
+          "Antimicrobial activity/Competitive advantage": 0.08333333333333333,
+          "Biofilm": 0.056338028169014086,
+          "Effector delivery system": 0.10349716446124764,
+          "Exoenzyme": 0.23958333333333334,
+          "Exotoxin": 0.22383985441310283,
+          "Immune modulation": 0.040878896269800714,
+          "Invasion": 0.16216216216216217,
+          "Motility": 0.015232974910394265,
+          "Nutritional/Metabolic factor": 0.07685352622061482,
+          "Others": 0.02185792349726776,
+          "Post-translational modification": 0.0,
+          "Regulation": 0.016129032258064516,
+          "Stress survival": 0.0
+        },
+        "AI3_P6_a_exceeds_c": false
+      }
+    },
+    "esm2_35M": {
+      "full": {
+        "arm": "esm2_35M",
+        "drop_shared": false,
+        "seeds": 30,
+        "n_positives_used": 12989,
+        "n_negatives": 33456,
+        "n_union": 22304,
+        "n_test": 11152,
+        "n_targets": 14,
+        "below_floor": [],
+        "recovery": {
+          "Adherence": {
+            "n": 2259,
+            "mean": 0.6160690571049137,
+            "sd": 0.06033751221000045,
+            "zero_seeds": 0
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "n": 24,
+            "mean": 0.27361111111111114,
+            "sd": 0.1565474499531866,
+            "zero_seeds": 1
+          },
+          "Biofilm": {
+            "n": 226,
+            "mean": 0.5004424778761062,
+            "sd": 0.05177571438152763,
+            "zero_seeds": 0
+          },
+          "Effector delivery system": {
+            "n": 4266,
+            "mean": 0.3661900296921393,
+            "sd": 0.05385746717860374,
+            "zero_seeds": 0
+          },
+          "Exoenzyme": {
+            "n": 210,
+            "mean": 0.45539682539682536,
+            "sd": 0.09808936591327089,
+            "zero_seeds": 0
+          },
+          "Exotoxin": {
+            "n": 1126,
+            "mean": 0.5837773830669034,
+            "sd": 0.09130367127802393,
+            "zero_seeds": 0
+          },
+          "Immune modulation": {
+            "n": 1983,
+            "mean": 0.28779626828038324,
+            "sd": 0.038698771003738086,
+            "zero_seeds": 0
+          },
+          "Invasion": {
+            "n": 84,
+            "mean": 0.584920634920635,
+            "sd": 0.07175168661809272,
+            "zero_seeds": 0
+          },
+          "Motility": {
+            "n": 1121,
+            "mean": 0.4334225393993458,
+            "sd": 0.08116137190813118,
+            "zero_seeds": 0
+          },
+          "Nutritional/Metabolic factor": {
+            "n": 1123,
+            "mean": 0.21095280498664293,
+            "sd": 0.03765654163242993,
+            "zero_seeds": 0
+          },
+          "Others": {
+            "n": 187,
+            "mean": 0.6787878787878788,
+            "sd": 0.055359299207017605,
+            "zero_seeds": 0
+          },
+          "Post-translational modification": {
+            "n": 66,
+            "mean": 0.10909090909090907,
+            "sd": 0.05403218393391223,
+            "zero_seeds": 0
+          },
+          "Regulation": {
+            "n": 128,
+            "mean": 0.21145833333333333,
+            "sd": 0.12899289038035452,
+            "zero_seeds": 0
+          },
+          "Stress survival": {
+            "n": 186,
+            "mean": 0.5376344086021504,
+            "sd": 0.04812892026112049,
+            "zero_seeds": 0
+          }
+        },
+        "test_fpr": {
+          "Adherence": {
+            "mean": 0.0473816355810617,
+            "sd": 0.008002423196606705
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "mean": 0.04915411286465807,
+            "sd": 0.008511506771383752
+          },
+          "Biofilm": {
+            "mean": 0.05002690100430416,
+            "sd": 0.008436292238129311
+          },
+          "Effector delivery system": {
+            "mean": 0.04945301291248207,
+            "sd": 0.008288093343999922
+          },
+          "Exoenzyme": {
+            "mean": 0.048699784791965565,
+            "sd": 0.008082706415969131
+          },
+          "Exotoxin": {
+            "mean": 0.04939622190339551,
+            "sd": 0.00879868917798591
+          },
+          "Immune modulation": {
+            "mean": 0.04993424198947871,
+            "sd": 0.00810543090635767
+          },
+          "Invasion": {
+            "mean": 0.04876554280248686,
+            "sd": 0.007805007362335972
+          },
+          "Motility": {
+            "mean": 0.04848158775705403,
+            "sd": 0.0088116500469705
+          },
+          "Nutritional/Metabolic factor": {
+            "mean": 0.0476954806312769,
+            "sd": 0.006527283415671161
+          },
+          "Others": {
+            "mean": 0.048666905786704934,
+            "sd": 0.008548362616894007
+          },
+          "Post-translational modification": {
+            "mean": 0.04922584887613582,
+            "sd": 0.008471062766853239
+          },
+          "Regulation": {
+            "mean": 0.048493543758967,
+            "sd": 0.008139623223661751
+          },
+          "Stress survival": {
+            "mean": 0.04791367766618841,
+            "sd": 0.008933027379415955
+          }
+        },
+        "margin": {
+          "Adherence": 0.022626675853374627,
+          "Antimicrobial activity/Competitive advantage": -0.009537143011887869,
+          "Biofilm": 0.011227763595834243,
+          "Effector delivery system": 0.004319930923303639,
+          "Exoenzyme": 0.00472477844783238,
+          "Exotoxin": 0.012703945380544578,
+          "Immune modulation": 0.0028478630071208143,
+          "Invasion": 0.014928239442053296,
+          "Motility": 0.023572734112616206,
+          "Nutritional/Metabolic factor": -0.002874360589819727,
+          "Others": 0.03207668837379007,
+          "Post-translational modification": -0.010870881152875496,
+          "Regulation": -0.008096669800579548,
+          "Stress survival": 0.014599531248051634
+        },
+        "nearest_positive": {
+          "Adherence": 0.961887747748545,
+          "Antimicrobial activity/Competitive advantage": 0.9543125281731287,
+          "Biofilm": 0.9696961723070229,
+          "Effector delivery system": 0.9679480909015783,
+          "Exoenzyme": 0.9683148355711074,
+          "Exotoxin": 0.9728936878021403,
+          "Immune modulation": 0.962833841792033,
+          "Invasion": 0.9730435212453207,
+          "Motility": 0.9716677615729749,
+          "Nutritional/Metabolic factor": 0.9611611230927499,
+          "Others": 0.9777513458767039,
+          "Post-translational modification": 0.9493894595088381,
+          "Regulation": 0.9570644441992044,
+          "Stress survival": 0.9683588749618941
+        },
+        "nearest_negative": {
+          "Adherence": 0.9392610718951705,
+          "Antimicrobial activity/Competitive advantage": 0.9638496711850166,
+          "Biofilm": 0.9584684087111887,
+          "Effector delivery system": 0.9636281599782746,
+          "Exoenzyme": 0.9635900571232751,
+          "Exotoxin": 0.9601897424215957,
+          "Immune modulation": 0.9599859787849122,
+          "Invasion": 0.9581152818032673,
+          "Motility": 0.9480950274603586,
+          "Nutritional/Metabolic factor": 0.9640354836825696,
+          "Others": 0.9456746575029139,
+          "Post-translational modification": 0.9602603406617136,
+          "Regulation": 0.965161113999784,
+          "Stress survival": 0.9537593437138424
+        },
+        "AI2": {
+          "rho": 0.8857142857142857,
+          "perm_p": 0.000199990000499975,
+          "alpha": 0.0125,
+          "rho_nearest_positive_alone": 0.7934065934065934,
+          "rho_nearest_negative_alone": -0.7802197802197802,
+          "margin_beats_both_controls": true,
+          "significant": true,
+          "verdict": "replicates",
+          "bimodality": {
+            "sorted": [
+              0.10909090909090907,
+              0.21095280498664293,
+              0.21145833333333333,
+              0.27361111111111114,
+              0.28779626828038324,
+              0.3661900296921393,
+              0.4334225393993458,
+              0.45539682539682536,
+              0.5004424778761062,
+              0.5376344086021504,
+              0.5837773830669034,
+              0.584920634920635,
+              0.6160690571049137,
+              0.6787878787878788
+            ],
+            "largest_gap": 0.10186189589573386,
+            "gap_after_rank": 1,
+            "spread": 0.5696969696969698,
+            "gap_over_spread": 0.1788001364127243
+          },
+          "rho_truncation_vs_recovery": 0.3652367446648629
+        },
+        "AI3a_all": {
+          "n_motility": 1121,
+          "n_exotoxin": 1126,
+          "rec_motility": 0.4334225393993459,
+          "rec_exotoxin": 0.5837773830669035,
+          "diff": -0.15035484366755764,
+          "ci": [
+            -0.18097523250882422,
+            -0.11928401370784043
+          ],
+          "excludes_zero": true,
+          "verdict": "between bands",
+          "truncation_rate_motility": 0.015165031222123104,
+          "truncation_rate_exotoxin": 0.2202486678507993
+        },
+        "AI3b_untruncated": {
+          "n_motility": 1104,
+          "n_exotoxin": 878,
+          "rec_motility": 0.4248792270531401,
+          "rec_exotoxin": 0.5124905087319667,
+          "diff": -0.08761128167882659,
+          "ci": [
+            -0.11936816181649115,
+            -0.05572965498552935
+          ],
+          "excludes_zero": true,
+          "verdict": "between bands"
+        },
+        "AI3c_length_matched": {
+          "n_motility": 828,
+          "n_exotoxin": 828,
+          "rec_motility": 0.4539049919484703,
+          "rec_exotoxin": 0.5068840579710145,
+          "diff": -0.05297906602254426,
+          "ci": [
+            -0.08913144122383257,
+            -0.01582125603864737
+          ],
+          "excludes_zero": true,
+          "verdict": "between bands",
+          "n_pairs": 828,
+          "n_dropped": 298,
+          "mean_length_ratio": 1.1476827069075182,
+          "primary": true,
+          "reading_rule": "amendment 1: AI-3 replicates section 6's narrowing only if AI-3c is in the replication band on BOTH arms"
+        },
+        "AI3_truncation_rates": {
+          "Adherence": 0.21336874723328905,
+          "Antimicrobial activity/Competitive advantage": 0.08333333333333333,
+          "Biofilm": 0.05309734513274336,
+          "Effector delivery system": 0.10337552742616034,
+          "Exoenzyme": 0.21904761904761905,
+          "Exotoxin": 0.2202486678507993,
+          "Immune modulation": 0.04135148764498235,
+          "Invasion": 0.16666666666666666,
+          "Motility": 0.015165031222123104,
+          "Nutritional/Metabolic factor": 0.07747105966162066,
+          "Others": 0.026737967914438502,
+          "Post-translational modification": 0.0,
+          "Regulation": 0.015625,
+          "Stress survival": 0.0
+        },
+        "AI3_P6_a_exceeds_c": false
+      },
+      "shared_removed": {
+        "arm": "esm2_35M",
+        "drop_shared": true,
+        "seeds": 30,
+        "n_positives_used": 12750,
+        "n_negatives": 33456,
+        "n_union": 22304,
+        "n_test": 11152,
+        "n_targets": 14,
+        "below_floor": [],
+        "recovery": {
+          "Adherence": {
+            "n": 2186,
+            "mean": 0.6148825861543152,
+            "sd": 0.06255101933265168,
+            "zero_seeds": 0
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "n": 24,
+            "mean": 0.22916666666666663,
+            "sd": 0.1462944270537097,
+            "zero_seeds": 2
+          },
+          "Biofilm": {
+            "n": 213,
+            "mean": 0.5046948356807511,
+            "sd": 0.05622661802675245,
+            "zero_seeds": 0
+          },
+          "Effector delivery system": {
+            "n": 4232,
+            "mean": 0.3692422810333964,
+            "sd": 0.054165871420342356,
+            "zero_seeds": 0
+          },
+          "Exoenzyme": {
+            "n": 192,
+            "mean": 0.44479166666666675,
+            "sd": 0.08715852566871066,
+            "zero_seeds": 0
+          },
+          "Exotoxin": {
+            "n": 1099,
+            "mean": 0.5960873521383075,
+            "sd": 0.08712283802431729,
+            "zero_seeds": 0
+          },
+          "Immune modulation": {
+            "n": 1957,
+            "mean": 0.28502810424118546,
+            "sd": 0.04102848250214977,
+            "zero_seeds": 0
+          },
+          "Invasion": {
+            "n": 74,
+            "mean": 0.5869369369369368,
+            "sd": 0.07575579347480976,
+            "zero_seeds": 0
+          },
+          "Motility": {
+            "n": 1116,
+            "mean": 0.43649940262843495,
+            "sd": 0.08256135886529634,
+            "zero_seeds": 0
+          },
+          "Nutritional/Metabolic factor": {
+            "n": 1106,
+            "mean": 0.2146172393007836,
+            "sd": 0.03852117729641899,
+            "zero_seeds": 0
+          },
+          "Others": {
+            "n": 183,
+            "mean": 0.6750455373406195,
+            "sd": 0.06084537116686367,
+            "zero_seeds": 0
+          },
+          "Post-translational modification": {
+            "n": 65,
+            "mean": 0.10051282051282051,
+            "sd": 0.05355866159572565,
+            "zero_seeds": 0
+          },
+          "Regulation": {
+            "n": 124,
+            "mean": 0.2247311827956989,
+            "sd": 0.1382084311562297,
+            "zero_seeds": 0
+          },
+          "Stress survival": {
+            "n": 179,
+            "mean": 0.5597765363128492,
+            "sd": 0.03410520293778358,
+            "zero_seeds": 0
+          }
+        },
+        "test_fpr": {
+          "Adherence": {
+            "mean": 0.047100669536107136,
+            "sd": 0.008453154738357548
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "mean": 0.04850251076040171,
+            "sd": 0.00820658786101542
+          },
+          "Biofilm": {
+            "mean": 0.049112266857962696,
+            "sd": 0.008316926959952675
+          },
+          "Effector delivery system": {
+            "mean": 0.049748923959827836,
+            "sd": 0.008527854249315639
+          },
+          "Exoenzyme": {
+            "mean": 0.04864897178383549,
+            "sd": 0.00788371030770865
+          },
+          "Exotoxin": {
+            "mean": 0.049820659971305595,
+            "sd": 0.00899289414589811
+          },
+          "Immune modulation": {
+            "mean": 0.05064562410329986,
+            "sd": 0.009096715534009921
+          },
+          "Invasion": {
+            "mean": 0.048275346724055486,
+            "sd": 0.0071366517421931775
+          },
+          "Motility": {
+            "mean": 0.0489777618364419,
+            "sd": 0.008396498080047127
+          },
+          "Nutritional/Metabolic factor": {
+            "mean": 0.0493663318986131,
+            "sd": 0.007164231211399905
+          },
+          "Others": {
+            "mean": 0.048418818747011,
+            "sd": 0.007913223796175031
+          },
+          "Post-translational modification": {
+            "mean": 0.049210903873744605,
+            "sd": 0.0085200150192104
+          },
+          "Regulation": {
+            "mean": 0.04860114777618365,
+            "sd": 0.008396451849661207
+          },
+          "Stress survival": {
+            "mean": 0.04714849354375897,
+            "sd": 0.007775263784692877
+          }
+        },
+        "margin": {
+          "Adherence": 0.022966317130356673,
+          "Antimicrobial activity/Competitive advantage": -0.018028671542803448,
+          "Biofilm": 0.011911506943859404,
+          "Effector delivery system": 0.004200829041590087,
+          "Exoenzyme": 0.004848919498423736,
+          "Exotoxin": 0.012985839477119064,
+          "Immune modulation": 0.0023703563560559912,
+          "Invasion": 0.015099564919600615,
+          "Motility": 0.02356026409774698,
+          "Nutritional/Metabolic factor": -0.002797821654549128,
+          "Others": 0.03269637119574625,
+          "Post-translational modification": -0.011491825030400202,
+          "Regulation": -0.008455091426449438,
+          "Stress survival": 0.01549222382753255
+        },
+        "nearest_positive": {
+          "Adherence": 0.9616280550108192,
+          "Antimicrobial activity/Competitive advantage": 0.9458209996422132,
+          "Biofilm": 0.9695106053576223,
+          "Effector delivery system": 0.9677998754979307,
+          "Exoenzyme": 0.9681401653215289,
+          "Exotoxin": 0.972965116225339,
+          "Immune modulation": 0.9623718808120041,
+          "Invasion": 0.9726506399141776,
+          "Motility": 0.9716858076045163,
+          "Nutritional/Metabolic factor": 0.9611803265204266,
+          "Others": 0.9777748151555088,
+          "Post-translational modification": 0.9489535093307495,
+          "Regulation": 0.9562015470958525,
+          "Stress survival": 0.9687918298071323
+        },
+        "nearest_negative": {
+          "Adherence": 0.9386617378804625,
+          "Antimicrobial activity/Competitive advantage": 0.9638496711850166,
+          "Biofilm": 0.9575990984137629,
+          "Effector delivery system": 0.9635990464563405,
+          "Exoenzyme": 0.9632912458231052,
+          "Exotoxin": 0.9599792767482199,
+          "Immune modulation": 0.9600015244559481,
+          "Invasion": 0.9575510749945769,
+          "Motility": 0.9481255435067693,
+          "Nutritional/Metabolic factor": 0.9639781481749757,
+          "Others": 0.9450784439597625,
+          "Post-translational modification": 0.9604453343611498,
+          "Regulation": 0.964656638522302,
+          "Stress survival": 0.9532996059795997
+        },
+        "AI2": {
+          "rho": 0.8593406593406594,
+          "perm_p": 0.000199990000499975,
+          "alpha": 0.0125,
+          "rho_nearest_positive_alone": 0.7802197802197802,
+          "rho_nearest_negative_alone": -0.7978021978021977,
+          "margin_beats_both_controls": true,
+          "significant": true,
+          "verdict": "replicates",
+          "bimodality": {
+            "sorted": [
+              0.10051282051282051,
+              0.2146172393007836,
+              0.2247311827956989,
+              0.22916666666666663,
+              0.28502810424118546,
+              0.3692422810333964,
+              0.43649940262843495,
+              0.44479166666666675,
+              0.5046948356807511,
+              0.5597765363128492,
+              0.5869369369369368,
+              0.5960873521383075,
+              0.6148825861543152,
+              0.6750455373406195
+            ],
+            "largest_gap": 0.1141044187879631,
+            "gap_after_rank": 1,
+            "spread": 0.5745327168277989,
+            "gap_over_spread": 0.19860386614355835
+          },
+          "rho_truncation_vs_recovery": 0.3608363019580573
+        },
+        "AI3a_all": {
+          "n_motility": 1116,
+          "n_exotoxin": 1099,
+          "rec_motility": 0.43649940262843495,
+          "rec_exotoxin": 0.5960873521383075,
+          "diff": -0.1595879495098726,
+          "ci": [
+            -0.19076810622886245,
+            -0.1279721837654086
+          ],
+          "excludes_zero": true,
+          "verdict": "between bands",
+          "truncation_rate_motility": 0.015232974910394265,
+          "truncation_rate_exotoxin": 0.22383985441310283
+        },
+        "AI3b_untruncated": {
+          "n_motility": 1099,
+          "n_exotoxin": 853,
+          "rec_motility": 0.42796481649984836,
+          "rec_exotoxin": 0.5249316139116842,
+          "diff": -0.09696679741183584,
+          "ci": [
+            -0.1295232592704796,
+            -0.06402451285245984
+          ],
+          "excludes_zero": true,
+          "verdict": "between bands"
+        },
+        "AI3c_length_matched": {
+          "n_motility": 809,
+          "n_exotoxin": 809,
+          "rec_motility": 0.46238154099711576,
+          "rec_exotoxin": 0.5209311907704985,
+          "diff": -0.058549649773382784,
+          "ci": [
+            -0.09513803049031716,
+            -0.022373300370828186
+          ],
+          "excludes_zero": true,
+          "verdict": "between bands",
+          "n_pairs": 809,
+          "n_dropped": 290,
+          "mean_length_ratio": 1.1492622769174414,
+          "primary": true,
+          "reading_rule": "amendment 1: AI-3 replicates section 6's narrowing only if AI-3c is in the replication band on BOTH arms"
+        },
+        "AI3_truncation_rates": {
+          "Adherence": 0.21363220494053065,
+          "Antimicrobial activity/Competitive advantage": 0.08333333333333333,
+          "Biofilm": 0.056338028169014086,
+          "Effector delivery system": 0.10349716446124764,
+          "Exoenzyme": 0.23958333333333334,
+          "Exotoxin": 0.22383985441310283,
+          "Immune modulation": 0.040878896269800714,
+          "Invasion": 0.16216216216216217,
+          "Motility": 0.015232974910394265,
+          "Nutritional/Metabolic factor": 0.07685352622061482,
+          "Others": 0.02185792349726776,
+          "Post-translational modification": 0.0,
+          "Regulation": 0.016129032258064516,
+          "Stress survival": 0.0
+        },
+        "AI3_P6_a_exceeds_c": false
+      }
+    }
+  },
+  "seconds": 9251.2
+}
