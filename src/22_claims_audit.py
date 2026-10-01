@@ -2888,6 +2888,16 @@ def corrections_log_census():
             "unused": [ordinal(n) for n in range(1, highest + 1) if ordinal(n) not in have],
             "paper_states_header_count": f"log of {len(hdrs)}" in man,
             "title_states_header_count": f"and {len(hdrs)} corrections found" in man,
+            # 🔴 Added 2026-10-02. Those two checks named the two places the count appeared and
+            # missed a THIRD -- section 8 read "Sixty entries" while the title and abstract read
+            # 113, and the claim built to prevent exactly this passed for fifty-three entries.
+            # Every statement of the count is now collected and all must agree, so a fourth
+            # phrasing fails too. "BSL-1 entries" is why the patterns are anchored and the bare
+            # r"(\d+) entries" is not used.
+            "count_statements": [int(x) for x in (
+                re.findall(r"corrections log of (\d+)", man)
+                + re.findall(r"and (\d+) corrections found", man)
+                + re.findall(r"log holds (\d+) entries", man))],
             # 🔴 the stale word this replaced, which must not come back
             "stale_word_gone": "corrections log of sixty" not in man}
 
@@ -6111,11 +6121,15 @@ CLAIMS = [
          and v["headers"] > v["distinct"]
          and v["duplicated"] == ["fourth", "second", "third"]
          and v["unused"] == ["first"]
-         and v["highest_ordinal"] < v["headers"]),
+         and v["highest_ordinal"] < v["headers"]
+         # 🔒 every place the paper states the count must agree with it, and there must be at
+         # least the three that exist now -- so deleting one is a failure as well as staling one
+         and len(v["count_statements"]) >= 3
+         and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 113"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 114"},
      # 🔴 the stale count, in both the forms it appeared in
-     ["and sixty corrections found", "corrections log of sixty"]),
+     ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
      independent_pool,
      lambda v: v is None or (
@@ -7669,8 +7683,13 @@ CLAIMS = [
          and v["kinds"]["P4_AI3_nonnegative_both_arms"] == "derived"
          and v["score"] == {"derived_held": 1, "derived_total": 3,
                             "reasoned_held": 0, "reasoned_total": 1}),
-     {"paper/MANUSCRIPT.md":
-      "🔴 **The two arms disagree on the sign in all three variants, and both intervals exclude zero**, so this",
+     # 🔒 Three fragments in one document: section 6's statement and section 8's two
+     # restatements of it. A restatement that drifts from the section it summarizes is the
+     # defect this pin list exists to catch.
+     {"paper/MANUSCRIPT.md": [
+         "🔴 **The two arms disagree on the sign in all three variants, and both intervals exclude zero**, so this",
+         "🟢 **The margin ordering survived the move.** *ρ* = **+0.947** and **+0.886** on the two arms of",
+         "🔴 **The narrowing did not.** It holds as a *within-fold ordering* claim on a third-party hazard axis —"],
       "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md":
       "🔑 **The reading rule, frozen here:** AI-3 replicates § 6's narrowing only if **AI-3c** lands in the"},
      # 🔴 Five readings this pair of results does not license.
@@ -7778,8 +7797,11 @@ CLAIMS = [
          and v["preds"]["P3_loss_sets_identical_and_small"] is False
          and v["kinds"]["P1_mean_between_bands"] == "derived"
          and v["kinds"]["P3_loss_sets_identical_and_small"] == "reasoned"),
-     {"paper/MANUSCRIPT.md":
-      "🔴 **On exoenzymes a 1,280-dimensional representation recovers twenty points fewer than twenty-one",
+     # 🔒 Section 6's measurement and section 8's one-number summary of it, which is where a
+     # reader takes the number from.
+     {"paper/MANUSCRIPT.md": [
+         "🔴 **On exoenzymes a 1,280-dimensional representation recovers twenty points fewer than twenty-one",
+         "🔒 **Against twenty-one model-free features at a matched 5% false-positive rate, ESM-2 buys about seven"],
       "docs/REPRESENTATION_INCREMENT_PREREGISTRATION.md":
       "🔒 **A verdict requires both arms in the same column.** Between the columns is reported as"},
      # 🔴 Five readings this does not license.
@@ -7818,20 +7840,31 @@ def main():
         print(f"  {'OK' if good else 'XX'} {label:<48} {detail}")
         if not good:
             failures.append(label)
-        for doc, s in must.items():
-            # 🔴 A non-string pin used to crash the whole audit with a bare TypeError from `s not in
-            # text`, which is worse than a failed claim: the gate dies instead of reporting. It
-            # happened on 2026-09-20 from a `{"huggingface/README.md": None}` entry added by mistake,
-            # and a grep of the output for the OK line hid the crash. Name the defect instead.
-            if not isinstance(s, str) or not s:
-                print(f"     XX pin for {doc} is not a non-empty string: {s!r}")
-                failures.append(f"{label}: bad pin for {doc}")
-            elif doc not in docs:
-                print(f"     XX document not found: {doc}")
-                failures.append(f"{label}: absent {doc}")
-            elif s not in docs[doc]:
-                print(f"     XX {doc} does not contain: {s!r}")
-                failures.append(f"{label}: missing in {doc}")
+        for doc, pin in must.items():
+            # 🔴 A dict holds one value per key, so for a long time a claim could pin only ONE
+            # fragment per document. The workaround in use was a key with a trailing space --
+            # which this loop reads as a DIFFERENT document path and reports as absent, the
+            # defect the log already recorded once. A list of fragments is accepted now, and the
+            # trailing-space hack is gone from the registry. Added 2026-10-02.
+            frags = pin if isinstance(pin, (list, tuple)) else [pin]
+            if isinstance(pin, (list, tuple)) and not frags:
+                print(f"     XX pin list for {doc} is empty")
+                failures.append(f"{label}: empty pin list for {doc}")
+            for s in frags:
+                # 🔴 A non-string pin used to crash the whole audit with a bare TypeError from
+                # `s not in text`, which is worse than a failed claim: the gate dies instead of
+                # reporting. It happened on 2026-09-20 from a
+                # `{"huggingface/README.md": None}` entry added by mistake, and a grep of the
+                # output for the OK line hid the crash. Name the defect instead.
+                if not isinstance(s, str) or not s:
+                    print(f"     XX pin for {doc} is not a non-empty string: {s!r}")
+                    failures.append(f"{label}: bad pin for {doc}")
+                elif doc not in docs:
+                    print(f"     XX document not found: {doc}")
+                    failures.append(f"{label}: absent {doc}")
+                elif s not in docs[doc]:
+                    print(f"     XX {doc} does not contain: {s!r}")
+                    failures.append(f"{label}: missing in {doc}")
         for s in forbid:
             hit = [d for d, t in docs.items() if s in t]
             if hit:

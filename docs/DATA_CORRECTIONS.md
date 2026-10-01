@@ -8024,3 +8024,69 @@ distinguishes direction from magnitude reliably.
 🔑 **Running total across AH, AI, AJ and AK: derived 4 of 9, reasoned 2 of 4.** The project's earlier
 "derived predictions hold here" is dead, and the replacement is not a new rule but an interval: **roughly
 half**, on studies that leave the original panel.
+
+## 2026-10-02 (one hundred and tenth entry) — The Discussion was fifty-three entries out of date, in a form no forbid covered
+
+### 🔴 1. A third statement of the count, which the claim built to catch it never looked at
+
+§ 8 read *"**Sixty entries**, several retracting our own conclusions"*. The log held **113**. The title
+and the abstract both read 113, because `corrections_log_census` syncs them — 🔴 **and it syncs them by
+checking two named phrasings**:
+
+```
+"paper_states_header_count": f"log of {len(hdrs)}" in man,
+"title_states_header_count": f"and {len(hdrs)} corrections found" in man,
+```
+
+§ 8's phrasing was neither, and neither of the two forbids (`"corrections log of sixty"`,
+`"and sixty corrections found"`) matched it either. ⚠️ **So the claim whose entire purpose is to stop a
+stale count sat green while one was fifty-three entries stale, in the section a reader takes conclusions
+from.**
+
+🔑 **This is not entry 102's defect.** There the counter could not see an entry. Here the counter is
+correct and its **coverage** is incomplete — it audited the places we remembered to list. 🔒 Fixed by
+collecting **every** statement of the count and requiring all of them to agree, with a floor on how many
+there must be so that deleting one is also a failure:
+
+```
+"count_statements": [int(x) for x in (
+    re.findall(r"corrections log of (\d+)", man)
+    + re.findall(r"and (\d+) corrections found", man)
+    + re.findall(r"log holds (\d+) entries", man))],
+```
+
+⚠️ A bare `r"(\d+) entries"` was tried first and rejected: the manuscript contains *"three **BSL-1**
+entries"*, which it matches. The patterns are anchored, § 8 was rewritten to the checkable
+`log holds N entries` form, and `"Sixty entries"` is now a forbid. Three calibrations: staling one of the
+three statements fails, deleting one fails, and restoring the old phrase fails.
+
+### 🔴 2. A pins dict could hold one fragment per document, and the workaround was a known defect
+
+Pinning § 8's restatements meant two fragments in `paper/MANUSCRIPT.md`, and a dict holds one value per
+key. The workaround already in the record is a **key with a trailing space** — which the pin loop reads
+as a *different document path* and reports as **absent**, which is the defect this log recorded the first
+time it happened. 🔴 **Reproduced it anyway**, this time knowing what it was for.
+
+🔒 **A pin value may now be a list of fragments**, each checked separately, with the non-string guard
+moved inside the loop so a `None` inside a list is **named** rather than crashing the gate. The
+trailing-space idiom is gone from the registry. Four calibrations, including a `None` in a list.
+
+### 🔑 3. What § 8 actually said, and what it says now
+
+Two claims in it had been overtaken:
+
+- *"What we would want next is not another representation. It is **more panel**"* — ⚠️ **we got more
+  panel.** VFDB's fourteen categories, then DeepVIC's same fourteen over 12,989 records from four
+  databases, then a hazard axis from UniProt curators. § 8 now reports what followed: 🟢 the margin
+  ordering **survived** the move (*ρ* +0.947 and +0.886 on someone else's benchmark), 🔴 the narrowing
+  **did not** between categories, and ⚠️ the **bimodality did not travel at all** — graded across
+  fourteen curator categories, with the arms disagreeing on where the largest gap falls.
+- *"This rule killed three findings in two days"* — ⚠️ **it has since killed this paper's own § 6
+  narrowing**, and § 8 now says so, together with the fact that **it nearly failed to fire in time**
+  (entry 101).
+
+🔒 And § 8 now carries the number a reader would actually want: **against twenty-one model-free features
+at a matched 5% false-positive rate, ESM-2 buys about seven points of recovery and loses twenty on
+exoenzymes.** 🔑 **Both § 8 restatements are pinned to the claims that own the measurements**, so a
+discussion that drifts from the section it summarizes now fails the gate — which is the general form of
+the defect in part 1.

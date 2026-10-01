@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 113 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 114 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 113
+written because it caught something. The evidence is a **dated, append-only corrections log of 114
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -1231,8 +1231,16 @@ ranking that raised the panel mean on one arm and on no *k* of the other. 🔑 *
 than the findings it killed**, and the cheapest arm in the project did all three kills for about twenty
 minutes of compute each.
 
-**Keep the log append-only, including the entries that hurt.** Sixty entries, several retracting our own
-conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
+🔴 **It has since killed something larger: this paper's own § 6 narrowing, between categories.** On
+DeepVIC's axis the length-matched recovery difference is **+6.04pp** on 650M and **−5.30pp** on 35M with
+both intervals excluding zero (§ 6), so the two representations disagree about whether a held-out toxin
+category is recovered more or less than a non-toxin one of the same size. ⚠️ **And the rule nearly failed
+to fire in time**: a 650M-only ranking had already been written into § 6 before the second arm was read,
+and nothing in the audit could have caught it, because every number in it was correct and traceable and
+what was wrong was the scope of the sentence built on them.
+
+**Keep the log append-only, including the entries that hurt.** The log holds 114 entries, many retracting
+our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
 thing, not three: we checked whether numbers were stable and not whether they measured what we said.**
@@ -1240,11 +1248,41 @@ Seeds, intervals and replication got attention; a definitionally constant quanti
 annotation-provenance mismatch and an incomparable scale did not, and no number of additional seeds would
 have surfaced any of them.
 
-What we would want next is not another representation. It is **more panel**: mechanism classes from a
-published ontology rather than hand curation, and catalytic positions from one source. VFDB supplies the
-first — fourteen categories, of which **Exotoxin is one and 4% of the records** — and that number is its
-own warning, because a virulence-factor axis is not a toxin axis, and adopting it changes what the screen
-is for.
+**What we said we wanted next was more panel, and more panel is what we got.** Mechanism classes from a
+published ontology rather than hand curation: VFDB's fourteen categories (§ 6), then **DeepVIC's** same
+fourteen over **12,989** annotated virulence factors from four databases, and a hazard axis from
+**UniProt curators' keywords** rather than from us. 🔑 **Three things followed, and only the first was
+the one we were hoping for.**
+
+🟢 **The margin ordering survived the move.** *ρ* = **+0.947** and **+0.886** on the two arms of
+someone else's benchmark, beating both of the controls it is built from on all four passes (§ 4). It is
+the one result that replicated internally, and it is now the one result that has replicated externally.
+
+🔴 **The narrowing did not.** It holds as a *within-fold ordering* claim on a third-party hazard axis —
+curated toxins against length-matched non-toxins at **AUROC 0.46 and 0.52**, both arms — and fails as a
+*between-category recovery* claim on the larger benchmark. ⚠️ **Those are two different statements that
+had been carried as one**, and separating them cost nothing but a preregistration that named which one
+the matched contrast could support.
+
+⚠️ **And the bimodality did not travel at all.** On our panel the per-class picture is two disjoint
+clusters; across fourteen curator categories it is graded, and the arms do not even agree where the
+largest gap falls. 🔑 **The shape of a failure distribution turned out to be a property of a panel of
+445, not of the task** — which is the same lesson § 3 draws about per-class recovery, arriving a second
+time from outside.
+
+### What a protein language model is worth here, in one number
+
+🔒 **Against twenty-one model-free features at a matched 5% false-positive rate, ESM-2 buys about seven
+points of recovery** — +7.19pp and +7.53pp, winning **11 of 14** categories on both arms (§ 6). Against
+length alone it buys **twenty-four**. 🔴 **And on one category it costs twenty**: exoenzymes are recovered
+**20.14** and **16.75** points *worse* by the 1,280-dimensional representation than by composition. 🟢 On
+cytoplasmic regulators the ratio runs the other way — composition finds **3.6%** and the embedding finds
+**23.0%**.
+
+🔑 **That is the number we would have wanted at the start**, and it took a published benchmark, a
+model-free control arm and a matched false-positive rate to get it. ⚠️ **It is also an argument for
+reporting the control**: a paper that gives only the embedding's AUROC on this benchmark has not shown
+that the embedding is what produced it.
 
 ### Where this sits against data-governance proposals
 
