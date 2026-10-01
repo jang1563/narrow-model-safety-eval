@@ -198,7 +198,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md",
           # Added 2026-10-02. It offers the only explanation the project has for study AI-3's
           # arm disagreement, and it records a band of its own that the control arm gamed.
-          "docs/COMPOSITION_ARM_PREREGISTRATION.md"]
+          "docs/COMPOSITION_ARM_PREREGISTRATION.md",
+          # Added 2026-10-02. It is the only place the project says what a protein language model
+          # buys over twenty-one numbers, per category, at a matched false-positive rate.
+          "docs/REPRESENTATION_INCREMENT_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1871,6 +1874,66 @@ def organism_cluster():
         "pool_gap_inside": bool(a["pool_gap_inside"] and b["pool_gap_inside"]),
         "ca_ratio_below_r_650M": bool(a["contrasts"]["CA"]["design_effect"]
                                       < a["contrasts"]["R"]["design_effect"]),
+    }
+
+
+def representation_increment():
+    """What a protein language model buys over 21 numbers, per category, at matched FPR.
+
+    🔒 Both arms win 11 of 14 categories and both land at about +7 points of mean recovery:
+    +7.19 [+0.57, +12.97] and +7.53 [+2.17, +12.51]. The frozen count floor for "earns its
+    place" was 11 and is met; its +10pp magnitude companion is not, so the composite verdict
+    on both arms is the middle one. Against length alone the increment is +24 points.
+
+    🔴 And on Exoenzyme the 1,280-dimensional representation recovers TWENTY POINTS FEWER than
+    composition does, on both arms, at the same false-positive rate. That is worse, not equal.
+    🟢 On Regulation, where composition finds 3.6%, the embedding finds 23.0%.
+
+    ⚠️ The loss sets are NOT identical across arms -- only Exoenzyme is in both -- so no claim
+    is made about which categories are compositionally marked beyond that one. Exotoxin is a
+    13.59-point loss on 650M and a 0.08-point gain on 35M.
+
+    ⚠️ Nothing is fitted here, and the per-category intervals are unpaired because the upstream
+    artifacts record across-seed SDs and not per-seed vectors.
+    """
+    v = j("../results/representation_increment.json")
+    if v is None:
+        return None
+    A, B = v["arms"]["esm2_650M"], v["arms"]["esm2_35M"]
+    pa = {r["category"]: r for r in A["per_category"]}
+    pb = {r["category"]: r for r in B["per_category"]}
+    f = v["fpr_evidence"]
+    return {
+        "prereg": v["preregistration"],
+        "nothing_fitted": "nothing is fitted" in v["nothing_fitted"],
+        "interval_unpaired_disclosed": "UNPAIRED" in v["interval_disclosure"],
+        "bands": v["bands"],
+        "fpr_min": min(f[a]["min"] for a in f),
+        "fpr_max": max(f[a]["max"] for a in f),
+        "won": {"650M": A["AK1_categories_won"], "35M": B["AK1_categories_won"]},
+        "mean_inc": {"650M": A["AK3_mean_increment_all"],
+                     "35M": B["AK3_mean_increment_all"]},
+        "mean_ci": {"650M": A["AK3_mean_increment_ci_category_bootstrap"],
+                    "35M": B["AK3_mean_increment_ci_category_bootstrap"]},
+        "mean_pos": {"650M": A["AK3_mean_increment_where_positive"],
+                     "35M": B["AK3_mean_increment_where_positive"]},
+        "vs_length": {"650M": A["AK4_mean_increment_vs_length_only"],
+                      "35M": B["AK4_mean_increment_vs_length_only"]},
+        "verdict": {"650M": A["verdict"], "35M": B["verdict"]},
+        "arms_agree": v["second_arm_rule"]["arms_agree_on_verdict"],
+        "loss_identical": v["AK2_loss_sets_identical"],
+        "loss_intersection": v["AK2_loss_set_intersection"],
+        "exoenzyme": {"650M": pa["Exoenzyme"]["increment"],
+                      "35M": pb["Exoenzyme"]["increment"],
+                      "comp": pa["Exoenzyme"]["recovery_composition"],
+                      "emb650": pa["Exoenzyme"]["recovery_embedding"]},
+        "exotoxin": {"650M": pa["Exotoxin"]["increment"],
+                     "35M": pb["Exotoxin"]["increment"]},
+        "regulation": {"comp": pa["Regulation"]["recovery_composition"],
+                       "emb650": pa["Regulation"]["recovery_embedding"],
+                       "inc650": pa["Regulation"]["increment"]},
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "kinds": {k: w["kind"] for k, w in v["predictions"].items()},
     }
 
 
@@ -6050,7 +6113,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 112"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 113"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -7667,6 +7730,64 @@ CLAIMS = [
       "length alone explains the arm disagreement",
       "study AJ settles the question",
       "the preregistered bands were met"]),
+    # 🔒 Added 2026-10-02. The practical number: what the representation buys, and the one category
+    # where it demonstrably costs. The claim holds both, plus the fact that the loss sets disagree.
+    ("the representation buys about seven points and loses twenty on one category",
+     representation_increment,
+     lambda v: v is None or (
+         "REPRESENTATION_INCREMENT_PREREGISTRATION" in v["prereg"]
+         and v["nothing_fitted"] and v["interval_unpaired_disclosed"]
+         # 🔒 the comparison is only legitimate because the folds are calibrated alike
+         and 0.045 < v["fpr_min"] and v["fpr_max"] < 0.055
+         # 🔒 the count floor is met on both arms and the magnitude floor is not, so the
+         # composite verdict is the middle one -- and both arms agree on it
+         and v["bands"]["won_earns_floor"] == 11
+         and v["bands"]["mean_earns_floor"] == 0.10
+         and v["won"] == {"650M": 11, "35M": 11}
+         and v["won"]["650M"] >= v["bands"]["won_earns_floor"]
+         and v["mean_inc"]["650M"] < v["bands"]["mean_earns_floor"]
+         and v["mean_inc"]["35M"] < v["bands"]["mean_earns_floor"]
+         and v["mean_inc"]["650M"] > v["bands"]["mean_not_ceiling"]
+         and v["mean_inc"]["35M"] > v["bands"]["mean_not_ceiling"]
+         and v["verdict"] == {"650M": "adds something and not much",
+                              "35M": "adds something and not much"}
+         and v["arms_agree"] is True
+         and abs(v["mean_inc"]["650M"] - 0.0719) < 0.0005
+         and abs(v["mean_inc"]["35M"] - 0.0753) < 0.0005
+         # 🔒 both category-level bootstraps exclude zero, the 650M one only just
+         and v["mean_ci"]["650M"][0] > 0 and v["mean_ci"]["35M"][0] > 0
+         and v["mean_ci"]["650M"][0] < 0.01
+         # 🔒 and against length alone it is a different order of magnitude
+         and v["vs_length"]["650M"] > 0.20 and v["vs_length"]["35M"] > 0.20
+         # 🔴 Exoenzyme: the embedding is TWENTY POINTS WORSE than 21 numbers, on both arms
+         and v["exoenzyme"]["650M"] < -0.15 and v["exoenzyme"]["35M"] < -0.15
+         and abs(v["exoenzyme"]["650M"] + 0.2014) < 0.0005
+         and v["exoenzyme"]["comp"] > v["exoenzyme"]["emb650"]
+         and "Exoenzyme" in v["loss_intersection"]
+         # ⚠️ but the loss sets are NOT identical, and Exotoxin is the knife-edge
+         and v["loss_identical"] is False
+         and v["loss_intersection"] == ["Exoenzyme"]
+         and v["exotoxin"]["650M"] < -0.10 and 0 < v["exotoxin"]["35M"] < 0.005
+         # 🟢 and Regulation is the opposite case: composition finds almost nothing
+         and v["regulation"]["comp"] < 0.05
+         and v["regulation"]["emb650"] > 0.20
+         and v["regulation"]["inc650"] > 0.15
+         # 🔴 the score: the magnitude prediction held and both others did not
+         and v["preds"]["P1_mean_between_bands"] is True
+         and v["preds"]["P2_exotoxin_in_loss_set"] is False
+         and v["preds"]["P3_loss_sets_identical_and_small"] is False
+         and v["kinds"]["P1_mean_between_bands"] == "derived"
+         and v["kinds"]["P3_loss_sets_identical_and_small"] == "reasoned"),
+     {"paper/MANUSCRIPT.md":
+      "🔴 **On exoenzymes a 1,280-dimensional representation recovers twenty points fewer than twenty-one",
+      "docs/REPRESENTATION_INCREMENT_PREREGISTRATION.md":
+      "🔒 **A verdict requires both arms in the same column.** Between the columns is reported as"},
+     # 🔴 Five readings this does not license.
+     ["the representation earns its place",
+      "the representation is not load-bearing",
+      "the embedding adds nothing over composition",
+      "composition beats the embedding on every category",
+      "the loss sets are the same on both arms"]),
 ]
 
 

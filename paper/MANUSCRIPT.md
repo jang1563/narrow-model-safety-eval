@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 112 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 113 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 112
+written because it caught something. The evidence is a **dated, append-only corrections log of 113
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -813,6 +813,52 @@ Exotoxin match, not the composite rule.
 ⚠️ **And study AJ has no second arm and cannot have one** — a sequence has one composition. It is an
 explanation offered, not a verdict, whichever way its bands had fallen.
 
+### What the representation buys, category by category, at a matched false-positive rate
+
+🔑 **Three folds calibrated alike make this subtractable.** Every pass above thresholds at the 95th
+percentile of the same calibrate negatives and comes out at **4.7–5.3%** on the same untouched test
+negatives, across all fourteen categories on both arms, so recovery rates compare without adjustment. Study AK subtracts
+(`docs/REPRESENTATION_INCREMENT_PREREGISTRATION.md`, bands frozen; the arithmetic that motivated it was
+disclosed there rather than hidden).
+
+| | 650M | 35M |
+|---|---:|---:|
+| categories won, of 14 | **11** | **11** |
+| mean increment over all 14 | **+7.19pp** [+0.57, +12.97] | **+7.53pp** [+2.17, +12.51] |
+| mean increment where positive | +12.33pp | +11.15pp |
+| mean increment over **length alone** | +23.82pp | +24.17pp |
+| verdict against the frozen bands | **adds something and not much** | **adds something and not much** |
+
+🔒 **The count criterion is met and the magnitude criterion is not.** Eleven of fourteen was the frozen
+floor for *earns its place*; **+7.2 and +7.5 points** sit below its **+10pp** companion, so the composite
+verdict on **both** arms is the middle one. 🔑 **That middle outcome is the useful number**: against 21
+model-free features, ESM-2 buys about **seven points of recovery at a fixed 5% false-positive rate**, and
+against length alone it buys **twenty-four**.
+
+🔑 **Where it helps and where it hurts is interpretable.**
+
+| category | composition | 650M | increment |
+|---|---:|---:|---:|
+| **Regulation** — cytoplasmic transcriptional regulators | **3.6%** | 23.0% | **+19.32pp** |
+| Others | 44.2% | 70.0% | **+25.81pp** |
+| … | | | |
+| **Exotoxin** | **58.3%** | 44.7% | **−13.59pp** |
+| **Exoenzyme** | **62.3%** | 42.1% | **−20.14pp** |
+
+🔴 **On exoenzymes a 1,280-dimensional representation recovers twenty points fewer than twenty-one
+numbers do, at the same false-positive rate, on both arms** (−20.14 and −16.75). ⚠️ **That is not "adds
+nothing" — it is worse.** 🟢 And on categories with no compositional signature the representation does
+nearly all of the work: composition finds **3.6%** of cytoplasmic regulators and the embedding finds
+23.0%.
+
+⚠️ **The loss sets are not the same on both arms**, which is why no claim is made about *which*
+categories are compositionally marked beyond the one both arms agree on: **Exoenzyme**. On 650M Exotoxin
+is also a loss (−13.59pp) and on 35M it is a gain by **0.08 points** — the same knife-edge study AJ
+described from the other side. ⚠️ **The per-category intervals are unpaired**: the upstream artifacts
+record across-seed SDs and not per-seed vectors, and seeds are shared between folds, so a paired interval
+would be tighter and is unavailable. The frozen bands use the count and the mean, neither of which
+depends on it.
+
 ⚠️ **This is not a contradiction of study AH, and the two should not be collapsed.** AH asks whether the
 screen can **order** a curated toxin above a length-matched non-toxin *inside one fold*, and the answer is
 chance on both arms. AI-3 asks whether a **held-out category** is recovered less than another held-out
@@ -1236,7 +1282,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**141 claims** and fails if any number in a public document drifts from the artifact that produced
+**142 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

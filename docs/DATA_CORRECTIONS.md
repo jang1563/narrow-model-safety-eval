@@ -7957,3 +7957,70 @@ threshold wrong once, and the threshold was mine.
 no longer "derived predictions hold here". It is that **the direction of a derived prediction has held
 5 of 7 times and its magnitude almost never has** — which is the same distinction § 4 draws between
 margin's ordering, which transfers, and margin's calibration, which does not.
+
+## 2026-10-02 (one hundred and ninth entry) — Seven points bought, twenty lost on one category
+
+Three populations said the same thing from different directions — § 5's metadata baseline at **0.8096**
+against the embedding's 0.9323 with a **+0.0007** increment, AI-1's 21 model-free numbers at **0.8705**
+on DeepVIC, and AJ's 0.08-point Exotoxin match — and **none of them was the number a person deciding
+whether to use a protein language model would want.** That number is per category, at a matched
+false-positive rate.
+
+🔒 **It is subtractable because the folds are calibrated alike**: every pass thresholds at the 95th
+percentile of the same calibrate negatives and lands at **4.7–5.3%** on the same untouched test
+negatives, across all fourteen categories on both arms.
+
+### 🔒 What it buys
+
+| | 650M | 35M |
+|---|---:|---:|
+| categories won, of 14 | **11** | **11** |
+| mean increment over all 14 | **+7.19pp** [+0.57, +12.97] | **+7.53pp** [+2.17, +12.51] |
+| mean increment where positive | +12.33pp | +11.15pp |
+| mean increment over **length alone** | +23.82pp | +24.17pp |
+
+🔑 **The frozen count floor for *earns its place* was 11 and is met; its +10pp magnitude companion is
+not**, so the composite verdict on both arms is the middle one — *adds something and not much*. ⚠️ Both
+category-level bootstraps exclude zero, the 650M one only just (**+0.57pp**).
+
+### 🔴 And what it costs
+
+| category | composition | 650M | increment |
+|---|---:|---:|---:|
+| **Regulation** | **3.6%** | 23.0% | **+19.32pp** |
+| Others | 44.2% | 70.0% | **+25.81pp** |
+| **Exotoxin** | 58.3% | 44.7% | **−13.59pp** (650M) / **+0.08pp** (35M) |
+| **Exoenzyme** | **62.3%** | 42.1% | **−20.14pp** / **−16.75pp** |
+
+🔴 **On exoenzymes a 1,280-dimensional representation recovers twenty points fewer than twenty-one
+numbers do, on both arms, at the same false-positive rate.** That is worse, not equal. 🟢 On Regulation
+it is the opposite: composition finds **3.6%** of cytoplasmic regulators and the embedding finds 23.0%.
+
+⚠️ **The loss sets are not identical across arms** — only **Exoenzyme** is in both — so no claim is made
+about which categories are compositionally marked beyond that one. Exotoxin is a 13.59-point loss on
+650M and a **0.08-point gain** on 35M, the same knife-edge AJ described from the other side.
+
+⚠️ **The per-category intervals are unpaired.** The upstream artifacts record across-seed SDs and not
+per-seed vectors, and seeds are shared between folds, so a paired interval would be tighter and is
+unavailable. The frozen bands use the count and the mean and do not touch it.
+
+### 🔴 The score, and a generalization that did not survive one study
+
+**P1 (derived) held, P2 (derived) missed, P3 (reasoned) missed** — derived 1 of 2, reasoned 0 of 1.
+
+🔴 **Entry 108 read the record as "the direction of a derived prediction has held 5 of 7 times and its
+magnitude almost never has."** This study inverts that in one pass:
+
+- **P1 was a magnitude prediction with a floor *and* a ceiling** — the mean increment lands between
+  +3pp and +10pp on both arms — and it **held**.
+- **P2 was a direction prediction** — Exotoxin in the loss set on both arms — and it **missed**, by
+  **0.08 points** on the 35M arm.
+
+⚠️ **So entry 108's reading was over-fit to three studies and is withdrawn as a generalization.** What
+the four studies support is weaker and duller: **predictions made from measurements on the same
+population hold more often than predictions carried across populations**, and nothing in this record
+distinguishes direction from magnitude reliably.
+
+🔑 **Running total across AH, AI, AJ and AK: derived 4 of 9, reasoned 2 of 4.** The project's earlier
+"derived predictions hold here" is dead, and the replacement is not a new rule but an interval: **roughly
+half**, on studies that leave the original panel.

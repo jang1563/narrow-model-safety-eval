@@ -1,0 +1,478 @@
+{
+  "built": "2026-10-02 01:13:12",
+  "study": "AK -- the representation's per-category increment at matched FPR",
+  "preregistration": "docs/REPRESENTATION_INCREMENT_PREREGISTRATION.md",
+  "nothing_fitted": "every number is read from src/125 and src/127; nothing is fitted",
+  "interval_disclosure": "the per-category interval is UNPAIRED: the upstream artifacts record means and across-seed SDs but not per-seed vectors, and seeds are shared between folds, so a paired interval would be tighter and is unavailable. The frozen bands are on the count and the mean and do not use it.",
+  "fpr_evidence": {
+    "esm2_650M": {
+      "min": 0.049635341941654705,
+      "max": 0.05336561453849833
+    },
+    "esm2_35M": {
+      "min": 0.0473816355810617,
+      "max": 0.05002690100430416
+    }
+  },
+  "bands": {
+    "won_earns_floor": 11,
+    "won_not_ceiling": 7,
+    "mean_earns_floor": 0.1,
+    "mean_not_ceiling": 0.03
+  },
+  "arms": {
+    "esm2_650M": {
+      "per_category": [
+        {
+          "category": "Others",
+          "n": 187,
+          "recovery_embedding": 0.7003565062388593,
+          "recovery_composition": 0.4422459893048129,
+          "increment": 0.25811051693404635,
+          "unpaired_ci": [
+            0.22348403083376597,
+            0.2927370030343267
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.6513368983957221
+        },
+        {
+          "category": "Regulation",
+          "n": 128,
+          "recovery_embedding": 0.2296875,
+          "recovery_composition": 0.036458333333333336,
+          "increment": 0.19322916666666665,
+          "unpaired_ci": [
+            0.15490440930201543,
+            0.23155392403131786
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.13203125
+        },
+        {
+          "category": "Effector delivery system",
+          "n": 4266,
+          "recovery_embedding": 0.45025785278949837,
+          "recovery_composition": 0.30889982809814037,
+          "increment": 0.141358024691358,
+          "unpaired_ci": [
+            0.11660773273491018,
+            0.16610831664780581
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.23660728238787307
+        },
+        {
+          "category": "Invasion",
+          "n": 84,
+          "recovery_embedding": 0.5555555555555556,
+          "recovery_composition": 0.41825396825396827,
+          "increment": 0.1373015873015873,
+          "unpaired_ci": [
+            0.09835266811681424,
+            0.17625050648636037
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.28134920634920635
+        },
+        {
+          "category": "Immune modulation",
+          "n": 1983,
+          "recovery_embedding": 0.3097327281896117,
+          "recovery_composition": 0.17475205916960837,
+          "increment": 0.1349806690200033,
+          "unpaired_ci": [
+            0.11213297267456553,
+            0.15782836536544106
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.21598587997982852
+        },
+        {
+          "category": "Biofilm",
+          "n": 226,
+          "recovery_embedding": 0.4589970501474926,
+          "recovery_composition": 0.32551622418879056,
+          "increment": 0.13348082595870203,
+          "unpaired_ci": [
+            0.10438363548800206,
+            0.162578016429402
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.3365781710914454
+        },
+        {
+          "category": "Post-translational modification",
+          "n": 66,
+          "recovery_embedding": 0.2292929292929293,
+          "recovery_composition": 0.10909090909090907,
+          "increment": 0.12020202020202023,
+          "unpaired_ci": [
+            0.07116384931087352,
+            0.16924019109316693
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.198989898989899
+        },
+        {
+          "category": "Motility",
+          "n": 1121,
+          "recovery_embedding": 0.47579542075527803,
+          "recovery_composition": 0.3826345524829022,
+          "increment": 0.09316086827237585,
+          "unpaired_ci": [
+            0.06252856382204774,
+            0.12379317272270396
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.39366636931311333
+        },
+        {
+          "category": "Nutritional/Metabolic factor",
+          "n": 1123,
+          "recovery_embedding": 0.29545859305431876,
+          "recovery_composition": 0.2147521519738795,
+          "increment": 0.08070644108043926,
+          "unpaired_ci": [
+            0.05337016827409129,
+            0.10804271388678723
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.09344018996734937
+        },
+        {
+          "category": "Adherence",
+          "n": 2259,
+          "recovery_embedding": 0.5653681570016231,
+          "recovery_composition": 0.5244355909694556,
+          "increment": 0.04093256603216755,
+          "unpaired_ci": [
+            0.007454131664781483,
+            0.07441100039955362
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.2150361516895381
+        },
+        {
+          "category": "Stress survival",
+          "n": 186,
+          "recovery_embedding": 0.5297491039426523,
+          "recovery_composition": 0.5073476702508961,
+          "increment": 0.02240143369175618,
+          "unpaired_ci": [
+            -0.007029517223815743,
+            0.0518323846073281
+          ],
+          "unpaired_excludes_zero": false,
+          "increment_vs_length_only": 0.4222222222222222
+        },
+        {
+          "category": "Antimicrobial activity/Competitive advantage",
+          "n": 24,
+          "recovery_embedding": 0.13194444444444445,
+          "recovery_composition": 0.14444444444444446,
+          "increment": -0.012500000000000011,
+          "unpaired_ci": [
+            -0.06908258449031147,
+            0.04408258449031145
+          ],
+          "unpaired_excludes_zero": false,
+          "increment_vs_length_only": 0.04861111111111109
+        },
+        {
+          "category": "Exotoxin",
+          "n": 1126,
+          "recovery_embedding": 0.4471284783895796,
+          "recovery_composition": 0.5830076968620486,
+          "increment": -0.13587921847246898,
+          "unpaired_ci": [
+            -0.18537527943818535,
+            -0.0863831575067526
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.059976317347542885
+        },
+        {
+          "category": "Exoenzyme",
+          "n": 210,
+          "recovery_embedding": 0.4214285714285715,
+          "recovery_composition": 0.622857142857143,
+          "increment": -0.2014285714285715,
+          "unpaired_ci": [
+            -0.24268145816528836,
+            -0.16017568469185467
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.049365079365079334
+        }
+      ],
+      "AK1_categories_won": 11,
+      "AK1_categories_lost": 3,
+      "loss_set": [
+        "Antimicrobial activity/Competitive advantage",
+        "Exoenzyme",
+        "Exotoxin"
+      ],
+      "AK3_mean_increment_all": 0.07186116642500588,
+      "AK3_mean_increment_ci_category_bootstrap": [
+        0.0057183357394822425,
+        0.12972374959998678
+      ],
+      "AK3_mean_increment_where_positive": 0.12326037453192025,
+      "AK3_largest_gain": "Others",
+      "AK3_largest_loss": "Exoenzyme",
+      "AK4_mean_increment_vs_length_only": 0.23822828772928073,
+      "n_unpaired_intervals_excluding_zero": 12,
+      "verdict": "adds something and not much"
+    },
+    "esm2_35M": {
+      "per_category": [
+        {
+          "category": "Others",
+          "n": 187,
+          "recovery_embedding": 0.6787878787878788,
+          "recovery_composition": 0.4422459893048129,
+          "increment": 0.23654188948306593,
+          "unpaired_ci": [
+            0.2046709130942084,
+            0.2684128658719235
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.6297682709447416
+        },
+        {
+          "category": "Regulation",
+          "n": 128,
+          "recovery_embedding": 0.21145833333333333,
+          "recovery_composition": 0.036458333333333336,
+          "increment": 0.175,
+          "unpaired_ci": [
+            0.12848955634340667,
+            0.2215104436565933
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.11380208333333333
+        },
+        {
+          "category": "Biofilm",
+          "n": 226,
+          "recovery_embedding": 0.5004424778761062,
+          "recovery_composition": 0.32551622418879056,
+          "increment": 0.17492625368731562,
+          "unpaired_ci": [
+            0.15261487793705142,
+            0.19723762943757983
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.378023598820059
+        },
+        {
+          "category": "Invasion",
+          "n": 84,
+          "recovery_embedding": 0.584920634920635,
+          "recovery_composition": 0.41825396825396827,
+          "increment": 0.16666666666666669,
+          "unpaired_ci": [
+            0.1369520312615602,
+            0.19638130207177318
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.3107142857142857
+        },
+        {
+          "category": "Antimicrobial activity/Competitive advantage",
+          "n": 24,
+          "recovery_embedding": 0.27361111111111114,
+          "recovery_composition": 0.14444444444444446,
+          "increment": 0.12916666666666668,
+          "unpaired_ci": [
+            0.0684535556992851,
+            0.18987977763404826
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.19027777777777777
+        },
+        {
+          "category": "Immune modulation",
+          "n": 1983,
+          "recovery_embedding": 0.28779626828038324,
+          "recovery_composition": 0.17475205916960837,
+          "increment": 0.11304420911077487,
+          "unpaired_ci": [
+            0.09606158237818818,
+            0.13002683584336155
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.19404942007060008
+        },
+        {
+          "category": "Adherence",
+          "n": 2259,
+          "recovery_embedding": 0.6160690571049137,
+          "recovery_composition": 0.5244355909694556,
+          "increment": 0.09163346613545809,
+          "unpaired_ci": [
+            0.06455960031442112,
+            0.11870733195649505
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.26573705179282864
+        },
+        {
+          "category": "Effector delivery system",
+          "n": 4266,
+          "recovery_embedding": 0.3661900296921393,
+          "recovery_composition": 0.30889982809814037,
+          "increment": 0.057290201593998946,
+          "unpaired_ci": [
+            0.034179958661108685,
+            0.08040044452688921
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.15253945929051402
+        },
+        {
+          "category": "Motility",
+          "n": 1121,
+          "recovery_embedding": 0.4334225393993458,
+          "recovery_composition": 0.3826345524829022,
+          "increment": 0.050787986916443595,
+          "unpaired_ci": [
+            0.020626486404394573,
+            0.08094948742849262
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.35129348795718107
+        },
+        {
+          "category": "Stress survival",
+          "n": 186,
+          "recovery_embedding": 0.5376344086021504,
+          "recovery_composition": 0.5073476702508961,
+          "increment": 0.030286738351254283,
+          "unpaired_ci": [
+            0.010061424978938454,
+            0.05051205172357011
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.4301075268817203
+        },
+        {
+          "category": "Exotoxin",
+          "n": 1126,
+          "recovery_embedding": 0.5837773830669034,
+          "recovery_composition": 0.5830076968620486,
+          "increment": 0.000769686204854847,
+          "unpaired_ci": [
+            -0.037236514987491774,
+            0.03877588739720147
+          ],
+          "unpaired_excludes_zero": false,
+          "increment_vs_length_only": 0.1966252220248667
+        },
+        {
+          "category": "Post-translational modification",
+          "n": 66,
+          "recovery_embedding": 0.10909090909090907,
+          "recovery_composition": 0.10909090909090907,
+          "increment": 0.0,
+          "unpaired_ci": [
+            -0.021678250137664903,
+            0.021678250137664903
+          ],
+          "unpaired_excludes_zero": false,
+          "increment_vs_length_only": 0.07878787878787877
+        },
+        {
+          "category": "Nutritional/Metabolic factor",
+          "n": 1123,
+          "recovery_embedding": 0.21095280498664293,
+          "recovery_composition": 0.2147521519738795,
+          "increment": -0.0037993469872365793,
+          "unpaired_ci": [
+            -0.020839345553567718,
+            0.01324065157909456
+          ],
+          "unpaired_excludes_zero": false,
+          "increment_vs_length_only": 0.008934401899673539
+        },
+        {
+          "category": "Exoenzyme",
+          "n": 210,
+          "recovery_embedding": 0.45539682539682536,
+          "recovery_composition": 0.622857142857143,
+          "increment": -0.16746031746031764,
+          "unpaired_ci": [
+            -0.2075830045747876,
+            -0.1273376303458477
+          ],
+          "unpaired_excludes_zero": true,
+          "increment_vs_length_only": 0.0833333333333332
+        }
+      ],
+      "AK1_categories_won": 11,
+      "AK1_categories_lost": 3,
+      "loss_set": [
+        "Exoenzyme",
+        "Nutritional/Metabolic factor",
+        "Post-translational modification"
+      ],
+      "AK3_mean_increment_all": 0.07534672145492467,
+      "AK3_mean_increment_ci_category_bootstrap": [
+        0.021687112117129807,
+        0.1251241118749895
+      ],
+      "AK3_mean_increment_where_positive": 0.11146488771059088,
+      "AK3_largest_gain": "Others",
+      "AK3_largest_loss": "Exoenzyme",
+      "AK4_mean_increment_vs_length_only": 0.24171384275919958,
+      "n_unpaired_intervals_excluding_zero": 11,
+      "verdict": "adds something and not much"
+    }
+  },
+  "AK2_loss_sets_identical": false,
+  "AK2_loss_set_intersection": [
+    "Exoenzyme"
+  ],
+  "second_arm_rule": {
+    "arms_agree_on_verdict": true,
+    "verdict": "adds something and not much"
+  },
+  "predictions": {
+    "P1_mean_between_bands": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "esm2_650M": 0.07186116642500588,
+        "esm2_35M": 0.07534672145492467
+      }
+    },
+    "P2_exotoxin_in_loss_set": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "esm2_650M": [
+          "Antimicrobial activity/Competitive advantage",
+          "Exoenzyme",
+          "Exotoxin"
+        ],
+        "esm2_35M": [
+          "Exoenzyme",
+          "Nutritional/Metabolic factor",
+          "Post-translational modification"
+        ]
+      }
+    },
+    "P3_loss_sets_identical_and_small": {
+      "kind": "reasoned",
+      "held": false,
+      "values": {
+        "identical": false,
+        "sizes": [
+          3,
+          3
+        ]
+      }
+    }
+  }
+}
