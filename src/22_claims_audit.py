@@ -188,7 +188,11 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/SPENT_RULE_PREREGISTRATION.md",
           # Added 2026-10-01. It is the test that could have invalidated every interval in studies
           # AC-AE and did not, and it records a prediction made against this project's own evidence.
-          "docs/ORGANISM_CLUSTER_PREREGISTRATION.md"]
+          "docs/ORGANISM_CLUSTER_PREREGISTRATION.md",
+          # Added 2026-10-01. It is the only matched, toxin-inclusive contrast in the project, on an
+          # axis set by UniProt curators rather than by the author or by VFDB, and its bands were
+          # frozen when nothing but the axis's coverage was known.
+          "docs/EXTERNAL_HAZARD_AXIS_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1861,6 +1865,71 @@ def organism_cluster():
         "pool_gap_inside": bool(a["pool_gap_inside"] and b["pool_gap_inside"]),
         "ca_ratio_below_r_650M": bool(a["contrasts"]["CA"]["design_effect"]
                                       < a["contrasts"]["R"]["design_effect"]),
+    }
+
+
+def external_hazard_axis():
+    """A matched, toxin-inclusive contrast on an axis the project did not define.
+
+    🔒 AUROC separating UniProt-curated toxins from length-matched non-toxin VFDB members is
+    0.4599 and 0.5247 strict, 0.5227 and 0.5468 permissive -- inside the frozen registration
+    band 0.40-0.60 on BOTH arms in BOTH variants, against a hazard floor of 0.70. That is a
+    verdict under the second-arm rule, and it is the cell study AG said section 6 was missing.
+
+    ⚠️ Drecovery is NOT a verdict: the arms split strict (+3.23pp inside the band, +10.22pp a
+    fifth of a point above its ceiling) and all four pair bootstraps span zero at 31 pairs.
+
+    🔴 P1, derived from study AG's +11 to +20pp category gap, MISSED and inverted on 650M
+    (-13.30pp): AG's gap belongs to VFDB's category partition, not to hazard content. P3, the
+    one prediction labelled reasoned, is the one that held.
+
+    ⭐ The matching did not carry it: expected recovery from AG's own per-category means puts
+    the matched 31 within 0.41pp of the full 197-protein negative set.
+    """
+    v = j("../results/external_hazard_axis_lomo.json")
+    f = j("../results/external_hazard_axis_fetch.json")
+    if None in (v, f):
+        return None
+    A, B = v["arms"]["esm2_650M"], v["arms"]["esm2_35M"]
+    return {
+        "axis": v["axis"],
+        "prereg": v["preregistration"],
+        "seeds": v["seeds"],
+        "bands": v["bands"],
+        "n_submitted": f["n_accessions_submitted"],
+        "n_reviewed_rows": f["n_reviewed_rows"],
+        "n_pairs": A["strict"]["n_pairs"],
+        "n_same_species": A["strict"]["n_same_species_pairs"],
+        "n_dropped": A["strict"]["n_dropped"],
+        "n_held_strict": A["strict"]["n_held_out_positives"],
+        "n_fitted_strict": A["strict"]["n_fitted_positives"],
+        "match_ratio": {"mean": A["strict"]["match_quality"]["mean_length_ratio"],
+                        "max": A["strict"]["match_quality"]["max_length_ratio"]},
+        "haz_cats": A["strict"]["hazard_by_vfdb_category"],
+        "auroc_strict": {"650M": A["strict"]["auroc_hazard_vs_matched"],
+                         "35M": B["strict"]["auroc_hazard_vs_matched"]},
+        "auroc_perm": {"650M": A["permissive"]["auroc_hazard_vs_matched"],
+                       "35M": B["permissive"]["auroc_hazard_vs_matched"]},
+        "verdict_auroc_strict": {"650M": A["strict"]["verdict_auroc"],
+                                 "35M": B["strict"]["verdict_auroc"]},
+        "verdict_auroc_perm": {"650M": A["permissive"]["verdict_auroc"],
+                               "35M": B["permissive"]["verdict_auroc"]},
+        "rec_haz_strict": {"650M": A["strict"]["recovery_hazard"],
+                           "35M": B["strict"]["recovery_hazard"]},
+        "rec_matched_strict": {"650M": A["strict"]["recovery_matched"],
+                               "35M": B["strict"]["recovery_matched"]},
+        "drec_strict": {"650M": A["strict"]["d_recovery_matched"],
+                        "35M": B["strict"]["d_recovery_matched"]},
+        "drec_ci_strict": {"650M": A["strict"]["d_recovery_pair_ci"],
+                           "35M": B["strict"]["d_recovery_pair_ci"]},
+        "drec_unmatched_strict": {"650M": A["strict"]["d_recovery_unmatched"],
+                                  "35M": B["strict"]["d_recovery_unmatched"]},
+        "verdict_drec_strict": {"650M": A["strict"]["verdict_d_recovery"],
+                                "35M": B["strict"]["verdict_d_recovery"]},
+        "comp_gap": A["strict"]["composition_check"]["matched_minus_all_non"],
+        "rule": v["second_arm_rule"],
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "pred_kinds": {k: w["kind"] for k, w in v["predictions"].items()},
     }
 
 
@@ -5772,7 +5841,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 106"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 107"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -7129,6 +7198,70 @@ CLAIMS = [
       "The curator's toxin category is second, below flagella",
       "Motility is first and Exotoxin second",
       "the class-axis ranking confirms"]),
+    # 🔒 Added 2026-10-01. The cell study AG named as missing: matched, toxin-inclusive, and on an
+    # axis neither the author nor VFDB defined. The AUROC verdict is what this claim exists to hold.
+    ("the screen orders curated toxins and matched non-toxins at chance, both arms",
+     external_hazard_axis,
+     lambda v: v is None or (
+         # the axis is third-party and the design is the preregistered one
+         "UniProt" in v["axis"] and "Toxin" in v["axis"]
+         and "EXTERNAL_HAZARD_AXIS_PREREGISTRATION" in v["prereg"]
+         and v["seeds"] == 30 and v["n_submitted"] == 745
+         and v["bands"]["auroc_registration"] == [0.40, 0.60]
+         and v["bands"]["auroc_hazard_floor"] == 0.70
+         # 31 pairs, matched tightly, nothing dropped, and most pairs share a species
+         and v["n_pairs"] == 31 and v["n_dropped"] == 0
+         and v["n_same_species"] == 17
+         and v["match_ratio"]["mean"] < 1.15 and v["match_ratio"]["max"] < 1.5
+         # the hazard group is the curators' toxins, and 26 of 31 are VFDB Exotoxin
+         and v["haz_cats"].get("Exotoxin") == 26 and sum(v["haz_cats"].values()) == 31
+         # 🔒 the strict fold holds out the whole Exotoxin category as well
+         and v["n_held_strict"] == 137 and v["n_fitted_strict"] == 609
+         # 🔒 THE VERDICT: AUROC inside the registration band on both arms, both variants
+         and v["verdict_auroc_strict"] == {"650M": "registration band",
+                                           "35M": "registration band"}
+         and v["verdict_auroc_perm"] == {"650M": "registration band",
+                                         "35M": "registration band"}
+         and v["rule"]["auroc_same_band_strict"] is True
+         and v["rule"]["auroc_same_band_permissive"] is True
+         and 0.40 <= v["auroc_strict"]["650M"] <= 0.60
+         and 0.40 <= v["auroc_strict"]["35M"] <= 0.60
+         and abs(v["auroc_strict"]["650M"] - 0.4599) < 0.0005
+         and abs(v["auroc_strict"]["35M"] - 0.5247) < 0.0005
+         # ⚠️ and the screen is NOT blind: it flags most of the curated toxins
+         and v["rec_haz_strict"]["650M"] > 0.70 and v["rec_haz_strict"]["35M"] > 0.60
+         and abs(v["rec_haz_strict"]["650M"] - 0.742) < 0.0006
+         # ⚠️ Drecovery is NOT a verdict: the arms split and every pair interval spans zero
+         and v["rule"]["d_recovery_same_band_strict"] is False
+         and v["verdict_drec_strict"]["650M"] == "registration band"
+         and v["verdict_drec_strict"]["35M"] == "between bands"
+         and v["drec_ci_strict"]["650M"][0] < 0 < v["drec_ci_strict"]["650M"][1]
+         and v["drec_ci_strict"]["35M"][0] < 0 < v["drec_ci_strict"]["35M"][1]
+         and abs(v["drec_strict"]["650M"] - 0.0323) < 0.0005
+         and abs(v["drec_strict"]["35M"] - 0.1022) < 0.0005
+         # 🔴 P1 missed and inverted on 650M, so AG's gap did not transfer to this axis
+         and v["preds"]["P1_unmatched_positive_over_10pp"] is False
+         and v["drec_unmatched_strict"]["650M"] < -0.10
+         and abs(v["drec_unmatched_strict"]["650M"] + 0.1330) < 0.0005
+         and abs(v["drec_unmatched_strict"]["35M"] - 0.0810) < 0.0005
+         # ⭐ the reasoned prediction held and both derived ones did not
+         and v["preds"]["P3_strict_auroc_below_permissive"] is True
+         and v["pred_kinds"]["P3_strict_auroc_below_permissive"] == "reasoned"
+         and v["preds"]["P2_matched_inside_registration_band"] is False
+         and v["pred_kinds"]["P1_unmatched_positive_over_10pp"] == "derived"
+         and v["pred_kinds"]["P2_matched_inside_registration_band"] == "derived"
+         # ⭐ and the matching is not carrying the contrast
+         and abs(v["comp_gap"]) < 0.005),
+     {"paper/MANUSCRIPT.md":
+      "🔒 **AUROC is a verdict, and it is the registration band on both arms and in both variants.** The screen",
+      "docs/EXTERNAL_HAZARD_AXIS_PREREGISTRATION.md":
+      "🔒 **A verdict requires both arms in the same band** (the second-arm rule). One arm in a band and the"},
+     # 🔴 Both wrong readings of this result, in assertion-only form.
+     ["the screen discriminates hazard where toxins are present",
+      "the probe is blind to curated toxins",
+      "the matched recovery difference is a verdict",
+      "the probe separates toxins from length-matched non-toxins",
+      "an externally validated hazard axis"]),
 ]
 
 

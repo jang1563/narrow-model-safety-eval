@@ -7568,3 +7568,77 @@ this entry and the one above it.
 
 ⭐ **The self-maintaining design held.** The totals are not hard-coded, so the moment the regex was fixed
 the gate failed against the paper's stale numeral and named it, which is why this was fixable in one pass.
+
+## 2026-10-01 (one hundred and third entry) — The matched contrast had never seen a toxin, and now it has
+
+Entry 101 left § 6's narrowing resting on **one** measurement — `C/A`, the length- and organism-matched
+contrast — over a population `src/74` built from *"VFDB setA, non-Exotoxin records"*. 🔴 **The matched
+contrast had never seen a toxin**, and the only toxin-inclusive measurement in the paper was study AG's
+unmatched per-category ranking, confounded with length at ρ = +0.53 / +0.40.
+
+Study AH supplies the cell. Bands were frozen in `docs/EXTERNAL_HAZARD_AXIS_PREREGISTRATION.md` when
+**only the axis's coverage was known** — no recovery, no AUROC, no contrast.
+
+### 🔒 The axis is third-party
+
+UniProt curators' Swiss-Prot keywords — Toxin (KW-0800), Hemolysis, Cytolysis, Enterotoxin, Neurotoxin —
+pulled for all **745** distinct RefSeq accessions of the 746 class-axis representatives in one ID-mapping
+job (`src/120`). ⚠️ **The local idmap could not have answered this**: it covers 431 of the 746 and **0 of
+the 102 Exotoxin**, because it was built for the non-Exotoxin population and inherited its exclusion.
+
+**228 of 746 carry a reviewed entry (30.6%)** — 🔴 entry 99's expensive reviewed-only rule again, on a
+new population — of which **31 are hazard-positive** and **197 are not**. 🔑 **The two curator sets agree
+at 87%**: 26 of the 31 are VFDB Exotoxin and 26 of the 30 reviewed Exotoxin representatives carry a
+toxin keyword.
+
+### 🔒 The verdict: at chance, on both arms, in both variants
+
+Each hazard-positive paired without replacement to the nearest-length hazard-negative — mean length
+ratio **1.126**, maximum **1.475**, 17 of 31 same-species, none dropped — with **both groups held out of
+the same fold** so one model scores both. The strict variant also holds out the whole Exotoxin category
+(**137** held, **609** fitted).
+
+| | 650M | 35M |
+|---|---|---|
+| AUROC, hazard vs matched — strict | **0.4599** | **0.5247** |
+| AUROC — permissive | 0.5227 | 0.5468 |
+| recovery, hazard group — strict | 74.2% | 66.2% |
+| Δrecovery, matched — strict | +3.23pp | +10.22pp |
+| pair bootstrap, strict | [−10.75, +17.85] | [−6.99, +27.85] |
+
+🔒 **AUROC is inside the frozen registration band 0.40–0.60 on both arms in both variants**, against a
+hazard floor of 0.70 — a verdict under the second-arm rule. ⚠️ **The screen is not blind to toxins**: it
+flags three quarters of them. It cannot **order** a toxin above a length-matched non-toxin from the same
+database. ⚠️ **Δrecovery is not a verdict** — the arms split strict (+3.23pp inside the band, +10.22pp a
+fifth of a point above its ceiling) and every pair interval spans zero at n = 31.
+
+⭐ **The matching is not carrying it**: expected recovery from study AG's own per-category means puts the
+matched 31 within **0.41pp** of the full 197-protein negative set.
+
+### 🔴 Two derived predictions missed; the reasoned one held
+
+- **P1 (derived)** — from AG's +11 to +20pp category gap — predicted the unmatched difference above
+  +10pp on both arms. It is **−13.30pp on 650M** and **+8.10pp on 35M**: on the larger arm the curated
+  toxins recover *worse*. 🔑 **AG's gap belongs to VFDB's category partition, not to hazard content.**
+- **P2 (derived)** held on **all four AUROCs** and failed only on the 35M Δrecovery, **by 0.22pp**.
+- **P3 (reasoned)** held on both arms: strict AUROC below permissive, 0.4599 < 0.5227 and
+  0.5247 < 0.5468.
+
+⚠️ **The inverse of this project's record** — derived predictions had held about ten times and reasoned
+ones had missed nearly every time (entries 94, 100). One study is not a reversal of that record, and the
+reason P1 missed is instructive rather than embarrassing: it was derived from a *correct* measurement
+whose scope I over-read, which is entry 101's defect in a new place.
+
+### ⭐ The frozen coverage caught the first bug on its first run
+
+`axis()` initially labelled **all 4,755** setA records instead of the **746** representatives, giving
+4,527 unlabelled against the 518 the preregistration had frozen. 🔒 **The selftest named it immediately**,
+because the preregistration had committed to a number the code had to reproduce. ⚠️ A coverage figure
+written into a frozen document is a cheaper check than any assertion written afterwards.
+
+### 🔑 What § 7 now says
+
+The hazard-taxonomy limitation is no longer *"no external validation"*. It is: the narrowing **no longer
+depends on** the author's four-category split, because a matched contrast on a third-party axis gives the
+same answer — ⚠️ on **31 pairs**, with **no second annotator** for the original split, and with a database
+keyword still not being a regulatory hazard designation.

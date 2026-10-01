@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 106 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 107 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 106
+written because it caught something. The evidence is a **dated, append-only corrections log of 107
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -72,6 +72,16 @@ no sequence information — localization stratum and log length — reach **AURO
 virulence task against the embedding's 0.9323, and add **+0.0007** on top of it. And the obvious
 mitigation fails: after a **provably exact** linear erasure of the localization axis, the ratio is still
 **4.79 [2.75, 9.29]**, because erasure equalizes class means while the screen fires on a tail.
+
+**Fifth, what the screen responds to is database registration rather than hazard, and that now has an
+external test.** On a hazard axis set by UniProt curators rather than by us — the Swiss-Prot Toxin,
+Hemolysis, Cytolysis, Enterotoxin and Neurotoxin keywords — **31** curated toxins paired to
+length-matched non-toxin members of the same database, with **both** groups held out of a single fit and
+the entire exotoxin category held out as well, are ordered at **chance**: AUROC **0.4599** on ESM-2 650M
+and **0.5247** on 35M, inside a registration band of 0.40–0.60 frozen before the study against a hazard
+floor of 0.70. The screen flags **three quarters** of those toxins, so it is not blind to them; it simply
+does not rank them above comparable non-toxins. ⚠️ The test rests on **31 pairs**, because only **30.6%**
+of the population carries a reviewed UniProt entry.
 
 We close on a structural observation about evaluation rather than about protein models. Twice we
 diagnosed a limit, built the repair, and found the limit was on the other side of the comparison: both
@@ -651,10 +661,59 @@ each VFDB protein against a length- and organism-matched benign one and comes ou
 groups on both arms; per-category *recovery* has no matched comparator, tilts hazard-ward by 11–26
 points, and cannot separate that tilt from length and diversity. ⚠️ The *matched* population also never
 contained exotoxins — `src/74` built it from *"VFDB setA, non-Exotoxin records"* — so `C/A` is about
-**non-toxin** virulence factors, and the only toxin-inclusive measurement we have is the unmatched
-ranking above. **The contrast is real and large; what it is evidence for is narrower than
-membership-beyond-confounds suggested, and the hazard question is open on the curator's labels rather
-than closed by them.**
+**non-toxin** virulence factors. **The contrast is real and large; what it is evidence for is narrower
+than membership-beyond-confounds suggested.**
+
+### The missing cell: a matched, toxin-inclusive contrast on a third-party axis
+
+🟢 **Study AH closes it.** The axis is **UniProt curators' Swiss-Prot keywords** — Toxin (KW-0800),
+Hemolysis, Cytolysis, Enterotoxin, Neurotoxin — set by neither the author (study Q) nor VFDB (study AG),
+pulled for all **745** distinct RefSeq accessions of the 746 representatives in one ID-mapping job
+(`src/120`, `src/121`; bands frozen in `docs/EXTERNAL_HAZARD_AXIS_PREREGISTRATION.md` before the study
+was written). **228 of 746 carry a reviewed entry — 30.6%**, which is § 6's expensive reviewed-only rule
+again on a new population — of which **31 are hazard-positive** and **197 are not**. 🔑 **The two curator
+sets agree at 87%**: 26 of the 31 are VFDB **Exotoxin**, and 26 of the 30 reviewed Exotoxin
+representatives carry a toxin keyword.
+
+Each hazard-positive is paired without replacement to the nearest-length hazard-negative — **mean length
+ratio 1.126, maximum 1.475, 17 of 31 pairs from the same species, none dropped** — and **both groups are
+held out of the same fold**, so a single model scores both. 🔒 The **strict** variant also holds out the
+entire Exotoxin category (**137** positives held, **609** fitted), so homology to a *trained* exotoxin
+cannot help the hazard group.
+
+| | 650M | 35M | frozen band |
+|---|---:|---:|---|
+| **AUROC**, hazard vs matched — **strict** | **0.4599** | **0.5247** | 🟢 **registration, 0.40–0.60** |
+| AUROC — permissive | 0.5227 | 0.5468 | 🟢 registration |
+| recovery, hazard group — strict | 74.2% | 66.2% | |
+| recovery, matched negatives — strict | 71.0% | 56.0% | |
+| Δrecovery, matched — strict | +3.23pp | **+10.22pp** | reg. / between bands |
+| Δrecovery, pair bootstrap — strict | **[−10.75, +17.85]** | **[−6.99, +27.85]** | both span 0 |
+
+🔒 **AUROC is a verdict, and it is the registration band on both arms and in both variants.** The screen
+flags **three quarters of the curated toxins**, so it is not blind to them — but it **cannot order a
+toxin above a length-matched non-toxin from the same database**: 0.46 and 0.52 against a hazard floor of
+0.70. ⚠️ **Δrecovery is not a verdict.** The arms split in the strict variant — +3.23pp inside the band,
++10.22pp **0.22pp above its ceiling** — and all four pair bootstraps span zero at n = 31 pairs.
+
+⭐ **The matching is not doing the work.** Expected recovery computed from study AG's own per-category
+means puts the matched 31 within **0.41pp** of the full 197-protein negative set, so the contrast is not
+carried by a shift in category mix.
+
+🔴 **And study AG's category gap did not transfer to this axis.** The frozen prediction P1 — *derived*
+from AG's +11 to +20pp group gap — was that the **unmatched** difference would exceed +10pp on both arms.
+It is **−13.30pp on 650M** and **+8.10pp on 35M**: on the larger arm the curated toxins recover *worse*
+than the non-toxin members. ⚠️ **AG's gap is a property of VFDB's category partition, not of hazard
+content**, and a third-party axis cuts across that partition. P2 — that the matched figures would land
+in the registration band — held on **all four AUROCs** and failed only on the 35M Δrecovery, by 0.22pp.
+⭐ **P3, the one prediction labelled *reasoned*, is the one that held**: strict AUROC below permissive on
+both arms, 0.4599 < 0.5227 and 0.5247 < 0.5468. Two derived predictions missed and the reasoned one
+held — the exact inverse of this project's record, and the sample is one study.
+
+🔑 **So § 6's narrowing now has the cell it was missing**: a matched contrast, on a population containing
+toxins, along an axis this project did not define, with both groups unseen by the model that scored them
+— and the screen orders toxins and length-matched non-toxins at chance. ⚠️ **On 31 pairs**, which is the
+limit of what 30.6% reviewed coverage allows.
 
 🔴 **And it is narrower again on a benign population the probe has never seen.** Every result above,
 and every result in the localization sections, is a re-analysis of **one fit on one pool of 8,259
@@ -943,8 +1002,15 @@ the diagnosis was in the record before the repair was built; both times it named
   than the frozen non-hazardous four on both arms, the top slot flips between arms (Motility on 650M,
   Exotoxin on 35M), and length and species diversity track recovery at ρ = 0.4–0.57. That is indicative
   and unattributable rather than a counter-verdict, but it is the opposite of a confirmation, and it is
-  why the narrowing is stated over the **matched contrast** alone. ⚠️ **A database category is also not a
-  regulatory hazard designation.** The limitation stands, with one part of it now measured.
+  why the narrowing is stated over the **matched contrast** alone. 🟢 **The matched contrast now exists on
+  a third-party axis** (§ 6, study AH): UniProt curators' toxin keywords, 31 hazard-positives paired to
+  length-matched non-toxin members of the same database, both groups held out of one fold, and the
+  ordering is at chance on **both** arms — AUROC **0.4599** and **0.5247** against a frozen hazard floor
+  of 0.70. ⚠️ **It rests on 31 pairs**, because only **30.6%** of the representatives carry a reviewed
+  UniProt entry, and **a database keyword is not a regulatory hazard designation** any more than a
+  database category is. 🔴 **There is still no second annotator for the author's four-category split**,
+  and the honest statement is that the narrowing no longer depends on it rather than that it has been
+  validated.
 - **Not a competence boundary.** The held-out class is removed from the *probe's* training, not from the
   foundation model's pretraining, and every class here is in the public databases these models saw.
 - **Not deployment-ready.** § 10.8 of the long write-up puts it quantitatively: every specificity above
@@ -1026,7 +1092,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**136 claims** and fails if any number in a public document drifts from the artifact that produced
+**137 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

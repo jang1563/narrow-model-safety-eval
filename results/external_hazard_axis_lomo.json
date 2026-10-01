@@ -1,0 +1,265 @@
+{
+  "built": "2026-10-01 09:30:47",
+  "study": "AH -- matched toxin-inclusive contrast on a third-party hazard axis",
+  "preregistration": "docs/EXTERNAL_HAZARD_AXIS_PREREGISTRATION.md",
+  "axis": "UniProt Swiss-Prot keywords: Toxin, Hemolysis, Cytolysis, Enterotoxin, Neurotoxin",
+  "seeds": 30,
+  "bands": {
+    "auroc_registration": [
+      0.4,
+      0.6
+    ],
+    "auroc_hazard_floor": 0.7,
+    "d_recovery_registration": [
+      -0.1,
+      0.1
+    ],
+    "d_recovery_hazard_floor": 0.2
+  },
+  "arms": {
+    "esm2_650M": {
+      "permissive": {
+        "composition_check": {
+          "expected_recovery_matched": 0.6461171166227967,
+          "expected_recovery_all_non_hazard": 0.6502124659338429,
+          "expected_recovery_hazard": 0.7804166413543122,
+          "matched_minus_all_non": -0.004095349311046159,
+          "note": "expected recovery from study AG's 650M per-category means, composition only -- nothing is fitted. A matched set whose mix matched the full negative set cannot be inflating Drecovery."
+        },
+        "hazard_by_vfdb_category": {
+          "Adherence": 1,
+          "Effector delivery system": 2,
+          "Enzyme": 2,
+          "Exotoxin": 26
+        },
+        "matched_by_vfdb_category": {
+          "Adherence": 5,
+          "Biofilm": 2,
+          "Effector delivery system": 5,
+          "Enzyme": 5,
+          "Exotoxin": 1,
+          "Immune modulation": 5,
+          "Invasion": 2,
+          "Nutritional/Metabolic factor": 3,
+          "Regulation": 3
+        },
+        "match_quality": {
+          "mean_length_ratio": 1.1260754399467328,
+          "max_length_ratio": 1.4746376811594204,
+          "mean_len_hazard": 619.5483870967741,
+          "mean_len_matched": 579.483870967742
+        },
+        "n_pairs": 31,
+        "n_same_species_pairs": 17,
+        "n_dropped": 0,
+        "n_held_out_positives": 62,
+        "n_fitted_positives": 684,
+        "recovery_hazard": 0.8344086021505376,
+        "recovery_matched": 0.7172043010752688,
+        "recovery_all_non_hazard": 0.8702199661590525,
+        "d_recovery_matched": 0.1172043010752688,
+        "d_recovery_unmatched": -0.03581136400851492,
+        "d_recovery_pair_ci": [
+          -0.021505376344086023,
+          0.26021505376344084
+        ],
+        "auroc_hazard_vs_matched": 0.5226847034339229,
+        "auroc_sd": 0.035075776966390596,
+        "test_fpr": 0.06843247509124988,
+        "verdict_auroc": "registration band",
+        "verdict_d_recovery": "between bands"
+      },
+      "strict": {
+        "composition_check": {
+          "expected_recovery_matched": 0.6461171166227967,
+          "expected_recovery_all_non_hazard": 0.6502124659338429,
+          "expected_recovery_hazard": 0.7804166413543122,
+          "matched_minus_all_non": -0.004095349311046159,
+          "note": "expected recovery from study AG's 650M per-category means, composition only -- nothing is fitted. A matched set whose mix matched the full negative set cannot be inflating Drecovery."
+        },
+        "hazard_by_vfdb_category": {
+          "Adherence": 1,
+          "Effector delivery system": 2,
+          "Enzyme": 2,
+          "Exotoxin": 26
+        },
+        "matched_by_vfdb_category": {
+          "Adherence": 5,
+          "Biofilm": 2,
+          "Effector delivery system": 5,
+          "Enzyme": 5,
+          "Exotoxin": 1,
+          "Immune modulation": 5,
+          "Invasion": 2,
+          "Nutritional/Metabolic factor": 3,
+          "Regulation": 3
+        },
+        "match_quality": {
+          "mean_length_ratio": 1.1260754399467328,
+          "max_length_ratio": 1.4746376811594204,
+          "mean_len_hazard": 619.5483870967741,
+          "mean_len_matched": 579.483870967742
+        },
+        "n_pairs": 31,
+        "n_same_species_pairs": 17,
+        "n_dropped": 0,
+        "n_held_out_positives": 137,
+        "n_fitted_positives": 609,
+        "recovery_hazard": 0.7419354838709677,
+        "recovery_matched": 0.7096774193548385,
+        "recovery_all_non_hazard": 0.8749576988155667,
+        "d_recovery_matched": 0.032258064516129226,
+        "d_recovery_unmatched": -0.13302221494459898,
+        "d_recovery_pair_ci": [
+          -0.1075268817204301,
+          0.17849462365591395
+        ],
+        "auroc_hazard_vs_matched": 0.4598681928546654,
+        "auroc_sd": 0.040767634912159637,
+        "test_fpr": 0.06960639242379402,
+        "verdict_auroc": "registration band",
+        "verdict_d_recovery": "registration band"
+      }
+    },
+    "esm2_35M": {
+      "permissive": {
+        "composition_check": {
+          "expected_recovery_matched": 0.6461171166227967,
+          "expected_recovery_all_non_hazard": 0.6502124659338429,
+          "expected_recovery_hazard": 0.7804166413543122,
+          "matched_minus_all_non": -0.004095349311046159,
+          "note": "expected recovery from study AG's 650M per-category means, composition only -- nothing is fitted. A matched set whose mix matched the full negative set cannot be inflating Drecovery."
+        },
+        "hazard_by_vfdb_category": {
+          "Adherence": 1,
+          "Effector delivery system": 2,
+          "Enzyme": 2,
+          "Exotoxin": 26
+        },
+        "matched_by_vfdb_category": {
+          "Adherence": 5,
+          "Biofilm": 2,
+          "Effector delivery system": 5,
+          "Enzyme": 5,
+          "Exotoxin": 1,
+          "Immune modulation": 5,
+          "Invasion": 2,
+          "Nutritional/Metabolic factor": 3,
+          "Regulation": 3
+        },
+        "match_quality": {
+          "mean_length_ratio": 1.1260754399467328,
+          "max_length_ratio": 1.4746376811594204,
+          "mean_len_hazard": 619.5483870967741,
+          "mean_len_matched": 579.483870967742
+        },
+        "n_pairs": 31,
+        "n_same_species_pairs": 17,
+        "n_dropped": 0,
+        "n_held_out_positives": 62,
+        "n_fitted_positives": 684,
+        "recovery_hazard": 0.6795698924731183,
+        "recovery_matched": 0.564516129032258,
+        "recovery_all_non_hazard": 0.5834179357021996,
+        "d_recovery_matched": 0.11505376344086027,
+        "d_recovery_unmatched": 0.0961519567709187,
+        "d_recovery_pair_ci": [
+          -0.059139784946236555,
+          0.2924731182795699
+        ],
+        "auroc_hazard_vs_matched": 0.5467568505029483,
+        "auroc_sd": 0.02953177511350568,
+        "test_fpr": 0.047721219295649604,
+        "verdict_auroc": "registration band",
+        "verdict_d_recovery": "between bands"
+      },
+      "strict": {
+        "composition_check": {
+          "expected_recovery_matched": 0.6461171166227967,
+          "expected_recovery_all_non_hazard": 0.6502124659338429,
+          "expected_recovery_hazard": 0.7804166413543122,
+          "matched_minus_all_non": -0.004095349311046159,
+          "note": "expected recovery from study AG's 650M per-category means, composition only -- nothing is fitted. A matched set whose mix matched the full negative set cannot be inflating Drecovery."
+        },
+        "hazard_by_vfdb_category": {
+          "Adherence": 1,
+          "Effector delivery system": 2,
+          "Enzyme": 2,
+          "Exotoxin": 26
+        },
+        "matched_by_vfdb_category": {
+          "Adherence": 5,
+          "Biofilm": 2,
+          "Effector delivery system": 5,
+          "Enzyme": 5,
+          "Exotoxin": 1,
+          "Immune modulation": 5,
+          "Invasion": 2,
+          "Nutritional/Metabolic factor": 3,
+          "Regulation": 3
+        },
+        "match_quality": {
+          "mean_length_ratio": 1.1260754399467328,
+          "max_length_ratio": 1.4746376811594204,
+          "mean_len_hazard": 619.5483870967741,
+          "mean_len_matched": 579.483870967742
+        },
+        "n_pairs": 31,
+        "n_same_species_pairs": 17,
+        "n_dropped": 0,
+        "n_held_out_positives": 137,
+        "n_fitted_positives": 609,
+        "recovery_hazard": 0.6623655913978495,
+        "recovery_matched": 0.5602150537634408,
+        "recovery_all_non_hazard": 0.5813874788494079,
+        "d_recovery_matched": 0.10215053763440862,
+        "d_recovery_unmatched": 0.08097811254844156,
+        "d_recovery_pair_ci": [
+          -0.06989247311827956,
+          0.278494623655914
+        ],
+        "auroc_hazard_vs_matched": 0.5246964967048213,
+        "auroc_sd": 0.033557432248541144,
+        "test_fpr": 0.04843148860609649,
+        "verdict_auroc": "registration band",
+        "verdict_d_recovery": "between bands"
+      }
+    }
+  },
+  "second_arm_rule": {
+    "auroc_same_band_strict": true,
+    "d_recovery_same_band_strict": false,
+    "auroc_same_band_permissive": true
+  },
+  "predictions": {
+    "P1_unmatched_positive_over_10pp": {
+      "kind": "derived",
+      "values": [
+        -0.13302221494459898,
+        0.08097811254844156
+      ],
+      "held": false
+    },
+    "P2_matched_inside_registration_band": {
+      "kind": "derived",
+      "values": [
+        0.032258064516129226,
+        0.10215053763440862,
+        0.4598681928546654,
+        0.5246964967048213
+      ],
+      "held": false
+    },
+    "P3_strict_auroc_below_permissive": {
+      "kind": "reasoned",
+      "values": [
+        0.4598681928546654,
+        0.5246964967048213,
+        0.5226847034339229,
+        0.5467568505029483
+      ],
+      "held": true
+    }
+  },
+  "seconds": 22.5
+}
