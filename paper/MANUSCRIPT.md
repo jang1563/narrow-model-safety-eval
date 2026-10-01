@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 103 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 106 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 103
+written because it caught something. The evidence is a **dated, append-only corrections log of 106
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -615,10 +615,46 @@ partly-hazardous ones, on 650M. ⭐ **Motility alone is the most-flagged group o
 2.682), at a raw rate of **99.05%**: essentially every flagellar protein is flagged, and flagella are
 surface structures with no toxic function.
 
-🔒 **So the finding is that the probe responds to VFDB *registration*.** ⚠️ And the population never
-contained exotoxins — `src/74` built it from *"VFDB setA, non-Exotoxin records"* — so every claim in
-this section is about **non-toxin** virulence factors. **The contrast is real and large; what it is
-evidence for is narrower than membership-beyond-confounds suggested.**
+⚠️ **That split is one author's judgment, and testing the same question on the curator's own labels does
+not simply confirm it — it adds a caution.** The external class-axis test holds **each** of VFDB's
+thirteen eligible categories out in turn, over 746 representatives that **do** include **102 Exotoxin**
+(`src/119`, `results/class_axis_hazard_order.json`; recoveries from `src/81`, 30 seeds per arm). Applying
+the *same frozen* four-category grouping to those thirteen labels:
+
+| | 650M rank | 650M recovery | 35M rank | 35M recovery |
+|---|---:|---:|---:|---:|
+| ⭐ Motility — flagella, no toxic function | **1** | **84.81%** | 4 | 62.78% |
+| **Exotoxin** — the curator's toxin category | 2 | 79.44% | **1** | **75.23%** |
+| Adherence (n = 180, the largest) | 4 | 79.02% | 3 | 65.65% |
+| Immune modulation (n = 77) | 10 | 53.07% | 9 | 43.33% |
+| Stress survival — last on both arms | 13 | **38.67%** | 13 | **23.67%** |
+| **hazard-relevant mean** (9 categories) | | **67.34%** | | **57.17%** |
+| **non-hazardous mean** (4 categories) | | **55.92%** | | **37.26%** |
+
+🔴 **The top slot is arm-dependent, so "the most-recovered category has no toxic function" is not
+available as a claim**: Motility is first on 650M and *fourth* on 35M, where Exotoxin is first. Exotoxin
+minus the best non-hazardous category is **−5.37pp on 650M and +12.45pp on 35M** — the sign itself flips
+between arms, which under this paper's second-arm rule means no verdict.
+
+⚠️ **And the group gap runs the other way from § 6's contrast.** Hazard-relevant categories recover
+**higher** than the frozen non-hazardous four on **both** arms: **+11.41pp** and **+19.91pp** unweighted,
+**+18.31pp** and **+26.04pp** member-weighted. 🟢 **It is indicative, not a verdict** — the category-level
+bootstrap interval spans zero on 650M (**[−8.67, +28.10]**) and clears it only on 35M
+(**[+1.82, +35.04]**), and the exact rank test is significant on *neither* arm (p = **0.330** and
+**0.0755**, nine categories against four). ⚠️ Two confounds are larger than anything clean here: recovery
+tracks a category's **median length** at ρ = **+0.53** / **+0.40** and its **species diversity** at
+ρ = **+0.57** / **+0.51**, so the gap is not attributable to hazard content.
+
+🔒 **So the finding is that the probe responds to VFDB *registration*** — and that narrowing rests on
+the matched contrast, not on recovery. `C/A` compares
+each VFDB protein against a length- and organism-matched benign one and comes out at parity across hazard
+groups on both arms; per-category *recovery* has no matched comparator, tilts hazard-ward by 11–26
+points, and cannot separate that tilt from length and diversity. ⚠️ The *matched* population also never
+contained exotoxins — `src/74` built it from *"VFDB setA, non-Exotoxin records"* — so `C/A` is about
+**non-toxin** virulence factors, and the only toxin-inclusive measurement we have is the unmatched
+ranking above. **The contrast is real and large; what it is evidence for is narrower than
+membership-beyond-confounds suggested, and the hazard question is open on the curator's labels rather
+than closed by them.**
 
 🔴 **And it is narrower again on a benign population the probe has never seen.** Every result above,
 and every result in the localization sections, is a re-analysis of **one fit on one pool of 8,259
@@ -902,7 +938,13 @@ the diagnosis was in the record before the repair was built; both times it named
   survival — which `docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md` § 1.1 states is **one author's domain
   judgment**, frozen in advance with its reasoning and with the largest ambiguous class deliberately
   excluded. ⚠️ **There is no second annotator and no agreement statistic.** Disclosing the judgment is not
-  the same as validating it, and the narrowing is only as good as the split.
+  the same as validating it. 🔴 **Testing the question on the curator's thirteen labels instead made this
+  limitation worse, not better** (§ 6): the hazard-relevant categories recover **11–26 points higher**
+  than the frozen non-hazardous four on both arms, the top slot flips between arms (Motility on 650M,
+  Exotoxin on 35M), and length and species diversity track recovery at ρ = 0.4–0.57. That is indicative
+  and unattributable rather than a counter-verdict, but it is the opposite of a confirmation, and it is
+  why the narrowing is stated over the **matched contrast** alone. ⚠️ **A database category is also not a
+  regulatory hazard designation.** The limitation stands, with one part of it now measured.
 - **Not a competence boundary.** The held-out class is removed from the *probe's* training, not from the
   foundation model's pretraining, and every class here is in the public databases these models saw.
 - **Not deployment-ready.** § 10.8 of the long write-up puts it quantitatively: every specificity above
@@ -984,7 +1026,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**135 claims** and fails if any number in a public document drifts from the artifact that produced
+**136 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

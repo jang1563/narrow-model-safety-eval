@@ -7476,3 +7476,95 @@ where a *finding* existed, which is worse.**
 The **0.30** between-pool gap sits inside a clustered half-width of **0.734** and **1.098**. 🔒 **Draw
 noise at the organism level, both arms.** ⚠️ **The third benign draw I proposed at the end of entry 99 is
 therefore not worth running** — it would estimate a variance this already bounds.
+
+## 2026-10-01 (one hundred and first entry) — The second arm reversed a ranking that was already in the paper
+
+Study B's per-category LOMO recovery was added to § 6 as the external replacement for § 6's
+four-category hazard split: VFDB's **own** thirteen curator labels, each held out in turn, over 746
+representatives that **do** include **102 Exotoxin** — exactly the population the matched contrast
+lacks. The inserted paragraph ended:
+
+> 🔒 **the most-recovered category is still the one with no toxic function.**
+
+🔴 **It was a 650M-only verdict, and the second arm reverses it.** The 35M artifact
+(`results/external_class_axis_lomo_esm2_35M.json`) had been sitting on disk unread since 2026-09-28.
+
+| | 650M | 35M |
+|---|---|---|
+| top category | **Motility** 84.81% | **Exotoxin** 75.23% |
+| Motility's rank | **1** | **4** |
+| Exotoxin's rank | 2 | **1** |
+| Exotoxin − best non-hazardous | **−5.37pp** | **+12.45pp** |
+
+⚠️ **The sign flips.** Under this paper's own second-arm rule — no verdict on 650M alone — there is no
+claim available about which category is most recovered.
+
+### ⚠️ And the group contrast runs opposite to study Q's parity
+
+Applying the *same frozen* grouping (`docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md` § 1.1, four
+non-hazardous categories, chosen before any of these numbers existed) to the curator's thirteen labels,
+the hazard-relevant nine recover **higher** on **both** arms:
+
+| | 650M | 35M |
+|---|---|---|
+| gap, unweighted over categories | **+11.41pp** | **+19.91pp** |
+| gap, member-weighted | **+18.31pp** | **+26.04pp** |
+| category-level bootstrap 95% | **[−8.67, +28.10]** | **[+1.82, +35.04]** |
+| exact Mann–Whitney p (9 vs 4) | **0.330** | **0.0755** |
+
+🟢 **Indicative, not a counter-verdict**: the 650M interval spans zero, the 35M one clears it, and the
+exact rank test is significant on **neither** arm. ⚠️ **And two confounds are larger than anything clean
+here** — recovery tracks a category's median length at ρ = **+0.53** / **+0.40** and its species
+diversity at ρ = **+0.57** / **+0.51**. The interval unit is the **category** (nine against four), not
+the probe seed, per entry 83.
+
+🔑 **Both arms do agree that Stress survival is last** (38.67% / 23.67%) and that the gap's sign is
+positive. The frozen grouping pre-dates the numbers; the **contrast** is a disclosed retrodiction — the
+estimators were chosen after seeing both arms' per-category means.
+
+### 🔑 What changed in the paper
+
+- § 6 now reports **both** arms, the arm-dependent top slot, the group gap with its interval and its two
+  confounds, and states that the narrowing to *registration* **rests on the matched contrast, not on
+  recovery** — `C/A` has a length- and organism-matched comparator and comes out at parity across hazard
+  groups on both arms; per-category recovery has no comparator.
+- § 7's hazard-taxonomy limitation went from *disclosed* to **measured and worse**: testing the question
+  on the curator's labels is the opposite of a confirmation. It is now stated that way.
+- 🔒 Claim 136 encodes the disagreement itself — the arm-dependent top slot, the sign flip, the spanning
+  interval, both non-significant rank tests, and both confounds — and its forbid list bans the five
+  single-arm sentences that were drafted, in assertion-only form so the retraction cannot satisfy its own
+  forbid (entries 76, 78, 83, 86).
+
+### ⭐ The structural gap this exposes
+
+🔴 **Nothing in the gate could have caught it.** Every number in the drafted paragraph was correct and
+traceable to its artifact; what was wrong was the **scope of the sentence built on them**. The audit
+compares numerals to artifacts; it cannot see that a claim generalizes past the arm that produced it.
+The second-arm rule caught this because it was applied by hand before committing, which is not a
+mechanism. ⚠️ **Claim 136's forbid list is a local patch, not a general check** — the general version
+would require every paper sentence to name the arms it rests on, and that does not exist here.
+
+## 2026-10-01 (one hundred and second entry) — The counter that counts these entries stopped at the hundredth one
+
+🔴 **The claim that audits this file's size could not see entry 100.** `corrections_log_census` extracted
+ordinals with
+
+```
+r"^## \d{4}-\d{2}-\d{2} \((\w+(?:-\w+)?) entry\)"
+```
+
+which matches one word or one hyphenated word — `ninety-ninth` yes, **`one hundredth` no, because of the
+space.** So the log held **104** dated entries and the audited count was **103**, in the paper's **title**
+and its abstract, with a green gate.
+
+⚠️ **The same shape as the `tens` map that stopped at 70** (entry 92): a counter whose own vocabulary runs
+out, failing quietly instead of loudly. That one raised `KeyError` and was reported as a failed claim;
+this one just **under-counted by one** and reported agreement. 🔴 **Silent is worse than loud.**
+
+🔒 Fixed three ways: the header regex now accepts any ordinal spelling (`\(([^)]+) entry\)`), `ordinal()`
+extends past ninety-nine and **raises** past its `hundreds` map rather than wrapping, and the
+highest-ordinal search runs to 300 instead of 100. The paper's count is **106** — 104 that existed plus
+this entry and the one above it.
+
+⭐ **The self-maintaining design held.** The totals are not hard-coded, so the moment the regex was fixed
+the gate failed against the paper's stale numeral and named it, which is why this was fixable in one pass.

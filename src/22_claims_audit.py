@@ -1864,6 +1864,61 @@ def organism_cluster():
     }
 
 
+def class_axis_hazard_order():
+    """The curator's own class axis does not confirm the hazard narrowing -- it cautions it.
+
+    🔴 Written after a 650M-only ranking had already been drafted into the paper. The second arm
+    reverses the top slot: Motility is first on 650M and fourth on 35M, where Exotoxin is first. The
+    sign of Exotoxin minus the best non-hazardous category flips, -5.37pp against +12.45pp, so under
+    the second-arm rule there is no verdict on which category is most recovered.
+
+    ⚠️ And the group gap runs opposite to study Q's parity: hazard-relevant categories recover 11.41
+    and 19.91 points HIGHER than the four frozen non-hazardous ones, 18.31 and 26.04 member-weighted.
+    It stays indicative -- the category-level bootstrap spans zero on 650M and the exact rank test is
+    significant on neither arm -- and median length and species diversity track recovery at rho 0.40
+    to 0.57, larger than anything clean. The grouping is frozen and pre-dates the numbers; the
+    contrast is a disclosed retrodiction.
+    """
+    v = j("../results/class_axis_hazard_order.json")
+    if v is None:
+        return None
+    a, b = v["arms"]["650M"], v["arms"]["35M"]
+    return {
+        "non_hazardous": v["non_hazardous"],
+        "frozen_source": v["frozen_grouping_source"],
+        "n_positives": {"650M": a["n_positives"], "35M": b["n_positives"]},
+        "n_categories": {"650M": len(a["ranking"]), "35M": len(b["ranking"])},
+        "n_held_out": {"650M": a["n_held_out"], "35M": b["n_held_out"]},
+        "seeds": {"650M": a["seeds"], "35M": b["seeds"]},
+        "n_exotoxin": next(r["n"] for r in a["ranking"] if r["category"] == "Exotoxin"),
+        "top": {"650M": a["top_category"], "35M": b["top_category"]},
+        "top_is_hazardous": {"650M": a["top_is_hazardous"],
+                             "35M": b["top_is_hazardous"]},
+        "bottom": {"650M": a["bottom_category"], "35M": b["bottom_category"]},
+        "exotoxin_rank": {"650M": a["exotoxin_rank"], "35M": b["exotoxin_rank"]},
+        "motility_rank": {"650M": a["motility_rank"], "35M": b["motility_rank"]},
+        "gap": {"650M": a["gap_unweighted"], "35M": b["gap_unweighted"]},
+        "gap_wt": {"650M": a["gap_member_weighted"],
+                   "35M": b["gap_member_weighted"]},
+        "gap_ci": {"650M": a["gap_ci_category_bootstrap"],
+                   "35M": b["gap_ci_category_bootstrap"]},
+        "mw_p": {"650M": a["mann_whitney_p_exact"],
+                 "35M": b["mann_whitney_p_exact"]},
+        "exo_minus_best_non": {"650M": a["exotoxin_minus_best_non_hazardous"],
+                               "35M": b["exotoxin_minus_best_non_hazardous"]},
+        "rho_len": {"650M": a["confounds"]["spearman_median_len_vs_recovery"],
+                    "35M": b["confounds"]["spearman_median_len_vs_recovery"]},
+        "rho_species": {"650M": a["confounds"]["spearman_n_species_vs_recovery"],
+                        "35M": b["confounds"]["spearman_n_species_vs_recovery"]},
+        "group_mean_haz": {"650M": a["group_mean_hazardous"],
+                           "35M": b["group_mean_hazardous"]},
+        "group_mean_non": {"650M": a["group_mean_non_hazardous"],
+                           "35M": b["group_mean_non_hazardous"]},
+        "rule": v["second_arm_rule"],
+        "retrodiction_disclosed": "retrodiction" in v["disclosure"],
+    }
+
+
 def spent_rule():
     """The reviewed-only rule cost 54.4% of the population and moved the estimate by 0.05.
 
@@ -2450,7 +2505,10 @@ def corrections_log_census():
     discrepancy is recorded rather than renumbered, because the log is append-only.
     """
     log = (ROOT / "docs/DATA_CORRECTIONS.md").read_text()
-    hdrs = re.findall(r"^## \d{4}-\d{2}-\d{2} \((\w+(?:-\w+)?) entry\)", log, re.M)
+    # 🔴 Was r"\((\w+(?:-\w+)?) entry\)" -- one word or one hyphenated word, so "ninety-ninth"
+    # counted and "one hundredth" did not. The log held 104 entries, this returned 103, and the paper's
+    # title agreed with the undercount on a green gate. Any ordinal spelling counts now.
+    hdrs = re.findall(r"^## \d{4}-\d{2}-\d{2} \(([^)]+) entry\)", log, re.M)
     words = ("first second third fourth fifth sixth seventh eighth ninth tenth eleventh twelfth "
              "thirteenth fourteenth fifteenth sixteenth seventeenth eighteenth nineteenth").split()
     # 🔴 This map stopped at 70 and ordinal(80) raised KeyError, which the audit reported as a FAILED
@@ -2458,17 +2516,31 @@ def corrections_log_census():
     # It fails safe, but the eightieth entry was one entry away.
     tens = {20: "twent", 30: "thirt", 40: "fort", 50: "fift", 60: "sixt", 70: "sevent",
             80: "eight", 90: "ninet"}
+    # 🔴 Added 2026-10-01 with the regex above. The ordinal vocabulary stopped at ninety-nine, so the
+    # hundredth entry had no word form to be searched for either -- the undercount and the missing
+    # vocabulary were the same defect seen from two sides.
+    hundreds = {1: "one hundred"}
 
     def ordinal(n):
         if n < 20:
             return words[n - 1]
+        if n >= 100:
+            h, r = divmod(n, 100)
+            if h not in hundreds:
+                raise ValueError(
+                    f"no ordinal word for {n}; extend `hundreds` past {max(hundreds)}")
+            return f"{hundreds[h]}th" if r == 0 else f"{hundreds[h]} and {ordinal(r)}"
         t, u = divmod(n, 10)
         if t * 10 not in tens:
             raise ValueError(f"no ordinal word for {n}; extend `tens` past {max(tens)}")
         return tens[t * 10] + "ieth" if u == 0 else f"{tens[t * 10]}y-{words[u - 1]}"
 
     have = set(hdrs)
-    highest = max((n for n in range(1, 100) if ordinal(n) in have), default=0)
+    # 🔴 A literal 300 here raised ValueError off `hundreds` and the audit reported "artifact error"
+    # -- a crash dressed as a failed claim, which is entry 92's defect again. The search bound is
+    # DERIVED from the vocabulary, so extending `hundreds` extends the search and nothing else does.
+    reach = max(hundreds) * 100 + 100
+    highest = max((n for n in range(1, reach) if ordinal(n) in have), default=0)
     man = (ROOT / "paper/MANUSCRIPT.md").read_text()
     return {"headers": len(hdrs), "distinct": len(have), "highest_ordinal": highest,
             "duplicated": sorted({o for o in have if hdrs.count(o) > 1}),
@@ -5700,7 +5772,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 103"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 106"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -5755,7 +5827,7 @@ CLAIMS = [
      {"docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md":
       "🔑 **Essentially every flagellar protein in this set is flagged.**",
       "paper/MANUSCRIPT.md":
-      "🔒 **So the finding is that the probe responds to VFDB *registration*.**"},
+      "🔒 **So the finding is that the probe responds to VFDB *registration***"},
      # 🔴 The unqualified forms of a claim this study retired. The manuscript and the two
      # preregistrations now say "registration"; these ban the sentence that said otherwise.
      # 🔴 Only the manuscript's live sentence is forbidden. The same words appear in study H's and
@@ -6997,6 +7069,66 @@ CLAIMS = [
      # outright would forbid explaining the error. Forbidding the phrasing a live claim would use
      # keeps the guard while leaving the narrative alone.
      ["64 UniProt sites omitted", "64 UniProt-annotated sites"]),
+    # 🔴 Added 2026-10-01. A 650M-only ranking had already been written into section 6 saying the
+    # most-recovered category has no toxic function. The second arm put Exotoxin first. This claim
+    # locks what both arms actually support and what they do not.
+    ("the curator's class axis cautions the hazard narrowing rather than confirming it",
+     class_axis_hazard_order,
+     lambda v: v is None or (
+         # the grouping is the one frozen before these numbers existed, not a new judgment
+         v["non_hazardous"] == ["Motility", "Nutritional/Metabolic factor",
+                                "Regulation", "Stress survival"]
+         and "HAZARD_VS_MEMBERSHIP" in v["frozen_source"]
+         and v["retrodiction_disclosed"]
+         # the design: both arms, 13 categories each held out, exotoxins present
+         and v["n_positives"] == {"650M": 746, "35M": 746}
+         and v["n_categories"] == {"650M": 13, "35M": 13}
+         and v["n_held_out"] == {"650M": 13, "35M": 13}
+         and v["seeds"] == {"650M": 30, "35M": 30}
+         and v["n_exotoxin"] == 102
+         # 🔴 the top slot is arm-dependent, so no verdict on it
+         and v["top"]["650M"] == "Motility" and v["top"]["35M"] == "Exotoxin"
+         and v["top_is_hazardous"]["650M"] is False
+         and v["top_is_hazardous"]["35M"] is True
+         and v["rule"]["arms_agree_on_top_category"] is False
+         and v["rule"]["arms_agree_top_is_hazardous"] is False
+         and v["motility_rank"] == {"650M": 1, "35M": 4}
+         and v["exotoxin_rank"] == {"650M": 2, "35M": 1}
+         # 🔴 and the Exotoxin-minus-best-non-hazardous sign flips between arms
+         and v["exo_minus_best_non"]["650M"] < 0 < v["exo_minus_best_non"]["35M"]
+         and abs(v["exo_minus_best_non"]["650M"] + 0.0537) < 0.0005
+         and abs(v["exo_minus_best_non"]["35M"] - 0.1245) < 0.0005
+         # ⚠️ what the arms DO agree on: the bottom is non-hazardous, and the gap is positive
+         and v["bottom"] == {"650M": "Stress survival", "35M": "Stress survival"}
+         and v["rule"]["arms_agree_gap_sign"] is True
+         and v["gap"]["650M"] > 0 and v["gap"]["35M"] > 0
+         and abs(v["gap"]["650M"] - 0.1141) < 0.0005
+         and abs(v["gap"]["35M"] - 0.1991) < 0.0005
+         and abs(v["gap_wt"]["650M"] - 0.1831) < 0.0005
+         and abs(v["gap_wt"]["35M"] - 0.2604) < 0.0005
+         and abs(v["group_mean_haz"]["650M"] - 0.6734) < 0.0005
+         and abs(v["group_mean_non"]["650M"] - 0.5592) < 0.0005
+         and abs(v["group_mean_haz"]["35M"] - 0.5717) < 0.0005
+         and abs(v["group_mean_non"]["35M"] - 0.3726) < 0.0005
+         # 🟢 but it stays INDICATIVE: 650M's interval spans zero and neither rank test is
+         # significant, so the gap is not a counter-verdict against the matched contrast
+         and v["gap_ci"]["650M"][0] < 0 < v["gap_ci"]["650M"][1]
+         and v["gap_ci"]["35M"][0] > 0
+         and v["rule"]["both_gaps_exclude_zero"] is False
+         and v["mw_p"]["650M"] > 0.05 and v["mw_p"]["35M"] > 0.05
+         and v["rule"]["both_mw_significant"] is False
+         # ⚠️ and two confounds are larger than anything clean here, on both arms
+         and v["rho_len"]["650M"] > 0.35 and v["rho_len"]["35M"] > 0.35
+         and v["rho_species"]["650M"] > 0.5 and v["rho_species"]["35M"] > 0.5),
+     {"paper/MANUSCRIPT.md":
+      "🔴 **The top slot is arm-dependent, so \"the most-recovered category has no toxic function\" is not"},
+     # 🔴 The 650M-only sentences this study retired, in assertion-only form so that the
+     # retraction now in the paper cannot satisfy its own forbid.
+     ["the most-recovered category is still the one with no toxic",
+      "the narrowing does not depend on the author",
+      "The curator's toxin category is second, below flagella",
+      "Motility is first and Exotoxin second",
+      "the class-axis ranking confirms"]),
 ]
 
 

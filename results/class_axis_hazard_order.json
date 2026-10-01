@@ -1,0 +1,299 @@
+{
+  "built": "2026-10-01",
+  "study": "AG -- the curator's class axis as a hazard ordering",
+  "frozen_grouping_source": "docs/HAZARD_VS_MEMBERSHIP_PREREGISTRATION.md section 1.1",
+  "non_hazardous": [
+    "Motility",
+    "Nutritional/Metabolic factor",
+    "Regulation",
+    "Stress survival"
+  ],
+  "disclosure": "the GROUPING is frozen and pre-dates these numbers; the CONTRAST is a retrodiction -- the author had seen both arms' per-category means before choosing these estimators. Not a sealed prediction.",
+  "unit_of_interval": "the category (9 vs 4), not the probe seed",
+  "arms": {
+    "650M": {
+      "seeds": 30,
+      "n_positives": 746,
+      "n_held_out": 13,
+      "ranking": [
+        {
+          "rank": 1,
+          "category": "Motility",
+          "recovery": 0.8481481481481482,
+          "n": 18,
+          "margin": 0.006618466693907976,
+          "hazardous": false
+        },
+        {
+          "rank": 2,
+          "category": "Exotoxin",
+          "recovery": 0.7944444444444444,
+          "n": 102,
+          "margin": 0.003709146287292242,
+          "hazardous": true
+        },
+        {
+          "rank": 3,
+          "category": "Effector delivery system",
+          "recovery": 0.7916666666666665,
+          "n": 108,
+          "margin": 0.005954931955784559,
+          "hazardous": true
+        },
+        {
+          "rank": 4,
+          "category": "Adherence",
+          "recovery": 0.7901851851851853,
+          "n": 180,
+          "margin": 0.009659410454332829,
+          "hazardous": true
+        },
+        {
+          "rank": 5,
+          "category": "Invasion",
+          "recovery": 0.7397849462365591,
+          "n": 31,
+          "margin": 0.012753672897815704,
+          "hazardous": true
+        },
+        {
+          "rank": 6,
+          "category": "Others",
+          "recovery": 0.7266666666666669,
+          "n": 15,
+          "margin": 0.003854163456708193,
+          "hazardous": true
+        },
+        {
+          "rank": 7,
+          "category": "Biofilm",
+          "recovery": 0.6383333333333333,
+          "n": 20,
+          "margin": 0.004808163736015558,
+          "hazardous": true
+        },
+        {
+          "rank": 8,
+          "category": "Enzyme",
+          "recovery": 0.5819209039548024,
+          "n": 59,
+          "margin": 0.0039998614229261875,
+          "hazardous": true
+        },
+        {
+          "rank": 9,
+          "category": "Nutritional/Metabolic factor",
+          "recovery": 0.5408450704225352,
+          "n": 71,
+          "margin": 0.001045521697960794,
+          "hazardous": false
+        },
+        {
+          "rank": 10,
+          "category": "Immune modulation",
+          "recovery": 0.5307359307359306,
+          "n": 77,
+          "margin": 0.005836580414324999,
+          "hazardous": true
+        },
+        {
+          "rank": 11,
+          "category": "Post-translational modification",
+          "recovery": 0.4666666666666667,
+          "n": 8,
+          "margin": 0.002063453197479248,
+          "hazardous": true
+        },
+        {
+          "rank": 12,
+          "category": "Regulation",
+          "recovery": 0.4612903225806452,
+          "n": 31,
+          "margin": 0.0015250617871060967,
+          "hazardous": false
+        },
+        {
+          "rank": 13,
+          "category": "Stress survival",
+          "recovery": 0.38666666666666666,
+          "n": 20,
+          "margin": -0.00025877953157760203,
+          "hazardous": false
+        }
+      ],
+      "top_category": "Motility",
+      "top_is_hazardous": false,
+      "bottom_category": "Stress survival",
+      "exotoxin_rank": 2,
+      "motility_rank": 1,
+      "group_mean_hazardous": 0.6733783048766951,
+      "group_mean_non_hazardous": 0.5592375519544989,
+      "gap_unweighted": 0.11414075292219628,
+      "gap_member_weighted": 0.18311904761904763,
+      "gap_ci_category_bootstrap": [
+        -0.0866730742333877,
+        0.28096797974485554
+      ],
+      "gap_excludes_zero": false,
+      "mann_whitney_U": 25.0,
+      "mann_whitney_p_exact": 0.3300699300699301,
+      "exotoxin_minus_best_non_hazardous": -0.05370370370370381,
+      "confounds": {
+        "spearman_n_vs_recovery": 0.2692307692307692,
+        "spearman_median_len_vs_recovery": 0.532967032967033,
+        "spearman_n_species_vs_recovery": 0.5714285714285714
+      },
+      "B1_margin_predicts_recovery": {
+        "rho": 0.6813186813186813,
+        "perm_p": 0.0059,
+        "supported": true
+      }
+    },
+    "35M": {
+      "seeds": 30,
+      "n_positives": 746,
+      "n_held_out": 13,
+      "ranking": [
+        {
+          "rank": 1,
+          "category": "Exotoxin",
+          "recovery": 0.7522875816993462,
+          "n": 102,
+          "margin": 0.00898849405348301,
+          "hazardous": true
+        },
+        {
+          "rank": 2,
+          "category": "Invasion",
+          "recovery": 0.7462365591397847,
+          "n": 31,
+          "margin": 0.033642906695604324,
+          "hazardous": true
+        },
+        {
+          "rank": 3,
+          "category": "Adherence",
+          "recovery": 0.6564814814814814,
+          "n": 180,
+          "margin": 0.02469177171587944,
+          "hazardous": true
+        },
+        {
+          "rank": 4,
+          "category": "Motility",
+          "recovery": 0.6277777777777778,
+          "n": 18,
+          "margin": 0.018604062497615814,
+          "hazardous": false
+        },
+        {
+          "rank": 5,
+          "category": "Biofilm",
+          "recovery": 0.5933333333333335,
+          "n": 20,
+          "margin": 0.020413106307387352,
+          "hazardous": true
+        },
+        {
+          "rank": 6,
+          "category": "Effector delivery system",
+          "recovery": 0.583641975308642,
+          "n": 108,
+          "margin": 0.009494815953075886,
+          "hazardous": true
+        },
+        {
+          "rank": 7,
+          "category": "Others",
+          "recovery": 0.5311111111111111,
+          "n": 15,
+          "margin": 0.008353384211659431,
+          "hazardous": true
+        },
+        {
+          "rank": 8,
+          "category": "Enzyme",
+          "recovery": 0.448587570621469,
+          "n": 59,
+          "margin": 0.006372191943228245,
+          "hazardous": true
+        },
+        {
+          "rank": 9,
+          "category": "Immune modulation",
+          "recovery": 0.4333333333333334,
+          "n": 77,
+          "margin": 0.013223737478256226,
+          "hazardous": true
+        },
+        {
+          "rank": 10,
+          "category": "Post-translational modification",
+          "recovery": 0.4,
+          "n": 8,
+          "margin": 0.013399355113506317,
+          "hazardous": true
+        },
+        {
+          "rank": 11,
+          "category": "Nutritional/Metabolic factor",
+          "recovery": 0.32582159624413143,
+          "n": 71,
+          "margin": 0.0005704768700525165,
+          "hazardous": false
+        },
+        {
+          "rank": 12,
+          "category": "Regulation",
+          "recovery": 0.30000000000000004,
+          "n": 31,
+          "margin": -0.005260636564344168,
+          "hazardous": false
+        },
+        {
+          "rank": 13,
+          "category": "Stress survival",
+          "recovery": 0.23666666666666666,
+          "n": 20,
+          "margin": -0.0010692893993109465,
+          "hazardous": false
+        }
+      ],
+      "top_category": "Exotoxin",
+      "top_is_hazardous": true,
+      "bottom_category": "Stress survival",
+      "exotoxin_rank": 1,
+      "motility_rank": 4,
+      "group_mean_hazardous": 0.5716681051142779,
+      "group_mean_non_hazardous": 0.372566510172144,
+      "gap_unweighted": 0.19910159494213392,
+      "gap_member_weighted": 0.2603650793650793,
+      "gap_ci_category_bootstrap": [
+        0.01816363558934862,
+        0.35038862940051707
+      ],
+      "gap_excludes_zero": true,
+      "mann_whitney_U": 30.0,
+      "mann_whitney_p_exact": 0.07552447552447553,
+      "exotoxin_minus_best_non_hazardous": 0.12450980392156841,
+      "confounds": {
+        "spearman_n_vs_recovery": 0.24725274725274726,
+        "spearman_median_len_vs_recovery": 0.3956043956043956,
+        "spearman_n_species_vs_recovery": 0.510989010989011
+      },
+      "B1_margin_predicts_recovery": {
+        "rho": 0.7252747252747254,
+        "perm_p": 0.00345,
+        "supported": true
+      }
+    }
+  },
+  "second_arm_rule": {
+    "arms_agree_on_top_category": false,
+    "arms_agree_top_is_hazardous": false,
+    "arms_agree_on_bottom_category": true,
+    "arms_agree_gap_sign": true,
+    "both_gaps_exclude_zero": false,
+    "both_mw_significant": false
+  }
+}
