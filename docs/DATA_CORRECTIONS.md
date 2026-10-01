@@ -7884,3 +7884,76 @@ held. AI: one derived of three, reasoned zero of one. **Derived 2 of 5 and reaso
 two.** The honest reading is not that reasoning improved but that these two studies left the panel the
 earlier predictions were derived *from*, and a derivation is only as good as the population it was
 derived on.
+
+## 2026-10-02 (one hundred and eighth entry) — A band the control arm gamed, and a 0.08-point match
+
+Study AI-3 left one unexplained fact: **Exotoxin** recovery swings **13.7 points** between the two
+arms while the fourteen-category means differ by **0.3**. Study AJ reran the identical fold — same
+categories, same seeds, negative partition reproduced bit-for-bit — with the embedding replaced by
+**log length plus the twenty amino-acid frequencies**, and with **log length alone** as the control
+that separates length from composition.
+
+### 🔒 What composition reproduces
+
+| | 650M | 35M | composition (21) | length alone (1) |
+|---|---:|---:|---:|---:|
+| Exotoxin recovery | 44.7% | **58.4%** | **58.3%** | 38.7% |
+| Motility recovery | 47.6% | 43.3% | 38.3% | 8.2% |
+| Motility − Exotoxin, length-matched | **+6.04pp** | **−5.30pp** | **−4.67pp** | −5.78pp |
+| Exotoxin's rank of fourteen | 8 | 4 | **2** | 1 |
+
+🔑 **A 21-number classifier with no model in it puts Exotoxin at 58.3% against the 35M arm's 58.4% —
+a gap of 0.08 points** — and gives the length-matched difference the same sign and nearly the same
+size, where the larger arm gives the opposite sign. ⚠️ So whatever the smaller representation is
+doing on exotoxins, a model-free classifier also does.
+
+### 🔴 And the band that was supposed to confirm it was gamed by the control
+
+AJ-2 asked for the **difference** between the composition arm's rank correlation with the 35M
+ordering and with the 650M ordering to reach **+0.15**. It reached **+0.1319** — missed by 0.018, so
+the frozen verdict is **PARTIAL**.
+
+🔴 **But the length-alone control clears the same band at +0.1714**, and it is not a better
+explanation of anything:
+
+| | *ρ* vs 35M | *ρ* vs 650M | gap | MAE vs 35M | MAE vs 650M | closer to |
+|---|---:|---:|---:|---:|---:|---|
+| composition | **+0.807** | +0.675 | +0.132 | **9.98pp** | 12.18pp | **35M** |
+| length alone | +0.385 | +0.213 | **+0.171** | 24.17pp | 23.82pp | **650M** |
+
+⚠️ **The band put a floor on a difference of two correlations without requiring either to be large.**
+A weak, asymmetric fit clears it; a strong, less asymmetric fit does not. The control sits **24
+points** from *both* embedding arms — two and a half times composition's error — and is marginally
+**closer to 650M**, the arm it is supposed to be unlike.
+
+🔑 **A criterion the worse-fitting arm passes and the better-fitting arm fails is a bad criterion.**
+🔴 **The mean-absolute-error comparison that shows this is POST HOC**, added after seeing AJ-2 fail
+to discriminate, and it is labelled so in the artifact and in § 6. **The frozen verdict is not
+upgraded.** What is reported as settled is the direction and the 0.08-point match; what is reported
+as unsettled is the composite rule.
+
+### ⚠️ Two limits that do not go away
+
+- 🔴 **The study has no second arm and cannot have one** — a sequence has one composition. It is an
+  explanation offered, not a verdict, whichever way its bands had fallen. The preregistration said
+  this before the run.
+- ⚠️ **It explains the disagreement without rescuing the claim.** § 6's between-category narrowing
+  still does not replicate (entry 107). Knowing that the smaller arm behaves compositionally on
+  exotoxins makes the disagreement intelligible; it does not make either arm the right one.
+
+### ⭐ The prediction record, and the test of entry 107's excuse
+
+**P1 (derived) held, P2 (derived) missed by 0.018, P3 (reasoned) held** — derived 1 of 2, reasoned
+1 of 1.
+
+🔑 Entry 107 explained the collapse of this project's derived-prediction record by saying that studies
+AH and AI had **left the panel the earlier derivations came from**. AJ's P1 and P2 were derived from
+measurements on *this* benchmark, so they were a test of that excuse. 🟢 **P1 held cleanly.** ⚠️ **P2
+missed, but by 0.018 and on a criterion that the control arm proved defective** — so the excuse
+survives in weakened form: a derivation on the right population got the direction right twice and the
+threshold wrong once, and the threshold was mine.
+
+🔴 **Running total across AH, AI and AJ: derived 3 of 7, reasoned 2 of 3.** The honest statement is
+no longer "derived predictions hold here". It is that **the direction of a derived prediction has held
+5 of 7 times and its magnitude almost never has** — which is the same distinction § 4 draws between
+margin's ordering, which transfers, and margin's calibration, which does not.

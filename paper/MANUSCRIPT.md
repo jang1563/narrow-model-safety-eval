@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 111 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 112 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 111
+written because it caught something. The evidence is a **dated, append-only corrections log of 112
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -778,6 +778,41 @@ each. **Exotoxin** swings **−13.7pp** between them (44.7% on 650M, **58.4%** o
 +4.2pp, and it is not seed instability: Exotoxin's across-seed standard deviation is 12.7 and 9.1 points
 with **zero** zero-recovery seeds on either arm.
 
+🔑 **A model-free classifier reproduces the smaller arm, including the category that moves.** Study AJ
+reruns the identical fold — same categories, same seeds, and the negative partition reproduced
+bit-for-bit — with the embedding replaced by **log length plus the twenty amino-acid frequencies**, the
+same 21 numbers that reach AUROC 0.8705 on this benchmark (§ 1.2). Bands were frozen in
+`docs/COMPOSITION_ARM_PREREGISTRATION.md` before the run.
+
+| | 650M | 35M | **composition, 21 features** | length alone, 1 feature |
+|---|---:|---:|---:|---:|
+| Exotoxin recovery | 44.7% | **58.4%** | **58.3%** | 38.7% |
+| Motility recovery | 47.6% | 43.3% | 38.3% | 8.2% |
+| Motility − Exotoxin, length-matched | **+6.04pp** | **−5.30pp** | **−4.67pp** | −5.78pp |
+| Exotoxin's rank of fourteen | 8 | 4 | **2** | 1 |
+| mean absolute error over the 14 recoveries, vs 35M | — | — | **9.98pp** | 24.17pp |
+| …vs 650M | — | — | 12.18pp | 23.82pp |
+
+🔒 **Composition alone puts Exotoxin at 58.3% against the 35M arm's 58.4%** — a gap of **0.08
+points** — and gives the length-matched difference the same sign and nearly the same size as 35M
+(−4.67 against −5.30), while 650M sits at +6.04. Over all fourteen categories it is closer to 35M than
+to 650M (9.98pp against 12.18pp). ⚠️ **So what the smaller representation is doing on exotoxins is
+something a 21-number model-free classifier also does.**
+
+🔴 **The preregistration's own verdict is nonetheless PARTIAL, and the reason is a band we chose
+badly.** AJ-2 asked for the *difference* between composition's rank correlation with the 35M ordering
+and with the 650M ordering to reach **+0.15**; it reached **+0.1319**. ⚠️ **But that criterion put a
+floor on a difference of two correlations without requiring either to be large**, and the
+length-alone control — included to separate length from composition — clears it at **+0.1714** while
+sitting **24pp** from *both* embedding arms and marginally closer to 650M. 🔑 **A criterion that the
+worse-fitting arm passes and the better-fitting arm fails is a bad criterion**, and the mean-absolute-
+error comparison that shows this is **post hoc** and labelled so in the artifact. The frozen verdict
+stands as *does not settle it*; what is reported as settled is the direction and the 0.08-point
+Exotoxin match, not the composite rule.
+
+⚠️ **And study AJ has no second arm and cannot have one** — a sequence has one composition. It is an
+explanation offered, not a verdict, whichever way its bands had fallen.
+
 ⚠️ **This is not a contradiction of study AH, and the two should not be collapsed.** AH asks whether the
 screen can **order** a curated toxin above a length-matched non-toxin *inside one fold*, and the answer is
 chance on both arms. AI-3 asks whether a **held-out category** is recovered less than another held-out
@@ -1201,7 +1236,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**140 claims** and fails if any number in a public document drifts from the artifact that produced
+**141 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

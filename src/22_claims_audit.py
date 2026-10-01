@@ -195,7 +195,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/EXTERNAL_HAZARD_AXIS_PREREGISTRATION.md",
           # Added 2026-10-01. It is the only study in the project run on someone else's published
           # benchmark, and it prices the circularity of doing so before any result exists.
-          "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md"]
+          "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md",
+          # Added 2026-10-02. It offers the only explanation the project has for study AI-3's
+          # arm disagreement, and it records a band of its own that the control arm gamed.
+          "docs/COMPOSITION_ARM_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1868,6 +1871,63 @@ def organism_cluster():
         "pool_gap_inside": bool(a["pool_gap_inside"] and b["pool_gap_inside"]),
         "ca_ratio_below_r_650M": bool(a["contrasts"]["CA"]["design_effect"]
                                       < a["contrasts"]["R"]["design_effect"]),
+    }
+
+
+def composition_arm():
+    """A 21-number model-free classifier reproduces the smaller arm on the category that moves.
+
+    🔒 Composition alone puts Exotoxin at 58.3% against the 35M arm's 58.4% -- 0.08 points --
+    gives the length-matched difference the same sign and nearly the same size (-4.67 against
+    -5.30, where 650M is +6.04), and over all fourteen categories sits 9.98pp from 35M against
+    12.18pp from 650M.
+
+    🔴 The frozen verdict is PARTIAL anyway, because AJ-2 asked for a DIFFERENCE of two rank
+    correlations to reach +0.15 and composition reached +0.1319. ⚠️ That band put a floor on a
+    difference without requiring either correlation to be large, and the length-alone control
+    clears it at +0.1714 while sitting 24pp from BOTH arms and marginally closer to 650M. A
+    criterion the worse-fitting arm passes and the better-fitting arm fails is a bad criterion;
+    the mean-absolute-error comparison that shows it is POST HOC and labelled so.
+
+    🔴 And the study has no second arm and cannot have one: a sequence has one composition. It
+    is an explanation offered, not a verdict, whichever way the bands fell.
+    """
+    v = j("../results/composition_arm.json")
+    if v is None:
+        return None
+    c, ln = v["arms"]["composition"], v["arms"]["length_only"]
+    return {
+        "prereg": v["preregistration"],
+        "single_arm_disclosed": "cannot have one" in v["single_arm_disclosure"],
+        "post_hoc_labelled": "post hoc" in v.get("post_hoc_note", "").lower(),
+        "bands": v["bands"],
+        "n_features": {"composition": c["n_features"], "length_only": ln["n_features"]},
+        "rec_exotoxin": {"composition": c["rec_exotoxin"], "length_only": ln["rec_exotoxin"]},
+        "rec_motility": {"composition": c["rec_motility"], "length_only": ln["rec_motility"]},
+        "matched": {"composition": c["AJ1_diff_matched"],
+                    "length_only": ln["AJ1_diff_matched"]},
+        "n_pairs": c["AJ1_n_pairs"],
+        "aj1_sign": {"composition": c["AJ1_sign_matches_35M"],
+                     "length_only": ln["AJ1_sign_matches_35M"]},
+        "aj1_matched_sign": {"composition": c["AJ1_matched_sign_matches_35M"],
+                             "length_only": ln["AJ1_matched_sign_matches_35M"]},
+        "aj2_gap": {"composition": c["AJ2_gap"], "length_only": ln["AJ2_gap"]},
+        "aj2_rho35": {"composition": c["AJ2_rho_vs_35M"],
+                      "length_only": ln["AJ2_rho_vs_35M"]},
+        "aj2_verdict": {"composition": c["AJ2_verdict"],
+                        "length_only": ln["AJ2_verdict"]},
+        "aj3_rank": {"composition": c["AJ3_exotoxin_rank"],
+                     "length_only": ln["AJ3_exotoxin_rank"]},
+        "mae35": {"composition": c["post_hoc_mae_vs_35M"],
+                  "length_only": ln["post_hoc_mae_vs_35M"]},
+        "mae650": {"composition": c["post_hoc_mae_vs_650M"],
+                   "length_only": ln["post_hoc_mae_vs_650M"]},
+        "closer": {"composition": c["post_hoc_closer_to"],
+                   "length_only": ln["post_hoc_closer_to"]},
+        "exo_gap_35M": c["post_hoc_exotoxin_gap_to_35M"],
+        "verdict": v["hypothesis_verdict"],
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "kinds": {k: w["kind"] for k, w in v["predictions"].items()},
     }
 
 
@@ -5990,7 +6050,7 @@ CLAIMS = [
          and v["unused"] == ["first"]
          and v["highest_ordinal"] < v["headers"]),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 111"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 112"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -7556,6 +7616,57 @@ CLAIMS = [
       "the per-class failure is bimodal on every panel",
       "the screen is hazard-selective on DeepVIC",
       "both arms agree on which category is recovered more"]),
+    # 🔴 Added 2026-10-02. The claim locks the explanation AND its two limits: the frozen verdict
+    # is PARTIAL, and the study is single-arm by construction. Neither can be dropped.
+    ("composition reproduces the smaller arm on the category that moves, and does not settle it",
+     composition_arm,
+     lambda v: v is None or (
+         "COMPOSITION_ARM_PREREGISTRATION" in v["prereg"]
+         and v["single_arm_disclosed"] and v["post_hoc_labelled"]
+         and v["n_features"] == {"composition": 21, "length_only": 1}
+         # 🔒 the 0.08-point Exotoxin match, which is the study's strongest fact
+         and abs(v["rec_exotoxin"]["composition"] - 0.583) < 0.0015
+         and v["exo_gap_35M"] < 0.002
+         # 🔒 AJ-1 holds in both forms, and the matched size is close to 35M's -5.30
+         and v["aj1_sign"]["composition"] and v["aj1_matched_sign"]["composition"]
+         and v["matched"]["composition"] < 0
+         and abs(v["matched"]["composition"] + 0.0467) < 0.0005
+         and v["n_pairs"] == 828
+         # 🔒 AJ-3 supports: Exotoxin is second of fourteen under composition
+         and v["aj3_rank"]["composition"] == 2
+         and v["aj3_rank"]["length_only"] == 1
+         # 🔴 AJ-2 is MISSED by composition and PASSED by the control, which is the band defect
+         and v["bands"]["aj2_support_floor"] == 0.15
+         and v["aj2_gap"]["composition"] < 0.15
+         and abs(v["aj2_gap"]["composition"] - 0.1319) < 0.0005
+         and v["aj2_verdict"]["composition"] == "between bands"
+         and v["aj2_gap"]["length_only"] >= 0.15
+         and v["aj2_verdict"]["length_only"] == "supports"
+         # 🔴 and the post-hoc MAE shows why that band is bad: the control is 24pp from both
+         # arms and closer to 650M, while composition is closer to 35M
+         and v["closer"]["composition"] == "35M"
+         and v["closer"]["length_only"] == "650M"
+         and v["mae35"]["composition"] < v["mae650"]["composition"]
+         and v["mae35"]["length_only"] > 2 * v["mae35"]["composition"]
+         and abs(v["mae35"]["composition"] - 0.0998) < 0.0005
+         and abs(v["mae35"]["length_only"] - 0.2417) < 0.0005
+         # 🔴 the frozen verdict is PARTIAL and is not upgraded by the post-hoc comparison
+         and v["verdict"].startswith("PARTIAL")
+         # ⭐ derived 1 of 2 and the reasoned one held
+         and v["preds"]["P1_AJ1_negative"] is True
+         and v["preds"]["P2_AJ2_at_least_0.15"] is False
+         and v["preds"]["P3_exotoxin_top_4"] is True
+         and v["kinds"]["P3_exotoxin_top_4"] == "reasoned"),
+     {"paper/MANUSCRIPT.md":
+      "🔴 **The preregistration's own verdict is nonetheless PARTIAL, and the reason is a band we chose",
+      "docs/COMPOSITION_ARM_PREREGISTRATION.md":
+      "🔴 **This study has no second arm and cannot have one**: there is only one composition of a sequence."},
+     # 🔴 Five overstatements, in assertion-only form.
+     ["composition explains the arm disagreement",
+      "the 35M arm is a composition classifier",
+      "length alone explains the arm disagreement",
+      "study AJ settles the question",
+      "the preregistered bands were met"]),
 ]
 
 
