@@ -1,0 +1,13 @@
+{
+  "built": "2026-10-01 09:24:39",
+  "source": "UniProt ID mapping, RefSeq_Protein -> UniProtKB",
+  "fields": "accession,reviewed,protein_name,organism_name,keyword,length",
+  "job": "gAzmsK0E7S",
+  "polls": 4,
+  "n_representatives": 746,
+  "n_accessions_submitted": 745,
+  "n_rows_returned": 823,
+  "n_distinct_from": 540,
+  "n_reviewed_rows": 314,
+  "tsv": "data/external/uniprot_idmap/class_axis_idmap.tsv"
+}
