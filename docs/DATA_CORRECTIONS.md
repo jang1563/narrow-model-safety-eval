@@ -7705,3 +7705,54 @@ representation, carries much of the separability — and it had only ever been s
 ⚠️ **AI-2 and AI-3 are not done.** Leave-one-category-out over DeepVIC's 14 classes and the
 Motility-against-Exotoxin contrast at 1,121 against 1,126 members both need ESM-2 embeddings of ~46,000
 sequences, and both are preregistered. Only AI-1 and the AI-4 variant of AI-1 are reported here.
+
+## 2026-10-01 (one hundred and fifth entry) — A second Spearman, and a nan that reported as a band
+
+Two defects found while writing `src/125`, the leave-one-category-out analysis for DeepVIC's axis.
+Neither reached a result, because both were caught by assertions written before the run.
+
+### 🔴 1. A local Spearman that disagreed with this project's on ties
+
+`src/125` carried its own `spearman`, ranking with `argsort(argsort(x))`. That breaks ties
+**arbitrarily**. `src/30`'s `_spearman` — the definition **every** rho in this paper was computed
+with — assigns **average ranks**. On the first tied vector the selftest fed them they disagreed:
+
+| | ρ on `[3,1,4,1,5]` vs `[2,7,1,8,2]` |
+|---|---:|
+| the local argsort version | **−0.600** |
+| `src/30._spearman` (average ranks) | **−0.789** |
+
+⚠️ **Class margins are floats and would rarely tie; per-class recovery rates over 30 seeds can and
+do.** 🔒 There is no local definition any more: `_rho` *is* `src/30._spearman`, and `perm_p` draws its
+null with the same function, so the statistic and its null cannot drift apart.
+
+⭐ **The untied cases could not have found this.** Monotone and reversed vectors agree between the two
+implementations exactly. The check that caught it was the one with a repeated value in it.
+
+### 🔴 2. A nan that passed a band test, and an assertion that passed on the nan
+
+`src/30._spearman` is `np.corrcoef` over ranks, so a **zero-variance** input returns **nan**, not 0.
+And every comparison against nan is False, so `verdict_rho(nan)` fell through `<= −0.40`, `>= 0.60`
+and `<= 0.20` to land on **"between bands"** — 🔴 **a non-measurement reported as a measured
+in-between result.**
+
+⚠️ **The first assertion written against this was itself vacuous.** It read
+
+```
+if abs(_rho([1, 1, 1, 1], [4, 3, 2, 1])) > 1e-12:   # "rho must be 0"
+```
+
+and `abs(nan) > 1e-12` is **False**, so it passed while measuring nothing — entry 97's
+weak-calibration defect, in a check written to prevent exactly this class of error.
+
+🔒 Both verdict functions now return **`"unmeasured"`** on a non-finite input, the selftest asserts
+the **real** behaviour (`np.isnan(tied)`) rather than the behaviour I assumed, and asserts that a nan
+cannot reach a band. 🔒 Removing either guard makes the selftest fail with the right message — both
+were null-calibrated, which is how the vacuous version was found.
+
+### ⭐ What this says about the method
+
+🔑 **Reusing a definition is not the same as importing it.** The local Spearman was written to match
+`src/30`'s and did, on every input without a tie. The only reason the project has one rho is that a
+selftest compared the two on a tied vector; nothing else in the pipeline would have noticed, and the
+disagreement would have shown up as a slightly different ρ in a table.

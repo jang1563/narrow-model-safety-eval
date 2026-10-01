@@ -150,3 +150,7 @@ data/sequences/_independent_pool.json
 data/sequences/benign_pool_independent.fasta
 data/external/deepvic/*.keras
 data/external/deepvic/DLDB_33456.faa
+data/sequences/deepvic_ordered.fasta
+results/v3/deepvic_ckpt*
+results/v3/embeddings_deepvic*.npy
+logs/
