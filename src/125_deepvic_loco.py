@@ -17,6 +17,7 @@ Margin is `src/30`'s, imported rather than restated, exactly as `src/81` does it
 import argparse
 import importlib.util
 import json
+import re
 import sys
 import time
 from collections import Counter
@@ -38,6 +39,9 @@ ALPHA = 0.05 / 4
 BAND_RHO_REPLICATE, BAND_RHO_FAIL, BAND_RHO_INVERT = 0.60, 0.20, -0.40
 BAND_AI3_REPLICATE, BAND_AI3_HAZARD = 0.0, -0.20
 ARMS = {"esm2_650M": "", "esm2_35M": "_esm2_35M"}
+MAX_LEN = 1022          # ESM-2's limit; amendment 1
+MATCH_DROP_RATIO = 2.0  # amendment 1, AI-3c, as src/121 does it
+FAA = ROOT / "data/external/deepvic/DLDB_33456.faa"
 
 
 def load30():
@@ -99,6 +103,44 @@ def boot_diff(a, b, seed=0):
         d[i] = (a[rng.integers(0, a.size, a.size)].mean()
                 - b[rng.integers(0, b.size, b.size)].mean())
     return float(np.percentile(d, 2.5)), float(np.percentile(d, 97.5))
+
+
+def lengths():
+    """id -> sequence length, for amendment 1's truncation and matching variants."""
+    out, key, n = {}, None, 0
+    with FAA.open(encoding="utf-8", errors="replace") as fh:
+        for line in fh:
+            if line.startswith(">"):
+                if key is not None:
+                    out[key] = n
+                key = re.split(r"[\t ]", line[1:].rstrip("\n"), maxsplit=1)[0].strip()
+                n = 0
+            else:
+                n += len(line.strip())
+    if key is not None:
+        out[key] = n
+    return out
+
+
+def match_pairs(a_ids, b_ids, length):
+    """Pair each of a_ids to the nearest-length member of b_ids, without replacement.
+
+    src/121's rule, minus the species preference, which does not apply across two VFDB
+    categories. Deterministic: a_ids are taken in ascending length.
+    """
+    pool, pairs, dropped = list(b_ids), [], 0
+    for h in sorted(a_ids, key=lambda v: length[v]):
+        if not pool:
+            dropped += 1
+            continue
+        pick = min(pool, key=lambda c: abs(length[c] - length[h]))
+        lo, hi = sorted((length[pick], length[h]))
+        if hi / max(lo, 1) > MATCH_DROP_RATIO:
+            dropped += 1
+            continue
+        pool.remove(pick)
+        pairs.append((h, pick))
+    return pairs, dropped
 
 
 def verdict_rho(r):
@@ -299,19 +341,61 @@ def run_arm(arm, seeds, drop_shared):
                 "significant": bool(p < ALPHA), "verdict": verdict_rho(rho),
                 "bimodality": bimodality([rec[c]["mean"] for c in order])},
     }
+    # ---- AI-3, three variants (amendment 1) ----------------------------------------
+    # 🔴 Exotoxin is truncated at 22.02% and Motility at 1.52%, so the full-membership
+    # comparison is pushed toward the narrowing by the truncation asymmetry alone.
+    # AI-3c, the length-matched one, is the primary variant per the amendment.
     if "Motility" in rec and "Exotoxin" in rec:
-        d = rec["Motility"]["mean"] - rec["Exotoxin"]["mean"]
-        lo, hi_ = boot_diff(flags["Motility"], flags["Exotoxin"])
-        out["AI3"] = {"n_motility": rec["Motility"]["n"],
-                      "n_exotoxin": rec["Exotoxin"]["n"],
-                      "rec_motility": rec["Motility"]["mean"],
-                      "rec_exotoxin": rec["Exotoxin"]["mean"],
-                      "diff": d, "ci": [lo, hi_],
-                      "excludes_zero": bool(lo > 0 or hi_ < 0),
-                      "verdict": verdict_ai3(d)}
-        print(f"    AI-3 Motility {rec['Motility']['mean'] * 100:.1f}% - Exotoxin "
-              f"{rec['Exotoxin']['mean'] * 100:.1f}% = {d * 100:+.2f}pp "
-              f"[{lo * 100:+.2f}, {hi_ * 100:+.2f}] -> {out['AI3']['verdict']}", flush=True)
+        LEN = lengths()
+        ids = np.array(man["id_of_row"])
+        mot = pos[cls[pos] == "Motility"]
+        exo = pos[cls[pos] == "Exotoxin"]
+        row_of = {int(r): i for i, r in enumerate(np.arange(len(ids)))}
+        del row_of
+        # per-member flag vectors are aligned to the order the fold scored them in
+        fm = {int(r): float(v) for r, v in zip(mot, flags["Motility"])}
+        fe = {int(r): float(v) for r, v in zip(exo, flags["Exotoxin"])}
+        trunc = {c: float(np.mean([LEN[i] > MAX_LEN for i in ids[pos[cls[pos] == c]]]))
+                 for c in targets}
+
+        def report(tag, mrows, erows, extra=None):
+            a = np.array([fm[int(r)] for r in mrows], float)
+            b = np.array([fe[int(r)] for r in erows], float)
+            d = float(a.mean() - b.mean())
+            lo, hi_ = boot_diff(a, b)
+            blk = {"n_motility": int(a.size), "n_exotoxin": int(b.size),
+                   "rec_motility": float(a.mean()), "rec_exotoxin": float(b.mean()),
+                   "diff": d, "ci": [lo, hi_],
+                   "excludes_zero": bool(lo > 0 or hi_ < 0),
+                   "verdict": verdict_ai3(d)}
+            if extra:
+                blk.update(extra)
+            print(f"    AI-3{tag} n={a.size}/{b.size}  Mot {a.mean() * 100:5.1f}% - Exo "
+                  f"{b.mean() * 100:5.1f}% = {d * 100:+6.2f}pp "
+                  f"[{lo * 100:+.2f}, {hi_ * 100:+.2f}] -> {blk['verdict']}", flush=True)
+            return blk
+
+        out["AI3a_all"] = report("a", mot, exo,
+                                 {"truncation_rate_motility": trunc["Motility"],
+                                  "truncation_rate_exotoxin": trunc["Exotoxin"]})
+        mu = [r for r in mot if LEN[ids[r]] <= MAX_LEN]
+        eu = [r for r in exo if LEN[ids[r]] <= MAX_LEN]
+        out["AI3b_untruncated"] = report("b", mu, eu)
+        pairs, dropped = match_pairs([ids[r] for r in exo], [ids[r] for r in mot], LEN)
+        back = {ids[r]: int(r) for r in np.r_[mot, exo]}
+        out["AI3c_length_matched"] = report(
+            "c", [back[b] for _, b in pairs], [back[a] for a, _ in pairs],
+            {"n_pairs": len(pairs), "n_dropped": dropped,
+             "mean_length_ratio": float(np.mean(
+                 [max(LEN[a], LEN[b]) / max(min(LEN[a], LEN[b]), 1) for a, b in pairs])),
+             "primary": True,
+             "reading_rule": ("amendment 1: AI-3 replicates section 6's narrowing only if "
+                              "AI-3c is in the replication band on BOTH arms")})
+        out["AI3_truncation_rates"] = trunc
+        out["AI3_P6_a_exceeds_c"] = bool(
+            out["AI3a_all"]["diff"] > out["AI3c_length_matched"]["diff"])
+        out["AI2"]["rho_truncation_vs_recovery"] = _rho(
+            [trunc[c] for c in order], recv)
     print(f"    AI-2 rho {rho:+.4f} p {p:.5f} -> {out['AI2']['verdict']}", flush=True)
     return out
 

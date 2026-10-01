@@ -114,3 +114,61 @@ derived missed and the reasoned one held. The record is not a law.
   databases, with naturally matched group sizes. 🔴 **AI-3 ≤ −20pp** ⇒ the narrowing is wrong at
   scale and § 6 must be rewritten.
 - **AI-4 moving a figure** ⇒ the arm is circular and is withdrawn.
+
+---
+
+## Amendment 1 — the truncation asymmetry, and what AI-3 must report because of it
+
+**Added 2026-10-01, after the embeddings were written and before `src/125` was run.** No recovery,
+rho or AI-3 difference existed when this was written; the only new facts are sequence lengths, which
+are composition.
+
+ESM-2 truncates at **1,022** residues. `src/124`'s log reports **1,738** of 46,445 sequences
+truncated. Decomposed:
+
+| | truncated | of | rate | median length |
+|---|---:|---:|---:|---:|
+| labelled positives | 1,438 | 12,989 | **11.07%** | 369 |
+| negatives | 300 | 33,456 | **0.90%** | 268 |
+
+🔴 **A 12× asymmetry between the two sides of the binary task**, and it is worse along the axis AI-3
+is built on:
+
+| class | truncated | of | rate | median |
+|---|---:|---:|---:|---:|
+| **Exotoxin** | 248 | 1,126 | **22.02%** — the highest of all fourteen | 532 |
+| Exoenzyme | 46 | 210 | 21.90% | 494 |
+| Adherence | 482 | 2,259 | 21.34% | 420 |
+| … | | | | |
+| **Motility** | 17 | 1,121 | **1.52%** | 308 |
+| Stress survival | 0 | 186 | 0.00% | 540 |
+
+🔴 **AI-3 compares Motility against Exotoxin because their sizes match within 0.5%. Their truncation
+rates differ by 14×.** If truncation costs recovery, the asymmetry pushes AI-3 **toward** `≥ 0`, which
+is the direction § 5's P4 predicts. ⚠️ **A confirmation of P4 on the full membership would therefore
+be uninterpretable on its own**, and that is stated here rather than discovered afterwards.
+
+### What AI-3 now reports: three variants, not one
+
+- **AI-3a — all members.** As frozen in § 3. 1,121 against 1,126.
+- **AI-3b — untruncated only.** Members of length ≤ 1,022, so no sequence is cut. Sizes stop
+  matching (about 1,104 against 878) and that is the price.
+- **AI-3c — length-matched pairs.** Each Exotoxin member paired without replacement to the
+  nearest-length Motility member, pairs above a 2.0 length ratio dropped and counted, as `src/121`
+  does. 🔑 **This is the primary variant**, because it removes the length difference and the
+  truncation difference together.
+
+🔒 **The bands are unchanged** and apply to each variant: `≥ 0` replicates the narrowing, `≤ −20pp`
+is hazard-selective on their labels, and a **verdict needs both arms in the same band**.
+
+🔑 **The reading rule, frozen here:** AI-3 replicates § 6's narrowing only if **AI-3c** lands in the
+replication band on both arms. If AI-3a is `≥ 0` while AI-3c is not, the result is reported as a
+**truncation and length artifact** and § 6 gains nothing from it.
+
+**P6 (derived — from the 22.02% against 1.52% rates above).** AI-3a exceeds AI-3c on both arms: the
+full-membership difference is more favourable to the narrowing than the matched one.
+
+⚠️ AI-2's Spearman is also exposed to this — truncation rate correlates with class median length, and
+`src/125` already reports margin against the two controls it is meant to beat. The **truncation rate
+per class** is added to the artifact so the correlation can be computed rather than assumed, and
+Spearman(truncation rate, recovery) is reported alongside. No band is set for it; it is a diagnostic.
