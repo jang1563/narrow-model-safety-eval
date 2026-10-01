@@ -1,0 +1,65 @@
+{
+  "built": "2026-10-01 10:27:06",
+  "study": "AI build -- DeepVIC's published benchmark, partitioned and priced",
+  "source": "https://github.com/ansontwk/DeepVIC (src/data, src/models)",
+  "files": {
+    "DLDB_33456.faa": {
+      "bytes": 49039734,
+      "sha256": "849fc7152f6895b6997c2f9157c0ea5731b36dd80b04944ebdd9e8970772e225"
+    },
+    "metadata.txt": {
+      "bytes": 5012470,
+      "sha256": "7b151d71147dde64f1563d14fd0a384f189a5206c31cc23321b2f2d65046ec96"
+    },
+    "binary.keras": {
+      "bytes": 8119361,
+      "sha256": "ca4f23322afd3832bef0d684553081929038bbf04c6416759e662cf761c328f5"
+    },
+    "multiclass.keras": {
+      "bytes": 16073012,
+      "sha256": "181410ef10c576b113b928e8743e4d718b14f353458674416d5d97ec65642e21"
+    }
+  },
+  "n_fasta": 66912,
+  "n_positives": 33456,
+  "n_negatives": 33456,
+  "n_labelled_positives": 12989,
+  "n_class_NA": 20467,
+  "source_databases": {
+    "UNIPROT": 21544,
+    "VFDB": 9143,
+    "VICTORS": 1752,
+    "PATRIC": 1017
+  },
+  "classes": {
+    "Effector delivery system": 4266,
+    "Adherence": 2259,
+    "Immune modulation": 1983,
+    "Exotoxin": 1126,
+    "Nutritional/Metabolic factor": 1123,
+    "Motility": 1121,
+    "Biofilm": 226,
+    "Exoenzyme": 210,
+    "Others": 187,
+    "Stress survival": 186,
+    "Regulation": 128,
+    "Invasion": 84,
+    "Post-translational modification": 66,
+    "Antimicrobial activity/Competitive advantage": 24
+  },
+  "n_classes": 14,
+  "length": {
+    "positives_median": 549,
+    "negatives_median": 268,
+    "labelled_median": 369
+  },
+  "overlap_with_this_project": {
+    "deepvic_positives_carrying_a_VFG_id": 9143,
+    "distinct_VFG_ids_in_deepvic": 9143,
+    "in_VFDB_setA": 2253,
+    "in_our_746_representatives": 239,
+    "frac_of_our_746": 0.3203753351206434,
+    "frac_of_deepvic_positives": 0.007143711142993783,
+    "note": "the circularity price. A probe fitted on this project's VFDB panel and tested on DeepVIC shares exactly these proteins; the preregistration has to say what is done about them before any result exists."
+  }
+}

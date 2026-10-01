@@ -148,3 +148,5 @@ data/external/uniprot_idmap/
 # results/independent_pool_composition.json, which is tracked.
 data/sequences/_independent_pool.json
 data/sequences/benign_pool_independent.fasta
+data/external/deepvic/*.keras
+data/external/deepvic/DLDB_33456.faa
