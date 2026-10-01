@@ -1,0 +1,107 @@
+{
+  "built": "2026-10-01",
+  "study": "AI amendment 1 -- the benchmark's truncation asymmetry, composition only",
+  "max_len": 1022,
+  "note": "a property of DeepVIC's benchmark, not of any model evaluated on it. Nothing is fitted here; these are sequence lengths against ESM-2's context limit.",
+  "n_truncated_total": 1738,
+  "labelled_positives": {
+    "n": 12989,
+    "truncated": 1438,
+    "rate": 0.11070906151358842,
+    "median_len": 369.0
+  },
+  "negatives": {
+    "n": 33456,
+    "truncated": 300,
+    "rate": 0.008967001434720229,
+    "median_len": 268.0
+  },
+  "asymmetry_fold": 12.346274539995381,
+  "per_class": {
+    "Exotoxin": {
+      "n": 1126,
+      "truncated": 248,
+      "rate": 0.2202486678507993,
+      "median_len": 532.0
+    },
+    "Exoenzyme": {
+      "n": 210,
+      "truncated": 46,
+      "rate": 0.21904761904761905,
+      "median_len": 494.0
+    },
+    "Adherence": {
+      "n": 2259,
+      "truncated": 482,
+      "rate": 0.21336874723328905,
+      "median_len": 420.0
+    },
+    "Invasion": {
+      "n": 84,
+      "truncated": 14,
+      "rate": 0.16666666666666666,
+      "median_len": 400.5
+    },
+    "Effector delivery system": {
+      "n": 4266,
+      "truncated": 441,
+      "rate": 0.10337552742616034,
+      "median_len": 348.0
+    },
+    "Antimicrobial activity/Competitive advantage": {
+      "n": 24,
+      "truncated": 2,
+      "rate": 0.08333333333333333,
+      "median_len": 408.5
+    },
+    "Nutritional/Metabolic factor": {
+      "n": 1123,
+      "truncated": 87,
+      "rate": 0.07747105966162066,
+      "median_len": 366.0
+    },
+    "Biofilm": {
+      "n": 226,
+      "truncated": 12,
+      "rate": 0.05309734513274336,
+      "median_len": 315.5
+    },
+    "Immune modulation": {
+      "n": 1983,
+      "truncated": 82,
+      "rate": 0.04135148764498235,
+      "median_len": 356.0
+    },
+    "Others": {
+      "n": 187,
+      "truncated": 5,
+      "rate": 0.026737967914438502,
+      "median_len": 361.0
+    },
+    "Regulation": {
+      "n": 128,
+      "truncated": 2,
+      "rate": 0.015625,
+      "median_len": 239.5
+    },
+    "Motility": {
+      "n": 1121,
+      "truncated": 17,
+      "rate": 0.015165031222123104,
+      "median_len": 308.0
+    },
+    "Stress survival": {
+      "n": 186,
+      "truncated": 0,
+      "rate": 0.0,
+      "median_len": 540.0
+    },
+    "Post-translational modification": {
+      "n": 66,
+      "truncated": 0,
+      "rate": 0.0,
+      "median_len": 248.0
+    }
+  },
+  "highest_rate_class": "Exotoxin"
+}

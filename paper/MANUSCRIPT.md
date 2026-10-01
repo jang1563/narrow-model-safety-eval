@@ -155,6 +155,16 @@ DeepVIC, **32.0% of ours but 0.71% of theirs**, and removing them moves these fi
 information reaching **0.8096** against this project's embedding at 0.9323 — now measured on the largest
 published benchmark in the line instead of on a self-built panel of 445.
 
+⚠️ **The same length difference truncates the two sides of the benchmark unequally.** ESM-2 cuts at
+**1,022** residues, and on DeepVIC's own sequences that reaches **11.07%** of the class-labelled
+positives against **0.90%** of the negatives — a **12×** asymmetry — rising to **22.02%** for the
+**Exotoxin** class against **1.52%** for **Motility**. 🔑 **This is a property of the benchmark, not of
+any model evaluated on it**: any sequence model with a context limit near 1,000 residues sees a
+systematically larger fraction of the positive side cut, and the categories it cuts hardest are the
+ones whose members are longest. It is why § 6's comparison on that axis is reported length-matched
+rather than over full membership
+(`docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md` amendment 1).
+
 🔑 **The comparison we care about is still not the AUROC.** DeepVIC carries a published 14-category class
 axis over 12,989 annotated VFs and runs **no leave-one-category-out evaluation**; its generalization check is
 recall on two organism-specific positive-only sets (71.4%, 45 of 63). The largest virulence-factor
@@ -1109,7 +1119,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**138 claims** and fails if any number in a public document drifts from the artifact that produced
+**139 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

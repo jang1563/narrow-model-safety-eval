@@ -1871,6 +1871,40 @@ def organism_cluster():
     }
 
 
+def deepvic_truncation():
+    """ESM-2's 1,022 limit cuts DeepVIC's positive side 12x as often as its negative side.
+
+    🔒 11.07% of the class-labelled positives against 0.90% of the negatives, and 22.02% of
+    the Exotoxin class against 1.52% of Motility. A property of the benchmark, not of any
+    model evaluated on it: nothing is fitted, these are sequence lengths against a context
+    limit.
+
+    🔴 It is why AI-3 is reported length-matched. Exotoxin and Motility were chosen for
+    AI-3 because their sizes match within 0.5%, and their truncation rates differ by 14x in
+    the direction the preregistration's P4 predicts, so the full-membership comparison could
+    not have been interpreted on its own. Amendment 1 says so, and was frozen before the
+    fold was run.
+    """
+    v = j("../results/deepvic_truncation.json")
+    if v is None:
+        return None
+    pc = v["per_class"]
+    return {
+        "max_len": v["max_len"],
+        "n_truncated_total": v["n_truncated_total"],
+        "pos": v["labelled_positives"],
+        "neg": v["negatives"],
+        "fold": v["asymmetry_fold"],
+        "highest": v["highest_rate_class"],
+        "rate_exotoxin": pc["Exotoxin"]["rate"],
+        "rate_motility": pc["Motility"]["rate"],
+        "n_exotoxin": pc["Exotoxin"]["n"],
+        "n_motility": pc["Motility"]["n"],
+        "n_classes": len(pc),
+        "nothing_fitted": "Nothing is fitted" in v["note"] or "nothing is fitted" in v["note"],
+    }
+
+
 def deepvic_metadata_baseline():
     """21 no-semantics numbers reach 91.3% of the largest published benchmark's AUROC.
 
@@ -7368,6 +7402,32 @@ CLAIMS = [
       "we evaluated on DeepVIC's published split",
       "the published benchmark is a length classifier",
       "our probe outperforms the published state of the art"]),
+    # ⚠️ Added 2026-10-01. The benchmark property that forced amendment 1, held separately from
+    # the AI-3 result so that the asymmetry stands whatever the fold returns.
+    ("ESM-2's context limit cuts DeepVIC's positive side twelve times as often",
+     deepvic_truncation,
+     lambda v: v is None or (
+         v["max_len"] == 1022 and v["n_classes"] == 14 and v["nothing_fitted"]
+         and v["n_truncated_total"] == 1738
+         # 🔒 the 12x asymmetry across the two sides of the binary task
+         and v["pos"]["n"] == 12989 and v["neg"]["n"] == 33456
+         and abs(v["pos"]["rate"] - 0.1107) < 0.0005
+         and abs(v["neg"]["rate"] - 0.0090) < 0.0005
+         and v["fold"] > 10.0
+         # 🔴 and the 14x asymmetry along the axis AI-3 compares, with matched class sizes
+         and v["highest"] == "Exotoxin"
+         and abs(v["rate_exotoxin"] - 0.2202) < 0.0005
+         and abs(v["rate_motility"] - 0.0152) < 0.0005
+         and v["rate_exotoxin"] / v["rate_motility"] > 10.0
+         and v["n_exotoxin"] == 1126 and v["n_motility"] == 1121
+         and abs(v["n_exotoxin"] - v["n_motility"]) / v["n_exotoxin"] < 0.005),
+     {"paper/MANUSCRIPT.md":
+      "🔑 **This is a property of the benchmark, not of",
+      "docs/DEEPVIC_BENCHMARK_PREREGISTRATION.md":
+      "🔑 **The reading rule, frozen here:** AI-3 replicates § 6's narrowing only if **AI-3c** lands in the"},
+     # 🔴 The two readings amendment 1 exists to prevent.
+     ["truncation explains the benchmark's AUROC",
+      "the narrowing replicates on full membership"]),
 ]
 
 
