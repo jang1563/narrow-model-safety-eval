@@ -168,6 +168,55 @@ def main():
         "entry 84's items 1-4 are still open as EXACT intervals: src/49 must be re-run with "
         "per-row flags retained so the row component can be bootstrapped rather than sized "
         "binomially. The sizing here is a floor and the paper says so.")
+    # ---- the tally, verified per item instead of written into prose -------------------
+    # 🔴 Entry 111 stated this tally in prose with no claim over it and got it wrong twice:
+    # it called the localization pair closed (it is not -- AC's R is 5.53/5.43, a different
+    # quantity from entry 84's 5.38x/5.07) and did not count the Mantel-Haenszel pair as
+    # closed (study AD closed it). The tally is computed here so it cannot drift again.
+    man = (ROOT / "paper/MANUSCRIPT.md").read_text()
+    items = [
+        # (label, the seed interval as the paper prints it, what closed it, evidence in the paper)
+        ("pool FPR, interpolating", "7.87% [7.57, 8.16]", "sized", "[7.22, 8.52]"),
+        ("pool FPR, conformal", "5.98% [5.73, 6.23]", "sized", "[5.41, 6.55]"),
+        ("VFDB rate, 650M", "46.70% [45.93, 47.47]", None, None),
+        ("VFDB rate, 35M", "40.84% [40.01, 41.68]", None, None),
+        ("localization ratio, 650M", "5.38×", None, None),
+        ("localization R, 35M", "R = 5.07 [4.91, 5.24]", None, None),
+        ("ratio of ratios, 650M", "0.692 [0.649, 0.735]", None, None),
+        ("ratio of ratios, 35M", "1.133 [1.048, 1.219]", None, None),
+        # ⚠️ the paper prints these to three decimals; a four-decimal evidence string made the
+        # check report a closed item as unevidenced, which is a false negative in the tally
+        ("matched VFDB, 650M", "2.418", "study AC, C/A", "[1.904, 3.252]"),
+        ("matched VFDB, 35M", "2.617", "study AC, C/A", "[1.931, 3.938]"),
+        ("Mantel-Haenszel, 650M", "3.89", "study AD", "[2.871, 5.200]"),
+        ("Mantel-Haenszel, 35M", "4.39", "study AD", "[2.885, 7.116]"),
+    ]
+    tally = []
+    for label, seed_form, closed_by, evidence in items:
+        row = {"item": label, "seed_form": seed_form,
+               "seed_form_in_paper": seed_form in man,
+               "closed_by": closed_by,
+               "row_interval_in_paper": (evidence in man) if evidence else False,
+               "status": ("closed" if closed_by and closed_by != "sized"
+                          else "sized" if closed_by == "sized" else "open")}
+        tally.append(row)
+    out["entry84_tally"] = {
+        "items": tally,
+        "n_items": len(tally),
+        "n_closed": sum(1 for r in tally if r["status"] == "closed"),
+        "n_sized": sum(1 for r in tally if r["status"] == "sized"),
+        "n_open": sum(1 for r in tally if r["status"] == "open"),
+        "every_closed_item_has_its_row_interval_in_the_paper": all(
+            r["row_interval_in_paper"] for r in tally if r["status"] != "open"),
+        "every_open_item_still_shows_its_seed_interval": all(
+            r["seed_form_in_paper"] for r in tally if r["status"] == "open"),
+        "entry_111_said": {"closed": 2, "sized": 2, "open": 8},
+        "correction": ("entry 111 called the localization pair closed -- study AC's R is "
+                       "5.53 and 5.43, a different quantity from entry 84's 5.38x and 5.07, "
+                       "both of which are still seed intervals in the paper -- and did not "
+                       "count the Mantel-Haenszel pair, which study AD closed at [2.871, "
+                       "5.200] and [2.885, 7.116]. The tally is 4 closed, 2 sized, 6 open."),
+    }
     out["entry84_enumeration"] = {
         "header_says": "eleven",
         "bracketed_intervals_listed": 10,
@@ -192,6 +241,17 @@ def main():
           f"(AC {out['AL3_study_AC_is_a_different_fold']['ac_pool_n']:,} vs {n:,})")
     print(f"  entry 84's header says {out['entry84_enumeration']['header_says']}, "
           f"lists {out['entry84_enumeration']['total_listed']}")
+    t = out["entry84_tally"]
+    print(f"  tally: {t['n_closed']} closed / {t['n_sized']} sized / {t['n_open']} open "
+          f"of {t['n_items']}  (entry 111 said "
+          f"{t['entry_111_said']['closed']}/{t['entry_111_said']['sized']}/"
+          f"{t['entry_111_said']['open']})")
+    for r in t["items"]:
+        mark = {"closed": "OK ", "sized": "~  ", "open": "XX "}[r["status"]]
+        print(f"    {mark}{r['item']:<26} {r['status']:<7} "
+              f"seed-form in paper={r['seed_form_in_paper']}  "
+              f"row-interval in paper={r['row_interval_in_paper']}"
+              + (f"  <- {r['closed_by']}" if r["closed_by"] else ""))
     print(f"wrote {OUT.relative_to(ROOT)}")
     return 0
 

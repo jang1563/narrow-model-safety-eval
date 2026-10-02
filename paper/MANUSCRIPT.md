@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 115 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 116 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 115
+written because it caught something. The evidence is a **dated, append-only corrections log of 116
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -1255,7 +1255,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 115 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 116 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one

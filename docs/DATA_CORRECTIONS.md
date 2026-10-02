@@ -8155,3 +8155,59 @@ Mantel–Haenszel ratios"* — **twelve**. 🔒 Recorded rather than edited, bec
 sized row component and a statement of what the bracket is (the operating-point pair), and eight remain
 open** — the VFDB rates, the ratio-of-ratios pair, the matched-VFDB pair and the two Mantel–Haenszel
 ratios. **That is the first time the count has been accurate.**
+
+## 2026-10-02 (one hundred and twelfth entry) — The tally in the last entry was wrong twice, because it was prose
+
+Entry 111 closed with *"of entry 84's twelve, two are closed in the paper (localization, registration),
+two now carry a sized row component, and **eight remain open**"*. 🔴 **Four of those twelve words were
+wrong.** The tally is **4 closed, 2 sized, 6 open**.
+
+### 🔴 Error 1: the localization pair is open, not closed
+
+Entry 84's items are **`5.38× [5.13, 5.63]`** and **`R = 5.07 [4.91, 5.24]`**. Study AC's localization
+figures are **5.53** and **5.43** with row interval `[3.714, 8.534]`. ⚠️ **Those are different
+quantities** — AC's fold fits the 746 class-axis representatives (entry 111 established exactly this
+about the pool rates and then failed to apply it one paragraph later) — and entry 84's pair is **still
+printed as a seed interval** in the paper, at lines 403 and 567.
+
+### 🔴 Error 2: the Mantel–Haenszel pair is closed, and was not counted
+
+Study **AD** (`src/116`) computed row intervals for both: **3.89 → [2.871, 5.200]** and
+**4.39 → [2.885, 7.116]**, a 7.8–9.6× widening, 🔒 **and the paper already carries them** at line 473.
+⚠️ Entry 111 listed the Mantel–Haenszel pair among the open items without checking.
+
+### 🔑 Why it happened, and what changed
+
+🔴 **The tally was written into prose with nothing auditing it.** Every *measurement* in entry 111 was
+checked by claim 143; the *count* of what the measurements had settled was not in the artifact at all.
+⚠️ **That is the same defect as entry 110 part 1** — a number in a document that the gate does not reach
+— two entries apart, and this time in a sentence summarizing the entry's own findings.
+
+🔒 **The tally is now computed per item** in `results/operating_point_row_component.json`: each of the
+twelve carries the form the paper prints, what closed it, and two mechanical conditions —
+
+- **a closed item must show its row interval in the paper** (all four do), and
+- **an open item must still show the seed interval it is open about** (all six do).
+
+🔒 Claim 143 asserts the three counts, that they sum to twelve, both integrity conditions, and
+specifically that the localization pair reads **open** and the Mantel–Haenszel pair reads **closed**.
+⭐ **Two of the five calibrations are entry 111's two errors**, re-injected to confirm the claim catches
+each one.
+
+### ⚠️ A false negative found while building it
+
+The first version of the check used study AC's artifact precision, `[1.9037, 3.2524]`, as the evidence
+string for the registration pair. The paper prints **`[1.904, 3.252]`**. 🔴 **So a correctly closed item
+was reported as unevidenced** — a false negative inside the very mechanism built to stop a miscount.
+Evidence strings now match the paper's own rounding.
+
+### 🔑 The standing position, accurately, for the first time
+
+| status | items |
+|---|---|
+| **closed** (4) | registration pair (study AC), Mantel–Haenszel pair (study AD) |
+| **sized** (2) | the operating-point pair — row component at 1.99× and 2.05×, binomial floor |
+| **open** (6) | VFDB rates, localization pair, ratio-of-ratios pair |
+
+Each open item needs its own study re-run with per-row flags retained. 🔒 **Nothing here is a new
+measurement**; what changed is that the bookkeeping is now a measurement instead of a sentence.

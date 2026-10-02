@@ -126,6 +126,118 @@
     "ac_ratio_widenings_exceed_2x_because": "R and C/A are ratios over strata of 171, 597 and 264 rows, where row resampling compounds; that is why they widen 8.2 to 11.8x and does not contradict entry 84, whose 'roughly 2x' was about the large-n RATES"
   },
   "AL_remaining": "entry 84's items 1-4 are still open as EXACT intervals: src/49 must be re-run with per-row flags retained so the row component can be bootstrapped rather than sized binomially. The sizing here is a floor and the paper says so.",
+  "entry84_tally": {
+    "items": [
+      {
+        "item": "pool FPR, interpolating",
+        "seed_form": "7.87% [7.57, 8.16]",
+        "seed_form_in_paper": true,
+        "closed_by": "sized",
+        "row_interval_in_paper": true,
+        "status": "sized"
+      },
+      {
+        "item": "pool FPR, conformal",
+        "seed_form": "5.98% [5.73, 6.23]",
+        "seed_form_in_paper": true,
+        "closed_by": "sized",
+        "row_interval_in_paper": true,
+        "status": "sized"
+      },
+      {
+        "item": "VFDB rate, 650M",
+        "seed_form": "46.70% [45.93, 47.47]",
+        "seed_form_in_paper": true,
+        "closed_by": null,
+        "row_interval_in_paper": false,
+        "status": "open"
+      },
+      {
+        "item": "VFDB rate, 35M",
+        "seed_form": "40.84% [40.01, 41.68]",
+        "seed_form_in_paper": true,
+        "closed_by": null,
+        "row_interval_in_paper": false,
+        "status": "open"
+      },
+      {
+        "item": "localization ratio, 650M",
+        "seed_form": "5.38\u00d7",
+        "seed_form_in_paper": true,
+        "closed_by": null,
+        "row_interval_in_paper": false,
+        "status": "open"
+      },
+      {
+        "item": "localization R, 35M",
+        "seed_form": "R = 5.07 [4.91, 5.24]",
+        "seed_form_in_paper": true,
+        "closed_by": null,
+        "row_interval_in_paper": false,
+        "status": "open"
+      },
+      {
+        "item": "ratio of ratios, 650M",
+        "seed_form": "0.692 [0.649, 0.735]",
+        "seed_form_in_paper": true,
+        "closed_by": null,
+        "row_interval_in_paper": false,
+        "status": "open"
+      },
+      {
+        "item": "ratio of ratios, 35M",
+        "seed_form": "1.133 [1.048, 1.219]",
+        "seed_form_in_paper": true,
+        "closed_by": null,
+        "row_interval_in_paper": false,
+        "status": "open"
+      },
+      {
+        "item": "matched VFDB, 650M",
+        "seed_form": "2.418",
+        "seed_form_in_paper": true,
+        "closed_by": "study AC, C/A",
+        "row_interval_in_paper": true,
+        "status": "closed"
+      },
+      {
+        "item": "matched VFDB, 35M",
+        "seed_form": "2.617",
+        "seed_form_in_paper": true,
+        "closed_by": "study AC, C/A",
+        "row_interval_in_paper": true,
+        "status": "closed"
+      },
+      {
+        "item": "Mantel-Haenszel, 650M",
+        "seed_form": "3.89",
+        "seed_form_in_paper": false,
+        "closed_by": "study AD",
+        "row_interval_in_paper": true,
+        "status": "closed"
+      },
+      {
+        "item": "Mantel-Haenszel, 35M",
+        "seed_form": "4.39",
+        "seed_form_in_paper": false,
+        "closed_by": "study AD",
+        "row_interval_in_paper": true,
+        "status": "closed"
+      }
+    ],
+    "n_items": 12,
+    "n_closed": 4,
+    "n_sized": 2,
+    "n_open": 6,
+    "every_closed_item_has_its_row_interval_in_the_paper": true,
+    "every_open_item_still_shows_its_seed_interval": true,
+    "entry_111_said": {
+      "closed": 2,
+      "sized": 2,
+      "open": 8
+    },
+    "correction": "entry 111 called the localization pair closed -- study AC's R is 5.53 and 5.43, a different quantity from entry 84's 5.38x and 5.07, both of which are still seed intervals in the paper -- and did not count the Mantel-Haenszel pair, which study AD closed at [2.871, 5.200] and [2.885, 7.116]. The tally is 4 closed, 2 sized, 6 open."
+  },
   "entry84_enumeration": {
     "header_says": "eleven",
     "bracketed_intervals_listed": 10,

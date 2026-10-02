@@ -1923,6 +1923,7 @@ def operating_point_row_component():
         "ac_widenings": v["AL3_study_AC_is_a_different_fold"]["ac_widenings"],
         "remaining_named": "per-row flags retained" in v["AL_remaining"],
         "e84_enum": v["entry84_enumeration"],
+        "tally": v["entry84_tally"],
     }
 
 
@@ -6176,7 +6177,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 115"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 116"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -7893,7 +7894,26 @@ CLAIMS = [
          and all(x > 2.5 for pair in v["ac_widenings"].values() for x in pair)
          # ⚠️ and entry 84's own header undercounts its list
          and v["e84_enum"]["header_says"] == "eleven"
-         and v["e84_enum"]["total_listed"] == 12),
+         and v["e84_enum"]["total_listed"] == 12
+         # 🔴 the tally itself, which entry 111 got wrong TWICE because it was written into
+         # prose with nothing auditing it. Four closed, two sized, six open, verified per item
+         # against the paper rather than asserted.
+         and v["tally"]["n_items"] == 12
+         and v["tally"]["n_closed"] == 4
+         and v["tally"]["n_sized"] == 2
+         and v["tally"]["n_open"] == 6
+         and (v["tally"]["n_closed"] + v["tally"]["n_sized"]
+              + v["tally"]["n_open"]) == v["tally"]["n_items"]
+         # 🔒 and the two integrity conditions: a closed item must show its row interval in
+         # the paper, and an open one must still show the seed interval it is open about
+         and v["tally"]["every_closed_item_has_its_row_interval_in_the_paper"] is True
+         and v["tally"]["every_open_item_still_shows_its_seed_interval"] is True
+         # 🔴 the specific pair entry 111 misclassified, and the pair it failed to count
+         and next(r for r in v["tally"]["items"]
+                  if r["item"] == "localization R, 35M")["status"] == "open"
+         and next(r for r in v["tally"]["items"]
+                  if r["item"] == "Mantel-Haenszel, 650M")["status"] == "closed"
+         and v["tally"]["entry_111_said"] == {"closed": 2, "sized": 2, "open": 8}),
      {"paper/MANUSCRIPT.md": [
          "⚠️ **The brackets in that table are 200-seed intervals, and they are not bare seed standard errors:**",
          "⚠️ **Study AC's honest intervals do not cover this quantity.** It fixed four intervals, and the two this"]},
