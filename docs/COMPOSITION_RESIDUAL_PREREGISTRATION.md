@@ -85,3 +85,58 @@ and P2 are derived from measurements on this exact benchmark**, so they are the 
   compositional**, and § 8's "seven points" is seven points of re-encoding.
 - **Partly** ⇒ reported as the fraction of the increment that survives, which is the number a
   practitioner wants and which no study here has produced.
+
+---
+
+## Amendment 1 — the frozen projection does not erase, and what must be added
+
+**Added 2026-10-02, after the diagnostic in § 2 was printed and before any residualized recovery
+was read.** The only new fact is the residual correlation the design itself was told to report.
+
+### 🔴 The instrument did not do what it was for
+
+§ 2 froze the projection as *"fitted on the negative union only — no labels, no held-out positives — so
+it cannot leak the held-out category"*, and required the residual correlation to be reported **as the
+evidence rather than assumed**. It was reported, and it says the erasure is incomplete:
+
+| arm | max &#124;corr&#124; before | after the frozen projection |
+|---|---:|---:|
+| ESM-2 650M | 0.688 | **0.239** |
+
+🔑 **This is the same phenomenon this study's own selftest asserts.** A least-squares map fitted on one
+set of rows does not annihilate the dependence on rows outside it, because the linear relationship
+between composition and the embedding differs between the negatives and the positives. ⚠️ **The rows
+whose recovery AN measures are precisely the rows where the erasure is weakest.**
+
+🔴 **So a high residualized recovery would NOT show the increment is non-compositional** — it could
+simply mean composition was still readable. The frozen design cannot answer its own question.
+
+### 🔒 What is added
+
+A second variant, **fitted on all 46,445 rows**, which erases exactly. ⚠️ **Its cost is stated**: the
+subspace is then informed by the held-out category's rows. **No labels enter either variant** — the
+projection is unsupervised — so what leaks is the composition geometry of the held-out proteins and not
+their class.
+
+| variant | erasure | leak |
+|---|---|---|
+| **negative-fitted** (frozen in § 2) | **incomplete**, residual &#124;corr&#124; ≈ 0.24 | none |
+| **all-rows** (added here) | **exact**, residual &#124;corr&#124; expected ≈ 0 | the held-out rows' composition geometry |
+
+🔑 **The reading rule, frozen here: the conclusion must hold under BOTH variants.** They bracket the
+answer — the negative-fitted one is conservative about leakage and permissive about erasure, the
+all-rows one the reverse. 🔴 **If they disagree, AN does not settle the question and § 6 says so.**
+
+⚠️ **The bands of § 4 apply unchanged to each variant separately**, and the second-arm rule applies
+within each.
+
+### ⚠️ What this does to P3
+
+**P3 (reasoned)** predicted the residual correlation below **1e-06**, citing study Z's LEACE erasure at
+3.1e-06. 🔴 **It is already falsified for the frozen variant at 0.239**, before any recovery was read,
+and it is scored that way. 🔑 **The prediction was not wrong about LEACE; it was wrong about this
+design** — study Z fitted its eraser on the rows it then measured, and § 2 deliberately did not, which
+is the trade this amendment makes explicit.
+
+**P4 (derived — from the 0.239 above, added with this amendment).** The all-rows variant's residual
+correlation is below **1e-06**, because it is fitted on every row it is applied to.
