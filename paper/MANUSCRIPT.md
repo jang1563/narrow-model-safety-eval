@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 118 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 119 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 118
+written because it caught something. The evidence is a **dated, append-only corrections log of 119
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -842,6 +842,45 @@ available here cannot close it, and the bracket is wide. 🔑 **That is worth st
 arrivals in §§ 1.2 and 6 make the compositional reading tempting, and this is the test that would have
 licensed it.**
 
+### The nested comparison answers it, and reinterprets the three arrivals
+
+🔑 **Erasure was the wrong instrument.** Study AO asks what the embedding adds **given** composition by
+fitting both together — no projection, no leak, every feature from the protein's own sequence
+(`docs/NESTED_MODEL_PREREGISTRATION.md`, bands frozen first).
+
+| | 650M | 35M |
+|---|---:|---:|
+| composition alone, 21 features | 34.25% | 34.25% |
+| embedding alone | 41.43% | 41.78% |
+| **concatenated**, 1,301 / 501 features | **41.27%** | **41.75%** |
+| **AO-1**, concatenated − composition | **+7.02pp** | **+7.51pp** |
+| **AO-2**, concatenated − embedding | **−0.16pp** | **−0.03pp** |
+
+🔒 **AO-1 clears its frozen +6pp floor on both arms: the seven points are information composition does
+not carry.** The increment is real and it is not re-encoding. 🔒 **AO-2 is zero to within two tenths of a
+point on both arms: handing the probe composition alongside the embedding changes nothing.**
+
+🔴 **And that is not because composition is useless — which is what makes it interesting.** On
+**Exoenzyme** composition alone recovers **62.3%** against the embedding's **42.1%**, a 20-point win
+(§ 6's increment table). Concatenating recovers **−0.86pp** of that gap on 650M and **+1.86pp** on 35M.
+⚠️ **The information is sitting in twenty-one columns the probe has been handed, and it does not use
+it.**
+
+⭐ **A post-hoc diagnostic makes that literal.** In the concatenated model on that fold, the
+twenty-one composition columns carry **1.54–1.91%** of the total absolute coefficient mass across five
+seeds, against the **1.614%** they would get by column count alone — a ratio of **0.95 to 1.19×**. 🔑 **The
+probe does not distinguish them from an average embedding column.** This was computed after the run and
+is labelled so.
+
+🔑 **So the three arrivals are not information claims, and § 6 should not have been drifting toward
+reading them as such.** Composition's wins — Exoenzyme's 20 points, the toxin ordering at AUROC 0.555
+against 0.446 — happen **while the same information is available to the larger model and unused**. That
+makes them a statement about **estimation**: with 1,301 standardized features and L2 regularization, the
+fit on thirteen categories selects a direction that does not transfer to the fourteenth, and twenty-one
+features cannot be fitted that way. ⚠️ **It is a bias–variance result, not an evidence-about-hazard
+result**, and the distinction matters because only the second would say anything about protein language
+models and biosecurity.
+
 ⚠️ **Two intervals are reported because they answer different questions and this project has confused
 them before.** The **prediction** interval draws one seed and resamples pairs inside it — what a single
 deployment fit would give, which is `src/110`'s idiom — and spans 0.5 on both embedding arms. The
@@ -1336,7 +1375,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 118 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 119 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1417,7 +1456,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**145 claims** and fails if any number in a public document drifts from the artifact that produced
+**146 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

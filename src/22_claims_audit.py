@@ -207,7 +207,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/WITHIN_FOLD_ORDERING_PREREGISTRATION.md",
           # Added 2026-10-02. It is the one study here that returned "does not settle it" under
           # a rule frozen before either variant was read, and the amendment that says why.
-          "docs/COMPOSITION_RESIDUAL_PREREGISTRATION.md"]
+          "docs/COMPOSITION_RESIDUAL_PREREGISTRATION.md",
+          # Added 2026-10-02. It settles what the erasure study could not, and reinterprets the
+          # three composition arrivals as an estimation result rather than an information one.
+          "docs/NESTED_MODEL_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1880,6 +1883,53 @@ def organism_cluster():
         "pool_gap_inside": bool(a["pool_gap_inside"] and b["pool_gap_inside"]),
         "ca_ratio_below_r_650M": bool(a["contrasts"]["CA"]["design_effect"]
                                       < a["contrasts"]["R"]["design_effect"]),
+    }
+
+
+def nested_model():
+    """What the embedding adds given composition, and what composition adds given it.
+
+    🔒 AO-1: the concatenated model beats composition by +7.02 and +7.51pp, clearing a +6pp
+    floor frozen first, on both arms. The seven points are information composition does not
+    carry -- not re-encoding.
+
+    🔒 AO-2: the concatenated model differs from the embedding alone by -0.16 and -0.03pp.
+    Handing the probe composition alongside the embedding changes nothing.
+
+    🔴 And that is not because composition is useless. On Exoenzyme composition alone recovers
+    62.3% against the embedding's 42.1%, and concatenating recovers -0.86pp of that 20-point
+    gap on 650M. The information is in twenty-one columns the probe has been handed and it
+    does not use them.
+
+    ⚠️ So the three composition arrivals (studies AJ, AK, AM) are an ESTIMATION result, not an
+    information one: with 1,301 features and L2 regularization the fit on thirteen categories
+    selects a direction that does not transfer to the fourteenth. Bias-variance, not evidence
+    about hazard.
+    """
+    v = j("../results/nested_model.json")
+    if v is None:
+        return None
+    A, B = v["arms"]["esm2_650M"], v["arms"]["esm2_35M"]
+    return {
+        "prereg": v["preregistration"],
+        "no_erasure": "no leak" in v["design"],
+        "linear_scope": "LINEAR probe" in v["linear_scope"],
+        "bands": v["bands"],
+        "n_comp_features": v["n_composition_features"],
+        "n_features": {"650M": A["n_features"], "35M": B["n_features"]},
+        "mean_CE": {"650M": A["mean_CE"], "35M": B["mean_CE"]},
+        "mean_E": {"650M": A["mean_E"], "35M": B["mean_E"]},
+        "mean_C": A["mean_C"],
+        "ao1": {"650M": A["AO1_CE_minus_C"], "35M": B["AO1_CE_minus_C"]},
+        "ao2": {"650M": A["AO2_CE_minus_E"], "35M": B["AO2_CE_minus_E"]},
+        "verdict": {"650M": A["verdict"], "35M": B["verdict"]},
+        "arms_agree": v["second_arm_rule"]["arms_agree"],
+        "exo": {"650M": A["per_category"]["Exoenzyme"],
+                "35M": B["per_category"]["Exoenzyme"]},
+        "fpr_min": min(A["test_fpr_min"], B["test_fpr_min"]),
+        "fpr_max": max(A["test_fpr_max"], B["test_fpr_max"]),
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "kinds": {k: w["kind"] for k, w in v["predictions"].items()},
     }
 
 
@@ -6300,7 +6350,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 118"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 119"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -8162,6 +8212,54 @@ CLAIMS = [
       "study AN settles whether the increment is compositional",
       "removing composition leaves the signal intact",
       "the additive decomposition is evidence"]),
+    # 🔒 Added 2026-10-02. The increment is real AND composition adds nothing on top -- and the
+    # Exoenzyme cell shows why those two facts together are an estimation result.
+    ("the embedding's seven points are real, and composition adds nothing on top of it",
+     nested_model,
+     lambda v: v is None or (
+         "NESTED_MODEL_PREREGISTRATION" in v["prereg"]
+         and v["no_erasure"] and v["linear_scope"]
+         and v["bands"]["adds_floor"] == 0.06 and v["bands"]["not_ceiling"] == 0.02
+         and v["n_comp_features"] == 21
+         and v["n_features"] == {"650M": 1301, "35M": 501}
+         # 🔒 AO-1 clears the frozen floor on both arms and the arms agree
+         and v["ao1"]["650M"] >= 0.06 and v["ao1"]["35M"] >= 0.06
+         and abs(v["ao1"]["650M"] - 0.0702) < 0.0005
+         and abs(v["ao1"]["35M"] - 0.0751) < 0.0005
+         and v["verdict"] == {"650M": "adds information composition lacks",
+                              "35M": "adds information composition lacks"}
+         and v["arms_agree"] is True
+         # 🔒 AO-2 is zero to within two tenths of a point, on both arms, and NEGATIVE
+         and abs(v["ao2"]["650M"]) < 0.002 and abs(v["ao2"]["35M"]) < 0.002
+         and v["ao2"]["650M"] < 0 and v["ao2"]["35M"] < 0
+         # 🔒 and the concatenated model does not beat the embedding alone
+         and v["mean_CE"]["650M"] <= v["mean_E"]["650M"]
+         and v["mean_CE"]["35M"] <= v["mean_E"]["35M"]
+         and abs(v["mean_C"] - 0.3425) < 0.0005
+         # 🔴 Exoenzyme: composition alone wins by 20 points and concatenation recovers none
+         and v["exo"]["650M"]["C"] > v["exo"]["650M"]["E"] + 0.15
+         and abs(v["exo"]["650M"]["C"] - 0.623) < 0.0015
+         and v["exo"]["650M"]["CE_minus_E"] < 0
+         and abs(v["exo"]["650M"]["CE_minus_E"] + 0.0086) < 0.0005
+         and v["exo"]["35M"]["CE_minus_E"] < 0.03
+         # 🔒 calibrated like every other DeepVIC study
+         and 0.045 < v["fpr_min"] and v["fpr_max"] < 0.055
+         # ⭐ P1 held; P2 and P3, which predicted composition would add something, did not
+         and v["preds"]["P1_AO1_clears_6pp_both_arms"] is True
+         and v["preds"]["P2_AO2_positive_both_arms"] is False
+         and v["preds"]["P3_AO2_over_1pp_on_one_arm"] is False
+         and v["kinds"]["P2_AO2_positive_both_arms"] == "derived"
+         and v["kinds"]["P3_AO2_over_1pp_on_one_arm"] == "reasoned"),
+     {"paper/MANUSCRIPT.md": [
+         "🔒 **AO-1 clears its frozen +6pp floor on both arms: the seven points are information composition does",
+         "🔴 **And that is not because composition is useless — which is what makes it interesting.** On",
+         "🔑 **So the three arrivals are not information claims, and § 6 should not have been drifting toward"]},
+     # 🔴 Five readings this does not license.
+     ["composition carries information the embedding lacks",
+      "the seven points are re-encoding",
+      "study AO shows composition is redundant",
+      "the composition columns are used",
+      "the embedding subsumes composition because composition is useless"]),
 ]
 
 

@@ -8353,3 +8353,63 @@ did not. 🔒 **P4, added with the amendment, predicted the all-rows variant wou
 reached 1.9e-14.** The instrument worked; the inference it was built for still failed.
 
 🔑 **Running total across AH through AN: derived 8 of 14, reasoned 2 of 6.**
+
+## 2026-10-02 (one hundred and fifteenth entry) — The nested comparison settles it, and three findings change meaning
+
+Study AN could not resolve whether the representation's +7-point increment is compositional, for a
+structural reason. 🔑 **Erasure was the wrong instrument.** Study AO asks the same question by fitting
+both feature sets **together** — no projection, no leak, every feature from the protein's own sequence.
+
+| | 650M | 35M |
+|---|---:|---:|
+| composition alone, 21 features | 34.25% | 34.25% |
+| embedding alone | 41.43% | 41.78% |
+| **concatenated**, 1,301 / 501 | **41.27%** | **41.75%** |
+| **AO-1** = concatenated − composition | **+7.02pp** | **+7.51pp** |
+| **AO-2** = concatenated − embedding | **−0.16pp** | **−0.03pp** |
+
+🔒 **AO-1 clears its frozen +6pp floor on both arms.** The seven points are information composition does
+not carry; the increment is real and not re-encoding. 🔒 **AO-2 is zero to within two tenths of a point
+on both arms, and negative.** Giving the probe composition alongside the embedding changes nothing.
+
+### 🔴 And the two facts together are not an information result
+
+On **Exoenzyme** composition alone recovers **62.3%** against the embedding's **42.1%** — the 20-point
+win entry 109 recorded. Concatenating recovers **−0.86pp** of that gap on 650M and **+1.86pp** on 35M.
+⚠️ **The information is in twenty-one columns the probe has been handed, and it does not use them.**
+
+⭐ **A post-hoc diagnostic makes it literal.** In the concatenated model on that fold, those twenty-one
+columns carry **1.54–1.91%** of the total absolute coefficient mass across five seeds, against the
+**1.614%** their column count alone would give — a ratio of **0.95 to 1.19×**. 🔑 **The probe does not
+distinguish them from an average embedding column.** Computed after the run, labelled as such.
+
+### 🔑 What this does to entries 108, 109 and 113
+
+Those three recorded composition doing something the representation was credited with — AJ's 0.08-point
+Exotoxin match, AK's 20-point exoenzyme deficit, AM's being the only arm whose ordering interval excluded
+chance. 🔴 **Each was heading toward "composition carries something the embedding lacks", and that
+reading is now ruled out**: AO-2 says the embedding loses nothing by not being given composition.
+
+🔒 **They are an estimation result.** With 1,301 standardized features and L2 regularization the fit on
+thirteen categories selects a direction that does not transfer to the fourteenth, and twenty-one features
+cannot be fitted that way. ⚠️ **Bias–variance, not evidence about hazard** — and the distinction matters
+because only the second would say anything about protein language models and biosecurity. § 6 had been
+drifting toward the first across three entries without testing it.
+
+### ⚠️ The score, and which predictions were wrong
+
+**P1 (derived) held, P2 (derived) missed, P3 (reasoned) missed** — derived 1 of 2, reasoned 0 of 1.
+
+🔴 **P2 and P3 both predicted composition would add something on top of the embedding**, derived from
+studies AM and AK, and **both were wrong** — which is the point of having run AO rather than writing a
+fourth description. 🔑 **The predictions failed in the direction that mattered**: had they held, the three
+arrivals would have been an information finding.
+
+🔑 **Running total across AH through AO: derived 9 of 16, reasoned 2 of 7.**
+
+### ⚠️ One calibration that could not fire, recognized immediately
+
+Four calibrations were run on `src/132`'s selftest and three fired. The fourth replaced
+`if C.shape[1] != 21:` with `if False:` — **removing a check cannot make a selftest fail**, which entries
+106 and 113 already record. 🔒 Noted rather than repeated: the composition width is a constant of
+`comp_features`, so it cannot be perturbed through the data, and that guard is a regression check only.
