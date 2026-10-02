@@ -8090,3 +8090,68 @@ at a matched 5% false-positive rate, ESM-2 buys about seven points of recovery a
 exoenzymes.** 🔑 **Both § 8 restatements are pinned to the claims that own the measurements**, so a
 discussion that drifts from the section it summarizes now fails the gate — which is the general form of
 the defect in part 1.
+
+## 2026-10-02 (one hundred and eleventh entry) — Entry 84's enumerated debt, settled three ways
+
+Entry 84 listed the published intervals built as seed standard errors, fixed none, and predicted the
+large-*n* ones would widen **"by roughly 2×"**. Study AC then fixed four and the paper took two. ⚠️ **The
+record left three things ambiguous, and all three were resolvable by reading rather than running.**
+
+### 🟢 1. The prediction was right, and nothing had scored it
+
+For entry 84's first two items — the deployment false-positive rate under both estimators — the omitted
+test-row component is **1.99×** and **2.05×** the published half-width, giving combined intervals
+**2.22×** and **2.28×** wider:
+
+| | point | published (200 seeds) | + test rows (n = 8,258) | + distinct names (n = 3,407) |
+|---|---:|---|---|---|
+| interpolating `np.quantile` | 7.87% | [7.57, 8.16] | **[7.22, 8.52]** 2.22× | **[6.92, 8.82]** 3.25× |
+| conformal | 5.98% | [5.73, 6.23] | **[5.41, 6.55]** 2.28× | **[5.14, 6.81]** 3.34× |
+
+🔑 **"Roughly 2×" is what they are.** ⚠️ The row term is **binomial and therefore a floor** — pool rows
+are homologous — which is why the distinct-name denominator is reported beside it, and why `src/49` re-run
+with per-row flags retained is still the exact version.
+
+### 🔴 2. The bracket is not a bare seed standard error, and entry 84 implied it was
+
+`src/49` runs `rng.permutation(len(N))` **inside** its seed loop and takes
+`nca, ntr = perm[:n_ca], perm[n_ca:]`, so the **118 / 178** calibration split is redrawn on every one of
+its **200** seeds. 🔒 **Calibration-split variability is already in the published interval.** What is
+missing is test-row variability, and nothing else.
+
+⚠️ **This correction came from a wrong guess of my own.** The threshold at α = 0.05 on 118 points is the
+**5th largest** of them, so I expected calibration variance to dominate and to be unmeasured — and went
+looking for it in the code, which is where the opposite turned out to be true. 🔑 **The guess was wrong
+and checking it was still the right move**, because the answer changed what the remaining work is.
+
+### 🔴 3. Study AC did not close those items, and its own docstring says it did
+
+`src/115`'s docstring reads *"This fixes the four that carry the argument: localization R, registration
+C/A, the out-of-sample false-positive rate and the VFDB flag rate."* 🔴 **It fixes them for its own fold,
+which is a different one**:
+
+| | entry 84's items | study AC |
+|---|---|---|
+| fitted on | the **149-protein panel** | the **746 class-axis representatives** |
+| thresholded on | **118 panel negatives** | the **pool's** calibrate split |
+| tested on | **8,258** pool rows | **6,758** pool rows |
+
+🔒 **The paper took only the localization and registration intervals from AC, which is correct**, and the
+operating-point table kept its own bracket — ⚠️ **but with no statement of what that bracket was**, which
+is what part 2 fixes. 🔑 **Had the two been mapped together, an interval from a 746-positive fold would
+have been printed against a 149-positive quantity** — the "intervals answering a different question"
+defect this log already records, and I was one step from it before reading both folds.
+
+⚠️ **AC's 5.4–11.8× widenings do not contradict entry 84.** Its localization and registration figures are
+**ratios** over strata of 171, 597 and 264 rows, where row resampling compounds; entry 84's "roughly 2×"
+was about large-*n* **rates**.
+
+### ⚠️ 4. And the list miscounts itself
+
+The header reads **"Remaining eleven"** and enumerates **ten** bracketed intervals plus *"the two
+Mantel–Haenszel ratios"* — **twelve**. 🔒 Recorded rather than edited, because the log is append-only.
+
+🔑 **Net: of entry 84's twelve, two are closed in the paper (localization, registration), two now carry a
+sized row component and a statement of what the bracket is (the operating-point pair), and eight remain
+open** — the VFDB rates, the ratio-of-ratios pair, the matched-VFDB pair and the two Mantel–Haenszel
+ratios. **That is the first time the count has been accurate.**

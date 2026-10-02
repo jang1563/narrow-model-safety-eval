@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 114 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 115 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 114
+written because it caught something. The evidence is a **dated, append-only corrections log of 115
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -326,6 +326,22 @@ measured on negatives the pipeline had already seen. Measured out of sample agai
 | calibrate on pool, test on pool (exchangeable control) | 5.87% | 4.32% |
 | **calibrate on panel, test on pool (the deployment case)** | **7.87% [7.57, 8.16]** | **5.98% [5.73, 6.23]** |
 | the same, one representative per distinct protein name | **9.64%** | **7.14%** |
+
+⚠️ **The brackets in that table are 200-seed intervals, and they are not bare seed standard errors:**
+`src/49` redraws the **118 / 178** calibration split on every one of its two hundred seeds, so
+calibration-split variability is already in them. 🔴 **What they omit is test-row variability on the
+8,258 pool rows**, and sizing it binomially (`src/129`) puts it at **1.99×** and **2.05×** the published
+half-width — giving **[7.22, 8.52]** and **[5.41, 6.55]**, about **2.2×** wider. 🟢 **Entry 84 predicted
+"roughly 2×" for these and that is what they are.** ⚠️ **On the 3,407 distinct protein names** rather
+than 8,258 rows the row term alone is **3.09×** and **3.19×**, giving **[6.92, 8.82]** and
+**[5.14, 6.81]**. 🔴 **A binomial is a floor here** — pool rows are homologous — so an exact bootstrap
+would be wider still, and `src/49` re-run with per-row flags retained is the outstanding work.
+
+⚠️ **Study AC's honest intervals do not cover this quantity.** It fixed four intervals, and the two this
+paper uses from it are the localization gradient and the registration contrast (§§ 5–6, where both are
+named). Its own pool and VFDB rates are a **different fold** —
+fitted on the 746 class-axis representatives, thresholded on the pool's calibrate split, tested on
+**6,758** pool rows — so its 5.4–5.9× widenings belong to those quantities and not to the table above.
 
 The conformal threshold is the better estimator and still overshoots, because panel negatives and pool
 negatives are not exchangeable — three curated blocks against Swiss-Prot. 🔑 **The guarantee is voided by
@@ -1239,7 +1255,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 114 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 115 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1320,7 +1336,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**142 claims** and fails if any number in a public document drifts from the artifact that produced
+**143 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

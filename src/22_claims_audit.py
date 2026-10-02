@@ -1877,6 +1877,55 @@ def organism_cluster():
     }
 
 
+def operating_point_row_component():
+    """The published operating-point bracket is a 200-seed interval, and what it omits.
+
+    🔒 src/49 redraws the 118/178 calibration split on every one of its 200 seeds, so the
+    bracket already carries calibration-split variability -- calling it a bare seed standard
+    error understates it. What it omits is TEST-ROW variability on the 8,258 pool rows.
+
+    🟢 Sized binomially that component is 1.99x and 2.05x the published half-width, giving
+    2.22x and 2.28x wider combined intervals. Entry 84 predicted "roughly 2x" for exactly
+    these items, and it is right. On the 3,407 distinct protein names it is 3.09x and 3.19x.
+
+    🔴 Study AC did NOT close these. Its fold fits the 746 class-axis representatives,
+    thresholds on the pool's calibrate split and tests 6,758 rows; entry 84's items come from
+    src/49's panel-calibrated fold over 8,258. Its 5.4-11.8x widenings belong to its own
+    quantities, and the paper took only R and C/A from it.
+
+    ⚠️ The binomial is a FLOOR -- pool rows are homologous -- and the exact version needs
+    src/49 re-run with per-row flags retained. Named, not described.
+    """
+    v = j("../results/operating_point_row_component.json")
+    if v is None:
+        return None
+    q, c = v["estimators"]["quantile"], v["estimators"]["conformal"]
+    return {
+        "nothing_fitted": "arithmetic on them" in v["nothing_fitted"],
+        "design": v["design"],
+        "split_redrawn": v["AL1_split_redrawn_per_seed"],
+        "floor_disclosed": "wider than this" in v["row_component_is_binomial_floor"],
+        "point": {"quantile": q["point"], "conformal": c["point"]},
+        "published_hw": {"quantile": q["published_half_width"],
+                         "conformal": c["published_half_width"]},
+        "seeds": q["published_n_seeds"],
+        "row_ratio": {"quantile": q["rows"]["row_over_published"],
+                      "conformal": c["rows"]["row_over_published"]},
+        "combined_ratio": {"quantile": q["rows"]["combined_over_published"],
+                           "conformal": c["rows"]["combined_over_published"]},
+        "combined_ci": {"quantile": q["rows"]["combined_ci"],
+                        "conformal": c["rows"]["combined_ci"]},
+        "name_ratio": {"quantile": q["distinct_names"]["row_over_published"],
+                       "conformal": c["distinct_names"]["row_over_published"]},
+        "e84_held": v["AL2_entry84_roughly_2x"]["held"],
+        "ac_pool_n": v["AL3_study_AC_is_a_different_fold"]["ac_pool_n"],
+        "ac_same_pool": v["AL3_study_AC_is_a_different_fold"]["same_pool_n"],
+        "ac_widenings": v["AL3_study_AC_is_a_different_fold"]["ac_widenings"],
+        "remaining_named": "per-row flags retained" in v["AL_remaining"],
+        "e84_enum": v["entry84_enumeration"],
+    }
+
+
 def representation_increment():
     """What a protein language model buys over 21 numbers, per category, at matched FPR.
 
@@ -6127,7 +6176,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 114"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 115"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -7810,6 +7859,49 @@ CLAIMS = [
       "the embedding adds nothing over composition",
       "composition beats the embedding on every category",
       "the loss sets are the same on both arms"]),
+    # 🟢 Added 2026-10-02. Entry 84's enumerated debt, settled three ways: what the bracket is,
+    # how big the missing piece is, and who did NOT close it.
+    ("the operating-point bracket omits row variability, by about the factor entry 84 predicted",
+     operating_point_row_component,
+     lambda v: v is None or (
+         v["nothing_fitted"] and v["floor_disclosed"] and v["remaining_named"]
+         # 🔒 the design the figures belong to
+         and v["design"]["seeds"] == 200 and v["design"]["calibration_n"] == 118
+         and v["design"]["pool_n"] == 8258
+         and v["design"]["pool_distinct_names"] == 3407
+         and v["design"]["conformal_k_at_0.05"] == 5
+         and v["seeds"] == 200
+         # 🔒 AL-1: the split IS redrawn per seed, so the bracket is not a bare seed SE
+         and v["split_redrawn"] is True
+         # 🟢 AL-2: the row component is about 2x, which is what entry 84 predicted
+         and v["e84_held"] is True
+         and 1.9 < v["row_ratio"]["quantile"] < 2.1
+         and 1.9 < v["row_ratio"]["conformal"] < 2.1
+         and abs(v["row_ratio"]["quantile"] - 1.99) < 0.01
+         and abs(v["row_ratio"]["conformal"] - 2.05) < 0.01
+         and 2.1 < v["combined_ratio"]["quantile"] < 2.4
+         and 2.1 < v["combined_ratio"]["conformal"] < 2.4
+         and abs(v["combined_ci"]["quantile"][0] - 0.0722) < 0.0002
+         and abs(v["combined_ci"]["conformal"][1] - 0.0655) < 0.0002
+         # ⚠️ and the distinct-name denominator is strictly worse, as homology implies
+         and v["name_ratio"]["quantile"] > v["row_ratio"]["quantile"]
+         and abs(v["name_ratio"]["quantile"] - 3.09) < 0.01
+         and abs(v["name_ratio"]["conformal"] - 3.19) < 0.01
+         # 🔴 AL-3: study AC is a different fold, so it did not close these
+         and v["ac_same_pool"] is False
+         and v["ac_pool_n"] == 6758
+         and all(x > 2.5 for pair in v["ac_widenings"].values() for x in pair)
+         # ⚠️ and entry 84's own header undercounts its list
+         and v["e84_enum"]["header_says"] == "eleven"
+         and v["e84_enum"]["total_listed"] == 12),
+     {"paper/MANUSCRIPT.md": [
+         "⚠️ **The brackets in that table are 200-seed intervals, and they are not bare seed standard errors:**",
+         "⚠️ **Study AC's honest intervals do not cover this quantity.** It fixed four intervals, and the two this"]},
+     # 🔴 Four readings this does not license.
+     ["the operating-point interval is a bare seed standard error",
+      "study AC closed the deployment false-positive interval",
+      "the row-level interval for the deployment case is exact",
+      "entry 84 predicted the widening wrongly"]),
 ]
 
 

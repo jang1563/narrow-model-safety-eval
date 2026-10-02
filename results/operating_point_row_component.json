@@ -1,0 +1,136 @@
+{
+  "built": "2026-10-02",
+  "study": "AL -- the row component of the operating-point interval",
+  "nothing_fitted": "every number is read from artifacts or is arithmetic on them",
+  "design": {
+    "seeds": 200,
+    "calibration_n": 118,
+    "pool_n": 8258,
+    "pool_distinct_names": 3407,
+    "conformal_k_at_0.05": 5
+  },
+  "AL1_split_redrawn_per_seed": true,
+  "AL1_evidence": "src/49's seed loop runs rng.permutation(len(N)) and takes nca, ntr = perm[:n_ca], perm[n_ca:], so the 118/178 split is redrawn on every one of the 200 seeds; the published interval therefore includes calibration-split variability and omits test-row variability",
+  "row_component_is_binomial_floor": "pool rows are homologous, so an exact bootstrap over rows is wider than this; the distinct-name denominator is the conservative form reported alongside",
+  "estimators": {
+    "quantile": {
+      "point": 0.07866664648421733,
+      "published_ci": [
+        0.0757435232109401,
+        0.08158976975749455
+      ],
+      "published_half_width": 0.00292312327327722,
+      "published_n_seeds": 200,
+      "rows": {
+        "n": 8258,
+        "row_half_width": 0.0058066058492719,
+        "row_over_published": 1.9864389238575977,
+        "combined_ci": [
+          0.0721657756841188,
+          0.08516751728431585
+        ],
+        "combined_half_width": 0.006500870800098519,
+        "combined_over_published": 2.2239468514819616
+      },
+      "distinct_names": {
+        "n": 3407,
+        "row_half_width": 0.009040110098567249,
+        "row_over_published": 3.0926202056583305,
+        "combined_ci": [
+          0.06916568651877213,
+          0.08816760644966253
+        ],
+        "combined_half_width": 0.009500959965445201,
+        "combined_over_published": 3.2502768707367338
+      }
+    },
+    "conformal": {
+      "point": 0.059782231371599256,
+      "published_ci": [
+        0.05728508329051392,
+        0.062279379452684594
+      ],
+      "published_half_width": 0.0024971480810853375,
+      "published_n_seeds": 200,
+      "rows": {
+        "n": 8258,
+        "row_half_width": 0.005113507765486716,
+        "row_over_published": 2.0477391005439407,
+        "combined_ci": [
+          0.05409156267569355,
+          0.06547290006750496
+        ],
+        "combined_half_width": 0.005690668695905705,
+        "combined_over_published": 2.2788671360780355
+      },
+      "distinct_names": {
+        "n": 3407,
+        "row_half_width": 0.007961048913914992,
+        "row_over_published": 3.188056396901731,
+        "combined_ci": [
+          0.05143872800978443,
+          0.06812573473341409
+        ],
+        "combined_half_width": 0.008343503361814825,
+        "combined_over_published": 3.3412128920238007
+      }
+    }
+  },
+  "AL2_entry84_roughly_2x": {
+    "prediction": "entry 84: the large-n ones will widen by roughly 2x",
+    "row_component_ratios": [
+      1.9864389238575977,
+      2.0477391005439407
+    ],
+    "combined_ratios": [
+      2.2239468514819616,
+      2.2788671360780355
+    ],
+    "held": true,
+    "note": "scored on the items entry 84 listed FIRST, the pool-FPR pair. The row component alone is 1.99x and 2.05x and the combined interval 2.22x and 2.28x, so 'roughly 2x' is right for these."
+  },
+  "AL3_study_AC_is_a_different_fold": {
+    "ac_widenings": {
+      "R": [
+        11.81,
+        10.14
+      ],
+      "CA": [
+        8.54,
+        8.21
+      ],
+      "pool_fpr": [
+        5.89,
+        5.41
+      ],
+      "vfdb_rate": [
+        5.88,
+        5.54
+      ]
+    },
+    "ac_n": {
+      "benign_extracellular": 171,
+      "benign_intracellular": 597,
+      "vfdb_extracellular": 264,
+      "pool": 6758,
+      "vfdb_all": 4218
+    },
+    "ac_pool_n": 6758,
+    "entry84_pool_n": 8258,
+    "same_pool_n": false,
+    "ac_fits_on": "the 746 class-axis positives",
+    "entry84_fits_on": "the 149-protein panel, calibrated on 118 panel negatives",
+    "ac_thresholds_on": "the pool's calibrate split",
+    "entry84_thresholds_on": "the panel negatives",
+    "conclusion": "study AC's docstring says it fixes 'the out-of-sample false-positive rate and the VFDB flag rate', and it does -- for ITS OWN fold. Those are not entry 84's items 1-4, which come from src/49's panel-calibrated fold over 8,258 rows. The paper took only R and C/A from AC, which is correct.",
+    "ac_ratio_widenings_exceed_2x_because": "R and C/A are ratios over strata of 171, 597 and 264 rows, where row resampling compounds; that is why they widen 8.2 to 11.8x and does not contradict entry 84, whose 'roughly 2x' was about the large-n RATES"
+  },
+  "AL_remaining": "entry 84's items 1-4 are still open as EXACT intervals: src/49 must be re-run with per-row flags retained so the row component can be bootstrapped rather than sized binomially. The sizing here is a floor and the paper says so.",
+  "entry84_enumeration": {
+    "header_says": "eleven",
+    "bracketed_intervals_listed": 10,
+    "plus_the_two_mantel_haenszel": 2,
+    "total_listed": 12,
+    "note": "the header undercounts its own list by one"
+  }
+}
