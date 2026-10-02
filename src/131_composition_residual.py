@@ -221,12 +221,16 @@ def main():
                      "won_not_floor": BAND_WON_NOT, "won_is_ceiling": BAND_WON_IS},
            "seeds": a.seeds, "arms": {}}
 
+    # amendment 1: two projections, which bracket the answer
+    FITS = {"negative_fitted": union, "all_rows": np.arange(len(recs))}
     for arm, sfx in ARMS.items():
-        X = np.load(RES / f"embeddings_deepvic{sfx}.npy").astype(np.float64)
-        before = max_abs_corr(X, C)
-        Xr = residualize(X, C, union)
+      X0 = np.load(RES / f"embeddings_deepvic{sfx}.npy").astype(np.float64)
+      before = max_abs_corr(X0, C)
+      for fitname, fitrows in FITS.items():
+        Xr = residualize(X0, C, fitrows)
         after = max_abs_corr(Xr, C)
-        print(f"  {arm}: residual |corr| {before:.3e} -> {after:.3e}", flush=True)
+        print(f"  {arm} / {fitname}: residual |corr| {before:.3e} -> {after:.3e}",
+              flush=True)
 
         rec, fpr = {}, []
         for cat in targets:
@@ -257,7 +261,8 @@ def main():
         won_emb = sum(1 for c in targets if emb[c] > comp_rec[c])
         inc_before = m_emb - m_comp
         inc_after = m_res - m_comp
-        out["arms"][arm] = {
+        out["arms"][f"{arm}/{fitname}"] = {
+            "arm": arm, "projection_fit": fitname,
             "residual_corr_before": before, "residual_corr_after": after,
             "recovery": rec,
             "mean_recovery_residual": m_res,
@@ -274,31 +279,55 @@ def main():
                         else "is compositional"
                         if m_res <= BAND_IS_COMP and won <= BAND_WON_IS else "partly"),
         }
-        v = out["arms"][arm]
+        v = out["arms"][f"{arm}/{fitname}"]
         print(f"    mean {m_res*100:.2f}% (embedding {m_emb*100:.2f}%, composition "
               f"{m_comp*100:.2f}%)  increment {inc_before*100:+.2f} -> {inc_after*100:+.2f}pp "
               f"({v['fraction_of_increment_surviving']:.1%} survives)  won {won}/14 "
               f"(was {won_emb}) -> {v['verdict']}", flush=True)
 
-    A, B = out["arms"]["esm2_650M"], out["arms"]["esm2_35M"]
-    out["second_arm_rule"] = {"arms_agree": A["verdict"] == B["verdict"],
-                              "verdict": A["verdict"] if A["verdict"] == B["verdict"]
-                              else "SPLIT -- indicative only"}
+    cells = out["arms"]
+    nf = [f"{a}/negative_fitted" for a in ARMS]
+    ar = [f"{a}/all_rows" for a in ARMS]
+    out["second_arm_rule"] = {
+        f: {"arms_agree": cells[f"esm2_650M/{f}"]["verdict"]
+                          == cells[f"esm2_35M/{f}"]["verdict"],
+            "verdict": (cells[f"esm2_650M/{f}"]["verdict"]
+                        if cells[f"esm2_650M/{f}"]["verdict"]
+                        == cells[f"esm2_35M/{f}"]["verdict"]
+                        else "SPLIT -- indicative only")}
+        for f in ("negative_fitted", "all_rows")}
+    # 🔒 amendment 1's reading rule: the conclusion must hold under BOTH projections
+    out["amendment1_reading_rule"] = {
+        "variants_agree": (out["second_arm_rule"]["negative_fitted"]["verdict"]
+                           == out["second_arm_rule"]["all_rows"]["verdict"]),
+        "verdict": (out["second_arm_rule"]["all_rows"]["verdict"]
+                    if out["second_arm_rule"]["negative_fitted"]["verdict"]
+                    == out["second_arm_rule"]["all_rows"]["verdict"]
+                    else "VARIANTS DISAGREE -- AN does not settle it"),
+        "rule": ("the conclusion must hold under both projections; they bracket the answer, "
+                 "the negative-fitted one conservative about leakage and permissive about "
+                 "erasure, the all-rows one the reverse"),
+    }
     out["predictions"] = {
         "P1_mean_between_bands": {
             "kind": "derived",
-            "held": bool(all(BAND_IS_COMP < out["arms"][k]["mean_recovery_residual"]
-                             < BAND_NOT_COMP for k in ARMS)),
-            "values": {k: out["arms"][k]["mean_recovery_residual"] for k in ARMS}},
+            "held": bool(all(BAND_IS_COMP < cells[k]["mean_recovery_residual"]
+                             < BAND_NOT_COMP for k in nf + ar)),
+            "values": {k: cells[k]["mean_recovery_residual"] for k in nf + ar}},
         "P2_won_at_least_10_on_one_arm": {
             "kind": "derived",
-            "held": bool(any(out["arms"][k]["categories_won_residual"] >= BAND_WON_NOT
-                             for k in ARMS)),
-            "values": {k: out["arms"][k]["categories_won_residual"] for k in ARMS}},
+            "held": bool(any(cells[k]["categories_won_residual"] >= BAND_WON_NOT
+                             for k in nf + ar)),
+            "values": {k: cells[k]["categories_won_residual"] for k in nf + ar}},
         "P3_residual_corr_below_1e-6": {
             "kind": "reasoned",
-            "held": bool(all(out["arms"][k]["residual_corr_after"] < 1e-6 for k in ARMS)),
-            "values": {k: out["arms"][k]["residual_corr_after"] for k in ARMS}},
+            "held": bool(all(cells[k]["residual_corr_after"] < 1e-6 for k in nf)),
+            "falsified_before_any_recovery_was_read": True,
+            "values": {k: cells[k]["residual_corr_after"] for k in nf}},
+        "P4_all_rows_erases_below_1e-6": {
+            "kind": "derived",
+            "held": bool(all(cells[k]["residual_corr_after"] < 1e-6 for k in ar)),
+            "values": {k: cells[k]["residual_corr_after"] for k in ar}},
     }
     out["seconds"] = round(time.time() - t0, 1)
     OUT.write_text(json.dumps(out, indent=2) + "\n")

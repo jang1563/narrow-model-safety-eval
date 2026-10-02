@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 117 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 118 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 117
+written because it caught something. The evidence is a **dated, append-only corrections log of 118
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -800,6 +800,48 @@ ordering ability as exists here is compositional**, and twenty-one numbers have 
 dimensions do. 🔑 **That is the same finding as § 6's composition arm and § 6's increment table, arriving
 a third time from a third direction.**
 
+### We tried to test whether the increment is compositional, and could not resolve it
+
+🔴 **Three descriptions are not a test.** Studies AJ, AK and AM each found composition doing something
+the representation was credited with, and none of them asked whether the **+7-point increment is
+information composition does not carry, or composition re-encoded.** Study AN removes the composition
+subspace and re-measures — the move studies Y and Z made on localization — with
+`X_resid = X − C(CᵗC)⁻¹CᵗX` over the same 21 features
+(`docs/COMPOSITION_RESIDUAL_PREREGISTRATION.md`, bands frozen; **amendment 1** added mid-study and
+explained below).
+
+| projection | erasure, max &#124;corr&#124; | mean recovery, 650M | 35M | verdict |
+|---|---:|---:|---:|---|
+| none (the embedding) | 0.688 / 0.732 | 41.43% | 41.78% | — |
+| composition alone | — | 34.25% | 34.25% | — |
+| **fitted on negatives only** (frozen) | **0.239** | **37.69%** | **38.86%** | partly / not compositional |
+| **fitted on all rows** (amendment 1) | **1.9e-14** | **9.12%** | **10.96%** | **is compositional** |
+
+🔴 **The two projections disagree, so by a reading rule frozen before either was read, study AN does not
+settle the question.** What it gives instead is a bracket: **[9.12%, 38.86%]** of mean recovery survives
+removal of composition, against composition's own **34.25%** and the embedding's **41.4–41.8%**. ⚠️ **That
+spans from almost nothing to almost everything.**
+
+🔑 **Why neither bound is the answer, which is the useful part.** The frozen projection was fitted on the
+negative union so it could not see the held-out category — and a least-squares map fitted on one set of
+rows does not annihilate the dependence on rows outside it, so it **under-erases on exactly the rows whose
+recovery is being measured** (residual correlation **0.239**, not zero). The all-rows projection erases
+exactly, ⚠️ **but it is fitted across both classes, and composition reaches AUROC 0.8705 on this
+benchmark's binary task (§ 1.2)** — so removing everything linearly predictable from composition removes
+much of the class signal with it. 🔴 **Neither variant isolates what it was meant to.**
+
+⚠️ **A post-hoc arithmetic that is suggestive and not evidence.** Composition's 34.25% plus the
+exactly-erased residual's 9.12% is **43.37%** against the embedding's 41.43%, and 34.25 + 10.96 = 45.21%
+against 41.78% — within 2 to 3 points of additive. 🔑 **If that near-additivity is real, most of what a
+linear probe reads from this embedding for this task is compositional and a small part is not** — but
+recovery rates do not add in general, the agreement is loose, and this is labelled post hoc because it
+was noticed after the run.
+
+🔒 **What the paper claims from AN is therefore only this**: the question is open, the instrument
+available here cannot close it, and the bracket is wide. 🔑 **That is worth stating because the three
+arrivals in §§ 1.2 and 6 make the compositional reading tempting, and this is the test that would have
+licensed it.**
+
 ⚠️ **Two intervals are reported because they answer different questions and this project has confused
 them before.** The **prediction** interval draws one seed and resamples pairs inside it — what a single
 deployment fit would give, which is `src/110`'s idiom — and spans 0.5 on both embedding arms. The
@@ -1294,7 +1336,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 117 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 118 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1375,7 +1417,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**144 claims** and fails if any number in a public document drifts from the artifact that produced
+**145 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

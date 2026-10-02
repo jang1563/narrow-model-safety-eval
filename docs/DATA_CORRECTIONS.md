@@ -8283,3 +8283,73 @@ independent arrival of the same finding**, after study AJ's 0.08-point Exotoxin 
   beside it is what caught it. **A check that silently covers half its cells is the shape worth naming.**
 
 Eight calibrations, including the bracketing failure, the P3 flip and the pair count shrunk back to 31.
+
+## 2026-10-02 (one hundred and fourteenth entry) — The test that could not resolve its own question
+
+Studies AJ, AK and AM each found composition doing something the representation was credited with.
+🔴 **All three are descriptions; none asked whether the +7-point increment is information composition
+does not carry or composition re-encoded.** Study AN asked, with studies Y and Z's instrument —
+`X_resid = X − C(CᵗC)⁻¹CᵗX` over the 21 features — and **it does not settle it.**
+
+| projection | erasure, max &#124;corr&#124; | mean recovery 650M | 35M | verdict |
+|---|---:|---:|---:|---|
+| none (the embedding) | 0.688 / 0.732 | 41.43% | 41.78% | — |
+| composition alone | — | 34.25% | 34.25% | — |
+| **negatives only** (frozen § 2) | **0.239** | 37.69% | 38.86% | partly / not compositional |
+| **all rows** (amendment 1) | **1.9e-14** | **9.12%** | **10.96%** | is compositional |
+
+🔒 **A rule frozen before either variant was read required the conclusion to hold under both. It does
+not.** The study delivers a bracket — **[9.12%, 38.86%]** against composition's 34.25% — which spans from
+almost nothing surviving to almost everything.
+
+### 🔑 Why neither bound is the answer
+
+- **The frozen projection under-erases on the rows being measured.** Fitted on the negative union so it
+  could not see the held-out category, it leaves residual correlation **0.239**. A least-squares map
+  fitted on one row set does not annihilate the dependence outside it — ⚠️ **which this study's own
+  selftest asserts as a property**, and which I did not connect to the design until the diagnostic
+  printed.
+- **The all-rows projection removes class signal with the composition.** It erases exactly, but it is
+  fitted across both classes, and composition alone reaches **AUROC 0.8705** on this benchmark's binary
+  task (entry 104). Removing everything linearly predictable from composition therefore removes much of
+  what distinguishes the classes. 🔴 **Amendment 1 priced its cost as "the held-out rows' composition
+  geometry" and that was an underestimate.**
+
+⚠️ **A post-hoc arithmetic, labelled:** 34.25 + 9.12 = **43.37** against the embedding's 41.43, and
+34.25 + 10.96 = 45.21 against 41.78 — within 2 to 3 points of additive. 🔑 **If real, most of what a
+linear probe reads here is compositional and a small part is not.** Recovery rates do not add in
+general, the agreement is loose, and it was noticed after the run.
+
+### 🔴 Four code and method defects, three of them mine in this file
+
+1. **`max_abs_corr` reported a perfect erasure as no erasure.** It guarded `s == 0` only; after an exact
+   residualization the columns are zero to ~1e-16, and dividing by that std turned numerical noise into
+   correlations of **0.98**. 🔒 The guard is now relative to the matrix's own scale.
+2. **Two selftest checks were too weak to fail.** The leak check asked whether the residual *outside*
+   `fit_rows` was large, which a projection fitted on all rows also satisfies; the band check never
+   pinned the floor's value, so moving it from 0.38 to 0.34 went undetected. 🔒 The leak check now gives
+   `X` two different exact linear maps and asserts the **in-fit** residual is zero; the band constants
+   are asserted directly, plus a case that discriminates the floor.
+3. **Two forbids matched their own documents.** `"the increment is compositional"` and
+   `"the increment is not compositional"` are the preregistration's own band-table **column headers**,
+   one in capitals — so one fired as stale and the other as a case-only miss. 🔴 **That is entries 76,
+   78, 83 and 86's defect for the fifth time.** The forms now name the study.
+4. **And adding this preregistration to the audited surface made an unrelated forbid fire.** `"2 of 5**"`
+   had been written to ban a stale five-arm spelling of the bottom-two figure; it is a bare numeral
+   fragment, and it matched *"reasoned **2 of 5**"* in this study's prediction tally — a different
+   quantity sharing the characters. 🔒 Narrowed to `"holds in only **2 of 5**"`, calibrated both ways:
+   restoring the stale sentence fires it, the tally does not.
+
+### ⭐ The score, and a prediction falsified before any result was read
+
+**P1 (derived) missed, P2 (derived) held, P3 (reasoned) missed, P4 (derived) held** — derived 2 of 3,
+reasoned 0 of 1.
+
+🔑 **P3 was falsified by the design's own diagnostic**, at 0.239 against a predicted 1e-06, **before a
+single recovery number was read** — and the artifact records that fact rather than letting the miss look
+like an outcome. ⚠️ **The prediction was not wrong about LEACE** (study Z reached 3.1e-06); it was wrong
+about this design, because study Z fitted its eraser on the rows it then measured and § 2 deliberately
+did not. 🔒 **P4, added with the amendment, predicted the all-rows variant would erase below 1e-06 and it
+reached 1.9e-14.** The instrument worked; the inference it was built for still failed.
+
+🔑 **Running total across AH through AN: derived 8 of 14, reasoned 2 of 6.**

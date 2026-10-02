@@ -204,7 +204,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/REPRESENTATION_INCREMENT_PREREGISTRATION.md",
           # Added 2026-10-02. It carries the only hazard claim section 6 still makes, repeated
           # at 26.7x the sample that claim originally rested on.
-          "docs/WITHIN_FOLD_ORDERING_PREREGISTRATION.md"]
+          "docs/WITHIN_FOLD_ORDERING_PREREGISTRATION.md",
+          # Added 2026-10-02. It is the one study here that returned "does not settle it" under
+          # a rule frozen before either variant was read, and the amendment that says why.
+          "docs/COMPOSITION_RESIDUAL_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1877,6 +1880,56 @@ def organism_cluster():
         "pool_gap_inside": bool(a["pool_gap_inside"] and b["pool_gap_inside"]),
         "ca_ratio_below_r_650M": bool(a["contrasts"]["CA"]["design_effect"]
                                       < a["contrasts"]["R"]["design_effect"]),
+    }
+
+
+def composition_residual():
+    """The test of whether the increment is compositional, and why it did not resolve.
+
+    🔴 Two projections, disagreeing. Fitted on the negatives only it UNDER-erases on exactly
+    the rows being measured -- residual correlation 0.239, not zero -- and leaves 37.69% and
+    38.86% mean recovery. Fitted on all rows it erases exactly, 1.9e-14, and leaves 9.12% and
+    10.96% -- but it is fitted across both classes, and composition alone reaches AUROC 0.8705
+    on this benchmark's binary task, so it removes much of the class signal with it.
+
+    🔒 By a reading rule frozen before either was read, the conclusion must hold under both.
+    It does not, so study AN does NOT settle the question. The bracket is [9.12%, 38.86%]
+    against composition's 34.25% and the embedding's 41.4-41.8%, which spans from almost
+    nothing to almost everything.
+
+    ⚠️ The near-additivity -- 34.25 + 9.12 = 43.37 against 41.43 -- is POST HOC, loose, and
+    labelled so. Recovery rates do not add in general.
+
+    🔴 P3 was falsified before any recovery was read, at 0.239 against a predicted 1e-06, and
+    is scored as a miss rather than quietly dropped.
+    """
+    v = j("../results/composition_residual.json")
+    if v is None:
+        return None
+    nf = {a: v["arms"][f"{a}/negative_fitted"] for a in ("esm2_650M", "esm2_35M")}
+    ar = {a: v["arms"][f"{a}/all_rows"] for a in ("esm2_650M", "esm2_35M")}
+    return {
+        "prereg": v["preregistration"],
+        "bands": v["bands"],
+        "linear_scope_stated": "LINEAR probe" in v["linear_scope"],
+        "leak_note": "cannot leak" in v["projection_fitted_on"],
+        "corr_after": {f"nf/{a}": nf[a]["residual_corr_after"] for a in nf}
+        | {f"ar/{a}": ar[a]["residual_corr_after"] for a in ar},
+        "mean_res": {f"nf/{a}": nf[a]["mean_recovery_residual"] for a in nf}
+        | {f"ar/{a}": ar[a]["mean_recovery_residual"] for a in ar},
+        "mean_emb": ar["esm2_650M"]["mean_recovery_embedding"],
+        "mean_comp": ar["esm2_650M"]["mean_recovery_composition"],
+        "won": {f"nf/{a}": nf[a]["categories_won_residual"] for a in nf}
+        | {f"ar/{a}": ar[a]["categories_won_residual"] for a in ar},
+        "verdict_nf": {a: nf[a]["verdict"] for a in nf},
+        "verdict_ar": {a: ar[a]["verdict"] for a in ar},
+        "rule": v["amendment1_reading_rule"],
+        "fpr_min": min(v["arms"][k]["test_fpr_min"] for k in v["arms"]),
+        "fpr_max": max(v["arms"][k]["test_fpr_max"] for k in v["arms"]),
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "kinds": {k: w["kind"] for k, w in v["predictions"].items()},
+        "p3_pre_falsified": v["predictions"]["P3_residual_corr_below_1e-6"].get(
+            "falsified_before_any_recovery_was_read", False),
     }
 
 
@@ -6247,7 +6300,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 117"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 118"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -7401,8 +7454,14 @@ CLAIMS = [
       # representation-general, which this section explicitly denies. The qualifier is pinned here
       # rather than on the § 10.6 claim because this is the claim that knows it is 2 of 5.
       "docs/DETECTOR_EVALUATION_SUMMARY.md": '  class in all nine — but the exact bottom-two holds in only **2 of 9**, and one arm, ESM-3 1.4B,'},
-     # the five-arm spellings, forbidden so the eight-arm rerun cannot be half-propagated again
-     ["2 of 5**", "only **5 arms** are embedded", "2 of 8**", "**8 arms** now embedded"]),
+     # the five-arm spellings, forbidden so the eight-arm rerun cannot be half-propagated again.
+     # 🔴 Narrowed 2026-10-02. "2 of 5**" and "2 of 8**" were bare numeral fragments with no
+     # subject, and they fired on docs/COMPOSITION_RESIDUAL_PREREGISTRATION.md's prediction
+     # tally ("reasoned **2 of 5**") the moment that document joined the audited surface --
+     # a different quantity that happens to share the characters. The forbids now carry the
+     # phrase the stale claim was made in, so a tally cannot satisfy them.
+     ["holds in only **2 of 5**", "only **5 arms** are embedded",
+      "holds in only **2 of 8**", "**8 arms** now embedded"]),
     ("reference set poisoning, both arms", reference_set_poisoning,
      # The assertion deliberately requires the 35M arm to be LOUD (s_p2_near == 0), so a future run
      # that made both arms quiet fails here instead of silently strengthening a claim the document
@@ -8046,6 +8105,63 @@ CLAIMS = [
       "the bootstrap excludes chance on both arms",
       "the ordering result rests on 31 pairs",
       "the prediction interval is a confidence interval for the mean"]),
+    # 🔴 Added 2026-10-02. The claim's job is to hold a NON-result in place: a frozen rule said
+    # the conclusion must hold under both projections, they disagree, and the question is open.
+    ("the test of whether the increment is compositional does not settle it, and says why",
+     composition_residual,
+     lambda v: v is None or (
+         "COMPOSITION_RESIDUAL_PREREGISTRATION" in v["prereg"]
+         and v["linear_scope_stated"] and v["leak_note"]
+         and v["bands"]["not_compositional_floor"] == 0.38
+         and v["bands"]["is_compositional_ceiling"] == 0.35
+         # 🔴 the frozen projection UNDER-erases on the measured rows
+         and 0.20 < v["corr_after"]["nf/esm2_650M"] < 0.30
+         and 0.20 < v["corr_after"]["nf/esm2_35M"] < 0.30
+         # 🔒 and the amendment's projection erases exactly
+         and v["corr_after"]["ar/esm2_650M"] < 1e-10
+         and v["corr_after"]["ar/esm2_35M"] < 1e-10
+         # 🔴 the two disagree, so the frozen reading rule returns "does not settle it"
+         and v["rule"]["variants_agree"] is False
+         and "does not settle" in v["rule"]["verdict"]
+         and v["verdict_ar"] == {"esm2_650M": "is compositional",
+                                 "esm2_35M": "is compositional"}
+         and v["verdict_nf"]["esm2_650M"] != v["verdict_nf"]["esm2_35M"]
+         # 🔒 the bracket, which is what the study delivers instead of an answer
+         and abs(v["mean_res"]["ar/esm2_650M"] - 0.0912) < 0.0005
+         and abs(v["mean_res"]["nf/esm2_35M"] - 0.3886) < 0.0005
+         and v["mean_res"]["ar/esm2_650M"] < v["mean_comp"] < v["mean_res"]["nf/esm2_35M"]
+         and abs(v["mean_comp"] - 0.3425) < 0.0005
+         and 0.41 < v["mean_emb"] < 0.42
+         # ⚠️ the exactly-erased variant falls BELOW composition's own level, which is the
+         # evidence that it removes class signal and not only composition
+         and v["won"]["ar/esm2_650M"] <= 3 and v["won"]["ar/esm2_35M"] <= 3
+         and v["won"]["nf/esm2_35M"] >= 10
+         # 🔒 every cell is still calibrated like the rest of the DeepVIC studies
+         and 0.045 < v["fpr_min"] and v["fpr_max"] < 0.060
+         # 🔴 P3 was falsified before any recovery was read and is scored as a miss
+         and v["preds"]["P3_residual_corr_below_1e-6"] is False
+         and v["p3_pre_falsified"] is True
+         and v["preds"]["P4_all_rows_erases_below_1e-6"] is True
+         and v["preds"]["P1_mean_between_bands"] is False
+         and v["preds"]["P2_won_at_least_10_on_one_arm"] is True
+         and v["kinds"]["P3_residual_corr_below_1e-6"] == "reasoned"),
+     {"paper/MANUSCRIPT.md": [
+         "🔴 **The two projections disagree, so by a reading rule frozen before either was read, study AN does not",
+         "🔑 **Why neither bound is the answer, which is the useful part.** The frozen projection was fitted on the",
+         "⚠️ **A post-hoc arithmetic that is suggestive and not evidence.** Composition's 34.25% plus the"],
+      "docs/COMPOSITION_RESIDUAL_PREREGISTRATION.md":
+      "🔑 **The reading rule, frozen here: the conclusion must hold under BOTH variants.** They bracket the"},
+     # 🔴 Five readings this non-result does not license. The first two were written as
+     # "the increment is compositional" and "the increment is not compositional" and matched
+     # their OWN documents -- the preregistration's band table uses both as column headers,
+     # one of them in capitals, so one fired as stale and the other as a case-only miss. That
+     # is entries 76, 78, 83 and 86's defect for the fifth time; the forms below name the
+     # study, so a hypothesis label cannot satisfy them.
+     ["study AN shows the increment is compositional",
+      "study AN shows the increment is not compositional",
+      "study AN settles whether the increment is compositional",
+      "removing composition leaves the signal intact",
+      "the additive decomposition is evidence"]),
 ]
 
 
