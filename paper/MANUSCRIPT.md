@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 116 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 117 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 116
+written because it caught something. The evidence is a **dated, append-only corrections log of 117
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -84,8 +84,11 @@ the entire exotoxin category held out as well, are ordered at **chance**: AUROC 
 and **0.5247** on 35M, inside a registration band of 0.40–0.60 frozen before the study against a hazard
 floor of 0.70. The screen flags **three quarters** of those toxins, so it is not blind to them; it simply
 does not rank them above comparable non-toxins. ⚠️ The test rests on **31 pairs**, because only **30.6%**
-of the population carries a reviewed UniProt entry. 🔴 **And the between-category form of the same claim
-does not replicate.** On DeepVIC's published axis, where Exotoxin and Motility hold 1,126 and 1,121
+of the population carries a reviewed UniProt entry — 🔒 **and the same ordering test on DeepVIC's axis
+gives 0.4457 and 0.5047 on 828 pairs**, 26.7× the sample, inside the same band. ⚠️ **The one
+arm whose interval excludes chance carries no model**: twenty-one amino-acid features reach 0.5553
+[0.5204, 0.5919], so what ordering ability exists here is compositional. 🔴 **And the between-category
+form of the same claim does not replicate.** On DeepVIC's published axis, where Exotoxin and Motility hold 1,126 and 1,121
 members without any choosing, the length-matched recovery difference is **+6.04pp** on 650M and
 **−5.30pp** on 35M — both intervals excluding zero, against a reading rule frozen before the run that
 required both arms to agree. The disagreement is **exotoxins specifically**, which swing 13.7 points
@@ -766,7 +769,43 @@ held — the exact inverse of this project's record, and the sample is one study
 🔑 **So § 6's narrowing now has the cell it was missing**: a matched contrast, on a population containing
 toxins, along an axis this project did not define, with both groups unseen by the model that scored them
 — and the screen orders toxins and length-matched non-toxins at chance. ⚠️ **On 31 pairs**, which is the
-limit of what 30.6% reviewed coverage allows.
+limit of what 30.6% reviewed coverage allows — 🔒 **and study AM repeats it on 828.**
+
+### The ordering result at 26.7× the pairs
+
+🔑 **This is the one hazard claim § 6 still makes, so it is the one worth repeating at scale.** DeepVIC's
+axis holds **1,126 Exotoxin** against **1,121 Motility** and study AI-3 already matched **828** pairs from
+them; AI-3 measured the *recovery difference* at a fixed threshold, which is a different quantity and
+which did not replicate. Study AM measures the **ordering** quantity on the same pairs — both groups held
+out of one fit, scored by one model, AUROC rather than recovery
+(`docs/WITHIN_FOLD_ORDERING_PREREGISTRATION.md`, bands frozen first).
+
+| | pairs | 650M | 35M | composition, 21 features |
+|---|---:|---:|---:|---:|
+| study AH (UniProt keywords) | 31 | 0.4599 | 0.5247 | — |
+| **study AM (DeepVIC), strict** | **828** | **0.4457** | **0.5047** | **0.5553** |
+| single-run prediction interval | | [0.3211, 0.6705] | [0.3872, 0.6605] | **[0.5204, 0.5919]** |
+| 30-seed mean's own interval | | **[0.4147, 0.4767]** | [0.4800, 0.5295] | [0.5511, 0.5595] |
+
+🔒 **Every cell is inside the frozen 0.40–0.60 band, on both arms and in both variants, against a
+hazard floor of 0.70.** The screen flags these proteins at **44.7%** and **51.2%** against **48.5%** and
+**46.1%** for their matched comparators, at out-of-sample false-positive rates of **4.99%** and
+**4.87%**, so it is neither blind to them nor able to rank them. 🔑 **The 31-pair caveat is retired: the
+result holds at 26.7× the sample.**
+
+🔴 **And the only arm whose interval excludes chance is the one with no model in it.** Composition's
+AUROC is **0.5553 [0.5204, 0.5919]** — inside the "cannot order" band, because that band is about
+usefulness, but **reliably above 0.5**, while neither embedding arm's interval excludes it. ⚠️ **So such
+ordering ability as exists here is compositional**, and twenty-one numbers have more of it than 1,280
+dimensions do. 🔑 **That is the same finding as § 6's composition arm and § 6's increment table, arriving
+a third time from a third direction.**
+
+⚠️ **Two intervals are reported because they answer different questions and this project has confused
+them before.** The **prediction** interval draws one seed and resamples pairs inside it — what a single
+deployment fit would give, which is `src/110`'s idiom — and spans 0.5 on both embedding arms. The
+**mean's** interval is `sd/√30` and excludes 0.5 on 650M, so *the average fit ranks toxins slightly below
+their comparators* while *any one fit could land anywhere from 0.32 to 0.67*. 🔒 Both statements are true
+and neither is the other.
 
 ### And on a published benchmark at eleven times the toxin count, the narrowing does not replicate
 
@@ -1255,7 +1294,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 116 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 117 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1336,7 +1375,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**143 claims** and fails if any number in a public document drifts from the artifact that produced
+**144 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

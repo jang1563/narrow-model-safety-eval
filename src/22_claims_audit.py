@@ -201,7 +201,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/COMPOSITION_ARM_PREREGISTRATION.md",
           # Added 2026-10-02. It is the only place the project says what a protein language model
           # buys over twenty-one numbers, per category, at a matched false-positive rate.
-          "docs/REPRESENTATION_INCREMENT_PREREGISTRATION.md"]
+          "docs/REPRESENTATION_INCREMENT_PREREGISTRATION.md",
+          # Added 2026-10-02. It carries the only hazard claim section 6 still makes, repeated
+          # at 26.7x the sample that claim originally rested on.
+          "docs/WITHIN_FOLD_ORDERING_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1874,6 +1877,70 @@ def organism_cluster():
         "pool_gap_inside": bool(a["pool_gap_inside"] and b["pool_gap_inside"]),
         "ca_ratio_below_r_650M": bool(a["contrasts"]["CA"]["design_effect"]
                                       < a["contrasts"]["R"]["design_effect"]),
+    }
+
+
+def within_fold_ordering():
+    """Section 6's surviving hazard claim, repeated at 828 pairs instead of 31.
+
+    🔒 AUROC 0.4457 and 0.5047 on the two arms, both variants, every cell inside the frozen
+    0.40-0.60 band against a hazard floor of 0.70 -- so the claim holds at 26.7x study AH's
+    sample and the 31-pair caveat is retired.
+
+    🔴 The only arm whose interval excludes chance has no model in it: composition reaches
+    0.5553 [0.5204, 0.5919] while neither embedding arm's interval excludes 0.5. Such ordering
+    ability as exists here is compositional.
+
+    ⚠️ Two intervals, because they answer different questions. The PREDICTION interval draws a
+    seed then resamples pairs -- what one deployment fit would give -- and spans 0.5 on both
+    embedding arms. The MEAN's interval is sd/sqrt(30) and excludes 0.5 on 650M. Both are true.
+
+    🔴 The first version of src/130 bootstrapped the SEED-AVERAGED scores while reporting the
+    mean of per-seed AUROCs, so the 35M point estimate fell outside its own interval
+    (0.5047 against [0.5395, 0.5899]) and three of six cells falsely excluded 0.5. The
+    bootstrap was manufacturing significance; the selftest now asserts bracketing.
+    """
+    v = j("../results/within_fold_ordering.json")
+    if v is None:
+        return None
+    A = v["arms"]["esm2_650M"]
+    B = v["arms"]["esm2_35M"]
+    C = v["arms"]["composition"]
+    return {
+        "prereg": v["preregistration"],
+        "n_pairs": v["n_pairs"], "n_dropped": v["n_dropped"], "seeds": v["seeds"],
+        "bands": v["bands"],
+        "n_features": {k: v["arms"][k]["n_features"] for k in v["arms"]},
+        "auroc": {k: v["arms"][k]["strict"]["auroc"] for k in v["arms"]},
+        # 🔴 This was keyed on `k` alone while looping over both variants, so the inner loop
+        # overwrote and the dict held THREE cells, not six -- and the predicate's
+        # all(x == "cannot order") passed on the three survivors. The `len(...) == 6`
+        # assertion beside it is what caught the collision; the key now carries the variant.
+        "verdict": {f"{k}/{w}": v["arms"][k][w]["verdict"]
+                    for k in v["arms"] for w in ("permissive", "strict")},
+        "brackets": {f"{k}/{w}": v["arms"][k][w]["ci_brackets_point"]
+                     for k in v["arms"] for w in ("permissive", "strict")},
+        "pred_ci": {k: v["arms"][k]["strict"]["auroc_hier_ci"] for k in v["arms"]},
+        "pred_excl": {k: v["arms"][k]["strict"]["excludes_half"] for k in v["arms"]},
+        "mean_ci": {k: v["arms"][k]["strict"]["auroc_mean_ci"] for k in v["arms"]},
+        "mean_excl": {k: v["arms"][k]["strict"]["mean_ci_excludes_half"] for k in v["arms"]},
+        # 🔴 This read `"not a confidence interval" in ...` and the artifact says "NOT a
+        # confidence interval". One capital letter, and the check could never pass -- the
+        # same case-only near-miss the forbid loop was hardened against on 2026-09-30, made
+        # here in a loader where no such guard exists. Case is ignored deliberately.
+        "two_objects_distinguished": ("not a confidence interval"
+                                      in A["strict"]["auroc_hier_ci_is"].lower()),
+        "rec": {k: [v["arms"][k]["strict"]["recovery_hazard"],
+                    v["arms"][k]["strict"]["recovery_matched"]] for k in v["arms"]},
+        "fpr_min": min(v["arms"][k][w]["test_fpr"]
+                       for k in v["arms"] for w in ("permissive", "strict")),
+        "fpr_max": max(v["arms"][k][w]["test_fpr"]
+                       for k in v["arms"] for w in ("permissive", "strict")),
+        "arms_agree": v["second_arm_rule"]["arms_agree"],
+        "vs_AH": v["vs_AH"],
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "kinds": {k: w["kind"] for k, w in v["predictions"].items()},
+        "unused": (A, B, C)[0] is not None,
     }
 
 
@@ -5194,7 +5261,10 @@ CLAIMS = [
       # only the README or the dataset card
       "huggingface/README.md":
       "at a nominal 5% the published `np.quantile` estimator delivers **7.87%**",
-      "README.md": "a nominal 5% budget really costs about **7.9%**",
+      "README.md": # 🔒 Repinned 2026-10-02. The README quoted only the interpolating estimator, which the log
+      # had recorded as a debt and not fixed; it now names both, and the pin follows the sentence
+      # rather than the stale phrasing.
+      "a nominal 5% budget really costs **7.87%** with the interpolating `np.quantile` estimator and **5.98%** with the conformal one",
       "docs/MECHANISM_GENERALIZATION.md":
       "| panel to pool, deployment shift | 7.87% [7.57, 8.16] exceeds | 5.98% [5.73, 6.23] **exceeds** |"},
      []),
@@ -6177,7 +6247,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 116"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 117"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -7922,6 +7992,60 @@ CLAIMS = [
       "study AC closed the deployment false-positive interval",
       "the row-level interval for the deployment case is exact",
       "entry 84 predicted the widening wrongly"]),
+    # 🔒 Added 2026-10-02. The surviving hazard claim at 26.7x the pairs, the composition arm
+    # that beats both embeddings at it, and the two interval objects kept apart.
+    ("the screen cannot order toxins above matched non-toxins, at 828 pairs as at 31",
+     within_fold_ordering,
+     lambda v: v is None or (
+         "WITHIN_FOLD_ORDERING_PREREGISTRATION" in v["prereg"]
+         and v["n_pairs"] == 828 and v["n_dropped"] == 298 and v["seeds"] == 30
+         and v["bands"]["cannot_order"] == [0.40, 0.60]
+         and v["bands"]["can_order_floor"] == 0.70
+         and v["n_features"] == {"esm2_650M": 1280, "esm2_35M": 480, "composition": 21}
+         # 🔒 every one of the six cells is in the cannot-order band, and the arms agree
+         and all(x == "cannot order" for x in v["verdict"].values())
+         and len(v["verdict"]) == 6
+         and v["arms_agree"] is True
+         and abs(v["auroc"]["esm2_650M"] - 0.4457) < 0.0005
+         and abs(v["auroc"]["esm2_35M"] - 0.5047) < 0.0005
+         and all(0.40 <= x <= 0.60 for x in v["auroc"].values())
+         # 🔒 and it holds at 26.7x study AH's sample, in the same band
+         and v["vs_AH"]["both_in_same_band_as_AH"] is True
+         and v["vs_AH"]["pairs_ratio"] > 26
+         and v["vs_AH"]["ah_auroc"] == [0.4599, 0.5247]
+         # 🔴 every interval brackets its own point -- the defect the first version had
+         and all(v["brackets"].values()) and len(v["brackets"]) == 6
+         # 🔴 the ONLY arm whose prediction interval excludes chance carries no model
+         and v["pred_excl"] == {"esm2_650M": False, "esm2_35M": False,
+                                "composition": True}
+         and abs(v["auroc"]["composition"] - 0.5553) < 0.0005
+         and v["pred_ci"]["composition"][0] > 0.5
+         # ⚠️ the two interval objects disagree on 650M and are kept apart
+         and v["two_objects_distinguished"]
+         and v["mean_excl"]["esm2_650M"] is True
+         and v["pred_excl"]["esm2_650M"] is False
+         and v["mean_ci"]["esm2_650M"][1] < 0.5
+         # 🔒 the screen is not blind: it flags these at 44.7% against 48.5% matched
+         and abs(v["rec"]["esm2_650M"][0] - 0.447) < 0.0015
+         and abs(v["rec"]["esm2_650M"][1] - 0.485) < 0.0015
+         # 🔒 and the fold is calibrated like studies AI, AJ and AK
+         and 0.045 < v["fpr_min"] and v["fpr_max"] < 0.055
+         # ⭐ two derived held and the reasoned one missed -- and it had held only while the
+         # bootstrap was wrong
+         and v["preds"]["P1_both_arms_cannot_order"] is True
+         and v["preds"]["P2_composition_further_from_half_than_650M"] is True
+         and v["preds"]["P3_bootstrap_excludes_half_on_one_arm"] is False
+         and v["kinds"]["P3_bootstrap_excludes_half_on_one_arm"] == "reasoned"),
+     {"paper/MANUSCRIPT.md": [
+         "🔒 **Every cell is inside the frozen 0.40–0.60 band, on both arms and in both variants, against a",
+         "🔴 **And the only arm whose interval excludes chance is the one with no model in it.** Composition's",
+         "⚠️ **Two intervals are reported because they answer different questions and this project has confused"]},
+     # 🔴 Five readings this does not license.
+     ["the screen can order toxins above matched non-toxins",
+      "the embedding orders toxins better than composition",
+      "the bootstrap excludes chance on both arms",
+      "the ordering result rests on 31 pairs",
+      "the prediction interval is a confidence interval for the mean"]),
 ]
 
 

@@ -8211,3 +8211,75 @@ Evidence strings now match the paper's own rounding.
 
 Each open item needs its own study re-run with per-row flags retained. 🔒 **Nothing here is a new
 measurement**; what changed is that the bookkeeping is now a measurement instead of a sentence.
+
+## 2026-10-02 (one hundred and thirteenth entry) — A bootstrap that manufactured significance, and the claim it was testing
+
+After entries 107 and 109, § 6 made exactly **one** claim about hazard: the screen cannot **order** a
+curated toxin above a length-matched non-toxin inside one fold. 🔴 **Its whole evidence was study AH's
+31 pairs**, the limit of 30.6% reviewed UniProt coverage. DeepVIC's axis holds 1,126 Exotoxin against
+1,121 Motility and study AI-3 had already matched **828** pairs, so the claim could be repeated at
+**26.7×** the sample. Study AM does that. 🟢 **It replicates.**
+
+| | pairs | 650M | 35M | composition, 21 features |
+|---|---:|---:|---:|---:|
+| AH (UniProt keywords) | 31 | 0.4599 | 0.5247 | — |
+| **AM (DeepVIC), strict** | **828** | **0.4457** | **0.5047** | **0.5553** |
+
+🔒 All six cells — two arms, two variants, plus the composition arm — are inside the frozen 0.40–0.60
+band against a hazard floor of 0.70, at out-of-sample false-positive rates of 4.87–5.34%. **The 31-pair
+caveat is retired.**
+
+### 🔴 The bootstrap was manufacturing significance, and the point estimate gave it away
+
+The first version reported the **mean of per-seed AUROCs** and bootstrapped the **seed-averaged scores**.
+Those are different statistics, and on the noisier arm they diverged enough that **the point estimate
+fell outside its own interval**:
+
+| | point (mean of per-seed) | AUROC of mean scores | first interval |
+|---|---:|---:|---|
+| 35M strict | **0.5047** | **0.5646** | **[0.5395, 0.5899]** ← excludes the point |
+| 35M permissive | 0.4680 | 0.5001 | [0.4741, 0.5261] ← excludes the point |
+| composition strict | 0.5553 | 0.5556 | [0.5275, 0.5834] ← contains it |
+
+🔑 **Seed-averaging denoises, so the averaged-score AUROC sits further from 0.5 than the average of
+noisy per-seed ones, and the gap grows with seed spread** — composition's across-seed sd is **0.012** and
+it agreed, 35M's is **0.069** and it did not. 🔴 **Three of six cells falsely reported their interval as
+excluding 0.5.** Resampling the seed first and pairs inside it brackets the right statistic, and every
+interval widened: 650M strict went from [0.4221, 0.4729] to **[0.3211, 0.6705]**.
+
+⚠️ **The reasoned prediction P3 — "the bootstrap excludes 0.50 on at least one arm" — held in the buggy
+version and fails in the corrected one.** It is scored as a miss. 🔒 The selftest now plants a
+seed-to-seed spread and asserts that the interval **brackets the statistic reported beside it**;
+re-injecting the original bug fails it with exactly that message.
+
+### 🔒 Two interval objects, kept apart
+
+| 650M strict | interval | excludes 0.5 |
+|---|---|:--:|
+| single-run **prediction** (one seed, then pairs) | **[0.3211, 0.6705]** | ✗ |
+| the 30-seed **mean's** own (sd/√30) | **[0.4147, 0.4767]** | ✓ |
+
+🔑 Both are true and neither is the other: *the average fit ranks toxins slightly below their
+comparators*, and *any one fit could land anywhere from 0.32 to 0.67*. ⚠️ **P3's verdict depends on which
+object you use**, and the frozen wording said "the paired bootstrap", which is the prediction interval —
+so the miss stands and the dependence is disclosed rather than resolved in our favour.
+
+### 🔴 And the only arm that can order them has no model in it
+
+**Composition reaches 0.5553 [0.5204, 0.5919]** — inside the "cannot order" band, because that band is
+about usefulness, ⚠️ **but it is the only arm whose interval excludes chance.** Twenty-one amino-acid
+features order toxins above matched non-toxins more reliably than 1,280 dimensions do. 🔑 **Third
+independent arrival of the same finding**, after study AJ's 0.08-point Exotoxin match and study AK's
+20-point exoenzyme deficit.
+
+### ⚠️ Two defects in the claim that checks all this
+
+- **A case-only miss in a loader.** The check read `"not a confidence interval" in ...` while the
+  artifact says `"NOT a confidence interval"`. 🔴 One capital letter — the same defect the **forbid**
+  loop was hardened against on 2026-09-30, made in a **loader**, where no such guard exists.
+- **A dict-comprehension key collision.** `{k: ... for k in arms for w in variants}` keys on `k` alone,
+  so the inner loop overwrote and the dict held **three** cells instead of six — ⚠️ **and
+  `all(x == "cannot order")` passed on the three survivors.** 🔒 The `len(...) == 6` assertion written
+  beside it is what caught it. **A check that silently covers half its cells is the shape worth naming.**
+
+Eight calibrations, including the bracketing failure, the P3 flip and the pair count shrunk back to 31.

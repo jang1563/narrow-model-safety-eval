@@ -1,0 +1,242 @@
+{
+  "built": "2026-10-02 11:44:22",
+  "study": "AM -- within-fold ordering of toxins against matched non-toxins",
+  "preregistration": "docs/WITHIN_FOLD_ORDERING_PREREGISTRATION.md",
+  "n_pairs": 828,
+  "n_dropped": 298,
+  "seeds": 30,
+  "bands": {
+    "cannot_order": [
+      0.4,
+      0.6
+    ],
+    "can_order_floor": 0.7
+  },
+  "ah_reference": {
+    "n_pairs": 31,
+    "auroc_650M": 0.4599,
+    "auroc_35M": 0.5247
+  },
+  "arms": {
+    "esm2_650M": {
+      "n_features": 1280,
+      "permissive": {
+        "n_held_out_positives": 1656,
+        "n_fitted_positives": 11333,
+        "auroc": 0.42684161726839215,
+        "auroc_sd": 0.07509584546909288,
+        "auroc_of_mean_scores": 0.434537562136806,
+        "auroc_per_seed_min": 0.31669788093071016,
+        "auroc_per_seed_max": 0.6472408924362295,
+        "auroc_hier_ci": [
+          0.31627306063152,
+          0.6379213925645869
+        ],
+        "auroc_hier_ci_is": "a PREDICTION interval for one run -- one seed drawn, then pairs resampled inside it, which is src/110's idiom. A deployment uses one fit, so this is the honest object, but it is NOT a confidence interval for the 30-seed mean and must not be read as one.",
+        "auroc_mean_ci": [
+          0.39996891409000723,
+          0.45371432044677706
+        ],
+        "auroc_mean_ci_is": "the seed-mean's own interval, sd/sqrt(30), which omits pair sampling entirely and is reported only so the two objects are not conflated",
+        "mean_ci_excludes_half": true,
+        "ci_brackets_point": true,
+        "excludes_half": false,
+        "recovery_hazard": 0.4562399355877618,
+        "recovery_matched": 0.5111111111111111,
+        "test_fpr": 0.04956659493065519,
+        "verdict": "cannot order",
+        "distance_from_half": 0.07315838273160785
+      },
+      "strict": {
+        "n_held_out_positives": 2247,
+        "n_fitted_positives": 10742,
+        "auroc": 0.44570220425214124,
+        "auroc_sd": 0.08668000971529573,
+        "auroc_of_mean_scores": 0.44706848467875565,
+        "auroc_per_seed_min": 0.32701317416975895,
+        "auroc_per_seed_max": 0.6795155662909286,
+        "auroc_hier_ci": [
+          0.32107032106933653,
+          0.6704870956731779
+        ],
+        "auroc_hier_ci_is": "a PREDICTION interval for one run -- one seed drawn, then pairs resampled inside it, which is src/110's idiom. A deployment uses one fit, so this is the honest object, but it is NOT a confidence interval for the 30-seed mean and must not be read as one.",
+        "auroc_mean_ci": [
+          0.41468416113632944,
+          0.47672024736795304
+        ],
+        "auroc_mean_ci_is": "the seed-mean's own interval, sd/sqrt(30), which omits pair sampling entirely and is reported only so the two objects are not conflated",
+        "mean_ci_excludes_half": true,
+        "ci_brackets_point": true,
+        "excludes_half": false,
+        "recovery_hazard": 0.44677938808373585,
+        "recovery_matched": 0.4853462157809984,
+        "test_fpr": 0.049883428981348635,
+        "verdict": "cannot order",
+        "distance_from_half": 0.05429779574785876
+      }
+    },
+    "esm2_35M": {
+      "n_features": 480,
+      "permissive": {
+        "n_held_out_positives": 1656,
+        "n_fitted_positives": 11333,
+        "auroc": 0.46800586555890067,
+        "auroc_sd": 0.055457688842028244,
+        "auroc_of_mean_scores": 0.5000933510700366,
+        "auroc_per_seed_min": 0.36071145184251674,
+        "auroc_per_seed_max": 0.5978173352937058,
+        "auroc_hier_ci": [
+          0.3667088569744918,
+          0.5956554557865993
+        ],
+        "auroc_hier_ci_is": "a PREDICTION interval for one run -- one seed drawn, then pairs resampled inside it, which is src/110's idiom. A deployment uses one fit, so this is the honest object, but it is NOT a confidence interval for the 30-seed mean and must not be read as one.",
+        "auroc_mean_ci": [
+          0.4481605864771915,
+          0.48785114464060986
+        ],
+        "auroc_mean_ci_is": "the seed-mean's own interval, sd/sqrt(30), which omits pair sampling entirely and is reported only so the two objects are not conflated",
+        "mean_ci_excludes_half": true,
+        "ci_brackets_point": true,
+        "excludes_half": false,
+        "recovery_hazard": 0.52512077294686,
+        "recovery_matched": 0.5052334943639292,
+        "test_fpr": 0.04929459588713535,
+        "verdict": "cannot order",
+        "distance_from_half": 0.03199413444109933
+      },
+      "strict": {
+        "n_held_out_positives": 2247,
+        "n_fitted_positives": 10742,
+        "auroc": 0.5047321213252741,
+        "auroc_sd": 0.0692264436554098,
+        "auroc_of_mean_scores": 0.5645756026978459,
+        "auroc_per_seed_min": 0.3829479684473383,
+        "auroc_per_seed_max": 0.6641578566594319,
+        "auroc_hier_ci": [
+          0.387186617540666,
+          0.6604785117505659
+        ],
+        "auroc_hier_ci_is": "a PREDICTION interval for one run -- one seed drawn, then pairs resampled inside it, which is src/110's idiom. A deployment uses one fit, so this is the honest object, but it is NOT a confidence interval for the 30-seed mean and must not be read as one.",
+        "auroc_mean_ci": [
+          0.4799597566115343,
+          0.529504486039014
+        ],
+        "auroc_mean_ci_is": "the seed-mean's own interval, sd/sqrt(30), which omits pair sampling entirely and is reported only so the two objects are not conflated",
+        "mean_ci_excludes_half": false,
+        "ci_brackets_point": true,
+        "excludes_half": false,
+        "recovery_hazard": 0.5121980676328503,
+        "recovery_matched": 0.460547504025765,
+        "test_fpr": 0.04873266379722621,
+        "verdict": "cannot order",
+        "distance_from_half": 0.004732121325274119
+      }
+    },
+    "composition": {
+      "n_features": 21,
+      "permissive": {
+        "n_held_out_positives": 1656,
+        "n_fitted_positives": 11333,
+        "auroc": 0.5389821913385765,
+        "auroc_sd": 0.0116765438723824,
+        "auroc_of_mean_scores": 0.5391505636070854,
+        "auroc_per_seed_min": 0.5186206212513711,
+        "auroc_per_seed_max": 0.5691541809610493,
+        "auroc_hier_ci": [
+          0.5040358293075685,
+          0.5758464316553479
+        ],
+        "auroc_hier_ci_is": "a PREDICTION interval for one run -- one seed drawn, then pairs resampled inside it, which is src/110's idiom. A deployment uses one fit, so this is the honest object, but it is NOT a confidence interval for the 30-seed mean and must not be read as one.",
+        "auroc_mean_ci": [
+          0.5348037937764761,
+          0.5431605889006769
+        ],
+        "auroc_mean_ci_is": "the seed-mean's own interval, sd/sqrt(30), which omits pair sampling entirely and is reported only so the two objects are not conflated",
+        "mean_ci_excludes_half": true,
+        "ci_brackets_point": true,
+        "excludes_half": true,
+        "recovery_hazard": 0.4876409017713365,
+        "recovery_matched": 0.4320048309178744,
+        "test_fpr": 0.05335963653754184,
+        "verdict": "cannot order",
+        "distance_from_half": 0.0389821913385765
+      },
+      "strict": {
+        "n_held_out_positives": 2247,
+        "n_fitted_positives": 10742,
+        "auroc": 0.5553167324013785,
+        "auroc_sd": 0.011683554942585736,
+        "auroc_of_mean_scores": 0.5555730588811875,
+        "auroc_per_seed_min": 0.534268594366263,
+        "auroc_per_seed_max": 0.5845323111391164,
+        "auroc_hier_ci": [
+          0.5204447230390441,
+          0.5919130259749352
+        ],
+        "auroc_hier_ci_is": "a PREDICTION interval for one run -- one seed drawn, then pairs resampled inside it, which is src/110's idiom. A deployment uses one fit, so this is the honest object, but it is NOT a confidence interval for the 30-seed mean and must not be read as one.",
+        "auroc_mean_ci": [
+          0.5511358259600271,
+          0.5594976388427298
+        ],
+        "auroc_mean_ci_is": "the seed-mean's own interval, sd/sqrt(30), which omits pair sampling entirely and is reported only so the two objects are not conflated",
+        "mean_ci_excludes_half": true,
+        "ci_brackets_point": true,
+        "excludes_half": true,
+        "recovery_hazard": 0.504951690821256,
+        "recovery_matched": 0.41859903381642505,
+        "test_fpr": 0.05232245337159254,
+        "verdict": "cannot order",
+        "distance_from_half": 0.055316732401378466
+      }
+    }
+  },
+  "second_arm_rule": {
+    "arms_agree": true,
+    "verdict": "cannot order"
+  },
+  "predictions": {
+    "P1_both_arms_cannot_order": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "650M": 0.44570220425214124,
+        "35M": 0.5047321213252741
+      }
+    },
+    "P2_composition_further_from_half_than_650M": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "composition": 0.5553167324013785,
+        "650M": 0.44570220425214124
+      }
+    },
+    "P3_bootstrap_excludes_half_on_one_arm": {
+      "kind": "reasoned",
+      "held": false,
+      "values": {
+        "650M": [
+          0.32107032106933653,
+          0.6704870956731779
+        ],
+        "35M": [
+          0.387186617540666,
+          0.6604785117505659
+        ]
+      }
+    }
+  },
+  "vs_AH": {
+    "ah_auroc": [
+      0.4599,
+      0.5247
+    ],
+    "am_auroc": [
+      0.44570220425214124,
+      0.5047321213252741
+    ],
+    "both_in_same_band_as_AH": true,
+    "pairs_ratio": 26.7
+  },
+  "seconds": 461.0
+}
