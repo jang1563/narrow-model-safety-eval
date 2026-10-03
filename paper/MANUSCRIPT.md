@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 121 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 122 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 121
+written because it caught something. The evidence is a **dated, append-only corrections log of 122
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -900,10 +900,34 @@ goes from **+0.9473 to +0.8110** on 650M and **+0.8857 to +0.8637** on 35M, both
 **+0.60** floor frozen in § 4 — and even a parameter-free nearest-centroid classifier gives **+0.7451**
 and **+0.6264**, also above it. 🔒 **The ordering survives the classifier; the levels do not.**
 
-⚠️ **What cannot be restated at the tuned `C`.** The increment over composition rises from +7.19pp to
-+21.14pp on 650M, **but composition is still at `C = 1.0`**, so that comparison is now unfair in a known
-direction. 🔑 **The +7pp figure is two untuned models and is at least internally consistent; tuning both
-is outstanding work**, and the same applies to the nested comparison's AO-2.
+🔒 **And the comparison has since been made fair on both sides.** Study AQ applies the same selection
+rule to composition and to the concatenation (`docs/FAIR_COMPARISON_PREREGISTRATION.md`, frozen first):
+
+| | 650M | 35M |
+|---|---:|---:|
+| composition, fixed `C = 1.0` | 34.25% | 34.25% |
+| **composition, tuned** | **36.41%** | **36.41%** |
+| composition's gain from tuning | **+2.17pp** | **+2.17pp** |
+| embedding's gain from tuning | +13.96pp | +5.13pp |
+| **increment, both tuned** | **+18.98pp** | **+10.50pp** |
+| increment, both untuned | +7.19pp | +7.53pp |
+
+🔴 **The fixed-`C` comparison was *understating* the embedding's advantage, not overstating it.**
+Composition has twenty-one features against 1,280 and therefore far less to gain from shrinkage — it
+picks up **2.17pp** where the embedding picks up 13.96 — so tuning both sides **widens** the gap rather
+than closing it. ⚠️ **The +21.14pp figure, which tuned only one side, is retired**; the fair figures are
+**+18.98pp** and **+10.50pp**, and the **+7pp** figures are two untuned models.
+
+🔒 **And AO-2's null survives tuning**: the concatenated model beats the tuned embedding by **−0.18pp**
+and **+0.35pp**, both inside the ±2pp band frozen for it. 🔑 **Composition adds nothing on top of the
+embedding even when every side is fitted properly**, so § 6's reinterpretation of the three arrivals
+stands at a tuned classifier and not only at `C = 1.0`.
+
+⭐ **One asymmetry in how the two are tuned is worth recording.** The embedding selects `C = 0.01` for
+fourteen of fourteen categories; composition selects across **1e-4, 0.01, 0.1 and 10.0** — ⚠️ **with
+twenty-one features the right amount of shrinkage varies by category, and with 1,280 it does not.** That
+is a bias–variance signature rather than a result about proteins, and the reasoned prediction that
+composition would need *less* shrinkage than the embedding **failed**.
 
 ⭐ **And a control splits the arms.** A nearest-centroid classifier — the difference of class means, no
 regularization parameter at all — reaches **48.59%** against the swept probe's 55.39% on 650M (−6.80pp,
@@ -1384,14 +1408,16 @@ the diagnosis was in the record before the repair was built; both times it named
   set, which is exactly the quantity § 6's narrowing is about.
 - **Not a competence boundary.** The held-out class is removed from the *probe's* training, not from the
   foundation model's pretraining, and every class here is in the public databases these models saw.
-- 🔴 **Eight preregistrations, thirty-one frozen predictions, and no correction across them.** Every
+- 🔴 **Ten preregistrations, forty-one frozen predictions, and no correction across them.** Every
   preregistration here sets its own Bonferroni α over its own primary tests — α = 0.05/2, /3 or /4 — and
   **none of them corrects for the others.** With this many frozen bands, some verdicts are expected to
   fall by chance. ⚠️ **The exposure is stated rather than corrected retroactively**, because choosing a
   family-wise correction after seeing which bands were met is the error the bands exist to prevent.
-  `results/prediction_record.json` holds the count.
+  ⚠️ **Six of the forty-one belong to a frozen design for work not yet run**, so thirty-five are
+  scored; `results/prediction_record.json` holds the count and discovers the studies rather than
+  listing them.
 - ⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions
-  held **10 of 22** where they were *derived* from a measurement and **3 of 9** where they were
+  held **13 of 25** where they were *derived* from a measurement and **3 of 10** where they were
   *reasoned* — so a derived prediction here is about a coin flip, and the paper's earlier reading that
   derived predictions reliably hold (§ 4) does not survive leaving the panel they were derived on. 🔴 **Two
   entries of the corrections log stated this tally wrongly** because it was maintained by hand; it is now
@@ -1432,7 +1458,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 121 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 122 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1465,12 +1491,17 @@ time from outside.
 
 ### What a protein language model is worth here, in one number
 
-🔒 **Against twenty-one model-free features at a matched 5% false-positive rate, ESM-2 buys about seven
-points of recovery** — +7.19pp and +7.53pp, winning **11 of 14** categories on both arms (§ 6). Against
-length alone it buys **twenty-four**. 🔴 **And on one category it costs twenty**: exoenzymes are recovered
-**20.14** and **16.75** points *worse* by the 1,280-dimensional representation than by composition. 🟢 On
-cytoplasmic regulators the ratio runs the other way — composition finds **3.6%** and the embedding finds
-**23.0%**.
+🔒 **Against twenty-one model-free features at a matched 5% false-positive rate, with the classifier
+tuned on both sides, ESM-2 buys between ten and nineteen points of recovery** — **+18.98pp** on 650M and
+**+10.50pp** on 35M (§ 6). ⚠️ **At the untuned `C = 1.0` both this project used everywhere, the same
+comparison reads +7.19pp and +7.53pp**, so the honest form of the practical number depends on whether
+the person asking will tune anything. Against length alone the untuned figure is **twenty-four** points.
+
+🔴 **And one number this paper carried for several hours was a tuning artifact.** At `C = 1.0` exoenzymes
+were recovered **20.14** and **16.75** points *worse* by the 1,280-dimensional representation than by
+composition; tuned, the embedding reaches **66.2%** against composition's 62.3% and the deficit is gone
+(§ 6). 🟢 The opposite case is not an artifact: on cytoplasmic regulators composition finds **3.6%** and
+the embedding **23.0%**.
 
 🔑 **That is the number we would have wanted at the start**, and it took a published benchmark, a
 model-free control arm and a matched false-positive rate to get it. ⚠️ **It is also an argument for
@@ -1513,7 +1544,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**148 claims** and fails if any number in a public document drifts from the artifact that produced
+**149 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

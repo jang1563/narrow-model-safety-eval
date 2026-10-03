@@ -213,7 +213,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/NESTED_MODEL_PREREGISTRATION.md",
           # Added 2026-10-03. It is the only study here that attempted an improvement, and the
           # only one whose result invalidates the LEVEL of every per-category figure beside it.
-          "docs/ESTIMATION_REPAIR_PREREGISTRATION.md"]
+          "docs/ESTIMATION_REPAIR_PREREGISTRATION.md",
+          # Added 2026-10-03. It makes the embedding-against-composition comparison fair on both
+          # sides, which retires a one-sided figure the paper carried for a few hours.
+          "docs/FAIR_COMPARISON_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1889,6 +1892,55 @@ def organism_cluster():
     }
 
 
+def fair_comparison():
+    """The embedding-against-composition comparison, with the classifier tuned on both sides.
+
+    🔴 Study AP tuned only the embedding, so the increment read +21.14pp -- a tuned model
+    against an untuned one. Tuning composition with the same rule gives it only +2.17pp,
+    because twenty-one features have far less to gain from shrinkage than 1,280, so the gap
+    WIDENS: +18.98pp on 650M and +10.50pp on 35M against the untuned +7.19 and +7.53.
+
+    🔑 The fixed-C comparison was UNDERSTATING the embedding's advantage, not overstating it.
+
+    🔒 And AO-2's null survives: the concatenation beats the tuned embedding by -0.18pp and
+    +0.35pp, inside the frozen +-2pp band. Composition adds nothing on top even when every
+    side is fitted properly.
+
+    ⭐ One asymmetry recorded: the embedding selects C=0.01 for 14 of 14 categories while
+    composition selects across 1e-4, 0.01, 0.1 and 10.0. With twenty-one features the right
+    shrinkage varies by category and with 1,280 it does not -- and the reasoned prediction that
+    composition would need LESS shrinkage failed.
+    """
+    v = j("../results/fair_comparison.json")
+    if v is None:
+        return None
+    A, B = v["arms"]["esm2_650M"], v["arms"]["esm2_35M"]
+    return {
+        "prereg": v["preregistration"],
+        "rule_imported": "imported rather than reimplemented" in v["selection_rule"],
+        "bands": v["bands"],
+        "grid": v["grid"],
+        "tuned_comp": {"650M": A["mean_tuned_composition"],
+                       "35M": B["mean_tuned_composition"]},
+        "comp_gain": {"650M": A["composition_gain_from_tuning"],
+                      "35M": B["composition_gain_from_tuning"]},
+        "emb_gain": {"650M": A["embedding_gain_from_tuning"],
+                     "35M": B["embedding_gain_from_tuning"]},
+        "aq1": {"650M": A["AQ1_tuned_increment"], "35M": B["AQ1_tuned_increment"]},
+        "aq1_untuned": {"650M": A["AQ1_untuned_increment"],
+                        "35M": B["AQ1_untuned_increment"]},
+        "aq2": {"650M": A["AQ2_tuned_ao2"], "35M": B["AQ2_tuned_ao2"]},
+        "verdict_aq1": v["second_arm_rule"]["verdict_aq1"],
+        "verdict_aq2": v["second_arm_rule"]["verdict_aq2"],
+        "agree": v["second_arm_rule"]["aq1_agree"] and v["second_arm_rule"]["aq2_agree"],
+        "comp_C": {"650M": A["distinct_C_composition"], "35M": B["distinct_C_composition"]},
+        "fpr_min": min(A["test_fpr"]["min"], B["test_fpr"]["min"]),
+        "fpr_max": max(A["test_fpr"]["max"], B["test_fpr"]["max"]),
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "kinds": {k: w["kind"] for k, w in v["predictions"].items()},
+    }
+
+
 def estimation_repair():
     """The classifier was never tuned, and tuning it moves every level in section 6.
 
@@ -2080,7 +2132,7 @@ def prediction_record():
         "reasoned": [t["reasoned"]["held"], t["reasoned"]["total"]],
         "paper_states_derived": d_str in man,
         "paper_states_reasoned": r_str in man,
-        "paper_states_prereg_count": "Eight preregistrations" in man,
+        "paper_states_prereg_count": "Ten preregistrations" in man,
         "paper_states_no_correction": "no correction across them" in man,
         "within_only": e["bonferroni_within_study_only"],
         "across_none": e["no_family_wise_correction_across_studies"],
@@ -6458,7 +6510,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 121"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 122"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -8138,7 +8190,10 @@ CLAIMS = [
      # reader takes the number from.
      {"paper/MANUSCRIPT.md": [
          "🔴 **On exoenzymes a 1,280-dimensional representation recovers twenty points fewer than twenty-one",
-         "🔒 **Against twenty-one model-free features at a matched 5% false-positive rate, ESM-2 buys about seven"],
+         # 🔒 Repinned 2026-10-03. Study AQ made the comparison fair on both sides, so section 8
+         # no longer says "about seven points" -- it gives the tuned range with the untuned
+         # figure beside it. The pin follows the sentence rather than the stale phrasing.
+         "🔒 **Against twenty-one model-free features at a matched 5% false-positive rate, with the classifier"],
       "docs/REPRESENTATION_INCREMENT_PREREGISTRATION.md":
       "🔒 **A verdict requires both arms in the same column.** Between the columns is reported as"},
      # 🔴 Five readings this does not license.
@@ -8377,8 +8432,14 @@ CLAIMS = [
          v["paper_states_derived"] and v["paper_states_reasoned"]
          # 🔒 and the exposure is stated rather than corrected after the fact
          and v["paper_states_prereg_count"] and v["paper_states_no_correction"]
+         # 🔒 and the gap between declared and scored must be accounted for by name, not left
+         # as an unexplained difference
+         and v["declared"] - v["scored"] == 6
          and v["within_only"] is True and v["across_none"] is True
-         and v["preregs"] == 8
+         # 🔴 Was `== 8`, a hand-counted number from a hand-maintained list. src/134 now
+         # DISCOVERS the preregistrations that declare predictions, and found ten -- study AQ's
+         # four predictions had been absent from the record entirely while this claim passed.
+         and v["preregs"] == 10
          # ⚠️ every scored prediction carries a kind; an unlabelled one would vanish from both
          # tallies without changing either, which is how a record quietly narrows
          and v["unlabelled"] == []
@@ -8389,7 +8450,7 @@ CLAIMS = [
          and v["amendments"] >= 3
          and v["no_hand_version"]),
      {"paper/MANUSCRIPT.md": [
-         "🔴 **Eight preregistrations, thirty-one frozen predictions, and no correction across them.** Every",
+         "🔴 **Ten preregistrations, forty-one frozen predictions, and no correction across them.** Every",
          "⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions"]},
      # 🔴 The two readings this does not license, in assertion-only form.
      ["derived predictions reliably hold on this benchmark",
@@ -8437,13 +8498,65 @@ CLAIMS = [
      {"paper/MANUSCRIPT.md": [
          "🔴 **`LogisticRegression(C=1.0)` is a default this project has used in every study and never examined.**",
          "🔑 **The one result that does not move is the one that was externally replicated.** *ρ*(margin, recovery)",
-         "⚠️ **What cannot be restated at the tuned `C`.** The increment over composition rises from +7.19pp to"]},
+         # 🔒 Repinned 2026-10-03. That paragraph said the increment could not be restated while
+         # composition was untuned; study AQ tuned it, so the paper gives the fair figure and
+         # retires the one-sided +21.14pp.
+         "🔴 **The fixed-`C` comparison was *understating* the embedding's advantage, not overstating it.**"]},
      # 🔴 Five readings this does not license.
      ["the per-category recoveries are properties of the representation",
       "tuning does not change the results",
       "the exoenzyme deficit is a real property of the embedding",
       "study AP shows C is the only lever",
       "the increment over composition is +21pp"]),
+    # 🔒 Added 2026-10-03. The fair comparison, which widens the gap rather than closing it, and
+    # the survival of AO-2's null once every side is tuned.
+    ("tuning both sides widens the embedding's advantage and leaves AO-2's null standing",
+     fair_comparison,
+     lambda v: v is None or (
+         "FAIR_COMPARISON_PREREGISTRATION" in v["prereg"] and v["rule_imported"]
+         and min(v["grid"]) <= 1e-4
+         # 🔒 composition gains little from tuning and the embedding gains a lot
+         and abs(v["comp_gain"]["650M"] - 0.0217) < 0.0005
+         and v["comp_gain"]["650M"] < 0.05
+         and v["emb_gain"]["650M"] > 4 * v["comp_gain"]["650M"]
+         and abs(v["tuned_comp"]["650M"] - 0.3641) < 0.0005
+         # 🔒 so the fair increment is LARGER than the untuned one, on both arms
+         and v["aq1"]["650M"] > v["aq1_untuned"]["650M"]
+         and v["aq1"]["35M"] > v["aq1_untuned"]["35M"]
+         and abs(v["aq1"]["650M"] - 0.1898) < 0.0005
+         and abs(v["aq1"]["35M"] - 0.1050) < 0.0005
+         and v["aq1"]["650M"] >= v["bands"]["survives_floor"]
+         and v["aq1"]["35M"] >= v["bands"]["survives_floor"]
+         and v["verdict_aq1"] == "the increment survives a fair comparison"
+         # 🔒 and AO-2's null survives tuning, within the frozen band, on both arms
+         and abs(v["aq2"]["650M"]) <= v["bands"]["ao2_null"]
+         and abs(v["aq2"]["35M"]) <= v["bands"]["ao2_null"]
+         and v["verdict_aq2"].startswith("AO-2's null survives")
+         and v["agree"] is True
+         # 🔒 matched false-positive rates, as everywhere in this arm
+         and 0.045 < v["fpr_min"] and v["fpr_max"] < 0.055
+         # ⭐ composition's shrinkage is heterogeneous where the embedding's is not
+         and len(v["comp_C"]["650M"]) >= 3
+         and min(v["comp_C"]["650M"]) < 0.01
+         # ⭐ three derived held and the reasoned one failed
+         and v["preds"]["P1_composition_gains_under_5pp"] is True
+         and v["preds"]["P2_tuned_increment_exceeds_untuned_on_650M"] is True
+         and v["preds"]["P3_ao2_stays_within_2pp"] is True
+         and v["preds"]["P4_composition_C_larger_than_embedding_C"] is False
+         and v["kinds"]["P4_composition_C_larger_than_embedding_C"] == "reasoned"),
+     {"paper/MANUSCRIPT.md": [
+         "🔒 **And the comparison has since been made fair on both sides.** Study AQ applies the same selection",
+         "🔒 **And AO-2's null survives tuning**: the concatenated model beats the tuned embedding by **−0.18pp**"]},
+     # 🔴 Five readings this does not license.
+     ["the increment over composition is +21.14pp",
+      "tuning composition closes the gap",
+      # 🔴 This read "composition adds something once both are tuned" and matched the
+      # preregistration's own BAND LABEL -- the sixth time a forbid has matched its own
+      # document (entries 76, 78, 83, 86, 114). The pre-check printed PRESENT and I added it
+      # anyway while assembling the claim in one call, which is the new part of the mistake.
+      "study AQ shows composition adds something",
+      "the untuned comparison overstated the embedding",
+      "composition needs less shrinkage than the embedding"]),
 ]
 
 

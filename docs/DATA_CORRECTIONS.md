@@ -8550,3 +8550,92 @@ instance in the record.
 
 🔑 **With AP scored, the computed record is in `results/prediction_record.json` and claim 147 requires
 § 7 to match it.** The paper is updated in the same commit, which is the behaviour that claim exists for.
+
+## 2026-10-03 (one hundred and eighteenth entry) — Tuning both sides widened the gap it was meant to close
+
+Entry 117 left an asymmetry it named: study AP tuned `C` for the **embedding** and left composition at
+1.0, so the increment read **+21.14pp** — a tuned model against an untuned one, which entry 117 said no
+one should quote. Study AQ applies the same selection rule to every side.
+
+| | 650M | 35M |
+|---|---:|---:|
+| composition, fixed `C = 1.0` | 34.25% | 34.25% |
+| **composition, tuned** | **36.41%** | **36.41%** |
+| composition's gain | **+2.17pp** | **+2.17pp** |
+| embedding's gain | +13.96pp | +5.13pp |
+| **increment, both tuned** | **+18.98pp** | **+10.50pp** |
+| increment, both untuned | +7.19pp | +7.53pp |
+
+🔴 **The fixed-`C` comparison was *understating* the embedding's advantage, not overstating it.**
+Twenty-one features have far less to gain from shrinkage than 1,280 — **2.17pp against 13.96** — so
+tuning both sides **widens** the gap. ⚠️ **The one-sided +21.14pp is retired; the fair figures are
++18.98pp and +10.50pp**, and the +7pp figures are two untuned models and are at least internally
+consistent.
+
+🔒 **And AO-2's null survives tuning**: the concatenation beats the tuned embedding by **−0.18pp** and
+**+0.35pp**, inside the frozen ±2pp band, on both arms. 🔑 **Composition adds nothing on top of the
+embedding even when every side is fitted properly** — so entry 115's reinterpretation of the three
+arrivals holds at a tuned classifier and not only at `C = 1.0`, which is the thing entry 117 flagged as
+outstanding.
+
+### ⭐ An asymmetry in the shrinkage itself
+
+The embedding selects `C = 0.01` for **fourteen of fourteen** categories. Composition selects across
+**1e-4, 0.01, 0.1 and 10.0**. ⚠️ **With twenty-one features the right amount of shrinkage varies by
+category; with 1,280 it does not.** 🔑 That is a bias–variance signature and not a result about proteins,
+and it is why **P4 — the reasoned prediction that composition would need *less* shrinkage — failed.**
+
+### 🔒 What § 8's practical number now says
+
+It had read *"ESM-2 buys about seven points"*. 🔴 **That was both models untuned.** It now gives the
+tuned range — **between ten and nineteen points** — with the untuned figure beside it, because **the
+honest form of the number depends on whether the person asking will tune anything.**
+
+⚠️ **And entry 109's twenty-point exoenzyme deficit is formally retired in § 8 as well as § 6.** At
+`C = 1.0` the embedding lost 20.14 and 16.75 points to composition there; tuned, it reaches 66.2%
+against composition's 62.3%.
+
+### ⭐ Three derived predictions held, which is a change
+
+**P1, P2 and P3 (derived) held; P4 (reasoned) failed.** 🔑 Entry 117 had just recorded that
+mechanism-derived predictions are not safer than any other kind, after all four of study AP's failed.
+⚠️ **AQ's three mechanism-derived predictions held.** The honest reading is the weaker one: **a mechanism
+claim is not reliably safe and not reliably wrong**, and the record is the only thing that settles any
+particular one.
+
+### 🔴 A forbid matched its own document for the sixth time, and this time I had been told
+
+The forbid `"composition adds something once both are tuned"` is the preregistration's own **band
+label**. 🔴 **The pre-check printed `PRESENT` for it** — and it went into the claim anyway, because the
+check and the claim were assembled in a single call and I read past the output. ⚠️ **Entries 76, 78, 83,
+86 and 114 are the same defect; the new part is having had the answer and not using it.** 🔒 The form now
+names the study, which a band label cannot satisfy.
+
+### 🔴 Addendum to the entry above: the anti-drift mechanism had the same hole it was built to close
+
+Entry 116 built `src/134` so the prediction record could not be carried in prose, and claim 147 made the
+paper follow it. 🔴 **Study AQ's four predictions were absent from that record anyway**, because
+`STUDIES` and `PREREGS` were **two hand-maintained lists** and neither was updated when AQ ran.
+
+⚠️ **The guard written to catch exactly this passed.** It required every declared prediction to be
+scored somewhere — and it compared **one stale list against the other**, which is consistent and both
+incomplete. 🔑 **The mechanism prevented drift between the artifact and the paper, and not between the
+artifact and reality.**
+
+🔒 Fixed by discovery rather than by a longer list:
+
+- **studies** are every `results/*.json` carrying a non-empty `predictions` dict;
+- **preregistrations** are every `docs/*_PREREGISTRATION.md` using the `**Pn` form — ⚠️ a first version
+  globbed all **forty** preregistration documents and the new cross-guard fired on the difference;
+- the **link** from a scored result back to the document that froze it comes from each artifact's own
+  `preregistration` field, so there is **no map to maintain at all**;
+- and a preregistration that declares predictions which no artifact points at is **named**, not counted
+  silently.
+
+🔑 **The corrected record is larger than the one two entries reported**: **35 predictions scored across
+10 studies, derived 13 of 25 and reasoned 3 of 10**, with **41 declared** — the six-prediction gap is
+`MUTATION_EXTENSION`, a frozen design for work not yet run, and the artifact says so by name.
+
+⚠️ **This is the third time a count in this project was wrong because something was listed by hand**
+(entries 102, 110, 112). 🔑 **The pattern is not carelessness about numbers; it is hand-maintained
+inventories**, and the fix each time has been to discover the inventory instead of writing it down.

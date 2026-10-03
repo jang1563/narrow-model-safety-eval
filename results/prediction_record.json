@@ -4,21 +4,45 @@
   "why": "entry 112 corrected a prose tally and entry 115 repeated the mistake two entries later, stating derived 9 of 16 while the artifacts said 10 of 20. No hand-maintained version exists any more.",
   "rows": [
     {
-      "study": "AH",
-      "prediction": "P1_unmatched_positive_over_10pp",
+      "study": "AJ",
+      "prediction": "P1_AJ1_negative",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AJ",
+      "prediction": "P2_AJ2_at_least_0.15",
       "kind": "derived",
       "held": false
     },
     {
-      "study": "AH",
-      "prediction": "P2_matched_inside_registration_band",
-      "kind": "derived",
-      "held": false
-    },
-    {
-      "study": "AH",
-      "prediction": "P3_strict_auroc_below_permissive",
+      "study": "AJ",
+      "prediction": "P3_exotoxin_top_4",
       "kind": "reasoned",
+      "held": true
+    },
+    {
+      "study": "AN",
+      "prediction": "P1_mean_between_bands",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AN",
+      "prediction": "P2_won_at_least_10_on_one_arm",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AN",
+      "prediction": "P3_residual_corr_below_1e-6",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
+      "study": "AN",
+      "prediction": "P4_all_rows_erases_below_1e-6",
+      "kind": "derived",
       "held": true
     },
     {
@@ -64,22 +88,94 @@
       "held": false
     },
     {
-      "study": "AJ",
-      "prediction": "P1_AJ1_negative",
-      "kind": "derived",
-      "held": true
-    },
-    {
-      "study": "AJ",
-      "prediction": "P2_AJ2_at_least_0.15",
+      "study": "AP",
+      "prediction": "P4_extended_grid_selects_below_0.01",
       "kind": "derived",
       "held": false
     },
     {
-      "study": "AJ",
-      "prediction": "P3_exotoxin_top_4",
+      "study": "AP",
+      "prediction": "P5_centroid_within_2pp_of_swept",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AP",
+      "prediction": "P1_swept_not_repaired_both_arms",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AP",
+      "prediction": "P2_gap_closed_under_10pct_both_arms",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AP",
+      "prediction": "P3_pca_beats_sweep_on_exoenzyme",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
+      "study": "AH",
+      "prediction": "P1_unmatched_positive_over_10pp",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AH",
+      "prediction": "P2_matched_inside_registration_band",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AH",
+      "prediction": "P3_strict_auroc_below_permissive",
       "kind": "reasoned",
       "held": true
+    },
+    {
+      "study": "AQ",
+      "prediction": "P1_composition_gains_under_5pp",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AQ",
+      "prediction": "P2_tuned_increment_exceeds_untuned_on_650M",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AQ",
+      "prediction": "P3_ao2_stays_within_2pp",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AQ",
+      "prediction": "P4_composition_C_larger_than_embedding_C",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
+      "study": "AO",
+      "prediction": "P1_AO1_clears_6pp_both_arms",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AO",
+      "prediction": "P2_AO2_positive_both_arms",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AO",
+      "prediction": "P3_AO2_over_1pp_on_one_arm",
+      "kind": "reasoned",
+      "held": false
     },
     {
       "study": "AK",
@@ -116,99 +212,37 @@
       "prediction": "P3_bootstrap_excludes_half_on_one_arm",
       "kind": "reasoned",
       "held": false
-    },
-    {
-      "study": "AN",
-      "prediction": "P1_mean_between_bands",
-      "kind": "derived",
-      "held": false
-    },
-    {
-      "study": "AN",
-      "prediction": "P2_won_at_least_10_on_one_arm",
-      "kind": "derived",
-      "held": true
-    },
-    {
-      "study": "AN",
-      "prediction": "P3_residual_corr_below_1e-6",
-      "kind": "reasoned",
-      "held": false
-    },
-    {
-      "study": "AN",
-      "prediction": "P4_all_rows_erases_below_1e-6",
-      "kind": "derived",
-      "held": true
-    },
-    {
-      "study": "AO",
-      "prediction": "P1_AO1_clears_6pp_both_arms",
-      "kind": "derived",
-      "held": true
-    },
-    {
-      "study": "AO",
-      "prediction": "P2_AO2_positive_both_arms",
-      "kind": "derived",
-      "held": false
-    },
-    {
-      "study": "AO",
-      "prediction": "P3_AO2_over_1pp_on_one_arm",
-      "kind": "reasoned",
-      "held": false
-    },
-    {
-      "study": "AP",
-      "prediction": "P4_extended_grid_selects_below_0.01",
-      "kind": "derived",
-      "held": false
-    },
-    {
-      "study": "AP",
-      "prediction": "P5_centroid_within_2pp_of_swept",
-      "kind": "derived",
-      "held": false
-    },
-    {
-      "study": "AP",
-      "prediction": "P1_swept_not_repaired_both_arms",
-      "kind": "derived",
-      "held": false
-    },
-    {
-      "study": "AP",
-      "prediction": "P2_gap_closed_under_10pct_both_arms",
-      "kind": "derived",
-      "held": false
-    },
-    {
-      "study": "AP",
-      "prediction": "P3_pca_beats_sweep_on_exoenzyme",
-      "kind": "reasoned",
-      "held": false
     }
   ],
   "tally": {
     "derived": {
-      "held": 10,
-      "total": 22
+      "held": 13,
+      "total": 25
     },
     "reasoned": {
       "held": 3,
-      "total": 9
+      "total": 10
     }
   },
-  "total_scored": 31,
+  "total_scored": 35,
   "by_study": {
-    "AH": {
+    "AJ": {
       "derived": [
-        0,
+        1,
         2
       ],
       "reasoned": [
         1,
+        1
+      ]
+    },
+    "AN": {
+      "derived": [
+        2,
+        3
+      ],
+      "reasoned": [
+        0,
         1
       ]
     },
@@ -232,13 +266,43 @@
         1
       ]
     },
-    "AJ": {
+    "AP": {
+      "derived": [
+        0,
+        4
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
+    "AH": {
+      "derived": [
+        0,
+        2
+      ],
+      "reasoned": [
+        1,
+        1
+      ]
+    },
+    "AQ": {
+      "derived": [
+        3,
+        3
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
+    "AO": {
       "derived": [
         1,
         2
       ],
       "reasoned": [
-        1,
+        0,
         1
       ]
     },
@@ -261,51 +325,58 @@
         0,
         1
       ]
-    },
-    "AN": {
-      "derived": [
-        2,
-        3
-      ],
-      "reasoned": [
-        0,
-        1
-      ]
-    },
-    "AO": {
-      "derived": [
-        1,
-        2
-      ],
-      "reasoned": [
-        0,
-        1
-      ]
-    },
-    "AP": {
-      "derived": [
-        0,
-        4
-      ],
-      "reasoned": [
-        0,
-        1
-      ]
     }
   },
   "exposure": {
-    "preregistrations": 8,
-    "declared_predictions": 31,
-    "amendments": 3,
+    "preregistrations": 10,
+    "preregs_found": [
+      "COMPOSITION_ARM",
+      "COMPOSITION_RESIDUAL",
+      "DEEPVIC_BENCHMARK",
+      "ESTIMATION_REPAIR",
+      "EXTERNAL_HAZARD_AXIS",
+      "FAIR_COMPARISON",
+      "MUTATION_EXTENSION",
+      "NESTED_MODEL",
+      "REPRESENTATION_INCREMENT",
+      "WITHIN_FOLD_ORDERING"
+    ],
+    "studies_found": [
+      "AJ",
+      "AN",
+      "AI-1",
+      "AI",
+      "AP",
+      "AH",
+      "AQ",
+      "AO",
+      "AK",
+      "AM"
+    ],
+    "preregs_with_no_scored_artifact": [
+      "MUTATION_EXTENSION"
+    ],
+    "unscored_accounted_for": "MUTATION_EXTENSION is a frozen design for work not yet run, per README; its declarations are counted in the exposure and not in the tally",
+    "declared_predictions": 41,
+    "amendments": 4,
     "per_prereg": [
       {
-        "prereg": "EXTERNAL_HAZARD_AXIS",
+        "prereg": "COMPOSITION_ARM",
         "exists": true,
         "declared_predictions": 3,
         "alpha_statements": [
           "3"
         ],
         "amendments": 0
+      },
+      {
+        "prereg": "COMPOSITION_RESIDUAL",
+        "exists": true,
+        "declared_predictions": 5,
+        "alpha_statements": [
+          "2"
+        ],
+        "amendments": 1
       },
       {
         "prereg": "DEEPVIC_BENCHMARK",
@@ -317,11 +388,45 @@
         "amendments": 1
       },
       {
-        "prereg": "COMPOSITION_ARM",
+        "prereg": "ESTIMATION_REPAIR",
+        "exists": true,
+        "declared_predictions": 5,
+        "alpha_statements": [
+          "2"
+        ],
+        "amendments": 1
+      },
+      {
+        "prereg": "EXTERNAL_HAZARD_AXIS",
         "exists": true,
         "declared_predictions": 3,
         "alpha_statements": [
           "3"
+        ],
+        "amendments": 0
+      },
+      {
+        "prereg": "FAIR_COMPARISON",
+        "exists": true,
+        "declared_predictions": 4,
+        "alpha_statements": [
+          "2"
+        ],
+        "amendments": 0
+      },
+      {
+        "prereg": "MUTATION_EXTENSION",
+        "exists": true,
+        "declared_predictions": 6,
+        "alpha_statements": [],
+        "amendments": 1
+      },
+      {
+        "prereg": "NESTED_MODEL",
+        "exists": true,
+        "declared_predictions": 3,
+        "alpha_statements": [
+          "2"
         ],
         "amendments": 0
       },
@@ -340,33 +445,6 @@
         "declared_predictions": 3,
         "alpha_statements": [],
         "amendments": 0
-      },
-      {
-        "prereg": "COMPOSITION_RESIDUAL",
-        "exists": true,
-        "declared_predictions": 5,
-        "alpha_statements": [
-          "2"
-        ],
-        "amendments": 1
-      },
-      {
-        "prereg": "NESTED_MODEL",
-        "exists": true,
-        "declared_predictions": 3,
-        "alpha_statements": [
-          "2"
-        ],
-        "amendments": 0
-      },
-      {
-        "prereg": "ESTIMATION_REPAIR",
-        "exists": true,
-        "declared_predictions": 5,
-        "alpha_statements": [
-          "2"
-        ],
-        "amendments": 1
       }
     ],
     "bonferroni_within_study_only": true,

@@ -1,0 +1,528 @@
+{
+  "built": "2026-10-03 13:48:34",
+  "study": "AQ -- the comparison with a tuned classifier on both sides",
+  "preregistration": "docs/FAIR_COMPARISON_PREREGISTRATION.md",
+  "selection_rule": "src/133's select_C, imported rather than reimplemented: chosen on a member split of the other thirteen categories, and no number from the scored category reaches any selection",
+  "grid": [
+    0.0001,
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0
+  ],
+  "seeds": 30,
+  "bands": {
+    "survives_floor": 0.06,
+    "not_ceiling": 0.02,
+    "ao2_null": 0.02,
+    "ao2_adds": 0.05
+  },
+  "arms": {
+    "esm2_650M": {
+      "composition": {
+        "Adherence": {
+          "n": 2259,
+          "mean": 0.5254094732182382,
+          "sd": 0.04485714046842971,
+          "test_fpr": 0.05293818747010999,
+          "C": 0.1
+        },
+        "Antimicrobial activity/Competitive advantage": {
+          "n": 24,
+          "mean": 0.16527777777777777,
+          "sd": 0.051884197856655816,
+          "test_fpr": 0.050134505021520795,
+          "C": 0.0001
+        },
+        "Biofilm": {
+          "n": 226,
+          "mean": 0.31401179941002955,
+          "sd": 0.02701461066747393,
+          "test_fpr": 0.05025705404112865,
+          "C": 0.0001
+        },
+        "Effector delivery system": {
+          "n": 4266,
+          "mean": 0.24371776840131273,
+          "sd": 0.023611354141317147,
+          "test_fpr": 0.04961441893830703,
+          "C": 0.0001
+        },
+        "Exoenzyme": {
+          "n": 210,
+          "mean": 0.7436507936507937,
+          "sd": 0.04333943790944777,
+          "test_fpr": 0.0506037780966045,
+          "C": 0.0001
+        },
+        "Exotoxin": {
+          "n": 1126,
+          "mean": 0.6337181764357608,
+          "sd": 0.0458078650645115,
+          "test_fpr": 0.050490196078431374,
+          "C": 0.0001
+        },
+        "Immune modulation": {
+          "n": 1983,
+          "mean": 0.212439065389141,
+          "sd": 0.026679378175875786,
+          "test_fpr": 0.05084289813486371,
+          "C": 0.0001
+        },
+        "Invasion": {
+          "n": 84,
+          "mean": 0.5511904761904762,
+          "sd": 0.04824607701297667,
+          "test_fpr": 0.05036764705882354,
+          "C": 0.0001
+        },
+        "Motility": {
+          "n": 1121,
+          "mean": 0.37537912578055305,
+          "sd": 0.023424786427275572,
+          "test_fpr": 0.05283656145384984,
+          "C": 0.01
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 1123,
+          "mean": 0.20949836746809145,
+          "sd": 0.018195125677398016,
+          "test_fpr": 0.04985652797704448,
+          "C": 0.0001
+        },
+        "Others": {
+          "n": 187,
+          "mean": 0.47860962566844917,
+          "sd": 0.07400188504330506,
+          "test_fpr": 0.05041547106647536,
+          "C": 0.0001
+        },
+        "Post-translational modification": {
+          "n": 66,
+          "mean": 0.1217171717171717,
+          "sd": 0.03145242666091375,
+          "test_fpr": 0.053299856527977044,
+          "C": 0.01
+        },
+        "Regulation": {
+          "n": 128,
+          "mean": 0.015885416666666666,
+          "sd": 0.009056025977294718,
+          "test_fpr": 0.050481229076996655,
+          "C": 0.0001
+        },
+        "Stress survival": {
+          "n": 186,
+          "mean": 0.50752688172043,
+          "sd": 0.029670002781099283,
+          "test_fpr": 0.052456958393113345,
+          "C": 10.0
+        }
+      },
+      "concatenated": {
+        "Adherence": {
+          "n": 2259,
+          "mean": 0.7840637450199204,
+          "sd": 0.04618247566587378,
+          "test_fpr": 0.048526422764227646,
+          "C": 0.01
+        },
+        "Antimicrobial activity/Competitive advantage": {
+          "n": 24,
+          "mean": 0.15555555555555559,
+          "sd": 0.09472012952598922,
+          "test_fpr": 0.0497549019607843,
+          "C": 0.01
+        },
+        "Biofilm": {
+          "n": 226,
+          "mean": 0.6433628318584071,
+          "sd": 0.04777800285428828,
+          "test_fpr": 0.049518770923003344,
+          "C": 0.01
+        },
+        "Effector delivery system": {
+          "n": 4266,
+          "mean": 0.6157837162056572,
+          "sd": 0.049408167180110374,
+          "test_fpr": 0.04971305595408895,
+          "C": 0.01
+        },
+        "Exoenzyme": {
+          "n": 210,
+          "mean": 0.6576190476190477,
+          "sd": 0.06643579540618036,
+          "test_fpr": 0.04934839789574366,
+          "C": 0.01
+        },
+        "Exotoxin": {
+          "n": 1126,
+          "mean": 0.6826524570751923,
+          "sd": 0.10381358514971059,
+          "test_fpr": 0.049375298900047805,
+          "C": 0.01
+        },
+        "Immune modulation": {
+          "n": 1983,
+          "mean": 0.37582787023029074,
+          "sd": 0.03939002220912634,
+          "test_fpr": 0.05031085604973697,
+          "C": 0.01
+        },
+        "Invasion": {
+          "n": 84,
+          "mean": 0.748015873015873,
+          "sd": 0.045097800488879305,
+          "test_fpr": 0.04971305595408895,
+          "C": 0.01
+        },
+        "Motility": {
+          "n": 1121,
+          "mean": 0.5842105263157895,
+          "sd": 0.06945890311904912,
+          "test_fpr": 0.0493214968914395,
+          "C": 0.01
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 1123,
+          "mean": 0.4021371326803206,
+          "sd": 0.05445658949762461,
+          "test_fpr": 0.050493185078909604,
+          "C": 0.01
+        },
+        "Others": {
+          "n": 187,
+          "mean": 0.8126559714795009,
+          "sd": 0.0358997686769614,
+          "test_fpr": 0.04934241989478717,
+          "C": 0.01
+        },
+        "Post-translational modification": {
+          "n": 66,
+          "mean": 0.4272727272727273,
+          "sd": 0.1587808592416542,
+          "test_fpr": 0.04969213295074127,
+          "C": 0.01
+        },
+        "Regulation": {
+          "n": 128,
+          "mean": 0.2994791666666667,
+          "sd": 0.08291697351644256,
+          "test_fpr": 0.04936035389765661,
+          "C": 0.01
+        },
+        "Stress survival": {
+          "n": 186,
+          "mean": 0.5401433691756272,
+          "sd": 0.01995392473029783,
+          "test_fpr": 0.0498595169775227,
+          "C": 0.01
+        }
+      },
+      "mean_tuned_composition": 0.364145137106778,
+      "mean_tuned_embedding": 0.5539022323717028,
+      "mean_tuned_concatenated": 0.5520557135836127,
+      "mean_fixed_composition": 0.34247832580573795,
+      "composition_gain_from_tuning": 0.021666811301040034,
+      "embedding_gain_from_tuning": 0.13956274014095893,
+      "AQ1_tuned_increment": 0.1897570952649248,
+      "AQ1_untuned_increment": 0.0718611664250059,
+      "AQ2_tuned_ao2": -0.0018465187880900569,
+      "distinct_C_composition": [
+        0.0001,
+        0.01,
+        0.1,
+        10.0
+      ],
+      "distinct_C_concatenated": [
+        0.01
+      ],
+      "test_fpr": {
+        "min": 0.048526422764227646,
+        "max": 0.053299856527977044
+      },
+      "verdict_AQ1": "the increment survives a fair comparison",
+      "verdict_AQ2": "AO-2's null survives tuning"
+    },
+    "esm2_35M": {
+      "composition": {
+        "Adherence": {
+          "n": 2259,
+          "mean": 0.5254094732182382,
+          "sd": 0.04485714046842971,
+          "test_fpr": 0.05293818747010999,
+          "C": 0.1
+        },
+        "Antimicrobial activity/Competitive advantage": {
+          "n": 24,
+          "mean": 0.16527777777777777,
+          "sd": 0.051884197856655816,
+          "test_fpr": 0.050134505021520795,
+          "C": 0.0001
+        },
+        "Biofilm": {
+          "n": 226,
+          "mean": 0.31401179941002955,
+          "sd": 0.02701461066747393,
+          "test_fpr": 0.05025705404112865,
+          "C": 0.0001
+        },
+        "Effector delivery system": {
+          "n": 4266,
+          "mean": 0.24371776840131273,
+          "sd": 0.023611354141317147,
+          "test_fpr": 0.04961441893830703,
+          "C": 0.0001
+        },
+        "Exoenzyme": {
+          "n": 210,
+          "mean": 0.7436507936507937,
+          "sd": 0.04333943790944777,
+          "test_fpr": 0.0506037780966045,
+          "C": 0.0001
+        },
+        "Exotoxin": {
+          "n": 1126,
+          "mean": 0.6337181764357608,
+          "sd": 0.0458078650645115,
+          "test_fpr": 0.050490196078431374,
+          "C": 0.0001
+        },
+        "Immune modulation": {
+          "n": 1983,
+          "mean": 0.212439065389141,
+          "sd": 0.026679378175875786,
+          "test_fpr": 0.05084289813486371,
+          "C": 0.0001
+        },
+        "Invasion": {
+          "n": 84,
+          "mean": 0.5511904761904762,
+          "sd": 0.04824607701297667,
+          "test_fpr": 0.05036764705882354,
+          "C": 0.0001
+        },
+        "Motility": {
+          "n": 1121,
+          "mean": 0.37537912578055305,
+          "sd": 0.023424786427275572,
+          "test_fpr": 0.05283656145384984,
+          "C": 0.01
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 1123,
+          "mean": 0.20949836746809145,
+          "sd": 0.018195125677398016,
+          "test_fpr": 0.04985652797704448,
+          "C": 0.0001
+        },
+        "Others": {
+          "n": 187,
+          "mean": 0.47860962566844917,
+          "sd": 0.07400188504330506,
+          "test_fpr": 0.05041547106647536,
+          "C": 0.0001
+        },
+        "Post-translational modification": {
+          "n": 66,
+          "mean": 0.1217171717171717,
+          "sd": 0.03145242666091375,
+          "test_fpr": 0.053299856527977044,
+          "C": 0.01
+        },
+        "Regulation": {
+          "n": 128,
+          "mean": 0.015885416666666666,
+          "sd": 0.009056025977294718,
+          "test_fpr": 0.050481229076996655,
+          "C": 0.0001
+        },
+        "Stress survival": {
+          "n": 186,
+          "mean": 0.50752688172043,
+          "sd": 0.029670002781099283,
+          "test_fpr": 0.052456958393113345,
+          "C": 10.0
+        }
+      },
+      "concatenated": {
+        "Adherence": {
+          "n": 2259,
+          "mean": 0.7351778072893609,
+          "sd": 0.05421931675429587,
+          "test_fpr": 0.05096843615494979,
+          "C": 0.01
+        },
+        "Antimicrobial activity/Competitive advantage": {
+          "n": 24,
+          "mean": 0.2722222222222222,
+          "sd": 0.1251116997733577,
+          "test_fpr": 0.04960545193687231,
+          "C": 0.1
+        },
+        "Biofilm": {
+          "n": 226,
+          "mean": 0.5954277286135693,
+          "sd": 0.05944059442344862,
+          "test_fpr": 0.050878766140602584,
+          "C": 0.01
+        },
+        "Effector delivery system": {
+          "n": 4266,
+          "mean": 0.42933270823566183,
+          "sd": 0.033353197283623355,
+          "test_fpr": 0.05232245337159254,
+          "C": 0.01
+        },
+        "Exoenzyme": {
+          "n": 210,
+          "mean": 0.610952380952381,
+          "sd": 0.06858773296402286,
+          "test_fpr": 0.05165889526542323,
+          "C": 0.01
+        },
+        "Exotoxin": {
+          "n": 1126,
+          "mean": 0.6512729425695677,
+          "sd": 0.04891604078991241,
+          "test_fpr": 0.051617049258727885,
+          "C": 0.01
+        },
+        "Immune modulation": {
+          "n": 1983,
+          "mean": 0.2795932089426794,
+          "sd": 0.02371299691818544,
+          "test_fpr": 0.05091164514586323,
+          "C": 0.01
+        },
+        "Invasion": {
+          "n": 84,
+          "mean": 0.6845238095238095,
+          "sd": 0.0806663303102775,
+          "test_fpr": 0.050953491152558573,
+          "C": 0.01
+        },
+        "Motility": {
+          "n": 1121,
+          "mean": 0.43030032708890875,
+          "sd": 0.08103778786565304,
+          "test_fpr": 0.04961740793878526,
+          "C": 0.01
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 1123,
+          "mean": 0.2409617097061443,
+          "sd": 0.029670871140681992,
+          "test_fpr": 0.050941535150645624,
+          "C": 0.01
+        },
+        "Others": {
+          "n": 187,
+          "mean": 0.7433155080213903,
+          "sd": 0.02612236189115217,
+          "test_fpr": 0.05149748923959828,
+          "C": 0.01
+        },
+        "Post-translational modification": {
+          "n": 66,
+          "mean": 0.15555555555555553,
+          "sd": 0.054692321336670166,
+          "test_fpr": 0.05058883309421331,
+          "C": 0.01
+        },
+        "Regulation": {
+          "n": 128,
+          "mean": 0.24791666666666667,
+          "sd": 0.11947186823202598,
+          "test_fpr": 0.051975729316116694,
+          "C": 0.01
+        },
+        "Stress survival": {
+          "n": 186,
+          "mean": 0.5396057347670251,
+          "sd": 0.01415305099246803,
+          "test_fpr": 0.05031085604973695,
+          "C": 0.01
+        }
+      },
+      "mean_tuned_composition": 0.364145137106778,
+      "mean_tuned_embedding": 0.4691246490747688,
+      "mean_tuned_concatenated": 0.4725827364396387,
+      "mean_fixed_composition": 0.34247832580573795,
+      "composition_gain_from_tuning": 0.021666811301040034,
+      "embedding_gain_from_tuning": 0.05129960181410609,
+      "AQ1_tuned_increment": 0.10497951196799082,
+      "AQ1_untuned_increment": 0.07534672145492477,
+      "AQ2_tuned_ao2": 0.0034580873648699106,
+      "distinct_C_composition": [
+        0.0001,
+        0.01,
+        0.1,
+        10.0
+      ],
+      "distinct_C_concatenated": [
+        0.01,
+        0.1
+      ],
+      "test_fpr": {
+        "min": 0.04960545193687231,
+        "max": 0.053299856527977044
+      },
+      "verdict_AQ1": "the increment survives a fair comparison",
+      "verdict_AQ2": "AO-2's null survives tuning"
+    }
+  },
+  "second_arm_rule": {
+    "aq1_agree": true,
+    "verdict_aq1": "the increment survives a fair comparison",
+    "aq2_agree": true,
+    "verdict_aq2": "AO-2's null survives tuning"
+  },
+  "predictions": {
+    "P1_composition_gains_under_5pp": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "esm2_650M": 0.021666811301040034,
+        "esm2_35M": 0.021666811301040034
+      }
+    },
+    "P2_tuned_increment_exceeds_untuned_on_650M": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "tuned": 0.1897570952649248,
+        "untuned": 0.0718611664250059
+      }
+    },
+    "P3_ao2_stays_within_2pp": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "esm2_650M": -0.0018465187880900569,
+        "esm2_35M": 0.0034580873648699106
+      }
+    },
+    "P4_composition_C_larger_than_embedding_C": {
+      "kind": "reasoned",
+      "held": false,
+      "values": {
+        "esm2_650M": [
+          0.0001,
+          0.01,
+          0.1,
+          10.0
+        ],
+        "esm2_35M": [
+          0.0001,
+          0.01,
+          0.1,
+          10.0
+        ]
+      }
+    }
+  },
+  "seconds": 1288.9
+}
