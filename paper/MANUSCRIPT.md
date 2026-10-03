@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 120 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 121 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 120
+written because it caught something. The evidence is a **dated, append-only corrections log of 121
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -872,6 +872,51 @@ seeds, against the **1.614%** they would get by column count alone — a ratio o
 probe does not distinguish them from an average embedding column.** This was computed after the run and
 is labelled so.
 
+### The classifier was never tuned, and tuning it moves every level in this section
+
+🔴 **`LogisticRegression(C=1.0)` is a default this project has used in every study and never examined.**
+Study AP selects `C` per held-out category on a member split of the **other thirteen** — never on the
+scored one — and re-measures (`docs/ESTIMATION_REPAIR_PREREGISTRATION.md`, bands and the amendment frozen
+before each run).
+
+| | 650M | 35M |
+|---|---:|---:|
+| mean recovery, fixed `C = 1.0` | 41.43% | 41.78% |
+| **mean recovery, nested-selected `C`** | **55.39%** | **46.91%** |
+| difference | **+13.96pp** | **+5.13pp** |
+| `C` selected | 0.01 (14 of 14) | 0.01 (12), 0.1 (2) |
+| out-of-sample false-positive rate | 4.88–5.05% | 4.91–5.23% |
+| Exoenzyme: share of composition's lead closed | **119.3%** | **97.7%** |
+
+🔒 **Both arms land in the frozen *repaired* band, at a matched false-positive rate**, and the selection
+is **interior** to the grid after it was extended to 1e-4 — so these are tuned figures and not a lower
+bound. ⚠️ **Every per-category recovery earlier in this section is therefore a statement about
+`C = 1.0`, not about the representation.** On 650M the gains run from +0.99pp to **+24.18pp**, and
+Exoenzyme reaches **66.2%**, **above** composition's 62.3% — 🔴 **so § 6's 20-point exoenzyme deficit is
+largely a tuning artifact.**
+
+🔑 **The one result that does not move is the one that was externally replicated.** *ρ*(margin, recovery)
+goes from **+0.9473 to +0.8110** on 650M and **+0.8857 to +0.8637** on 35M, both still clearing the
+**+0.60** floor frozen in § 4 — and even a parameter-free nearest-centroid classifier gives **+0.7451**
+and **+0.6264**, also above it. 🔒 **The ordering survives the classifier; the levels do not.**
+
+⚠️ **What cannot be restated at the tuned `C`.** The increment over composition rises from +7.19pp to
++21.14pp on 650M, **but composition is still at `C = 1.0`**, so that comparison is now unfair in a known
+direction. 🔑 **The +7pp figure is two untuned models and is at least internally consistent; tuning both
+is outstanding work**, and the same applies to the nested comparison's AO-2.
+
+⭐ **And a control splits the arms.** A nearest-centroid classifier — the difference of class means, no
+regularization parameter at all — reaches **48.59%** against the swept probe's 55.39% on 650M (−6.80pp,
+so `C` is doing something a centroid cannot) but **46.52%** against 46.91% on 35M (−0.39pp, so there the
+whole repair is reproduced by a parameter-free model). ⚠️ **The arms disagree, so this is reported as a
+quantity**: on the smaller representation the finding is about **model class**, and on the larger one it
+is about **regularization strength**.
+
+🔴 **All five of study AP's frozen predictions failed**, four of them derived from the coefficient-mass
+mechanism measured one subsection above. 🔑 **The mechanism was real and the inference from it was wrong**:
+what stronger regularization changes is not the relative weight on twenty-one columns but **which
+direction is found**, and a direction fitted with less capacity transfers better to a held-out category.
+
 🔑 **So the three arrivals are not information claims, and § 6 should not have been drifting toward
 reading them as such.** Composition's wins — Exoenzyme's 20 points, the toxin ordering at AUROC 0.555
 against 0.446 — happen **while the same information is available to the larger model and unused**. That
@@ -1346,7 +1391,7 @@ the diagnosis was in the record before the repair was built; both times it named
   family-wise correction after seeing which bands were met is the error the bands exist to prevent.
   `results/prediction_record.json` holds the count.
 - ⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions
-  held **10 of 20** where they were *derived* from a measurement and **3 of 9** where they were
+  held **10 of 22** where they were *derived* from a measurement and **3 of 9** where they were
   *reasoned* — so a derived prediction here is about a coin flip, and the paper's earlier reading that
   derived predictions reliably hold (§ 4) does not survive leaving the panel they were derived on. 🔴 **Two
   entries of the corrections log stated this tally wrongly** because it was maintained by hand; it is now
@@ -1387,7 +1432,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 120 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 121 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1468,7 +1513,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**147 claims** and fails if any number in a public document drifts from the artifact that produced
+**148 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

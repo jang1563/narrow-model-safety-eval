@@ -1,10 +1,12 @@
 {
-  "built": "2026-10-02 21:21:09",
+  "built": "2026-10-03 09:49:36",
   "study": "AP -- can the estimation gap be repaired by a modelling choice?",
   "preregistration": "docs/ESTIMATION_REPAIR_PREREGISTRATION.md",
   "selection_rule": "C is chosen on a member split of the TRAINED categories plus train negatives; no number from the scored category reaches the selection",
   "pca_basis": "fitted on the negative union only, so no held-out positive informs it",
   "C_grid": [
+    0.0001,
+    0.001,
     0.01,
     0.1,
     1.0,
@@ -256,9 +258,100 @@
           "test_fpr": 0.04958153993304639
         }
       },
+      "centroid": {
+        "Adherence": {
+          "n": 2259,
+          "mean": 0.7660026560424967,
+          "sd": 0.03242083866282252,
+          "test_fpr": 0.05433106169296987
+        },
+        "Antimicrobial activity/Competitive advantage": {
+          "n": 24,
+          "mean": 0.24444444444444446,
+          "sd": 0.018090520227304358,
+          "test_fpr": 0.05433703969392635
+        },
+        "Biofilm": {
+          "n": 226,
+          "mean": 0.5668141592920354,
+          "sd": 0.04439021934020643,
+          "test_fpr": 0.05407699665231947
+        },
+        "Effector delivery system": {
+          "n": 4266,
+          "mean": 0.4743397405844663,
+          "sd": 0.05270276836833121,
+          "test_fpr": 0.051975729316116694
+        },
+        "Exoenzyme": {
+          "n": 210,
+          "mean": 0.7884126984126983,
+          "sd": 0.05389922821041619,
+          "test_fpr": 0.05432209469153516
+        },
+        "Exotoxin": {
+          "n": 1126,
+          "mean": 0.6781527531083481,
+          "sd": 0.05479409669743351,
+          "test_fpr": 0.05452235772357723
+        },
+        "Immune modulation": {
+          "n": 1983,
+          "mean": 0.27839973104723487,
+          "sd": 0.017401565258621726,
+          "test_fpr": 0.056085604973696794
+        },
+        "Invasion": {
+          "n": 84,
+          "mean": 0.6634920634920635,
+          "sd": 0.023171528839125148,
+          "test_fpr": 0.054474533715925394
+        },
+        "Motility": {
+          "n": 1121,
+          "mean": 0.43621766280107044,
+          "sd": 0.027209236851898955,
+          "test_fpr": 0.05232843137254903
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 1123,
+          "mean": 0.26357969723953695,
+          "sd": 0.025262229173329747,
+          "test_fpr": 0.053766140602582495
+        },
+        "Others": {
+          "n": 187,
+          "mean": 0.7418894830659535,
+          "sd": 0.0164334588799916,
+          "test_fpr": 0.054145743663318986
+        },
+        "Post-translational modification": {
+          "n": 66,
+          "mean": 0.25252525252525254,
+          "sd": 0.08935747740652614,
+          "test_fpr": 0.0545044237207078
+        },
+        "Regulation": {
+          "n": 128,
+          "mean": 0.09609375,
+          "sd": 0.029170434767884654,
+          "test_fpr": 0.05445958871353419
+        },
+        "Stress survival": {
+          "n": 186,
+          "mean": 0.5528673835125447,
+          "sd": 0.01207013780081819,
+          "test_fpr": 0.05371532759445241
+        }
+      },
       "mean_fixed_C": 0.41433949223074384,
       "mean_swept": 0.5539022323717028,
       "mean_pca": 0.46305796953553513,
+      "mean_centroid": 0.48594510539772473,
+      "AP4_centroid_minus_swept": -0.06795712697397804,
+      "AP4_reading": "C is a real lever",
+      "AP3_selected_at_edge": false,
+      "AP3_lowest_in_grid": 0.0001,
       "AP1_swept_minus_fixed": 0.13956274014095893,
       "AP1_pca_minus_fixed": 0.048718477304791286,
       "exoenzyme": {
@@ -517,9 +610,100 @@
           "test_fpr": 0.048158775705404104
         }
       },
+      "centroid": {
+        "Adherence": {
+          "n": 2259,
+          "mean": 0.7530175593920613,
+          "sd": 0.025450105586150157,
+          "test_fpr": 0.05486310377809662
+        },
+        "Antimicrobial activity/Competitive advantage": {
+          "n": 24,
+          "mean": 0.22083333333333335,
+          "sd": 0.06300086662421636,
+          "test_fpr": 0.05502152080344332
+        },
+        "Biofilm": {
+          "n": 226,
+          "mean": 0.48348082595870207,
+          "sd": 0.050140611158523,
+          "test_fpr": 0.05506635581061694
+        },
+        "Effector delivery system": {
+          "n": 4266,
+          "mean": 0.3571339271761214,
+          "sd": 0.03532731404277684,
+          "test_fpr": 0.051602104256336684
+        },
+        "Exoenzyme": {
+          "n": 210,
+          "mean": 0.7944444444444444,
+          "sd": 0.05677334459682814,
+          "test_fpr": 0.05479734576757533
+        },
+        "Exotoxin": {
+          "n": 1126,
+          "mean": 0.6509769094138544,
+          "sd": 0.04278734212808559,
+          "test_fpr": 0.05368842659014825
+        },
+        "Immune modulation": {
+          "n": 1983,
+          "mean": 0.24170448814926873,
+          "sd": 0.012893712508931131,
+          "test_fpr": 0.055404112864658066
+        },
+        "Invasion": {
+          "n": 84,
+          "mean": 0.7249999999999999,
+          "sd": 0.018849026300525755,
+          "test_fpr": 0.05499760879961741
+        },
+        "Motility": {
+          "n": 1121,
+          "mean": 0.34463276836158196,
+          "sd": 0.04267790653441225,
+          "test_fpr": 0.05503646580583453
+        },
+        "Nutritional/Metabolic factor": {
+          "n": 1123,
+          "mean": 0.24672009498367467,
+          "sd": 0.016729522865336143,
+          "test_fpr": 0.05583452893352462
+        },
+        "Others": {
+          "n": 187,
+          "mean": 0.7131907308377897,
+          "sd": 0.030590380102129063,
+          "test_fpr": 0.05514108082257292
+        },
+        "Post-translational modification": {
+          "n": 66,
+          "mean": 0.3787878787878788,
+          "sd": 0.0913434416424362,
+          "test_fpr": 0.05503646580583452
+        },
+        "Regulation": {
+          "n": 128,
+          "mean": 0.01015625,
+          "sd": 0.018595583617210167,
+          "test_fpr": 0.05500657580105213
+        },
+        "Stress survival": {
+          "n": 186,
+          "mean": 0.592652329749104,
+          "sd": 0.01913541699279352,
+          "test_fpr": 0.05477044476327117
+        }
+      },
       "mean_fixed_C": 0.4178250472606627,
       "mean_swept": 0.4691246490747688,
       "mean_pca": 0.43271164623803177,
+      "mean_centroid": 0.4651951100419867,
+      "AP4_centroid_minus_swept": -0.003929539032782092,
+      "AP4_reading": "about model class",
+      "AP3_selected_at_edge": false,
+      "AP3_lowest_in_grid": 0.0001,
       "AP1_swept_minus_fixed": 0.05129960181410609,
       "AP1_pca_minus_fixed": 0.014886598977369048,
       "exoenzyme": {
@@ -550,6 +734,27 @@
     "verdict_pca": "SPLIT -- indicative only"
   },
   "predictions": {
+    "P4_extended_grid_selects_below_0.01": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "esm2_650M": [
+          0.01
+        ],
+        "esm2_35M": [
+          0.01,
+          0.1
+        ]
+      }
+    },
+    "P5_centroid_within_2pp_of_swept": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "esm2_650M": -0.06795712697397804,
+        "esm2_35M": -0.003929539032782092
+      }
+    },
     "P1_swept_not_repaired_both_arms": {
       "kind": "derived",
       "held": false,
@@ -581,5 +786,36 @@
       }
     }
   },
-  "seconds": 1636.9
+  "seconds": 1836.1,
+  "AP5_robustness_of_AI2": {
+    "question": "does tuning change AI-2's conclusion or only its levels?",
+    "arms": {
+      "esm2_650M": {
+        "rho_margin_fixed": 0.9472527472527472,
+        "rho_margin_swept": 0.8109890109890111,
+        "rho_margin_centroid": 0.745054945054945,
+        "ai2_floor": 0.6,
+        "swept_clears_ai2_floor": true,
+        "centroid_clears_ai2_floor": true,
+        "increment_over_composition_fixed": 0.0718611664250059,
+        "increment_over_composition_swept": 0.21142390656596483,
+        "increment_comparison_is_unfair": true,
+        "unfairness_note": "composition is still at C=1.0, so the swept increment compares a tuned model against an untuned one and is inflated in a known direction; the +7pp figure is two untuned models"
+      },
+      "esm2_35M": {
+        "rho_margin_fixed": 0.8857142857142857,
+        "rho_margin_swept": 0.8637362637362638,
+        "rho_margin_centroid": 0.6263736263736264,
+        "ai2_floor": 0.6,
+        "swept_clears_ai2_floor": true,
+        "centroid_clears_ai2_floor": true,
+        "increment_over_composition_fixed": 0.07534672145492477,
+        "increment_over_composition_swept": 0.12664632326903086,
+        "increment_comparison_is_unfair": true,
+        "unfairness_note": "composition is still at C=1.0, so the swept increment compares a tuned model against an untuned one and is inflated in a known direction; the +7pp figure is two untuned models"
+      }
+    },
+    "conclusion": "the ordering survives the classifier and the levels do not: rho clears the +0.60 floor frozen in AI-2 under the fixed C, the swept C AND a parameter-free nearest centroid, on both arms",
+    "post_hoc": true
+  }
 }

@@ -8481,3 +8481,72 @@ seven DeepVIC studies share one negative partition (`default_rng(12345)`) with n
 "two arms" there are two sizes of **one** model family, while the repository holds ESM-3, ESM-C, ProtT5
 and SaProt embeddings of the *panel* that were never computed for DeepVIC; and study AP's result (entry
 117) invalidates the *level* of every per-category figure in that arm.
+
+## 2026-10-03 (one hundred and seventeenth entry) — An unexamined default moved every level in § 6
+
+🔴 **`LogisticRegression(C=1.0)` has been used in every study in this repository and was never
+examined.** Study AP selects it per held-out category on a member split of the **other thirteen** —
+never on the scored one — and re-measures.
+
+| | 650M | 35M |
+|---|---:|---:|
+| mean recovery, fixed `C = 1.0` | 41.43% | 41.78% |
+| **nested-selected `C`** | **55.39%** | **46.91%** |
+| difference | **+13.96pp** | **+5.13pp** |
+| `C` chosen | 0.01 (14 of 14) | 0.01 (12), 0.1 (2) |
+| out-of-sample FPR | 4.88–5.05% | 4.91–5.23% |
+
+🔒 **Both arms land in the frozen *repaired* band at a matched false-positive rate.** On 650M the
+per-category gains run **+0.99pp to +24.18pp**. 🔴 **So every per-category recovery in § 6 was a
+statement about `C = 1.0` and not about the representation.**
+
+### 🔒 Amendment 1's boundary worry is resolved
+
+The first run selected at the grid's lower edge — 0.01 for 14 of 14 on 650M — so amendment 1 extended the
+grid to **1e-4** before any extended result was read, and froze that a second edge selection would make
+every figure a lower bound. ⚠️ **The selection came back INTERIOR on both arms**: 1e-4 and 1e-3 were
+available and not chosen. 🔒 **These are tuned figures.** P4, which predicted the extension would go
+below 0.01, **missed**.
+
+### 🔴 Entry 109's twenty-point exoenzyme deficit is largely a tuning artifact
+
+Composition alone reaches **62.3%** there. The tuned probe reaches **66.2%** — **above it** — closing
+**119.3%** of the gap on 650M and **97.7%** on 35M. ⚠️ **Entries 109, 113 and 115 all built on that
+deficit**, and what they describe is a probe with an unexamined hyperparameter.
+
+### 🔑 The ordering survives the classifier; the levels do not
+
+| *ρ*(margin, recovery) | 650M | 35M |
+|---|---:|---:|
+| fixed `C = 1.0` | +0.9473 | +0.8857 |
+| nested-selected `C` | **+0.8110** | **+0.8637** |
+| nearest-centroid, no parameter at all | **+0.7451** | **+0.6264** |
+
+🔒 **All six clear AI-2's frozen +0.60 floor.** 🔑 **The one result in this paper that replicated
+externally does not depend on the untuned default** — which is the most important thing study AP found,
+and it is recorded in the artifact rather than in this sentence (entry 116's lesson).
+
+⚠️ **What cannot be restated.** The increment over composition rises from +7.19pp to **+21.14pp** on
+650M, **but composition is still at `C = 1.0`** — a tuned model against an untuned one, inflated in a
+known direction. 🔒 **The +7pp figure is two untuned models and is at least internally consistent.**
+Tuning both is outstanding, and the same applies to the nested comparison's AO-2.
+
+### ⭐ A control that splits the arms
+
+A **nearest-centroid** classifier — difference of class means, no regularization parameter — reaches
+**48.59%** against the swept probe's 55.39% on 650M (**−6.80pp**) and **46.52%** against 46.91% on 35M
+(**−0.39pp**). ⚠️ **The arms disagree**, so amendment 1's reading is reported as a quantity: on the
+smaller representation the whole repair is reproduced by a parameter-free model, so the finding there is
+about **model class**; on the larger one `C` does something a centroid cannot.
+
+### 🔴 All five frozen predictions failed
+
+P1, P2 (derived), P3 (reasoned), P4, P5 (derived) — **0 of 5**. Four were derived from the
+coefficient-mass mechanism measured in entry 115. 🔑 **The mechanism was real and the inference from it
+was wrong**: what stronger regularization changes is not the relative weight on twenty-one columns but
+**which direction is found**, and a direction fitted with less capacity transfers better to a held-out
+category. ⚠️ **Mechanism-derived predictions are not safer than any other kind** — this is the clearest
+instance in the record.
+
+🔑 **With AP scored, the computed record is in `results/prediction_record.json` and claim 147 requires
+§ 7 to match it.** The paper is updated in the same commit, which is the behaviour that claim exists for.

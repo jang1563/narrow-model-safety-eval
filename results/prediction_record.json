@@ -161,6 +161,18 @@
     },
     {
       "study": "AP",
+      "prediction": "P4_extended_grid_selects_below_0.01",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AP",
+      "prediction": "P5_centroid_within_2pp_of_swept",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AP",
       "prediction": "P1_swept_not_repaired_both_arms",
       "kind": "derived",
       "held": false
@@ -181,14 +193,14 @@
   "tally": {
     "derived": {
       "held": 10,
-      "total": 20
+      "total": 22
     },
     "reasoned": {
       "held": 3,
       "total": 9
     }
   },
-  "total_scored": 29,
+  "total_scored": 31,
   "by_study": {
     "AH": {
       "derived": [
@@ -273,7 +285,7 @@
     "AP": {
       "derived": [
         0,
-        2
+        4
       ],
       "reasoned": [
         0,

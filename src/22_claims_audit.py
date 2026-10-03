@@ -210,7 +210,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/COMPOSITION_RESIDUAL_PREREGISTRATION.md",
           # Added 2026-10-02. It settles what the erasure study could not, and reinterprets the
           # three composition arrivals as an estimation result rather than an information one.
-          "docs/NESTED_MODEL_PREREGISTRATION.md"]
+          "docs/NESTED_MODEL_PREREGISTRATION.md",
+          # Added 2026-10-03. It is the only study here that attempted an improvement, and the
+          # only one whose result invalidates the LEVEL of every per-category figure beside it.
+          "docs/ESTIMATION_REPAIR_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1883,6 +1886,68 @@ def organism_cluster():
         "pool_gap_inside": bool(a["pool_gap_inside"] and b["pool_gap_inside"]),
         "ca_ratio_below_r_650M": bool(a["contrasts"]["CA"]["design_effect"]
                                       < a["contrasts"]["R"]["design_effect"]),
+    }
+
+
+def estimation_repair():
+    """The classifier was never tuned, and tuning it moves every level in section 6.
+
+    🔴 C=1.0 is a default used in every study here and never examined. Selected per held-out
+    category on a member split of the other thirteen -- never on the scored one -- mean recovery
+    goes 41.43% to 55.39% on 650M and 41.78% to 46.91% on 35M, at matched false-positive rates
+    of 4.88-5.23%. Both arms land in the frozen "repaired" band.
+
+    🔒 The selection is INTERIOR after the grid was extended to 1e-4, so these are tuned figures
+    and not a lower bound -- the boundary selection that amendment 1 was written for is resolved.
+
+    🔑 The ordering survives and the levels do not. rho(margin, recovery) falls from +0.9473 to
+    +0.8110 and from +0.8857 to +0.8637, both still above AI-2's frozen +0.60 floor, and a
+    parameter-free nearest centroid gives +0.7451 and +0.6264, also above it.
+
+    ⚠️ The increment over composition cannot be restated: it rises to +21.14pp only because
+    composition is still at C=1.0, so the tuned comparison is unfair in a known direction.
+
+    🔴 All five frozen predictions failed, four of them derived from the coefficient-mass
+    mechanism. The mechanism was real and the inference from it was wrong: what stronger
+    regularization changes is which direction is found, not the weight on twenty-one columns.
+    """
+    v = j("../results/estimation_repair.json")
+    if v is None:
+        return None
+    A, B = v["arms"]["esm2_650M"], v["arms"]["esm2_35M"]
+    rb = v.get("AP5_robustness_of_AI2", {}).get("arms", {})
+    return {
+        "prereg": v["preregistration"],
+        # 🔴 This read "never reaches the selection" while the artifact says "no number from
+        # the scored category reaches the selection" -- a phrase I wrote and then mis-quoted a
+        # few minutes later. The check now carries the artifact's own words.
+        "selection_rule": ("no number from the scored category reaches the selection"
+                           in v["selection_rule"]),
+        "grid": v["C_grid"],
+        "mean_fixed": {"650M": A["mean_fixed_C"], "35M": B["mean_fixed_C"]},
+        "mean_swept": {"650M": A["mean_swept"], "35M": B["mean_swept"]},
+        "ap1": {"650M": A["AP1_swept_minus_fixed"], "35M": B["AP1_swept_minus_fixed"]},
+        "verdict": {"650M": A["verdict_swept"], "35M": B["verdict_swept"]},
+        "arms_agree": v["second_arm_rule"]["swept_agree"],
+        "ap2_gap_closed": {"650M": A["AP2_gap_closed_swept"],
+                           "35M": B["AP2_gap_closed_swept"]},
+        "ap3_at_edge": {"650M": A["AP3_selected_at_edge"], "35M": B["AP3_selected_at_edge"]},
+        "chosen": {"650M": A["distinct_C_chosen"], "35M": B["distinct_C_chosen"]},
+        "ap4_centroid_minus_swept": {"650M": A["AP4_centroid_minus_swept"],
+                                     "35M": B["AP4_centroid_minus_swept"]},
+        "ap4_reading": {"650M": A["AP4_reading"], "35M": B["AP4_reading"]},
+        "exo_swept": A["exoenzyme"]["swept"],
+        "exo_composition": A["exoenzyme"]["composition"],
+        "fpr_min": min(A["test_fpr_swept"]["min"], B["test_fpr_swept"]["min"]),
+        "fpr_max": max(A["test_fpr_swept"]["max"], B["test_fpr_swept"]["max"]),
+        "rho_fixed": {k: rb[f"esm2_{k}"]["rho_margin_fixed"] for k in ("650M", "35M")},
+        "rho_swept": {k: rb[f"esm2_{k}"]["rho_margin_swept"] for k in ("650M", "35M")},
+        "rho_centroid": {k: rb[f"esm2_{k}"]["rho_margin_centroid"] for k in ("650M", "35M")},
+        "clears": all(rb[a][k] for a in rb
+                      for k in ("swept_clears_ai2_floor", "centroid_clears_ai2_floor")),
+        "unfair_disclosed": all(rb[a]["increment_comparison_is_unfair"] for a in rb),
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "n_preds": len(v["predictions"]),
     }
 
 
@@ -6393,7 +6458,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 120"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 121"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -8329,6 +8394,56 @@ CLAIMS = [
      # 🔴 The two readings this does not license, in assertion-only form.
      ["derived predictions reliably hold on this benchmark",
       "a family-wise correction has been applied across the studies"]),
+    # 🔴 Added 2026-10-03. The most consequential result here: an unexamined default moved every
+    # level in section 6. The claim holds the repair, the boundary resolution, AND the fact that
+    # the externally replicated ordering survives it.
+    ("tuning the classifier moves every level in section 6 and leaves the ordering standing",
+     estimation_repair,
+     lambda v: v is None or (
+         "ESTIMATION_REPAIR_PREREGISTRATION" in v["prereg"] and v["selection_rule"]
+         # 🔒 both arms repaired, arms agree, at a matched false-positive rate
+         and v["verdict"] == {"650M": "repaired", "35M": "repaired"}
+         and v["arms_agree"] is True
+         and abs(v["ap1"]["650M"] - 0.1396) < 0.0005
+         and abs(v["ap1"]["35M"] - 0.0513) < 0.0005
+         and abs(v["mean_swept"]["650M"] - 0.5539) < 0.0005
+         and 0.045 < v["fpr_min"] and v["fpr_max"] < 0.055
+         # 🔒 amendment 1's boundary worry is resolved: the grid reaches 1e-4 and the
+         # selection is INTERIOR on both arms
+         and min(v["grid"]) <= 1e-4
+         and v["ap3_at_edge"] == {"650M": False, "35M": False}
+         and v["chosen"]["650M"] == [0.01]
+         # 🔒 the Exoenzyme deficit is largely a tuning artifact: the tuned probe passes
+         # composition there
+         and v["ap2_gap_closed"]["650M"] > 1.0
+         and v["ap2_gap_closed"]["35M"] > 0.90
+         and v["exo_swept"] > v["exo_composition"]
+         # 🔑 and the externally replicated ordering survives, under BOTH the tuned probe and a
+         # parameter-free centroid, on both arms
+         and v["clears"] is True
+         and v["rho_swept"]["650M"] >= 0.60 and v["rho_swept"]["35M"] >= 0.60
+         and v["rho_centroid"]["650M"] >= 0.60 and v["rho_centroid"]["35M"] >= 0.60
+         and v["rho_swept"]["650M"] < v["rho_fixed"]["650M"]
+         and abs(v["rho_swept"]["650M"] - 0.8110) < 0.0005
+         # ⚠️ the centroid control SPLITS the arms and that is reported, not resolved
+         and v["ap4_reading"]["650M"] != v["ap4_reading"]["35M"]
+         and v["ap4_centroid_minus_swept"]["650M"] < -0.05
+         and abs(v["ap4_centroid_minus_swept"]["35M"]) < 0.02
+         # ⚠️ and the unfair comparison is disclosed rather than quoted
+         and v["unfair_disclosed"] is True
+         # 🔴 all five frozen predictions failed
+         and v["n_preds"] == 5
+         and not any(v["preds"].values())),
+     {"paper/MANUSCRIPT.md": [
+         "🔴 **`LogisticRegression(C=1.0)` is a default this project has used in every study and never examined.**",
+         "🔑 **The one result that does not move is the one that was externally replicated.** *ρ*(margin, recovery)",
+         "⚠️ **What cannot be restated at the tuned `C`.** The increment over composition rises from +7.19pp to"]},
+     # 🔴 Five readings this does not license.
+     ["the per-category recoveries are properties of the representation",
+      "tuning does not change the results",
+      "the exoenzyme deficit is a real property of the embedding",
+      "study AP shows C is the only lever",
+      "the increment over composition is +21pp"]),
 ]
 
 
