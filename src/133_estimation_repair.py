@@ -32,7 +32,11 @@ LOCO = ROOT / "results/deepvic_loco.json"
 COMP = ROOT / "results/composition_arm.json"
 OUT = ROOT / "results/estimation_repair.json"
 SEEDS, INNER_SEEDS, N_TRAIN, N_CAL, SPEC, FLOOR = 30, 5, 1000, 500, 0.95, 7
-C_GRID = (0.01, 0.1, 1.0, 10.0, 100.0)
+# amendment 1: the original grid selected at its own lower edge for 14 of 14 categories on
+# 650M and 12 of 14 on 35M, so the optimum may lie outside it and the figures were a lower
+# bound rather than a tuned result. Extended downward; the selection rule is unchanged.
+C_GRID = (1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10.0, 100.0)
+C_GRID_ORIGINAL = (0.01, 0.1, 1.0, 10.0, 100.0)
 PCA_K = 50
 BAND_REPAIRED, BAND_NOT = 0.03, 0.005
 BAND_GAP_REPAIRED, BAND_GAP_NOT = 0.50, 0.10
@@ -50,6 +54,27 @@ def load(mod):
 def clf(creg):
     return make_pipeline(StandardScaler(),
                          LogisticRegression(max_iter=5000, C=creg))
+
+
+def centroid_scores(X, fit_pos, fit_neg, score_rows):
+    """Nearest-centroid score: the projection onto the difference of class means.
+
+    🔒 Amendment 1's AP-4 control. No regularization parameter exists, so if this matches the
+    swept probe the finding is about model class and not about a hyperparameter. Features are
+    standardized on the fitted rows only, as the probe's pipeline does.
+    """
+    fit = np.concatenate([fit_pos, fit_neg])
+    mu, sd = X[fit].mean(axis=0), X[fit].std(axis=0)
+    sd = np.where(sd <= 0, 1.0, sd)
+    Z = (X - mu) / sd
+    w = Z[fit_pos].mean(axis=0) - Z[fit_neg].mean(axis=0)
+    return Z[score_rows] @ w
+
+
+def centroid_rate(X, fit_pos, fit_neg, score_rows, cal_rows):
+    s_cal = centroid_scores(X, fit_pos, fit_neg, cal_rows)
+    t = float(np.quantile(s_cal, SPEC))
+    return float((centroid_scores(X, fit_pos, fit_neg, score_rows) >= t).mean())
 
 
 def fold_once(X, fit_pos, fit_neg, score_rows, cal_rows, creg):
@@ -101,8 +126,29 @@ def selftest():
     if (BAND_GAP_REPAIRED, BAND_GAP_NOT) != (0.50, 0.10):
         print(f"  XX gap bands are {(BAND_GAP_REPAIRED, BAND_GAP_NOT)}, frozen at (0.5, 0.1)")
         ok = False
-    if C_GRID != (0.01, 0.1, 1.0, 10.0, 100.0) or PCA_K != 50:
+    if C_GRID != (1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10.0, 100.0) or PCA_K != 50:
         print(f"  XX the grid or k changed: {C_GRID}, {PCA_K}")
+        ok = False
+    # 🔒 amendment 1's extension must be a strict superset of what was frozen in section 2,
+    # so the original result stays recoverable from the same run
+    if not set(C_GRID_ORIGINAL) <= set(C_GRID):
+        print("  XX the extended grid is not a superset of the original")
+        ok = False
+    # 🔒 and the centroid control must be parameter-free: two calls must agree exactly
+    rng0 = np.random.default_rng(3)
+    Xc = rng0.normal(size=(300, 5))
+    a1 = centroid_scores(Xc, np.arange(0, 100), np.arange(100, 200), np.arange(200, 300))
+    a2 = centroid_scores(Xc, np.arange(0, 100), np.arange(100, 200), np.arange(200, 300))
+    if not np.array_equal(a1, a2):
+        print("  XX centroid_scores is not deterministic")
+        ok = False
+    # it must separate a planted mean difference and not separate noise
+    Xp = rng0.normal(size=(300, 5))
+    Xp[:100] += 5.0
+    sp = centroid_scores(Xp, np.arange(0, 100), np.arange(100, 200), np.arange(0, 100))
+    sn = centroid_scores(Xp, np.arange(0, 100), np.arange(100, 200), np.arange(100, 200))
+    if sp.mean() <= sn.mean():
+        print("  XX centroid_scores does not score the planted class higher")
         ok = False
     for d, want in ((0.05, "repaired"), (0.002, "not repaired"), (0.015, "between bands"),
                     (-0.02, "not repaired")):
@@ -228,6 +274,17 @@ def main():
             tri = pos[cls[pos] != cat]
             chosen, inner = select_C(E, tri, union, ci)
             res["chosen_C"][cat] = {"C": chosen, "inner_score": inner}
+            # AP-4: the parameter-free control, on the identical fold
+            cr, cf = [], []
+            for seed in range(a.seeds):
+                r = np.random.default_rng(seed)
+                p = r.permutation(len(union))
+                tr, ca = union[p[:N_TRAIN]], union[p[N_TRAIN:N_TRAIN + N_CAL]]
+                cr.append(centroid_rate(E, tri, tr, hi, ca))
+                cf.append(centroid_rate(E, tri, tr, test, ca))
+            res.setdefault("centroid", {})[cat] = {
+                "n": int(len(hi)), "mean": float(np.mean(cr)),
+                "sd": float(np.std(cr, ddof=1)), "test_fpr": float(np.mean(cf))}
             for tag, X in (("swept", E), ("pca", Ep)):
                 creg = chosen if tag == "swept" else 1.0
                 rr, ff = [], []
@@ -253,6 +310,7 @@ def main():
         m_base = float(np.mean([base[c] for c in targets]))
         m_sw = float(np.mean([res["swept"][c]["mean"] for c in targets]))
         m_pca = float(np.mean([res["pca"][c]["mean"] for c in targets]))
+        m_cen = float(np.mean([res["centroid"][c]["mean"] for c in targets]))
         gap = comp["Exoenzyme"] - base["Exoenzyme"]
         closed_sw = (res["swept"]["Exoenzyme"]["mean"] - base["Exoenzyme"]) / gap
         closed_pca = (res["pca"]["Exoenzyme"]["mean"] - base["Exoenzyme"]) / gap
@@ -261,7 +319,17 @@ def main():
             "chosen_C": res["chosen_C"],
             "distinct_C_chosen": sorted({v["C"] for v in res["chosen_C"].values()}),
             "swept": res["swept"], "pca": res["pca"],
+            "centroid": res["centroid"],
             "mean_fixed_C": m_base, "mean_swept": m_sw, "mean_pca": m_pca,
+            "mean_centroid": m_cen,
+            "AP4_centroid_minus_swept": m_cen - m_sw,
+            "AP4_reading": ("about model class" if abs(m_cen - m_sw) <= 0.02
+                            else "C is a real lever" if m_cen - m_sw < -0.05
+                            else "between"),
+            "AP3_selected_at_edge": bool(
+                sum(1 for v in res["chosen_C"].values() if v["C"] == min(C_GRID))
+                > len(targets) / 2),
+            "AP3_lowest_in_grid": float(min(C_GRID)),
             "AP1_swept_minus_fixed": m_sw - m_base,
             "AP1_pca_minus_fixed": m_pca - m_base,
             "exoenzyme": {"composition": comp["Exoenzyme"], "fixed_C": base["Exoenzyme"],
@@ -287,6 +355,9 @@ def main():
               f"{v['verdict_pca']})", flush=True)
         print(f"    Exoenzyme gap {gap*100:.1f}pp: swept closes {closed_sw:.1%}, "
               f"pca closes {closed_pca:.1%}  | C chosen: {v['distinct_C_chosen']}", flush=True)
+        print(f"    centroid {m_cen*100:.2f}%  (swept {m_sw*100:.2f}%, diff "
+              f"{v['AP4_centroid_minus_swept']*100:+.2f}pp -> {v['AP4_reading']})  "
+              f"selected at edge: {v['AP3_selected_at_edge']}", flush=True)
         print(f"    out-of-sample FPR: swept {v['test_fpr_swept']['min']*100:.2f}-"
               f"{v['test_fpr_swept']['max']*100:.2f}%  pca "
               f"{v['test_fpr_pca']['min']*100:.2f}-{v['test_fpr_pca']['max']*100:.2f}%",
@@ -301,6 +372,18 @@ def main():
         "verdict_pca": (A["verdict_pca"] if A["verdict_pca"] == B["verdict_pca"]
                         else "SPLIT -- indicative only")}
     out["predictions"] = {
+        "P4_extended_grid_selects_below_0.01": {
+            "kind": "derived",
+            "held": bool(all(min(v["C"] for v in out["arms"][k]["chosen_C"].values()) < 0.01
+                             for k in ARMS)
+                         and any(out["arms"][k]["mean_swept"]
+                                 - out["arms"][k]["mean_fixed_C"] > 0 for k in ARMS)),
+            "values": {k: out["arms"][k]["distinct_C_chosen"] for k in ARMS}},
+        "P5_centroid_within_2pp_of_swept": {
+            "kind": "derived",
+            "held": bool(all(abs(out["arms"][k]["AP4_centroid_minus_swept"]) <= 0.02
+                             for k in ARMS)),
+            "values": {k: out["arms"][k]["AP4_centroid_minus_swept"] for k in ARMS}},
         "P1_swept_not_repaired_both_arms": {
             "kind": "derived",
             "held": bool(A["AP1_swept_minus_fixed"] <= BAND_NOT

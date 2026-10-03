@@ -8413,3 +8413,71 @@ Four calibrations were run on `src/132`'s selftest and three fired. The fourth r
 `if C.shape[1] != 21:` with `if False:` — **removing a check cannot make a selftest fail**, which entries
 106 and 113 already record. 🔒 Noted rather than repeated: the composition width is a constant of
 `comp_features`, so it cannot be perturbed through the data, and that guard is a regression check only.
+
+## 2026-10-03 (one hundred and sixteenth entry) — The tally that drifted twice, and the exposure the paper never stated
+
+A review of this session's own work, prompted by being asked what had been rushed. 🔴 **Two things had
+been, and one of them is a repeat.**
+
+### 🔴 1. The prediction tally drifted again, two entries after it was corrected
+
+Entry 112 corrected a tally that had been written into prose with nothing auditing it, and named the
+lesson: *"the bookkeeping is now a measurement instead of a sentence."* ⚠️ **Entry 115 then stated
+"derived 9 of 16, reasoned 2 of 7"** — and the artifacts say **10 of 20** and **3 of 9**, because study
+**AI-1's three predictions were being omitted by hand.**
+
+🔒 `src/134` now computes the record from the artifacts, and claim 147 is **self-maintaining in the way
+`corrections_log_census` is**: it does not hard-code the totals, it requires the paper's numerals to
+equal whatever the artifacts currently compute. **Scoring one more prediction fails the gate until the
+paper is updated.** One of its seven calibrations is exactly that case.
+
+⭐ **It also refuses an unlabelled prediction.** A prediction with no `kind` would vanish from both
+tallies without changing either — ⚠️ **a record can narrow silently**, which is how the first drift
+happened in a different form.
+
+### 🔴 2. Eight preregistrations, thirty-one frozen predictions, no correction across them
+
+Every preregistration in this session sets its own Bonferroni α — 0.05/2, /3 or /4 — over its own primary
+tests. 🔴 **None corrects for the others.** With thirty-one frozen predictions and roughly twenty-five
+bands, some verdicts are expected to fall by chance, and **the paper had never said so.**
+
+🔒 § 7 now states the exposure. ⚠️ **It is stated and not corrected**, because choosing a family-wise
+correction after seeing which bands were met is the error the bands exist to prevent. 🔑 The honest form
+is a disclosure, not a retroactive α.
+
+### 🔑 3. What the record actually says, now that it is computed
+
+**Derived 10 of 20. Reasoned 3 of 9.**
+
+| study | derived | reasoned |
+|---|---|---|
+| AH | 0 / 2 | 1 / 1 |
+| AI-1 | 2 / 2 | 1 / 1 |
+| AI | 1 / 3 | 0 / 1 |
+| AJ | 1 / 2 | 1 / 1 |
+| AK | 1 / 2 | 0 / 1 |
+| AM | 2 / 2 | 0 / 1 |
+| AN | 2 / 3 | 0 / 1 |
+| AO | 1 / 2 | 0 / 1 |
+| AP | 0 / 2 | 0 / 1 |
+
+🔴 **A derived prediction on this benchmark is about a coin flip.** § 4's reading — that derived
+predictions reliably hold — was true of the original panel and **does not survive leaving it**. Entry 109
+had already withdrawn one generalization about these predictions as over-fit; this withdraws the
+remaining one, and replaces it with a number instead of a rule.
+
+### ⭐ 4. Two things the review strengthened rather than weakened
+
+- **Study AI-2 survives a rival it had never been reported against.** Per-category recovery is predicted
+  by **median length** at ρ = **+0.279** / **+0.521** and by **class size** at +0.292 / +0.200, against
+  margin's **+0.947** / **+0.886**. 🔑 Margin beats both on both arms, decisively on the larger one.
+- **The coefficient-mass diagnostic generalizes, and is stronger than entry 115 claimed.** Across all
+  fourteen categories the twenty-one composition columns take **1.02–1.13×** their share by column count
+  on 650M and **0.74–0.86×** on 35M — ⚠️ **the smaller arm actively underweights them.** Entry 115
+  reported one fold, one arm, five seeds and generalized; the generalization holds.
+
+⚠️ **Three weaknesses found in the review are not fixed yet and are named rather than described**: all
+seven DeepVIC studies share one negative partition (`default_rng(12345)`) with no independent draw; the
+"two arms" there are two sizes of **one** model family, while the repository holds ESM-3, ESM-C, ProtT5
+and SaProt embeddings of the *panel* that were never computed for DeepVIC; and study AP's result (entry
+117) invalidates the *level* of every per-category figure in that arm.

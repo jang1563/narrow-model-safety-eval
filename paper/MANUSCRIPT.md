@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 119 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 120 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 119
+written because it caught something. The evidence is a **dated, append-only corrections log of 120
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -1339,6 +1339,18 @@ the diagnosis was in the record before the repair was built; both times it named
   set, which is exactly the quantity § 6's narrowing is about.
 - **Not a competence boundary.** The held-out class is removed from the *probe's* training, not from the
   foundation model's pretraining, and every class here is in the public databases these models saw.
+- 🔴 **Eight preregistrations, thirty-one frozen predictions, and no correction across them.** Every
+  preregistration here sets its own Bonferroni α over its own primary tests — α = 0.05/2, /3 or /4 — and
+  **none of them corrects for the others.** With this many frozen bands, some verdicts are expected to
+  fall by chance. ⚠️ **The exposure is stated rather than corrected retroactively**, because choosing a
+  family-wise correction after seeing which bands were met is the error the bands exist to prevent.
+  `results/prediction_record.json` holds the count.
+- ⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions
+  held **10 of 20** where they were *derived* from a measurement and **3 of 9** where they were
+  *reasoned* — so a derived prediction here is about a coin flip, and the paper's earlier reading that
+  derived predictions reliably hold (§ 4) does not survive leaving the panel they were derived on. 🔴 **Two
+  entries of the corrections log stated this tally wrongly** because it was maintained by hand; it is now
+  recomputed from the artifacts, and a hand-maintained version no longer exists.
 - **Not deployment-ready.** § 10.8 of the long write-up puts it quantitatively: every specificity above
   0.9915 is extrapolation on this panel, and calibrating a one-in-ten-thousand budget would need a negative
   set roughly **850 times** larger. Common Mechanism and SecureDNA run in production; this does not.
@@ -1375,7 +1387,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 119 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 120 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1456,7 +1468,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**146 claims** and fails if any number in a public document drifts from the artifact that produced
+**147 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

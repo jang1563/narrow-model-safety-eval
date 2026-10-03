@@ -1,0 +1,364 @@
+{
+  "built": "2026-10-03",
+  "study": "the session's prediction record and exposure, computed from artifacts",
+  "why": "entry 112 corrected a prose tally and entry 115 repeated the mistake two entries later, stating derived 9 of 16 while the artifacts said 10 of 20. No hand-maintained version exists any more.",
+  "rows": [
+    {
+      "study": "AH",
+      "prediction": "P1_unmatched_positive_over_10pp",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AH",
+      "prediction": "P2_matched_inside_registration_band",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AH",
+      "prediction": "P3_strict_auroc_below_permissive",
+      "kind": "reasoned",
+      "held": true
+    },
+    {
+      "study": "AI-1",
+      "prediction": "P1_length_only_clears_0.75",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AI-1",
+      "prediction": "P2_composition_clears_0.85",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AI-1",
+      "prediction": "P5_shared_removal_under_2pp",
+      "kind": "reasoned",
+      "held": true
+    },
+    {
+      "study": "AI",
+      "prediction": "P3_AI2_clears_0.60_both_arms",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AI",
+      "prediction": "P4_AI3_nonnegative_both_arms",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AI",
+      "prediction": "P5_shared_removal_under_2pp",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
+      "study": "AI",
+      "prediction": "P6_AI3a_exceeds_AI3c",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AJ",
+      "prediction": "P1_AJ1_negative",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AJ",
+      "prediction": "P2_AJ2_at_least_0.15",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AJ",
+      "prediction": "P3_exotoxin_top_4",
+      "kind": "reasoned",
+      "held": true
+    },
+    {
+      "study": "AK",
+      "prediction": "P1_mean_between_bands",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AK",
+      "prediction": "P2_exotoxin_in_loss_set",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AK",
+      "prediction": "P3_loss_sets_identical_and_small",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
+      "study": "AM",
+      "prediction": "P1_both_arms_cannot_order",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AM",
+      "prediction": "P2_composition_further_from_half_than_650M",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AM",
+      "prediction": "P3_bootstrap_excludes_half_on_one_arm",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
+      "study": "AN",
+      "prediction": "P1_mean_between_bands",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AN",
+      "prediction": "P2_won_at_least_10_on_one_arm",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AN",
+      "prediction": "P3_residual_corr_below_1e-6",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
+      "study": "AN",
+      "prediction": "P4_all_rows_erases_below_1e-6",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AO",
+      "prediction": "P1_AO1_clears_6pp_both_arms",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "AO",
+      "prediction": "P2_AO2_positive_both_arms",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AO",
+      "prediction": "P3_AO2_over_1pp_on_one_arm",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
+      "study": "AP",
+      "prediction": "P1_swept_not_repaired_both_arms",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AP",
+      "prediction": "P2_gap_closed_under_10pct_both_arms",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "AP",
+      "prediction": "P3_pca_beats_sweep_on_exoenzyme",
+      "kind": "reasoned",
+      "held": false
+    }
+  ],
+  "tally": {
+    "derived": {
+      "held": 10,
+      "total": 20
+    },
+    "reasoned": {
+      "held": 3,
+      "total": 9
+    }
+  },
+  "total_scored": 29,
+  "by_study": {
+    "AH": {
+      "derived": [
+        0,
+        2
+      ],
+      "reasoned": [
+        1,
+        1
+      ]
+    },
+    "AI-1": {
+      "derived": [
+        2,
+        2
+      ],
+      "reasoned": [
+        1,
+        1
+      ]
+    },
+    "AI": {
+      "derived": [
+        1,
+        3
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
+    "AJ": {
+      "derived": [
+        1,
+        2
+      ],
+      "reasoned": [
+        1,
+        1
+      ]
+    },
+    "AK": {
+      "derived": [
+        1,
+        2
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
+    "AM": {
+      "derived": [
+        2,
+        2
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
+    "AN": {
+      "derived": [
+        2,
+        3
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
+    "AO": {
+      "derived": [
+        1,
+        2
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
+    "AP": {
+      "derived": [
+        0,
+        2
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    }
+  },
+  "exposure": {
+    "preregistrations": 8,
+    "declared_predictions": 31,
+    "amendments": 3,
+    "per_prereg": [
+      {
+        "prereg": "EXTERNAL_HAZARD_AXIS",
+        "exists": true,
+        "declared_predictions": 3,
+        "alpha_statements": [
+          "3"
+        ],
+        "amendments": 0
+      },
+      {
+        "prereg": "DEEPVIC_BENCHMARK",
+        "exists": true,
+        "declared_predictions": 6,
+        "alpha_statements": [
+          "4"
+        ],
+        "amendments": 1
+      },
+      {
+        "prereg": "COMPOSITION_ARM",
+        "exists": true,
+        "declared_predictions": 3,
+        "alpha_statements": [
+          "3"
+        ],
+        "amendments": 0
+      },
+      {
+        "prereg": "REPRESENTATION_INCREMENT",
+        "exists": true,
+        "declared_predictions": 3,
+        "alpha_statements": [
+          "4"
+        ],
+        "amendments": 0
+      },
+      {
+        "prereg": "WITHIN_FOLD_ORDERING",
+        "exists": true,
+        "declared_predictions": 3,
+        "alpha_statements": [],
+        "amendments": 0
+      },
+      {
+        "prereg": "COMPOSITION_RESIDUAL",
+        "exists": true,
+        "declared_predictions": 5,
+        "alpha_statements": [
+          "2"
+        ],
+        "amendments": 1
+      },
+      {
+        "prereg": "NESTED_MODEL",
+        "exists": true,
+        "declared_predictions": 3,
+        "alpha_statements": [
+          "2"
+        ],
+        "amendments": 0
+      },
+      {
+        "prereg": "ESTIMATION_REPAIR",
+        "exists": true,
+        "declared_predictions": 5,
+        "alpha_statements": [
+          "2"
+        ],
+        "amendments": 1
+      }
+    ],
+    "bonferroni_within_study_only": true,
+    "no_family_wise_correction_across_studies": true,
+    "note": "every preregistration sets its own Bonferroni alpha over its own primary tests; no correction is applied across the studies. With this many frozen bands some verdicts are expected to fall by chance, and the paper states the exposure rather than correcting retroactively."
+  }
+}

@@ -1983,6 +1983,49 @@ def composition_residual():
     }
 
 
+def prediction_record():
+    """The session's prediction record and exposure, computed from the artifacts.
+
+    🔴 Entry 112 corrected a tally written into prose, and entry 115 repeated the mistake two
+    entries later -- "derived 9 of 16" against the artifacts' 10 of 20, because one study's
+    three predictions were being omitted by hand. This claim is self-maintaining in the same
+    way corrections_log_census is: it does NOT hard-code the totals, it requires the paper's
+    numerals to equal whatever the artifact currently computes. Scoring a new prediction fails
+    the gate until the paper is updated, which is the point.
+
+    ⚠️ It also holds the exposure the paper had never stated: eight preregistrations, thirty-one
+    declared predictions, and Bonferroni applied within each study and never across them.
+    """
+    v = j("../results/prediction_record.json")
+    if v is None:
+        return None
+    # 🔴 Written as `R / "paper/MANUSCRIPT.md"` first. `R` is the src directory -- j() takes
+    # paths relative to it with "../" -- so this raised FileNotFoundError and the audit
+    # reported "artifact error" rather than a failed claim. ROOT is the repository root.
+    man = (ROOT / "paper/MANUSCRIPT.md").read_text()
+    t, e = v["tally"], v["exposure"]
+    d_str = f"{t['derived']['held']} of {t['derived']['total']}"
+    r_str = f"{t['reasoned']['held']} of {t['reasoned']['total']}"
+    return {
+        "scored": v["total_scored"],
+        "declared": e["declared_predictions"],
+        "preregs": e["preregistrations"],
+        "amendments": e["amendments"],
+        "derived": [t["derived"]["held"], t["derived"]["total"]],
+        "reasoned": [t["reasoned"]["held"], t["reasoned"]["total"]],
+        "paper_states_derived": d_str in man,
+        "paper_states_reasoned": r_str in man,
+        "paper_states_prereg_count": "Eight preregistrations" in man,
+        "paper_states_no_correction": "no correction across them" in man,
+        "within_only": e["bonferroni_within_study_only"],
+        "across_none": e["no_family_wise_correction_across_studies"],
+        "unlabelled": [rw["prediction"] for rw in v["rows"]
+                       if rw["kind"] not in ("derived", "reasoned")],
+        "studies": len({rw["study"] for rw in v["rows"]}),
+        "no_hand_version": "No hand-maintained version" in v["why"],
+    }
+
+
 def within_fold_ordering():
     """Section 6's surviving hazard claim, repeated at 828 pairs instead of 31.
 
@@ -6350,7 +6393,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 119"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 120"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -8260,6 +8303,32 @@ CLAIMS = [
       "study AO shows composition is redundant",
       "the composition columns are used",
       "the embedding subsumes composition because composition is useless"]),
+    # 🔒 Added 2026-10-03. Self-maintaining by design, like the corrections census: the totals
+    # are NOT hard-coded, and the paper must state whatever the artifacts currently compute.
+    ("the paper's prediction record and its multiple-comparison exposure match the artifacts",
+     prediction_record,
+     lambda v: v is None or (
+         # 🔒 the paper's two tallies equal the computed ones, whatever they currently are
+         v["paper_states_derived"] and v["paper_states_reasoned"]
+         # 🔒 and the exposure is stated rather than corrected after the fact
+         and v["paper_states_prereg_count"] and v["paper_states_no_correction"]
+         and v["within_only"] is True and v["across_none"] is True
+         and v["preregs"] == 8
+         # ⚠️ every scored prediction carries a kind; an unlabelled one would vanish from both
+         # tallies without changing either, which is how a record quietly narrows
+         and v["unlabelled"] == []
+         # 🔒 structural sanity: more declared than scored is fine, the reverse is impossible
+         and v["scored"] <= v["declared"]
+         and v["scored"] == v["derived"][1] + v["reasoned"][1]
+         and v["studies"] >= 9
+         and v["amendments"] >= 3
+         and v["no_hand_version"]),
+     {"paper/MANUSCRIPT.md": [
+         "🔴 **Eight preregistrations, thirty-one frozen predictions, and no correction across them.** Every",
+         "⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions"]},
+     # 🔴 The two readings this does not license, in assertion-only form.
+     ["derived predictions reliably hold on this benchmark",
+      "a family-wise correction has been applied across the studies"]),
 ]
 
 
