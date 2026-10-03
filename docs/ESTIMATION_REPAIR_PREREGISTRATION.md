@@ -70,3 +70,56 @@ they are derived from a mechanism measured two entries ago rather than from the 
 - **Not repaired** ⇒ the estimation deficit is real and not a tuning artifact; § 6 can say the probe
   ignores available information and no obvious knob changes it.
 - **PCA wins where `C` does not** ⇒ the lever is dimensionality, and the paper reports which.
+
+---
+
+## Amendment 1 — the grid selected at its own edge, and the control that would reframe the result
+
+**Added 2026-10-03, after the § 3 bands were applied and before the extended grid was run.** The only
+facts used here are the selected values and the verdict, both already recorded.
+
+### 🔴 The sweep is not finished
+
+`C ∈ {0.01, 0.1, 1, 10, 100}` returned **repaired** on both arms — 41.43% → **55.39%** on 650M and
+41.78% → **46.91%** on 35M, at out-of-sample false-positive rates of 4.88–5.23%. ⚠️ **But the selection
+sat at the grid's lower edge: 0.01 for 14 of 14 categories on 650M and 12 of 14 on 35M.** 🔴 **A boundary
+selection means the optimum may lie outside the grid, so none of those numbers can be stated as what
+tuning achieves — only as a lower bound on it.**
+
+🔒 The grid is extended downward to **`C ∈ {1e-4, 1e-3, 1e-2, 1e-1, 1, 10, 100}`**, with the selection
+rule unchanged: chosen on a member split of the other thirteen categories, never on the scored one.
+
+**AP-3 (frozen here).** Does the extended grid select in the **interior**? ⚠️ **If it again selects at
+the new edge (1e-4) for a majority of categories, the sweep is still unfinished and every figure is
+reported as a lower bound, not as a tuned result.**
+
+### 🔑 The control that may reframe the whole thing
+
+At `C = 0.01` on standardized features a logistic regression is close to a **shrunken mean-difference
+classifier**: the penalty dominates the likelihood and the solution approaches a scaled difference of
+class means. 🔴 **If that is what is happening, "tune `C`" is the wrong description and "the paper used an
+over-parameterized classifier" is the right one.**
+
+🔒 **AP-4 (frozen here).** A **nearest-centroid** classifier — the difference of class means, no
+regularization parameter at all — is run on the identical fold and scored the same way.
+
+| | reading |
+|---|---|
+| nearest-centroid **within 2pp** of the swept probe, both arms | the finding is about **model class**, not about a hyperparameter, and the paper should say so |
+| nearest-centroid **more than 5pp below** the swept probe | the shrunken solution is doing something a centroid cannot, and `C` is a real lever |
+
+⚠️ Between ⇒ reported as a quantity.
+
+### Predictions
+
+**P4 (derived — from 0.01 beating 0.1 on 14 of 14 categories, which is a monotone trend at the edge).**
+The extended grid selects **below 0.01** for a majority of categories on both arms, and mean recovery
+rises by a further **≥ 1pp** on at least one arm.
+
+**P5 (derived — from the penalty dominating at small `C` on standardized features).** AP-4's
+nearest-centroid lands **within 2pp** of the swept probe on both arms.
+
+⚠️ **The record, now computed from the artifacts rather than carried in prose** (entry 112's defect,
+which recurred in entry 115): **derived 10 of 20, reasoned 3 of 9.** 🔑 **P1 and P2 of this study were
+mechanism-derived and both failed**, which is why P4 and P5 are stated as mechanism claims that can fail
+the same way.
