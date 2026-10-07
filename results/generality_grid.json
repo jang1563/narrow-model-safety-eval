@@ -184,7 +184,14 @@
             "nearest_negative": -0.23076923076923078
           },
           "AT2_beats_all_rivals": true,
-          "verdict": "clears"
+          "verdict": "clears",
+          "AT2_rivals_scored": [
+            "class_size",
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [],
+          "AT2_beaten_by": []
         },
         "swept": {
           "recovery": {
@@ -286,7 +293,16 @@
             "nearest_negative": -0.049450549450549455
           },
           "AT2_beats_all_rivals": false,
-          "verdict": "clears"
+          "verdict": "clears",
+          "AT2_rivals_scored": [
+            "class_size",
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [],
+          "AT2_beaten_by": [
+            "nearest_positive"
+          ]
         }
       },
       "interpretable": true,
@@ -464,7 +480,14 @@
             "nearest_negative": -0.3021978021978022
           },
           "AT2_beats_all_rivals": true,
-          "verdict": "clears"
+          "verdict": "clears",
+          "AT2_rivals_scored": [
+            "class_size",
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [],
+          "AT2_beaten_by": []
         },
         "swept": {
           "recovery": {
@@ -566,7 +589,16 @@
             "nearest_negative": -0.1758241758241758
           },
           "AT2_beats_all_rivals": false,
-          "verdict": "clears"
+          "verdict": "clears",
+          "AT2_rivals_scored": [
+            "class_size",
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [],
+          "AT2_beaten_by": [
+            "nearest_positive"
+          ]
         }
       },
       "jobs": 8,
@@ -755,7 +787,14 @@
             "nearest_negative": -0.5208791208791209
           },
           "AT2_beats_all_rivals": true,
-          "verdict": "clears"
+          "verdict": "clears",
+          "AT2_rivals_scored": [
+            "class_size",
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [],
+          "AT2_beaten_by": []
         },
         "swept": {
           "recovery": {
@@ -863,7 +902,14 @@
             "nearest_negative": -0.2351648351648352
           },
           "AT2_beats_all_rivals": true,
-          "verdict": "clears"
+          "verdict": "clears",
+          "AT2_rivals_scored": [
+            "class_size",
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [],
+          "AT2_beaten_by": []
         }
       },
       "jobs": 8,
@@ -874,17 +920,910 @@
       "fails_both_settings": false,
       "beats_rivals_both": true,
       "tuning_gain": 0.13934712257587084
+    },
+    "image/clip_vit_b32": {
+      "cell": "image/clip_vit_b32",
+      "dim": 512,
+      "n_classes": 50,
+      "n_positives": 25000,
+      "n_negatives": 25000,
+      "margin": {
+        "aquarium_fish": 0.028638727740254836,
+        "baby": 0.050187914222859724,
+        "bear": 0.04367592548073088,
+        "beaver": 0.029163231346036086,
+        "bee": 0.018057872298663475,
+        "beetle": 0.03761455064422499,
+        "boy": 0.04763476461850914,
+        "butterfly": 0.012998247340767386,
+        "camel": 0.03202791643313024,
+        "caterpillar": 0.014128141264563234,
+        "cattle": 0.0449778906330296,
+        "chimpanzee": 0.03393986066784891,
+        "cockroach": 0.06123339423964482,
+        "crab": 0.02496917713341089,
+        "crocodile": 0.023572798491276366,
+        "dinosaur": 0.034753584040186344,
+        "dolphin": 0.06542807453593932,
+        "elephant": 0.045778857338488625,
+        "flatfish": 0.021825659637014674,
+        "fox": 0.04601353455730677,
+        "girl": 0.04445282677826592,
+        "hamster": 0.040626064568456424,
+        "kangaroo": 0.0418834671962305,
+        "leopard": 0.031723970483024874,
+        "lion": 0.05001714834738185,
+        "lizard": 0.027873114280266578,
+        "lobster": 0.01698060035144877,
+        "man": 0.028213802599389062,
+        "mouse": 0.04028071595107516,
+        "otter": 0.031158557561149672,
+        "porcupine": 0.028093590263995716,
+        "possum": 0.037322658072415534,
+        "rabbit": 0.03140487331297467,
+        "raccoon": 0.03443604443301153,
+        "ray": 0.026869696400168883,
+        "seal": 0.03498497489682171,
+        "shark": 0.05985332509489303,
+        "shrew": 0.02976058288435344,
+        "skunk": 0.023702497597854554,
+        "snail": 0.012786330481194328,
+        "snake": 0.02431367530491894,
+        "spider": 0.03162715068548485,
+        "squirrel": 0.02925448084185748,
+        "tiger": 0.039993745858345545,
+        "trout": 0.04041266870449009,
+        "turtle": 0.033150861116099425,
+        "whale": 0.05720783590788591,
+        "wolf": 0.04915629621599446,
+        "woman": 0.04130387996784775,
+        "worm": 0.018921262535836023
+      },
+      "nearest_positive": {
+        "aquarium_fish": 0.9213333727074191,
+        "baby": 0.9074564460757566,
+        "bear": 0.9283815770647975,
+        "beaver": 0.9369481000450882,
+        "bee": 0.9316514883508201,
+        "beetle": 0.9237826484061537,
+        "boy": 0.906243589382456,
+        "butterfly": 0.925275941692187,
+        "camel": 0.9112728917206532,
+        "caterpillar": 0.9259646759021831,
+        "cattle": 0.915623182730576,
+        "chimpanzee": 0.9203355034526527,
+        "cockroach": 0.9297179725882879,
+        "crab": 0.926502357410998,
+        "crocodile": 0.9351187048801242,
+        "dinosaur": 0.9197737059532812,
+        "dolphin": 0.935604846920862,
+        "elephant": 0.9278676512460884,
+        "flatfish": 0.9106369849188807,
+        "fox": 0.9310003062309067,
+        "girl": 0.9044113204363629,
+        "hamster": 0.927807224476687,
+        "kangaroo": 0.9299393094619364,
+        "leopard": 0.9375917449402474,
+        "lion": 0.9361754622842481,
+        "lizard": 0.9231952832042619,
+        "lobster": 0.9253517425081111,
+        "man": 0.8779521788096315,
+        "mouse": 0.9343560647492924,
+        "otter": 0.9333970444645958,
+        "porcupine": 0.9305957554173676,
+        "possum": 0.9292543136658193,
+        "rabbit": 0.9268433253656515,
+        "raccoon": 0.9333119259669498,
+        "ray": 0.9304019549625656,
+        "seal": 0.9307317011089378,
+        "shark": 0.9320035889041562,
+        "shrew": 0.9383542872698838,
+        "skunk": 0.9295214277104794,
+        "snail": 0.9207595766209302,
+        "snake": 0.9237349575640447,
+        "spider": 0.9273771429693065,
+        "squirrel": 0.9345464399243795,
+        "tiger": 0.933379234150746,
+        "trout": 0.926183930911096,
+        "turtle": 0.929479946107919,
+        "whale": 0.9310612121012325,
+        "wolf": 0.9339707626286392,
+        "woman": 0.8908835475928056,
+        "worm": 0.9208294220599206
+      },
+      "nearest_negative": {
+        "aquarium_fish": 0.8926946449671643,
+        "baby": 0.8572685318528969,
+        "bear": 0.8847056515840666,
+        "beaver": 0.9077848686990522,
+        "bee": 0.9135936160521567,
+        "beetle": 0.8861680977619286,
+        "boy": 0.8586088247639468,
+        "butterfly": 0.9122776943514196,
+        "camel": 0.879244975287523,
+        "caterpillar": 0.9118365346376199,
+        "cattle": 0.8706452920975464,
+        "chimpanzee": 0.8863956427848039,
+        "cockroach": 0.8684845783486432,
+        "crab": 0.901533180277587,
+        "crocodile": 0.9115459063888478,
+        "dinosaur": 0.885020121913095,
+        "dolphin": 0.8701767723849225,
+        "elephant": 0.8820887939075999,
+        "flatfish": 0.8888113252818659,
+        "fox": 0.8849867716735998,
+        "girl": 0.859958493658097,
+        "hamster": 0.8871811599082304,
+        "kangaroo": 0.8880558422657058,
+        "leopard": 0.9058677744572226,
+        "lion": 0.8861583139368663,
+        "lizard": 0.8953221689239954,
+        "lobster": 0.9083711421566623,
+        "man": 0.8497383762102424,
+        "mouse": 0.8940753487982174,
+        "otter": 0.9022384869034461,
+        "porcupine": 0.9025021651533718,
+        "possum": 0.8919316555934038,
+        "rabbit": 0.8954384520526769,
+        "raccoon": 0.8988758815339382,
+        "ray": 0.9035322585623967,
+        "seal": 0.8957467262121158,
+        "shark": 0.8721502638092633,
+        "shrew": 0.9085937043855303,
+        "skunk": 0.9058189301126249,
+        "snail": 0.907973246139736,
+        "snake": 0.8994212822591257,
+        "spider": 0.8957499922838217,
+        "squirrel": 0.9052919590825221,
+        "tiger": 0.8933854882924005,
+        "trout": 0.8857712622066061,
+        "turtle": 0.8963290849918194,
+        "whale": 0.8738533761933466,
+        "wolf": 0.8848144664126447,
+        "woman": 0.8495796676249578,
+        "worm": 0.9019081595240845
+      },
+      "class_size": {
+        "aquarium_fish": 500,
+        "baby": 500,
+        "bear": 500,
+        "beaver": 500,
+        "bee": 500,
+        "beetle": 500,
+        "boy": 500,
+        "butterfly": 500,
+        "camel": 500,
+        "caterpillar": 500,
+        "cattle": 500,
+        "chimpanzee": 500,
+        "cockroach": 500,
+        "crab": 500,
+        "crocodile": 500,
+        "dinosaur": 500,
+        "dolphin": 500,
+        "elephant": 500,
+        "flatfish": 500,
+        "fox": 500,
+        "girl": 500,
+        "hamster": 500,
+        "kangaroo": 500,
+        "leopard": 500,
+        "lion": 500,
+        "lizard": 500,
+        "lobster": 500,
+        "man": 500,
+        "mouse": 500,
+        "otter": 500,
+        "porcupine": 500,
+        "possum": 500,
+        "rabbit": 500,
+        "raccoon": 500,
+        "ray": 500,
+        "seal": 500,
+        "shark": 500,
+        "shrew": 500,
+        "skunk": 500,
+        "snail": 500,
+        "snake": 500,
+        "spider": 500,
+        "squirrel": 500,
+        "tiger": 500,
+        "trout": 500,
+        "turtle": 500,
+        "whale": 500,
+        "wolf": 500,
+        "woman": 500,
+        "worm": 500
+      },
+      "settings": {
+        "fixed": {
+          "recovery": {
+            "aquarium_fish": {
+              "n": 500,
+              "mean": 0.9392666666666666,
+              "sd": 0.02079445107239664
+            },
+            "baby": {
+              "n": 500,
+              "mean": 0.8933333333333334,
+              "sd": 0.0472099736199397
+            },
+            "bear": {
+              "n": 500,
+              "mean": 0.9778,
+              "sd": 0.01266382303228783
+            },
+            "beaver": {
+              "n": 500,
+              "mean": 0.9803999999999999,
+              "sd": 0.00871621556600705
+            },
+            "bee": {
+              "n": 500,
+              "mean": 0.8569333333333334,
+              "sd": 0.03622814045627432
+            },
+            "beetle": {
+              "n": 500,
+              "mean": 0.9610666666666667,
+              "sd": 0.010798893089294987
+            },
+            "boy": {
+              "n": 500,
+              "mean": 0.9519333333333333,
+              "sd": 0.018303821597072858
+            },
+            "butterfly": {
+              "n": 500,
+              "mean": 0.8882666666666668,
+              "sd": 0.035388419431857346
+            },
+            "camel": {
+              "n": 500,
+              "mean": 0.9054666666666668,
+              "sd": 0.0526954380891012
+            },
+            "caterpillar": {
+              "n": 500,
+              "mean": 0.8178666666666666,
+              "sd": 0.04710350549465566
+            },
+            "cattle": {
+              "n": 500,
+              "mean": 0.7295333333333335,
+              "sd": 0.09927139162619965
+            },
+            "chimpanzee": {
+              "n": 500,
+              "mean": 0.9849999999999999,
+              "sd": 0.005982733777152041
+            },
+            "cockroach": {
+              "n": 500,
+              "mean": 0.9944666666666667,
+              "sd": 0.0026617771265198707
+            },
+            "crab": {
+              "n": 500,
+              "mean": 0.9187333333333332,
+              "sd": 0.020574395425538912
+            },
+            "crocodile": {
+              "n": 500,
+              "mean": 0.9698,
+              "sd": 0.009632559727120923
+            },
+            "dinosaur": {
+              "n": 500,
+              "mean": 0.9516666666666668,
+              "sd": 0.019191113844035
+            },
+            "dolphin": {
+              "n": 500,
+              "mean": 0.978,
+              "sd": 0.011507119235649229
+            },
+            "elephant": {
+              "n": 500,
+              "mean": 0.9833333333333335,
+              "sd": 0.005996167358280271
+            },
+            "flatfish": {
+              "n": 500,
+              "mean": 0.8929333333333334,
+              "sd": 0.03589537798825276
+            },
+            "fox": {
+              "n": 500,
+              "mean": 0.9801333333333332,
+              "sd": 0.014073044258888836
+            },
+            "girl": {
+              "n": 500,
+              "mean": 0.9621999999999999,
+              "sd": 0.014135794624115494
+            },
+            "hamster": {
+              "n": 500,
+              "mean": 0.9737333333333333,
+              "sd": 0.02001195045265554
+            },
+            "kangaroo": {
+              "n": 500,
+              "mean": 0.9855333333333332,
+              "sd": 0.008114411756924815
+            },
+            "leopard": {
+              "n": 500,
+              "mean": 0.9687999999999999,
+              "sd": 0.015425907451091974
+            },
+            "lion": {
+              "n": 500,
+              "mean": 0.9957333333333334,
+              "sd": 0.013346660006658333
+            },
+            "lizard": {
+              "n": 500,
+              "mean": 0.9643333333333334,
+              "sd": 0.013004862043928388
+            },
+            "lobster": {
+              "n": 500,
+              "mean": 0.8135333333333333,
+              "sd": 0.033723759488274545
+            },
+            "man": {
+              "n": 500,
+              "mean": 0.7345333333333334,
+              "sd": 0.07046433841671791
+            },
+            "mouse": {
+              "n": 500,
+              "mean": 0.9833999999999999,
+              "sd": 0.007374700461479897
+            },
+            "otter": {
+              "n": 500,
+              "mean": 0.9744,
+              "sd": 0.010832900079753849
+            },
+            "porcupine": {
+              "n": 500,
+              "mean": 0.9552666666666666,
+              "sd": 0.01825855176742333
+            },
+            "possum": {
+              "n": 500,
+              "mean": 0.9798000000000001,
+              "sd": 0.00937126937267159
+            },
+            "rabbit": {
+              "n": 500,
+              "mean": 0.9509333333333334,
+              "sd": 0.015480651624290334
+            },
+            "raccoon": {
+              "n": 500,
+              "mean": 0.9595333333333333,
+              "sd": 0.019565510353739782
+            },
+            "ray": {
+              "n": 500,
+              "mean": 0.9122666666666664,
+              "sd": 0.024906630239457463
+            },
+            "seal": {
+              "n": 500,
+              "mean": 0.9576,
+              "sd": 0.01769005175330142
+            },
+            "shark": {
+              "n": 500,
+              "mean": 0.9684666666666667,
+              "sd": 0.013085220231457605
+            },
+            "shrew": {
+              "n": 500,
+              "mean": 0.9847333333333333,
+              "sd": 0.007991086988912582
+            },
+            "skunk": {
+              "n": 500,
+              "mean": 0.9499333333333333,
+              "sd": 0.018580548474391022
+            },
+            "snail": {
+              "n": 500,
+              "mean": 0.8052666666666666,
+              "sd": 0.043806733330133976
+            },
+            "snake": {
+              "n": 500,
+              "mean": 0.9305333333333332,
+              "sd": 0.020651013723691408
+            },
+            "spider": {
+              "n": 500,
+              "mean": 0.9398000000000001,
+              "sd": 0.017658445278539422
+            },
+            "squirrel": {
+              "n": 500,
+              "mean": 0.9760666666666665,
+              "sd": 0.009194951138357492
+            },
+            "tiger": {
+              "n": 500,
+              "mean": 0.9666666666666667,
+              "sd": 0.013049860174527257
+            },
+            "trout": {
+              "n": 500,
+              "mean": 0.9398000000000001,
+              "sd": 0.018113435668700096
+            },
+            "turtle": {
+              "n": 500,
+              "mean": 0.9721333333333334,
+              "sd": 0.007181073463762512
+            },
+            "whale": {
+              "n": 500,
+              "mean": 0.9454666666666665,
+              "sd": 0.01940446683970813
+            },
+            "wolf": {
+              "n": 500,
+              "mean": 0.9766666666666668,
+              "sd": 0.01642817876306635
+            },
+            "woman": {
+              "n": 500,
+              "mean": 0.9318000000000001,
+              "sd": 0.045722853261195615
+            },
+            "worm": {
+              "n": 500,
+              "mean": 0.7700666666666666,
+              "sd": 0.05570732220387584
+            }
+          },
+          "chosen_C": {
+            "aquarium_fish": 1.0,
+            "baby": 1.0,
+            "bear": 1.0,
+            "beaver": 1.0,
+            "bee": 1.0,
+            "beetle": 1.0,
+            "boy": 1.0,
+            "butterfly": 1.0,
+            "camel": 1.0,
+            "caterpillar": 1.0,
+            "cattle": 1.0,
+            "chimpanzee": 1.0,
+            "cockroach": 1.0,
+            "crab": 1.0,
+            "crocodile": 1.0,
+            "dinosaur": 1.0,
+            "dolphin": 1.0,
+            "elephant": 1.0,
+            "flatfish": 1.0,
+            "fox": 1.0,
+            "girl": 1.0,
+            "hamster": 1.0,
+            "kangaroo": 1.0,
+            "leopard": 1.0,
+            "lion": 1.0,
+            "lizard": 1.0,
+            "lobster": 1.0,
+            "man": 1.0,
+            "mouse": 1.0,
+            "otter": 1.0,
+            "porcupine": 1.0,
+            "possum": 1.0,
+            "rabbit": 1.0,
+            "raccoon": 1.0,
+            "ray": 1.0,
+            "seal": 1.0,
+            "shark": 1.0,
+            "shrew": 1.0,
+            "skunk": 1.0,
+            "snail": 1.0,
+            "snake": 1.0,
+            "spider": 1.0,
+            "squirrel": 1.0,
+            "tiger": 1.0,
+            "trout": 1.0,
+            "turtle": 1.0,
+            "whale": 1.0,
+            "wolf": 1.0,
+            "woman": 1.0,
+            "worm": 1.0
+          },
+          "mean_recovery": 0.9336986666666667,
+          "AT1_rho": 0.5230857885250473,
+          "perm_p": 0.0002999850007499625,
+          "significant": true,
+          "n_classes_scored": 50,
+          "test_fpr": {
+            "min": 0.04887209023278138,
+            "max": 0.050647948164146875
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": NaN,
+            "nearest_positive": 0.6088981730007894,
+            "nearest_negative": -0.1422843285963201
+          },
+          "AT2_beats_all_rivals": false,
+          "verdict": "between bands",
+          "AT2_rivals_scored": [
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [
+            "class_size"
+          ],
+          "AT2_beaten_by": [
+            "nearest_positive"
+          ]
+        },
+        "swept": {
+          "recovery": {
+            "aquarium_fish": {
+              "n": 500,
+              "mean": 0.9715999999999999,
+              "sd": 0.007285318254473555
+            },
+            "baby": {
+              "n": 500,
+              "mean": 0.9443333333333332,
+              "sd": 0.020798430533183924
+            },
+            "bear": {
+              "n": 500,
+              "mean": 0.9931333333333332,
+              "sd": 0.004352829704546416
+            },
+            "beaver": {
+              "n": 500,
+              "mean": 0.9950666666666665,
+              "sd": 0.0023915560269174266
+            },
+            "bee": {
+              "n": 500,
+              "mean": 0.8839999999999999,
+              "sd": 0.02533635795616172
+            },
+            "beetle": {
+              "n": 500,
+              "mean": 0.9756666666666669,
+              "sd": 0.004670769953018777
+            },
+            "boy": {
+              "n": 500,
+              "mean": 0.985,
+              "sd": 0.008300394672793459
+            },
+            "butterfly": {
+              "n": 500,
+              "mean": 0.9248,
+              "sd": 0.02004546556344281
+            },
+            "camel": {
+              "n": 500,
+              "mean": 0.9342666666666666,
+              "sd": 0.01823020103797697
+            },
+            "caterpillar": {
+              "n": 500,
+              "mean": 0.8630666666666669,
+              "sd": 0.03280762456937499
+            },
+            "cattle": {
+              "n": 500,
+              "mean": 0.9272000000000001,
+              "sd": 0.038109099284499764
+            },
+            "chimpanzee": {
+              "n": 500,
+              "mean": 0.9925999999999998,
+              "sd": 0.0021107279345744944
+            },
+            "cockroach": {
+              "n": 500,
+              "mean": 0.9976666666666669,
+              "sd": 0.0010613372610104657
+            },
+            "crab": {
+              "n": 500,
+              "mean": 0.9464666666666666,
+              "sd": 0.015255826096447767
+            },
+            "crocodile": {
+              "n": 500,
+              "mean": 0.9838666666666666,
+              "sd": 0.005703799902988655
+            },
+            "dinosaur": {
+              "n": 500,
+              "mean": 0.9702000000000001,
+              "sd": 0.006671607364615088
+            },
+            "dolphin": {
+              "n": 500,
+              "mean": 0.9927333333333332,
+              "sd": 0.002851899951494327
+            },
+            "elephant": {
+              "n": 500,
+              "mean": 0.9905999999999999,
+              "sd": 0.0017538135787379236
+            },
+            "flatfish": {
+              "n": 500,
+              "mean": 0.9424666666666667,
+              "sd": 0.017762287312582007
+            },
+            "fox": {
+              "n": 500,
+              "mean": 0.9976666666666667,
+              "sd": 0.0014932799662056905
+            },
+            "girl": {
+              "n": 500,
+              "mean": 0.9755333333333334,
+              "sd": 0.011187225884396274
+            },
+            "hamster": {
+              "n": 500,
+              "mean": 0.9939333333333331,
+              "sd": 0.0022580634567506406
+            },
+            "kangaroo": {
+              "n": 500,
+              "mean": 0.9997333333333334,
+              "sd": 0.0006914918072835214
+            },
+            "leopard": {
+              "n": 500,
+              "mean": 0.9905999999999999,
+              "sd": 0.003201292842285595
+            },
+            "lion": {
+              "n": 500,
+              "mean": 0.9999333333333333,
+              "sd": 0.00036514837167011106
+            },
+            "lizard": {
+              "n": 500,
+              "mean": 0.984,
+              "sd": 0.004394353744020416
+            },
+            "lobster": {
+              "n": 500,
+              "mean": 0.8471333333333335,
+              "sd": 0.024778652287713362
+            },
+            "man": {
+              "n": 500,
+              "mean": 0.7734000000000002,
+              "sd": 0.06294639207978539
+            },
+            "mouse": {
+              "n": 500,
+              "mean": 0.9937333333333332,
+              "sd": 0.003352130905736741
+            },
+            "otter": {
+              "n": 500,
+              "mean": 0.9895333333333334,
+              "sd": 0.0034713937709000544
+            },
+            "porcupine": {
+              "n": 500,
+              "mean": 0.9827333333333336,
+              "sd": 0.004741113890167612
+            },
+            "possum": {
+              "n": 500,
+              "mean": 0.9957333333333334,
+              "sd": 0.0027659672291340857
+            },
+            "rabbit": {
+              "n": 500,
+              "mean": 0.9673333333333333,
+              "sd": 0.003906964015203107
+            },
+            "raccoon": {
+              "n": 500,
+              "mean": 0.9854666666666668,
+              "sd": 0.007103827687668955
+            },
+            "ray": {
+              "n": 500,
+              "mean": 0.9404666666666667,
+              "sd": 0.011950280139071973
+            },
+            "seal": {
+              "n": 500,
+              "mean": 0.9892666666666666,
+              "sd": 0.004884411045803564
+            },
+            "shark": {
+              "n": 500,
+              "mean": 0.9852666666666666,
+              "sd": 0.004151720319240619
+            },
+            "shrew": {
+              "n": 500,
+              "mean": 0.9956000000000002,
+              "sd": 0.0023133793761359253
+            },
+            "skunk": {
+              "n": 500,
+              "mean": 0.9792666666666666,
+              "sd": 0.0066949972745138
+            },
+            "snail": {
+              "n": 500,
+              "mean": 0.8588,
+              "sd": 0.02799310259873758
+            },
+            "snake": {
+              "n": 500,
+              "mean": 0.9569999999999997,
+              "sd": 0.01289479980724654
+            },
+            "spider": {
+              "n": 500,
+              "mean": 0.9662,
+              "sd": 0.008243701880202563
+            },
+            "squirrel": {
+              "n": 500,
+              "mean": 0.9936666666666664,
+              "sd": 0.0023537692930823704
+            },
+            "tiger": {
+              "n": 500,
+              "mean": 0.9863999999999999,
+              "sd": 0.0043438422528035495
+            },
+            "trout": {
+              "n": 500,
+              "mean": 0.9651999999999998,
+              "sd": 0.00767620595939391
+            },
+            "turtle": {
+              "n": 500,
+              "mean": 0.9827333333333336,
+              "sd": 0.0031286587776755796
+            },
+            "whale": {
+              "n": 500,
+              "mean": 0.9622,
+              "sd": 0.008887806447502991
+            },
+            "wolf": {
+              "n": 500,
+              "mean": 0.9978000000000001,
+              "sd": 0.0020577858874578515
+            },
+            "woman": {
+              "n": 500,
+              "mean": 0.9299333333333333,
+              "sd": 0.03592514567756158
+            },
+            "worm": {
+              "n": 500,
+              "mean": 0.8232666666666668,
+              "sd": 0.04332868233218819
+            }
+          },
+          "chosen_C": {
+            "aquarium_fish": 0.01,
+            "baby": 0.01,
+            "bear": 0.01,
+            "beaver": 0.01,
+            "bee": 0.01,
+            "beetle": 0.01,
+            "boy": 0.01,
+            "butterfly": 0.01,
+            "camel": 0.01,
+            "caterpillar": 0.01,
+            "cattle": 0.01,
+            "chimpanzee": 0.01,
+            "cockroach": 0.01,
+            "crab": 0.01,
+            "crocodile": 0.01,
+            "dinosaur": 0.01,
+            "dolphin": 0.01,
+            "elephant": 0.01,
+            "flatfish": 0.01,
+            "fox": 0.01,
+            "girl": 0.01,
+            "hamster": 0.01,
+            "kangaroo": 0.01,
+            "leopard": 0.01,
+            "lion": 0.01,
+            "lizard": 0.01,
+            "lobster": 0.1,
+            "man": 0.01,
+            "mouse": 0.01,
+            "otter": 0.01,
+            "porcupine": 0.01,
+            "possum": 0.01,
+            "rabbit": 0.01,
+            "raccoon": 0.01,
+            "ray": 0.01,
+            "seal": 0.01,
+            "shark": 0.01,
+            "shrew": 0.01,
+            "skunk": 0.01,
+            "snail": 0.01,
+            "snake": 0.01,
+            "spider": 0.01,
+            "squirrel": 0.01,
+            "tiger": 0.01,
+            "trout": 0.01,
+            "turtle": 0.01,
+            "whale": 0.01,
+            "wolf": 0.01,
+            "woman": 0.01,
+            "worm": 0.01
+          },
+          "mean_recovery": 0.9600853333333332,
+          "AT1_rho": 0.5421628895993922,
+          "perm_p": 0.000199990000499975,
+          "significant": true,
+          "n_classes_scored": 50,
+          "test_fpr": {
+            "min": 0.048416126709863214,
+            "max": 0.04986801055915527
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": NaN,
+            "nearest_positive": 0.6372454867124832,
+            "nearest_negative": -0.14046292755342976
+          },
+          "AT2_beats_all_rivals": false,
+          "verdict": "between bands",
+          "AT2_rivals_scored": [
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [
+            "class_size"
+          ],
+          "AT2_beaten_by": [
+            "nearest_positive"
+          ]
+        }
+      },
+      "jobs": 8,
+      "interpretable_strict": true,
+      "interpretable": true,
+      "fpr_in_band": true,
+      "clears_both_settings": false,
+      "fails_both_settings": false,
+      "beats_rivals_both": false,
+      "tuning_gain": 0.02638666666666656
     }
   },
   "verdict_block": {
     "cells_total": 6,
-    "cells_run": 3,
-    "cells_interpretable": 3,
+    "cells_run": 4,
+    "cells_interpretable": 4,
     "uninterpretable": [],
     "AT1_clears": 3,
-    "AT1_denominator": 3,
+    "AT1_denominator": 4,
     "AT1_clears_strict": 1,
-    "AT1_denominator_strict": 1,
+    "AT1_denominator_strict": 2,
     "cells_failing_AT0b": [
       "text/minilm_l6",
       "text/mpnet_base"
@@ -893,7 +1832,7 @@
     "AT1b_modalities_dead_on_both_encoders": [],
     "AT2_beats_rivals": 1,
     "complete": false,
-    "verdict": "INCOMPLETE -- 3 of 6 cells; the grid is the unit of the claim and no verdict is read until all six land"
+    "verdict": "INCOMPLETE -- 4 of 6 cells; the grid is the unit of the claim and no verdict is read until all six land"
   },
-  "seconds": 714.0
+  "seconds": 781.3
 }

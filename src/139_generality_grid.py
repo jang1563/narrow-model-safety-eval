@@ -353,7 +353,7 @@ def score_cell(cell, seeds, m30, m133, jobs=1):
             "AT0a_mean_recovery_over_20pct": bool(mean_rec > AT0_RECOVERY),
             "AT0b_fpr_in_band": bool(AT0_FPR[0] <= fmin and fmax <= AT0_FPR[1]),
             "rivals": rivals,
-            "AT2_beats_all_rivals": bool(all(abs(rho) > abs(x) for x in rivals.values())),
+            **at2(rho, rivals),
             "verdict": ("clears" if rho >= BAND_OK
                         else "fails" if rho <= BAND_NOT else "between bands"),
         }
@@ -378,6 +378,30 @@ def score_cell(cell, seeds, m30, m133, jobs=1):
     res.update(derived_flags(F, S))
     res["tuning_gain"] = S["mean_recovery"] - F["mean_recovery"]
     return res
+
+
+def at2(rho, rivals):
+    """AT-2: does margin's |rho| exceed class size and both halves of its own definition?
+
+    🔴 `all(abs(rho) > abs(x) for x in rivals.values())` read False when a rival's rho was
+    NaN, so a rival with NO VARIANCE counted as unbeatable. Every CIFAR-100 fine class holds
+    exactly 500 images, so `class_size` is constant there and src/30's Spearman correctly
+    returns NaN -- and that made AT-2 fail on a technicality.
+
+    🔒 A constant rival carries no information and cannot be a rival. It is DROPPED and named,
+    rather than silently skipped or silently fatal.
+    ⚠️ On the image cell this does not change the verdict: `nearest_positive` beats margin
+    there on merit, +0.609 against +0.523 and +0.637 against +0.542.
+    """
+    live = {k: x for k, x in rivals.items() if x is not None and np.isfinite(x)}
+    dropped = sorted(set(rivals) - set(live))
+    return {
+        "AT2_beats_all_rivals": bool(live) and all(abs(rho) > abs(x)
+                                                   for x in live.values()),
+        "AT2_rivals_scored": sorted(live),
+        "AT2_rivals_dropped_no_variance": dropped,
+        "AT2_beaten_by": sorted(k for k, x in live.items() if abs(x) >= abs(rho)),
+    }
 
 
 def preconditions(F, S):
@@ -667,6 +691,31 @@ def selftest():
     finally:
         OUT = keep
 
+    # 🔒 AT-2's NaN handling. A rival with no variance cannot be a rival, and the old
+    # `abs(rho) > abs(nan)` made it unbeatable.
+    r = at2(0.80, {"class_size": float("nan"), "nearest_positive": 0.5,
+                   "nearest_negative": -0.3})
+    if not r["AT2_beats_all_rivals"]:
+        print(f"  XX a constant rival still blocks AT-2: {r}")
+        ok = False
+    if r["AT2_rivals_dropped_no_variance"] != ["class_size"]:
+        print(f"  XX the dropped rival is not named: {r}")
+        ok = False
+    # and a rival that genuinely beats margin must still fail it, and be named
+    r = at2(0.52, {"class_size": float("nan"), "nearest_positive": 0.61,
+                   "nearest_negative": -0.14})
+    if r["AT2_beats_all_rivals"] or r["AT2_beaten_by"] != ["nearest_positive"]:
+        print(f"  XX a real rival did not fail AT-2 or was not named: {r}")
+        ok = False
+    # a tie must not count as beating
+    if at2(0.5, {"a": 0.5})["AT2_beats_all_rivals"]:
+        print("  XX a tie counted as beating the rival")
+        ok = False
+    # and if EVERY rival is constant there is nothing to beat, which is not a pass
+    if at2(0.9, {"a": float("nan")})["AT2_beats_all_rivals"]:
+        print("  XX AT-2 passed with no scorable rival at all")
+        ok = False
+
     # 🔒 section 5's predictions, each driven BOTH ways. Untested prediction scoring is how a
     # study reports a verdict nobody checked.
     def gridcell(dim, rho, gain, low_margin, low_is_worst, fpr=True):
@@ -841,20 +890,28 @@ def main():
         # function of the stored settings, so an amendment to how a precondition is READ does
         # not require a single fit to be repeated. The settings themselves are untouched.
         d = json.loads(OUT.read_text())
-        before = json.dumps(
-            {k: v["settings"] for k, v in d["cells"].items()}, sort_keys=True)
+        # ⚠️ AT-2's flag is recomputed from the stored rivals, so the guard below compares
+        # the MEASUREMENTS -- recoveries, rho, FPR, chosen C -- and not the derived verdicts.
+        def measured(cells):
+            keep = ("recovery", "chosen_C", "AT1_rho", "perm_p", "mean_recovery",
+                    "test_fpr", "rivals")
+            return json.dumps({k: {s: {kk: sv[kk] for kk in keep if kk in sv}
+                                   for s, sv in v["settings"].items()}
+                               for k, v in cells.items()}, sort_keys=True)
+
+        before = measured(d["cells"])
         for cell, cv in d["cells"].items():
             F, S = cv["settings"]["fixed"], cv["settings"]["swept"]
+            for sv in (F, S):
+                sv.update(at2(sv["AT1_rho"], sv["rivals"]))
             cv.update(preconditions(F, S))
             cv.update(derived_flags(F, S))
             print(f"  {cell:<24} interpretable={cv['interpretable']} "
                   f"strict={cv['interpretable_strict']} fpr_in_band={cv['fpr_in_band']} "
                   f"clears={cv['clears_both_settings']} "
                   f"rivals={cv['beats_rivals_both']}")
-        after = json.dumps(
-            {k: v["settings"] for k, v in d["cells"].items()}, sort_keys=True)
-        if before != after:
-            raise SystemExit("XX refreshing flags changed a stored setting; it must not")
+        if measured(d["cells"]) != before:
+            raise SystemExit("XX refreshing flags changed a stored MEASUREMENT; it must not")
         d["verdict_block"] = verdict(d["cells"])
         pr = score_predictions(d["cells"], m30)
         if pr is not None:
