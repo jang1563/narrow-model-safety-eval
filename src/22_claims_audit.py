@@ -6706,7 +6706,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 126"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 127"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

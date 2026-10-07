@@ -104,10 +104,35 @@ def main():
     gate_recs = m02g.read_fasta(
         ROOT / "data/sequences/benign_negatives_v3.fasta")
     got = m02g.embed(gate_recs, model, tok, dev, a.batch)
-    delta = float(np.abs(got - np.load(GATE)).max())
-    print(f"gate: max abs delta vs {GATE.name} = {delta:.3e} (tol {TOL:.0e})", flush=True)
+    ref = np.load(GATE)
+    delta = float(np.abs(got - ref).max())
+    scale = float(np.abs(ref).mean())
+    refman = RES / "embedding_manifest_v3_prott5_xl.json"
+    refdev = (json.loads(refman.read_text()).get("device", "?")
+              if refman.exists() else "?")
+    print(f"gate: max abs delta vs {GATE.name} = {delta:.3e} (tol {TOL:.0e}); "
+          f"{delta / scale * 100:.2f}% of mean|v| vs a {TOL / scale * 100:.2f}% tolerance",
+          flush=True)
+    print(f"  reference built on {refdev}; this run on {dev}", flush=True)
     if delta > TOL:
-        raise SystemExit("GATE FAILED: this is not src/02g's pooling. Nothing written.")
+        # 🔴 This message used to read "this is not src/02g's pooling", which ASSERTS a cause
+        # the gate cannot distinguish. On 2026-10-07 it fired at 2.441e-04 on MPS against a
+        # CUDA-built reference, and halving the model to match the reference's dtype left the
+        # delta UNCHANGED to four significant figures -- so dtype was ruled out by
+        # measurement and the pooling was never shown to be wrong.
+        # 🔒 The gate still refuses to proceed. What changes is that it no longer names a
+        # cause it has not established.
+        raise SystemExit(
+            f"GATE FAILED at {delta:.3e} > {TOL:.0e}. Nothing written.\n"
+            f"  This gate is a SAME-DEVICE, same-environment reproducibility check. A "
+            f"mismatch means the embedding is not bit-comparable to the reference; it does "
+            f"NOT by itself establish that the pooling is wrong.\n"
+            f"  Candidates, in the order they are cheap to rule out: (1) device -- reference "
+            f"{refdev}, this run {dev}; (2) attention implementation or library version drift "
+            f"-- the reference manifest records no torch/transformers versions, so this "
+            f"cannot be checked against it; (3) the pooling itself.\n"
+            f"  Ruled out already: model dtype. Halving to match the reference's uniform "
+            f"fp16 left the delta unchanged.")
 
     recs, meta = m124.ordered()
     ck = RES / "deepvic_ckpt_prott5_xl"
@@ -144,7 +169,12 @@ def main():
         # run is fp32. Recorded because precision is not cosmetic here: on 2026-10-07 the
         # ESM-2 35M margin ordering moved by exactly one adjacent rank swap -- rho 0.8857 to
         # 0.8901, 12/2730 -- between a float32 and a float64 cosine computation.
-        "half_precision": dev == "cuda",
+        "half_precision": not a.no_half,
+        # 🔒 Recorded because the 2026-09-26 reference manifest does NOT record them, which is
+        # why a 2.441e-04 gate failure could not be attributed to library drift.
+        "versions": {"torch": torch.__version__,
+                     "transformers": __import__("transformers").__version__,
+                     "numpy": np.__version__},
         "precision_note": ("fp16 on CUDA, fp32 otherwise; a margin ordering can differ by "
                            "an adjacent rank swap between precisions"),
         "pooling": "src/02g's: mean over residue positions only, </s> excluded",

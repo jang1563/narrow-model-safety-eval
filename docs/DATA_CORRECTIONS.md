@@ -8917,3 +8917,50 @@ had no instance and the expected list was empty.
 🔑 **The check that found it is the one I did not write**, and the lesson is about the harness and not the
 fixture: a verification command that cannot run looks exactly like one that passed. 🔒 Fixed, and
 calibrated by disabling the detection it guards.
+
+---
+
+## 2026-10-07 (one hundred and twenty-third entry) — A gate that had never run, and an error message that named the wrong cause
+
+### 🔴 The gate could not have passed on any device, and nobody knew
+
+`src/137` compares a 296-sequence probe against `embeddings_negative_v3_prott5_xl.npy` at a tolerance of
+**5e-05** before writing anything. 🔑 **It had never run.** The cluster job carrying it has been `PENDING`
+since submission, so the first execution of that gate was a local one on 2026-10-07 — and it failed at
+**2.441e-04**.
+
+🔴 **The first diagnosis was mine and it was wrong.** `src/02g.main()` builds that reference from a
+`.half()`-ed model; `src/137` loaded the model and never halved it, and transformers 5.x keeps per-tensor
+checkpoint dtypes so it arrives as an **fp16/fp32 mix** against a uniformly fp16 reference. That looked
+conclusive. 🔒 **Halving to match left the delta unchanged to four significant figures** — still
+2.441e-04. ⚠️ **Dtype is ruled out by measurement, not by argument**, and the halving is kept because it
+is the right thing against a halved reference regardless.
+
+### 🔒 What the number actually is
+
+| | |
+|---|---|
+| max abs delta | **2.441e-04** = **0.82%** of the reference's mean \|value\| |
+| tolerance | 5e-05 = **0.17%** |
+| reference device, per its manifest | **cuda**, 2026-09-26 |
+| this run | **mps** |
+
+🔑 **This gate is a same-device, same-environment reproducibility check**, and it correctly refuses a
+cross-device reproduction. 🔴 **But its failure message read "this is not src/02g's pooling"** — which
+asserts a cause the gate cannot distinguish from device kernels or library drift. ⚠️ **The pooling was
+never shown to be wrong.** 🔒 The message now reports the delta as a fraction of scale, names both
+devices, lists the candidates in the order they are cheap to rule out, and states which one has already
+been eliminated. **It still refuses to proceed.**
+
+🔴 **And the attribution cannot be completed**, because the 2026-09-26 reference manifest records
+`model`, `device`, `max_len` and the pooling note but **no torch or transformers versions** — the same
+gap entry 122 hit with scikit-learn. 🔒 `src/137` records `torch`, `transformers` and `numpy` versions
+now.
+
+### ⚠️ Why the local path was abandoned rather than forced
+
+At the observed rate the gate's 296 sequences took ~850s, so DeepVIC's **46,445** would take roughly
+**32 hours** on this hardware. 🔒 **The tolerance was not relaxed and the run was not forced.** The
+cluster job stays queued; `scontrol` puts its start within about a day, and `sbatch --test-only` reports
+a slot the same evening, so the estimate is conservative. ⚠️ **Study AT therefore stands at five of six
+cells and its preregistration forbids a verdict** — which is the intended behaviour and not a stall.
