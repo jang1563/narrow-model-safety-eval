@@ -213,3 +213,53 @@ strict reading is the one with no hindsight in it, and the paper must report it 
 on text — ⚠️ **one half of margin's own definition beats margin.** 🔑 **On DeepVIC the same control runs
 +0.63 to +0.79 against margin's +0.86 to +0.95**, so the negative term earns its place there and does not
 clearly do so here. 🔒 **AT-2 is frozen and this is recorded as it falls**; the band is unchanged.
+
+---
+
+## Amendment 3 — a recovery ceiling was considered and DECLINED
+
+**Added 2026-10-07, after `image/clip_vit_b32` landed between bands.** 🔒 **This amendment changes
+nothing.** It exists because the change it declines was tempting, the project's own log contains the
+identical defect, and a reader deserves to know the option was on the table.
+
+### 🔴 AT-0a has a floor and no ceiling, which this project already knew was a defect
+
+§ 3 requires mean recovery **above 20%** and says nothing about the top. 🔴
+**`docs/EXTERNAL_VALIDATION_PREREGISTRATION.md` made exactly this mistake**: "the falsification rules
+specified a floor but **no ceiling**, so a panel with no room to move was scored NOT SUPPORTED when
+*uninterpretable* is the accurate word" (§ 4 of the paper). ⚠️ **AT-0a was written in imitation of AS-0 and
+inherited the same one-sidedness.**
+
+### 🔒 And the image cell has measurably little room to move
+
+| cell | recovery range | sd | classes ≥ 99% |
+|---|---|---:|---:|
+| `text/minilm_l6` | 25.1 – 72.9% | 15.6 | 0 / 13 |
+| `text/mpnet_base` | 31.4 – 75.2% | 12.0 | 0 / 13 |
+| `protein/esm2_650M` | 13.2 – 70.3% | 15.7 | 0 / 14 |
+| **`image/clip_vit_b32`** fixed | **73.0 – 99.6%** | **6.6** | 2 / 50 |
+| **`image/clip_vit_b32`** swept | **77.3 – 100.0%** | **5.0** | **16 / 50** |
+
+🔑 **About a third the spread of every other cell, and at the tuned classifier a third of its classes are
+saturated.** ⚠️ **CIFAR-100's animal / non-animal axis is too easy**: a held-out animal class still looks
+like forty-nine other animal classes, so the probe recovers it at 96% on average and there is little
+variance left for any quantity to predict.
+
+### 🔴 The decision: report it as it falls
+
+🔒 **The cell stays interpretable and lands BETWEEN BANDS**, at *ρ* +0.5231 and +0.5422 against a floor
+of +0.60. ⚠️ **Reclassifying it as uninterpretable would convert a failing cell into a non-result, after
+seeing it fail**, and that is not the same act as amendment 2 — which rescoped a precondition for a
+*passing* cell on an argument that did not depend on the outcome. 🔑 **This one would depend entirely on
+the outcome, so it is declined.**
+
+- **AT-1 is scored with the image cells in**, and the grid will not reach 5 of 6 if they do not clear.
+- 🔒 **The dynamic-range table above is reported next to the verdict**, so a reader can discount the image
+  cells on the evidence rather than on an assurance.
+- 🔒 **The ceiling is a defect in the next study's design, not a repair to this one.** A fair image test
+  needs an axis with room to move — fewer trained classes, a fine-grained axis, or a harder negative
+  side — and that is a new preregistration, not an amendment to this one.
+
+⚠️ **If the remaining cells clear and the image cells do not, the honest verdict is
+`modality-dependent`** — and the reason will be stated as *measured dynamic range*, not as a property of
+images, because this design cannot tell those apart.

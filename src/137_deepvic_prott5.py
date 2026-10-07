@@ -125,6 +125,13 @@ def main():
     (RES / "embedding_manifest_deepvic_prott5_xl.json").write_text(json.dumps({
         "model": MODEL, "arm": "prott5_xl", "tag": "deepvic_prott5_xl",
         "n": int(arr.shape[0]), "dim": int(arr.shape[1]), "device": devname,
+        # ⚠️ src/02g halves the model only on CUDA, so a CUDA run is fp16 and an MPS or CPU
+        # run is fp32. Recorded because precision is not cosmetic here: on 2026-10-07 the
+        # ESM-2 35M margin ordering moved by exactly one adjacent rank swap -- rho 0.8857 to
+        # 0.8901, 12/2730 -- between a float32 and a float64 cosine computation.
+        "half_precision": dev == "cuda",
+        "precision_note": ("fp16 on CUDA, fp32 otherwise; a margin ordering can differ by "
+                           "an adjacent rank swap between precisions"),
         "pooling": "src/02g's: mean over residue positions only, </s> excluded",
         "pooling_differs_from_esm2": ("src/02b includes the specials; the two poolings are "
                                       "not interchangeable and the gate is ProtT5's own"),

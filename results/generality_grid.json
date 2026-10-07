@@ -1813,26 +1813,1226 @@
       "fails_both_settings": false,
       "beats_rivals_both": false,
       "tuning_gain": 0.02638666666666656
+    },
+    "image/dinov2_vits14": {
+      "cell": "image/dinov2_vits14",
+      "dim": 384,
+      "n_classes": 50,
+      "n_positives": 25000,
+      "n_negatives": 25000,
+      "margin": {
+        "aquarium_fish": 0.12646513668109727,
+        "baby": 0.21823921994076104,
+        "bear": 0.18077155648336457,
+        "beaver": 0.1723506691867234,
+        "bee": 0.07895727377081553,
+        "beetle": 0.1792896514987376,
+        "boy": 0.21710672103965395,
+        "butterfly": 0.0640928864735165,
+        "camel": 0.11430620789200101,
+        "caterpillar": 0.09253247029954245,
+        "cattle": 0.12824989871252873,
+        "chimpanzee": 0.1379905379737294,
+        "cockroach": 0.29028910896713955,
+        "crab": 0.1709144292585681,
+        "crocodile": 0.11813210294901598,
+        "dinosaur": 0.13292545548159523,
+        "dolphin": 0.21094523910918622,
+        "elephant": 0.15114650792063203,
+        "flatfish": 0.11593728099888315,
+        "fox": 0.21018050057936757,
+        "girl": 0.20331023435256743,
+        "hamster": 0.25688173276308285,
+        "kangaroo": 0.19052734756550785,
+        "leopard": 0.20726348175765685,
+        "lion": 0.2396637807481398,
+        "lizard": 0.16174391755900283,
+        "lobster": 0.10067974411395636,
+        "man": 0.1478028368660382,
+        "mouse": 0.22815277729738775,
+        "otter": 0.14914903879827004,
+        "porcupine": 0.16296973727944047,
+        "possum": 0.21394010981940237,
+        "rabbit": 0.15560969433496724,
+        "raccoon": 0.1802166706591745,
+        "ray": 0.14887375503119427,
+        "seal": 0.15871863234871475,
+        "shark": 0.2163184081378027,
+        "shrew": 0.16530185902639022,
+        "skunk": 0.1197925416271059,
+        "snail": 0.07994697050589093,
+        "snake": 0.20641992121747474,
+        "spider": 0.15222567508418797,
+        "squirrel": 0.16948659950348685,
+        "tiger": 0.22877342752617533,
+        "trout": 0.2247080892149474,
+        "turtle": 0.17354693657273315,
+        "whale": 0.18469999440267207,
+        "wolf": 0.20668914090532095,
+        "woman": 0.19373825251691112,
+        "worm": 0.15990881626102785
+      },
+      "nearest_positive": {
+        "aquarium_fish": 0.5995146724054696,
+        "baby": 0.6468696791645818,
+        "bear": 0.6065349127328209,
+        "beaver": 0.619818320373494,
+        "bee": 0.5241315968087833,
+        "beetle": 0.5994601906953315,
+        "boy": 0.6437398550242805,
+        "butterfly": 0.49204823456918395,
+        "camel": 0.555067300918927,
+        "caterpillar": 0.5102364932300426,
+        "cattle": 0.5416931547758858,
+        "chimpanzee": 0.5413118266938383,
+        "cockroach": 0.6759394191981928,
+        "crab": 0.6015453066727527,
+        "crocodile": 0.5794907859368659,
+        "dinosaur": 0.5704195563174712,
+        "dolphin": 0.6893466772437966,
+        "elephant": 0.5803994088370559,
+        "flatfish": 0.5749487726451632,
+        "fox": 0.6016971104346014,
+        "girl": 0.6394645399868188,
+        "hamster": 0.6354250288841873,
+        "kangaroo": 0.5921198740554895,
+        "leopard": 0.5918656496267874,
+        "lion": 0.6002516295933616,
+        "lizard": 0.5660911077387067,
+        "lobster": 0.582019385804058,
+        "man": 0.587693390306001,
+        "mouse": 0.635470054574512,
+        "otter": 0.6185602640974416,
+        "porcupine": 0.5815817316595443,
+        "possum": 0.5875383460066077,
+        "rabbit": 0.591458442651909,
+        "raccoon": 0.5727900001819713,
+        "ray": 0.6199250157854773,
+        "seal": 0.606994192245578,
+        "shark": 0.6616917610383687,
+        "shrew": 0.6293864773316042,
+        "skunk": 0.5813340594849316,
+        "snail": 0.5421600853806026,
+        "snake": 0.6059937013155905,
+        "spider": 0.5668697855571202,
+        "squirrel": 0.5928510126952707,
+        "tiger": 0.6302043952316142,
+        "trout": 0.6344362554356426,
+        "turtle": 0.5900001662964433,
+        "whale": 0.6703916148605596,
+        "wolf": 0.5794124919009801,
+        "woman": 0.6209815652450771,
+        "worm": 0.624690218689531
+      },
+      "nearest_negative": {
+        "aquarium_fish": 0.4730495357243724,
+        "baby": 0.42863045922382087,
+        "bear": 0.4257633562494564,
+        "beaver": 0.4474676511867706,
+        "bee": 0.44517432303796783,
+        "beetle": 0.4201705391965939,
+        "boy": 0.4266331339846267,
+        "butterfly": 0.42795534809566743,
+        "camel": 0.4407610930269259,
+        "caterpillar": 0.41770402293050013,
+        "cattle": 0.41344325606335713,
+        "chimpanzee": 0.4033212887201089,
+        "cockroach": 0.3856503102310533,
+        "crab": 0.4306308774141846,
+        "crocodile": 0.46135868298785004,
+        "dinosaur": 0.437494100835876,
+        "dolphin": 0.4784014381346105,
+        "elephant": 0.42925290091642376,
+        "flatfish": 0.45901149164627997,
+        "fox": 0.3915166098552339,
+        "girl": 0.4361543056342514,
+        "hamster": 0.3785432961211045,
+        "kangaroo": 0.40159252648998167,
+        "leopard": 0.38460216786913065,
+        "lion": 0.36058784884522177,
+        "lizard": 0.40434719017970394,
+        "lobster": 0.48133964169010157,
+        "man": 0.43989055343996286,
+        "mouse": 0.4073172772771243,
+        "otter": 0.4694112252991716,
+        "porcupine": 0.4186119943801038,
+        "possum": 0.37359823618720545,
+        "rabbit": 0.4358487483169418,
+        "raccoon": 0.39257332952279683,
+        "ray": 0.4710512607542829,
+        "seal": 0.44827555989686313,
+        "shark": 0.44537335290056607,
+        "shrew": 0.46408461830521414,
+        "skunk": 0.4615415178578256,
+        "snail": 0.4622131148747117,
+        "snake": 0.39957378009811567,
+        "spider": 0.4146441104729322,
+        "squirrel": 0.4233644131917838,
+        "tiger": 0.4014309677054389,
+        "trout": 0.40972816622069536,
+        "turtle": 0.4164532297237101,
+        "whale": 0.48569162045788755,
+        "wolf": 0.3727233509956592,
+        "woman": 0.42724331272816596,
+        "worm": 0.46478140242850313
+      },
+      "class_size": {
+        "aquarium_fish": 500,
+        "baby": 500,
+        "bear": 500,
+        "beaver": 500,
+        "bee": 500,
+        "beetle": 500,
+        "boy": 500,
+        "butterfly": 500,
+        "camel": 500,
+        "caterpillar": 500,
+        "cattle": 500,
+        "chimpanzee": 500,
+        "cockroach": 500,
+        "crab": 500,
+        "crocodile": 500,
+        "dinosaur": 500,
+        "dolphin": 500,
+        "elephant": 500,
+        "flatfish": 500,
+        "fox": 500,
+        "girl": 500,
+        "hamster": 500,
+        "kangaroo": 500,
+        "leopard": 500,
+        "lion": 500,
+        "lizard": 500,
+        "lobster": 500,
+        "man": 500,
+        "mouse": 500,
+        "otter": 500,
+        "porcupine": 500,
+        "possum": 500,
+        "rabbit": 500,
+        "raccoon": 500,
+        "ray": 500,
+        "seal": 500,
+        "shark": 500,
+        "shrew": 500,
+        "skunk": 500,
+        "snail": 500,
+        "snake": 500,
+        "spider": 500,
+        "squirrel": 500,
+        "tiger": 500,
+        "trout": 500,
+        "turtle": 500,
+        "whale": 500,
+        "wolf": 500,
+        "woman": 500,
+        "worm": 500
+      },
+      "settings": {
+        "fixed": {
+          "recovery": {
+            "aquarium_fish": {
+              "n": 500,
+              "mean": 0.9685333333333334,
+              "sd": 0.025633670386256902
+            },
+            "baby": {
+              "n": 500,
+              "mean": 0.9511999999999999,
+              "sd": 0.020345973082889268
+            },
+            "bear": {
+              "n": 500,
+              "mean": 0.9897999999999997,
+              "sd": 0.004852301267049166
+            },
+            "beaver": {
+              "n": 500,
+              "mean": 0.9945999999999999,
+              "sd": 0.003756373893475758
+            },
+            "bee": {
+              "n": 500,
+              "mean": 0.8245333333333333,
+              "sd": 0.05303982455198874
+            },
+            "beetle": {
+              "n": 500,
+              "mean": 0.9709333333333332,
+              "sd": 0.014381341679612062
+            },
+            "boy": {
+              "n": 500,
+              "mean": 0.9837999999999999,
+              "sd": 0.008125736040931718
+            },
+            "butterfly": {
+              "n": 500,
+              "mean": 0.9058666666666666,
+              "sd": 0.036645302030677
+            },
+            "camel": {
+              "n": 500,
+              "mean": 0.9454,
+              "sd": 0.02678213506464129
+            },
+            "caterpillar": {
+              "n": 500,
+              "mean": 0.8874,
+              "sd": 0.0379842072445905
+            },
+            "cattle": {
+              "n": 500,
+              "mean": 0.8886,
+              "sd": 0.07194662772763785
+            },
+            "chimpanzee": {
+              "n": 500,
+              "mean": 0.9911999999999997,
+              "sd": 0.008655873031129477
+            },
+            "cockroach": {
+              "n": 500,
+              "mean": 0.9899333333333333,
+              "sd": 0.01585697569402564
+            },
+            "crab": {
+              "n": 500,
+              "mean": 0.9629333333333334,
+              "sd": 0.015120055950757025
+            },
+            "crocodile": {
+              "n": 500,
+              "mean": 0.9814666666666664,
+              "sd": 0.00854897990822674
+            },
+            "dinosaur": {
+              "n": 500,
+              "mean": 0.9760666666666664,
+              "sd": 0.00799108698891258
+            },
+            "dolphin": {
+              "n": 500,
+              "mean": 0.9926666666666667,
+              "sd": 0.004079666427653072
+            },
+            "elephant": {
+              "n": 500,
+              "mean": 0.9624666666666665,
+              "sd": 0.03930318345738748
+            },
+            "flatfish": {
+              "n": 500,
+              "mean": 0.9613333333333333,
+              "sd": 0.010920822671213555
+            },
+            "fox": {
+              "n": 500,
+              "mean": 0.9797333333333331,
+              "sd": 0.018373394057587804
+            },
+            "girl": {
+              "n": 500,
+              "mean": 0.9791999999999998,
+              "sd": 0.008591896743744803
+            },
+            "hamster": {
+              "n": 500,
+              "mean": 0.9906666666666666,
+              "sd": 0.005880026585286687
+            },
+            "kangaroo": {
+              "n": 500,
+              "mean": 0.9912666666666666,
+              "sd": 0.008144951189851144
+            },
+            "leopard": {
+              "n": 500,
+              "mean": 0.9865333333333334,
+              "sd": 0.011239503404581958
+            },
+            "lion": {
+              "n": 500,
+              "mean": 0.9944666666666667,
+              "sd": 0.005500679163918567
+            },
+            "lizard": {
+              "n": 500,
+              "mean": 0.9838666666666668,
+              "sd": 0.0045768030804024815
+            },
+            "lobster": {
+              "n": 500,
+              "mean": 0.8962000000000002,
+              "sd": 0.019738637062964824
+            },
+            "man": {
+              "n": 500,
+              "mean": 0.8413333333333334,
+              "sd": 0.05047726243556109
+            },
+            "mouse": {
+              "n": 500,
+              "mean": 0.9922000000000001,
+              "sd": 0.004342254300912504
+            },
+            "otter": {
+              "n": 500,
+              "mean": 0.9864,
+              "sd": 0.005314910710639362
+            },
+            "porcupine": {
+              "n": 500,
+              "mean": 0.9606666666666666,
+              "sd": 0.02858662978210006
+            },
+            "possum": {
+              "n": 500,
+              "mean": 0.9938666666666667,
+              "sd": 0.0035982115608704326
+            },
+            "rabbit": {
+              "n": 500,
+              "mean": 0.9583333333333334,
+              "sd": 0.013152509484776139
+            },
+            "raccoon": {
+              "n": 500,
+              "mean": 0.9849333333333333,
+              "sd": 0.004689925617624507
+            },
+            "ray": {
+              "n": 500,
+              "mean": 0.9447333333333333,
+              "sd": 0.022149855348376928
+            },
+            "seal": {
+              "n": 500,
+              "mean": 0.9892000000000001,
+              "sd": 0.004254004198885794
+            },
+            "shark": {
+              "n": 500,
+              "mean": 0.9844666666666666,
+              "sd": 0.007837721930348854
+            },
+            "shrew": {
+              "n": 500,
+              "mean": 0.9896666666666666,
+              "sd": 0.005779472194809382
+            },
+            "skunk": {
+              "n": 500,
+              "mean": 0.9587999999999999,
+              "sd": 0.02115036479672354
+            },
+            "snail": {
+              "n": 500,
+              "mean": 0.8276666666666663,
+              "sd": 0.07884350861405594
+            },
+            "snake": {
+              "n": 500,
+              "mean": 0.9879999999999999,
+              "sd": 0.00967043129231114
+            },
+            "spider": {
+              "n": 500,
+              "mean": 0.9572,
+              "sd": 0.017885459322377305
+            },
+            "squirrel": {
+              "n": 500,
+              "mean": 0.9872666666666666,
+              "sd": 0.005105327395583167
+            },
+            "tiger": {
+              "n": 500,
+              "mean": 0.9893333333333333,
+              "sd": 0.006974502000925918
+            },
+            "trout": {
+              "n": 500,
+              "mean": 0.9862666666666665,
+              "sd": 0.0036665621719697544
+            },
+            "turtle": {
+              "n": 500,
+              "mean": 0.9879999999999999,
+              "sd": 0.004299157896692059
+            },
+            "whale": {
+              "n": 500,
+              "mean": 0.9346666666666666,
+              "sd": 0.02995322023253676
+            },
+            "wolf": {
+              "n": 500,
+              "mean": 0.9489333333333333,
+              "sd": 0.04722574789633103
+            },
+            "woman": {
+              "n": 500,
+              "mean": 0.9381333333333333,
+              "sd": 0.028896644994774425
+            },
+            "worm": {
+              "n": 500,
+              "mean": 0.8592,
+              "sd": 0.06441589009360754
+            }
+          },
+          "chosen_C": {
+            "aquarium_fish": 1.0,
+            "baby": 1.0,
+            "bear": 1.0,
+            "beaver": 1.0,
+            "bee": 1.0,
+            "beetle": 1.0,
+            "boy": 1.0,
+            "butterfly": 1.0,
+            "camel": 1.0,
+            "caterpillar": 1.0,
+            "cattle": 1.0,
+            "chimpanzee": 1.0,
+            "cockroach": 1.0,
+            "crab": 1.0,
+            "crocodile": 1.0,
+            "dinosaur": 1.0,
+            "dolphin": 1.0,
+            "elephant": 1.0,
+            "flatfish": 1.0,
+            "fox": 1.0,
+            "girl": 1.0,
+            "hamster": 1.0,
+            "kangaroo": 1.0,
+            "leopard": 1.0,
+            "lion": 1.0,
+            "lizard": 1.0,
+            "lobster": 1.0,
+            "man": 1.0,
+            "mouse": 1.0,
+            "otter": 1.0,
+            "porcupine": 1.0,
+            "possum": 1.0,
+            "rabbit": 1.0,
+            "raccoon": 1.0,
+            "ray": 1.0,
+            "seal": 1.0,
+            "shark": 1.0,
+            "shrew": 1.0,
+            "skunk": 1.0,
+            "snail": 1.0,
+            "snake": 1.0,
+            "spider": 1.0,
+            "squirrel": 1.0,
+            "tiger": 1.0,
+            "trout": 1.0,
+            "turtle": 1.0,
+            "whale": 1.0,
+            "wolf": 1.0,
+            "woman": 1.0,
+            "worm": 1.0
+          },
+          "mean_recovery": 0.9583986666666666,
+          "AT1_rho": 0.6155730031306875,
+          "perm_p": 4.999750012499375e-05,
+          "significant": true,
+          "n_classes_scored": 50,
+          "test_fpr": {
+            "min": 0.05192784577233822,
+            "max": 0.05485561155107592
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": NaN,
+            "nearest_positive": 0.41062210389035886,
+            "nearest_negative": -0.4014502150068296
+          },
+          "AT2_beats_all_rivals": true,
+          "verdict": "clears",
+          "AT2_rivals_scored": [
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [
+            "class_size"
+          ],
+          "AT2_beaten_by": []
+        },
+        "swept": {
+          "recovery": {
+            "aquarium_fish": {
+              "n": 500,
+              "mean": 0.9933333333333333,
+              "sd": 0.004277715578987537
+            },
+            "baby": {
+              "n": 500,
+              "mean": 0.9770666666666666,
+              "sd": 0.008513410651409948
+            },
+            "bear": {
+              "n": 500,
+              "mean": 0.9957333333333331,
+              "sd": 0.0008683449709106103
+            },
+            "beaver": {
+              "n": 500,
+              "mean": 0.9997333333333334,
+              "sd": 0.0008683449709106102
+            },
+            "bee": {
+              "n": 500,
+              "mean": 0.8144666666666667,
+              "sd": 0.04287812184941561
+            },
+            "beetle": {
+              "n": 500,
+              "mean": 0.9847333333333332,
+              "sd": 0.004940566303805556
+            },
+            "boy": {
+              "n": 500,
+              "mean": 0.9906666666666667,
+              "sd": 0.003726265888428306
+            },
+            "butterfly": {
+              "n": 500,
+              "mean": 0.9182,
+              "sd": 0.033090680008852576
+            },
+            "camel": {
+              "n": 500,
+              "mean": 0.9534666666666667,
+              "sd": 0.020975738585217958
+            },
+            "caterpillar": {
+              "n": 500,
+              "mean": 0.9344000000000001,
+              "sd": 0.017167732362859036
+            },
+            "cattle": {
+              "n": 500,
+              "mean": 0.9765333333333335,
+              "sd": 0.010647108506079483
+            },
+            "chimpanzee": {
+              "n": 500,
+              "mean": 0.9988,
+              "sd": 0.001242910932531732
+            },
+            "cockroach": {
+              "n": 500,
+              "mean": 0.9995333333333334,
+              "sd": 0.0010080138659874628
+            },
+            "crab": {
+              "n": 500,
+              "mean": 0.9820666666666669,
+              "sd": 0.006378483947715511
+            },
+            "crocodile": {
+              "n": 500,
+              "mean": 0.9913333333333334,
+              "sd": 0.005339077366590302
+            },
+            "dinosaur": {
+              "n": 500,
+              "mean": 0.9845333333333334,
+              "sd": 0.0026747005418374893
+            },
+            "dolphin": {
+              "n": 500,
+              "mean": 0.9962666666666665,
+              "sd": 0.0006914918072835214
+            },
+            "elephant": {
+              "n": 500,
+              "mean": 0.9855999999999999,
+              "sd": 0.01020344769318618
+            },
+            "flatfish": {
+              "n": 500,
+              "mean": 0.9799999999999999,
+              "sd": 0.007182353854869016
+            },
+            "fox": {
+              "n": 500,
+              "mean": 0.9997333333333334,
+              "sd": 0.0008683449709106101
+            },
+            "girl": {
+              "n": 500,
+              "mean": 0.9892666666666666,
+              "sd": 0.004378106450505064
+            },
+            "hamster": {
+              "n": 500,
+              "mean": 0.9970666666666669,
+              "sd": 0.0010148325268098505
+            },
+            "kangaroo": {
+              "n": 500,
+              "mean": 0.9993333333333333,
+              "sd": 0.0009589266029707692
+            },
+            "leopard": {
+              "n": 500,
+              "mean": 0.9980000000000001,
+              "sd": 1.1292025708167404e-16
+            },
+            "lion": {
+              "n": 500,
+              "mean": 1.0,
+              "sd": 0.0
+            },
+            "lizard": {
+              "n": 500,
+              "mean": 0.9894000000000001,
+              "sd": 0.0028839627909025387
+            },
+            "lobster": {
+              "n": 500,
+              "mean": 0.9072,
+              "sd": 0.012677430393392449
+            },
+            "man": {
+              "n": 500,
+              "mean": 0.9202666666666666,
+              "sd": 0.024577720964647866
+            },
+            "mouse": {
+              "n": 500,
+              "mean": 0.9958666666666667,
+              "sd": 0.001814374278639474
+            },
+            "otter": {
+              "n": 500,
+              "mean": 0.9915333333333333,
+              "sd": 0.0023886705772116824
+            },
+            "porcupine": {
+              "n": 500,
+              "mean": 0.9929333333333332,
+              "sd": 0.0033107279471786726
+            },
+            "possum": {
+              "n": 500,
+              "mean": 0.9979333333333336,
+              "sd": 0.000365148371670111
+            },
+            "rabbit": {
+              "n": 500,
+              "mean": 0.9759999999999999,
+              "sd": 0.003237708853601521
+            },
+            "raccoon": {
+              "n": 500,
+              "mean": 0.9891333333333332,
+              "sd": 0.002145296914316226
+            },
+            "ray": {
+              "n": 500,
+              "mean": 0.9800000000000001,
+              "sd": 0.006432675209026776
+            },
+            "seal": {
+              "n": 500,
+              "mean": 0.9934666666666666,
+              "sd": 0.0011665845619713506
+            },
+            "shark": {
+              "n": 500,
+              "mean": 0.9915999999999998,
+              "sd": 0.0031249827585731298
+            },
+            "shrew": {
+              "n": 500,
+              "mean": 0.996,
+              "sd": 0.002034190510862433
+            },
+            "skunk": {
+              "n": 500,
+              "mean": 0.9905333333333333,
+              "sd": 0.002775922752245962
+            },
+            "snail": {
+              "n": 500,
+              "mean": 0.8857333333333333,
+              "sd": 0.03455224263726405
+            },
+            "snake": {
+              "n": 500,
+              "mean": 0.9979999999999999,
+              "sd": 0.0018194353045893699
+            },
+            "spider": {
+              "n": 500,
+              "mean": 0.9729333333333332,
+              "sd": 0.007119343893313798
+            },
+            "squirrel": {
+              "n": 500,
+              "mean": 0.9926666666666665,
+              "sd": 0.0022488822255440203
+            },
+            "tiger": {
+              "n": 500,
+              "mean": 0.9985333333333334,
+              "sd": 0.001279367659898985
+            },
+            "trout": {
+              "n": 500,
+              "mean": 0.989933333333333,
+              "sd": 0.00036514837167011096
+            },
+            "turtle": {
+              "n": 500,
+              "mean": 0.9937333333333332,
+              "sd": 0.001014832526809851
+            },
+            "whale": {
+              "n": 500,
+              "mean": 0.9663999999999999,
+              "sd": 0.011355083928993348
+            },
+            "wolf": {
+              "n": 500,
+              "mean": 0.9986,
+              "sd": 0.0019046223265772556
+            },
+            "woman": {
+              "n": 500,
+              "mean": 0.9882666666666667,
+              "sd": 0.004748381454430725
+            },
+            "worm": {
+              "n": 500,
+              "mean": 0.9165333333333334,
+              "sd": 0.028810598305357062
+            }
+          },
+          "chosen_C": {
+            "aquarium_fish": 0.01,
+            "baby": 0.01,
+            "bear": 0.01,
+            "beaver": 0.01,
+            "bee": 0.01,
+            "beetle": 0.01,
+            "boy": 0.01,
+            "butterfly": 0.01,
+            "camel": 0.01,
+            "caterpillar": 0.01,
+            "cattle": 0.01,
+            "chimpanzee": 0.01,
+            "cockroach": 0.01,
+            "crab": 0.01,
+            "crocodile": 0.01,
+            "dinosaur": 0.01,
+            "dolphin": 0.01,
+            "elephant": 0.01,
+            "flatfish": 0.01,
+            "fox": 0.01,
+            "girl": 0.01,
+            "hamster": 0.01,
+            "kangaroo": 0.01,
+            "leopard": 0.01,
+            "lion": 0.01,
+            "lizard": 0.01,
+            "lobster": 0.01,
+            "man": 0.01,
+            "mouse": 0.01,
+            "otter": 0.01,
+            "porcupine": 0.01,
+            "possum": 0.01,
+            "rabbit": 0.01,
+            "raccoon": 0.01,
+            "ray": 0.01,
+            "seal": 0.01,
+            "shark": 0.01,
+            "shrew": 0.01,
+            "skunk": 0.01,
+            "snail": 0.01,
+            "snake": 0.01,
+            "spider": 0.01,
+            "squirrel": 0.01,
+            "tiger": 0.01,
+            "trout": 0.01,
+            "turtle": 0.01,
+            "whale": 0.01,
+            "wolf": 0.01,
+            "woman": 0.01,
+            "worm": 0.01
+          },
+          "mean_recovery": 0.9770613333333334,
+          "AT1_rho": 0.6424644050928676,
+          "perm_p": 9.99950002499875e-05,
+          "significant": true,
+          "n_classes_scored": 50,
+          "test_fpr": {
+            "min": 0.05149988000959923,
+            "max": 0.05345572354211663
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": NaN,
+            "nearest_positive": 0.3661072295708216,
+            "nearest_negative": -0.5176114674113177
+          },
+          "AT2_beats_all_rivals": true,
+          "verdict": "clears",
+          "AT2_rivals_scored": [
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [
+            "class_size"
+          ],
+          "AT2_beaten_by": []
+        }
+      },
+      "jobs": 8,
+      "interpretable_strict": true,
+      "interpretable": true,
+      "fpr_in_band": true,
+      "clears_both_settings": true,
+      "fails_both_settings": false,
+      "beats_rivals_both": true,
+      "tuning_gain": 0.018662666666666827
+    },
+    "protein/esm2_35M": {
+      "cell": "protein/esm2_35M",
+      "dim": 480,
+      "n_classes": 14,
+      "n_positives": 12989,
+      "n_negatives": 33456,
+      "margin": {
+        "Adherence": 0.02262667006277195,
+        "Antimicrobial activity/Competitive advantage": -0.009537093904768335,
+        "Biofilm": 0.011227743340598872,
+        "Effector delivery system": 0.004319922382261109,
+        "Exoenzyme": 0.0047247926352653,
+        "Exotoxin": 0.012703944531121792,
+        "Immune modulation": 0.00284786120346439,
+        "Invasion": 0.014928178103898501,
+        "Motility": 0.023572724734416538,
+        "Nutritional/Metabolic factor": -0.002874356203732703,
+        "Others": 0.032076672852151204,
+        "Post-translational modification": -0.010870899235685684,
+        "Regulation": -0.008096720694640756,
+        "Stress survival": 0.014599558822874194
+      },
+      "nearest_positive": {
+        "Adherence": 0.9618877438161179,
+        "Antimicrobial activity/Competitive advantage": 0.9543125519037222,
+        "Biofilm": 0.9696961679692121,
+        "Effector delivery system": 0.9679480841172309,
+        "Exoenzyme": 0.968314873519572,
+        "Exotoxin": 0.9728936869259851,
+        "Immune modulation": 0.9628338533537901,
+        "Invasion": 0.9730434621225864,
+        "Motility": 0.9716677600451632,
+        "Nutritional/Metabolic factor": 0.9611611324239266,
+        "Others": 0.9777513295709556,
+        "Post-translational modification": 0.949389441880049,
+        "Regulation": 0.9570644066046035,
+        "Stress survival": 0.9683588948832664
+      },
+      "nearest_negative": {
+        "Adherence": 0.9392610737533458,
+        "Antimicrobial activity/Competitive advantage": 0.9638496458084905,
+        "Biofilm": 0.9584684246286134,
+        "Effector delivery system": 0.9636281617349698,
+        "Exoenzyme": 0.9635900808843068,
+        "Exotoxin": 0.9601897423948633,
+        "Immune modulation": 0.9599859921503257,
+        "Invasion": 0.958115284018688,
+        "Motility": 0.9480950353107465,
+        "Nutritional/Metabolic factor": 0.9640354886276591,
+        "Others": 0.9456746567188044,
+        "Post-translational modification": 0.9602603411157347,
+        "Regulation": 0.9651611272992442,
+        "Stress survival": 0.9537593360603921
+      },
+      "class_size": {
+        "Adherence": 2259,
+        "Antimicrobial activity/Competitive advantage": 24,
+        "Biofilm": 226,
+        "Effector delivery system": 4266,
+        "Exoenzyme": 210,
+        "Exotoxin": 1126,
+        "Immune modulation": 1983,
+        "Invasion": 84,
+        "Motility": 1121,
+        "Nutritional/Metabolic factor": 1123,
+        "Others": 187,
+        "Post-translational modification": 66,
+        "Regulation": 128,
+        "Stress survival": 186
+      },
+      "settings": {
+        "fixed": {
+          "recovery": {
+            "Adherence": {
+              "n": 2259,
+              "mean": 0.615951010771728,
+              "sd": 0.060120704302151065
+            },
+            "Antimicrobial activity/Competitive advantage": {
+              "n": 24,
+              "mean": 0.275,
+              "sd": 0.15651557889482318
+            },
+            "Biofilm": {
+              "n": 226,
+              "mean": 0.5008849557522124,
+              "sd": 0.052062440167694346
+            },
+            "Effector delivery system": {
+              "n": 4266,
+              "mean": 0.36642444131895613,
+              "sd": 0.05476672727216653
+            },
+            "Exoenzyme": {
+              "n": 210,
+              "mean": 0.45730158730158726,
+              "sd": 0.0992463849155748
+            },
+            "Exotoxin": {
+              "n": 1126,
+              "mean": 0.5838069863824747,
+              "sd": 0.09080070573512984
+            },
+            "Immune modulation": {
+              "n": 1983,
+              "mean": 0.28803160194990757,
+              "sd": 0.039238156474533374
+            },
+            "Invasion": {
+              "n": 84,
+              "mean": 0.5845238095238096,
+              "sd": 0.07253858364868623
+            },
+            "Motility": {
+              "n": 1121,
+              "mean": 0.43267915551590846,
+              "sd": 0.08038263293762099
+            },
+            "Nutritional/Metabolic factor": {
+              "n": 1123,
+              "mean": 0.2117245473434253,
+              "sd": 0.03853812652810801
+            },
+            "Others": {
+              "n": 187,
+              "mean": 0.6809269162210339,
+              "sd": 0.05221325674109379
+            },
+            "Post-translational modification": {
+              "n": 66,
+              "mean": 0.10656565656565653,
+              "sd": 0.053750643260217244
+            },
+            "Regulation": {
+              "n": 128,
+              "mean": 0.21145833333333333,
+              "sd": 0.12923740010340856
+            },
+            "Stress survival": {
+              "n": 186,
+              "mean": 0.5387096774193548,
+              "sd": 0.04503487081793168
+            }
+          },
+          "chosen_C": {
+            "Adherence": 1.0,
+            "Antimicrobial activity/Competitive advantage": 1.0,
+            "Biofilm": 1.0,
+            "Effector delivery system": 1.0,
+            "Exoenzyme": 1.0,
+            "Exotoxin": 1.0,
+            "Immune modulation": 1.0,
+            "Invasion": 1.0,
+            "Motility": 1.0,
+            "Nutritional/Metabolic factor": 1.0,
+            "Others": 1.0,
+            "Post-translational modification": 1.0,
+            "Regulation": 1.0,
+            "Stress survival": 1.0
+          },
+          "mean_recovery": 0.41814204852852777,
+          "AT1_rho": 0.8901098901098902,
+          "perm_p": 9.99950002499875e-05,
+          "significant": true,
+          "n_classes_scored": 14,
+          "test_fpr": {
+            "min": 0.047327833572453376,
+            "max": 0.05004483500717361
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": 0.22637362637362637,
+            "nearest_positive": 0.7978021978021977,
+            "nearest_negative": -0.7846153846153847
+          },
+          "AT2_beats_all_rivals": true,
+          "AT2_rivals_scored": [
+            "class_size",
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [],
+          "AT2_beaten_by": [],
+          "verdict": "clears"
+        },
+        "swept": {
+          "recovery": {
+            "Adherence": {
+              "n": 2259,
+              "mean": 0.7341449018739856,
+              "sd": 0.050687485224527096
+            },
+            "Antimicrobial activity/Competitive advantage": {
+              "n": 24,
+              "mean": 0.2638888888888889,
+              "sd": 0.12823091399984746
+            },
+            "Biofilm": {
+              "n": 226,
+              "mean": 0.5994100294985251,
+              "sd": 0.05167630185534261
+            },
+            "Effector delivery system": {
+              "n": 4266,
+              "mean": 0.4255274261603376,
+              "sd": 0.03401000756608887
+            },
+            "Exoenzyme": {
+              "n": 210,
+              "mean": 0.619047619047619,
+              "sd": 0.07091771339839609
+            },
+            "Exotoxin": {
+              "n": 1126,
+              "mean": 0.6438425103611604,
+              "sd": 0.04802904804542859
+            },
+            "Immune modulation": {
+              "n": 1983,
+              "mean": 0.2813077828206421,
+              "sd": 0.023597485039821425
+            },
+            "Invasion": {
+              "n": 84,
+              "mean": 0.6857142857142858,
+              "sd": 0.0802319921862688
+            },
+            "Motility": {
+              "n": 1121,
+              "mean": 0.4349093071662206,
+              "sd": 0.07884967602465384
+            },
+            "Nutritional/Metabolic factor": {
+              "n": 1123,
+              "mean": 0.2362718907687741,
+              "sd": 0.028750480483971386
+            },
+            "Others": {
+              "n": 187,
+              "mean": 0.7422459893048128,
+              "sd": 0.02292141913346011
+            },
+            "Post-translational modification": {
+              "n": 66,
+              "mean": 0.12676767676767675,
+              "sd": 0.05118576441664858
+            },
+            "Regulation": {
+              "n": 128,
+              "mean": 0.23255208333333333,
+              "sd": 0.11453873135975201
+            },
+            "Stress survival": {
+              "n": 186,
+              "mean": 0.5421146953405017,
+              "sd": 0.013400631925727003
+            }
+          },
+          "chosen_C": {
+            "Adherence": 0.01,
+            "Antimicrobial activity/Competitive advantage": 0.1,
+            "Biofilm": 0.01,
+            "Effector delivery system": 0.01,
+            "Exoenzyme": 0.01,
+            "Exotoxin": 0.01,
+            "Immune modulation": 0.01,
+            "Invasion": 0.01,
+            "Motility": 0.01,
+            "Nutritional/Metabolic factor": 0.01,
+            "Others": 0.01,
+            "Post-translational modification": 0.1,
+            "Regulation": 0.01,
+            "Stress survival": 0.01
+          },
+          "mean_recovery": 0.4691246490747688,
+          "AT1_rho": 0.8637362637362638,
+          "perm_p": 0.00024998750062496874,
+          "significant": true,
+          "n_classes_scored": 14,
+          "test_fpr": {
+            "min": 0.04910329985652798,
+            "max": 0.05228060736489717
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": 0.24395604395604395,
+            "nearest_positive": 0.7890109890109891,
+            "nearest_negative": -0.7318681318681319
+          },
+          "AT2_beats_all_rivals": true,
+          "AT2_rivals_scored": [
+            "class_size",
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [],
+          "AT2_beaten_by": [],
+          "verdict": "clears"
+        }
+      },
+      "jobs": 8,
+      "interpretable_strict": true,
+      "interpretable": true,
+      "fpr_in_band": true,
+      "clears_both_settings": true,
+      "fails_both_settings": false,
+      "beats_rivals_both": true,
+      "tuning_gain": 0.05098260054624104
     }
   },
   "verdict_block": {
     "cells_total": 6,
-    "cells_run": 4,
-    "cells_interpretable": 4,
+    "cells_run": 5,
+    "cells_interpretable": 5,
     "uninterpretable": [],
-    "AT1_clears": 3,
-    "AT1_denominator": 4,
-    "AT1_clears_strict": 1,
-    "AT1_denominator_strict": 2,
+    "AT1_clears": 4,
+    "AT1_denominator": 5,
+    "AT1_clears_strict": 2,
+    "AT1_denominator_strict": 3,
     "cells_failing_AT0b": [
       "text/minilm_l6",
       "text/mpnet_base"
     ],
     "readings": "AT1_clears applies AT-0a alone, per amendment 2, because AT-1 is a within-cell ordering; AT1_clears_strict applies section 3 as frozen (AT-0a and AT-0b). AT-0b gates P4, the cross-cell level claim.",
     "AT1b_modalities_dead_on_both_encoders": [],
-    "AT2_beats_rivals": 1,
+    "AT2_beats_rivals": 2,
     "complete": false,
-    "verdict": "INCOMPLETE -- 4 of 6 cells; the grid is the unit of the claim and no verdict is read until all six land"
+    "verdict": "INCOMPLETE -- 5 of 6 cells; the grid is the unit of the claim and no verdict is read until all six land"
   },
-  "seconds": 781.3
+  "seconds": 205.3
 }

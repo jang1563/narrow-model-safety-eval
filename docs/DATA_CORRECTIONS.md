@@ -8851,3 +8851,69 @@ start **1.5 days** out. ProtT5-XL is ~3B parameters — ~6 GB in fp16 — so an 
 type was never load-bearing. 🔒 Relaxed to `--gres=gpu:1`; the estimate moved to the same evening. ⚠️ **The
 submit script existed only on the cluster's scratch copy and not in the repository**, so the fix is now
 tracked.
+
+---
+
+## 2026-10-07 (one hundred and twenty-second entry) — A rho quoted to four decimals whose last two are not resolvable
+
+### 🔑 What was found, and how
+
+Study AT re-ran `src/125`'s DeepVIC fold through a rewritten loop. 🟢 **On ESM-2 650M it reproduced
+*ρ* = +0.9473 exactly.** 🔴 **On 35M it returned +0.8901 against the +0.8857 on record** — a difference of
+**0.0044**, which at *n* = 14 is **exactly one adjacent rank swap**, 12/(14 × 195) = 12/2730.
+
+🔒 **Isolated by crossing the two sources** rather than guessed:
+
+| | |
+|---|---|
+| AI-2 margin × AI-2 recovery | **+0.8857143** |
+| AT margin × AT recovery | **+0.8901099** |
+| AI-2 margin × **AT** recovery | +0.8901099 |
+| **AT** margin × AI-2 recovery | +0.8857143 |
+
+🔑 **So the margins are not the difference.** They agree to **6.1 × 10⁻⁸** with an identical rank order.
+The recoveries differ by −0.25 to +0.21pp across 12 of 14 categories, and the ordering changes in exactly
+one place: **Nutritional/Metabolic factor** (21.095 → 21.172) crosses **Regulation** (21.146, unchanged).
+⚠️ **Two categories 0.05pp apart exchanged ranks.**
+
+### 🔴 What it is not
+
+- **Not the fold.** Class sizes match exactly, and every stored parameter agrees: 30 seeds, 12,989
+  positives, 33,456 negatives, union 22,304, test 11,152, 14 targets.
+- **Not float precision.** Tested directly: the float32 path gives 10.758% on the largest-differing
+  category and float64 gives 10.657%, and **AI-2's 10.909% is neither**. ⚠️ **My first hypothesis was
+  precision and it was wrong** — stated here because the arithmetic that refuted it is the same
+  arithmetic that would have confirmed it.
+- 🔴 **Not confirmable.** The 2026-09-30 artifact records **no library versions**, so solver drift between
+  scikit-learn or scipy releases — the one remaining candidate for a sub-0.1pp change in a converged
+  logistic fit — cannot be checked. 🔒 **Artifacts record `numpy`, `scipy`, `sklearn` and `python`
+  versions now, and the swap quantum with them.**
+
+### 🔒 What changes
+
+**Nothing material.** Both values clear the +0.60 floor by a wide margin and no verdict moves. 🔑 **What
+changes is how *ρ* should be read**: it moves in steps of 12/(*n*(*n*² − 1)) — **0.0055** at thirteen
+classes, **0.0044** at fourteen, **0.0001** at fifty — and this paper quotes it to four decimals
+throughout. ⚠️ **A *ρ* difference smaller than one adjacent swap is not a difference**, and two classes
+whose recoveries sit 0.05pp apart are tied. § 4 says so now.
+
+### 🟢 A related measurement that came out well
+
+Study AT's `image/dinov2_vits14` cell clears the floor by only **0.016**, which study AR's result — *ρ*
+moving **0.105** between negative draws on fourteen categories — made look like a knife edge. 🔒 **A
+second draw was run rather than argued about**: *ρ* moved **+0.0029** and **+0.0010**, same verdict both
+settings. 🔑 **Fifty classes give a far more precise *ρ* than fourteen**, which is the same fact as the
+quantum above seen from the other side — the image cells have the worst *signal* in the grid and the best
+*precision*.
+
+### 🔴 And a selftest I believed had run, which had not
+
+`src/140`'s new mechanism checks were "verified" with `timeout 300 python3 ... --selftest`. 🔴 **macOS has
+no `timeout`**, so the shell printed *command not found*, the selftest never executed, and the `rc=0` I
+read came from the `echo` after it. ⚠️ **The three-way gate caught the failure**: one fixture set the
+swept cell's margin to 0.7, which *clears* the 0.60 floor, so the "one term is enough" case it asserted
+had no instance and the expected list was empty.
+
+🔑 **The check that found it is the one I did not write**, and the lesson is about the harness and not the
+fixture: a verification command that cannot run looks exactly like one that passed. 🔒 Fixed, and
+calibrated by disabling the detection it guards.

@@ -99,6 +99,54 @@ def predictors(P, NEGU, y, m30):
     return out
 
 
+def mechanism(grid, m30):
+    """When does margin beat its own positive half, and why?
+
+    ⚠️ EXPLORATORY, no bands. Reads only the stored rivals, so it touches no embedding.
+
+    🔑 The question: `margin = nearest_positive - nearest_negative`. If the negative term
+    carries no signal then margin is the positive term plus noise, and it should LOSE. So the
+    gain from subtracting should track how much signal the negative term has.
+
+    Returns the per-cell table and the Spearman of |rho(nearest_negative)| against
+    (rho(margin) - rho(nearest_positive)) across every cell x setting.
+    """
+    rows = []
+    for cell, cv in grid.get("cells", {}).items():
+        for setting, sv in cv["settings"].items():
+            r = sv.get("rivals", {})
+            if "nearest_positive" not in r or "nearest_negative" not in r:
+                continue
+            mg, hp, hn = sv["AT1_rho"], r["nearest_positive"], r["nearest_negative"]
+            if not all(np.isfinite(x) for x in (mg, hp, hn)):
+                continue
+            rows.append({
+                "cell": cell, "setting": setting,
+                "rho_margin": mg, "rho_nearest_positive": hp, "rho_nearest_negative": hn,
+                "abs_rho_negative": abs(hn),
+                "gain_from_subtracting": mg - hp,
+                "margin_wins": bool(mg > hp),
+                "margin_clears": bool(mg >= 0.60),
+                "nearest_positive_clears": bool(hp >= 0.60),
+            })
+    out = {"rows": rows, "n": len(rows)}
+    if len(rows) >= 4:
+        out["rho_of_absneg_vs_gain"] = m30._spearman(
+            [r["abs_rho_negative"] for r in rows],
+            [r["gain_from_subtracting"] for r in rows])
+    out["margin_clears_count"] = sum(1 for r in rows if r["margin_clears"])
+    out["nearest_positive_clears_count"] = sum(
+        1 for r in rows if r["nearest_positive_clears"])
+    out["cells_where_one_term_is_enough"] = sorted(
+        {f"{r['cell']}/{r['setting']}" for r in rows
+         if r["nearest_positive_clears"] and not r["margin_clears"]})
+    out["reading"] = (
+        "if nearest_positive clears in strictly more cell-settings than margin, the general "
+        "claim is about a held-out class's distance to its nearest TRAINED class, and the "
+        "subtraction is a protein-fold refinement rather than part of the general result")
+    return out
+
+
 def selftest():
     ok = True
     m30 = load("30_margin_across_arms.py")
@@ -109,6 +157,36 @@ def selftest():
     NEG = rng.normal(size=(200, 16)) - 5.0
     P = np.vstack([A, B, Cc])
     y = np.array(["a"] * 40 + ["b"] * 40 + ["c"] * 40)
+    # 🔒 the mechanism table, driven both ways
+    # ⚠️ The swept cell must have margin BELOW the 0.60 floor and nearest_positive above it,
+    # or "one term is enough" has no instance. The first version used margin 0.7, which
+    # clears, so the expected list was empty and the assertion was simply wrong -- caught by
+    # the gate, not by me, because my own check ran `timeout 300 python3 ...` and macOS has
+    # no `timeout`, so the selftest never executed and the rc=0 came from `echo`.
+    fake = {"cells": {"a": {"settings": {
+        "fixed": {"AT1_rho": 0.9, "rivals": {"nearest_positive": 0.6,
+                                             "nearest_negative": -0.5}},
+        "swept": {"AT1_rho": 0.5, "rivals": {"nearest_positive": 0.8,
+                                             "nearest_negative": -0.05}}}}}}
+    mk = mechanism(fake, m30)
+    if mk["n"] != 2:
+        print(f"  XX mechanism() read {mk['n']} rows from 2")
+        ok = False
+    if not mk["rows"][0]["margin_wins"] or mk["rows"][1]["margin_wins"]:
+        print(f"  XX margin_wins is wrong: {[r['margin_wins'] for r in mk['rows']]}")
+        ok = False
+    if mk["cells_where_one_term_is_enough"] != ["a/swept"]:
+        print(f"  XX the one-term-is-enough cells are wrong: "
+              f"{mk['cells_where_one_term_is_enough']}")
+        ok = False
+    # a NaN rival must be skipped, not propagated
+    fake2 = {"cells": {"b": {"settings": {"fixed": {
+        "AT1_rho": 0.9, "rivals": {"nearest_positive": float("nan"),
+                                   "nearest_negative": -0.5}}}}}}
+    if mechanism(fake2, m30)["n"] != 0:
+        print("  XX mechanism() kept a row with a NaN rival")
+        ok = False
+
     pr = predictors(P, NEG, y, m30)
     if not all(len(v) == 3 for v in pr.values()):
         print(f"  XX a predictor does not cover every class: "
@@ -122,19 +200,24 @@ def selftest():
     # ⚠️ and the recomputed margin must AGREE with study AT's, or the sweep is comparing a
     # different quantity to AT's verdict. Checked against the grid when it exists.
     if GRID.exists():
+        # ⚠️ Only the CHEAPEST cell. This check recomputes every pairwise cosine, and running
+        # it on all of them -- 12,989 x 12,989 at 1,280 dims for the protein cell -- made the
+        # selftest take minutes. One cell proves the code path; the full comparison runs in
+        # `main()`, where it is a hard failure on every cell.
         g = json.loads(GRID.read_text())
-        for cell, v in g.get("cells", {}).items():
-            mine = None
+        cells = g.get("cells", {})
+        if cells:
+            cheapest = min(cells, key=lambda k: cells[k]["n_positives"] * cells[k]["dim"])
             try:
-                mine = _cell_margin(cell, m30)
-            except (FileNotFoundError, KeyError):
-                continue
-            if mine is None:
-                continue
-            d = max(abs(mine[c] - v["margin"][c]) for c in v["margin"])
-            if d > 1e-9:
-                print(f"  XX {cell}: recomputed margin differs from AT's by {d:.3g}")
-                ok = False
+                mine = _cell_margin(cheapest, m30)
+                v = cells[cheapest]
+                d = max(abs(mine[c] - v["margin"][c]) for c in v["margin"])
+                if d > 1e-9:
+                    print(f"  XX {cheapest}: recomputed margin differs from AT's "
+                          f"by {d:.3g}")
+                    ok = False
+            except (FileNotFoundError, KeyError) as e:
+                print(f"  -- margin agreement unchecked for {cheapest}: {e}")
     if not pr["class_size"] == {"a": 40.0, "b": 40.0, "c": 40.0}:
         print(f"  XX class_size is wrong: {pr['class_size']}")
         ok = False
@@ -174,6 +257,7 @@ def main():
                         "measure orders the classes as well, the result is about a held-out "
                         "class sitting near the negatives and not about margin in particular"),
            "cells": {}}
+    out["mechanism"] = mechanism(grid, m30)
 
     for cell, cv in grid.get("cells", {}).items():
         try:

@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 125 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 126 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 153 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 125
+written because it caught something. The evidence is a **dated, append-only corrections log of 126
 entries** in which a published number moved, including entries that retract our own findings.
 
 Five results matter beyond this panel.
@@ -1218,6 +1218,19 @@ its own (§ 1.2). Bands were frozen in `docs/DEEPVIC_BENCHMARK_PREREGISTRATION.m
 | 35M, full | **+0.8857** | 0.00020 | ✅ |
 | 35M, shared removed | **+0.8593** | 0.00020 | ✅ |
 
+⚠️ **Every *ρ* in this section is quoted to four decimals and the last two are not resolvable.** A
+Spearman over *n* classes moves in steps: one adjacent swap changes it by 12/(*n*(*n*² − 1)), which is
+**0.0044** at the fourteen categories below, **0.0055** at thirteen, and 0.0001 at fifty. 🔴 **Study AT
+re-ran this fold on 650M and reproduced +0.9473 exactly, and on 35M returned +0.8901 against the +0.8857
+reported here** — *one adjacent swap*. The margins agree to **6 × 10⁻⁸** and the fold composition is
+identical by every stored parameter; what moved is two categories' recoveries, **0.05pp apart**
+(Nutritional/Metabolic factor and Regulation, 21.095/21.146 against 21.172/21.146), which exchanged ranks.
+⚠️ **Float32 against float64 was tested and is not the cause**, and the 2026-09-30 artifact records no
+library versions, so the remaining candidate — solver drift between releases — cannot be confirmed.
+🔒 **Artifacts record versions and the swap quantum now.** 🔑 **Nothing here changes: both values clear
++0.60 by a wide margin. The point is that two categories whose recoveries differ by 0.05pp are tied, and
+a *ρ* difference below one swap is not a difference.**
+
 🔒 **All four passes clear the frozen floor of +0.60 at *p* below α = 0.0125, and on all four margin beats
 both of the controls it is built from** — nearest-positive alone reaches +0.63 to +0.79 and
 nearest-negative alone −0.52 to −0.80. ⚠️ **That comparison is made at the untuned classifier, and the
@@ -1583,7 +1596,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 125 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 126 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one

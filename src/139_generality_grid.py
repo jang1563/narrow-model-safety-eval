@@ -264,12 +264,15 @@ def _one_class(task):
                   "sd": float(np.std(rr, ddof=1))}, float(np.mean(ff)), cv)
 
 
-def score_cell(cell, seeds, m30, m133, jobs=1):
+def score_cell(cell, seeds, m30, m133, jobs=1, draw=12345):
     P, N, y = get_data(cell)
     X = np.vstack([P, N])
     pos = np.arange(len(P))
     neg = np.arange(len(P), len(P) + len(N))
-    perm = np.random.default_rng(12345).permutation(len(neg))
+    # 🔒 `draw` is the negative-PARTITION seed, 12345 everywhere in this project. A second
+    # value re-draws the union/test split, which is study AR's stability test -- the one that
+    # showed this rho moves 0.105 between draws while the levels move 0.023.
+    perm = np.random.default_rng(draw).permutation(len(neg))
     cut = 2 * len(neg) // 3
     union, test = neg[perm[:cut]], neg[perm[cut:]]
     cats = sorted(set(y.tolist()))
@@ -277,7 +280,18 @@ def score_cell(cell, seeds, m30, m133, jobs=1):
           f"{len(union)} union / {len(test)} test", flush=True)
 
     mar, hi_pos, hi_neg = margin_parts(P, X[union], y, m30)
-    res = {"cell": cell, "dim": int(P.shape[1]), "n_classes": len(cats),
+    # 🔒 Library versions, recorded because a rho reproduced to 6e-08 on the margin still
+    # moved 0.0044 on the recoveries between 2026-09-30 and 2026-10-07, and the older
+    # artifact records no versions so the cause cannot be confirmed.
+    import sklearn
+    import scipy
+    res = {"cell": cell, "draw": draw, "dim": int(P.shape[1]), "n_classes": len(cats),
+           "versions": {"numpy": np.__version__, "scipy": scipy.__version__,
+                        "sklearn": sklearn.__version__, "python": sys.version.split()[0]},
+           # 🔑 Spearman over n classes has a QUANTUM: one adjacent swap moves it by
+           # 12/(n(n^2-1)). Differences below it are not resolvable, and this project quotes
+           # rho to four decimals.
+           "rho_quantum_one_adjacent_swap": 12.0 / (len(cats) * (len(cats) ** 2 - 1)),
            "n_positives": int(len(P)), "n_negatives": int(len(N)),
            "margin": mar, "nearest_positive": hi_pos, "nearest_negative": hi_neg,
            "class_size": {c: int((y == c).sum()) for c in cats},
@@ -872,6 +886,10 @@ def main():
     ap.add_argument("--jobs", type=int, default=1,
                     help="parallel workers over held-out classes; the folds are exactly "
                          "independent, and --verify-parallel checks that on a scored cell")
+    ap.add_argument("--second-draw", type=int, metavar="SEED",
+                    help="re-score the named cells with a different negative PARTITION seed "
+                         "and write to results/generality_grid_draw<SEED>.json -- study AR's "
+                         "stability test. The primary artifact is never touched.")
     ap.add_argument("--refresh-flags", action="store_true",
                     help="recompute every scored cell's precondition flags and the verdict "
                          "block from the STORED settings; no refitting, for when the reading "
@@ -884,6 +902,65 @@ def main():
 
     t0 = time.time()
     m30, m133 = load("30_margin_across_arms.py"), load("133_estimation_repair.py")
+
+    if a.second_draw:
+        # 🔒 A SEPARATE artifact, so a stability measurement cannot contaminate the verdict
+        # it is measuring. The frozen draw stays 12345 in results/generality_grid.json.
+        if a.second_draw == 12345:
+            raise SystemExit("--second-draw 12345 is the frozen draw, not a second one")
+        alt = OUT.with_name(f"generality_grid_draw{a.second_draw}.json")
+        base = json.loads(OUT.read_text()) if OUT.exists() else {"cells": {}}
+        got = json.loads(alt.read_text()) if alt.exists() else {
+            "built": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "study": "AT stability: study AR's second-draw test on the grid",
+            "exploratory": ("not a band. The preregistration froze one negative partition; "
+                            "this re-draws it to measure how far rho moves, because the "
+                            "verdict turns on cells sitting within 0.05 of the floor and "
+                            "study AR measured this rho moving 0.105 between draws"),
+            "draw": a.second_draw, "frozen_draw": 12345, "cells": {}}
+        for cell in (a.cell or sorted(base.get("cells", {}))):
+            fresh = score_cell(cell, a.seeds, m30, m133, a.jobs, a.second_draw)
+            ref = base.get("cells", {}).get(cell, {})
+            row = {"draw": a.second_draw, "settings": {}}
+            for setting in ("fixed", "swept"):
+                f = fresh["settings"][setting]
+                r = ref.get("settings", {}).get(setting, {})
+                row["settings"][setting] = {
+                    "rho_draw2": f["AT1_rho"], "rho_draw1": r.get("AT1_rho"),
+                    "mean_recovery_draw2": f["mean_recovery"],
+                    "mean_recovery_draw1": r.get("mean_recovery"),
+                    "clears_draw2": f["verdict"] == "clears",
+                    "clears_draw1": r.get("verdict") == "clears",
+                    "verdict_draw2": f["verdict"],
+                    "rivals_draw2": f["rivals"],
+                }
+                d = row["settings"][setting]
+                if d["rho_draw1"] is not None:
+                    d["rho_shift"] = d["rho_draw2"] - d["rho_draw1"]
+                    d["verdict_flipped"] = d["clears_draw2"] != d["clears_draw1"]
+                    print(f"    {cell} {setting}: rho {d['rho_draw1']:+.4f} -> "
+                          f"{d['rho_draw2']:+.4f}  ({d['rho_shift']:+.4f})  "
+                          f"{'FLIPPED' if d['verdict_flipped'] else 'same verdict'}",
+                          flush=True)
+            got["cells"][cell] = row
+            alt.write_text(json.dumps(got, indent=2) + "\n")
+        flips = sorted(f"{c}/{s}" for c, v in got["cells"].items()
+                       for s, d in v["settings"].items() if d.get("verdict_flipped"))
+        shifts = [abs(d["rho_shift"]) for v in got["cells"].values()
+                  for d in v["settings"].values() if "rho_shift" in d]
+        got["summary"] = {
+            "verdicts_flipped": flips,
+            "mean_abs_rho_shift": float(np.mean(shifts)) if shifts else None,
+            "max_abs_rho_shift": float(max(shifts)) if shifts else None,
+            "reading": ("a cell whose verdict flips between two negative draws is not "
+                        "evidence either way, and the grid count should be read with it "
+                        "named rather than silently included"),
+        }
+        alt.write_text(json.dumps(got, indent=2) + "\n")
+        print(f"\n  flipped: {flips or 'none'}   mean |shift| "
+              f"{got['summary']['mean_abs_rho_shift']}")
+        print(f"  wrote {alt.relative_to(ROOT)}")
+        return 0
 
     if a.refresh_flags:
         # 🔒 Pure bookkeeping on numbers already in the artifact: the per-cell flags are a

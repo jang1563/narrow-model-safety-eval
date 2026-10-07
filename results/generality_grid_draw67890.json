@@ -1,0 +1,126 @@
+{
+  "built": "2026-10-07 00:46:54",
+  "study": "AT stability: study AR's second-draw test on the grid",
+  "exploratory": "not a band. The preregistration froze one negative partition; this re-draws it to measure how far rho moves, because the verdict turns on cells sitting within 0.05 of the floor and study AR measured this rho moving 0.105 between draws",
+  "draw": 67890,
+  "frozen_draw": 12345,
+  "cells": {
+    "image/dinov2_vits14": {
+      "draw": 67890,
+      "settings": {
+        "fixed": {
+          "rho_draw2": 0.6184393757503002,
+          "rho_draw1": 0.6155730031306875,
+          "mean_recovery_draw2": 0.9553480000000001,
+          "mean_recovery_draw1": 0.9583986666666666,
+          "clears_draw2": true,
+          "clears_draw1": true,
+          "verdict_draw2": "clears",
+          "rivals_draw2": {
+            "class_size": NaN,
+            "nearest_positive": 0.40744297719087635,
+            "nearest_negative": -0.4225210084033613
+          },
+          "rho_shift": 0.002866372619612645,
+          "verdict_flipped": false
+        },
+        "swept": {
+          "rho_draw2": 0.6435054021608644,
+          "rho_draw1": 0.6424644050928676,
+          "mean_recovery_draw2": 0.9745333333333334,
+          "mean_recovery_draw1": 0.9770613333333334,
+          "clears_draw2": true,
+          "clears_draw1": true,
+          "verdict_draw2": "clears",
+          "rivals_draw2": {
+            "class_size": NaN,
+            "nearest_positive": 0.3698919567827131,
+            "nearest_negative": -0.5348859543817527
+          },
+          "rho_shift": 0.0010409970679967628,
+          "verdict_flipped": false
+        }
+      }
+    },
+    "image/clip_vit_b32": {
+      "draw": 67890,
+      "settings": {
+        "fixed": {
+          "rho_draw2": 0.5537094837935175,
+          "rho_draw1": 0.5230857885250473,
+          "mean_recovery_draw2": 0.9356253333333333,
+          "mean_recovery_draw1": 0.9336986666666667,
+          "clears_draw2": false,
+          "clears_draw1": false,
+          "verdict_draw2": "between bands",
+          "rivals_draw2": {
+            "class_size": NaN,
+            "nearest_positive": 0.6162304921968788,
+            "nearest_negative": -0.16292917166866747
+          },
+          "rho_shift": 0.030623695268470197,
+          "verdict_flipped": false
+        },
+        "swept": {
+          "rho_draw2": 0.5894357743097238,
+          "rho_draw1": 0.5421628895993922,
+          "mean_recovery_draw2": 0.9612586666666668,
+          "mean_recovery_draw1": 0.9600853333333332,
+          "clears_draw2": false,
+          "clears_draw1": false,
+          "verdict_draw2": "between bands",
+          "rivals_draw2": {
+            "class_size": NaN,
+            "nearest_positive": 0.6242016806722689,
+            "nearest_negative": -0.17925570228091237
+          },
+          "rho_shift": 0.04727288471033164,
+          "verdict_flipped": false
+        }
+      }
+    },
+    "text/minilm_l6": {
+      "draw": 67890,
+      "settings": {
+        "fixed": {
+          "rho_draw2": 0.8791208791208791,
+          "rho_draw1": 0.9230769230769231,
+          "mean_recovery_draw2": 0.5550134553539278,
+          "mean_recovery_draw1": 0.5477159088603345,
+          "clears_draw2": true,
+          "clears_draw1": true,
+          "verdict_draw2": "clears",
+          "rivals_draw2": {
+            "class_size": 0.030261376633440123,
+            "nearest_positive": 0.7912087912087913,
+            "nearest_negative": -0.09890109890109891
+          },
+          "rho_shift": -0.04395604395604402,
+          "verdict_flipped": false
+        },
+        "swept": {
+          "rho_draw2": 0.8736263736263737,
+          "rho_draw1": 0.7692307692307693,
+          "mean_recovery_draw2": 0.6006582087466417,
+          "mean_recovery_draw1": 0.5902223486803281,
+          "clears_draw2": true,
+          "clears_draw1": true,
+          "verdict_draw2": "clears",
+          "rivals_draw2": {
+            "class_size": -0.09078412990032037,
+            "nearest_positive": 0.7967032967032966,
+            "nearest_negative": -0.06043956043956044
+          },
+          "rho_shift": 0.10439560439560447,
+          "verdict_flipped": false
+        }
+      }
+    }
+  },
+  "summary": {
+    "verdicts_flipped": [],
+    "mean_abs_rho_shift": 0.03835926633634329,
+    "max_abs_rho_shift": 0.10439560439560447,
+    "reading": "a cell whose verdict flips between two negative draws is not evidence either way, and the grid count should be read with it named rather than silently included"
+  }
+}

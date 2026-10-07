@@ -1,0 +1,416 @@
+{
+  "built": "2026-10-07 01:07:56",
+  "study": "exploratory rival-predictor sweep over study AT's cells",
+  "exploratory": "no preregistration and no bands. AT-2's rivals were frozen as class size and margin's two halves; these were added after, so nothing here can change AT's verdict",
+  "question": "margin is a MAX over cosines. If a mean, a centroid or a cohesion measure orders the classes as well, the result is about a held-out class sitting near the negatives and not about margin in particular",
+  "cells": {
+    "text/minilm_l6": {
+      "margin_matches_AT": true,
+      "settings": {
+        "fixed": {
+          "rho": {
+            "max_minus_max": 0.9230769230769231,
+            "mean_minus_mean": 0.6098901098901099,
+            "max_pos_mean_neg": 0.7912087912087913,
+            "mean_pos_max_neg": 0.3516483516483516,
+            "centroid_margin": 0.7912087912087913,
+            "within_class_cohesion": 0.45604395604395603,
+            "cos_to_global_positive_centroid": 0.5,
+            "class_size": -0.03576344511224741
+          },
+          "margin_rho": 0.9230769230769231,
+          "best_predictor": "max_minus_max",
+          "margin_is_best": true,
+          "margin_beats_mean_version": true,
+          "margin_beats_centroid": true
+        },
+        "swept": {
+          "rho": {
+            "max_minus_max": 0.7692307692307693,
+            "mean_minus_mean": 0.7692307692307693,
+            "max_pos_mean_neg": 0.8021978021978022,
+            "mean_pos_max_neg": 0.15384615384615383,
+            "centroid_margin": 0.8076923076923077,
+            "within_class_cohesion": 0.1758241758241758,
+            "cos_to_global_positive_centroid": 0.532967032967033,
+            "class_size": -0.23383791034931004
+          },
+          "margin_rho": 0.7692307692307693,
+          "best_predictor": "centroid_margin",
+          "margin_is_best": false,
+          "margin_beats_mean_version": false,
+          "margin_beats_centroid": false
+        }
+      }
+    },
+    "text/mpnet_base": {
+      "margin_matches_AT": true,
+      "settings": {
+        "fixed": {
+          "rho": {
+            "max_minus_max": 0.8406593406593407,
+            "mean_minus_mean": 0.7637362637362637,
+            "max_pos_mean_neg": 0.8131868131868131,
+            "mean_pos_max_neg": 0.3736263736263736,
+            "centroid_margin": 0.7692307692307693,
+            "within_class_cohesion": 0.10989010989010989,
+            "cos_to_global_positive_centroid": 0.5274725274725275,
+            "class_size": 0.12104550653376049
+          },
+          "margin_rho": 0.8406593406593407,
+          "best_predictor": "max_minus_max",
+          "margin_is_best": true,
+          "margin_beats_mean_version": true,
+          "margin_beats_centroid": true
+        },
+        "swept": {
+          "rho": {
+            "max_minus_max": 0.8516483516483516,
+            "mean_minus_mean": 0.8076923076923077,
+            "max_pos_mean_neg": 0.9065934065934067,
+            "mean_pos_max_neg": 0.2747252747252747,
+            "centroid_margin": 0.8406593406593407,
+            "within_class_cohesion": 0.17032967032967034,
+            "cos_to_global_positive_centroid": 0.6208791208791209,
+            "class_size": 0.046767582069862
+          },
+          "margin_rho": 0.8516483516483516,
+          "best_predictor": "max_pos_mean_neg",
+          "margin_is_best": false,
+          "margin_beats_mean_version": true,
+          "margin_beats_centroid": true
+        }
+      }
+    },
+    "protein/esm2_650M": {
+      "margin_matches_AT": true,
+      "settings": {
+        "fixed": {
+          "rho": {
+            "max_minus_max": 0.9472527472527472,
+            "mean_minus_mean": 0.6615384615384616,
+            "max_pos_mean_neg": 0.9032967032967033,
+            "mean_pos_max_neg": 0.7230769230769231,
+            "centroid_margin": 0.5208791208791209,
+            "within_class_cohesion": -0.01978021978021978,
+            "cos_to_global_positive_centroid": 0.2967032967032967,
+            "class_size": 0.2923076923076923
+          },
+          "margin_rho": 0.9472527472527472,
+          "best_predictor": "max_minus_max",
+          "margin_is_best": true,
+          "margin_beats_mean_version": true,
+          "margin_beats_centroid": true
+        },
+        "swept": {
+          "rho": {
+            "max_minus_max": 0.8109890109890111,
+            "mean_minus_mean": 0.8461538461538461,
+            "max_pos_mean_neg": 0.7978021978021977,
+            "mean_pos_max_neg": 0.9032967032967033,
+            "centroid_margin": 0.7186813186813187,
+            "within_class_cohesion": 0.27472527472527475,
+            "cos_to_global_positive_centroid": 0.6571428571428571,
+            "class_size": 0.2835164835164835
+          },
+          "margin_rho": 0.8109890109890111,
+          "best_predictor": "mean_pos_max_neg",
+          "margin_is_best": false,
+          "margin_beats_mean_version": false,
+          "margin_beats_centroid": true
+        }
+      }
+    },
+    "image/clip_vit_b32": {
+      "margin_matches_AT": true,
+      "settings": {
+        "fixed": {
+          "rho": {
+            "max_minus_max": 0.5230857885250473,
+            "mean_minus_mean": 0.7669331798892435,
+            "max_pos_mean_neg": 0.6020312614283041,
+            "mean_pos_max_neg": 0.8274388343041483,
+            "centroid_margin": 0.6112511706724802,
+            "within_class_cohesion": 0.49427357213699724,
+            "cos_to_global_positive_centroid": 0.44111503290104503,
+            "class_size": NaN
+          },
+          "margin_rho": 0.5230857885250473,
+          "best_predictor": "mean_pos_max_neg",
+          "margin_is_best": false,
+          "margin_beats_mean_version": false,
+          "margin_beats_centroid": false
+        },
+        "swept": {
+          "rho": {
+            "max_minus_max": 0.5421628895993922,
+            "mean_minus_mean": 0.8330291980408021,
+            "max_pos_mean_neg": 0.6464656173416313,
+            "mean_pos_max_neg": 0.866019977948223,
+            "centroid_margin": 0.647233961560727,
+            "within_class_cohesion": 0.5350076840590636,
+            "cos_to_global_positive_centroid": 0.477958125791209,
+            "class_size": NaN
+          },
+          "margin_rho": 0.5421628895993922,
+          "best_predictor": "mean_pos_max_neg",
+          "margin_is_best": false,
+          "margin_beats_mean_version": false,
+          "margin_beats_centroid": false
+        }
+      }
+    },
+    "image/dinov2_vits14": {
+      "margin_matches_AT": true,
+      "settings": {
+        "fixed": {
+          "rho": {
+            "max_minus_max": 0.6155730031306875,
+            "mean_minus_mean": 0.7119018465880681,
+            "max_pos_mean_neg": 0.42377968270756833,
+            "mean_pos_max_neg": 0.6373742468643121,
+            "centroid_margin": 0.5014766262340097,
+            "within_class_cohesion": 0.28663353270045044,
+            "cos_to_global_positive_centroid": 0.6046723812638755,
+            "class_size": NaN
+          },
+          "margin_rho": 0.6155730031306875,
+          "best_predictor": "mean_minus_mean",
+          "margin_is_best": false,
+          "margin_beats_mean_version": false,
+          "margin_beats_centroid": true
+        },
+        "swept": {
+          "rho": {
+            "max_minus_max": 0.6424644050928676,
+            "mean_minus_mean": 0.6796321642334521,
+            "max_pos_mean_neg": 0.40836514693996157,
+            "mean_pos_max_neg": 0.692501620886781,
+            "centroid_margin": 0.5076712527574405,
+            "within_class_cohesion": 0.4354006099840818,
+            "cos_to_global_positive_centroid": 0.5439746454063834,
+            "class_size": NaN
+          },
+          "margin_rho": 0.6424644050928676,
+          "best_predictor": "mean_pos_max_neg",
+          "margin_is_best": false,
+          "margin_beats_mean_version": false,
+          "margin_beats_centroid": true
+        }
+      }
+    },
+    "protein/esm2_35M": {
+      "margin_matches_AT": true,
+      "settings": {
+        "fixed": {
+          "rho": {
+            "max_minus_max": 0.8901098901098902,
+            "mean_minus_mean": 0.8461538461538461,
+            "max_pos_mean_neg": 0.5428571428571429,
+            "mean_pos_max_neg": 0.6527472527472528,
+            "centroid_margin": 0.5472527472527472,
+            "within_class_cohesion": -0.006593406593406593,
+            "cos_to_global_positive_centroid": 0.3010989010989011,
+            "class_size": 0.22637362637362637
+          },
+          "margin_rho": 0.8901098901098902,
+          "best_predictor": "max_minus_max",
+          "margin_is_best": true,
+          "margin_beats_mean_version": true,
+          "margin_beats_centroid": true
+        },
+        "swept": {
+          "rho": {
+            "max_minus_max": 0.8637362637362638,
+            "mean_minus_mean": 0.8813186813186813,
+            "max_pos_mean_neg": 0.49890109890109896,
+            "mean_pos_max_neg": 0.6791208791208792,
+            "centroid_margin": 0.5736263736263736,
+            "within_class_cohesion": 0.002197802197802198,
+            "cos_to_global_positive_centroid": 0.3274725274725274,
+            "class_size": 0.24395604395604395
+          },
+          "margin_rho": 0.8637362637362638,
+          "best_predictor": "mean_minus_mean",
+          "margin_is_best": false,
+          "margin_beats_mean_version": false,
+          "margin_beats_centroid": true
+        }
+      }
+    }
+  },
+  "mechanism": {
+    "rows": [
+      {
+        "cell": "text/minilm_l6",
+        "setting": "fixed",
+        "rho_margin": 0.9230769230769231,
+        "rho_nearest_positive": 0.8131868131868131,
+        "rho_nearest_negative": -0.23076923076923078,
+        "abs_rho_negative": 0.23076923076923078,
+        "gain_from_subtracting": 0.10989010989011005,
+        "margin_wins": true,
+        "margin_clears": true,
+        "nearest_positive_clears": true
+      },
+      {
+        "cell": "text/minilm_l6",
+        "setting": "swept",
+        "rho_margin": 0.7692307692307693,
+        "rho_nearest_positive": 0.8076923076923077,
+        "rho_nearest_negative": -0.049450549450549455,
+        "abs_rho_negative": 0.049450549450549455,
+        "gain_from_subtracting": -0.038461538461538436,
+        "margin_wins": false,
+        "margin_clears": true,
+        "nearest_positive_clears": true
+      },
+      {
+        "cell": "text/mpnet_base",
+        "setting": "fixed",
+        "rho_margin": 0.8406593406593407,
+        "rho_nearest_positive": 0.7967032967032966,
+        "rho_nearest_negative": -0.3021978021978022,
+        "abs_rho_negative": 0.3021978021978022,
+        "gain_from_subtracting": 0.04395604395604402,
+        "margin_wins": true,
+        "margin_clears": true,
+        "nearest_positive_clears": true
+      },
+      {
+        "cell": "text/mpnet_base",
+        "setting": "swept",
+        "rho_margin": 0.8516483516483516,
+        "rho_nearest_positive": 0.8956043956043955,
+        "rho_nearest_negative": -0.1758241758241758,
+        "abs_rho_negative": 0.1758241758241758,
+        "gain_from_subtracting": -0.04395604395604391,
+        "margin_wins": false,
+        "margin_clears": true,
+        "nearest_positive_clears": true
+      },
+      {
+        "cell": "protein/esm2_650M",
+        "setting": "fixed",
+        "rho_margin": 0.9472527472527472,
+        "rho_nearest_positive": 0.6307692307692307,
+        "rho_nearest_negative": -0.5208791208791209,
+        "abs_rho_negative": 0.5208791208791209,
+        "gain_from_subtracting": 0.31648351648351647,
+        "margin_wins": true,
+        "margin_clears": true,
+        "nearest_positive_clears": true
+      },
+      {
+        "cell": "protein/esm2_650M",
+        "setting": "swept",
+        "rho_margin": 0.8109890109890111,
+        "rho_nearest_positive": 0.7758241758241758,
+        "rho_nearest_negative": -0.2351648351648352,
+        "abs_rho_negative": 0.2351648351648352,
+        "gain_from_subtracting": 0.03516483516483526,
+        "margin_wins": true,
+        "margin_clears": true,
+        "nearest_positive_clears": true
+      },
+      {
+        "cell": "image/clip_vit_b32",
+        "setting": "fixed",
+        "rho_margin": 0.5230857885250473,
+        "rho_nearest_positive": 0.6088981730007894,
+        "rho_nearest_negative": -0.1422843285963201,
+        "abs_rho_negative": 0.1422843285963201,
+        "gain_from_subtracting": -0.08581238447574213,
+        "margin_wins": false,
+        "margin_clears": false,
+        "nearest_positive_clears": true
+      },
+      {
+        "cell": "image/clip_vit_b32",
+        "setting": "swept",
+        "rho_margin": 0.5421628895993922,
+        "rho_nearest_positive": 0.6372454867124832,
+        "rho_nearest_negative": -0.14046292755342976,
+        "abs_rho_negative": 0.14046292755342976,
+        "gain_from_subtracting": -0.09508259711309097,
+        "margin_wins": false,
+        "margin_clears": false,
+        "nearest_positive_clears": true
+      },
+      {
+        "cell": "image/dinov2_vits14",
+        "setting": "fixed",
+        "rho_margin": 0.6155730031306875,
+        "rho_nearest_positive": 0.41062210389035886,
+        "rho_nearest_negative": -0.4014502150068296,
+        "abs_rho_negative": 0.4014502150068296,
+        "gain_from_subtracting": 0.20495089924032867,
+        "margin_wins": true,
+        "margin_clears": true,
+        "nearest_positive_clears": false
+      },
+      {
+        "cell": "image/dinov2_vits14",
+        "setting": "swept",
+        "rho_margin": 0.6424644050928676,
+        "rho_nearest_positive": 0.3661072295708216,
+        "rho_nearest_negative": -0.5176114674113177,
+        "abs_rho_negative": 0.5176114674113177,
+        "gain_from_subtracting": 0.27635717552204603,
+        "margin_wins": true,
+        "margin_clears": true,
+        "nearest_positive_clears": false
+      },
+      {
+        "cell": "protein/esm2_35M",
+        "setting": "fixed",
+        "rho_margin": 0.8901098901098902,
+        "rho_nearest_positive": 0.7978021978021977,
+        "rho_nearest_negative": -0.7846153846153847,
+        "abs_rho_negative": 0.7846153846153847,
+        "gain_from_subtracting": 0.09230769230769242,
+        "margin_wins": true,
+        "margin_clears": true,
+        "nearest_positive_clears": true
+      },
+      {
+        "cell": "protein/esm2_35M",
+        "setting": "swept",
+        "rho_margin": 0.8637362637362638,
+        "rho_nearest_positive": 0.7890109890109891,
+        "rho_nearest_negative": -0.7318681318681319,
+        "abs_rho_negative": 0.7318681318681319,
+        "gain_from_subtracting": 0.07472527472527468,
+        "margin_wins": true,
+        "margin_clears": true,
+        "nearest_positive_clears": true
+      }
+    ],
+    "n": 12,
+    "rho_of_absneg_vs_gain": 0.7412587412587414,
+    "margin_clears_count": 10,
+    "nearest_positive_clears_count": 10,
+    "cells_where_one_term_is_enough": [
+      "image/clip_vit_b32/fixed",
+      "image/clip_vit_b32/swept"
+    ],
+    "reading": "if nearest_positive clears in strictly more cell-settings than margin, the general claim is about a held-out class's distance to its nearest TRAINED class, and the subtraction is a protein-fold refinement rather than part of the general result"
+  },
+  "summary": {
+    "cells": 6,
+    "margin_is_best_predictor": {
+      "fixed": 4,
+      "swept": 0
+    },
+    "margin_beats_mean_version": {
+      "fixed": 4,
+      "swept": 1
+    },
+    "margin_beats_centroid": {
+      "fixed": 5,
+      "swept": 4
+    },
+    "reading": "if margin is NOT the best predictor in most cells, the claim is about a held-out class sitting near the negatives and the paper should say that instead of naming a formula"
+  },
+  "seconds": 32.6
+}
