@@ -5568,6 +5568,34 @@ def abstract_result_census():
     }
 
 
+def manuscript_is_the_live_file():
+    """Does the paper point an editor at the file the audit actually reads?
+
+    🔴 Section 9 said "It is assembled from sections `paper/0*.md`; edit those, not this
+    file" until 2026-10-07. That had been false since 2026-09-30, when MANUSCRIPT.md became
+    the live document and the section files were frozen with a SUPERSEDED banner -- their
+    title still reads *103 corrections*. An entire session's edits went into MANUSCRIPT.md
+    while the document itself told the editor to edit something else.
+
+    🔑 A stale INSTRUCTION is worse than a stale number: the gate catches a drifting number
+    and had nothing at all to say about this one.
+    """
+    man = (ROOT / "paper/MANUSCRIPT.md").read_text()
+    secs = sorted((ROOT / "paper").glob("0*.md"))
+    return {
+        "n_section_files": len(secs),
+        "all_marked_superseded": all("SUPERSEDED" in f.read_text() for f in secs),
+        "all_say_manuscript_is_live": all(
+            "paper/MANUSCRIPT.md` is the live document" in f.read_text() for f in secs),
+        # ⚠️ assertion-only, so a retraction cannot satisfy its own forbid
+        "stale_instruction_gone": "edit those, not this file" not in man,
+        "live_file_stated": "the live\ndocument and the only one the audit reads" in man,
+        # 🔒 and the superseded files must stay OFF the audited surface, or their frozen
+        # numbers would be policed as though they were current
+        "sections_not_audited": not any(str(f.relative_to(ROOT)) in PUBLIC for f in secs),
+    }
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -6678,7 +6706,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 124"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 125"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -8825,6 +8853,17 @@ CLAIMS = [
          v["n"] >= 5 and v["contiguous"] and v["agrees"] and v["summary_doc_agrees"]),
      {"paper/MANUSCRIPT.md": "Five results matter beyond this panel."},
      ["Four results matter beyond this panel"]),
+    ("the paper points an editor at the file the audit reads",
+     manuscript_is_the_live_file,
+     lambda v: v is None or (
+         v["n_section_files"] == 4
+         and v["all_marked_superseded"] and v["all_say_manuscript_is_live"]
+         and v["stale_instruction_gone"] and v["live_file_stated"]
+         and v["sections_not_audited"]),
+     {"paper/MANUSCRIPT.md":
+      "🔒 **This file is the live\ndocument and the only one the audit reads.**"},
+     ["It is assembled from\nsections `paper/0*.md`; edit those, not this file",
+      "edit those, not this file"]),
 ]
 
 

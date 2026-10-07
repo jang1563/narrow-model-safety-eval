@@ -1,7 +1,7 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 124 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 125 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
-`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 152 such
+`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 153 such
 claims. Section references without a document name are to `docs/MECHANISM_GENERALIZATION.md`.
 
 ---
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 124
+written because it caught something. The evidence is a **dated, append-only corrections log of 125
 entries** in which a published number moved, including entries that retract our own findings.
 
 Five results matter beyond this panel.
@@ -1583,7 +1583,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 124 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 125 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1682,7 +1682,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**152 claims** and fails if any number in a public document drifts from the artifact that produced
+**153 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and
@@ -1727,5 +1727,12 @@ forbid strings that match their own disclaimers, and intervals that answer a dif
 the prose asks.
 
 ⚠️ **It is a draft and is on the audited surface**, which means a figure here that drifts
-from its artifact fails the gate in the same way a figure in the write-up does. It is assembled from
-sections `paper/0*.md`; edit those, not this file.
+from its artifact fails the gate in the same way a figure in the write-up does. 🔒 **This file is the live
+document and the only one the audit reads.** 🔴 **Until 2026-10-07 this paragraph named the four `paper/0*.md`
+section files as the place to make edits, and said not to edit this one.** That had been false since
+2026-09-30: those files carry a `SUPERSEDED` banner, hold a frozen partition of an earlier draft — their
+title still reads *103 corrections* — and are kept only for history. ⚠️ **The retraction does not quote
+the old sentence**, because the forbid that polices it would then match the retraction — the defect this
+log has recorded six times. ⚠️ **A stale instruction in a public document is
+the same defect class as a stale number, and it is worse**, because a number that drifts fails the gate
+while an instruction that drifts sends the next editor to the wrong file. It is audited now.

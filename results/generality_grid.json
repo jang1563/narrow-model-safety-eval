@@ -296,24 +296,604 @@
       "tuning_gain": 0.04250643981999358,
       "interpretable_strict": false,
       "fpr_in_band": false
+    },
+    "text/mpnet_base": {
+      "cell": "text/mpnet_base",
+      "dim": 768,
+      "n_classes": 13,
+      "n_positives": 12238,
+      "n_negatives": 5790,
+      "margin": {
+        "comp.graphics": 0.1470716609104268,
+        "comp.os.ms-windows.misc": 0.15134862036846705,
+        "comp.sys.ibm.pc.hardware": 0.11104440845085554,
+        "comp.sys.mac.hardware": 0.10909623746374648,
+        "comp.windows.x": 0.1681986926651485,
+        "rec.autos": 0.06050776887834746,
+        "rec.motorcycles": 0.07228392393178024,
+        "rec.sport.baseball": 0.14163504639923777,
+        "rec.sport.hockey": 0.15786966658847237,
+        "sci.crypt": -0.06445142145442019,
+        "sci.electronics": 0.07821583052618881,
+        "sci.med": 0.018718855698077477,
+        "sci.space": 0.050831282765773235
+      },
+      "nearest_positive": {
+        "comp.graphics": 0.5011468091702064,
+        "comp.os.ms-windows.misc": 0.5321399496600591,
+        "comp.sys.ibm.pc.hardware": 0.5570003880033779,
+        "comp.sys.mac.hardware": 0.5284968229922601,
+        "comp.windows.x": 0.47429945337476154,
+        "rec.autos": 0.4616669527774693,
+        "rec.motorcycles": 0.452277063899539,
+        "rec.sport.baseball": 0.4528990403463774,
+        "rec.sport.hockey": 0.47019108851713143,
+        "sci.crypt": 0.4237710701751014,
+        "sci.electronics": 0.46237530951774325,
+        "sci.med": 0.3546078251865624,
+        "sci.space": 0.4071699538073909
+      },
+      "nearest_negative": {
+        "comp.graphics": 0.35407514825977965,
+        "comp.os.ms-windows.misc": 0.380791329291592,
+        "comp.sys.ibm.pc.hardware": 0.44595597955252236,
+        "comp.sys.mac.hardware": 0.41940058552851356,
+        "comp.windows.x": 0.30610076070961306,
+        "rec.autos": 0.40115918389912186,
+        "rec.motorcycles": 0.3799931399677588,
+        "rec.sport.baseball": 0.31126399394713955,
+        "rec.sport.hockey": 0.3123214219286591,
+        "sci.crypt": 0.4882224916295215,
+        "sci.electronics": 0.38415947899155445,
+        "sci.med": 0.335888969488485,
+        "sci.space": 0.3563386710416177
+      },
+      "class_size": {
+        "comp.graphics": 940,
+        "comp.os.ms-windows.misc": 934,
+        "comp.sys.ibm.pc.hardware": 956,
+        "comp.sys.mac.hardware": 918,
+        "comp.windows.x": 961,
+        "rec.autos": 918,
+        "rec.motorcycles": 942,
+        "rec.sport.baseball": 926,
+        "rec.sport.hockey": 953,
+        "sci.crypt": 948,
+        "sci.electronics": 945,
+        "sci.med": 951,
+        "sci.space": 946
+      },
+      "settings": {
+        "fixed": {
+          "recovery": {
+            "comp.graphics": {
+              "n": 940,
+              "mean": 0.7010283687943264,
+              "sd": 0.06764893956418877
+            },
+            "comp.os.ms-windows.misc": {
+              "n": 934,
+              "mean": 0.6353319057815845,
+              "sd": 0.055833046104356195
+            },
+            "comp.sys.ibm.pc.hardware": {
+              "n": 956,
+              "mean": 0.6632845188284519,
+              "sd": 0.06293461314419072
+            },
+            "comp.sys.mac.hardware": {
+              "n": 918,
+              "mean": 0.6582425562817719,
+              "sd": 0.05892009351155707
+            },
+            "comp.windows.x": {
+              "n": 961,
+              "mean": 0.7523759972251126,
+              "sd": 0.06378653772340964
+            },
+            "rec.autos": {
+              "n": 918,
+              "mean": 0.44081336238198976,
+              "sd": 0.07205877076716842
+            },
+            "rec.motorcycles": {
+              "n": 942,
+              "mean": 0.522965322009908,
+              "sd": 0.08046501629007671
+            },
+            "rec.sport.baseball": {
+              "n": 926,
+              "mean": 0.6289776817854573,
+              "sd": 0.08257885097395667
+            },
+            "rec.sport.hockey": {
+              "n": 953,
+              "mean": 0.5849947534102832,
+              "sd": 0.1159866697607005
+            },
+            "sci.crypt": {
+              "n": 948,
+              "mean": 0.31385372714486626,
+              "sd": 0.07478389301892079
+            },
+            "sci.electronics": {
+              "n": 945,
+              "mean": 0.5308994708994709,
+              "sd": 0.06420216542239675
+            },
+            "sci.med": {
+              "n": 951,
+              "mean": 0.47599018576936564,
+              "sd": 0.08727866246881051
+            },
+            "sci.space": {
+              "n": 946,
+              "mean": 0.5191331923890063,
+              "sd": 0.07788958757027134
+            }
+          },
+          "chosen_C": {
+            "comp.graphics": 1.0,
+            "comp.os.ms-windows.misc": 1.0,
+            "comp.sys.ibm.pc.hardware": 1.0,
+            "comp.sys.mac.hardware": 1.0,
+            "comp.windows.x": 1.0,
+            "rec.autos": 1.0,
+            "rec.motorcycles": 1.0,
+            "rec.sport.baseball": 1.0,
+            "rec.sport.hockey": 1.0,
+            "sci.crypt": 1.0,
+            "sci.electronics": 1.0,
+            "sci.med": 1.0,
+            "sci.space": 1.0
+          },
+          "mean_recovery": 0.5713762340539689,
+          "AT1_rho": 0.8406593406593407,
+          "perm_p": 0.00024998750062496874,
+          "significant": true,
+          "n_classes_scored": 13,
+          "test_fpr": {
+            "min": 0.04046632124352332,
+            "max": 0.04471502590673575
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": false,
+          "rivals": {
+            "class_size": 0.12104550653376049,
+            "nearest_positive": 0.7967032967032966,
+            "nearest_negative": -0.3021978021978022
+          },
+          "AT2_beats_all_rivals": true,
+          "verdict": "clears"
+        },
+        "swept": {
+          "recovery": {
+            "comp.graphics": {
+              "n": 940,
+              "mean": 0.8774822695035461,
+              "sd": 0.03308810032070487
+            },
+            "comp.os.ms-windows.misc": {
+              "n": 934,
+              "mean": 0.8357958600999287,
+              "sd": 0.04252039587229584
+            },
+            "comp.sys.ibm.pc.hardware": {
+              "n": 956,
+              "mean": 0.8728382147838217,
+              "sd": 0.04170252235922713
+            },
+            "comp.sys.mac.hardware": {
+              "n": 918,
+              "mean": 0.808242556281772,
+              "sd": 0.047275704652216304
+            },
+            "comp.windows.x": {
+              "n": 961,
+              "mean": 0.8436697884148457,
+              "sd": 0.04117114491006011
+            },
+            "rec.autos": {
+              "n": 918,
+              "mean": 0.6367828612926653,
+              "sd": 0.06926259454707065
+            },
+            "rec.motorcycles": {
+              "n": 942,
+              "mean": 0.6686482661004953,
+              "sd": 0.04835705363855791
+            },
+            "rec.sport.baseball": {
+              "n": 926,
+              "mean": 0.7426925845932325,
+              "sd": 0.07514626251608413
+            },
+            "rec.sport.hockey": {
+              "n": 953,
+              "mean": 0.7661070304302203,
+              "sd": 0.08998363138661736
+            },
+            "sci.crypt": {
+              "n": 948,
+              "mean": 0.3377988748241913,
+              "sd": 0.04277542509906497
+            },
+            "sci.electronics": {
+              "n": 945,
+              "mean": 0.7118165784832452,
+              "sd": 0.06476217505535302
+            },
+            "sci.med": {
+              "n": 951,
+              "mean": 0.4735015772870662,
+              "sd": 0.07501674557782705
+            },
+            "sci.space": {
+              "n": 946,
+              "mean": 0.6360465116279069,
+              "sd": 0.061043193854727645
+            }
+          },
+          "chosen_C": {
+            "comp.graphics": 0.001,
+            "comp.os.ms-windows.misc": 0.001,
+            "comp.sys.ibm.pc.hardware": 0.001,
+            "comp.sys.mac.hardware": 0.001,
+            "comp.windows.x": 0.01,
+            "rec.autos": 0.001,
+            "rec.motorcycles": 0.001,
+            "rec.sport.baseball": 0.01,
+            "rec.sport.hockey": 0.001,
+            "sci.crypt": 0.001,
+            "sci.electronics": 0.001,
+            "sci.med": 0.001,
+            "sci.space": 0.001
+          },
+          "mean_recovery": 0.7085709979786875,
+          "AT1_rho": 0.8516483516483516,
+          "perm_p": 0.00024998750062496874,
+          "significant": true,
+          "n_classes_scored": 13,
+          "test_fpr": {
+            "min": 0.037547495682210705,
+            "max": 0.041675302245250435
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": false,
+          "rivals": {
+            "class_size": 0.046767582069862,
+            "nearest_positive": 0.8956043956043955,
+            "nearest_negative": -0.1758241758241758
+          },
+          "AT2_beats_all_rivals": false,
+          "verdict": "clears"
+        }
+      },
+      "jobs": 8,
+      "interpretable_strict": false,
+      "interpretable": true,
+      "fpr_in_band": false,
+      "clears_both_settings": true,
+      "fails_both_settings": false,
+      "beats_rivals_both": false,
+      "tuning_gain": 0.13719476392471863
+    },
+    "protein/esm2_650M": {
+      "cell": "protein/esm2_650M",
+      "dim": 1280,
+      "n_classes": 14,
+      "n_positives": 12989,
+      "n_negatives": 33456,
+      "margin": {
+        "Adherence": 0.009537998924971222,
+        "Antimicrobial activity/Competitive advantage": -0.0028241274510984967,
+        "Biofilm": 0.00597886646952118,
+        "Effector delivery system": 0.0023568155366727045,
+        "Exoenzyme": 0.004583934541537062,
+        "Exotoxin": 0.003711244146701393,
+        "Immune modulation": 0.0018912044839453914,
+        "Invasion": 0.008524275070091108,
+        "Motility": 0.012125200423848488,
+        "Nutritional/Metabolic factor": -0.00041587314170055914,
+        "Others": 0.018162253094242457,
+        "Post-translational modification": -0.002552637493598582,
+        "Regulation": -0.0019546414207048755,
+        "Stress survival": 0.005163222368103276
+      },
+      "nearest_positive": {
+        "Adherence": 0.9773521872435291,
+        "Antimicrobial activity/Competitive advantage": 0.9697021035031929,
+        "Biofilm": 0.9814591031131311,
+        "Effector delivery system": 0.9787248983090802,
+        "Exoenzyme": 0.9811416833220067,
+        "Exotoxin": 0.9803223796339386,
+        "Immune modulation": 0.9777648841591088,
+        "Invasion": 0.9835297983960122,
+        "Motility": 0.9784748443006911,
+        "Nutritional/Metabolic factor": 0.9763840151542474,
+        "Others": 0.9876083859784277,
+        "Post-translational modification": 0.9722496393736801,
+        "Regulation": 0.9763571615335804,
+        "Stress survival": 0.9723582331119578
+      },
+      "nearest_negative": {
+        "Adherence": 0.9678141883185578,
+        "Antimicrobial activity/Competitive advantage": 0.9725262309542914,
+        "Biofilm": 0.9754802366436099,
+        "Effector delivery system": 0.9763680827724075,
+        "Exoenzyme": 0.9765577487804699,
+        "Exotoxin": 0.9766111354872371,
+        "Immune modulation": 0.9758736796751635,
+        "Invasion": 0.9750055233259209,
+        "Motility": 0.9663496438768425,
+        "Nutritional/Metabolic factor": 0.976799888295948,
+        "Others": 0.9694461328841854,
+        "Post-translational modification": 0.9748022768672788,
+        "Regulation": 0.9783118029542852,
+        "Stress survival": 0.9671950107438545
+      },
+      "class_size": {
+        "Adherence": 2259,
+        "Antimicrobial activity/Competitive advantage": 24,
+        "Biofilm": 226,
+        "Effector delivery system": 4266,
+        "Exoenzyme": 210,
+        "Exotoxin": 1126,
+        "Immune modulation": 1983,
+        "Invasion": 84,
+        "Motility": 1121,
+        "Nutritional/Metabolic factor": 1123,
+        "Others": 187,
+        "Post-translational modification": 66,
+        "Regulation": 128,
+        "Stress survival": 186
+      },
+      "settings": {
+        "fixed": {
+          "recovery": {
+            "Adherence": {
+              "n": 2259,
+              "mean": 0.5658698539176626,
+              "sd": 0.08120821341003953
+            },
+            "Antimicrobial activity/Competitive advantage": {
+              "n": 24,
+              "mean": 0.13194444444444445,
+              "sd": 0.14395686570160837
+            },
+            "Biofilm": {
+              "n": 226,
+              "mean": 0.4588495575221238,
+              "sd": 0.0736397867585703
+            },
+            "Effector delivery system": {
+              "n": 4266,
+              "mean": 0.4494764807001095,
+              "sd": 0.05923434757450118
+            },
+            "Exoenzyme": {
+              "n": 210,
+              "mean": 0.423015873015873,
+              "sd": 0.10177933239066586
+            },
+            "Exotoxin": {
+              "n": 1126,
+              "mean": 0.44754292480757846,
+              "sd": 0.12868831553077395
+            },
+            "Immune modulation": {
+              "n": 1983,
+              "mean": 0.31106068246764174,
+              "sd": 0.0567069395426903
+            },
+            "Invasion": {
+              "n": 84,
+              "mean": 0.5543650793650793,
+              "sd": 0.09929197180812716
+            },
+            "Motility": {
+              "n": 1121,
+              "mean": 0.4767469521260779,
+              "sd": 0.08283194259149695
+            },
+            "Nutritional/Metabolic factor": {
+              "n": 1123,
+              "mean": 0.2947165330958742,
+              "sd": 0.07173936891598594
+            },
+            "Others": {
+              "n": 187,
+              "mean": 0.7024955436720143,
+              "sd": 0.06390138362344797
+            },
+            "Post-translational modification": {
+              "n": 66,
+              "mean": 0.2277777777777778,
+              "sd": 0.13378399031386476
+            },
+            "Regulation": {
+              "n": 128,
+              "mean": 0.22890625,
+              "sd": 0.10415398180667576
+            },
+            "Stress survival": {
+              "n": 186,
+              "mean": 0.5310035842293906,
+              "sd": 0.07910005861045136
+            }
+          },
+          "chosen_C": {
+            "Adherence": 1.0,
+            "Antimicrobial activity/Competitive advantage": 1.0,
+            "Biofilm": 1.0,
+            "Effector delivery system": 1.0,
+            "Exoenzyme": 1.0,
+            "Exotoxin": 1.0,
+            "Immune modulation": 1.0,
+            "Invasion": 1.0,
+            "Motility": 1.0,
+            "Nutritional/Metabolic factor": 1.0,
+            "Others": 1.0,
+            "Post-translational modification": 1.0,
+            "Regulation": 1.0,
+            "Stress survival": 1.0
+          },
+          "mean_recovery": 0.41455510979583193,
+          "AT1_rho": 0.9472527472527472,
+          "perm_p": 4.999750012499375e-05,
+          "significant": true,
+          "n_classes_scored": 14,
+          "test_fpr": {
+            "min": 0.04953969392635103,
+            "max": 0.053377570540411284
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": 0.2923076923076923,
+            "nearest_positive": 0.6307692307692307,
+            "nearest_negative": -0.5208791208791209
+          },
+          "AT2_beats_all_rivals": true,
+          "verdict": "clears"
+        },
+        "swept": {
+          "recovery": {
+            "Adherence": {
+              "n": 2259,
+              "mean": 0.786778810683193,
+              "sd": 0.044596831347224655
+            },
+            "Antimicrobial activity/Competitive advantage": {
+              "n": 24,
+              "mean": 0.15694444444444444,
+              "sd": 0.09134172640911267
+            },
+            "Biofilm": {
+              "n": 226,
+              "mean": 0.6451327433628319,
+              "sd": 0.04778930590693146
+            },
+            "Effector delivery system": {
+              "n": 4266,
+              "mean": 0.6171823722456634,
+              "sd": 0.05059578822243306
+            },
+            "Exoenzyme": {
+              "n": 210,
+              "mean": 0.6617460317460317,
+              "sd": 0.06595305772071698
+            },
+            "Exotoxin": {
+              "n": 1126,
+              "mean": 0.6889579632918886,
+              "sd": 0.10228954539697697
+            },
+            "Immune modulation": {
+              "n": 1983,
+              "mean": 0.3775760632038997,
+              "sd": 0.04006895987547973
+            },
+            "Invasion": {
+              "n": 84,
+              "mean": 0.7492063492063491,
+              "sd": 0.040634450257266586
+            },
+            "Motility": {
+              "n": 1121,
+              "mean": 0.5853404698186143,
+              "sd": 0.06841230044191039
+            },
+            "Nutritional/Metabolic factor": {
+              "n": 1123,
+              "mean": 0.40296823983377855,
+              "sd": 0.05497188572621714
+            },
+            "Others": {
+              "n": 187,
+              "mean": 0.8137254901960785,
+              "sd": 0.036811125763684956
+            },
+            "Post-translational modification": {
+              "n": 66,
+              "mean": 0.4237373737373738,
+              "sd": 0.15848560437718873
+            },
+            "Regulation": {
+              "n": 128,
+              "mean": 0.30572916666666666,
+              "sd": 0.08823900264420309
+            },
+            "Stress survival": {
+              "n": 186,
+              "mean": 0.539605734767025,
+              "sd": 0.020140371465356705
+            }
+          },
+          "chosen_C": {
+            "Adherence": 0.01,
+            "Antimicrobial activity/Competitive advantage": 0.01,
+            "Biofilm": 0.01,
+            "Effector delivery system": 0.01,
+            "Exoenzyme": 0.01,
+            "Exotoxin": 0.01,
+            "Immune modulation": 0.01,
+            "Invasion": 0.01,
+            "Motility": 0.01,
+            "Nutritional/Metabolic factor": 0.01,
+            "Others": 0.01,
+            "Post-translational modification": 0.01,
+            "Regulation": 0.01,
+            "Stress survival": 0.01
+          },
+          "mean_recovery": 0.5539022323717028,
+          "AT1_rho": 0.8109890109890111,
+          "perm_p": 0.0009499525023748813,
+          "significant": true,
+          "n_classes_scored": 14,
+          "test_fpr": {
+            "min": 0.04878646580583453,
+            "max": 0.05054100908656144
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": 0.2835164835164835,
+            "nearest_positive": 0.7758241758241758,
+            "nearest_negative": -0.2351648351648352
+          },
+          "AT2_beats_all_rivals": true,
+          "verdict": "clears"
+        }
+      },
+      "jobs": 8,
+      "interpretable_strict": true,
+      "interpretable": true,
+      "fpr_in_band": true,
+      "clears_both_settings": true,
+      "fails_both_settings": false,
+      "beats_rivals_both": true,
+      "tuning_gain": 0.13934712257587084
     }
   },
   "verdict_block": {
     "cells_total": 6,
-    "cells_run": 1,
-    "cells_interpretable": 1,
+    "cells_run": 3,
+    "cells_interpretable": 3,
     "uninterpretable": [],
-    "AT1_clears": 1,
-    "AT1_denominator": 1,
-    "AT1_clears_strict": 0,
-    "AT1_denominator_strict": 0,
+    "AT1_clears": 3,
+    "AT1_denominator": 3,
+    "AT1_clears_strict": 1,
+    "AT1_denominator_strict": 1,
     "cells_failing_AT0b": [
-      "text/minilm_l6"
+      "text/minilm_l6",
+      "text/mpnet_base"
     ],
     "readings": "AT1_clears applies AT-0a alone, per amendment 2, because AT-1 is a within-cell ordering; AT1_clears_strict applies section 3 as frozen (AT-0a and AT-0b). AT-0b gates P4, the cross-cell level claim.",
     "AT1b_modalities_dead_on_both_encoders": [],
-    "AT2_beats_rivals": 0,
+    "AT2_beats_rivals": 1,
     "complete": false,
-    "verdict": "INCOMPLETE -- 1 of 6 cells; the grid is the unit of the claim and no verdict is read until all six land"
-  }
+    "verdict": "INCOMPLETE -- 3 of 6 cells; the grid is the unit of the claim and no verdict is read until all six land"
+  },
+  "seconds": 714.0
 }

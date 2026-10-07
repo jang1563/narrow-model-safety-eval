@@ -8792,3 +8792,62 @@ failed it. 🔒 **Replaced with a named allowlist, `UNRUN`, that requires a writ
 fails in **both** directions — an unscored preregistration with no stated reason, and an entry in `UNRUN`
 that has since acquired a scored artifact. 🔴 **Both calibrated by breaking them.** ⚠️ **Adding a name is
 the only way to silence the check, which is deliberate**: it turns an omission into a written claim.
+
+---
+
+## 2026-10-07 (one hundred and twenty-first entry) — The paper told its editor to edit the wrong file, for a week
+
+### 🔴 A stale instruction, which is worse than a stale number
+
+§ 9 closed with a line naming the four `paper/0*.md` section files as the place to make edits and saying
+not to edit `MANUSCRIPT.md`. ⚠️ **That had been false since 2026-09-30**, when `MANUSCRIPT.md` became the
+live document and the section files were frozen with a `SUPERSEDED` banner — their title still reads
+*103 corrections* against the live *124*. 🔴 **An entire session of edits went into `MANUSCRIPT.md` while
+the document itself said to edit something else**, and the only reason nothing was lost is that the audit
+reads `MANUSCRIPT.md` and would have failed had the edits gone elsewhere.
+
+🔑 **The gate catches a number that drifts and had nothing to say about an instruction that drifts.**
+Claim 153 now checks that the live file is named, that all four section files carry the banner and point
+at `MANUSCRIPT.md`, and that the superseded files stay **off** the audited surface so their frozen numbers
+are not policed as current. ⚠️ **Calibrated both ways**: restoring the instruction fails the gate, and so
+does removing a section file's banner.
+
+### 🔴 The forbid matched its own retraction — the seventh time
+
+The first retraction **quoted** the stale sentence, so the forbid policing it matched the retraction.
+⚠️ **Entries 76, 78, 83, 86, 114 and study AQ's band label are the others.** 🔒 **The fix this time was
+not a narrower forbid but a retraction that does not reproduce the string**: the paragraph now *describes*
+what the old sentence said. 🔑 **That is the first time the collision was resolved on the prose side
+rather than the predicate side**, and it is the cheaper of the two.
+
+### ⚠️ A gate failure that was not one
+
+One gate run reported `pytest=1` with 53 dots and no summary line — an **interrupted** run, killed when
+background jobs were stopped, not a failing test. 🔒 **Re-run clean: `audit=0 pytest=0 ruff=0`.**
+⚠️ **A truncated test run and a failing one differ only in the summary line**, and the exit code reads
+the same.
+
+### 🔒 Study AT's parallelism, and what verifying it proved
+
+The folds were ~8 hours serially. Per-class parallelism is numerically exact — same seeds, same
+partitions, no shared state — and `--verify-parallel` **checks that against an already-scored cell**
+rather than asserting it: bit-for-bit equal on every recovery, every selected `C`, every *ρ* and every FPR.
+
+🔴 **Then the workers were found oversubscribing.** Eight processes each running multi-threaded BLAS on
+eight cores drove the load average to **214**. Pinning one BLAS thread per worker cut the cell from
+**416.3s to 122.3s** — **3.4×** — and 🔒 **the bit-identity check still passed**, which is the more useful
+result: these numbers do not depend on BLAS reduction order.
+
+### ⚠️ Two things that were simply over-specified
+
+🔴 **`src/139` never scored its own declared predictions**, so the grid could have completed without P1–P4
+entering the record — and `src/134` discovers studies *by* their `predictions` dict, so the study would
+have been silently absent. 🔒 Added, with each of the four driven **both** ways in the selftest, including
+that AT-0b **gates** P4 and that fewer than three in-band cells makes it unscorable rather than quietly
+computed on the rest.
+
+🔴 **The ProtT5 job requested `--gres=gpu:h100:1`**, pinning it to the one H100 node, and slurm put its
+start **1.5 days** out. ProtT5-XL is ~3B parameters — ~6 GB in fp16 — so an A40 or A100 is ample and the
+type was never load-bearing. 🔒 Relaxed to `--gres=gpu:1`; the estimate moved to the same evening. ⚠️ **The
+submit script existed only on the cluster's scratch copy and not in the repository**, so the fix is now
+tracked.

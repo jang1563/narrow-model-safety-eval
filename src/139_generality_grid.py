@@ -298,10 +298,27 @@ def score_cell(cell, seeds, m30, m133, jobs=1):
             tasks.append((cat, ci, h, pos[y != cat], setting))
         if jobs > 1:
             import concurrent.futures as cf
-            with cf.ProcessPoolExecutor(
-                    max_workers=jobs, initializer=_winit,
-                    initargs=(str(mm), X.shape, np.float64, union, test, seeds)) as ex:
-                got = list(ex.map(_one_class, tasks))
+            import os
+            # 🔴 Each worker ran multi-threaded BLAS, so 8 processes x 8 threads thrashed 8
+            # cores -- load average 214. Process parallelism wants ONE BLAS thread per
+            # worker. Set before the pool spawns: with the `spawn` start method children
+            # inherit os.environ at spawn time, while the parent's already-loaded BLAS keeps
+            # its threads for the one-off margin matmuls.
+            keep = {k: os.environ.get(k) for k in
+                    ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
+                     "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS")}
+            os.environ.update({k: "1" for k in keep})
+            try:
+                with cf.ProcessPoolExecutor(
+                        max_workers=jobs, initializer=_winit,
+                        initargs=(str(mm), X.shape, np.float64, union, test, seeds)) as ex:
+                    got = list(ex.map(_one_class, tasks))
+            finally:
+                for k, was in keep.items():
+                    if was is None:
+                        os.environ.pop(k, None)
+                    else:
+                        os.environ[k] = was
         else:
             _winit_serial(X, union, test, seeds, m133)
             got = [_one_class(t) for t in tasks]
@@ -392,6 +409,80 @@ def derived_flags(F, S):
     }
 
 
+def score_predictions(cells, m30):
+    """Section 5's four predictions, scored from the grid. Returns None until it is complete.
+
+    🔒 The grid is the unit of the claim, so no prediction is scored on a partial grid --
+    the same rule the verdict follows.
+    🔒 P4 is gated on AT-0b per amendment 2: it is the one CROSS-CELL LEVEL claim here, which
+    is what AT-0b was always for. Both the gated and ungated numbers are reported.
+    """
+    scored = {k: v for k, v in cells.items() if k in CELLS}
+    if len(scored) != len(CELLS):
+        return None
+    v = verdict(cells)
+
+    # P2: the weakest modality, by mean rho over its cells and both settings
+    by_mod = {}
+    for k, cv in scored.items():
+        by_mod.setdefault(k.split("/")[0], []).extend(
+            cv["settings"][s]["AT1_rho"] for s in ("fixed", "swept"))
+    mod_mean = {m: float(np.mean(r)) for m, r in by_mod.items()}
+    weakest = min(mod_mean, key=mod_mean.get)
+
+    # P3: in every interpretable cell, the lowest-margin class has margin <= 0 and sits in
+    # the bottom third of that cell's recovery ranking
+    p3 = {}
+    for k, cv in scored.items():
+        if not cv["interpretable"]:
+            continue
+        low = min(cv["margin"], key=cv["margin"].get)
+        per = {}
+        for setting in ("fixed", "swept"):
+            rec = cv["settings"][setting]["recovery"]
+            if low not in rec:
+                per[setting] = None
+                continue
+            order = sorted(rec, key=lambda c: rec[c]["mean"])
+            per[setting] = bool(cv["margin"][low] <= 0.0
+                                and order.index(low) < max(1, len(order) // 3))
+        p3[k] = {"lowest_margin_class": low, "margin": cv["margin"][low], "by_setting": per}
+
+    # P4: tuning gain against embedding dimension, across cells
+    def gain_vs_dim(keys):
+        if len(keys) < 3:
+            return None
+        return m30._spearman([scored[k]["dim"] for k in keys],
+                             [scored[k]["tuning_gain"] for k in keys])
+    gated = sorted(k for k in scored if scored[k].get("fpr_in_band"))
+    rho_gated, rho_all = gain_vs_dim(gated), gain_vs_dim(sorted(scored))
+
+    return {
+        "P1_AT1_at_least_5_of_6": {
+            "kind": "derived",
+            "held": bool(v["AT1_clears"] >= 5),
+            "values": {"amended": [v["AT1_clears"], v["AT1_denominator"]],
+                       "strict": [v["AT1_clears_strict"], v["AT1_denominator_strict"]]}},
+        "P2_image_cells_are_the_weakest_modality": {
+            "kind": "reasoned",
+            "held": bool(weakest == "image"),
+            "values": {"mean_rho_by_modality": mod_mean, "weakest": weakest}},
+        "P3_floor_class_has_nonpositive_margin_and_bottom_third_recovery": {
+            "kind": "derived",
+            "held": bool(p3) and all(x["by_setting"][s] is True
+                                     for x in p3.values() for s in ("fixed", "swept")),
+            "values": p3},
+        "P4_tuning_gain_tracks_embedding_dimension": {
+            "kind": "derived",
+            "held": bool(rho_gated is not None and rho_gated >= 0.5),
+            "values": {"rho_AT0b_gated": rho_gated, "cells_gated": gated,
+                       "rho_all_cells": rho_all,
+                       "note": ("AT-0b gates this per amendment 2: it is a cross-cell LEVEL "
+                                "claim. Both numbers are reported; the gated one is primary. "
+                                "None means fewer than three cells qualified.")}},
+    }
+
+
 def verdict(cells):
     """AT-1 and AT-1b, read as a conjunction. Uninterpretable cells leave the denominator."""
     scored = {k: v for k, v in cells.items() if k in CELLS}
@@ -455,6 +546,9 @@ def save(out, mine):
         cells[k] = out["cells"][k]
     merged = {**disk, **out, "cells": cells}
     merged["verdict_block"] = verdict(cells)
+    pr = score_predictions(cells, load("30_margin_across_arms.py"))
+    if pr is not None:
+        merged["predictions"] = pr
     OUT.write_text(json.dumps(merged, indent=2) + "\n")
     return merged
 
@@ -573,6 +667,86 @@ def selftest():
     finally:
         OUT = keep
 
+    # 🔒 section 5's predictions, each driven BOTH ways. Untested prediction scoring is how a
+    # study reports a verdict nobody checked.
+    def gridcell(dim, rho, gain, low_margin, low_is_worst, fpr=True):
+        """A synthetic cell with just the fields score_predictions reads."""
+        cats = ["z", "b", "c", "d", "e", "f"]
+        mar = {c: 0.5 for c in cats}
+        mar["z"] = low_margin
+        rec = {c: {"mean": 0.9 - 0.01 * i} for i, c in enumerate(cats)}
+        rec["z"] = {"mean": 0.01 if low_is_worst else 0.99}
+        st = {"AT1_rho": rho, "recovery": rec,
+              "AT0a_mean_recovery_over_20pct": True, "AT0b_fpr_in_band": fpr,
+              "verdict": "clears" if rho >= BAND_OK else "fails",
+              "AT2_beats_all_rivals": True}
+        cv = {"dim": dim, "margin": mar, "tuning_gain": gain,
+              "settings": {"fixed": dict(st), "swept": dict(st)}}
+        cv.update(preconditions(cv["settings"]["fixed"], cv["settings"]["swept"]))
+        cv.update(derived_flags(cv["settings"]["fixed"], cv["settings"]["swept"]))
+        return cv
+
+    # all six clear, image weakest, floor class negative-margin and worst, gain tracks dim
+    dims = {"protein/esm2_650M": 1280, "protein/prott5_xl": 1024,
+            "text/minilm_l6": 384, "text/mpnet_base": 768,
+            "image/clip_vit_b32": 512, "image/dinov2_vits14": 384}
+    g = {k: gridcell(dims[k], 0.7 if k.startswith("image") else 0.9,
+                     dims[k] / 10000.0, -0.1, True) for k in CELLS}
+    pr = score_predictions(g, m30)
+    if pr is None:
+        print("  XX score_predictions returned None on a complete grid")
+        ok = False
+    else:
+        for name, want in (("P1_AT1_at_least_5_of_6", True),
+                           ("P2_image_cells_are_the_weakest_modality", True),
+                           ("P3_floor_class_has_nonpositive_margin_and_bottom_third_recovery",
+                            True),
+                           ("P4_tuning_gain_tracks_embedding_dimension", True)):
+            if pr[name]["held"] is not want:
+                print(f"  XX {name} = {pr[name]['held']}, expected {want}: "
+                      f"{pr[name]['values']}")
+                ok = False
+    # now drive each one the other way
+    g2 = {k: gridcell(dims[k], 0.1 if k.startswith("image") else 0.9,
+                      dims[k] / 10000.0, -0.1, True) for k in CELLS}
+    if score_predictions(g2, m30)["P1_AT1_at_least_5_of_6"]["held"]:
+        print("  XX P1 held with only 4 of 6 clearing")
+        ok = False
+    g3 = {k: gridcell(dims[k], 0.9 if k.startswith("image") else 0.7,
+                      dims[k] / 10000.0, -0.1, True) for k in CELLS}
+    if score_predictions(g3, m30)["P2_image_cells_are_the_weakest_modality"]["held"]:
+        print("  XX P2 held with image the STRONGEST modality")
+        ok = False
+    # floor class with a POSITIVE margin must break P3
+    g4 = dict(g)
+    g4["text/minilm_l6"] = gridcell(384, 0.9, 0.0384, +0.2, True)
+    if score_predictions(g4, m30)["P3_floor_class_has_nonpositive_margin_and_bottom_third_recovery"]["held"]:
+        print("  XX P3 held with a positive-margin floor class")
+        ok = False
+    # floor class that is the BEST recovered must break P3 too
+    g5 = dict(g)
+    g5["text/mpnet_base"] = gridcell(768, 0.9, 0.0768, -0.1, False)
+    if score_predictions(g5, m30)["P3_floor_class_has_nonpositive_margin_and_bottom_third_recovery"]["held"]:
+        print("  XX P3 held with the floor class the best recovered")
+        ok = False
+    # gain running AGAINST dimension must break P4
+    g6 = {k: gridcell(dims[k], 0.9, -dims[k] / 10000.0, -0.1, True) for k in CELLS}
+    p4 = score_predictions(g6, m30)["P4_tuning_gain_tracks_embedding_dimension"]
+    if p4["held"] or p4["values"]["rho_AT0b_gated"] > -0.5:
+        print(f"  XX P4 held with gain running against dimension: {p4['values']}")
+        ok = False
+    # 🔒 and AT-0b must GATE P4: with fewer than three cells in band it is unscorable, not
+    # silently computed on the rest
+    g7 = {k: gridcell(dims[k], 0.9, dims[k] / 10000.0, -0.1, True,
+                      fpr=k.startswith("protein")) for k in CELLS}
+    p4 = score_predictions(g7, m30)["P4_tuning_gain_tracks_embedding_dimension"]
+    if p4["values"]["rho_AT0b_gated"] is not None or p4["held"]:
+        print(f"  XX P4 was scored on 2 in-band cells: {p4['values']}")
+        ok = False
+    if p4["values"]["rho_all_cells"] is None:
+        print("  XX P4 does not report the ungated number alongside")
+        ok = False
+
     # and an incomplete grid must refuse to return a verdict at all
     v = verdict({k: fake[k] for k in list(CELLS)[:4]})
     if not v["verdict"].startswith("INCOMPLETE") or v["complete"]:
@@ -682,6 +856,9 @@ def main():
         if before != after:
             raise SystemExit("XX refreshing flags changed a stored setting; it must not")
         d["verdict_block"] = verdict(d["cells"])
+        pr = score_predictions(d["cells"], m30)
+        if pr is not None:
+            d["predictions"] = pr
         OUT.write_text(json.dumps(d, indent=2) + "\n")
         print(f"  AT-1 {d['verdict_block']['AT1_clears']}/"
               f"{d['verdict_block']['AT1_denominator']} amended, "
