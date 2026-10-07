@@ -73,6 +73,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--batch", type=int, default=4)
+    ap.add_argument("--no-half", action="store_true",
+                    help="keep the checkpoint's mixed fp16/fp32 dtypes instead of matching "
+                         "the gate reference's uniform fp16; for diagnosing the gate only")
     a = ap.parse_args()
     if a.selftest:
         return selftest()
@@ -85,6 +88,18 @@ def main():
           flush=True)
     tok = T5Tokenizer.from_pretrained(MODEL, do_lower_case=False, legacy=True)
     model = T5EncoderModel.from_pretrained(MODEL).to(dev).eval()
+    # 🔴 This file loaded the model WITHOUT halving while its gate compares against
+    # `embeddings_negative_v3_prott5_xl.npy`, which `src/02g.main()` produced from a
+    # `.half()`-ed model. So the precisions never matched and the gate could not pass on any
+    # device -- it had simply never run, because the cluster job stayed queued. Found locally
+    # at a delta of 2.441e-04 against a 5e-05 tolerance.
+    # 🔒 The fix is to reproduce the REFERENCE's dtype, not to relax the tolerance. Transformers
+    # 5.x keeps per-tensor checkpoint dtypes, so this model arrives as an fp16/fp32 MIX; the
+    # reference is uniformly fp16.
+    if not a.no_half:
+        model = model.half()
+    dts = sorted({str(q.dtype).replace("torch.", "") for q in model.parameters()})
+    print(f"  param dtypes after load: {dts}", flush=True)
 
     gate_recs = m02g.read_fasta(
         ROOT / "data/sequences/benign_negatives_v3.fasta")

@@ -1231,6 +1231,15 @@ library versions, so the remaining candidate — solver drift between releases �
 +0.60 by a wide margin. The point is that two categories whose recoveries differ by 0.05pp are tied, and
 a *ρ* difference below one swap is not a difference.**
 
+🔒 **And the coarseness is a property of the class count, now measured on a second domain.** Study AR
+found *ρ* moving **0.105** between two draws of DeepVIC's negatives over fourteen categories. ⚠️ **Study
+AT reproduced that figure independently on text**: re-drawing the negatives moves *ρ* by **+0.1044** on
+the thirteen 20-Newsgroups classes at the tuned classifier, and by 0.0029 to 0.0473 on the **fifty**
+CIFAR-100 classes. 🔑 **So a *ρ* measured over thirteen or fourteen classes carries a draw-to-draw
+uncertainty near ±0.10, and one measured over fifty carries roughly ±0.03** — which is the swap quantum
+seen from the other side, and the reason the cell that clears the floor by the narrowest margin in that
+study is also its most stable. 🔒 **No verdict flipped in six cell-settings** (`results/generality_grid_draw67890.json`).
+
 🔒 **All four passes clear the frozen floor of +0.60 at *p* below α = 0.0125, and on all four margin beats
 both of the controls it is built from** — nearest-positive alone reaches +0.63 to +0.79 and
 nearest-negative alone −0.52 to −0.80. ⚠️ **That comparison is made at the untuned classifier, and the

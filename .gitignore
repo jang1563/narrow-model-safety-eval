@@ -158,3 +158,4 @@ results/v3/text20ng_*.npz
 results/v3/at_*.npz
 results/v3/.at_mm_*.dat
 data/external/cifar100/
+.gate/
