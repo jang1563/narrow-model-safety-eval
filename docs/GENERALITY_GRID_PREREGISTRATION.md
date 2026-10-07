@@ -27,6 +27,19 @@ both the fixed `C = 1.0` and `src/133`'s nested-selected `C` are run in every ce
 | **text** | 20NG `comp`/`rec`/`sci` | 20NG `alt`/`misc`/`soc`/`talk` | **13** sub-classes | **all-MiniLM-L6-v2**, **all-mpnet-base-v2** |
 | **image** | CIFAR-100 animal superclasses incl. `people` (10) | its plant, artifact and scene superclasses (10) | **50** fine classes | **CLIP ViT-B/32**, **DINOv2 ViT-S/14** |
 
+### 🔒 One definition of the negative side, fixed now
+
+⚠️ **`src/125` computes margin against the *union* negatives — the pool the probe trains from — and
+`src/138` computed it against *all* negatives.** Those are different quantities and the grid cannot mix
+them. 🔒 **Every AT cell uses the union negatives**, matching `src/125` and `src/81`, because that is the
+arm the **+0.60** floor was established on.
+
+🔑 **The choice is not load-bearing for AS, and the number is recorded here rather than left implied**: on
+20 Newsgroups the two definitions rank classes identically at *ρ* = **+0.9945**, and AS's *ρ*(margin,
+recovery) reads **+0.9231** and **+0.7692** under the union definition against **+0.9505** and **+0.8132**
+under the all-negative one — **all four above the floor**. ⚠️ **That is a post-hoc sensitivity check on a
+finished study**, computed after its verdict was read, and it is labelled as one.
+
 🔑 **The protein row is deliberately ESM-2 650M and ProtT5, not 650M and 35M.** The grid is about encoder
 **families**; 650M/35M is one family twice, and its agreement is already reported. 🔒 **ESM-2 35M stays in
 the record as a third protein cell** and is reported, but the two-family row is what AT-1 is scored on.
@@ -111,3 +124,92 @@ near a coin flip and P1 is not a safe bet because it is labelled derived.
 locally, checkpointed), and ProtT5 on DeepVIC's 46,445 sequences (Cayuga, queued).** 🔒 **No cell is
 re-run after its *ρ* is seen**, and the embedding checkpoints hash build, model and device so a resume
 cannot mix backends — the defect the ESM-2 arm hit.
+
+---
+
+## Amendment 1 — AT-1b cannot bind at six cells, and the selftest proved it
+
+**Added 2026-10-06, before any cell was scored.** 🔒 **No embedding had been computed and no *ρ* existed
+when this was written**; it came out of calibrating the runner's own checks.
+
+### 🔴 The conjunction is a no-op
+
+§ 4 reads AT-1 and AT-1b as a conjunction: **≥ 5 of 6** cells clearing **and** no modality dead on both
+its encoders. ⚠️ **Those cannot both be informative at this grid size.** A modality dead on both encoders
+is **two** non-clearing cells, which leaves at most **four** clears — already inside AT-1's
+*modality-dependent* band of 3–4. 🔑 **AT-1b is therefore implied by AT-1 and adds nothing to the
+verdict.**
+
+🔴 **This was found by trying to break the check and failing.** The runner's selftest builds a grid with
+`image` dead on both encoders and asserts the verdict says "modality-dependent"; removing the AT-1b
+override from the code **did not** make that assertion fail, because the count alone already returned
+*modality-dependent*. ⚠️ **An assertion that passes when the thing it guards is deleted is not a test**,
+and this project's log records the same defect twice before (study AN's leak check, study AQ's band check).
+
+### 🔒 What changes, and what does not
+
+- **AT-1 is unchanged** and remains the primary test.
+- **AT-1b stays computed and reported** as a descriptive fact — *which* modality is weakest is worth
+  knowing — but it is **removed from the verdict conjunction** and labelled as implied.
+- 🔒 **The selftest now asserts the implication** (a dead modality forces the count below 5) rather than a
+  reachable override, so it fails if the band structure changes in a way that breaks it.
+
+🔑 **The band that would be independent is a per-modality one** — e.g. *no modality may have a mean *ρ*
+below the floor across its encoders* — and it is **named rather than adopted**, because adding a band
+after seeing that another was redundant is still adding a band, and this one has no frozen threshold.
+
+---
+
+## Amendment 2 — AT-0b was the wrong precondition for AT-1, and the first cell showed it
+
+**Added 2026-10-06, after the `text/minilm_l6` cell was scored and before the remaining five.**
+⚠️ **This was written because a cell failed the precondition**, and that is disclosed rather than
+presented as foresight. 🔒 **Nothing below widens a band.** The strict reading stays computed and
+reported, and the verdict is reported **both** ways.
+
+### 🔴 What happened
+
+`text/minilm_l6` returned *ρ* = **+0.9231** and **+0.7692** with mean recovery **54.77%** and **59.02%** —
+AT-0a passed comfortably — and **failed AT-0b** at a realized test false-positive rate of
+**4.00–4.56%** against the frozen band of **[4.5%, 5.6%]**. 🔴 **Under the letter of § 3 the cell is
+uninterpretable**, and with both text cells out the denominator falls to four, so AT-1's "≥ 5 of 6" could
+never be met and the grid would be unreadable on a technicality.
+
+### 🔒 The measured diagnosis
+
+| | |
+|---|---|
+| calibration false-positive rate | **5.00%** exactly, by construction, in every cell |
+| test rate, per-class 30-seed means | **4.08–4.37%** |
+| test rate, per **seed** | 2.02–6.22%, sd **0.94pp** |
+| rate on the negatives it trained on | **2.53%** |
+
+🔑 **The operating point is matched by construction and drifts only out of sample**, and the drift is the
+**interpolating `np.quantile` estimator's** calibration-size effect this project has already characterised
+— the abstract records it as "0.6–2.4% on the 484-point fold". ⚠️ **A 0.6pp downward deviation at
+n = 500 is that effect, not a broken fold.** 🔑 **And its *direction* depends on the score
+distribution's upper tail, which is modality-specific**: the protein folds land at 4.85–5.61% with the
+identical n = 500. 🔴 **So the band [4.5%, 5.6%] encodes "text's tail must look like protein's tail"**,
+which is not the thing it was written to check.
+
+### 🔒 The scoping, which does not depend on which cell failed
+
+**AT-0b is a condition on comparing *levels across* cells. AT-1 is a rank correlation *within* a cell.**
+
+- 🔒 **AT-1 keeps AT-0a only.** A within-cell ordering is not a cross-cell level comparison, and the
+  threshold is identical in construction in every cell.
+- 🔒 **AT-0b continues to gate every cross-cell *level* claim**, which is **P4** — the prediction that the
+  tuning gain tracks embedding dimension across the six cells. 🔑 **P4 is the test AT-0b was always for**,
+  and it is now the test it applies to.
+- 🔒 **Both readings are reported**: `AT1_clears_strict` (AT-0a ∧ AT-0b) and `AT1_clears_ordering`
+  (AT-0a alone), so a reader who rejects this amendment can apply § 3 as frozen and get a number.
+
+⚠️ **The honest cost is stated**: this amendment was written with one cell's *ρ* already known, so the
+strict reading is the one with no hindsight in it, and the paper must report it next to the other.
+
+### 🔴 And the first cell already failed AT-2 at one setting
+
+`nearest_positive` **alone** reaches *ρ* **+0.808** against margin's **+0.7692** at the swept classifier
+on text — ⚠️ **one half of margin's own definition beats margin.** 🔑 **On DeepVIC the same control runs
++0.63 to +0.79 against margin's +0.86 to +0.95**, so the negative term earns its place there and does not
+clearly do so here. 🔒 **AT-2 is frozen and this is recorded as it falls**; the band is unchanged.

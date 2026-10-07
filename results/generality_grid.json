@@ -1,0 +1,319 @@
+{
+  "built": "2026-10-06 22:41:50",
+  "study": "AT -- three modalities, two encoder families each",
+  "preregistration": "docs/GENERALITY_GRID_PREREGISTRATION.md",
+  "bands": {
+    "ok": 0.6,
+    "not": 0.2,
+    "alpha": 0.016666666666666666,
+    "AT1_general_floor": 5,
+    "AT1_fail_ceiling": 2,
+    "AT0a_recovery": 0.2,
+    "AT0b_fpr": [
+      0.045,
+      0.056
+    ]
+  },
+  "negative_side": "the UNION negatives, matching src/125 and src/81 -- the arm the +0.60 floor was set on; src/138 used all negatives and the preregistration records the sensitivity",
+  "seeds": 30,
+  "cells": {
+    "text/minilm_l6": {
+      "cell": "text/minilm_l6",
+      "dim": 384,
+      "n_classes": 13,
+      "n_positives": 12238,
+      "n_negatives": 5790,
+      "margin": {
+        "comp.graphics": 0.13336413746161271,
+        "comp.os.ms-windows.misc": 0.1251664167540077,
+        "comp.sys.ibm.pc.hardware": 0.09275074604104144,
+        "comp.sys.mac.hardware": 0.07838698180636261,
+        "comp.windows.x": 0.1549327501751323,
+        "rec.autos": 0.05437232232519418,
+        "rec.motorcycles": 0.06097694947680581,
+        "rec.sport.baseball": 0.12157487619184955,
+        "rec.sport.hockey": 0.13807893576440664,
+        "sci.crypt": -0.046219726700049896,
+        "sci.electronics": 0.0625107845065695,
+        "sci.med": 0.017462332697114228,
+        "sci.space": 0.04301248201030509
+      },
+      "nearest_positive": {
+        "comp.graphics": 0.505459815663015,
+        "comp.os.ms-windows.misc": 0.5203509834996125,
+        "comp.sys.ibm.pc.hardware": 0.5444793711437228,
+        "comp.sys.mac.hardware": 0.5182726887386353,
+        "comp.windows.x": 0.48157559386921317,
+        "rec.autos": 0.43824386226556916,
+        "rec.motorcycles": 0.43457156844291334,
+        "rec.sport.baseball": 0.4566142717328005,
+        "rec.sport.hockey": 0.46754846862369376,
+        "sci.crypt": 0.433794015228699,
+        "sci.electronics": 0.4536221850403271,
+        "sci.med": 0.3668968108191474,
+        "sci.space": 0.4132237121605295
+      },
+      "nearest_negative": {
+        "comp.graphics": 0.37209567820140227,
+        "comp.os.ms-windows.misc": 0.3951845667456048,
+        "comp.sys.ibm.pc.hardware": 0.4517286251026814,
+        "comp.sys.mac.hardware": 0.43988570693227264,
+        "comp.windows.x": 0.3266428436940809,
+        "rec.autos": 0.383871539940375,
+        "rec.motorcycles": 0.37359461896610746,
+        "rec.sport.baseball": 0.3350393955409509,
+        "rec.sport.hockey": 0.32946953285928715,
+        "sci.crypt": 0.4800137419287488,
+        "sci.electronics": 0.39111140053375754,
+        "sci.med": 0.3494344781220332,
+        "sci.space": 0.37021123015022445
+      },
+      "class_size": {
+        "comp.graphics": 940,
+        "comp.os.ms-windows.misc": 934,
+        "comp.sys.ibm.pc.hardware": 956,
+        "comp.sys.mac.hardware": 918,
+        "comp.windows.x": 961,
+        "rec.autos": 918,
+        "rec.motorcycles": 942,
+        "rec.sport.baseball": 926,
+        "rec.sport.hockey": 953,
+        "sci.crypt": 948,
+        "sci.electronics": 945,
+        "sci.med": 951,
+        "sci.space": 946
+      },
+      "settings": {
+        "fixed": {
+          "recovery": {
+            "comp.graphics": {
+              "n": 940,
+              "mean": 0.7285460992907802,
+              "sd": 0.058981354291164474
+            },
+            "comp.os.ms-windows.misc": {
+              "n": 934,
+              "mean": 0.6787651677373306,
+              "sd": 0.06663107312121648
+            },
+            "comp.sys.ibm.pc.hardware": {
+              "n": 956,
+              "mean": 0.6160739191073918,
+              "sd": 0.05393948734900613
+            },
+            "comp.sys.mac.hardware": {
+              "n": 918,
+              "mean": 0.5907044299201162,
+              "sd": 0.05544233406418388
+            },
+            "comp.windows.x": {
+              "n": 961,
+              "mean": 0.7176552202566773,
+              "sd": 0.061638280271719796
+            },
+            "rec.autos": {
+              "n": 918,
+              "mean": 0.513362381989833,
+              "sd": 0.06147719935494354
+            },
+            "rec.motorcycles": {
+              "n": 942,
+              "mean": 0.5780254777070064,
+              "sd": 0.052174562715609524
+            },
+            "rec.sport.baseball": {
+              "n": 926,
+              "mean": 0.6291216702663788,
+              "sd": 0.0945516027681611
+            },
+            "rec.sport.hockey": {
+              "n": 953,
+              "mean": 0.6011542497376705,
+              "sd": 0.09911869619462642
+            },
+            "sci.crypt": {
+              "n": 948,
+              "mean": 0.25780590717299584,
+              "sd": 0.06386602963242219
+            },
+            "sci.electronics": {
+              "n": 945,
+              "mean": 0.5573544973544974,
+              "sd": 0.057748585332744094
+            },
+            "sci.med": {
+              "n": 951,
+              "mean": 0.2512092534174553,
+              "sd": 0.05542542762528576
+            },
+            "sci.space": {
+              "n": 946,
+              "mean": 0.4005285412262157,
+              "sd": 0.07276195130187575
+            }
+          },
+          "chosen_C": {
+            "comp.graphics": 1.0,
+            "comp.os.ms-windows.misc": 1.0,
+            "comp.sys.ibm.pc.hardware": 1.0,
+            "comp.sys.mac.hardware": 1.0,
+            "comp.windows.x": 1.0,
+            "rec.autos": 1.0,
+            "rec.motorcycles": 1.0,
+            "rec.sport.baseball": 1.0,
+            "rec.sport.hockey": 1.0,
+            "sci.crypt": 1.0,
+            "sci.electronics": 1.0,
+            "sci.med": 1.0,
+            "sci.space": 1.0
+          },
+          "mean_recovery": 0.5477159088603345,
+          "AT1_rho": 0.9230769230769231,
+          "perm_p": 4.999750012499375e-05,
+          "significant": true,
+          "n_classes_scored": 13,
+          "test_fpr": {
+            "min": 0.04075993091537133,
+            "max": 0.04373056994818653
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": false,
+          "rivals": {
+            "class_size": -0.03576344511224741,
+            "nearest_positive": 0.8131868131868131,
+            "nearest_negative": -0.23076923076923078
+          },
+          "AT2_beats_all_rivals": true,
+          "verdict": "clears"
+        },
+        "swept": {
+          "recovery": {
+            "comp.graphics": {
+              "n": 940,
+              "mean": 0.8165602836879432,
+              "sd": 0.05536476146898166
+            },
+            "comp.os.ms-windows.misc": {
+              "n": 934,
+              "mean": 0.8273019271948608,
+              "sd": 0.0494165135295671
+            },
+            "comp.sys.ibm.pc.hardware": {
+              "n": 956,
+              "mean": 0.6624825662482566,
+              "sd": 0.0646737337228133
+            },
+            "comp.sys.mac.hardware": {
+              "n": 918,
+              "mean": 0.6469862018881626,
+              "sd": 0.06378280940208056
+            },
+            "comp.windows.x": {
+              "n": 961,
+              "mean": 0.7920915712799168,
+              "sd": 0.04562093817600226
+            },
+            "rec.autos": {
+              "n": 918,
+              "mean": 0.5400145243282498,
+              "sd": 0.05862210701278113
+            },
+            "rec.motorcycles": {
+              "n": 942,
+              "mean": 0.5977707006369427,
+              "sd": 0.05746928598300694
+            },
+            "rec.sport.baseball": {
+              "n": 926,
+              "mean": 0.684233261339093,
+              "sd": 0.08523541023559374
+            },
+            "rec.sport.hockey": {
+              "n": 953,
+              "mean": 0.5077649527806926,
+              "sd": 0.08925536617143107
+            },
+            "sci.crypt": {
+              "n": 948,
+              "mean": 0.2612517580872011,
+              "sd": 0.0565993740412479
+            },
+            "sci.electronics": {
+              "n": 945,
+              "mean": 0.6293827160493828,
+              "sd": 0.06578930139018137
+            },
+            "sci.med": {
+              "n": 951,
+              "mean": 0.2794602173151069,
+              "sd": 0.058228848275545746
+            },
+            "sci.space": {
+              "n": 946,
+              "mean": 0.4275898520084567,
+              "sd": 0.0750499020373168
+            }
+          },
+          "chosen_C": {
+            "comp.graphics": 0.001,
+            "comp.os.ms-windows.misc": 0.001,
+            "comp.sys.ibm.pc.hardware": 0.01,
+            "comp.sys.mac.hardware": 0.01,
+            "comp.windows.x": 0.01,
+            "rec.autos": 0.01,
+            "rec.motorcycles": 0.01,
+            "rec.sport.baseball": 0.01,
+            "rec.sport.hockey": 0.001,
+            "sci.crypt": 0.01,
+            "sci.electronics": 0.001,
+            "sci.med": 0.01,
+            "sci.space": 0.01
+          },
+          "mean_recovery": 0.5902223486803281,
+          "AT1_rho": 0.7692307692307693,
+          "perm_p": 0.002999850007499625,
+          "significant": true,
+          "n_classes_scored": 13,
+          "test_fpr": {
+            "min": 0.04000000000000001,
+            "max": 0.04557858376511227
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": false,
+          "rivals": {
+            "class_size": -0.23383791034931004,
+            "nearest_positive": 0.8076923076923077,
+            "nearest_negative": -0.049450549450549455
+          },
+          "AT2_beats_all_rivals": false,
+          "verdict": "clears"
+        }
+      },
+      "interpretable": true,
+      "clears_both_settings": true,
+      "fails_both_settings": false,
+      "beats_rivals_both": false,
+      "tuning_gain": 0.04250643981999358,
+      "interpretable_strict": false,
+      "fpr_in_band": false
+    }
+  },
+  "verdict_block": {
+    "cells_total": 6,
+    "cells_run": 1,
+    "cells_interpretable": 1,
+    "uninterpretable": [],
+    "AT1_clears": 1,
+    "AT1_denominator": 1,
+    "AT1_clears_strict": 0,
+    "AT1_denominator_strict": 0,
+    "cells_failing_AT0b": [
+      "text/minilm_l6"
+    ],
+    "readings": "AT1_clears applies AT-0a alone, per amendment 2, because AT-1 is a within-cell ordering; AT1_clears_strict applies section 3 as frozen (AT-0a and AT-0b). AT-0b gates P4, the cross-cell level claim.",
+    "AT1b_modalities_dead_on_both_encoders": [],
+    "AT2_beats_rivals": 0,
+    "complete": false,
+    "verdict": "INCOMPLETE -- 1 of 6 cells; the grid is the unit of the claim and no verdict is read until all six land"
+  }
+}

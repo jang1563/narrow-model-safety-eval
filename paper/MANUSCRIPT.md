@@ -1220,7 +1220,17 @@ its own (§ 1.2). Bands were frozen in `docs/DEEPVIC_BENCHMARK_PREREGISTRATION.m
 
 🔒 **All four passes clear the frozen floor of +0.60 at *p* below α = 0.0125, and on all four margin beats
 both of the controls it is built from** — nearest-positive alone reaches +0.63 to +0.79 and
-nearest-negative alone −0.52 to −0.80. ⚠️ **One rival explanation is measured rather than assumed**: a
+nearest-negative alone −0.52 to −0.80. ⚠️ **That comparison is made at the untuned classifier, and the
+paper said so nowhere until 2026-10-06.** `src/125` hardcodes `C = 1.0`; study AP measured *margin* at the
+tuned setting — *ρ* falls to **+0.811** and **+0.864** — but never measured **the controls** there, so
+"beats both of its own components" has been established at one operating point and not two. 🔴 **On text
+it does not survive the tuning**: the nearest-positive half reaches **+0.808** against margin's **+0.769**
+at the selected `C`, because the nearest-*negative* half carries real signal at `C = 1` (*ρ* **−0.231**,
+worth **+0.11** over the positive half alone) and almost none once `C` is tuned (*ρ* **−0.049**, costing
+**0.04**). 🔑 **The reading is about what tuning repairs**: at the untuned operating point the probe is
+vulnerable to a class sitting near the negatives, which is exactly what the negative half measures, and
+tuning removes that vulnerability — so the term stops predicting. 🔒 **Study AT measures the controls at
+both settings in every cell**, which is the test this sentence needed. ⚠️ **One rival explanation is measured rather than assumed**: a
 class's ESM-2 **truncation rate** also tracks its recovery, at *ρ* = +0.097 on 650M but **+0.365** on 35M,
 so margin is not a truncation proxy — it exceeds that correlation on every pass — but the correlation is
 not zero on the smaller arm. 🔒 **And it is not circular**: 239 of the 746 representatives this project
@@ -1324,6 +1334,13 @@ commerce — which discuss medicine, cryptography policy and space. The classes 
 whose nearest neighbour is on the **other side of the axis**, not the ones with a close sibling on their
 own. 🔒 **That is the same mechanism as the protein result**, where both failing classes carried negative
 margin because they sat closer to a benign protein than to any trained hazard class.
+
+⚠️ **One definitional difference between the two domains was found afterwards and is reported as a
+sensitivity, not a result.** `src/125` computes margin against the *union* negatives — the pool the probe
+trains from — while this study computed it against *all* of them. 🔒 **The two rank the thirteen classes
+identically at *ρ* = +0.9945**, and under the union definition AS reads **+0.9231** and **+0.7692**
+against +0.9505 and +0.8132 — all four above the floor. ⚠️ **Computed after the verdict was read**, so it
+is a robustness number and not a preregistered one; study AT fixes the union definition for every cell.
 
 ⚠️ **What this does not do is make the screen work.** It widens what the geometric ordering is about; the
 dissociation stated above is unchanged, and § 5 is still the section where nothing moved the precision.

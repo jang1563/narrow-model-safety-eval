@@ -155,3 +155,6 @@ results/v3/deepvic_ckpt*
 results/v3/embeddings_deepvic*.npy
 logs/
 results/v3/text20ng_*.npz
+results/v3/at_*.npz
+results/v3/.at_mm_*.dat
+data/external/cifar100/
