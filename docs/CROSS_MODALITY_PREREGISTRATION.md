@@ -77,3 +77,54 @@ than the small ones.
   geometric aside to a transfer-prediction result with biosecurity as its motivating domain.
 - **AS-1 fails** ⇒ the result is protein-specific, which is a narrower but still publishable claim, and
   the paper says so instead of implying generality it has not tested.
+
+---
+
+## Amendment 1 — the first design had no positive/negative axis, and a precondition is added
+
+**Added 2026-10-06, after the first run's recoveries were seen and before the fixed design was run.**
+
+### 🔴 The fold was measuring noise
+
+§ 2 drew positives from 20 Newsgroups' **train** split and negatives from its **test** split, with the
+stated justification that negatives should be "text from the same source and not a different
+distribution". ⚠️ **That made positives and negatives the same kind of thing.** The probe was being asked
+to separate train-split newsgroup posts from test-split newsgroup posts, which is a null task.
+
+🔴 **The recoveries say so**: `rec.autos` 1.26%, `rec.motorcycles` 1.43%, `rec.sport.baseball` 0.82%,
+`rec.sport.hockey` 0.82% — **below the 5% nominal**, i.e. a held-out class was *less* like the trained
+positives than the negatives were. 🔑 **The protein fold has a real contrast** — registered virulence
+factors against benign proteins — **and the text fold had none.**
+
+### 🔒 The fixed design uses the corpus's own hierarchy
+
+| | |
+|---|---|
+| **positive side** | `comp.*` (5), `rec.*` (4), `sci.*` (4) = **13 sub-classes**, held out one at a time |
+| **negative side** | `alt.atheism`, `misc.forsale`, `soc.religion.christian`, `talk.*` (4) = **7 groups** |
+
+🔑 **That is the protein structure**: a genuine positive/negative axis — technical, hobby and science
+content against belief, politics and commerce — with sub-classes *inside* the positive side playing the
+role of mechanism categories. **Thirteen classes against DeepVIC's fourteen.**
+
+### 🔒 AS-0, a precondition frozen before the run
+
+**Mean recovery over the thirteen classes must exceed 20%** at the fixed classifier. ⚠️ **Below that the
+fold is still close to null and AS-1 is uninterpretable whatever ρ comes out**, because a rank
+correlation over thirteen near-zero numbers is noise. 🔴 **The first design would have failed this
+precondition at ~1%, and nothing in § 3 would have caught it** — the bands were all on ρ.
+
+🔑 **This is the check the original preregistration should have had**, and its absence is why a broken
+fold ran to completion before anyone looked at a level.
+
+### Predictions, restated for the fixed design
+
+**P1 and P2 are unchanged.** **P3 is withdrawn**: the confusable-pair reasoning was about all twenty
+newsgroups, and `talk.religion.misc` and `soc.religion.christian` are now both on the **negative** side,
+so the prediction no longer has a referent. ⚠️ **Withdrawn rather than quietly rewritten**, and it counts
+as neither held nor missed.
+
+**P4 (derived — from the hierarchy: `comp.sys.ibm.pc.hardware` and `comp.sys.mac.hardware` are near
+neighbours, as are the two `rec.sport.*` groups).** The lowest-margin classes are drawn from those two
+near-duplicate pairs, because a class whose nearest other-class neighbour is its own sibling has little
+to distinguish it.

@@ -1,7 +1,7 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 123 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 124 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
-`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
+`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 152 such
 claims. Section references without a document name are to `docs/MECHANISM_GENERALIZATION.md`.
 
 ---
@@ -21,10 +21,10 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 123
+written because it caught something. The evidence is a **dated, append-only corrections log of 124
 entries** in which a published number moved, including entries that retract our own findings.
 
-Four results matter beyond this panel.
+Five results matter beyond this panel.
 
 **First, the aggregate is uninformative and the per-class picture is bimodal.** Holding out an entire
 mechanism class, recovery runs from **100% to 12%**: three classes are fully recovered without ever being
@@ -45,7 +45,11 @@ survives **fourteen model arms** and **fifteen re-poolings** of one arm (*ρ* +0
 significant). It replicated across **every internal variation we tried**, and it is the only result here
 that did. 🔒 **It now also replicates on a published benchmark with someone else's labels** — *ρ* =
 **+0.947** and **+0.886** over DeepVIC's fourteen curator categories and 12,989 proteins, both arms, both
-clearing a floor frozen in advance (§ 4). ⚠️ **Its external record is otherwise mixed and is three further
+clearing a floor frozen in advance (§ 4). 🔒 **And it is not a fact about protein language models**: the
+identical fold on **20 Newsgroups** with a frozen sentence encoder orders **13** held-out text classes at
+*ρ* = **+0.951** and **+0.813** at the two classifier settings, both clearing the same floor, so what the
+quantity indexes is frozen-representation geometry and proteins are one domain of it — ⚠️ **on one text
+encoder, which is one arm.** ⚠️ **Its external record is otherwise mixed and is three further
 tests.** The **member-level** version was
 preregistered and **failed** externally. The **class-level** version — the one this paper claims — was
 preregistered on **VFDB's 13 categories** and came back at *ρ* **+0.681** (*p* = 0.0059), where a frozen
@@ -210,6 +214,35 @@ competition), and *k*-nearest-neighbour distance in embedding space as an out-of
 established (Sun et al., [ICML 2022](https://arxiv.org/abs/2204.06507)). 🔑 **What is ours is the level
 and the target**: the statistic applied at **class** level, **before** the class is trained on, to a
 safety screen's **false-negative** structure — and the finding that prediction and repair dissociate.
+
+🔑 **The surrounding literature predicts a different object, and the difference is consistent across it.**
+Margin-based generalization prediction measures margins at the hidden layers of a network **already
+trained on the task** and predicts an aggregate generalization gap across models and hyperparameters
+(Jiang et al.; [arXiv 2405.17445](https://arxiv.org/abs/2405.17445)). Representation-geometry work on
+frozen encoders predicts **aggregate** accuracy: effective manifold dimensionality and utility against
+out-of-distribution accuracy under distribution shift
+([arXiv 2603.01879](https://arxiv.org/abs/2603.01879)). The class-subset line asks **which subset of
+training classes** to use for best overall performance, not which held-out class will fail
+([arXiv 2403.03569](https://arxiv.org/abs/2403.03569)); and the leave-one-out-error line is
+leave-one-**example**-out in the kernel regime, again against overall generalization
+([arXiv 2203.03443](https://arxiv.org/abs/2203.03443)). ⚠️ **Two results in that literature are reasons
+for caution rather than support.** Global geometric statistics — participation ratio, isotropy, local
+isotropy — have been reported as **non-predictive** on a compositional-binding target (*r* = −0.00, 0.18
+and 0.05) where a *functional* quantity, the input-output Jacobian's effective rank, reached *r* = 0.65
+([arXiv 2602.03282](https://arxiv.org/abs/2602.03282)); and frozen-embedding separability was found **not
+stable** as a training-free predictor of a fine-tuning label budget across 35 tasks and three encoders.
+🔒 **Margin is neither of the quantities those two papers tested**: it is not a global summary of the
+embedding cloud and not a derivative of the encoder, but a **local quantity relative to a class
+partition** — which is the one cell of that design space with a positive result here, and the reason § 4
+reports it as an ordering and not a score.
+
+🔑 **The closest work by setup leaves the predictive question open.** A frozen-probing analysis of five
+genomic language models reports exactly this paper's metric — recovery of fine-tuned performance by a
+frozen probe — and finds it strongly task-dependent (95–100% on promoter tasks against 60–88% on
+splice-site), concluding that local biological signal is "partially present … but is not always
+accessible" through pooled embeddings ([arXiv 2608.05329](https://arxiv.org/abs/2608.05329)). ⚠️ **It
+reports no quantity that predicts which task will be the inaccessible one, and no model-free baseline** —
+which are the two things § 1.2's first subsection and § 4 are about.
 
 ---
 
@@ -1242,6 +1275,59 @@ cause of attempt 2's ceiling is visible in it: its low-margin holdout was **10 p
 in the panel, so margin — defined against out-of-class positives — came apart from a classifier that
 trains on the within-class ones.
 
+### And outside proteins entirely: the same fold on text
+
+🔒 **Nothing in the formula mentions proteins.** It takes an embedding matrix and a class partition, so if
+the result is about representation geometry it should appear in any domain with that structure, and if it
+is about protein language models it should not. Study AS runs **`src/125`'s fold unchanged** — same
+selection rule, same 95th-percentile threshold, same 30 seeds — on **20 Newsgroups** with
+`all-MiniLM-L6-v2` frozen and mean-pooled, holding out one of **13** sub-classes at a time. Bands were
+frozen in `docs/CROSS_MODALITY_PREREGISTRATION.md` before `src/138` existed.
+
+| classifier | *ρ*(margin, recovery) | permutation *p* | mean recovery |
+|---|---:|---:|---:|
+| fixed `C = 1` | **+0.9505** | 0.00005 | 54.77% |
+| nested-selected `C` | **+0.8132** | 0.0013 | 59.02% |
+
+🔒 **Both settings clear the same +0.60 floor at the same α = 0.0125 that DeepVIC was judged by**, and the
+floor was borrowed from the protein study deliberately so that the two domains are scored by one criterion
+rather than two. 🟢 **The margin result is about frozen-representation geometry. It is not about protein
+language models.**
+
+⚠️ **This is one text encoder, so it is one arm, and it is reported as single-arm indicative** — the rule
+this paper applies everywhere else is that no verdict stands on one arm (§ 3), and a second text encoder
+is named as the follow-up rather than promised. ⚠️ **Thirteen classes is thirteen points**, and study AR
+showed this *ρ* is the noisy quantity: it moved 0.105 between negative draws while the levels moved 0.023.
+
+🔴 **The first design of this study was a null task and ran to completion before anyone looked at a
+level.** It drew positives from 20 Newsgroups' train split and negatives from its test split, on the
+stated reasoning that negatives should come from the same source — which made positives and negatives the
+same kind of thing. Recoveries came back at **0.82% to 1.43%**, *below* the 5% nominal false-positive
+rate. 🔒 **Nothing in the frozen bands would have caught it**, because every band was on *ρ*. Amendment 1
+moved to the corpus's own hierarchy — `comp`/`rec`/`sci` as positives against `alt`/`misc`/`soc`/`talk` —
+and added **AS-0**, a precondition that mean recovery exceed 20% before *ρ* is interpretable at all. Both
+settings meet it. ⚠️ **The amendment is appended, not substituted**, and the dead design is in the
+document above the fix.
+
+🟢 **A second preregistered prediction held, and it was the one that could have gone either way.** Study
+AP found an unexamined `C = 1.0` cost up to 24 points per category on ESM-2 650M, where 1,280 features
+meet ~13k positives; the prediction was that MiniLM's **384** features on ~18k documents would over-fit
+less, so the tuning gain would be **smaller**. It is **+4.25pp against +13.96pp**.
+
+🔴 **A third prediction missed, and the miss locates a hole in the reasoning rather than in the result.**
+We predicted the lowest-margin classes would be the near-duplicate sibling pairs — `comp.sys.*`,
+`rec.sport.*` — because a class whose nearest other-class neighbour is its own sibling has little to
+distinguish it. The three lowest are **`sci.crypt`, `sci.med`, `sci.space`**, and the `rec.sport` pair
+sits **high** (+0.096, +0.114). ⚠️ **The prediction read only the first term of the formula.** Margin
+subtracts the maximum cosine to any *negative*, and the negative side here is belief, politics and
+commerce — which discuss medicine, cryptography policy and space. The classes at the floor are the ones
+whose nearest neighbour is on the **other side of the axis**, not the ones with a close sibling on their
+own. 🔒 **That is the same mechanism as the protein result**, where both failing classes carried negative
+margin because they sat closer to a benign protein than to any trained hazard class.
+
+⚠️ **What this does not do is make the screen work.** It widens what the geometric ordering is about; the
+dissociation stated above is unchanged, and § 5 is still the section where nothing moved the precision.
+
 ---
 
 ## 5. Nothing moved the precision
@@ -1420,16 +1506,26 @@ the diagnosis was in the record before the repair was built; both times it named
   and **6.09pp** (Regulation), so the reasoned prediction that levels would move by more than 3pp
   **failed**. ⚠️ **Study AM's ordering AUROC and study AQ's fair comparison keep the original partition**,
   which is stated rather than implied.
-- 🔴 **Eleven preregistrations, forty-four frozen predictions, and no correction across them.** Every
+- 🔴 **Thirteen preregistrations, fifty-one frozen predictions, and no correction across them.** Every
   preregistration here sets its own Bonferroni α over its own primary tests — α = 0.05/2, /3 or /4 — and
   **none of them corrects for the others.** With this many frozen bands, some verdicts are expected to
   fall by chance. ⚠️ **The exposure is stated rather than corrected retroactively**, because choosing a
   family-wise correction after seeing which bands were met is the error the bands exist to prevent.
-  ⚠️ **Six of the forty-four belong to a frozen design for work not yet run**, so 38 are
-  scored; `results/prediction_record.json` holds the count and discovers the studies rather than
-  listing them.
+  ⚠️ **Forty-one carry a verdict.** Ten belong to designs frozen for work not yet run — six to
+  `MUTATION_EXTENSION` and four to `GENERALITY_GRID`, study AT's three-modality grid — and one was
+  **withdrawn by amendment** when its referent moved to the other side of a redesigned axis; `results/prediction_record.json` holds the counts and discovers the studies
+  rather than listing them. 🔒 **A withdrawn prediction is stored as unscored, not as a miss**, and the
+  record now refuses to build if a withdrawal carries a scored verdict or a scored prediction carries
+  none. ⚠️ **The declared, scored and unrun counts do not reconcile by subtraction, and the reason is
+  structural**: `DEEPVIC_BENCHMARK` is scored by **two** artifacts — study AI-1's metadata baseline and
+  study AI's verdicts — whose prediction numbers overlap, so it contributes **seven** scored rows against
+  **six** declarations. 🔒 **The artifact reconciles the gap from its parts rather than asserting it** —
+  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **51 = 41 + 10 + 1 − 1** —
+  and names the preregistration the surplus comes from. 🔴 **Until today the declared total read 49**, because the count
+  matched *lines* beginning with a prediction label and an amendment that restates "P1 and P2 are
+  unchanged" was counted as two further declarations; it now counts distinct prediction numbers.
 - ⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions
-  held **15 of 27** where they were *derived* from a measurement and **3 of 11** where they were
+  held **17 of 30** where they were *derived* from a measurement and **3 of 11** where they were
   *reasoned* — so a derived prediction here is about a coin flip, and the paper's earlier reading that
   derived predictions reliably hold (§ 4) does not survive leaving the panel they were derived on. 🔴 **Two
   entries of the corrections log stated this tally wrongly** because it was maintained by hand; it is now
@@ -1470,7 +1566,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 123 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 124 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1488,6 +1584,19 @@ the one we were hoping for.**
 🟢 **The margin ordering survived the move.** *ρ* = **+0.947** and **+0.886** on the two arms of
 someone else's benchmark, beating both of the controls it is built from on all four passes (§ 4). It is
 the one result that replicated internally, and it is now the one result that has replicated externally.
+
+🔑 **And it then survived leaving biology, which changes what the result is about.** The same fold on **20
+Newsgroups** with a frozen sentence encoder orders thirteen held-out text classes at *ρ* = **+0.951** and
+**+0.813** at the two classifier settings, both above the floor the protein study was judged by (§ 4). 🔒
+**So the quantity is not indexing anything about protein language models, or about hazard**: it indexes
+how far a held-out class sits from the trained positives relative to the negatives, in whatever frozen
+representation is to hand. ⚠️ **That is a wider claim and a weaker one than it sounds.** Wider, because
+the biosecurity screen becomes one instance of a general property rather than the subject; weaker,
+because a property that holds for newsgroup topics is self-evidently not telling us anything specific
+about toxins — and § 4's dissociation still stands, so knowing which class will fail does not say how to
+repair it. 🔑 **The honest framing is a transfer-prediction result with a biosecurity screen as the
+motivating case**, and this paper's title is still the screen because the screen is what the eighteen
+criteria and the corrections log are about.
 
 🔴 **The narrowing did not.** It holds as a *within-fold ordering* claim on a third-party hazard axis —
 curated toxins against length-matched non-toxins at **AUROC 0.46 and 0.52**, both arms — and fails as a
@@ -1556,7 +1665,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**150 claims** and fails if any number in a public document drifts from the artifact that produced
+**152 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

@@ -86,6 +86,49 @@ def read(name):
     return json.loads(f.read_text())
 
 
+# 🔒 Preregistrations that DECLARE predictions but have no scored artifact yet. Each needs a
+# REASON, because the default reading of an unscored preregistration is that a study ran and
+# its verdicts never reached the record -- which is how study AQ went missing. A name added
+# here is a statement that the design is frozen and the run has not happened; a name that
+# should NOT be here fails the selftest loudly. ⚠️ Adding a name is the only way to silence
+# the check, which is deliberate: it makes the omission a written claim.
+UNRUN = {
+    "MUTATION_EXTENSION": "a frozen design for work not yet run, per README",
+    "GENERALITY_GRID": ("study AT, frozen 2026-10-06; its six cells require a second text "
+                        "encoder, two image encoders and ProtT5 on DeepVIC, and no cell is "
+                        "scored until all six land"),
+}
+
+
+
+def reconcile(exp, rows):
+    """declared = scored + unrun + withdrawn - double-scored, as an identity, not a literal.
+
+    🔒 Returns the pieces AND whether they balance, so a claim can assert the balance and a
+    reader can see which term moved. DEEPVIC_BENCHMARK is scored by two artifacts whose
+    prediction numbers overlap, so it contributes more rows than it declares; that surplus is
+    the only reason the naive subtraction fails.
+    """
+    by = {e["prereg"]: e.get("declared_predictions", 0) for e in exp if e["exists"]}
+    declared = sum(by.values())
+    scored = sum(1 for r in rows if r["kind"] in ("derived", "reasoned"))
+    withdrawn = sum(1 for r in rows if r["kind"] == "withdrawn")
+    unrun = sum(by.get(k, 0) for k in UNRUN if k in by)
+    # rows a preregistration holds beyond what it declared, summed over preregistrations
+    rows_per = {}
+    for tag, art in discover_studies():
+        d = read(art)
+        if d is None:
+            continue
+        pr = Path(d.get("preregistration", "")).name.replace("_PREREGISTRATION.md", "")
+        rows_per[pr] = rows_per.get(pr, 0) + len(d.get("predictions", {}))
+    surplus = sum(max(0, n - by.get(pr, 0)) for pr, n in rows_per.items())
+    return {"declared": declared, "scored": scored, "withdrawn": withdrawn,
+            "unrun": unrun, "double_scored_surplus": surplus,
+            "balances": declared == scored + unrun + withdrawn - surplus,
+            "identity": ("declared = scored + unrun + withdrawn - double_scored_surplus")}
+
+
 def collect():
     rows, missing = [], []
     for tag, art in discover_studies():
@@ -94,9 +137,20 @@ def collect():
             missing.append((tag, art))
             continue
         for k, v in d.get("predictions", {}).items():
-            rows.append({"study": tag, "prediction": k,
-                         "kind": v.get("kind", "unlabelled"),
-                         "held": bool(v.get("held"))})
+            h = v.get("held")
+            kind = v.get("kind", "unlabelled")
+            # A WITHDRAWN prediction counts as neither held nor missed, so `held` stays
+            # None rather than being coerced to False -- `bool(None)` is False, which
+            # reads as a MISS in the artifact and is what the preregistration forbids.
+            rows.append({"study": tag, "prediction": k, "kind": kind,
+                         "held": None if h is None else bool(h)})
+    for r in rows:
+        if r["kind"] == "withdrawn" and r["held"] is not None:
+            raise SystemExit(f"XX withdrawn prediction {r['study']}/{r['prediction']} "
+                             f"carries held={r['held']!r}; it must be null")
+        if r["kind"] in ("derived", "reasoned") and r["held"] is None:
+            raise SystemExit(f"XX {r['kind']} prediction {r['study']}/{r['prediction']} "
+                             f"has held=null; only `withdrawn` may be unscored")
     return rows, missing
 
 
@@ -110,7 +164,12 @@ def exposure():
         t = f.read_text()
         out.append({
             "prereg": name, "exists": True,
-            "declared_predictions": len(re.findall(r"^\*\*P\d", t, re.M)),
+            # 🔴 Was `len(re.findall(r"^\*\*P\d", t, re.M))`, which counted LINES and so
+            # counted an amendment's restatement ("**P1 and P2 are unchanged.") as a further
+            # declaration -- CROSS_MODALITY read 5 against its actual P1-P4. Distinct
+            # prediction NUMBERS is the honest reading: a restatement adds no declaration,
+            # and an amendment that adds P5 still counts once.
+            "declared_predictions": len(set(re.findall(r"^\*\*P(\d+)", t, re.M))),
             "alpha_statements": re.findall(r"α = 0\.05/(\d+)", t),
             "amendments": len(re.findall(r"^## Amendment", t, re.M)),
         })
@@ -127,7 +186,9 @@ def selftest():
         print("  XX no predictions collected at all")
         ok = False
     # every prediction must carry a kind the record can tally; "unlabelled" is a defect
-    unl = [r for r in rows if r["kind"] not in ("derived", "reasoned")]
+    # `withdrawn` is a third legitimate kind: a prediction whose referent an amendment
+    # removed. It carries no verdict by design, and `collect()` already enforces that.
+    unl = [r for r in rows if r["kind"] not in ("derived", "reasoned", "withdrawn")]
     if unl:
         print(f"  XX {len(unl)} prediction(s) with no kind: "
               f"{[(r['study'], r['prediction']) for r in unl][:3]}")
@@ -163,10 +224,16 @@ def selftest():
     # an omission is visible instead of silent.
     declared_set = {e["prereg"] for e in exp if e["exists"]}
     unscored = sorted(declared_set - scored_preregs())
-    if unscored != ["MUTATION_EXTENSION"]:
-        print(f"  XX preregistrations declaring predictions with no scored artifact: "
-              f"{unscored} -- expected only MUTATION_EXTENSION, which README states is a "
-              "frozen design for work not yet run")
+    if unscored != sorted(UNRUN):
+        unexpected = sorted(set(unscored) - set(UNRUN))
+        vanished = sorted(set(UNRUN) - set(unscored))
+        if unexpected:
+            print(f"  XX preregistrations declaring predictions with no scored artifact and "
+                  f"no stated reason: {unexpected} -- either the study's verdicts never "
+                  "reached the record, or the design is unrun and belongs in UNRUN")
+        if vanished:
+            print(f"  XX UNRUN names {vanished}, which now HAS a scored artifact -- remove "
+                  "the entry so the allowlist cannot hide a future omission")
         ok = False
     print("selftest PASS" if ok else "selftest FAIL")
     return 0 if ok else 1
@@ -196,7 +263,10 @@ def main():
                 "No hand-maintained version exists any more."),
         "rows": rows,
         "tally": tal,
-        "total_scored": len(rows),
+        # 🔴 Was `len(rows)`, which counted the WITHDRAWN row as scored -- 42 against the
+        # 41 verdicts that exist. Scored means a verdict was reached.
+        "total_scored": sum(1 for r in rows if r["kind"] in ("derived", "reasoned")),
+        "total_withdrawn": sum(1 for r in rows if r["kind"] == "withdrawn"),
         "by_study": by_study,
         "exposure": {
             "preregistrations": len(exp),
@@ -204,10 +274,24 @@ def main():
             "studies_found": [t for t, _ in discover_studies()],
             "preregs_with_no_scored_artifact": sorted(
                 {e["prereg"] for e in exp if e["exists"]} - scored_preregs()),
-            "unscored_accounted_for": ("MUTATION_EXTENSION is a frozen design for work not "
-                                       "yet run, per README; its declarations are counted in "
-                                       "the exposure and not in the tally"),
+            "unscored_accounted_for": UNRUN,
             "declared_predictions": sum(e.get("declared_predictions", 0) for e in exp),
+            # ⚠️ DECLARED and SCORED do not reconcile by subtraction, and the reason is
+            # structural: DEEPVIC_BENCHMARK is scored by TWO artifacts (AI-1's metadata
+            # baseline and AI's verdicts) whose P-numbers overlap, so it contributes 7
+            # scored rows against 6 declarations. Reported as two separate counts rather
+            # than as a balance that would have to be fudged to close.
+            # 🔒 The gap between DECLARED and SCORED, reconciled from its parts instead of
+            # asserted as a literal. `src/22` hard-coded `declared - scored == 6`, which went
+            # stale the moment a preregistration was frozen -- the SEVENTH hand-maintained
+            # number in this project to drift, inside the claim built to catch the sixth.
+            # The identity: every declared prediction is scored, unrun, or withdrawn, less the
+            # rows a preregistration scored twice through two artifacts.
+            "reconciliation": reconcile(exp, rows),
+            "preregs_scored_by_multiple_artifacts": sorted(
+                {pr for pr in scored_preregs()
+                 if sum(1 for _, a in discover_studies()
+                        if (read(a) or {}).get("preregistration", "").endswith(pr + "_PREREGISTRATION.md")) > 1}),
             "amendments": sum(e.get("amendments", 0) for e in exp),
             "per_prereg": exp,
             "bonferroni_within_study_only": True,

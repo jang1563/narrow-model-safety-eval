@@ -46,6 +46,30 @@
       "held": true
     },
     {
+      "study": "cross_modality",
+      "prediction": "P1_rho_clears_0.60_both_settings",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "cross_modality",
+      "prediction": "P2_tuning_gain_smaller_than_esm2",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "cross_modality",
+      "prediction": "P3_withdrawn_by_amendment_1",
+      "kind": "withdrawn",
+      "held": null
+    },
+    {
+      "study": "cross_modality",
+      "prediction": "P4_lowest_margin_classes_are_the_sibling_pairs",
+      "kind": "derived",
+      "held": false
+    },
+    {
       "study": "AI-1",
       "prediction": "P1_length_only_clears_0.75",
       "kind": "derived",
@@ -234,15 +258,16 @@
   ],
   "tally": {
     "derived": {
-      "held": 15,
-      "total": 27
+      "held": 17,
+      "total": 30
     },
     "reasoned": {
       "held": 3,
       "total": 11
     }
   },
-  "total_scored": 38,
+  "total_scored": 41,
+  "total_withdrawn": 1,
   "by_study": {
     "AJ": {
       "derived": [
@@ -262,6 +287,16 @@
       "reasoned": [
         0,
         1
+      ]
+    },
+    "cross_modality": {
+      "derived": [
+        2,
+        3
+      ],
+      "reasoned": [
+        0,
+        0
       ]
     },
     "AI-1": {
@@ -356,14 +391,16 @@
     }
   },
   "exposure": {
-    "preregistrations": 11,
+    "preregistrations": 13,
     "preregs_found": [
       "COMPOSITION_ARM",
       "COMPOSITION_RESIDUAL",
+      "CROSS_MODALITY",
       "DEEPVIC_BENCHMARK",
       "ESTIMATION_REPAIR",
       "EXTERNAL_HAZARD_AXIS",
       "FAIR_COMPARISON",
+      "GENERALITY_GRID",
       "MUTATION_EXTENSION",
       "NESTED_MODEL",
       "REPRESENTATION_INCREMENT",
@@ -373,6 +410,7 @@
     "studies_found": [
       "AJ",
       "AN",
+      "cross_modality",
       "AI-1",
       "AI",
       "AP",
@@ -384,11 +422,27 @@
       "AM"
     ],
     "preregs_with_no_scored_artifact": [
+      "GENERALITY_GRID",
       "MUTATION_EXTENSION"
     ],
-    "unscored_accounted_for": "MUTATION_EXTENSION is a frozen design for work not yet run, per README; its declarations are counted in the exposure and not in the tally",
-    "declared_predictions": 44,
-    "amendments": 4,
+    "unscored_accounted_for": {
+      "MUTATION_EXTENSION": "a frozen design for work not yet run, per README",
+      "GENERALITY_GRID": "study AT, frozen 2026-10-06; its six cells require a second text encoder, two image encoders and ProtT5 on DeepVIC, and no cell is scored until all six land"
+    },
+    "declared_predictions": 51,
+    "reconciliation": {
+      "declared": 51,
+      "scored": 41,
+      "withdrawn": 1,
+      "unrun": 10,
+      "double_scored_surplus": 1,
+      "balances": true,
+      "identity": "declared = scored + unrun + withdrawn - double_scored_surplus"
+    },
+    "preregs_scored_by_multiple_artifacts": [
+      "DEEPVIC_BENCHMARK"
+    ],
+    "amendments": 5,
     "per_prereg": [
       {
         "prereg": "COMPOSITION_ARM",
@@ -402,7 +456,16 @@
       {
         "prereg": "COMPOSITION_RESIDUAL",
         "exists": true,
-        "declared_predictions": 5,
+        "declared_predictions": 4,
+        "alpha_statements": [
+          "2"
+        ],
+        "amendments": 1
+      },
+      {
+        "prereg": "CROSS_MODALITY",
+        "exists": true,
+        "declared_predictions": 4,
         "alpha_statements": [
           "2"
         ],
@@ -441,6 +504,15 @@
         "declared_predictions": 4,
         "alpha_statements": [
           "2"
+        ],
+        "amendments": 0
+      },
+      {
+        "prereg": "GENERALITY_GRID",
+        "exists": true,
+        "declared_predictions": 4,
+        "alpha_statements": [
+          "3"
         ],
         "amendments": 0
       },

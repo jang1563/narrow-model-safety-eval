@@ -2190,8 +2190,28 @@ def prediction_record():
         "paper_states_no_correction": "no correction across them" in man,
         "within_only": e["bonferroni_within_study_only"],
         "across_none": e["no_family_wise_correction_across_studies"],
+        # `withdrawn` is a THIRD legitimate kind, added when amendment 1 of CROSS_MODALITY
+        # removed a prediction whose referent moved to the other side of a redesigned axis.
+        # It is excluded here and counted on its own below, so a withdrawal cannot be read
+        # as a miss and an actually-unlabelled kind still fails.
         "unlabelled": [rw["prediction"] for rw in v["rows"]
-                       if rw["kind"] not in ("derived", "reasoned")],
+                       if rw["kind"] not in ("derived", "reasoned", "withdrawn")],
+        "withdrawn": [rw["prediction"] for rw in v["rows"] if rw["kind"] == "withdrawn"],
+        "withdrawn_unscored": all(rw["held"] is None for rw in v["rows"]
+                                  if rw["kind"] == "withdrawn"),
+        "scored_all_have_verdicts": all(rw["held"] is not None for rw in v["rows"]
+                                        if rw["kind"] in ("derived", "reasoned")),
+        "multi_artifact_preregs": e.get("preregs_scored_by_multiple_artifacts", []),
+        "reconciles": e.get("reconciliation", {}).get("balances"),
+        # ⚠️ `isinstance(True, int)` is True in Python, so `balances` would land in here as a
+        # count; excluded explicitly rather than relying on the reader to discount it.
+        "gap_parts": {k: x for k, x in e.get("reconciliation", {}).items()
+                      if isinstance(x, int) and not isinstance(x, bool)},
+        "paper_states_declared_word": "fifty-one frozen predictions" in man,
+        "paper_states_verdict_count": "**Forty-one carry a verdict.**" in man,
+        "paper_names_the_balance_problem": (
+            "do not reconcile by subtraction" in man
+            and "seven** scored rows against" in man),
         "studies": len({rw["study"] for rw in v["rows"]}),
         "no_hand_version": "No hand-maintained version" in v["why"],
     }
@@ -3002,8 +3022,21 @@ def audit_self_size():
     """
     man = (ROOT / "paper/MANUSCRIPT.md").read_text()
     n = len(CLAIMS)
+    # 🔴 2026-10-06: this claim checked ONE phrasing, and the paper stated the audit's size in
+    # TWO. The masthead read "the gate currently checks 90 such claims" while § 9 read 150, so
+    # the stale number sat in the FIRST FOUR LINES of the paper with a claim passing on it.
+    # Exactly the defect entry 100 recorded for the corrections count -- a census that checks
+    # one phrasing of a number is a census of one phrasing. Every statement is collected now.
+    statements = [int(x) for x in (
+        re.findall(r"\*\*(\d+) claims\*\* and fails", man)
+        + re.findall(r"gate currently checks (\d+) such", man)
+        + re.findall(r"which currently checks\s+\*\*(\d+) claims\*\*", man))]
     return {"n_claims": n,
             "paper_states_it": f"**{n} claims** and fails" in man,
+            "count_statements": statements,
+            # ⚠️ at least two phrasings must be FOUND, or the census has stopped seeing one
+            "n_statements": len(statements),
+            "all_statements_agree": statements != [] and set(statements) == {n},
             "stale_90_gone": "**90 claims**" not in man}
 
 
@@ -5457,6 +5490,84 @@ def annotation_provenance():
             "p1_significant": d["P1"]["significant_at_05"]}
 
 
+def cross_modality():
+    """Does the margin ordering hold on TEXT, with proteins nowhere in the fold?
+
+    🔒 `src/125`'s fold unchanged on 20 Newsgroups with `all-MiniLM-L6-v2` frozen, 13 held-out
+    sub-classes: rho(margin, recovery) = +0.9505 at the fixed classifier and +0.8132 at the
+    nested-selected one, permutation p = 0.00005 and 0.0013. Both clear the +0.60 floor the
+    DeepVIC study was judged by, borrowed deliberately so two domains meet one criterion.
+
+    🟢 So the quantity indexes frozen-representation geometry, not protein language models.
+
+    ⚠️ ONE text encoder is ONE arm, and this project's rule is that no verdict stands on one
+    arm, so the artifact labels itself single-arm indicative.
+
+    🔴 The FIRST design was a null task -- positives from the train split, negatives from the
+    test split, which made them the same kind of thing -- and recoveries came back at 0.82% to
+    1.43%, BELOW the 5% nominal. Every frozen band was on rho, so nothing would have caught it.
+    Amendment 1 added AS-0: mean recovery must exceed 20% before rho is interpretable.
+    """
+    v = j("../results/cross_modality.json")
+    if v is None:
+        return None
+    F, S = v["settings"]["fixed"], v["settings"]["swept"]
+    return {
+        "prereg": v["preregistration"],
+        "domain": v["domain"],
+        "encoder": v["encoder"],
+        "n_classes": v["n_classes"],
+        "dim": v["dim"],
+        "seeds": v["seeds"],
+        "bands": v["bands"],
+        "single_arm_declared": "one arm" in v["single_arm"],
+        "rho": {"fixed": F["AS1_rho"], "swept": S["AS1_rho"]},
+        "p": {"fixed": F["AS2_perm_p"], "swept": S["AS2_perm_p"]},
+        "mean_recovery": {"fixed": F["mean_recovery"], "swept": S["mean_recovery"]},
+        "as0": {"fixed": F["AS0_mean_recovery_over_20pct"],
+                "swept": S["AS0_mean_recovery_over_20pct"]},
+        "as0_gate": v["AS0_precondition_met"],
+        "verdict": v["verdict"],
+        "tuning_gain": v["tuning_gain"],
+        "lowest_margin": sorted(v["margin"], key=v["margin"].get)[:3],
+        "preds": {k: x["held"] for k, x in v["predictions"].items()},
+        "kinds": {k: x["kind"] for k, x in v["predictions"].items()},
+    }
+
+
+def abstract_result_census():
+    """Does the abstract's stated result count match the results it enumerates?
+
+    🔴 The abstract said "Four results matter beyond this panel." and then enumerated FIVE,
+    First through Fifth. `docs/DETECTOR_EVALUATION_SUMMARY.md` had carried the right number the
+    whole time. That is the sixth hand-maintained count in this project to go stale (entries
+    102, 110, 112, 115, 116), and no claim existed to catch it because every number the audit
+    checked was a measurement and this one was a tally of the prose's own structure.
+
+    🔒 So this claim COUNTS the ordinals and derives the expected word, rather than pinning a
+    literal -- the self-maintaining form entry 119 arrived at for the preregistration count.
+    """
+    man = (ROOT / "paper/MANUSCRIPT.md").read_text()
+    words = ["First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth"]
+    found = [w for w in words if re.search(rf"^\*\*{w},", man, re.M)]
+    # the ordinals must be a PREFIX of the sequence: First, Second, ... with none skipped,
+    # or the count is meaningless
+    contiguous = found == words[:len(found)]
+    spelled = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five",
+               6: "Six", 7: "Seven", 8: "Eight"}.get(len(found))
+    stated = re.search(r"^(\w+) results matter beyond this panel\.", man, re.M)
+    return {
+        "enumerated": found,
+        "n": len(found),
+        "contiguous": contiguous,
+        "expected_word": spelled,
+        "stated_word": stated.group(1) if stated else None,
+        "agrees": bool(stated) and stated.group(1) == spelled,
+        "summary_doc_agrees": f"{spelled} results" in (
+            ROOT / "docs/DETECTOR_EVALUATION_SUMMARY.md").read_text(),
+    }
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -6392,7 +6503,10 @@ CLAIMS = [
      audit_self_size,
      # 🔒 Self-maintaining like claim 119: no hard-coded total, so adding a claim fails the gate until
      # § 9 is updated. That is the point, and it is why this claim exists at all.
-     lambda v: v is None or (v["paper_states_it"] and v["stale_90_gone"] and v["n_claims"] > 100),
+     lambda v: v is None or (
+         v["paper_states_it"] and v["stale_90_gone"] and v["n_claims"] > 100
+         # 🔒 EVERY statement of the number, not just the bolded one in § 9
+         and v["all_statements_agree"] and v["n_statements"] >= 2),
      {"paper/MANUSCRIPT.md":
       "⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the"},
      ["which currently checks\n**90 claims**"]),
@@ -6564,7 +6678,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 123"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 124"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -8488,7 +8602,12 @@ CLAIMS = [
          and v["paper_states_prereg_count"] and v["paper_states_no_correction"]
          # 🔒 and the gap between declared and scored must be accounted for by name, not left
          # as an unexplained difference
-         and v["declared"] - v["scored"] == 6
+         # 🔴 Was `v["declared"] - v["scored"] == 6`, a LITERAL -- the seventh
+         # hand-maintained number in this project to go stale, and it went stale inside the
+         # claim written to catch the sixth. src/134 now reconciles the gap from its parts and
+         # this asserts the IDENTITY, which survives freezing a preregistration or running one.
+         and v["reconciles"] is True
+         and v["gap_parts"]["unrun"] >= 6
          and v["within_only"] is True and v["across_none"] is True
          # 🔴 Was `== 8`, a hand-counted number from a hand-maintained list. src/134 now
          # DISCOVERS the preregistrations that declare predictions, and found ten -- study AQ's
@@ -8500,9 +8619,19 @@ CLAIMS = [
          # ⚠️ every scored prediction carries a kind; an unlabelled one would vanish from both
          # tallies without changing either, which is how a record quietly narrows
          and v["unlabelled"] == []
+         # 🔒 a withdrawal must stay unscored and a scored prediction must carry a verdict;
+         # `bool(None)` turned the first into a MISS until 2026-10-06
+         and v["withdrawn_unscored"]
+         and v["scored_all_have_verdicts"]
          # 🔒 structural sanity: more declared than scored is fine, the reverse is impossible
          and v["scored"] <= v["declared"]
          and v["scored"] == v["derived"][1] + v["reasoned"][1]
+         # ⚠️ and the paper must state the exposure the artifact computed, in words, including
+         # the fact that declared and scored do NOT balance and why
+         and v["paper_states_declared_word"]
+         and v["paper_states_verdict_count"]
+         and v["paper_names_the_balance_problem"]
+         and v["multi_artifact_preregs"] == ["DEEPVIC_BENCHMARK"]
          and v["studies"] >= 9
          and v["amendments"] >= 3
          and v["no_hand_version"]),
@@ -8652,6 +8781,50 @@ CLAIMS = [
       "study AR retested every verdict",
       "the levels are draw-independent",
       "a second draw changes nothing"]),
+    ("the margin ordering holds on text, with no protein in the fold",
+     cross_modality,
+     lambda v: v is None or (
+         "CROSS_MODALITY_PREREGISTRATION" in v["prereg"]
+         and v["domain"] == "text" and v["n_classes"] == 13 and v["seeds"] == 30
+         # 🔒 AS-0 FIRST: below 20% mean recovery the fold is near null and rho means nothing.
+         # The first design sat at ~1% and every band was on rho, so this gate is the claim.
+         and v["as0"]["fixed"] and v["as0"]["swept"] and v["as0_gate"] is True
+         and v["mean_recovery"]["fixed"] > 0.20 and v["mean_recovery"]["swept"] > 0.20
+         # 🔒 both classifier settings clear the floor BORROWED from AI-2, at its alpha
+         and v["rho"]["fixed"] >= v["bands"]["ok"] and v["rho"]["swept"] >= v["bands"]["ok"]
+         and v["p"]["fixed"] < v["bands"]["alpha"] / 2
+         and v["p"]["swept"] < v["bands"]["alpha"] / 2
+         and abs(v["bands"]["ok"] - 0.60) < 1e-9
+         and abs(v["rho"]["fixed"] - 0.9505) < 0.0005
+         and abs(v["rho"]["swept"] - 0.8132) < 0.0005
+         and v["verdict"] == "generalizes"
+         # ⚠️ one encoder is one arm, and the artifact must say so itself
+         and v["single_arm_declared"]
+         # ⭐ P2 held: 384 features over-fit less than 1,280, so the tuning gain is SMALLER
+         and v["tuning_gain"] < 0.1396
+         and v["preds"]["P2_tuning_gain_smaller_than_esm2"] is True
+         # 🔴 P4 MISSED, and the miss is the point: the floor classes are the ones nearest the
+         # NEGATIVE side, not the ones with a close sibling. All three lowest are sci.*
+         and v["preds"]["P4_lowest_margin_classes_are_the_sibling_pairs"] is False
+         and v["lowest_margin"] == ["sci.crypt", "sci.med", "sci.space"]
+         # 🔒 the withdrawn prediction stays withdrawn
+         and v["kinds"]["P3_withdrawn_by_amendment_1"] == "withdrawn"
+         and v["preds"]["P3_withdrawn_by_amendment_1"] is None),
+     {"paper/MANUSCRIPT.md":
+      ["### And outside proteins entirely: the same fold on text",
+       "🟢 **The margin result is about frozen-representation geometry. It is not about protein",
+       "🔴 **The first design of this study was a null task and ran to completion before anyone looked at a"]},
+     # 🔴 Readings this does not license. The result is an ordering on one text encoder.
+     ["the margin result replicates across modalities",
+      "two encoders agree",
+      "the screen works outside proteins",
+      "margin predicts hazard in any domain"]),
+    ("the abstract's result count matches the results it enumerates",
+     abstract_result_census,
+     lambda v: v is None or (
+         v["n"] >= 5 and v["contiguous"] and v["agrees"] and v["summary_doc_agrees"]),
+     {"paper/MANUSCRIPT.md": "Five results matter beyond this panel."},
+     ["Four results matter beyond this panel"]),
 ]
 
 

@@ -1,0 +1,276 @@
+{
+  "built": "2026-10-06 22:24:15",
+  "study": "AS -- does the margin result hold outside proteins?",
+  "preregistration": "docs/CROSS_MODALITY_PREREGISTRATION.md",
+  "domain": "text",
+  "dataset": "20 Newsgroups, headers/footers/quotes removed",
+  "encoder": "sentence-transformers/all-MiniLM-L6-v2",
+  "dim": 384,
+  "single_arm": "one text encoder is one arm, so this is single-arm indicative however it falls; a second encoder is the named follow-up",
+  "n_positives": 12238,
+  "n_negatives": 5790,
+  "n_classes": 13,
+  "seeds": 30,
+  "bands": {
+    "ok": 0.6,
+    "not": 0.2,
+    "alpha": 0.025
+  },
+  "margin": {
+    "comp.graphics": 0.12362675268168712,
+    "comp.os.ms-windows.misc": 0.11038547732754282,
+    "comp.sys.ibm.pc.hardware": 0.0762256836629,
+    "comp.sys.mac.hardware": 0.06073184021400397,
+    "comp.windows.x": 0.1434679939839987,
+    "rec.autos": 0.04227264469171736,
+    "rec.motorcycles": 0.049377266075293434,
+    "rec.sport.baseball": 0.09556601906140916,
+    "rec.sport.hockey": 0.11351864561257102,
+    "sci.crypt": -0.052774443583337945,
+    "sci.electronics": 0.05138752189254452,
+    "sci.med": 0.008340361916186353,
+    "sci.space": 0.0353818079211571
+  },
+  "settings": {
+    "fixed": {
+      "AS0_mean_recovery_over_20pct": true,
+      "recovery": {
+        "comp.graphics": {
+          "n": 940,
+          "mean": 0.7285460992907802,
+          "sd": 0.058981354291164474
+        },
+        "comp.os.ms-windows.misc": {
+          "n": 934,
+          "mean": 0.6787651677373306,
+          "sd": 0.06663107312121648
+        },
+        "comp.sys.ibm.pc.hardware": {
+          "n": 956,
+          "mean": 0.6160041841004185,
+          "sd": 0.054028854338068893
+        },
+        "comp.sys.mac.hardware": {
+          "n": 918,
+          "mean": 0.5907044299201162,
+          "sd": 0.05544233406418388
+        },
+        "comp.windows.x": {
+          "n": 961,
+          "mean": 0.7176552202566773,
+          "sd": 0.061638280271719796
+        },
+        "rec.autos": {
+          "n": 918,
+          "mean": 0.513362381989833,
+          "sd": 0.06147719935494354
+        },
+        "rec.motorcycles": {
+          "n": 942,
+          "mean": 0.5780254777070064,
+          "sd": 0.052174562715609524
+        },
+        "rec.sport.baseball": {
+          "n": 926,
+          "mean": 0.6291216702663788,
+          "sd": 0.0945516027681611
+        },
+        "rec.sport.hockey": {
+          "n": 953,
+          "mean": 0.6011542497376705,
+          "sd": 0.09911869619462642
+        },
+        "sci.crypt": {
+          "n": 948,
+          "mean": 0.25780590717299584,
+          "sd": 0.06386602963242219
+        },
+        "sci.electronics": {
+          "n": 945,
+          "mean": 0.5573544973544974,
+          "sd": 0.057748585332744094
+        },
+        "sci.med": {
+          "n": 951,
+          "mean": 0.2512092534174553,
+          "sd": 0.05542542762528576
+        },
+        "sci.space": {
+          "n": 946,
+          "mean": 0.40056377730796344,
+          "sd": 0.07278079238198915
+        }
+      },
+      "chosen_C": {
+        "comp.graphics": 1.0,
+        "comp.os.ms-windows.misc": 1.0,
+        "comp.sys.ibm.pc.hardware": 1.0,
+        "comp.sys.mac.hardware": 1.0,
+        "comp.windows.x": 1.0,
+        "rec.autos": 1.0,
+        "rec.motorcycles": 1.0,
+        "rec.sport.baseball": 1.0,
+        "rec.sport.hockey": 1.0,
+        "sci.crypt": 1.0,
+        "sci.electronics": 1.0,
+        "sci.med": 1.0,
+        "sci.space": 1.0
+      },
+      "distinct_C": [
+        1.0
+      ],
+      "mean_recovery": 0.5477132550968556,
+      "AS1_rho": 0.9505494505494506,
+      "AS2_perm_p": 4.999750012499375e-05,
+      "significant": true,
+      "n_classes_scored": 13,
+      "test_fpr": {
+        "min": 0.04075993091537133,
+        "max": 0.04373056994818653
+      },
+      "verdict": "generalizes"
+    },
+    "swept": {
+      "AS0_mean_recovery_over_20pct": true,
+      "recovery": {
+        "comp.graphics": {
+          "n": 940,
+          "mean": 0.8165602836879432,
+          "sd": 0.05536476146898166
+        },
+        "comp.os.ms-windows.misc": {
+          "n": 934,
+          "mean": 0.8273019271948608,
+          "sd": 0.0494165135295671
+        },
+        "comp.sys.ibm.pc.hardware": {
+          "n": 956,
+          "mean": 0.6624825662482566,
+          "sd": 0.0646737337228133
+        },
+        "comp.sys.mac.hardware": {
+          "n": 918,
+          "mean": 0.6469862018881626,
+          "sd": 0.06378280940208056
+        },
+        "comp.windows.x": {
+          "n": 961,
+          "mean": 0.7920915712799168,
+          "sd": 0.04562093817600226
+        },
+        "rec.autos": {
+          "n": 918,
+          "mean": 0.5400145243282498,
+          "sd": 0.05862210701278113
+        },
+        "rec.motorcycles": {
+          "n": 942,
+          "mean": 0.5977707006369427,
+          "sd": 0.05746928598300694
+        },
+        "rec.sport.baseball": {
+          "n": 926,
+          "mean": 0.684233261339093,
+          "sd": 0.08523541023559374
+        },
+        "rec.sport.hockey": {
+          "n": 953,
+          "mean": 0.5077649527806926,
+          "sd": 0.08925536617143107
+        },
+        "sci.crypt": {
+          "n": 948,
+          "mean": 0.2612517580872011,
+          "sd": 0.0565993740412479
+        },
+        "sci.electronics": {
+          "n": 945,
+          "mean": 0.6293827160493828,
+          "sd": 0.06578930139018137
+        },
+        "sci.med": {
+          "n": 951,
+          "mean": 0.2794602173151069,
+          "sd": 0.058228848275545746
+        },
+        "sci.space": {
+          "n": 946,
+          "mean": 0.4275898520084567,
+          "sd": 0.0750499020373168
+        }
+      },
+      "chosen_C": {
+        "comp.graphics": 0.001,
+        "comp.os.ms-windows.misc": 0.001,
+        "comp.sys.ibm.pc.hardware": 0.01,
+        "comp.sys.mac.hardware": 0.01,
+        "comp.windows.x": 0.01,
+        "rec.autos": 0.01,
+        "rec.motorcycles": 0.01,
+        "rec.sport.baseball": 0.01,
+        "rec.sport.hockey": 0.001,
+        "sci.crypt": 0.01,
+        "sci.electronics": 0.001,
+        "sci.med": 0.01,
+        "sci.space": 0.01
+      },
+      "distinct_C": [
+        0.001,
+        0.01
+      ],
+      "mean_recovery": 0.5902223486803281,
+      "AS1_rho": 0.8131868131868131,
+      "AS2_perm_p": 0.0012999350032498376,
+      "significant": true,
+      "n_classes_scored": 13,
+      "test_fpr": {
+        "min": 0.04000000000000001,
+        "max": 0.04557858376511227
+      },
+      "verdict": "generalizes"
+    }
+  },
+  "tuning_gain": 0.042509093583472435,
+  "AS0_precondition_met": true,
+  "verdict": "generalizes",
+  "predictions": {
+    "P1_rho_clears_0.60_both_settings": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "fixed": 0.9505494505494506,
+        "swept": 0.8131868131868131
+      }
+    },
+    "P2_tuning_gain_smaller_than_esm2": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "text": 0.042509093583472435,
+        "esm2_650M": 0.1396
+      }
+    },
+    "P3_withdrawn_by_amendment_1": {
+      "kind": "withdrawn",
+      "held": null,
+      "note": "the confusable-pair reasoning was about all twenty newsgroups, and both members of the religion pair are now on the NEGATIVE side, so the prediction has no referent. Withdrawn, not rewritten; counts as neither held nor missed.",
+      "values": [
+        "sci.med",
+        "sci.crypt",
+        "sci.space"
+      ]
+    },
+    "P4_lowest_margin_classes_are_the_sibling_pairs": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "lowest_margin": [
+          "sci.crypt",
+          "sci.med",
+          "sci.space"
+        ]
+      }
+    }
+  },
+  "seconds": 316.1
+}

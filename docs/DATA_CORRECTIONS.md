@@ -8682,3 +8682,113 @@ project to go stale** (entries 102, 110, 112, 116), inside the mechanism built t
 
 **Two derived predictions held, the reasoned one failed.** The computed record now reads **derived 15 of
 27, reasoned 3 of 11**, with **44 declared** and the six-prediction gap still `MUTATION_EXTENSION`.
+
+---
+
+## 2026-10-06 (one hundred and twentieth entry) — The margin result is not about protein language models, and a null task ran to completion first
+
+### 🔑 What moved
+
+The paper's one replicated result was stated, in every version until today, as a property of **protein**
+embeddings. Study AS ran `src/125`'s fold **unchanged** on **20 Newsgroups** with `all-MiniLM-L6-v2`
+frozen, holding out one of **13** sub-classes at a time, against bands frozen in
+`docs/CROSS_MODALITY_PREREGISTRATION.md` before `src/138` existed.
+
+| classifier | *ρ*(margin, recovery) | permutation *p* | mean recovery |
+|---|---:|---:|---:|
+| fixed `C = 1` | **+0.9505** | 0.00005 | 54.77% |
+| nested-selected `C` | **+0.8132** | 0.0013 | 59.02% |
+
+🔒 **Both clear the +0.60 floor the DeepVIC study was judged by**, at the same α = 0.0125 — the floor was
+borrowed deliberately so two domains are scored by one criterion. 🟢 **The quantity indexes
+frozen-representation geometry, not protein language models and not hazard.** § 4 gains a subsection, the
+abstract a clause, § 8 a paragraph naming the reframe, and § 1.2 a related-work paragraph.
+
+⚠️ **One text encoder is one arm**, and the paper's own rule is that no verdict stands on one arm, so AS
+is reported **single-arm indicative** and a second encoder is named rather than promised.
+
+### 🔴 The first design was a null task and nothing in the bands would have caught it
+
+§ 2 of the preregistration drew positives from 20 Newsgroups' **train** split and negatives from its
+**test** split, reasoning that negatives should come from the same source. ⚠️ **That made positives and
+negatives the same kind of thing** — the probe was asked to separate train-split posts from test-split
+posts. Recoveries came back at **0.82%–1.43%**, *below* the 5% nominal false-positive rate, i.e. a
+held-out class was *less* like the trained positives than the negatives were.
+
+🔴 **Every frozen band was on *ρ*.** A rank correlation over thirteen near-zero numbers is noise, and the
+study would have reported a verdict on it. **Amendment 1** moved to the corpus's own hierarchy
+(`comp`/`rec`/`sci` positive, `alt`/`misc`/`soc`/`talk` negative) and added **AS-0**: mean recovery must
+exceed **20%** before *ρ* is interpretable. 🔑 **This is the check the original preregistration should
+have had**, and its absence is why a broken fold ran to completion before anyone looked at a level.
+
+### 🔴 A reasoned prediction missed by reading half the formula
+
+**P4 (derived)** said the lowest-margin classes would be the near-duplicate sibling pairs — `comp.sys.*`,
+`rec.sport.*` — because a class whose nearest other-class neighbour is its own sibling has little to
+distinguish it. The three lowest are **`sci.crypt`, `sci.med`, `sci.space`**, and the `rec.sport` pair
+sits **high** (+0.096, +0.114). ⚠️ **The prediction used only the first term.** Margin subtracts the
+maximum cosine to any *negative*, and the negative side is belief, politics and commerce — which discuss
+medicine, cryptography policy and space. 🔒 **Same mechanism as the protein result**, where both failing
+classes carried negative margin by sitting closer to a benign protein than to any trained hazard class.
+
+**P2 (derived) held**: the tuning gain on text is **+4.25pp** against ESM-2 650M's **+13.96pp**, as
+predicted from 384 features on ~18k documents over-fitting less than 1,280 on ~13k.
+
+### 🔴 The abstract said "Four results" and listed five
+
+A sixth hand-maintained count gone stale, and `docs/DETECTOR_EVALUATION_SUMMARY.md` had carried the right
+number — **five** — the whole time. ⚠️ **Entries 102, 110, 112, 115, 116 are the others.** Fixed, and
+claim 151 now counts the `**First,` … `**Fifth,` ordinals in the abstract and fails if the stated word
+disagrees, so the next result added cannot leave it behind.
+
+### ⚠️ A withdrawn prediction was being stored as a miss
+
+`src/134` coerced `held` through `bool()`, so amendment 1's **withdrawn** P3 — which the preregistration
+says "counts as neither held nor missed" — appeared in the record as `held: false`. 🔒 Fixed to preserve
+`null`, with guards both ways: a `withdrawn` row carrying a verdict and a `derived`/`reasoned` row
+carrying none both fail the build, **both calibrated by breaking them** (exit 1 each, exit 0 clean).
+
+**The computed record now reads derived 17 of 30, reasoned 3 of 11**, with **49 declared** across **12**
+preregistrations and a **seven**-prediction gap — six `MUTATION_EXTENSION`, one withdrawn.
+
+### 🔴 The run that produced these numbers exited 1, and I read the artifact anyway
+
+`src/138` wrote `results/cross_modality.json` and then raised `KeyError` on the next line, printing a
+summary keyed on `P3_failures_are_the_confusable_pairs` — the name the prediction carried **before**
+amendment 1 withdrew it. ⚠️ **The rename reached the registry, the predicate and the artifact and missed
+one consumer.** 🔴 **I checked that the artifact existed and reported the verdict from it**, which is the
+discipline this project states as verdicts-by-captured-exit-code, violated in the one place nothing was
+checking me.
+
+🔒 **Re-run after the fix: `EXIT=0`, and the artifact is byte-identical apart from `built` and `seconds`** —
+so the numbers were never in question, but the reason to believe that is the re-run and not the first
+reading. ⚠️ **A crashed run and a finished run looked the same from the outside**, which is the finding.
+
+### 🔴 `declared - scored == 6`, a literal, inside the claim that polices literals
+
+Entry 119 recorded the fourth hand-maintained number to go stale and replaced claim 147's hand-count with
+a discovered one. ⚠️ **The same claim still carried `v["declared"] - v["scored"] == 6`**, which went stale
+the instant `GENERALITY_GRID` was frozen. 🔒 **`src/134` now reconciles the gap from its parts** —
+*declared = scored + unrun + withdrawn − double-scored surplus*, reading **51 = 41 + 10 + 1 − 1** — and the
+claim asserts the **identity**, which survives freezing a preregistration or running one.
+
+🔑 **The surplus term is not a fudge**: `DEEPVIC_BENCHMARK` is scored by two artifacts, AI-1's metadata
+baseline and AI's verdicts, whose prediction numbers overlap, so it holds **seven** rows against **six**
+declarations. ⚠️ **Until today the declared total also read 49 against a true 47**, because the count
+matched *lines* starting with a prediction label and an amendment restating "P1 and P2 are unchanged" was
+counted as two further declarations. Distinct prediction numbers now.
+
+### 🔴 The audit stated its own size twice and checked one of them
+
+Claim 148 asserted `**{n} claims** and fails`, the § 9 phrasing. ⚠️ **The masthead — the paper's fourth
+line — read "the gate currently checks 90 such claims" while § 9 read 150.** 🔒 Exactly the defect entry
+100 recorded for the corrections count: a census of one phrasing is a census of one phrasing. Every
+statement of the number is collected now, **three** are found, and all three must agree.
+
+### ⚠️ And the unrun-preregistration check was a single hardcoded name
+
+`src/134`'s selftest asserted `unscored == ["MUTATION_EXTENSION"]`, so freezing study AT's preregistration
+failed it. 🔒 **Replaced with a named allowlist, `UNRUN`, that requires a written reason per entry** and
+fails in **both** directions — an unscored preregistration with no stated reason, and an entry in `UNRUN`
+that has since acquired a scored artifact. 🔴 **Both calibrated by breaking them.** ⚠️ **Adding a name is
+the only way to silence the check, which is deliberate**: it turns an omission into a written claim.
