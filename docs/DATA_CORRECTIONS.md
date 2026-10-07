@@ -8639,3 +8639,46 @@ artifact and reality.**
 ⚠️ **This is the third time a count in this project was wrong because something was listed by hand**
 (entries 102, 110, 112). 🔑 **The pattern is not carelessness about numbers; it is hand-maintained
 inventories**, and the fix each time has been to discover the inventory instead of writing it down.
+
+## 2026-10-06 (one hundred and nineteenth entry) — The arm no longer rests on one draw, and the levels were the stable part
+
+🔴 **All seven DeepVIC studies reproduced `default_rng(12345)` bit-for-bit**, deliberately, so their
+recoveries were comparable — ⚠️ **which left the whole arm on one draw of 33,456 negatives**, and this
+project's own history said that mattered: study E's localization result changed on an independent pool,
+`C/A` falling 2.418 → 1.594 while `R` **grew** 7.682 → 11.774.
+
+🔒 On a second partition — `default_rng(67890)`, sharing **66.6%** of its union with the first, as two
+independent two-thirds draws should:
+
+| | *ρ* fixed `C` | *ρ* tuned `C` | (draw 1, fixed) | mean &#124;level shift&#124; | max |
+|---|---:|---:|---:|---:|---|
+| 650M | **+0.8418** | +0.8198 | +0.9473 | **2.30pp** | 5.70pp (Exotoxin) |
+| 35M | **+0.9033** | +0.8549 | +0.8857 | **1.47pp** | 6.09pp (Regulation) |
+
+🔒 **All four cells clear AI-2's frozen +0.60 floor and the tuning gain reproduces on both arms.**
+
+### 🔑 The prediction that failed is the interesting one
+
+**P3 (reasoned)** said the levels would shift by more than **3pp** between draws — the reasoning being
+that verdicts about orderings survive perturbation while levels do not, so the paper should quote
+orderings. ⚠️ **It failed: 2.30pp and 1.47pp.** 🔴 **And the ordering correlation moved *more* than the
+levels did** — *ρ* fell 0.105 on 650M against a mean level shift of 0.023. 🔑 **The opposite of what I
+argued**: here the levels are the stable part and the rank correlation over fourteen points is the noisy
+one, which is what a Spearman over fourteen categories should have been expected to be.
+
+### ⚠️ What this does and does not close
+
+🟢 § 7's "one negative partition" limitation is replaced by a measurement. ⚠️ **Study AM's within-fold
+ordering AUROC and study AQ's fair comparison keep the original draw**, and the artifact says so by name
+rather than leaving it to be assumed.
+
+### 🔴 Two stale hand-counts in the claim that polices hand-counts
+
+Claim 147 asserted `preregs == 8`, then `== 10`, against a number `src/134` **discovers** — so adding
+study AR's preregistration failed the gate on the count rather than on anything substantive, twice. 🔒
+It now asserts only that the paper **agrees with whatever was discovered**, and the spelled-out word is
+derived from the count instead of written in. ⚠️ **That is the fourth hand-maintained number in this
+project to go stale** (entries 102, 110, 112, 116), inside the mechanism built to stop the third.
+
+**Two derived predictions held, the reasoned one failed.** The computed record now reads **derived 15 of
+27, reasoned 3 of 11**, with **44 declared** and the six-prediction gap still `MUTATION_EXTENSION`.

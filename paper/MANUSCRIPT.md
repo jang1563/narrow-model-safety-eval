@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 122 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 123 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 90 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 122
+written because it caught something. The evidence is a **dated, append-only corrections log of 123
 entries** in which a published number moved, including entries that retract our own findings.
 
 Four results matter beyond this panel.
@@ -1408,16 +1408,28 @@ the diagnosis was in the record before the repair was built; both times it named
   set, which is exactly the quantity § 6's narrowing is about.
 - **Not a competence boundary.** The held-out class is removed from the *probe's* training, not from the
   foundation model's pretraining, and every class here is in the public databases these models saw.
-- 🔴 **Ten preregistrations, forty-one frozen predictions, and no correction across them.** Every
+- 🟢 **The DeepVIC arm rested on one draw of negatives, and now it does not.** All seven studies there
+  reproduce `default_rng(12345)` bit-for-bit so their recoveries are comparable, which left the arm on a
+  single draw of 33,456 negatives — ⚠️ **and this project's own history said that mattered**, since study
+  E's localization result changed on an independent pool (`C/A` 2.418 → 1.594, `R` 7.682 → 11.774). 🔒 On
+  a second partition (`default_rng(67890)`, sharing 66.6% of its union with the first, as two independent
+  two-thirds draws should) *ρ*(margin, recovery) is **+0.8418** and **+0.9033** at the fixed classifier
+  and **+0.8198** and **+0.8549** at the tuned one — **all four cells above the +0.60 floor** — and the
+  tuning gain reproduces on both arms. 🔑 **The levels move less than expected**: the mean absolute
+  per-category shift between draws is **2.30pp** and **1.47pp**, with a maximum of **5.70pp** (Exotoxin)
+  and **6.09pp** (Regulation), so the reasoned prediction that levels would move by more than 3pp
+  **failed**. ⚠️ **Study AM's ordering AUROC and study AQ's fair comparison keep the original partition**,
+  which is stated rather than implied.
+- 🔴 **Eleven preregistrations, forty-four frozen predictions, and no correction across them.** Every
   preregistration here sets its own Bonferroni α over its own primary tests — α = 0.05/2, /3 or /4 — and
   **none of them corrects for the others.** With this many frozen bands, some verdicts are expected to
   fall by chance. ⚠️ **The exposure is stated rather than corrected retroactively**, because choosing a
   family-wise correction after seeing which bands were met is the error the bands exist to prevent.
-  ⚠️ **Six of the forty-one belong to a frozen design for work not yet run**, so thirty-five are
+  ⚠️ **Six of the forty-four belong to a frozen design for work not yet run**, so 38 are
   scored; `results/prediction_record.json` holds the count and discovers the studies rather than
   listing them.
 - ⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions
-  held **13 of 25** where they were *derived* from a measurement and **3 of 10** where they were
+  held **15 of 27** where they were *derived* from a measurement and **3 of 11** where they were
   *reasoned* — so a derived prediction here is about a coin flip, and the paper's earlier reading that
   derived predictions reliably hold (§ 4) does not survive leaving the panel they were derived on. 🔴 **Two
   entries of the corrections log stated this tally wrongly** because it was maintained by hand; it is now
@@ -1458,7 +1470,7 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 122 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 123 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1544,7 +1556,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**149 claims** and fails if any number in a public document drifts from the artifact that produced
+**150 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

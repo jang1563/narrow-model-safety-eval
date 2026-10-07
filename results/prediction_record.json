@@ -196,6 +196,24 @@
       "held": false
     },
     {
+      "study": "second_draw",
+      "prediction": "P1_rho_clears_0.60_in_all_four_cells",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "second_draw",
+      "prediction": "P2_tuning_gain_reproduces",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "second_draw",
+      "prediction": "P3_levels_shift_over_3pp",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
       "study": "AM",
       "prediction": "P1_both_arms_cannot_order",
       "kind": "derived",
@@ -216,15 +234,15 @@
   ],
   "tally": {
     "derived": {
-      "held": 13,
-      "total": 25
+      "held": 15,
+      "total": 27
     },
     "reasoned": {
       "held": 3,
-      "total": 10
+      "total": 11
     }
   },
-  "total_scored": 35,
+  "total_scored": 38,
   "by_study": {
     "AJ": {
       "derived": [
@@ -316,6 +334,16 @@
         1
       ]
     },
+    "second_draw": {
+      "derived": [
+        2,
+        2
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
     "AM": {
       "derived": [
         2,
@@ -328,7 +356,7 @@
     }
   },
   "exposure": {
-    "preregistrations": 10,
+    "preregistrations": 11,
     "preregs_found": [
       "COMPOSITION_ARM",
       "COMPOSITION_RESIDUAL",
@@ -339,6 +367,7 @@
       "MUTATION_EXTENSION",
       "NESTED_MODEL",
       "REPRESENTATION_INCREMENT",
+      "SECOND_DRAW",
       "WITHIN_FOLD_ORDERING"
     ],
     "studies_found": [
@@ -351,13 +380,14 @@
       "AQ",
       "AO",
       "AK",
+      "second_draw",
       "AM"
     ],
     "preregs_with_no_scored_artifact": [
       "MUTATION_EXTENSION"
     ],
     "unscored_accounted_for": "MUTATION_EXTENSION is a frozen design for work not yet run, per README; its declarations are counted in the exposure and not in the tally",
-    "declared_predictions": 41,
+    "declared_predictions": 44,
     "amendments": 4,
     "per_prereg": [
       {
@@ -436,6 +466,15 @@
         "declared_predictions": 3,
         "alpha_statements": [
           "4"
+        ],
+        "amendments": 0
+      },
+      {
+        "prereg": "SECOND_DRAW",
+        "exists": true,
+        "declared_predictions": 3,
+        "alpha_statements": [
+          "3"
         ],
         "amendments": 0
       },

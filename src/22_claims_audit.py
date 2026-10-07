@@ -216,7 +216,10 @@ PUBLIC = ["README.md", "huggingface/README.md", "docs/EVALUATION_REPORT.md",
           "docs/ESTIMATION_REPAIR_PREREGISTRATION.md",
           # Added 2026-10-03. It makes the embedding-against-composition comparison fair on both
           # sides, which retires a one-sided figure the paper carried for a few hours.
-          "docs/FAIR_COMPARISON_PREREGISTRATION.md"]
+          "docs/FAIR_COMPARISON_PREREGISTRATION.md",
+          # Added 2026-10-06. It replaces section 7's "one negative partition" limitation with
+          # a measurement, and says which two studies still keep the original draw.
+          "docs/SECOND_DRAW_PREREGISTRATION.md"]
 
 
 def j(p):
@@ -1892,6 +1895,52 @@ def organism_cluster():
     }
 
 
+def second_draw():
+    """Do the verdicts survive a second draw of the 33,456 negatives?
+
+    🔒 rho(margin, recovery) on a new partition is +0.8418 and +0.9033 at the fixed classifier
+    and +0.8198 and +0.8549 at the tuned one -- all four cells above AI-2's frozen +0.60 floor
+    -- and the tuning gain reproduces on both arms.
+
+    🔑 The levels move less than predicted: the mean absolute per-category shift between draws
+    is 2.30pp and 1.47pp, maximum 5.70pp on Exotoxin and 6.09pp on Regulation, so the reasoned
+    prediction that they would move by more than 3pp FAILED. The arm does not rest
+    precariously on one draw.
+
+    ⚠️ The two partitions share 66.6% of their union, as two independent two-thirds draws
+    should, and study AM's ordering AUROC and study AQ's fair comparison keep the original
+    partition -- stated in the artifact, not implied.
+    """
+    v = j("../results/second_draw.json")
+    if v is None:
+        return None
+    A, B = v["arms"]["esm2_650M"], v["arms"]["esm2_35M"]
+    return {
+        "prereg": v["preregistration"],
+        "seeds": [v["seed_original"], v["seed_new"]],
+        "imported": "rather than" in v["imported_fold"],
+        "scope_stated": "keep the original partition" in v["not_retested"],
+        "bands": v["bands"],
+        "rho": {f"{k}/{t}": v["arms"][k][f"AR1_rho_{t}"]
+                for k in ("esm2_650M", "esm2_35M") for t in ("fixed", "swept")},
+        "rho_draw1": {"650M": A["AR1_rho_fixed_draw1"], "35M": B["AR1_rho_fixed_draw1"]},
+        "gain": {"650M": A["AR2_tuning_gain"], "35M": B["AR2_tuning_gain"]},
+        "gain_draw1": {"650M": A["AR2_tuning_gain_draw1"],
+                       "35M": B["AR2_tuning_gain_draw1"]},
+        "shift": {"650M": A["AR3_mean_abs_shift_fixed"],
+                  "35M": B["AR3_mean_abs_shift_fixed"]},
+        "max_shift": {"650M": A["AR3_max_abs_shift_fixed"],
+                      "35M": B["AR3_max_abs_shift_fixed"]},
+        "verdict_ar1": v["second_arm_rule"]["verdict_ar1"],
+        "verdict_ar2": v["second_arm_rule"]["verdict_ar2"],
+        "agree": v["second_arm_rule"]["ar1_agree"] and v["second_arm_rule"]["ar2_agree"],
+        "fpr_min": min(A["test_fpr"]["min"], B["test_fpr"]["min"]),
+        "fpr_max": max(A["test_fpr"]["max"], B["test_fpr"]["max"]),
+        "preds": {k: w["held"] for k, w in v["predictions"].items()},
+        "kinds": {k: w["kind"] for k, w in v["predictions"].items()},
+    }
+
+
 def fair_comparison():
     """The embedding-against-composition comparison, with the classifier tuned on both sides.
 
@@ -2132,7 +2181,12 @@ def prediction_record():
         "reasoned": [t["reasoned"]["held"], t["reasoned"]["total"]],
         "paper_states_derived": d_str in man,
         "paper_states_reasoned": r_str in man,
-        "paper_states_prereg_count": "Ten preregistrations" in man,
+        # 🔒 Discovered, so this moves whenever a preregistration is added. The word form is
+        # derived from the count rather than hard-coded, which is what let it go stale twice.
+        "paper_states_prereg_count": (
+            {8: "Eight", 9: "Nine", 10: "Ten", 11: "Eleven", 12: "Twelve",
+             13: "Thirteen"}.get(e["preregistrations"], "?")
+            + " preregistrations") in man,
         "paper_states_no_correction": "no correction across them" in man,
         "within_only": e["bonferroni_within_study_only"],
         "across_none": e["no_family_wise_correction_across_studies"],
@@ -6510,7 +6564,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 122"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 123"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -8439,7 +8493,10 @@ CLAIMS = [
          # 🔴 Was `== 8`, a hand-counted number from a hand-maintained list. src/134 now
          # DISCOVERS the preregistrations that declare predictions, and found ten -- study AQ's
          # four predictions had been absent from the record entirely while this claim passed.
-         and v["preregs"] == 10
+         # 🔴 Was `== 8`, then `== 10`, both hand-counted against a discovered number. The
+         # claim now asserts only that the paper AGREES with whatever was discovered, which is
+         # the self-maintaining form the totals already use.
+         and v["preregs"] >= 10
          # ⚠️ every scored prediction carries a kind; an unlabelled one would vanish from both
          # tallies without changing either, which is how a record quietly narrows
          and v["unlabelled"] == []
@@ -8450,7 +8507,7 @@ CLAIMS = [
          and v["amendments"] >= 3
          and v["no_hand_version"]),
      {"paper/MANUSCRIPT.md": [
-         "🔴 **Ten preregistrations, forty-one frozen predictions, and no correction across them.** Every",
+         "preregistration here sets its own Bonferroni α over its own primary tests — α = 0.05/2, /3 or /4 — and",
          "⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions"]},
      # 🔴 The two readings this does not license, in assertion-only form.
      ["derived predictions reliably hold on this benchmark",
@@ -8557,6 +8614,44 @@ CLAIMS = [
       "study AQ shows composition adds something",
       "the untuned comparison overstated the embedding",
       "composition needs less shrinkage than the embedding"]),
+    # 🟢 Added 2026-10-06. The arm no longer rests on one draw, and the LEVELS turn out to be
+    # the stable part while the ordering correlation moves more than they do.
+    ("the verdicts survive a second draw of negatives and the levels barely move",
+     second_draw,
+     lambda v: v is None or (
+         "SECOND_DRAW_PREREGISTRATION" in v["prereg"]
+         and v["imported"] and v["scope_stated"]
+         and v["seeds"] == [12345, 67890]
+         # 🔒 all four cells clear AI-2's floor and the arms agree
+         and all(x >= v["bands"]["rho_ok"] for x in v["rho"].values())
+         and len(v["rho"]) == 4
+         and v["verdict_ar1"] == "survives" and v["agree"] is True
+         and abs(v["rho"]["esm2_650M/fixed"] - 0.8418) < 0.0005
+         and abs(v["rho"]["esm2_35M/fixed"] - 0.9033) < 0.0005
+         # 🔒 the tuning repair reproduces on the new draw, on both arms
+         and v["verdict_ar2"] == "reproduces"
+         and v["gain"]["650M"] >= v["bands"]["gain_ok"]
+         and v["gain"]["35M"] >= v["bands"]["gain_ok"]
+         # 🔑 and the levels move LESS than the reasoned prediction said, under 3pp on both
+         and v["shift"]["650M"] < 0.03 and v["shift"]["35M"] < 0.03
+         and abs(v["shift"]["650M"] - 0.0230) < 0.0005
+         and v["max_shift"]["650M"] < 0.07 and v["max_shift"]["35M"] < 0.07
+         # ⚠️ the ordering correlation is MORE draw-sensitive than the levels on 650M
+         and abs(v["rho_draw1"]["650M"] - v["rho"]["esm2_650M/fixed"]) > v["shift"]["650M"]
+         # 🔒 matched false-positive rates, as everywhere in this arm
+         and 0.045 < v["fpr_min"] and v["fpr_max"] < 0.056
+         # ⭐ two derived held, the reasoned one failed
+         and v["preds"]["P1_rho_clears_0.60_in_all_four_cells"] is True
+         and v["preds"]["P2_tuning_gain_reproduces"] is True
+         and v["preds"]["P3_levels_shift_over_3pp"] is False
+         and v["kinds"]["P3_levels_shift_over_3pp"] == "reasoned"),
+     {"paper/MANUSCRIPT.md":
+      "- 🟢 **The DeepVIC arm rested on one draw of negatives, and now it does not.** All seven studies there"},
+     # 🔴 Four readings this does not license.
+     ["the arm rests on one draw of negatives",
+      "study AR retested every verdict",
+      "the levels are draw-independent",
+      "a second draw changes nothing"]),
 ]
 
 
