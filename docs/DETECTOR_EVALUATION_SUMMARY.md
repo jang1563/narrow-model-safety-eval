@@ -14,7 +14,7 @@ criteria are `docs/DETECTOR_CRITERIA.md`.
 
 A hazard detector takes a biological sequence and returns a score or a flag. This project built one
 — a linear probe over frozen protein-language-model embeddings — for the narrow purpose of finding
-out what it takes to know whether such a thing works. Five results, in descending order of how much
+out what it takes to know whether such a thing works. Seven results, in descending order of how much
 they should change a reader's practice:
 
 1. **The split is the binding constraint, not the model.** This panel's negatives divide 178 train /
@@ -454,6 +454,72 @@ python src/22_claims_audit.py                             # every number above, 
 The last command is the one that matters for reading the rest: it recomputes each headline figure
 from its stored artifact and checks it against the sentence quoting it in every public document.
 Exit status 1 if any claim has drifted.
+
+---
+
+## Addendum, 2026-10-08 — the headline changed, and it changed away from proteins
+
+⚠️ **Everything above is the 2026-09 line and is unrevised.** Its figures are still audited and still
+accurate about the protein panel. 🔑 **What has changed is what the margin result is a result *about*,
+and a reader who stops at § 3 will take away the wrong claim.**
+
+🔑 **The closing sentence above says "the transferable claim is not about protein models" and means it
+methodologically** — that a detector number without a split, a per-class table and a realized
+false-positive rate is not evidence. 🔒 **There is now a second, literal sense in which the same sentence
+is true.**
+
+### 🟢 The geometric result is not about protein language models
+
+`src/125`'s fold, unchanged, on **20 Newsgroups** with a frozen sentence encoder: *ρ*(margin, recovery) =
+**+0.9505** and **+0.8132** at the two classifier settings, both clearing the **+0.60** floor the protein
+benchmark was judged by — a floor borrowed deliberately so two domains meet one criterion
+(`docs/CROSS_MODALITY_PREREGISTRATION.md`). 🔑 **Nothing in the formula mentions proteins**; it takes an
+embedding matrix and a class partition. ⚠️ **One text encoder is one arm**, so it was reported single-arm
+indicative, and the grid below is the follow-up.
+
+### 🔴 The *formula* does not generalize, and when it fails is predictable
+
+🔒 Across **three modalities and eight frozen encoders**, `margin = nearest_positive − nearest_negative`
+clears the floor in **10 of 12** cell-settings — and so does `nearest_positive` **alone**, failing on
+*different* cells. 🔑 **The subtraction is earned only where the negative term carries signal**, and that
+is measurable: *ρ*(\|*ρ*(nearest-negative, recovery)\|, the gain from subtracting) = **+0.8118**.
+
+🔑 **The sharpest case is two encoders over identical images.** On CIFAR-100's superclass axis, same
+embeddings and same fold, DINOv2's nearest-negative term carries *ρ* = −0.224 and −0.442 and subtracting
+it buys **+0.061 and +0.303**; CLIP's carries **+0.139 and +0.103** — the *wrong sign*, where sitting
+closer to the negatives predicts **better** recovery — and subtracting it **costs 0.218 and 0.158**.
+
+### 🟢 A quantity needing no training says which, and that was tested prospectively
+
+🔒 **R = *ρ*(nearest-positive, nearest-negative)** across a cell's classes is computable from the frozen
+embedding before any probe is fitted. Study AV sealed a per-cell prediction from R for four encoders that
+did not exist in this project, **committed it before any fold ran**, and scored it after:
+*ρ*(R, gain) = **−0.6610** over **24** cell-settings, against a band frozen at ≤ −0.60.
+
+🔴 **The *thresholded* form of that rule was not established** — 3 of 4 predicted cell-settings but
+**1 of 2 cells**, which at two non-abstaining cells is a coin flip. 🔴 **And no training-free quantity
+predicts the gain's *magnitude***: nine candidates against 24 points, where the permutation maximum
+\|*ρ*\| for nine candidates has p95 = **0.5513** and the best reaches **−0.3595**.
+
+### 🔴 And it still does not let you build anything
+
+🔒 § 3 above calls margin "a triage signal". 🔑 **That was tested rather than asserted.** Cluster the
+positives without labels, give three experts to the lowest-margin clusters, and compare against the same
+budget allocated at random and against a **tuned** single probe: the mixture never beats one probe
+(**−1.55pp** and **−0.15pp**, at four times the parameters), and margin's allocation is indistinguishable
+from random. ⚠️ **Every interval spans zero and the arms disagree**, so the honest form is *no advantage
+was found* — but there is no reason here to build a mixture, and § 3's framing stands.
+
+🔑 **So the dissociation § 3 reports — prediction without repair — now holds by a second route.**
+
+### ⚠️ What a reader should take from the two halves together
+
+🔒 **The 2026-09 claims about the protein panel are unchanged.** 🔑 **The geometric claim is wider and
+weaker than § 3 states it**: wider because it is about frozen representations rather than protein models,
+weaker because the particular formula § 3 names is one instantiation whose extra term is earned in some
+representations and not others. ⚠️ **Six studies and five preregistered bands that could not do their job
+are in `docs/DATA_CORRECTIONS.md`**, entries 120–127, and `src/143_band_reachability.py` now checks a
+band's verdicts are reachable before one is frozen.
 
 ---
 

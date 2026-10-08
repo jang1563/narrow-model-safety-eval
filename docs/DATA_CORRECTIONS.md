@@ -9287,3 +9287,50 @@ spreads — **and the band was frozen without consulting it.**
 🔒 **`check_resolution` added**, flagging a pass threshold that sits inside the interval and a
 between-bands gap under half the interval width. **Calibrated both ways**: a band comfortably wider than
 its interval comes back clean, and a band with no variance estimate stays silent rather than guessing.
+
+### 🔴 The claim that caught the paper's stale count let the same one through next door
+
+Entry 124 recorded the abstract saying **"Four results"** over a list of **five**, and noted that
+`docs/DETECTOR_EVALUATION_SUMMARY.md` "had carried the right number the whole time". 🔴 **On 2026-10-08
+the summary was found saying "Five results" over a list of SEVEN.**
+
+🔴 **Claim 152 is why it went unnoticed.** Its check read
+
+    "summary_doc_agrees": f"{spelled} results" in summary_text
+
+where `spelled` is the **paper's** count. ⚠️ **Two documents enumerating different result sets were held
+to one number** — the paper's five that matter beyond the panel, the summary's seven in order of
+practical consequence — **so the summary's own list was never counted at all.** 🔑 **The claim written to
+catch a stale enumerated count contained a stale-enumerated-count bug of its own.**
+
+🔒 Each document is now checked against its **own** list: the paper's `**First,`…`**Fifth,` ordinals
+against its stated word, and the summary's numbered items against its stated word, independently.
+**Calibrated both ways** — reverting the count fails it, and deleting one item from the summary's list
+fails it too.
+
+### 🔒 And the reader-facing summary now carries the reframing
+
+⚠️ **`docs/DETECTOR_EVALUATION_SUMMARY.md` is the document "for a reader who will not open a 2,600-line
+results document", and it predated every study from AG onward.** Its 2026-09 figures are accurate about
+the protein panel and are unrevised; what it lacked was the thing a reader most needs — 🔑 **that the
+margin result is no longer a result about protein language models.**
+
+🔑 **Its closing sentence already said "the transferable claim is not about protein models", meaning it
+methodologically.** 🔒 **An addendum records the second, literal sense**: the cross-modality result, the
+formula's conditional advantage with the CLIP/DINOv2 wrong-sign case, R's prospective test and its
+failed thresholded form, the magnitude sweep's negative, and study AW finding no advantage in building a
+mixture. 🔒 **Four fragments of it are pinned** and a forbid refuses *"margin is a property of protein
+language models"*, so the retired claim cannot return to the document a reader actually reads.
+
+### ⚠️ A machine-level failure worth recording, because it cost the session its shell
+
+Mid-session every `Bash` call began returning `fork failed: resource temporarily unavailable`, including
+bare `echo`. 🔴 **The cause was this session's own accumulation**: a long run of `nohup` background jobs,
+background waits, and `Monitor` watches, each spawning a `tail -f | grep` pipeline. ⚠️ **`pkill -f
+"tail -f"` matched nothing**, so the watches had exited and the process table had not recovered.
+
+🔒 **The edits in flight were completed with the non-forking file tools and the rest deferred rather than
+attempted blind** — specifically, a multi-part change to `src/22_claims_audit.py` was held back, because
+an unverifiable edit to the audit file fails every claim at once. 🔑 **Nothing was lost**: no artifact, no
+data, and the one-word count fix was verifiable by reading the file back. ⚠️ **The lesson is about
+monitor hygiene**, not about the gate: a watch per study, re-armed on expiry, accumulates.

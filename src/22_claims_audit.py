@@ -5553,6 +5553,13 @@ def abstract_result_census():
 
     🔒 So this claim COUNTS the ordinals and derives the expected word, rather than pinning a
     literal -- the self-maintaining form entry 119 arrived at for the preregistration count.
+
+    🔴 And on 2026-10-08 the SUMMARY was found saying "Five results" over a list of SEVEN --
+    the same defect, in the document whose correct number had exposed the paper's. This claim
+    was the reason it went unnoticed: `summary_doc_agrees` checked the summary for the
+    PAPER's spelled count, so two documents enumerating different result sets were held to
+    one number, and the summary's own list was never counted at all. 🔒 Each document is now
+    checked against its own list.
     """
     man = (ROOT / "paper/MANUSCRIPT.md").read_text()
     words = ["First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth"]
@@ -5563,6 +5570,11 @@ def abstract_result_census():
     spelled = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five",
                6: "Six", 7: "Seven", 8: "Eight"}.get(len(found))
     stated = re.search(r"^(\w+) results matter beyond this panel\.", man, re.M)
+    summ = (ROOT / "docs/DETECTOR_EVALUATION_SUMMARY.md").read_text()
+    s_items = len(re.findall(r"^\d+\. \*\*", summ, re.M))
+    s_spelled = {4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight", 9: "Nine",
+                 10: "Ten"}.get(s_items)
+    s_stated = re.search(r"(\w+) results, in descending order", summ)
     return {
         "enumerated": found,
         "n": len(found),
@@ -5570,8 +5582,13 @@ def abstract_result_census():
         "expected_word": spelled,
         "stated_word": stated.group(1) if stated else None,
         "agrees": bool(stated) and stated.group(1) == spelled,
-        "summary_doc_agrees": f"{spelled} results" in (
-            ROOT / "docs/DETECTOR_EVALUATION_SUMMARY.md").read_text(),
+        # ⚠️ The two documents enumerate DIFFERENT sets -- the paper's results that matter
+        # beyond the panel, the summary's in order of practical consequence -- so each is
+        # checked against its OWN list and never against the other's count.
+        "summary_n_items": s_items,
+        "summary_expected_word": s_spelled,
+        "summary_stated_word": s_stated.group(1) if s_stated else None,
+        "summary_agrees": bool(s_stated) and s_stated.group(1) == s_spelled,
     }
 
 
@@ -8978,9 +8995,20 @@ CLAIMS = [
     ("the abstract's result count matches the results it enumerates",
      abstract_result_census,
      lambda v: v is None or (
-         v["n"] >= 5 and v["contiguous"] and v["agrees"] and v["summary_doc_agrees"]),
-     {"paper/MANUSCRIPT.md": "Five results matter beyond this panel."},
-     ["Four results matter beyond this panel"]),
+         v["n"] >= 5 and v["contiguous"] and v["agrees"]
+         # 🔒 and the summary's own numbered list against its own stated count
+         and v["summary_n_items"] >= 5 and v["summary_agrees"]),
+     {"paper/MANUSCRIPT.md": "Five results matter beyond this panel.",
+      "docs/DETECTOR_EVALUATION_SUMMARY.md": [
+          "Seven results, in descending order of how much",
+          # 🔒 the reader-facing document must carry the reframing, not just the paper
+          "## Addendum, 2026-10-08 — the headline changed, and it changed away from proteins",
+          "### 🔴 The *formula* does not generalize, and when it fails is predictable",
+          "### 🔴 And it still does not let you build anything"]},
+     ["Four results matter beyond this panel",
+      "Five results, in descending order of how much",
+      # 🔴 the summary must not revive the claim study AS retired
+      "margin is a property of protein language models"]),
     ("the paper points an editor at the file the audit reads",
      manuscript_is_the_live_file,
      lambda v: v is None or (
