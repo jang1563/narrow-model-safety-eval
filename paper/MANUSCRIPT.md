@@ -1,7 +1,7 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 131 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 132 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
-`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 156 such
+`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 157 such
 claims. Section references without a document name are to `docs/MECHANISM_GENERALIZATION.md`.
 
 ---
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 131
+written because it caught something. The evidence is a **dated, append-only corrections log of 132
 entries** in which a published number moved, including entries that retract our own findings.
 
 Five results matter beyond this panel.
@@ -1317,6 +1317,26 @@ deployment score.
 **8 to 11%** of a failure the geometry predicts at *ρ* = +0.894. Knowing which class will fail does not
 tell you how to fix it.
 
+🟢 **The triage claim above is tested, and it is the one thing here with a usable number.** Given a budget
+to validate **two** of a cell's held-out classes, picking the two **lowest-margin** ones recovers the two
+genuinely worst at **mean 5.70× chance** across **24 cell-settings**, three modalities and eight frozen
+encoders, beating chance in **21 of 24** — against bands of ≥ 2× and ≥ 18 of 24 frozen in
+`docs/TRIAGE_BUDGET_PREREGISTRATION.md`. 🔑 **The number a reader spending that budget experiences is a
+recovery lift of −22.44pp**: the classes margin sends you to validate recover twenty-two points worse than
+the cell average. 🔒 **Nothing was fitted for this** — every recovery and margin already existed.
+
+⚠️ **It fails where study AU said it would.** Mean recall at that budget is **0.950** on text, **0.625** on
+protein and **0.550** on images, and the three cell-settings that score **zero** are all fifty-class
+CIFAR-100 cells on the saturated fine-class axis. 🔴 **And a reasoned prediction failed**: recall at a
+budget of **one** was expected to be *worse* than at two, on the reasoning that the single lowest-margin
+class is the noisiest point of the ordering. It is **better** — 6.17× against 5.70× — so the top of the
+margin ordering is its most reliable end, not its least. 🔑 **Which is the opposite of what § 4's
+34-point over-prediction of beta-lactamase recovery suggested**, and that over-prediction is about a
+*level*, not a rank.
+
+🔑 **So the two uses of the geometry separate cleanly.** Building with it buys nothing (§ 7); spending an
+evaluation budget with it is worth about **5.7× chance**.
+
 🔒 **The class-level claim has its own external record, and it is not the member-level one.**
 `docs/EXTERNAL_CLASS_AXIS_PREREGISTRATION.md` froze a test on **746** VFDB proteins in **13** held-out
 categories, 30 seeds, both arms: **B-1 Spearman(margin, recovery) = +0.6813**, permutation *p* =
@@ -1580,12 +1600,12 @@ the diagnosis was in the record before the repair was built; both times it named
   and **6.09pp** (Regulation), so the reasoned prediction that levels would move by more than 3pp
   **failed**. ⚠️ **Study AM's ordering AUROC and study AQ's fair comparison keep the original partition**,
   which is stated rather than implied.
-- 🔴 **Sixteen preregistrations, sixty-two frozen predictions, and no correction across them.** Every
+- 🔴 **Seventeen preregistrations, sixty-five frozen predictions, and no correction across them.** Every
   preregistration here sets its own Bonferroni α over its own primary tests — α = 0.05/2, /3 or /4 — and
   **none of them corrects for the others.** With this many frozen bands, some verdicts are expected to
   fall by chance. ⚠️ **The exposure is stated rather than corrected retroactively**, because choosing a
   family-wise correction after seeing which bands were met is the error the bands exist to prevent.
-  ⚠️ **Fifty-one carry a verdict.** Ten belong to designs frozen for work not yet run — six to
+  ⚠️ **Fifty-four carry a verdict.** Ten belong to designs frozen for work not yet run — six to
   `MUTATION_EXTENSION` and four to `GENERALITY_GRID`, study AT's three-modality grid, waiting on one
   cell — and **two** were **withdrawn for want of a referent**: one when an amendment moved its subject to
   the other side of a redesigned axis, and one that named two of this project's **own panel classes** in a
@@ -1596,12 +1616,12 @@ the diagnosis was in the record before the repair was built; both times it named
   structural**: `DEEPVIC_BENCHMARK` is scored by **two** artifacts — study AI-1's metadata baseline and
   study AI's verdicts — whose prediction numbers overlap, so it contributes **seven** scored rows against
   **six** declarations. 🔒 **The artifact reconciles the gap from its parts rather than asserting it** —
-  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **62 = 51 + 10 + 2 − 1** —
+  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **65 = 54 + 10 + 2 − 1** —
   and names the preregistration the surplus comes from. 🔴 **Until today the declared total read 49**, because the count
   matched *lines* beginning with a prediction label and an amendment that restates "P1 and P2 are
   unchanged" was counted as two further declarations; it now counts distinct prediction numbers.
 - ⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions
-  held **19 of 37** where they were *derived* from a measurement and **4 of 14** where they were
+  held **21 of 39** where they were *derived* from a measurement and **4 of 15** where they were
   *reasoned* — so a derived prediction here is about a coin flip, and the paper's earlier reading that
   derived predictions reliably hold (§ 4) does not survive leaving the panel they were derived on. 🔴 **Two
   entries of the corrections log stated this tally wrongly** because it was maintained by hand; it is now
@@ -1664,7 +1684,7 @@ way**; the third was found by trying to break the check that guarded it and fail
 do** — an excluded unit leaves the numerator *and* the denominator and the reduced denominator is
 stated — **and to band coverage separately**, rather than fixing a count against a pool that can shrink.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 131 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 132 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1763,7 +1783,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**156 claims** and fails if any number in a public document drifts from the artifact that produced
+**157 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

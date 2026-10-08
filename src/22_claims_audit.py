@@ -2214,8 +2214,8 @@ def prediction_record():
         # count; excluded explicitly rather than relying on the reader to discount it.
         "gap_parts": {k: x for k, x in e.get("reconciliation", {}).items()
                       if isinstance(x, int) and not isinstance(x, bool)},
-        "paper_states_declared_word": "sixty-two frozen predictions" in man,
-        "paper_states_verdict_count": "**Fifty-one carry a verdict.**" in man,
+        "paper_states_declared_word": "sixty-five frozen predictions" in man,
+        "paper_states_verdict_count": "**Fifty-four carry a verdict.**" in man,
         "paper_names_the_balance_problem": (
             "do not reconcile by subtraction" in man
             and "seven** scored rows against" in man),
@@ -5741,6 +5741,45 @@ def training_free_rule():
     }
 
 
+def triage_budget():
+    """Study AX: does margin triage an evaluation budget?
+
+    🔑 Section 4 calls margin "a triage signal for deciding which mechanism families need
+    their own validation". Study AW tested the OTHER use -- building a mixture -- and found
+    no advantage. This tests the asserted one, and it is the project's only positive,
+    decision-relevant result for the geometry.
+
+    🟢 Picking the two lowest-margin classes recovers the two genuinely worst at mean 5.70x
+    chance over 24 cell-settings, beating chance in 21 of 24, with a recovery lift of
+    -22.44pp -- the classes it sends you to validate recover 22 points below the cell mean.
+
+    🔴 A reasoned prediction failed: recall at a budget of ONE is BETTER than at two
+    (6.17x against 5.70x), so the top of the margin ordering is its most reliable end.
+    🔒 Nothing was fitted; every recovery and margin already existed.
+    """
+    v = j("../results/triage_budget.json")
+    if v is None:
+        return None
+    return {
+        "prereg": v["preregistration"],
+        "no_fitting": "nothing was trained for this" in v["no_fitting"],
+        "n_cell_settings": v["n_cell_settings"],
+        "AX1_ratio": v["AX1_mean_ratio_at_m2"], "AX1_verdict": v["AX1_verdict"],
+        "AX2_beats": v["AX2_beats_chance"], "AX2_denom": v["AX2_denominator"],
+        "AX2_verdict": v["AX2_verdict"],
+        "recall_by_modality": v["mean_recall_at_m2_by_modality"],
+        "recovery_lift": v["mean_recovery_lift_at_m2"],
+        "ratio_at_m1": v["mean_ratio_at_m1"],
+        # ⚠️ chance varies with k, so AX-1 is a mean of per-cell ratios; the artifact must
+        # say so, because a ratio of pooled counts is a different number
+        "ratio_note_stated": "not a ratio of pooled counts" in v["ratio_note"],
+        "zero_recall_cells": sorted(f"{r['cell']}/{r['setting']}" for r in v["rows"]
+                                    if r["budgets"]["m2"]["recall"] == 0),
+        "preds": {k: x["held"] for k, x in v["predictions"].items()},
+        "kinds": {k: x["kind"] for k, x in v["predictions"].items()},
+    }
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -6851,7 +6890,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 131"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 132"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -9094,6 +9133,36 @@ CLAIMS = [
      ["a training-free rule decides which form of the statistic to use",
       "R predicts the magnitude of the gain",
       "the thresholded rule was validated"]),
+    ("margin triages an evaluation budget at 5.7x chance, and that is its only working use",
+     triage_budget,
+     lambda v: v is None or (
+         "TRIAGE_BUDGET" in v["prereg"] and v["no_fitting"]
+         and v["n_cell_settings"] == 24
+         # 🟢 both bands clear
+         and v["AX1_ratio"] >= 2.0 and v["AX1_verdict"] == "triage works"
+         and (v["AX2_beats"], v["AX2_denom"]) == (21, 24)
+         and v["AX2_verdict"] == "triage works"
+         and abs(v["AX1_ratio"] - 5.6979) < 0.001
+         # 🔑 the number a reader spending the budget experiences
+         and v["recovery_lift"] < -0.20
+         and v["ratio_note_stated"]
+         # ⚠️ and it fails where study AU said it would: the saturated fifty-class cells
+         and min(v["recall_by_modality"], key=v["recall_by_modality"].get) == "image"
+         and len(v["zero_recall_cells"]) == 3
+         and all("image/" in c for c in v["zero_recall_cells"])
+         # ⭐ two derived held; the reasoned one failed, and in the informative direction
+         and v["preds"]["P1_AX1_clears_2x_chance"] is True
+         and v["preds"]["P2_image_cells_have_lowest_recall"] is True
+         and v["preds"]["P3_recall_at_1_worse_than_at_2"] is False
+         and v["kinds"]["P3_recall_at_1_worse_than_at_2"] == "reasoned"
+         and v["ratio_at_m1"] > v["AX1_ratio"]),
+     {"paper/MANUSCRIPT.md": [
+         "🟢 **The triage claim above is tested, and it is the one thing here with a usable number.**",
+         "🔑 **So the two uses of the geometry separate cleanly.**"]},
+     # 🔴 Readings this does not license. Triage is a RANK use at a small budget.
+     ["margin is a deployment score",
+      "margin predicts the miss rate of an unseen class",
+      "triage works equally across modalities"]),
 ]
 
 

@@ -1,0 +1,2032 @@
+{
+  "built": "2026-10-08 16:50:19",
+  "study": "AX -- does margin triage an evaluation budget?",
+  "preregistration": "docs/TRIAGE_BUDGET_PREREGISTRATION.md",
+  "no_fitting": "every recovery and margin already existed in the artifacts of studies AT, AU and AV; nothing was trained for this",
+  "bands": {
+    "AX1_ok": 2.0,
+    "AX1_not": 1.2,
+    "AX2_ok": 18,
+    "AX2_not": 12
+  },
+  "n_cell_settings": 24,
+  "AX1_mean_ratio_at_m2": 5.697916666666667,
+  "AX1_verdict": "triage works",
+  "AX2_beats_chance": 21,
+  "AX2_denominator": 24,
+  "AX2_verdict": "triage works",
+  "mean_recall_at_m2_by_modality": {
+    "text": 0.95,
+    "protein": 0.625,
+    "image": 0.55
+  },
+  "mean_ratio_at_m1": 6.166666666666667,
+  "mean_recall_at_m2": 0.7291666666666666,
+  "mean_recovery_lift_at_m2": -0.22437494002892255,
+  "ratio_note": "chance varies with k (2/14, 2/13, 2/10, 2/50), so AX-1 is the mean of per-cell ratios and not a ratio of pooled counts",
+  "rows": [
+    {
+      "cell": "text/minilm_l6",
+      "setting": "fixed",
+      "source": "results/generality_grid.json",
+      "modality": "text",
+      "k": 13,
+      "rho": 0.9230769230769231,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 13,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.07692307692307693,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.25780590717299584,
+          "mean_recovery_all": 0.5477159088603345,
+          "recovery_lift": -0.28991000168733866,
+          "picked": [
+            "sci.crypt"
+          ],
+          "truth": [
+            "sci.med"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 13,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.15384615384615385,
+          "ratio": 6.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.01282051282051282,
+          "mean_recovery_picked": 0.2545075802952256,
+          "mean_recovery_all": 0.5477159088603345,
+          "recovery_lift": -0.2932083285651089,
+          "picked": [
+            "sci.crypt",
+            "sci.med"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 13,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.23076923076923078,
+          "ratio": 4.333333333333333,
+          "beats_chance": true,
+          "p_hypergeom": 0.0034965034965034965,
+          "mean_recovery_picked": 0.3031812339388889,
+          "mean_recovery_all": 0.5477159088603345,
+          "recovery_lift": -0.2445346749214456,
+          "picked": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt",
+            "sci.space"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "text/minilm_l6",
+      "setting": "swept",
+      "source": "results/generality_grid.json",
+      "modality": "text",
+      "k": 13,
+      "rho": 0.7692307692307693,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 13,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.07692307692307693,
+          "ratio": 13.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.07692307692307693,
+          "mean_recovery_picked": 0.2612517580872011,
+          "mean_recovery_all": 0.5902223486803281,
+          "recovery_lift": -0.328970590593127,
+          "picked": [
+            "sci.crypt"
+          ],
+          "truth": [
+            "sci.crypt"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 13,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.15384615384615385,
+          "ratio": 6.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.01282051282051282,
+          "mean_recovery_picked": 0.270355987701154,
+          "mean_recovery_all": 0.5902223486803281,
+          "recovery_lift": -0.3198663609791741,
+          "picked": [
+            "sci.crypt",
+            "sci.med"
+          ],
+          "truth": [
+            "sci.crypt",
+            "sci.med"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 13,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.23076923076923078,
+          "ratio": 4.333333333333333,
+          "beats_chance": true,
+          "p_hypergeom": 0.0034965034965034965,
+          "mean_recovery_picked": 0.3227672758035882,
+          "mean_recovery_all": 0.5902223486803281,
+          "recovery_lift": -0.26745507287673986,
+          "picked": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ],
+          "truth": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "text/mpnet_base",
+      "setting": "fixed",
+      "source": "results/generality_grid.json",
+      "modality": "text",
+      "k": 13,
+      "rho": 0.8406593406593407,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 13,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.07692307692307693,
+          "ratio": 13.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.07692307692307693,
+          "mean_recovery_picked": 0.31385372714486626,
+          "mean_recovery_all": 0.5713762340539689,
+          "recovery_lift": -0.2575225069091026,
+          "picked": [
+            "sci.crypt"
+          ],
+          "truth": [
+            "sci.crypt"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 13,
+          "hits": 1,
+          "recall": 0.5,
+          "chance": 0.15384615384615385,
+          "ratio": 3.25,
+          "beats_chance": true,
+          "p_hypergeom": 0.2948717948717949,
+          "mean_recovery_picked": 0.3949219564571159,
+          "mean_recovery_all": 0.5713762340539689,
+          "recovery_lift": -0.17645427759685295,
+          "picked": [
+            "sci.crypt",
+            "sci.med"
+          ],
+          "truth": [
+            "sci.crypt",
+            "rec.autos"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 13,
+          "hits": 2,
+          "recall": 0.6666666666666666,
+          "chance": 0.23076923076923078,
+          "ratio": 2.8888888888888884,
+          "beats_chance": true,
+          "p_hypergeom": 0.1083916083916084,
+          "mean_recovery_picked": 0.43632570176774604,
+          "mean_recovery_all": 0.5713762340539689,
+          "recovery_lift": -0.13505053228622282,
+          "picked": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ],
+          "truth": [
+            "sci.crypt",
+            "rec.autos",
+            "sci.med"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "text/mpnet_base",
+      "setting": "swept",
+      "source": "results/generality_grid.json",
+      "modality": "text",
+      "k": 13,
+      "rho": 0.8516483516483516,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 13,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.07692307692307693,
+          "ratio": 13.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.07692307692307693,
+          "mean_recovery_picked": 0.3377988748241913,
+          "mean_recovery_all": 0.7085709979786875,
+          "recovery_lift": -0.3707721231544962,
+          "picked": [
+            "sci.crypt"
+          ],
+          "truth": [
+            "sci.crypt"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 13,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.15384615384615385,
+          "ratio": 6.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.01282051282051282,
+          "mean_recovery_picked": 0.4056502260556287,
+          "mean_recovery_all": 0.7085709979786875,
+          "recovery_lift": -0.3029207719230588,
+          "picked": [
+            "sci.crypt",
+            "sci.med"
+          ],
+          "truth": [
+            "sci.crypt",
+            "sci.med"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 13,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.23076923076923078,
+          "ratio": 4.333333333333333,
+          "beats_chance": true,
+          "p_hypergeom": 0.0034965034965034965,
+          "mean_recovery_picked": 0.48244898791305485,
+          "mean_recovery_all": 0.7085709979786875,
+          "recovery_lift": -0.22612201006563265,
+          "picked": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ],
+          "truth": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "protein/esm2_650M",
+      "setting": "fixed",
+      "source": "results/generality_grid.json",
+      "modality": "protein",
+      "k": 14,
+      "rho": 0.9472527472527472,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 14,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.07142857142857142,
+          "ratio": 14.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.07142857142857142,
+          "mean_recovery_picked": 0.13194444444444445,
+          "mean_recovery_all": 0.41455510979583193,
+          "recovery_lift": -0.28261066535138746,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 14,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.14285714285714285,
+          "ratio": 7.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.01098901098901099,
+          "mean_recovery_picked": 0.17986111111111114,
+          "mean_recovery_all": 0.41455510979583193,
+          "recovery_lift": -0.2346939986847208,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage",
+            "Post-translational modification"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage",
+            "Post-translational modification"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 14,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.21428571428571427,
+          "ratio": 4.666666666666667,
+          "beats_chance": true,
+          "p_hypergeom": 0.0027472527472527475,
+          "mean_recovery_picked": 0.19620949074074076,
+          "mean_recovery_all": 0.41455510979583193,
+          "recovery_lift": -0.21834561905509117,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage",
+            "Post-translational modification",
+            "Regulation"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage",
+            "Post-translational modification",
+            "Regulation"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "protein/esm2_650M",
+      "setting": "swept",
+      "source": "results/generality_grid.json",
+      "modality": "protein",
+      "k": 14,
+      "rho": 0.8109890109890111,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 14,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.07142857142857142,
+          "ratio": 14.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.07142857142857142,
+          "mean_recovery_picked": 0.15694444444444444,
+          "mean_recovery_all": 0.5539022323717028,
+          "recovery_lift": -0.39695778792725833,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 14,
+          "hits": 1,
+          "recall": 0.5,
+          "chance": 0.14285714285714285,
+          "ratio": 3.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.27472527472527475,
+          "mean_recovery_picked": 0.29034090909090915,
+          "mean_recovery_all": 0.5539022323717028,
+          "recovery_lift": -0.2635613232807936,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage",
+            "Post-translational modification"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage",
+            "Regulation"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 14,
+          "hits": 2,
+          "recall": 0.6666666666666666,
+          "chance": 0.21428571428571427,
+          "ratio": 3.111111111111111,
+          "beats_chance": true,
+          "p_hypergeom": 0.09340659340659341,
+          "mean_recovery_picked": 0.2954703282828283,
+          "mean_recovery_all": 0.5539022323717028,
+          "recovery_lift": -0.25843190408887445,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage",
+            "Post-translational modification",
+            "Regulation"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage",
+            "Regulation",
+            "Immune modulation"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "image/clip_vit_b32",
+      "setting": "fixed",
+      "source": "results/generality_grid.json",
+      "modality": "image",
+      "k": 50,
+      "rho": 0.5230857885250473,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.02,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.8052666666666666,
+          "mean_recovery_all": 0.9336986666666667,
+          "recovery_lift": -0.1284320000000001,
+          "picked": [
+            "snail"
+          ],
+          "truth": [
+            "cattle"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.04,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.8467666666666667,
+          "mean_recovery_all": 0.9336986666666667,
+          "recovery_lift": -0.08693200000000001,
+          "picked": [
+            "snail",
+            "butterfly"
+          ],
+          "truth": [
+            "cattle",
+            "man"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.06,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.8371333333333334,
+          "mean_recovery_all": 0.9336986666666667,
+          "recovery_lift": -0.09656533333333328,
+          "picked": [
+            "snail",
+            "butterfly",
+            "caterpillar"
+          ],
+          "truth": [
+            "cattle",
+            "man",
+            "worm"
+          ]
+        },
+        "m10": {
+          "m": 10,
+          "k": 50,
+          "hits": 7,
+          "recall": 0.7,
+          "chance": 0.2,
+          "ratio": 3.4999999999999996,
+          "beats_chance": true,
+          "p_hypergeom": 0.00011887343584271335,
+          "mean_recovery_picked": 0.8695133333333332,
+          "mean_recovery_all": 0.9336986666666667,
+          "recovery_lift": -0.06418533333333343,
+          "picked": [
+            "snail",
+            "butterfly",
+            "caterpillar",
+            "lobster",
+            "bee",
+            "worm",
+            "flatfish",
+            "crocodile",
+            "skunk",
+            "snake"
+          ],
+          "truth": [
+            "cattle",
+            "man",
+            "worm",
+            "snail",
+            "lobster",
+            "caterpillar",
+            "bee",
+            "butterfly",
+            "flatfish",
+            "baby"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "image/clip_vit_b32",
+      "setting": "swept",
+      "source": "results/generality_grid.json",
+      "modality": "image",
+      "k": 50,
+      "rho": 0.5421628895993922,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.02,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.8588,
+          "mean_recovery_all": 0.9600853333333332,
+          "recovery_lift": -0.10128533333333323,
+          "picked": [
+            "snail"
+          ],
+          "truth": [
+            "man"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.04,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.8917999999999999,
+          "mean_recovery_all": 0.9600853333333332,
+          "recovery_lift": -0.06828533333333331,
+          "picked": [
+            "snail",
+            "butterfly"
+          ],
+          "truth": [
+            "man",
+            "worm"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.06,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.8822222222222221,
+          "mean_recovery_all": 0.9600853333333332,
+          "recovery_lift": -0.0778631111111111,
+          "picked": [
+            "snail",
+            "butterfly",
+            "caterpillar"
+          ],
+          "truth": [
+            "man",
+            "worm",
+            "lobster"
+          ]
+        },
+        "m10": {
+          "m": 10,
+          "k": 50,
+          "hits": 6,
+          "recall": 0.6,
+          "chance": 0.2,
+          "ratio": 2.9999999999999996,
+          "beats_chance": true,
+          "p_hypergeom": 0.001987193168075977,
+          "mean_recovery_picked": 0.9063666666666664,
+          "mean_recovery_all": 0.9600853333333332,
+          "recovery_lift": -0.0537186666666668,
+          "picked": [
+            "snail",
+            "butterfly",
+            "caterpillar",
+            "lobster",
+            "bee",
+            "worm",
+            "flatfish",
+            "crocodile",
+            "skunk",
+            "snake"
+          ],
+          "truth": [
+            "man",
+            "worm",
+            "lobster",
+            "snail",
+            "caterpillar",
+            "bee",
+            "butterfly",
+            "cattle",
+            "woman",
+            "camel"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "image/dinov2_vits14",
+      "setting": "fixed",
+      "source": "results/generality_grid.json",
+      "modality": "image",
+      "k": 50,
+      "rho": 0.6155730031306875,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.02,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.9058666666666666,
+          "mean_recovery_all": 0.9583986666666666,
+          "recovery_lift": -0.05253200000000002,
+          "picked": [
+            "butterfly"
+          ],
+          "truth": [
+            "bee"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 50,
+          "hits": 1,
+          "recall": 0.5,
+          "chance": 0.04,
+          "ratio": 12.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.07918367346938775,
+          "mean_recovery_picked": 0.8652,
+          "mean_recovery_all": 0.9583986666666666,
+          "recovery_lift": -0.09319866666666665,
+          "picked": [
+            "butterfly",
+            "bee"
+          ],
+          "truth": [
+            "bee",
+            "snail"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 50,
+          "hits": 2,
+          "recall": 0.6666666666666666,
+          "chance": 0.06,
+          "ratio": 11.11111111111111,
+          "beats_chance": true,
+          "p_hypergeom": 0.007244897959183674,
+          "mean_recovery_picked": 0.8526888888888887,
+          "mean_recovery_all": 0.9583986666666666,
+          "recovery_lift": -0.1057097777777779,
+          "picked": [
+            "butterfly",
+            "bee",
+            "snail"
+          ],
+          "truth": [
+            "bee",
+            "snail",
+            "man"
+          ]
+        },
+        "m10": {
+          "m": 10,
+          "k": 50,
+          "hits": 5,
+          "recall": 0.5,
+          "chance": 0.2,
+          "ratio": 2.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.01812947565457138,
+          "mean_recovery_picked": 0.91572,
+          "mean_recovery_all": 0.9583986666666666,
+          "recovery_lift": -0.04267866666666664,
+          "picked": [
+            "butterfly",
+            "bee",
+            "snail",
+            "caterpillar",
+            "lobster",
+            "camel",
+            "flatfish",
+            "crocodile",
+            "skunk",
+            "aquarium_fish"
+          ],
+          "truth": [
+            "bee",
+            "snail",
+            "man",
+            "worm",
+            "caterpillar",
+            "cattle",
+            "lobster",
+            "butterfly",
+            "whale",
+            "woman"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "image/dinov2_vits14",
+      "setting": "swept",
+      "source": "results/generality_grid.json",
+      "modality": "image",
+      "k": 50,
+      "rho": 0.6424644050928676,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.02,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.9182,
+          "mean_recovery_all": 0.9770613333333334,
+          "recovery_lift": -0.05886133333333343,
+          "picked": [
+            "butterfly"
+          ],
+          "truth": [
+            "bee"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 50,
+          "hits": 1,
+          "recall": 0.5,
+          "chance": 0.04,
+          "ratio": 12.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.07918367346938775,
+          "mean_recovery_picked": 0.8663333333333334,
+          "mean_recovery_all": 0.9770613333333334,
+          "recovery_lift": -0.11072800000000005,
+          "picked": [
+            "butterfly",
+            "bee"
+          ],
+          "truth": [
+            "bee",
+            "snail"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 50,
+          "hits": 2,
+          "recall": 0.6666666666666666,
+          "chance": 0.06,
+          "ratio": 11.11111111111111,
+          "beats_chance": true,
+          "p_hypergeom": 0.007244897959183674,
+          "mean_recovery_picked": 0.8728000000000001,
+          "mean_recovery_all": 0.9770613333333334,
+          "recovery_lift": -0.10426133333333332,
+          "picked": [
+            "butterfly",
+            "bee",
+            "snail"
+          ],
+          "truth": [
+            "bee",
+            "snail",
+            "lobster"
+          ]
+        },
+        "m10": {
+          "m": 10,
+          "k": 50,
+          "hits": 6,
+          "recall": 0.6,
+          "chance": 0.2,
+          "ratio": 2.9999999999999996,
+          "beats_chance": true,
+          "p_hypergeom": 0.001987193168075977,
+          "mean_recovery_picked": 0.9368666666666667,
+          "mean_recovery_all": 0.9770613333333334,
+          "recovery_lift": -0.04019466666666671,
+          "picked": [
+            "butterfly",
+            "bee",
+            "snail",
+            "caterpillar",
+            "lobster",
+            "camel",
+            "flatfish",
+            "crocodile",
+            "skunk",
+            "aquarium_fish"
+          ],
+          "truth": [
+            "bee",
+            "snail",
+            "lobster",
+            "worm",
+            "butterfly",
+            "man",
+            "caterpillar",
+            "camel",
+            "whale",
+            "spider"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "protein/esm2_35M",
+      "setting": "fixed",
+      "source": "results/generality_grid.json",
+      "modality": "protein",
+      "k": 14,
+      "rho": 0.8901098901098902,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 14,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.07142857142857142,
+          "ratio": 14.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.07142857142857142,
+          "mean_recovery_picked": 0.10656565656565653,
+          "mean_recovery_all": 0.41814204852852777,
+          "recovery_lift": -0.31157639196287124,
+          "picked": [
+            "Post-translational modification"
+          ],
+          "truth": [
+            "Post-translational modification"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 14,
+          "hits": 1,
+          "recall": 0.5,
+          "chance": 0.14285714285714285,
+          "ratio": 3.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.27472527472527475,
+          "mean_recovery_picked": 0.19078282828282828,
+          "mean_recovery_all": 0.41814204852852777,
+          "recovery_lift": -0.2273592202456995,
+          "picked": [
+            "Post-translational modification",
+            "Antimicrobial activity/Competitive advantage"
+          ],
+          "truth": [
+            "Post-translational modification",
+            "Regulation"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 14,
+          "hits": 2,
+          "recall": 0.6666666666666666,
+          "chance": 0.21428571428571427,
+          "ratio": 3.111111111111111,
+          "beats_chance": true,
+          "p_hypergeom": 0.09340659340659341,
+          "mean_recovery_picked": 0.1976746632996633,
+          "mean_recovery_all": 0.41814204852852777,
+          "recovery_lift": -0.22046738522886447,
+          "picked": [
+            "Post-translational modification",
+            "Antimicrobial activity/Competitive advantage",
+            "Regulation"
+          ],
+          "truth": [
+            "Post-translational modification",
+            "Regulation",
+            "Nutritional/Metabolic factor"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "protein/esm2_35M",
+      "setting": "swept",
+      "source": "results/generality_grid.json",
+      "modality": "protein",
+      "k": 14,
+      "rho": 0.8637362637362638,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 14,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.07142857142857142,
+          "ratio": 14.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.07142857142857142,
+          "mean_recovery_picked": 0.12676767676767675,
+          "mean_recovery_all": 0.4691246490747688,
+          "recovery_lift": -0.34235697230709206,
+          "picked": [
+            "Post-translational modification"
+          ],
+          "truth": [
+            "Post-translational modification"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 14,
+          "hits": 1,
+          "recall": 0.5,
+          "chance": 0.14285714285714285,
+          "ratio": 3.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.27472527472527475,
+          "mean_recovery_picked": 0.19532828282828282,
+          "mean_recovery_all": 0.4691246490747688,
+          "recovery_lift": -0.27379636624648596,
+          "picked": [
+            "Post-translational modification",
+            "Antimicrobial activity/Competitive advantage"
+          ],
+          "truth": [
+            "Post-translational modification",
+            "Regulation"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 14,
+          "hits": 2,
+          "recall": 0.6666666666666666,
+          "chance": 0.21428571428571427,
+          "ratio": 3.111111111111111,
+          "beats_chance": true,
+          "p_hypergeom": 0.09340659340659341,
+          "mean_recovery_picked": 0.2077362163299663,
+          "mean_recovery_all": 0.4691246490747688,
+          "recovery_lift": -0.2613884327448025,
+          "picked": [
+            "Post-translational modification",
+            "Antimicrobial activity/Competitive advantage",
+            "Regulation"
+          ],
+          "truth": [
+            "Post-translational modification",
+            "Regulation",
+            "Nutritional/Metabolic factor"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "image_sc/clip_vit_b32",
+      "setting": "fixed",
+      "source": "results/image_axis_repair.json",
+      "modality": "image",
+      "k": 10,
+      "rho": 0.6121212121212121,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 10,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.1,
+          "ratio": 10.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.1,
+          "mean_recovery_picked": 0.48488000000000003,
+          "mean_recovery_all": 0.8751559999999999,
+          "recovery_lift": -0.3902759999999999,
+          "picked": [
+            "people"
+          ],
+          "truth": [
+            "people"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 10,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.2,
+          "ratio": 5.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.022222222222222223,
+          "mean_recovery_picked": 0.6577,
+          "mean_recovery_all": 0.8751559999999999,
+          "recovery_lift": -0.21745599999999998,
+          "picked": [
+            "people",
+            "non-insect_invertebrates"
+          ],
+          "truth": [
+            "people",
+            "non-insect_invertebrates"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 10,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.3,
+          "ratio": 3.3333333333333335,
+          "beats_chance": true,
+          "p_hypergeom": 0.008333333333333333,
+          "mean_recovery_picked": 0.7273377777777777,
+          "mean_recovery_all": 0.8751559999999999,
+          "recovery_lift": -0.14781822222222218,
+          "picked": [
+            "people",
+            "non-insect_invertebrates",
+            "insects"
+          ],
+          "truth": [
+            "people",
+            "non-insect_invertebrates",
+            "insects"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "image_sc/clip_vit_b32",
+      "setting": "swept",
+      "source": "results/image_axis_repair.json",
+      "modality": "image",
+      "k": 10,
+      "rho": 0.6848484848484848,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 10,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.1,
+          "ratio": 10.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.1,
+          "mean_recovery_picked": 0.3239600000000001,
+          "mean_recovery_all": 0.892296,
+          "recovery_lift": -0.568336,
+          "picked": [
+            "people"
+          ],
+          "truth": [
+            "people"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 10,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.2,
+          "ratio": 5.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.022222222222222223,
+          "mean_recovery_picked": 0.60238,
+          "mean_recovery_all": 0.892296,
+          "recovery_lift": -0.28991599999999995,
+          "picked": [
+            "people",
+            "non-insect_invertebrates"
+          ],
+          "truth": [
+            "people",
+            "non-insect_invertebrates"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 10,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.3,
+          "ratio": 3.3333333333333335,
+          "beats_chance": true,
+          "p_hypergeom": 0.008333333333333333,
+          "mean_recovery_picked": 0.7016311111111112,
+          "mean_recovery_all": 0.892296,
+          "recovery_lift": -0.19066488888888877,
+          "picked": [
+            "people",
+            "non-insect_invertebrates",
+            "insects"
+          ],
+          "truth": [
+            "people",
+            "non-insect_invertebrates",
+            "insects"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "image_sc/dinov2_vits14",
+      "setting": "fixed",
+      "source": "results/image_axis_repair.json",
+      "modality": "image",
+      "k": 10,
+      "rho": 0.8666666666666665,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 10,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.1,
+          "ratio": 10.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.1,
+          "mean_recovery_picked": 0.5825600000000001,
+          "mean_recovery_all": 0.8949466666666666,
+          "recovery_lift": -0.3123866666666665,
+          "picked": [
+            "people"
+          ],
+          "truth": [
+            "people"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 10,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.2,
+          "ratio": 5.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.022222222222222223,
+          "mean_recovery_picked": 0.6881933333333332,
+          "mean_recovery_all": 0.8949466666666666,
+          "recovery_lift": -0.20675333333333334,
+          "picked": [
+            "people",
+            "insects"
+          ],
+          "truth": [
+            "people",
+            "insects"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 10,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.3,
+          "ratio": 3.3333333333333335,
+          "beats_chance": true,
+          "p_hypergeom": 0.008333333333333333,
+          "mean_recovery_picked": 0.7509422222222222,
+          "mean_recovery_all": 0.8949466666666666,
+          "recovery_lift": -0.14400444444444438,
+          "picked": [
+            "people",
+            "insects",
+            "non-insect_invertebrates"
+          ],
+          "truth": [
+            "people",
+            "insects",
+            "non-insect_invertebrates"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "image_sc/dinov2_vits14",
+      "setting": "swept",
+      "source": "results/image_axis_repair.json",
+      "modality": "image",
+      "k": 10,
+      "rho": 0.9515151515151514,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 10,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.1,
+          "ratio": 10.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.1,
+          "mean_recovery_picked": 0.6485200000000001,
+          "mean_recovery_all": 0.9263426666666665,
+          "recovery_lift": -0.27782266666666644,
+          "picked": [
+            "people"
+          ],
+          "truth": [
+            "people"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 10,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.2,
+          "ratio": 5.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.022222222222222223,
+          "mean_recovery_picked": 0.7368400000000002,
+          "mean_recovery_all": 0.9263426666666665,
+          "recovery_lift": -0.18950266666666638,
+          "picked": [
+            "people",
+            "insects"
+          ],
+          "truth": [
+            "people",
+            "insects"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 10,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.3,
+          "ratio": 3.3333333333333335,
+          "beats_chance": true,
+          "p_hypergeom": 0.008333333333333333,
+          "mean_recovery_picked": 0.8001333333333335,
+          "mean_recovery_all": 0.9263426666666665,
+          "recovery_lift": -0.12620933333333306,
+          "picked": [
+            "people",
+            "insects",
+            "non-insect_invertebrates"
+          ],
+          "truth": [
+            "people",
+            "insects",
+            "non-insect_invertebrates"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "text/distilroberta",
+      "setting": "fixed",
+      "source": "results/training_free_rule.json",
+      "modality": "text",
+      "k": 13,
+      "rho": 0.7252747252747254,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 13,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.07692307692307693,
+          "ratio": 13.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.07692307692307693,
+          "mean_recovery_picked": 0.3117088607594936,
+          "mean_recovery_all": 0.5480546146478293,
+          "recovery_lift": -0.23634575388833573,
+          "picked": [
+            "sci.crypt"
+          ],
+          "truth": [
+            "sci.crypt"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 13,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.15384615384615385,
+          "ratio": 6.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.01282051282051282,
+          "mean_recovery_picked": 0.3185428285571039,
+          "mean_recovery_all": 0.5480546146478293,
+          "recovery_lift": -0.22951178609072542,
+          "picked": [
+            "sci.crypt",
+            "sci.med"
+          ],
+          "truth": [
+            "sci.crypt",
+            "sci.med"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 13,
+          "hits": 2,
+          "recall": 0.6666666666666666,
+          "chance": 0.23076923076923078,
+          "ratio": 2.8888888888888884,
+          "beats_chance": true,
+          "p_hypergeom": 0.1083916083916084,
+          "mean_recovery_picked": 0.37573985140828303,
+          "mean_recovery_all": 0.5480546146478293,
+          "recovery_lift": -0.1723147632395463,
+          "picked": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ],
+          "truth": [
+            "sci.crypt",
+            "sci.med",
+            "rec.sport.hockey"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "text/distilroberta",
+      "setting": "swept",
+      "source": "results/training_free_rule.json",
+      "modality": "text",
+      "k": 13,
+      "rho": 0.7087912087912087,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 13,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.07692307692307693,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.39050632911392413,
+          "mean_recovery_all": 0.6714585133608142,
+          "recovery_lift": -0.28095218424689006,
+          "picked": [
+            "sci.crypt"
+          ],
+          "truth": [
+            "sci.med"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 13,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.15384615384615385,
+          "ratio": 6.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.01282051282051282,
+          "mean_recovery_picked": 0.3289194807153918,
+          "mean_recovery_all": 0.6714585133608142,
+          "recovery_lift": -0.3425390326454224,
+          "picked": [
+            "sci.crypt",
+            "sci.med"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 13,
+          "hits": 2,
+          "recall": 0.6666666666666666,
+          "chance": 0.23076923076923078,
+          "ratio": 2.8888888888888884,
+          "beats_chance": true,
+          "p_hypergeom": 0.1083916083916084,
+          "mean_recovery_picked": 0.42723126292466107,
+          "mean_recovery_all": 0.6714585133608142,
+          "recovery_lift": -0.24422725043615312,
+          "picked": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt",
+            "rec.sport.hockey"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "text/minilm_l3",
+      "setting": "fixed",
+      "source": "results/training_free_rule.json",
+      "modality": "text",
+      "k": 13,
+      "rho": 0.8406593406593407,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 13,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.07692307692307693,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.18052039381153306,
+          "mean_recovery_all": 0.4102154305095532,
+          "recovery_lift": -0.22969503669802016,
+          "picked": [
+            "sci.crypt"
+          ],
+          "truth": [
+            "sci.med"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 13,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.15384615384615385,
+          "ratio": 6.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.01282051282051282,
+          "mean_recovery_picked": 0.15005690212833928,
+          "mean_recovery_all": 0.4102154305095532,
+          "recovery_lift": -0.26015852838121395,
+          "picked": [
+            "sci.crypt",
+            "sci.med"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 13,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.23076923076923078,
+          "ratio": 4.333333333333333,
+          "beats_chance": true,
+          "p_hypergeom": 0.0034965034965034965,
+          "mean_recovery_picked": 0.16639922204374605,
+          "mean_recovery_all": 0.4102154305095532,
+          "recovery_lift": -0.24381620846580718,
+          "picked": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt",
+            "sci.space"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "text/minilm_l3",
+      "setting": "swept",
+      "source": "results/training_free_rule.json",
+      "modality": "text",
+      "k": 13,
+      "rho": 0.7802197802197801,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 13,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.07692307692307693,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.15436005625879043,
+          "mean_recovery_all": 0.44079018703694295,
+          "recovery_lift": -0.2864301307781525,
+          "picked": [
+            "sci.crypt"
+          ],
+          "truth": [
+            "sci.med"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 13,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.15384615384615385,
+          "ratio": 6.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.01282051282051282,
+          "mean_recovery_picked": 0.12691714695168754,
+          "mean_recovery_all": 0.44079018703694295,
+          "recovery_lift": -0.3138730400852554,
+          "picked": [
+            "sci.crypt",
+            "sci.med"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 13,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.23076923076923078,
+          "ratio": 4.333333333333333,
+          "beats_chance": true,
+          "p_hypergeom": 0.0034965034965034965,
+          "mean_recovery_picked": 0.1492931320293374,
+          "mean_recovery_all": 0.44079018703694295,
+          "recovery_lift": -0.2914970550076056,
+          "picked": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt",
+            "sci.space"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "text/bge_base",
+      "setting": "fixed",
+      "source": "results/training_free_rule.json",
+      "modality": "text",
+      "k": 13,
+      "rho": 0.7582417582417583,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 13,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.07692307692307693,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.3216596343178622,
+          "mean_recovery_all": 0.5866492887619383,
+          "recovery_lift": -0.26498965444407613,
+          "picked": [
+            "sci.crypt"
+          ],
+          "truth": [
+            "sci.med"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 13,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.15384615384615385,
+          "ratio": 6.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.01282051282051282,
+          "mean_recovery_picked": 0.29142918624410463,
+          "mean_recovery_all": 0.5866492887619383,
+          "recovery_lift": -0.2952201025178337,
+          "picked": [
+            "sci.crypt",
+            "sci.med"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 13,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.23076923076923078,
+          "ratio": 4.333333333333333,
+          "beats_chance": true,
+          "p_hypergeom": 0.0034965034965034965,
+          "mean_recovery_picked": 0.35287198274859505,
+          "mean_recovery_all": 0.5866492887619383,
+          "recovery_lift": -0.2337773060133433,
+          "picked": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt",
+            "sci.space"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "text/bge_base",
+      "setting": "swept",
+      "source": "results/training_free_rule.json",
+      "modality": "text",
+      "k": 13,
+      "rho": 0.7472527472527472,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 13,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.07692307692307693,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.40305907172995775,
+          "mean_recovery_all": 0.7047243802771673,
+          "recovery_lift": -0.3016653085472096,
+          "picked": [
+            "sci.crypt"
+          ],
+          "truth": [
+            "sci.med"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 13,
+          "hits": 2,
+          "recall": 1.0,
+          "chance": 0.15384615384615385,
+          "ratio": 6.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.01282051282051282,
+          "mean_recovery_picked": 0.3056129568253715,
+          "mean_recovery_all": 0.7047243802771673,
+          "recovery_lift": -0.39911142345179584,
+          "picked": [
+            "sci.crypt",
+            "sci.med"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 13,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.23076923076923078,
+          "ratio": 4.333333333333333,
+          "beats_chance": true,
+          "p_hypergeom": 0.0034965034965034965,
+          "mean_recovery_picked": 0.3762460820931182,
+          "mean_recovery_all": 0.7047243802771673,
+          "recovery_lift": -0.3284782981840491,
+          "picked": [
+            "sci.crypt",
+            "sci.med",
+            "sci.space"
+          ],
+          "truth": [
+            "sci.med",
+            "sci.crypt",
+            "sci.space"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "image/vit_b16_sup",
+      "setting": "fixed",
+      "source": "results/training_free_rule.json",
+      "modality": "image",
+      "k": 50,
+      "rho": 0.5743577430972389,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.02,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.7434666666666666,
+          "mean_recovery_all": 0.92744,
+          "recovery_lift": -0.18397333333333343,
+          "picked": [
+            "cattle"
+          ],
+          "truth": [
+            "bee"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 50,
+          "hits": 1,
+          "recall": 0.5,
+          "chance": 0.04,
+          "ratio": 12.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.07918367346938775,
+          "mean_recovery_picked": 0.8038333333333334,
+          "mean_recovery_all": 0.92744,
+          "recovery_lift": -0.12360666666666664,
+          "picked": [
+            "cattle",
+            "snail"
+          ],
+          "truth": [
+            "bee",
+            "cattle"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 50,
+          "hits": 2,
+          "recall": 0.6666666666666666,
+          "chance": 0.06,
+          "ratio": 11.11111111111111,
+          "beats_chance": true,
+          "p_hypergeom": 0.007244897959183674,
+          "mean_recovery_picked": 0.7897555555555557,
+          "mean_recovery_all": 0.92744,
+          "recovery_lift": -0.1376844444444444,
+          "picked": [
+            "cattle",
+            "snail",
+            "butterfly"
+          ],
+          "truth": [
+            "bee",
+            "cattle",
+            "butterfly"
+          ]
+        },
+        "m10": {
+          "m": 10,
+          "k": 50,
+          "hits": 6,
+          "recall": 0.6,
+          "chance": 0.2,
+          "ratio": 2.9999999999999996,
+          "beats_chance": true,
+          "p_hypergeom": 0.001987193168075977,
+          "mean_recovery_picked": 0.85084,
+          "mean_recovery_all": 0.92744,
+          "recovery_lift": -0.0766,
+          "picked": [
+            "cattle",
+            "snail",
+            "butterfly",
+            "bee",
+            "caterpillar",
+            "flatfish",
+            "aquarium_fish",
+            "camel",
+            "elephant",
+            "man"
+          ],
+          "truth": [
+            "bee",
+            "cattle",
+            "butterfly",
+            "man",
+            "whale",
+            "snail",
+            "woman",
+            "caterpillar",
+            "trout",
+            "turtle"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "image/vit_b16_sup",
+      "setting": "swept",
+      "source": "results/training_free_rule.json",
+      "modality": "image",
+      "k": 50,
+      "rho": 0.6312124849939976,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.02,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.87,
+          "mean_recovery_all": 0.9660786666666666,
+          "recovery_lift": -0.09607866666666665,
+          "picked": [
+            "cattle"
+          ],
+          "truth": [
+            "bee"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 50,
+          "hits": 0,
+          "recall": 0.0,
+          "chance": 0.04,
+          "ratio": 0.0,
+          "beats_chance": false,
+          "p_hypergeom": 1.0,
+          "mean_recovery_picked": 0.8997333333333334,
+          "mean_recovery_all": 0.9660786666666666,
+          "recovery_lift": -0.06634533333333326,
+          "picked": [
+            "cattle",
+            "snail"
+          ],
+          "truth": [
+            "bee",
+            "butterfly"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 50,
+          "hits": 2,
+          "recall": 0.6666666666666666,
+          "chance": 0.06,
+          "ratio": 11.11111111111111,
+          "beats_chance": true,
+          "p_hypergeom": 0.007244897959183674,
+          "mean_recovery_picked": 0.8771555555555556,
+          "mean_recovery_all": 0.9660786666666666,
+          "recovery_lift": -0.08892311111111106,
+          "picked": [
+            "cattle",
+            "snail",
+            "butterfly"
+          ],
+          "truth": [
+            "bee",
+            "butterfly",
+            "cattle"
+          ]
+        },
+        "m10": {
+          "m": 10,
+          "k": 50,
+          "hits": 7,
+          "recall": 0.7,
+          "chance": 0.2,
+          "ratio": 3.4999999999999996,
+          "beats_chance": true,
+          "p_hypergeom": 0.00011887343584271335,
+          "mean_recovery_picked": 0.9038866666666665,
+          "mean_recovery_all": 0.9660786666666666,
+          "recovery_lift": -0.062192000000000136,
+          "picked": [
+            "cattle",
+            "snail",
+            "butterfly",
+            "bee",
+            "caterpillar",
+            "flatfish",
+            "aquarium_fish",
+            "camel",
+            "elephant",
+            "man"
+          ],
+          "truth": [
+            "bee",
+            "butterfly",
+            "cattle",
+            "lobster",
+            "man",
+            "caterpillar",
+            "snail",
+            "whale",
+            "flatfish",
+            "spider"
+          ]
+        }
+      }
+    }
+  ],
+  "predictions": {
+    "P1_AX1_clears_2x_chance": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "mean_ratio": 5.697916666666667,
+        "band": 2.0
+      }
+    },
+    "P2_image_cells_have_lowest_recall": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "text": 0.95,
+        "protein": 0.625,
+        "image": 0.55
+      }
+    },
+    "P3_recall_at_1_worse_than_at_2": {
+      "kind": "reasoned",
+      "held": false,
+      "values": {
+        "ratio_at_m1": 6.166666666666667,
+        "ratio_at_m2": 5.697916666666667
+      }
+    }
+  },
+  "verdict": "AX-1 triage works (mean ratio 5.70x), AX-2 triage works (21/24)",
+  "seconds": 0.0
+}

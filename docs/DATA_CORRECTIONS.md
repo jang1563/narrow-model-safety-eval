@@ -9334,3 +9334,58 @@ attempted blind** — specifically, a multi-part change to `src/22_claims_audit.
 an unverifiable edit to the audit file fails every claim at once. 🔑 **Nothing was lost**: no artifact, no
 data, and the one-word count fix was verifiable by reading the file back. ⚠️ **The lesson is about
 monitor hygiene**, not about the gate: a watch per study, re-armed on expiry, accumulates.
+
+---
+
+## 2026-10-08 (one hundred and twenty-eighth entry) — The triage claim is tested, and it is the geometry's one working use
+
+### 🔑 The claim § 4 makes, which nothing had tested
+
+§ 4 has called margin **"a triage signal for deciding which mechanism families need their own validation,
+and not as a deployment score"** since before this line of work began. 🔴 **It was an assertion.** Study
+AW tested the *other* use — building a mixture — and found no advantage. 🔒 **Study AX tests the asserted
+one.**
+
+⚠️ **It is not redundant with *ρ*.** A rank correlation says the ordering beats chance; it does not say
+whether picking **two** of fourteen works. 🔑 **The decision a reader faces is a budget.**
+
+🔒 **No fitting.** Every recovery and margin already existed in the artifacts of studies AT, AU and AV:
+**24 cell-settings**, three modalities, eight frozen encoders.
+
+### 🟢 It works, at a number a reader can act on
+
+| | |
+|---|---|
+| **AX-1** mean recall@2 ÷ chance | **5.70×** (band ≥ 2×) |
+| **AX-2** cell-settings beating chance | **21 of 24** (band ≥ 18) |
+| mean recall@2 | **0.729** |
+| 🔑 **recovery lift of the picked classes** | **−22.44pp** |
+
+🔑 **The lift is the number that matters**: the classes margin sends you to validate recover
+**twenty-two points worse** than the cell average. ⚠️ **Chance varies with *k*** — 2/14, 2/13, 2/10, 2/50
+— so AX-1 is the mean of per-cell ratios and **not** a ratio of pooled counts, and the artifact says so.
+
+### ⚠️ And it fails exactly where study AU said it would
+
+Mean recall@2 is **0.950** on text, **0.625** on protein, **0.550** on images. 🔴 **The three
+cell-settings scoring zero are all fifty-class CIFAR-100 cells on the saturated fine-class axis** —
+`image/clip_vit_b32` at both settings and `image/vit_b16_sup` swept. 🔑 **The axis study AU repaired is
+the axis triage fails on**, which is the same finding reached from a third direction.
+
+### 🔴 A reasoned prediction failed, in the informative direction
+
+**P3** expected recall at a budget of **one** to be *worse* than at two, because the single lowest-margin
+class is the noisiest point of the ordering and § 4 reports margin over-predicting beta-lactamase
+recovery by **34 points**. 🔴 **It is better: 6.17× against 5.70×.** 🔑 **So the top of the margin
+ordering is its most reliable end, not its least** — and the 34-point error is about a *level*, which a
+rank-based budget never consults. ⚠️ **The prediction confused a calibration failure for a ranking
+failure**, which is the distinction § 4 draws two paragraphs earlier.
+
+🟢 **P1 and P2, both derived, held.**
+
+### 🔑 What this settles about the geometry
+
+🔒 **The two uses separate cleanly.** Building with margin buys nothing — study AW, no advantage over one
+tuned probe on either arm. Spending an evaluation budget with it is worth about **5.7× chance** with a
+**−22pp** recovery lift. 🔑 **§ 4's framing was right and is now measured rather than asserted**, and the
+record moves to **derived 21 of 39, reasoned 4 of 15**.

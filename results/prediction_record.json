@@ -304,6 +304,24 @@
       "held": true
     },
     {
+      "study": "triage_budget",
+      "prediction": "P1_AX1_clears_2x_chance",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "triage_budget",
+      "prediction": "P2_image_cells_have_lowest_recall",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "triage_budget",
+      "prediction": "P3_recall_at_1_worse_than_at_2",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
       "study": "AM",
       "prediction": "P1_both_arms_cannot_order",
       "kind": "derived",
@@ -324,15 +342,15 @@
   ],
   "tally": {
     "derived": {
-      "held": 19,
-      "total": 37
+      "held": 21,
+      "total": 39
     },
     "reasoned": {
       "held": 4,
-      "total": 14
+      "total": 15
     }
   },
-  "total_scored": 51,
+  "total_scored": 54,
   "total_withdrawn": 2,
   "by_study": {
     "AJ": {
@@ -475,6 +493,16 @@
         1
       ]
     },
+    "triage_budget": {
+      "derived": [
+        2,
+        2
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
     "AM": {
       "derived": [
         2,
@@ -487,7 +515,7 @@
     }
   },
   "exposure": {
-    "preregistrations": 16,
+    "preregistrations": 17,
     "preregs_found": [
       "COMPOSITION_ARM",
       "COMPOSITION_RESIDUAL",
@@ -504,6 +532,7 @@
       "REPRESENTATION_INCREMENT",
       "SECOND_DRAW",
       "TRAINING_FREE_RULE",
+      "TRIAGE_BUDGET",
       "WITHIN_FOLD_ORDERING"
     ],
     "studies_found": [
@@ -521,6 +550,7 @@
       "AK",
       "second_draw",
       "training_free_rule_scored",
+      "triage_budget",
       "AM"
     ],
     "preregs_with_no_scored_artifact": [
@@ -531,10 +561,10 @@
       "MUTATION_EXTENSION": "a frozen design for work not yet run, per README",
       "GENERALITY_GRID": "study AT, frozen 2026-10-06; its six cells require a second text encoder, two image encoders and ProtT5 on DeepVIC, and no cell is scored until all six land"
     },
-    "declared_predictions": 62,
+    "declared_predictions": 65,
     "reconciliation": {
-      "declared": 62,
-      "scored": 51,
+      "declared": 65,
+      "scored": 54,
       "withdrawn": 2,
       "unrun": 10,
       "double_scored_surplus": 1,
@@ -678,6 +708,15 @@
           "2"
         ],
         "amendments": 2
+      },
+      {
+        "prereg": "TRIAGE_BUDGET",
+        "exists": true,
+        "declared_predictions": 3,
+        "alpha_statements": [
+          "2"
+        ],
+        "amendments": 0
       },
       {
         "prereg": "WITHIN_FOLD_ORDERING",
