@@ -97,6 +97,8 @@ UNRUN = {
     "GENERALITY_GRID": ("study AT, frozen 2026-10-06; its six cells require a second text "
                         "encoder, two image encoders and ProtT5 on DeepVIC, and no cell is "
                         "scored until all six land"),
+    "MARGIN_ROUTING": ("study AW, frozen 2026-10-08; the mixture folds have not been fitted "
+                       "yet. Remove this entry when results/margin_routing.json lands"),
 }
 
 

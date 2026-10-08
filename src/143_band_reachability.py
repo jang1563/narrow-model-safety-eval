@@ -158,6 +158,13 @@ def main():
         if r["ok"]:
             print("      ok: every region is reachable")
     bad = [r for r in rows if not r["ok"]]
+    if a.units is not None:
+        # 🔴 An ad-hoc query used to overwrite the regression artifact, so checking a proposed
+        # band replaced the three known cases that claim 154 audits -- caught by the gate
+        # immediately, but a query must not be able to clobber a fixture.
+        print(f"\n{len(bad)} of {len(rows)} band(s) flagged "
+              f"(ad-hoc query; {OUT.name} not written)")
+        return 0
     OUT.write_text(json.dumps(
         {"study": "band reachability -- can every declared verdict happen?",
          "why": ("three studies in a row carried a band that could not do what it was "
