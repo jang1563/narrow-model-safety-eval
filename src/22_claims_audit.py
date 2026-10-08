@@ -2215,7 +2215,7 @@ def prediction_record():
         "gap_parts": {k: x for k, x in e.get("reconciliation", {}).items()
                       if isinstance(x, int) and not isinstance(x, bool)},
         "paper_states_declared_word": "sixty-two frozen predictions" in man,
-        "paper_states_verdict_count": "**Forty-eight carry a verdict.**" in man,
+        "paper_states_verdict_count": "**Fifty-one carry a verdict.**" in man,
         "paper_names_the_balance_problem": (
             "do not reconcile by subtraction" in man
             and "seven** scored rows against" in man),
@@ -5618,6 +5618,10 @@ def band_reachability():
     man = (ROOT / "paper/MANUSCRIPT.md").read_text()
     return {
         "n_rows": len(v["rows"]), "n_flagged": v["n_flagged"],
+        "aw2_bands_finer_than_measurement": any(
+            "BANDS FINER THAN THE MEASUREMENT" in p for p in rows["AW-2"]["problems"]),
+        "aw2_pass_inside_noise": any(
+            "PASS INSIDE THE NOISE" in p for p in rows["AW-2"]["problems"]),
         "bands": sorted(rows),
         "all_three_flagged": all(not r["ok"] for r in v["rows"]),
         "av1_perfect_scores_as_failure": any(
@@ -6830,7 +6834,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 130"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 131"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -8991,7 +8995,10 @@ CLAIMS = [
     ("every verdict the preregistrations declare is reachable, or is named as not",
      band_reachability,
      lambda v: v is None or (
-         v["n_rows"] == 3 and v["n_flagged"] == 3 and v["all_three_flagged"]
+         v["n_rows"] == 4 and v["n_flagged"] == 4 and v["all_three_flagged"]
+         # 🔴 the fourth case is a NEW kind: a band narrower than its own measurement's
+         # interval, which the count-and-unit check cannot see
+         and v["aw2_bands_finer_than_measurement"] and v["aw2_pass_inside_noise"]
          # 🔒 the three specific diagnoses, not just a count of complaints
          and v["av1_perfect_scores_as_failure"] and v["av1_pass_unreachable"]
          and v["av1_attainable_max"] == 4

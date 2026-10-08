@@ -38,6 +38,19 @@
       "ok": false
     },
     {
+      "band": "AW-2 (MARGIN_ROUTING)",
+      "pass_at": 0.03,
+      "fail_at": 0.01,
+      "between_bands_gap": 0.019999999999999997,
+      "ci_width": 0.069,
+      "n_units": 14,
+      "problems": [
+        "PASS INSIDE THE NOISE: the pass threshold +0.03 is within a 0.069-wide interval, so a null result can clear it",
+        "BANDS FINER THAN THE MEASUREMENT: the between-bands gap is 0.02 against a 0.069-wide interval, so which band a point lands in is decided by noise"
+      ],
+      "ok": false
+    },
+    {
       "band": "AT-1b (GENERALITY_GRID)",
       "outer": "the 3-4 of 6 modality-dependent band",
       "inner": "a modality dead on both its encoders",
@@ -47,5 +60,5 @@
       "ok": false
     }
   ],
-  "n_flagged": 3
+  "n_flagged": 4
 }

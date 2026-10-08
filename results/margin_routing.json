@@ -575,10 +575,630 @@
       "AW1_margin_minus_none": -0.015455342451062837,
       "AW2_margin_minus_random": -0.005376625311780847,
       "AW3_margin_minus_size": 0.020646002088104076
+    },
+    "esm2_650M": {
+      "arm": "esm2_650M",
+      "n_categories": 14,
+      "k_clusters": 7,
+      "m_experts": 3,
+      "seeds": 30,
+      "recovery": {
+        "margin": {
+          "Adherence": {
+            "n": 2259,
+            "mean": 0.7793123801091929,
+            "sd": 0.04380314555116263
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "n": 24,
+            "mean": 0.17361111111111116,
+            "sd": 0.07508243660190565
+          },
+          "Biofilm": {
+            "n": 226,
+            "mean": 0.586283185840708,
+            "sd": 0.045254790792440915
+          },
+          "Effector delivery system": {
+            "n": 4266,
+            "mean": 0.567283950617284,
+            "sd": 0.05231875580275485
+          },
+          "Exoenzyme": {
+            "n": 210,
+            "mean": 0.637936507936508,
+            "sd": 0.06776578511026414
+          },
+          "Exotoxin": {
+            "n": 1126,
+            "mean": 0.6838365896980463,
+            "sd": 0.0767265054469192
+          },
+          "Immune modulation": {
+            "n": 1983,
+            "mean": 0.37302067574382247,
+            "sd": 0.042166921099445386
+          },
+          "Invasion": {
+            "n": 84,
+            "mean": 0.7543650793650795,
+            "sd": 0.04878331762075987
+          },
+          "Motility": {
+            "n": 1121,
+            "mean": 0.6023788284269996,
+            "sd": 0.05553795415788502
+          },
+          "Nutritional/Metabolic factor": {
+            "n": 1123,
+            "mean": 0.3711190264173346,
+            "sd": 0.05234763574235802
+          },
+          "Others": {
+            "n": 187,
+            "mean": 0.7664884135472371,
+            "sd": 0.02244027370899221
+          },
+          "Post-translational modification": {
+            "n": 66,
+            "mean": 0.493939393939394,
+            "sd": 0.15541481055136383
+          },
+          "Regulation": {
+            "n": 128,
+            "mean": 0.4049479166666667,
+            "sd": 0.08124386927024978
+          },
+          "Stress survival": {
+            "n": 186,
+            "mean": 0.5396057347670251,
+            "sd": 0.019740489729813515
+          }
+        },
+        "random": {
+          "Adherence": {
+            "n": 2259,
+            "mean": 0.7374354434115392,
+            "sd": 0.04741146859837114
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "n": 24,
+            "mean": 0.21944444444444444,
+            "sd": 0.07809186717597022
+          },
+          "Biofilm": {
+            "n": 226,
+            "mean": 0.5696165191740413,
+            "sd": 0.05076950633757951
+          },
+          "Effector delivery system": {
+            "n": 4266,
+            "mean": 0.632012814502266,
+            "sd": 0.04631865601014635
+          },
+          "Exoenzyme": {
+            "n": 210,
+            "mean": 0.6584126984126983,
+            "sd": 0.07261664733531703
+          },
+          "Exotoxin": {
+            "n": 1126,
+            "mean": 0.6320011841326229,
+            "sd": 0.07807876199408209
+          },
+          "Immune modulation": {
+            "n": 1983,
+            "mean": 0.35930408472012104,
+            "sd": 0.02839726978818067
+          },
+          "Invasion": {
+            "n": 84,
+            "mean": 0.7373015873015872,
+            "sd": 0.049524020040813986
+          },
+          "Motility": {
+            "n": 1121,
+            "mean": 0.5865893547427893,
+            "sd": 0.06266125216476119
+          },
+          "Nutritional/Metabolic factor": {
+            "n": 1123,
+            "mean": 0.40329474621549427,
+            "sd": 0.04808113510378251
+          },
+          "Others": {
+            "n": 187,
+            "mean": 0.7718360071301247,
+            "sd": 0.022396287504578657
+          },
+          "Post-translational modification": {
+            "n": 66,
+            "mean": 0.3373737373737374,
+            "sd": 0.0746452651094734
+          },
+          "Regulation": {
+            "n": 128,
+            "mean": 0.38619791666666664,
+            "sd": 0.07937267014523447
+          },
+          "Stress survival": {
+            "n": 186,
+            "mean": 0.5453405017921147,
+            "sd": 0.01423731001958772
+          }
+        },
+        "size": {
+          "Adherence": {
+            "n": 2259,
+            "mean": 0.7275047956322857,
+            "sd": 0.04758133011311641
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "n": 24,
+            "mean": 0.1986111111111111,
+            "sd": 0.07395774310379129
+          },
+          "Biofilm": {
+            "n": 226,
+            "mean": 0.5948377581120945,
+            "sd": 0.04703867479953498
+          },
+          "Effector delivery system": {
+            "n": 4266,
+            "mean": 0.591279887482419,
+            "sd": 0.04859684040049864
+          },
+          "Exoenzyme": {
+            "n": 210,
+            "mean": 0.6644444444444445,
+            "sd": 0.07325773226860552
+          },
+          "Exotoxin": {
+            "n": 1126,
+            "mean": 0.7143872113676732,
+            "sd": 0.07703272383852676
+          },
+          "Immune modulation": {
+            "n": 1983,
+            "mean": 0.34629349470499243,
+            "sd": 0.034160334797345385
+          },
+          "Invasion": {
+            "n": 84,
+            "mean": 0.70515873015873,
+            "sd": 0.04768912468186603
+          },
+          "Motility": {
+            "n": 1121,
+            "mean": 0.588373476063039,
+            "sd": 0.05517746151355461
+          },
+          "Nutritional/Metabolic factor": {
+            "n": 1123,
+            "mean": 0.3564262392401306,
+            "sd": 0.05105791430521506
+          },
+          "Others": {
+            "n": 187,
+            "mean": 0.7855614973262032,
+            "sd": 0.027817059587126675
+          },
+          "Post-translational modification": {
+            "n": 66,
+            "mean": 0.5181818181818181,
+            "sd": 0.16364216871161372
+          },
+          "Regulation": {
+            "n": 128,
+            "mean": 0.39791666666666664,
+            "sd": 0.07476428175852301
+          },
+          "Stress survival": {
+            "n": 186,
+            "mean": 0.5476702508960574,
+            "sd": 0.014586566997149789
+          }
+        },
+        "none": {
+          "Adherence": {
+            "n": 2259,
+            "mean": 0.786778810683193,
+            "sd": 0.044596831347224655
+          },
+          "Antimicrobial activity/Competitive advantage": {
+            "n": 24,
+            "mean": 0.15694444444444444,
+            "sd": 0.09134172640911267
+          },
+          "Biofilm": {
+            "n": 226,
+            "mean": 0.6451327433628319,
+            "sd": 0.04778930590693146
+          },
+          "Effector delivery system": {
+            "n": 4266,
+            "mean": 0.6171823722456634,
+            "sd": 0.05059578822243306
+          },
+          "Exoenzyme": {
+            "n": 210,
+            "mean": 0.6617460317460317,
+            "sd": 0.06595305772071698
+          },
+          "Exotoxin": {
+            "n": 1126,
+            "mean": 0.6889579632918886,
+            "sd": 0.10228954539697697
+          },
+          "Immune modulation": {
+            "n": 1983,
+            "mean": 0.3775760632038997,
+            "sd": 0.04006895987547973
+          },
+          "Invasion": {
+            "n": 84,
+            "mean": 0.7492063492063491,
+            "sd": 0.040634450257266586
+          },
+          "Motility": {
+            "n": 1121,
+            "mean": 0.5853404698186143,
+            "sd": 0.06841230044191039
+          },
+          "Nutritional/Metabolic factor": {
+            "n": 1123,
+            "mean": 0.40296823983377855,
+            "sd": 0.05497188572621714
+          },
+          "Others": {
+            "n": 187,
+            "mean": 0.8137254901960785,
+            "sd": 0.036811125763684956
+          },
+          "Post-translational modification": {
+            "n": 66,
+            "mean": 0.4237373737373738,
+            "sd": 0.15848560437718873
+          },
+          "Regulation": {
+            "n": 128,
+            "mean": 0.30572916666666666,
+            "sd": 0.08823900264420309
+          },
+          "Stress survival": {
+            "n": 186,
+            "mean": 0.539605734767025,
+            "sd": 0.020140371465356705
+          }
+        }
+      },
+      "mean_recovery": {
+        "margin": 0.5524377710133149,
+        "random": 0.5411543600014462,
+        "size": 0.5526176700991189,
+        "none": 0.5539022323717028
+      },
+      "test_fpr": {
+        "margin": {
+          "min": 0.04991331898613103,
+          "max": 0.05287242945958871
+        },
+        "random": {
+          "min": 0.04869380679100909,
+          "max": 0.053195241511238646
+        },
+        "size": {
+          "min": 0.050239120038259207,
+          "max": 0.05332077953132473
+        },
+        "none": {
+          "min": 0.04878646580583453,
+          "max": 0.05054100908656144
+        }
+      },
+      "n_params": {
+        "margin": 5120,
+        "random": 5120,
+        "size": 5120,
+        "none": 1280
+      },
+      "clusters_picked": {
+        "margin": [
+          [
+            0,
+            6,
+            1
+          ],
+          [
+            1,
+            4,
+            5
+          ],
+          [
+            1,
+            3,
+            0
+          ],
+          [
+            0,
+            2,
+            5
+          ],
+          [
+            6,
+            5,
+            4
+          ],
+          [
+            5,
+            6,
+            0
+          ],
+          [
+            3,
+            0,
+            2
+          ],
+          [
+            0,
+            3,
+            6
+          ],
+          [
+            6,
+            0,
+            5
+          ],
+          [
+            3,
+            5,
+            2
+          ],
+          [
+            1,
+            3,
+            0
+          ],
+          [
+            2,
+            1,
+            4
+          ],
+          [
+            2,
+            0,
+            5
+          ],
+          [
+            6,
+            5,
+            2
+          ]
+        ],
+        "random": [
+          [
+            1,
+            3,
+            5
+          ],
+          [
+            3,
+            4,
+            5
+          ],
+          [
+            2,
+            3,
+            5
+          ],
+          [
+            1,
+            4,
+            5
+          ],
+          [
+            0,
+            3,
+            6
+          ],
+          [
+            0,
+            2,
+            6
+          ],
+          [
+            1,
+            2,
+            5
+          ],
+          [
+            0,
+            5,
+            6
+          ],
+          [
+            1,
+            3,
+            5
+          ],
+          [
+            0,
+            3,
+            4
+          ],
+          [
+            0,
+            3,
+            4
+          ],
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            1,
+            3
+          ],
+          [
+            0,
+            3,
+            4
+          ]
+        ],
+        "size": [
+          [
+            1,
+            2,
+            4
+          ],
+          [
+            6,
+            4,
+            0
+          ],
+          [
+            4,
+            3,
+            5
+          ],
+          [
+            0,
+            5,
+            6
+          ],
+          [
+            3,
+            5,
+            0
+          ],
+          [
+            4,
+            6,
+            1
+          ],
+          [
+            0,
+            1,
+            4
+          ],
+          [
+            3,
+            2,
+            6
+          ],
+          [
+            0,
+            2,
+            1
+          ],
+          [
+            6,
+            5,
+            1
+          ],
+          [
+            5,
+            3,
+            4
+          ],
+          [
+            1,
+            6,
+            0
+          ],
+          [
+            0,
+            6,
+            3
+          ],
+          [
+            5,
+            3,
+            4
+          ]
+        ],
+        "none": [
+          [],
+          [],
+          [],
+          [],
+          [],
+          [],
+          [],
+          [],
+          [],
+          [],
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "mean_cluster_purity": 0.44736465421178645,
+      "AW1_margin_minus_none": -0.0014644613583878474,
+      "AW2_margin_minus_random": 0.011283411011868694,
+      "AW3_margin_minus_size": -0.00017989908580395841
     }
   },
   "verdict_block": {
-    "verdict": "INCOMPLETE -- 1 of 2 arms; both must agree"
+    "per_arm": {
+      "esm2_35M": {
+        "AW1": "does not",
+        "AW2": "does not",
+        "AW3": "between bands"
+      },
+      "esm2_650M": {
+        "AW1": "does not",
+        "AW2": "between bands",
+        "AW3": "does not"
+      }
+    },
+    "arms_agree": {
+      "AW1": true,
+      "AW2": false,
+      "AW3": false
+    },
+    "AW2_is_the_one_that_matters": "AW-1 can be won by having more parameters; only AW-2 isolates whether margin picked the right clusters",
+    "verdict": "ARMS DISAGREE -- AW2: does not/between bands, AW3: between bands/does not"
   },
-  "seconds": 703.7
+  "seconds": 2265.4,
+  "predictions": {
+    "P1_AW2_lands_in_does_not": {
+      "kind": "reasoned",
+      "held": false,
+      "values": {
+        "esm2_35M": -0.005376625311780847,
+        "esm2_650M": 0.011283411011868694
+      }
+    },
+    "P2_AW1_positive_but_under_5pp": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "esm2_35M": -0.015455342451062837,
+        "esm2_650M": -0.0014644613583878474
+      }
+    },
+    "P3_cluster_purity_below_0.50": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "mean_purity": 0.45511524403331755
+      }
+    },
+    "P4_low_margin_clusters_over_contain_the_failures": {
+      "kind": "withdrawn",
+      "held": null,
+      "note": "P4 names beta-lactamase and the phage peptidoglycan hydrolase class, which are this project's own panel classes and are absent from DeepVIC's fourteen curator categories. The prediction has no referent in the benchmark it was declared against. Withdrawn rather than rewritten, and rather than scored against substituted categories, which the first implementation attempted.",
+      "values": {
+        "deepvic_categories_named_in_P4": [],
+        "panel_classes_P4_names": [
+          "beta_lactamase",
+          "phage_peptidoglycan_hydrolase"
+        ]
+      }
+    }
+  }
 }

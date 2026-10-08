@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 130 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 131 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 156 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 130
+written because it caught something. The evidence is a **dated, append-only corrections log of 131
 entries** in which a published number moved, including entries that retract our own findings.
 
 Five results matter beyond this panel.
@@ -1585,22 +1585,23 @@ the diagnosis was in the record before the repair was built; both times it named
   **none of them corrects for the others.** With this many frozen bands, some verdicts are expected to
   fall by chance. ⚠️ **The exposure is stated rather than corrected retroactively**, because choosing a
   family-wise correction after seeing which bands were met is the error the bands exist to prevent.
-  ⚠️ **Forty-eight carry a verdict.** Fourteen belong to designs frozen for work not yet run — six to
-  `MUTATION_EXTENSION`, four to `GENERALITY_GRID` (study AT's three-modality grid, waiting on one cell)
-  and four to `MARGIN_ROUTING`, whose mixture folds are still being fitted — and one was **withdrawn by amendment** when its referent moved to the other side of a
-  redesigned axis; `results/prediction_record.json` holds the counts and discovers the studies
+  ⚠️ **Fifty-one carry a verdict.** Ten belong to designs frozen for work not yet run — six to
+  `MUTATION_EXTENSION` and four to `GENERALITY_GRID`, study AT's three-modality grid, waiting on one
+  cell — and **two** were **withdrawn for want of a referent**: one when an amendment moved its subject to
+  the other side of a redesigned axis, and one that named two of this project's **own panel classes** in a
+  prediction about a third-party benchmark whose fourteen curator categories contain neither; `results/prediction_record.json` holds the counts and discovers the studies
   rather than listing them. 🔒 **A withdrawn prediction is stored as unscored, not as a miss**, and the
   record now refuses to build if a withdrawal carries a scored verdict or a scored prediction carries
   none. ⚠️ **The declared, scored and unrun counts do not reconcile by subtraction, and the reason is
   structural**: `DEEPVIC_BENCHMARK` is scored by **two** artifacts — study AI-1's metadata baseline and
   study AI's verdicts — whose prediction numbers overlap, so it contributes **seven** scored rows against
   **six** declarations. 🔒 **The artifact reconciles the gap from its parts rather than asserting it** —
-  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **62 = 48 + 14 + 1 − 1** —
+  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **62 = 51 + 10 + 2 − 1** —
   and names the preregistration the surplus comes from. 🔴 **Until today the declared total read 49**, because the count
   matched *lines* beginning with a prediction label and an amendment that restates "P1 and P2 are
   unchanged" was counted as two further declarations; it now counts distinct prediction numbers.
 - ⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions
-  held **18 of 35** where they were *derived* from a measurement and **4 of 13** where they were
+  held **19 of 37** where they were *derived* from a measurement and **4 of 14** where they were
   *reasoned* — so a derived prediction here is about a coin flip, and the paper's earlier reading that
   derived predictions reliably hold (§ 4) does not survive leaving the panel they were derived on. 🔴 **Two
   entries of the corrections log stated this tally wrongly** because it was maintained by hand; it is now
@@ -1663,7 +1664,7 @@ way**; the third was found by trying to break the check that guarded it and fail
 do** — an excluded unit leaves the numerator *and* the denominator and the reduced denominator is
 stated — **and to band coverage separately**, rather than fixing a count against a pool that can shrink.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 130 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 131 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one

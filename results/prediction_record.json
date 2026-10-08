@@ -208,6 +208,30 @@
       "held": false
     },
     {
+      "study": "margin_routing",
+      "prediction": "P1_AW2_lands_in_does_not",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
+      "study": "margin_routing",
+      "prediction": "P2_AW1_positive_but_under_5pp",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "margin_routing",
+      "prediction": "P3_cluster_purity_below_0.50",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "margin_routing",
+      "prediction": "P4_low_margin_clusters_over_contain_the_failures",
+      "kind": "withdrawn",
+      "held": null
+    },
+    {
       "study": "AO",
       "prediction": "P1_AO1_clears_6pp_both_arms",
       "kind": "derived",
@@ -300,16 +324,16 @@
   ],
   "tally": {
     "derived": {
-      "held": 18,
-      "total": 35
+      "held": 19,
+      "total": 37
     },
     "reasoned": {
       "held": 4,
-      "total": 13
+      "total": 14
     }
   },
-  "total_scored": 48,
-  "total_withdrawn": 1,
+  "total_scored": 51,
+  "total_withdrawn": 2,
   "by_study": {
     "AJ": {
       "derived": [
@@ -401,6 +425,16 @@
         1
       ]
     },
+    "margin_routing": {
+      "derived": [
+        1,
+        2
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
     "AO": {
       "derived": [
         1,
@@ -482,6 +516,7 @@
       "AH",
       "AQ",
       "image_axis_repair",
+      "margin_routing",
       "AO",
       "AK",
       "second_draw",
@@ -490,20 +525,18 @@
     ],
     "preregs_with_no_scored_artifact": [
       "GENERALITY_GRID",
-      "MARGIN_ROUTING",
       "MUTATION_EXTENSION"
     ],
     "unscored_accounted_for": {
       "MUTATION_EXTENSION": "a frozen design for work not yet run, per README",
-      "GENERALITY_GRID": "study AT, frozen 2026-10-06; its six cells require a second text encoder, two image encoders and ProtT5 on DeepVIC, and no cell is scored until all six land",
-      "MARGIN_ROUTING": "study AW, frozen 2026-10-08; the mixture folds have not been fitted yet. Remove this entry when results/margin_routing.json lands"
+      "GENERALITY_GRID": "study AT, frozen 2026-10-06; its six cells require a second text encoder, two image encoders and ProtT5 on DeepVIC, and no cell is scored until all six land"
     },
     "declared_predictions": 62,
     "reconciliation": {
       "declared": 62,
-      "scored": 48,
-      "withdrawn": 1,
-      "unrun": 14,
+      "scored": 51,
+      "withdrawn": 2,
+      "unrun": 10,
       "double_scored_surplus": 1,
       "balances": true,
       "identity": "declared = scored + unrun + withdrawn - double_scored_surplus"

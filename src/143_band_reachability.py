@@ -66,6 +66,36 @@ def check_count_band(name, n_units, pass_at_least, fail_at_most, max_unscorable=
             "problems": problems, "ok": not problems}
 
 
+def check_resolution(name, pass_at, fail_at, ci_width, n_units=None):
+    """A band on a CONTINUOUS difference, against the measurement's own uncertainty.
+
+    🔴 Study AW banded AW-2 at +1pp and AW-3 at +3pp. The paired bootstrap over its 14
+    categories returns intervals **4 to 9 points wide**, so the bands were 3-9x finer than
+    the measurement could resolve -- and the two arms landed on opposite sides of the +1pp
+    line while BOTH intervals spanned zero. The "ARMS DISAGREE" verdict is an artifact of
+    reading a point estimate against a band narrower than its own interval.
+
+    ⚠️ `check_count_band` cannot see this: it is decidable from the band and the unit count
+    alone, and this is not. It needs a variance estimate -- which study AP's per-category
+    seed spreads would have supplied before AW was frozen.
+    """
+    problems = []
+    gap = pass_at - fail_at
+    if ci_width is not None and ci_width > 0:
+        if pass_at <= ci_width:
+            problems.append(
+                f"PASS INSIDE THE NOISE: the pass threshold {pass_at:+.4g} is within a "
+                f"{ci_width:.4g}-wide interval, so a null result can clear it")
+        if gap < ci_width / 2:
+            problems.append(
+                f"BANDS FINER THAN THE MEASUREMENT: the between-bands gap is {gap:.4g} "
+                f"against a {ci_width:.4g}-wide interval, so which band a point lands in "
+                "is decided by noise")
+    return {"band": name, "pass_at": pass_at, "fail_at": fail_at,
+            "between_bands_gap": gap, "ci_width": ci_width, "n_units": n_units,
+            "problems": problems, "ok": not problems}
+
+
 def check_implied(name, outer, inner_description, implied):
     """A conjunction between a count band and a structural clause the count already implies."""
     return {"band": name, "outer": outer, "inner": inner_description,
@@ -81,6 +111,9 @@ KNOWN = [
                              fail_at_most=4, max_unscorable=4),
     lambda: check_count_band("AU-3 (IMAGE_AXIS_REPAIR)", n_units=4, pass_at_least=4,
                              fail_at_most=0, max_unscorable=0, per_unit_veto=True),
+    # 🔴 Study AW: bands at 1pp and 3pp against bootstrap intervals 4-9pp wide.
+    lambda: check_resolution("AW-2 (MARGIN_ROUTING)", pass_at=0.03, fail_at=0.01,
+                             ci_width=0.069, n_units=14),
     lambda: check_implied("AT-1b (GENERALITY_GRID)",
                           outer="the 3-4 of 6 modality-dependent band",
                           inner_description="a modality dead on both its encoders",
@@ -96,6 +129,23 @@ def selftest():
         if r["ok"]:
             print(f"  XX {r['band']} was not flagged")
             ok = False
+    aw2 = [fn() for fn in KNOWN if fn().get("band", "").startswith("AW-2")][0]
+    if not any("BANDS FINER THAN THE MEASUREMENT" in p for p in aw2["problems"]):
+        print(f"  XX AW-2's resolution problem was not named: {aw2['problems']}")
+        ok = False
+    if not any("PASS INSIDE THE NOISE" in p for p in aw2["problems"]):
+        print(f"  XX AW-2's pass-inside-the-noise was not named: {aw2['problems']}")
+        ok = False
+    # 🔒 a band comfortably wider than its interval must come back clean
+    wide = check_resolution("wide", pass_at=0.20, fail_at=0.05, ci_width=0.02)
+    if not wide["ok"]:
+        print(f"  XX a well-resolved band was flagged: {wide['problems']}")
+        ok = False
+    # 🔒 and with no variance estimate the check must stay silent rather than guess
+    if not check_resolution("unknown", 0.03, 0.01, None)["ok"]:
+        print("  XX a band with no interval estimate was flagged anyway")
+        ok = False
+
     av1 = KNOWN[0]()
     if not any("PERFECT SCORES AS FAILURE" in p for p in av1["problems"]):
         print(f"  XX AV-1's perfect-score-as-failure was not named: {av1['problems']}")

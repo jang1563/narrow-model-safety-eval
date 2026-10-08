@@ -9207,3 +9207,83 @@ among*. ⚠️ **Stated because the two numbers sit in one table and could be re
 ⚠️ **The candidates are not independent** — several are built from the same two terms — so the true
 threshold is below the permutation estimate. 🔒 **That makes the estimate conservative in the direction
 that makes a false positive harder**, which is the direction to err in, and the file says so.
+
+---
+
+## 2026-10-08 (one hundred and twenty-seventh entry) — The mixture does not help, and my bands were finer than the measurement
+
+### 🔒 What study AW did, and the verdict as frozen
+
+Cluster DeepVIC's positives without labels (k-means, **k = 7**, deliberately not 14), score each cluster
+with the same margin formula, give **three** experts to the **lowest-margin** clusters, and compare
+against the same budget allocated at random, by cluster size, and against study AP's **tuned** single
+probe. 🔒 **Preregistered before `src/145` existed**, with the reachability of its bands checked first.
+
+| arm | margin | random | size | none | AW-1 | AW-2 | AW-3 |
+|---|---|---|---|---|---|---|---|
+| ESM-2 35M | 45.37% | 45.90% | 43.30% | **46.91%** | −1.55pp | **−0.54pp** | +2.06pp |
+| ESM-2 650M | 55.24% | 54.12% | 55.26% | **55.39%** | −0.15pp | **+1.13pp** | −0.02pp |
+
+🔒 **Verdict as frozen: ARMS DISAGREE** — AW-2 reads *does not* on 35M and *between bands* on 650M; AW-3
+the reverse. 🔑 **The second-arm rule fired**, which is the behaviour § 5 of the preregistration accepted
+the reachability warning in order to keep.
+
+### 🔴 And the disagreement is an artifact of bands narrower than the measurement
+
+⚠️ **A paired bootstrap over the 14 categories, computed post hoc because the preregistration banded a
+POINT difference and specified no interval:**
+
+| arm | band | point | 95% CI | spans 0 |
+|---|---|---:|---|---|
+| 35M | AW-2 | −0.54pp | [−4.05, +2.85] | ✅ |
+| 650M | AW-2 | +1.13pp | [−1.29, +4.00] | ✅ |
+| 35M | AW-1 | −1.55pp | [−4.79, +2.30] | ✅ |
+| 650M | AW-1 | −0.15pp | [−2.20, +2.19] | ✅ |
+| 650M | AW-3 | −0.02pp | [−1.36, +1.43] | ✅ |
+| 35M | AW-3 | +2.06pp | [+0.38, +4.04] | 🔴 no |
+
+🔴 **The intervals are 4 to 9 points wide and the bands were set at 1pp and 3pp** — finer than the
+measurement by a factor of three to nine. 🔑 **So the two arms landing on opposite sides of the +1pp line
+is noise**, and five of six intervals span zero. ⚠️ **The one that does not, 35M's AW-3, does not
+replicate on 650M** (−0.02pp), so it fails the same two-arm rule.
+
+🔒 **The bands are not moved and the verdict stands as ARMS DISAGREE.** ⚠️ **What the intervals license is
+narrower than a verdict**: no effect is established in any direction, the mixture neither detectably helps
+nor detectably hurts, and margin's allocation is indistinguishable from random allocation.
+
+### 🔑 What DOES agree across arms
+
+🟢 **AW-1 reads *does not* on both arms.** The mixture never beats one tuned probe — **−1.55pp and
+−0.15pp**, at **four times the parameters** (1920 vs 480, 5120 vs 1280). ⚠️ **Both intervals span zero**,
+so the honest form is "no advantage was found", not "the mixture is worse". 🔑 **Either way the practical
+reading is the same: there is no reason here to build a mixture**, and § 4's existing framing — margin as
+a triage signal for *where to spend evaluation effort* and explicitly not as a component to build with —
+is not contradicted by anything in this study.
+
+### Predictions
+
+🔴 **P1 (reasoned) failed, by 0.13pp.** It required AW-2 inside the *does not* band on **both** arms;
+650M returned **+1.13pp** against a +1.00pp ceiling. ⚠️ **The band boundary did the work, not the data** —
+and the substantive content of P1, that routing buys nothing, is what the intervals show. 🔒 **It is
+scored as failed**, because a prediction that needs its threshold re-read is a prediction that failed.
+
+🔴 **P2 (derived) failed.** It expected AW-1 *positive* but under +5pp, reasoning from study AP that the
+single probe's capacity was the binding constraint. 🔑 **It is negative on both arms**: splitting the
+probe gives each expert roughly 1,800 positives instead of 12,000, and that costs more than the routing
+gains.
+
+🟢 **P3 (derived) held.** Mean cluster-to-category purity is **0.455** — below the 0.50 declared — so
+k-means did not simply rediscover the curator categories. ⚠️ **Had it done so the mixture would have been
+handed the answer**, which is why k was fixed at half of 14.
+
+### 🔒 A fifth band failure, of a new kind, and a check for it
+
+🔴 **This is the fifth preregistered band in this project that could not do its job**, and the first whose
+defect `src/143_band_reachability.py` could **not** see: AT-1b, AU-3 and AV-1 were all decidable from the
+band and the unit count alone, and 🔑 **a band narrower than its own measurement's interval needs a
+variance estimate to detect.** ⚠️ **This project had one available** — study AP's per-category seed
+spreads — **and the band was frozen without consulting it.**
+
+🔒 **`check_resolution` added**, flagging a pass threshold that sits inside the interval and a
+between-bands gap under half the interval width. **Calibrated both ways**: a band comfortably wider than
+its interval comes back clean, and a band with no variance estimate stays silent rather than guessing.

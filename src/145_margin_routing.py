@@ -199,6 +199,44 @@ def run_arm(arm, seeds, jobs, m30, m133):
     }
 
 
+def p4_withdrawn():
+    """P4 is WITHDRAWN: it names classes that do not exist in the benchmark it was declared
+    against.
+
+    🔴 Section 6's P4 reads "the three lowest-margin CLUSTERS contain a disproportionate share
+    of the members of beta-lactamase and the phage class -- the two categories section 2 of
+    the paper reports as the screen's failures." 🔴 Those are *our own panel's* classes.
+    DeepVIC's fourteen curator categories are Adherence, Antimicrobial activity, Biofilm,
+    Effector delivery system, Exoenzyme, Exotoxin, Immune modulation, Invasion, Motility,
+    Nutritional/Metabolic factor, Others, Post-translational modification, Regulation and
+    Stress survival. **Neither named class is among them.**
+
+    ⚠️ The first implementation of this scorer guessed `Exoenzyme` and `Motility` as
+    substitutes, which is inventing a referent after the fact. It was deleted.
+
+    🔒 This is the same defect amendment 1 of CROSS_MODALITY withdrew study AS's P3 for --
+    "both members of the religion pair are now on the negative side, so the prediction no
+    longer has a referent" -- and it is handled the same way: withdrawn, counting as neither
+    held nor missed, with `held` left null.
+
+    🔑 Found by the prediction-record identity: 62 declared against 51 scored, 10 unrun and 1
+    withdrawn is one short, and the missing one was a prediction never implemented.
+    """
+    return {
+        "kind": "withdrawn",
+        "held": None,
+        "note": ("P4 names beta-lactamase and the phage peptidoglycan hydrolase class, which "
+                 "are this project's own panel classes and are absent from DeepVIC's "
+                 "fourteen curator categories. The prediction has no referent in the "
+                 "benchmark it was declared against. Withdrawn rather than rewritten, and "
+                 "rather than scored against substituted categories, which the first "
+                 "implementation attempted."),
+        "values": {"deepvic_categories_named_in_P4": [],
+                   "panel_classes_P4_names": ["beta_lactamase",
+                                              "phage_peptidoglycan_hydrolase"]},
+    }
+
+
 def band(d, ok, not_):
     return "works" if d >= ok else "does not" if d <= not_ else "between bands"
 
@@ -325,6 +363,8 @@ def main():
     ap.add_argument("--arm", action="append", default=[])
     ap.add_argument("--seeds", type=int, default=SEEDS)
     ap.add_argument("--jobs", type=int, default=1)
+    ap.add_argument("--score-p4", action="store_true",
+                    help="score section 6's P4 from the clustering alone, no refitting")
     a = ap.parse_args()
     if a.selftest:
         return selftest()
@@ -344,6 +384,14 @@ def main():
         "bands": {"AW1_ok": AW1_OK, "AW1_not": AW1_NOT,
                   "AW2_ok": AW2_OK, "AW2_not": AW2_NOT},
         "arms": {}}
+    if a.score_p4:
+        out.setdefault("predictions", {})
+        out["predictions"]["P4_low_margin_clusters_over_contain_the_failures"] = \
+            p4_withdrawn()
+        OUT.write_text(json.dumps(out, indent=2) + "\n")
+        print("  P4 WITHDRAWN -- it names panel classes absent from DeepVIC's 14 categories")
+        return 0
+
     for arm in (a.arm or list(ARMS)):
         if arm in out["arms"]:
             continue
