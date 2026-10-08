@@ -1279,7 +1279,15 @@ at ≤ −0.60. 🔴 **The thresholded form of the same rule was not established
 cell-settings but **1 of 2 cells**, which at two non-abstaining cells is a coin flip, and the single miss
 has the smallest \|gain\| of the four. 🔑 **So the ordering is prospective and the decision rule is
 not**: R says which representations the negative term is worth adding for, and says nothing about how
-much. ⚠️ **One rival explanation is measured rather than assumed**: a
+much.
+
+🔴 **And the magnitude gap is closed negatively.** Nine training-free summaries of a cell's geometry —
+the spread of its margins, the spread and mean of its nearest-negative term, the fraction of classes with
+negative margin, and five others — were swept against \|gain\| over the same 24 cell-settings. 🔒 **The
+sweep reports its own noise floor**: with nine candidates at *n* = 24 the permutation maximum \|*ρ*\|
+has p95 = **0.5513**, and the best candidate reaches **−0.3595**. ⚠️ **Nothing in it predicts magnitude.**
+🔑 **R's sign result is unaffected**, because it was sealed and tested prospectively rather than selected
+from that sweep — a distinction worth stating, since the two numbers otherwise sit in one table. ⚠️ **One rival explanation is measured rather than assumed**: a
 class's ESM-2 **truncation rate** also tracks its recovery, at *ρ* = +0.097 on 650M but **+0.365** on 35M,
 so margin is not a truncation proxy — it exceeds that correlation on every pass — but the correlation is
 not zero on the smaller arm. 🔒 **And it is not circular**: 239 of the 746 representatives this project

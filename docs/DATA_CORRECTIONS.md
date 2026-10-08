@@ -9179,3 +9179,31 @@ side track its distance to everything. R = **+0.1086** places it beside DINOv2 (
 
 **The computed record moves to derived 18 of 35, reasoned 4 of 13**, 48 scored of 58 declared across 15
 preregistrations, identity balancing at 58 = 48 + 10 + 1 − 1.
+
+### 🔴 The magnitude gap is not closed by any of nine obvious candidates
+
+Study AV named its own gap: **R predicts the sign of the gain and says nothing about its magnitude**, and
+the single sealed miss was the smallest \|gain\| of the four scored. 🔒 `src/144_magnitude_candidates.py`
+sweeps **nine** training-free summaries of a cell's geometry — all computable from the frozen embedding
+and the class partition, none using recovery — against **24** cell-settings from **12** cells.
+
+🔒 **The sweep reports its own noise floor rather than a winner.** With nine candidates at n = 24 the
+permutation distribution of the maximum \|*ρ*\| has **p95 = 0.5513** and p99 = 0.6348.
+
+| | best candidate | *ρ* | clears p95 |
+|---|---|---:|---|
+| **magnitude** (\|gain\|) | `sd_margin` | **−0.3595** | 🔴 **no** |
+| **sign** (signed gain) | `R` = *ρ*(nearest-pos, nearest-neg) | **−0.6610** | 🟢 yes, and at p99 |
+
+🔑 **So the magnitude question is closed negatively**, not left vaguely open: the spread of a cell's
+margins, the spread of its nearest-negative term, the fraction of classes with negative margin, and six
+others all land inside the range that nine arbitrary candidates reach by chance.
+
+🔒 **R's own claim does not rest on this sweep and is not weakened by its correction.** R was
+preregistered and tested **prospectively** in study AV, on four encoders that did not exist in this
+project when the band was frozen; the correction above applies to the eight candidates the sweep *chose
+among*. ⚠️ **Stated because the two numbers sit in one table and could be read as one test.**
+
+⚠️ **The candidates are not independent** — several are built from the same two terms — so the true
+threshold is below the permutation estimate. 🔒 **That makes the estimate conservative in the direction
+that makes a false positive harder**, which is the direction to err in, and the file says so.
