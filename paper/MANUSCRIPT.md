@@ -1,4 +1,4 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 129 corrections found
+# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 130 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 154 such
@@ -21,7 +21,7 @@ the 484-point fold every contrast in this paper uses, where the headline ratios 
 
 We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
 and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 129
+written because it caught something. The evidence is a **dated, append-only corrections log of 130
 entries** in which a published number moved, including entries that retract our own findings.
 
 Five results matter beyond this panel.
@@ -1268,7 +1268,18 @@ sitting closer to the negatives predicts **better** recovery — and subtracting
 0.158**. 🔒 **Monotone across all four.** 🔑 **What generalizes is a held-out class's position relative to
 the trained positives; whether the negative side belongs in the formula is a property of the
 representation, not of the method** — and on the protein fold, where benign neighbours are the screen's
-actual failure mode, it belongs. ⚠️ **One rival explanation is measured rather than assumed**: a
+actual failure mode, it belongs.
+
+🟢 **And that much was then tested prospectively.** *ρ*(nearest-positive, nearest-negative) across a
+cell's classes — call it **R**, computable from the frozen embedding with **no training at all** — ranks
+how much the subtraction is worth. 🔒 **Study AV sealed a per-cell prediction from R for four encoders
+never embedded here, committed it before any fold ran, and scored it afterwards**: *ρ*(R, gain) =
+**−0.6610** over **24** cell-settings spanning three modalities and eight encoders, against a band frozen
+at ≤ −0.60. 🔴 **The thresholded form of the same rule was not established** — 3 of 4 predicted
+cell-settings but **1 of 2 cells**, which at two non-abstaining cells is a coin flip, and the single miss
+has the smallest \|gain\| of the four. 🔑 **So the ordering is prospective and the decision rule is
+not**: R says which representations the negative term is worth adding for, and says nothing about how
+much. ⚠️ **One rival explanation is measured rather than assumed**: a
 class's ESM-2 **truncation rate** also tracks its recovery, at *ρ* = +0.097 on 650M but **+0.365** on 35M,
 so margin is not a truncation proxy — it exceeds that correlation on every pass — but the correlation is
 not zero on the smaller arm. 🔒 **And it is not circular**: 239 of the 746 representatives this project
@@ -1566,10 +1577,9 @@ the diagnosis was in the record before the repair was built; both times it named
   **none of them corrects for the others.** With this many frozen bands, some verdicts are expected to
   fall by chance. ⚠️ **The exposure is stated rather than corrected retroactively**, because choosing a
   family-wise correction after seeing which bands were met is the error the bands exist to prevent.
-  ⚠️ **Forty-five carry a verdict.** Thirteen belong to designs frozen for work not yet run — six to
-  `MUTATION_EXTENSION`, four to `GENERALITY_GRID` (study AT's three-modality grid, waiting on one cell)
-  and three to `TRAINING_FREE_RULE`, whose procedure *requires* the predictions to be sealed before any
-  fold runs — and one was **withdrawn by amendment** when its referent moved to the other side of a
+  ⚠️ **Forty-eight carry a verdict.** Ten belong to designs frozen for work not yet run — six to
+  `MUTATION_EXTENSION` and four to `GENERALITY_GRID`, study AT's three-modality grid, waiting on one
+  cell — and one was **withdrawn by amendment** when its referent moved to the other side of a
   redesigned axis; `results/prediction_record.json` holds the counts and discovers the studies
   rather than listing them. 🔒 **A withdrawn prediction is stored as unscored, not as a miss**, and the
   record now refuses to build if a withdrawal carries a scored verdict or a scored prediction carries
@@ -1577,12 +1587,12 @@ the diagnosis was in the record before the repair was built; both times it named
   structural**: `DEEPVIC_BENCHMARK` is scored by **two** artifacts — study AI-1's metadata baseline and
   study AI's verdicts — whose prediction numbers overlap, so it contributes **seven** scored rows against
   **six** declarations. 🔒 **The artifact reconciles the gap from its parts rather than asserting it** —
-  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **58 = 45 + 13 + 1 − 1** —
+  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **58 = 48 + 10 + 1 − 1** —
   and names the preregistration the surplus comes from. 🔴 **Until today the declared total read 49**, because the count
   matched *lines* beginning with a prediction label and an amendment that restates "P1 and P2 are
   unchanged" was counted as two further declarations; it now counts distinct prediction numbers.
 - ⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions
-  held **17 of 33** where they were *derived* from a measurement and **4 of 12** where they were
+  held **18 of 35** where they were *derived* from a measurement and **4 of 13** where they were
   *reasoned* — so a derived prediction here is about a coin flip, and the paper's earlier reading that
   derived predictions reliably hold (§ 4) does not survive leaving the panel they were derived on. 🔴 **Two
   entries of the corrections log stated this tally wrongly** because it was maintained by hand; it is now
@@ -1645,7 +1655,7 @@ way**; the third was found by trying to break the check that guarded it and fail
 do** — an excluded unit leaves the numerator *and* the denominator and the reduced denominator is
 stated — **and to band coverage separately**, rather than fixing a count against a pool that can shrink.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 129 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 130 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one

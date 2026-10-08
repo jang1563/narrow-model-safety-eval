@@ -262,6 +262,24 @@
       "held": false
     },
     {
+      "study": "training_free_rule_scored",
+      "prediction": "P1_AV1_at_least_6_of_8",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "training_free_rule_scored",
+      "prediction": "P2_supervised_image_abstains_or_predicts_negative",
+      "kind": "reasoned",
+      "held": false
+    },
+    {
+      "study": "training_free_rule_scored",
+      "prediction": "P3_three_layer_encoder_has_lowest_recovery",
+      "kind": "derived",
+      "held": true
+    },
+    {
       "study": "AM",
       "prediction": "P1_both_arms_cannot_order",
       "kind": "derived",
@@ -282,15 +300,15 @@
   ],
   "tally": {
     "derived": {
-      "held": 17,
-      "total": 33
+      "held": 18,
+      "total": 35
     },
     "reasoned": {
       "held": 4,
-      "total": 12
+      "total": 13
     }
   },
-  "total_scored": 45,
+  "total_scored": 48,
   "total_withdrawn": 1,
   "by_study": {
     "AJ": {
@@ -413,6 +431,16 @@
         1
       ]
     },
+    "training_free_rule_scored": {
+      "derived": [
+        1,
+        2
+      ],
+      "reasoned": [
+        0,
+        1
+      ]
+    },
     "AM": {
       "derived": [
         2,
@@ -456,24 +484,23 @@
       "AO",
       "AK",
       "second_draw",
+      "training_free_rule_scored",
       "AM"
     ],
     "preregs_with_no_scored_artifact": [
       "GENERALITY_GRID",
-      "MUTATION_EXTENSION",
-      "TRAINING_FREE_RULE"
+      "MUTATION_EXTENSION"
     ],
     "unscored_accounted_for": {
       "MUTATION_EXTENSION": "a frozen design for work not yet run, per README",
-      "GENERALITY_GRID": "study AT, frozen 2026-10-06; its six cells require a second text encoder, two image encoders and ProtT5 on DeepVIC, and no cell is scored until all six land",
-      "TRAINING_FREE_RULE": "study AV, frozen 2026-10-07; its procedure embeds four encoders and SEALS the per-cell prediction before any fold runs, so the artifact cannot exist until the folds do. Remove this entry when results/training_free_rule_scored.json lands"
+      "GENERALITY_GRID": "study AT, frozen 2026-10-06; its six cells require a second text encoder, two image encoders and ProtT5 on DeepVIC, and no cell is scored until all six land"
     },
     "declared_predictions": 58,
     "reconciliation": {
       "declared": 58,
-      "scored": 45,
+      "scored": 48,
       "withdrawn": 1,
-      "unrun": 13,
+      "unrun": 10,
       "double_scored_surplus": 1,
       "balances": true,
       "identity": "declared = scored + unrun + withdrawn - double_scored_surplus"
@@ -481,7 +508,7 @@
     "preregs_scored_by_multiple_artifacts": [
       "DEEPVIC_BENCHMARK"
     ],
-    "amendments": 9,
+    "amendments": 10,
     "per_prereg": [
       {
         "prereg": "COMPOSITION_ARM",
@@ -605,7 +632,7 @@
         "alpha_statements": [
           "2"
         ],
-        "amendments": 1
+        "amendments": 2
       },
       {
         "prereg": "WITHIN_FOLD_ORDERING",

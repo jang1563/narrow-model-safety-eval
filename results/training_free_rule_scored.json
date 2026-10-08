@@ -1,0 +1,174 @@
+{
+  "built": "2026-10-08 01:51:31",
+  "study": "AV -- a training-free rule for whether the negative term belongs",
+  "preregistration": "docs/TRAINING_FREE_RULE_PREREGISTRATION.md",
+  "sealing": {
+    "ok": true,
+    "why": "sealed record present and stated in amendment 1",
+    "sealed": {
+      "text/distilroberta": 0.07142857142857142,
+      "text/minilm_l3": 0.24725274725274726,
+      "text/bge_base": 0.15934065934065936,
+      "image/vit_b16_sup": 0.10857142857142857
+    }
+  },
+  "rule": {
+    "positive_below": 0.15,
+    "negative_above": 0.35
+  },
+  "cells": {
+    "text/distilroberta": {
+      "R": 0.07142857142857142,
+      "sealed_prediction": "positive gain",
+      "settings": {
+        "fixed": {
+          "gain": 0.120879120879121,
+          "actual": "positive gain",
+          "hit": true,
+          "rho_margin": 0.7252747252747254,
+          "rho_nearest_positive": 0.6043956043956044,
+          "rho_nearest_negative": -0.32967032967032966,
+          "mean_recovery": 0.5480546146478293
+        },
+        "swept": {
+          "gain": 0.038461538461538436,
+          "actual": "positive gain",
+          "hit": true,
+          "rho_margin": 0.7087912087912087,
+          "rho_nearest_positive": 0.6703296703296703,
+          "rho_nearest_negative": -0.24725274725274726,
+          "mean_recovery": 0.6714585133608142
+        }
+      },
+      "both_settings_hit": true,
+      "dim": 768
+    },
+    "text/minilm_l3": {
+      "R": 0.24725274725274726,
+      "sealed_prediction": "ABSTAIN",
+      "settings": {
+        "fixed": {
+          "gain": -0.07692307692307687,
+          "actual": "negative gain",
+          "hit": null,
+          "rho_margin": 0.8406593406593407,
+          "rho_nearest_positive": 0.9175824175824175,
+          "rho_nearest_negative": 0.010989010989010988,
+          "mean_recovery": 0.4102154305095532
+        },
+        "swept": {
+          "gain": -0.13186813186813195,
+          "actual": "negative gain",
+          "hit": null,
+          "rho_margin": 0.7802197802197801,
+          "rho_nearest_positive": 0.9120879120879121,
+          "rho_nearest_negative": 0.10989010989010989,
+          "mean_recovery": 0.44079018703694295
+        }
+      },
+      "both_settings_hit": null,
+      "dim": 384
+    },
+    "text/bge_base": {
+      "R": 0.15934065934065936,
+      "sealed_prediction": "ABSTAIN",
+      "settings": {
+        "fixed": {
+          "gain": 0.07692307692307698,
+          "actual": "positive gain",
+          "hit": null,
+          "rho_margin": 0.7582417582417583,
+          "rho_nearest_positive": 0.6813186813186813,
+          "rho_nearest_negative": -0.14285714285714285,
+          "mean_recovery": 0.5866492887619383
+        },
+        "swept": {
+          "gain": 0.038461538461538436,
+          "actual": "positive gain",
+          "hit": null,
+          "rho_margin": 0.7472527472527472,
+          "rho_nearest_positive": 0.7087912087912087,
+          "rho_nearest_negative": -0.12087912087912088,
+          "mean_recovery": 0.7047243802771673
+        }
+      },
+      "both_settings_hit": null,
+      "dim": 768
+    },
+    "image/vit_b16_sup": {
+      "R": 0.10857142857142857,
+      "sealed_prediction": "positive gain",
+      "settings": {
+        "fixed": {
+          "gain": 0.04638655462184882,
+          "actual": "positive gain",
+          "hit": true,
+          "rho_margin": 0.5743577430972389,
+          "rho_nearest_positive": 0.52797118847539,
+          "rho_nearest_negative": -0.22506602641056422,
+          "mean_recovery": 0.92744
+        },
+        "swept": {
+          "gain": -0.02698679471788723,
+          "actual": "negative gain",
+          "hit": false,
+          "rho_margin": 0.6312124849939976,
+          "rho_nearest_positive": 0.6581992797118849,
+          "rho_nearest_negative": -0.09320528211284512,
+          "mean_recovery": 0.9660786666666666
+        }
+      },
+      "both_settings_hit": false,
+      "dim": 768
+    }
+  },
+  "AV1_hits": 3,
+  "AV1_scored": 4,
+  "AV1_verdict": "it does not",
+  "AV1_per_cell": {
+    "text/distilroberta": true,
+    "text/minilm_l3": null,
+    "text/bge_base": null,
+    "image/vit_b16_sup": false
+  },
+  "AV2_abstained": [
+    "text/bge_base",
+    "text/minilm_l3"
+  ],
+  "AV2_n_abstained": 2,
+  "AV2_verdict": "between bands",
+  "AV3_rho_all_cells": -0.6610003745896872,
+  "AV3_n": 24,
+  "AV3_verdict": "holds",
+  "independence_note": "the two settings of a cell are not independent; AV1_per_cell is the count over independent cells and AV1_hits is over cell-settings",
+  "verdict": "it does not (AV-1 3/4), abstention between bands (2/4), AV-3 holds (-0.6610)",
+  "predictions": {
+    "P1_AV1_at_least_6_of_8": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "hits": 3,
+        "scored": 4
+      }
+    },
+    "P2_supervised_image_abstains_or_predicts_negative": {
+      "kind": "reasoned",
+      "held": false,
+      "values": {
+        "R": 0.10857142857142857,
+        "prediction": "positive gain"
+      }
+    },
+    "P3_three_layer_encoder_has_lowest_recovery": {
+      "kind": "derived",
+      "held": true,
+      "values": {
+        "text/distilroberta": 0.6097565640043218,
+        "text/minilm_l3": 0.4255028087732481,
+        "text/bge_base": 0.6456868345195528,
+        "image/vit_b16_sup": 0.9467593333333333
+      }
+    }
+  },
+  "seconds": 0.0
+}

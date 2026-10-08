@@ -9118,3 +9118,64 @@ and claim 154 forbids the paper from saying it does.
 named, let an excluded unit leave the numerator *and* the denominator, state the reduced denominator, and
 band **coverage** separately. ⚠️ **None of the three bands is being moved** — the tool exists so the next
 one is checked before it is frozen, not so these can be rewritten after the fact.
+
+---
+
+## 2026-10-08 (one hundred and twenty-sixth entry) — The continuous relationship replicated prospectively; the rule built on it did not
+
+### 🔒 What was sealed, and when
+
+Studies AT and AU found, **post hoc**, that `margin = nearest_positive − nearest_negative` beats its own
+first term only sometimes, and that **R = *ρ*(nearest-positive, nearest-negative)** across classes —
+computable from the frozen embedding with **no training at all** — predicts when. Study AV sealed a
+per-cell prediction from R for four encoders never embedded here, **committed it to git at `40cb118`
+before a single fold ran**, and scored it afterwards.
+
+| cell | R | 🔒 sealed | gain, fixed / swept | outcome |
+|---|---:|---|---|---|
+| `text/distilroberta` | +0.0714 | positive | **+0.1209 / +0.0385** | 🟢 **HIT** both |
+| `image/vit_b16_sup` | +0.1086 | positive | +0.0464 / **−0.0270** | 🔴 **MISS** at swept |
+| `text/bge_base` | +0.1593 | ABSTAIN | +0.0769 / +0.0385 | both positive |
+| `text/minilm_l3` | +0.2473 | ABSTAIN | −0.0769 / −0.1319 | both negative |
+
+### 🟢 AV-3 holds, and it is the result
+
+🔒 ***ρ*(R, gain) = −0.6610 over 24 cell-settings**, against a band frozen at **≤ −0.60** before any of
+the four new encoders existed in this project. 🔑 **The continuous relationship replicated
+prospectively**: a training-free quantity ranks, across proteins, text and images and across eight
+encoders, how much the negative half of the formula is worth.
+
+### 🔴 The thresholded rule did not
+
+**AV-1 is 3 of 4** scored cell-settings and 🔴 **1 of 2 cells** — and the per-cell count is the
+independent one, because the two settings of a cell share an embedding and a fold. ⚠️ **At two
+non-abstaining cells that is a coin flip**, and the literal band (≥ 6 of 8) was already unattainable
+before the folds ran, which amendment 1 recorded at the time. 🔒 **Neither reading is evidence**, and the
+honest summary is that the thresholded rule was never testable at this sample size.
+
+⚠️ **The single miss has the smallest \|gain\| of the four scored — 0.0270 against 0.0385, 0.0464 and
+0.1209** — which is what one would expect if the sign of a near-zero quantity is unpredictable. 🔑 **With
+one miss that is an observation, not a finding**, and it is stated as one. 🔒 **R predicts a sign and says
+nothing about magnitude**, which is the gap a usable rule would have to close.
+
+### 🟢 And the abstention region turned out to be right, against the suspicion recorded about it
+
+Amendment 0 suspected the band **[+0.15, +0.35]** was too wide, because one cell inside it would have
+been called correctly at both settings. 🔑 **The two new abstaining cells went in opposite directions** —
+`bge_base` positive at both settings, `minilm_l3` negative at both. ⚠️ **So the band genuinely contains
+both outcomes and the rule is right to decline there**, which is a better result for its calibration than
+a clean sweep would have been. 🔒 **AV-2 reads 2 of 4: between bands, confirming nothing** — the number
+the band was written to produce in exactly this case.
+
+### Predictions
+
+🔴 **P1 (derived) failed** — AV-1 did not reach 6 of 8, and could not have.
+🔴 **P2 (reasoned) failed, before any fold**: the **supervised** ImageNet ViT was predicted to abstain or
+predict a negative gain, on the reasoning that label supervision makes a class's distance to the negative
+side track its distance to everything. R = **+0.1086** places it beside DINOv2 (+0.1105), not CLIP
+(+0.3825).
+🟢 **P3 (derived) held**: the three-layer encoder has the lowest mean recovery of the four — **41.0% and
+44.1%** against 54.8–96.6% for the rest.
+
+**The computed record moves to derived 18 of 35, reasoned 4 of 13**, 48 scored of 58 declared across 15
+preregistrations, identity balancing at 58 = 48 + 10 + 1 − 1.
