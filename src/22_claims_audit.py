@@ -2214,7 +2214,7 @@ def prediction_record():
         # count; excluded explicitly rather than relying on the reader to discount it.
         "gap_parts": {k: x for k, x in e.get("reconciliation", {}).items()
                       if isinstance(x, int) and not isinstance(x, bool)},
-        "paper_states_declared_word": "fifty-five frozen predictions" in man,
+        "paper_states_declared_word": "fifty-eight frozen predictions" in man,
         "paper_states_verdict_count": "**Forty-five carry a verdict.**" in man,
         "paper_names_the_balance_problem": (
             "do not reconcile by subtraction" in man
@@ -6713,7 +6713,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 128"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 129"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",

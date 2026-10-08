@@ -16,11 +16,24 @@ cd "$(dirname "$0")/.."
 OUT="${1:-.gate}"
 mkdir -p "$OUT"
 
+# 🔴 Two concurrent runs wrote the same files and the report MIXED them: rc.txt said
+# `pytest=0` while pytest.txt ended in a FAILED line, because each came from a different
+# run. A gate whose report can be assembled from two runs is worse than no gate.
+# 🔒 `mkdir` is atomic, so this is a lock and not a check-then-act.
+LOCK="$OUT/.lock"
+if ! mkdir "$LOCK" 2>/dev/null; then
+  echo "another gate run holds $LOCK -- refusing to interleave reports" >&2
+  echo "  (remove it if you are sure no gate is running)" >&2
+  exit 2
+fi
+trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+
 python3 -W ignore src/22_claims_audit.py > "$OUT/audit.txt" 2>&1; A=$?
 python3 -m pytest -q tests                > "$OUT/pytest.txt" 2>&1; B=$?
 python3 -m ruff check src tests           > "$OUT/ruff.txt" 2>&1; C=$?
 
-printf 'audit=%d pytest=%d ruff=%d\n' "$A" "$B" "$C" | tee "$OUT/rc.txt"
+STAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ) pid=$$"
+printf 'audit=%d pytest=%d ruff=%d  [%s]\n' "$A" "$B" "$C" "$STAMP" | tee "$OUT/rc.txt"
 tail -1 "$OUT/audit.txt"
 # ⚠️ pytest's LAST line is the summary only when it finished. An interrupted run ends in a row
 # of dots with no summary and exits non-zero, which reads exactly like a passing run unless

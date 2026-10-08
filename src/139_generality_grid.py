@@ -48,6 +48,16 @@ CELLS = {
 # two-FAMILY row: 650M and ProtT5. The preregistration says so.
 EXTRA = {"protein/esm2_35M": ("protein", "_esm2_35M")}
 
+# 🔒 Study AV (docs/TRAINING_FREE_RULE_PREREGISTRATION.md): four encoders never embedded
+# here, chosen for training-objective diversity. The folds are the ones already frozen for
+# 20 Newsgroups and CIFAR-100; only the encoder changes.
+NEWCELLS = {
+    "text/distilroberta": ("text", "sentence-transformers/all-distilroberta-v1"),
+    "text/minilm_l3": ("text", "sentence-transformers/paraphrase-MiniLM-L3-v2"),
+    "text/bge_base": ("text", "BAAI/bge-base-en-v1.5"),
+    "image/vit_b16_sup": ("image", "google/vit-base-patch16-224"),
+}
+
 # 🔒 Study AU (docs/IMAGE_AXIS_REPAIR_PREREGISTRATION.md): the SAME embeddings and the same
 # fold, with the held-out unit changed from fine class to SUPERCLASS. Kept out of CELLS so
 # study AT's frozen grid is untouched -- these are a different study, not extra AT cells.
@@ -219,7 +229,7 @@ def data_image_superclass(encoder, cell):
 
 
 def get_data(cell):
-    modality, spec = {**CELLS, **EXTRA, **REPAIR}[cell]
+    modality, spec = {**CELLS, **EXTRA, **REPAIR, **NEWCELLS}[cell]
     if modality == "protein":
         return data_protein(spec)
     if modality == "text":
@@ -416,6 +426,25 @@ def at2(rho, rivals):
         "AT2_rivals_dropped_no_variance": dropped,
         "AT2_beaten_by": sorted(k for k, x in live.items() if abs(x) >= abs(rho)),
     }
+
+
+def _seal(rows):
+    """Merge sealed R values into the record, re-reading from disk first.
+
+    🔒 One cell at a time, so an interrupted embedding run still leaves a valid seal for the
+    cells it finished, and two processes sealing different cells cannot drop each other's.
+    """
+    f = ROOT / "results/training_free_rule_sealed.json"
+    prev = json.loads(f.read_text()) if f.exists() else {"cells": {}}
+    prev.setdefault("cells", {}).update(rows)
+    prev.setdefault("built", time.strftime("%Y-%m-%d %H:%M:%S"))
+    prev["study"] = "AV step 1 -- R computed with NO fold, sealing the prediction"
+    prev["preregistration"] = "docs/TRAINING_FREE_RULE_PREREGISTRATION.md"
+    prev["rule"] = {"positive_below": 0.15, "negative_above": 0.35,
+                    "abstain_between": [0.15, 0.35]}
+    prev["no_fold_ran"] = True
+    f.write_text(json.dumps(prev, indent=2) + "\n")
+    return prev
 
 
 def draw_artifact(seed):
@@ -914,6 +943,10 @@ def main():
     ap.add_argument("--jobs", type=int, default=1,
                     help="parallel workers over held-out classes; the folds are exactly "
                          "independent, and --verify-parallel checks that on a scored cell")
+    ap.add_argument("--embed-only", action="store_true",
+                    help="build the cache and report R = rho(nearest_positive, "
+                         "nearest_negative) across classes, running NO fold -- study AV's "
+                         "step 1, so the sealed prediction cannot follow the result")
     ap.add_argument("--out", metavar="PATH",
                     help="write to PATH instead of results/generality_grid.json -- study AU "
                          "uses this so the repaired axis cannot land in AT's frozen grid")
@@ -1001,6 +1034,46 @@ def main():
         print(f"\n  flipped: {flips or 'none'}   mean |shift| "
               f"{got['summary']['mean_abs_rho_shift']}")
         print(f"  wrote {alt.relative_to(ROOT)}")
+        return 0
+
+    if a.embed_only:
+        # 🔒 Nothing is fitted here. R is a rank correlation between two per-class numbers
+        # read off the frozen embedding, so it exists before any probe does -- which is the
+        # whole point of study AV.
+        rows = {}
+        for cell in a.cell:
+            P, N, y = get_data(cell)
+            X = np.vstack([P, N])
+            neg = np.arange(len(P), len(P) + len(N))
+            perm = np.random.default_rng(12345).permutation(len(neg))
+            union = neg[perm[:2 * len(neg) // 3]]
+            mar, hp, hn = margin_parts(P, X[union], y, m30)
+            ks = sorted(mar)
+            R = m30._spearman([hp[k] for k in ks], [hn[k] for k in ks])
+            band = ("positive gain" if R < 0.15
+                    else "negative gain" if R > 0.35 else "ABSTAIN")
+            rows[cell] = {"R": R, "prediction": band, "dim": int(P.shape[1]),
+                          "n_classes": len(ks), "n_positives": int(len(P)),
+                          "margin": mar, "nearest_positive": hp, "nearest_negative": hn}
+            print(f"  {cell:24s} dim {P.shape[1]:5d}  classes {len(ks):3d}  "
+                  f"R {R:+.4f}  -> {band}", flush=True)
+            # 🔒 Sealed PER CELL, re-reading from disk each time. Writing once at the end of
+            # the loop meant an interruption sealed nothing, and two processes embedding
+            # different cells into the same record could clobber each other -- the race
+            # already fixed in `save()`, reintroduced here.
+            _seal(rows)
+        f = ROOT / "results/training_free_rule_sealed.json"
+        prev = json.loads(f.read_text()) if f.exists() else {"cells": {}}
+        prev.setdefault("cells", {}).update(rows)
+        prev.update({
+            "built": prev.get("built", time.strftime("%Y-%m-%d %H:%M:%S")),
+            "study": "AV step 1 -- R computed with NO fold, sealing the prediction",
+            "preregistration": "docs/TRAINING_FREE_RULE_PREREGISTRATION.md",
+            "rule": {"positive_below": 0.15, "negative_above": 0.35,
+                     "abstain_between": [0.15, 0.35]},
+            "no_fold_ran": True})
+        f.write_text(json.dumps(prev, indent=2) + "\n")
+        print(f"  wrote {f.relative_to(ROOT)}  ({len(prev['cells'])} cell(s) sealed)")
         return 0
 
     if a.refresh_flags:
@@ -1094,9 +1167,9 @@ def main():
     todo = a.cell or [k for k in {**CELLS, **EXTRA} if k not in out["cells"]]
     done = []
     for cell in todo:
-        if cell not in {**CELLS, **EXTRA, **REPAIR}:
+        if cell not in {**CELLS, **EXTRA, **REPAIR, **NEWCELLS}:
             raise SystemExit(f"unknown cell {cell!r}; "
-                             f"known: {sorted({**CELLS, **EXTRA, **REPAIR})}")
+                             f"known: {sorted({**CELLS, **EXTRA, **REPAIR, **NEWCELLS})}")
         try:
             out["cells"][cell] = score_cell(cell, a.seeds, m30, m133, a.jobs)
         except FileNotFoundError as e:

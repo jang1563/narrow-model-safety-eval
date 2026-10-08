@@ -425,7 +425,7 @@
     }
   },
   "exposure": {
-    "preregistrations": 14,
+    "preregistrations": 15,
     "preregs_found": [
       "COMPOSITION_ARM",
       "COMPOSITION_RESIDUAL",
@@ -440,6 +440,7 @@
       "NESTED_MODEL",
       "REPRESENTATION_INCREMENT",
       "SECOND_DRAW",
+      "TRAINING_FREE_RULE",
       "WITHIN_FOLD_ORDERING"
     ],
     "studies_found": [
@@ -459,18 +460,20 @@
     ],
     "preregs_with_no_scored_artifact": [
       "GENERALITY_GRID",
-      "MUTATION_EXTENSION"
+      "MUTATION_EXTENSION",
+      "TRAINING_FREE_RULE"
     ],
     "unscored_accounted_for": {
       "MUTATION_EXTENSION": "a frozen design for work not yet run, per README",
-      "GENERALITY_GRID": "study AT, frozen 2026-10-06; its six cells require a second text encoder, two image encoders and ProtT5 on DeepVIC, and no cell is scored until all six land"
+      "GENERALITY_GRID": "study AT, frozen 2026-10-06; its six cells require a second text encoder, two image encoders and ProtT5 on DeepVIC, and no cell is scored until all six land",
+      "TRAINING_FREE_RULE": "study AV, frozen 2026-10-07; its procedure embeds four encoders and SEALS the per-cell prediction before any fold runs, so the artifact cannot exist until the folds do. Remove this entry when results/training_free_rule_scored.json lands"
     },
-    "declared_predictions": 55,
+    "declared_predictions": 58,
     "reconciliation": {
-      "declared": 55,
+      "declared": 58,
       "scored": 45,
       "withdrawn": 1,
-      "unrun": 10,
+      "unrun": 13,
       "double_scored_surplus": 1,
       "balances": true,
       "identity": "declared = scored + unrun + withdrawn - double_scored_surplus"
@@ -478,7 +481,7 @@
     "preregs_scored_by_multiple_artifacts": [
       "DEEPVIC_BENCHMARK"
     ],
-    "amendments": 8,
+    "amendments": 9,
     "per_prereg": [
       {
         "prereg": "COMPOSITION_ARM",
@@ -594,6 +597,15 @@
           "3"
         ],
         "amendments": 0
+      },
+      {
+        "prereg": "TRAINING_FREE_RULE",
+        "exists": true,
+        "declared_predictions": 3,
+        "alpha_statements": [
+          "2"
+        ],
+        "amendments": 1
       },
       {
         "prereg": "WITHIN_FOLD_ORDERING",

@@ -9065,3 +9065,33 @@ function now and the check calls it against a rebound `OUT`, which fails on both
 *word* rather than on anything substantive — the same shape of stall entry 119 recorded for the count
 itself. 🔒 Covered to twenty-five, and a count past the end yields `"?"`, which cannot match any sentence
 and so fails loudly instead of passing by accident.
+
+---
+
+## 2026-10-08 (one hundred and twenty-fifth entry) — The gate assembled one report out of two runs
+
+### 🔴 `rc.txt` said `pytest=0` while `pytest.txt` ended in a FAILED line
+
+Two `scripts/gate.sh` runs overlapped — one left in the background, another started in the foreground —
+and both wrote the same `.gate/` files. 🔴 **The report I read took its exit codes from one run and its
+output from the other**, so it reported a passing gate over a failing test log. ⚠️ **A gate whose report
+can be assembled from two runs is worse than no gate**, because it is confidently wrong rather than
+silent.
+
+🔒 **The script now takes a lock.** `mkdir` is atomic, so this is a lock and not a check-then-act; a second
+run exits **2** and says so rather than interleaving. Each report also carries a UTC timestamp and the
+pid, so a stale file cannot be read as current. **Calibrated**: a pre-made lock directory makes the next
+run exit 2.
+
+### ⚠️ And the failure underneath it was machine load, not code
+
+`src/130`'s selftest hit the suite's **300-second** subprocess timeout. 🔒 **Run alone it passes in
+63 seconds.** ⚠️ **Three embedding jobs were saturating eight cores at the time**, so the gate's verdict
+depended on what else the machine was doing. 🔴 **My first reading was that `pytest=0` meant the FAILED
+line was stale** — the opposite of the truth, and reached because the race above had made the two
+disagree.
+
+🔒 **The timeout is not being raised.** A selftest that needs more than 300 seconds is a selftest worth
+noticing, and masking it would remove the only signal that one has become slow. ⚠️ **What is recorded
+instead is that this gate is load-sensitive**: a green gate under light load and a red one under heavy
+load are both honest, and the time to read one is when the machine is otherwise idle.

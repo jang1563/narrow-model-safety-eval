@@ -107,3 +107,80 @@ recovery of the four new cells.
   correlations stay in the paper as descriptions**, explicitly not as a procedure.
 - **AV-2 ≥ 3 of 4** ⇒ the thresholds were fitted so tightly that the rule has no reach, and the honest
   report is that the abstention region swallows the claim.
+
+---
+
+## Amendment 0 — a factual error in § 2's description of the fitting set
+
+**Added 2026-10-07, before any fold ran and before the sealed predictions below.** 🔒 **The rule and both
+thresholds are unchanged.** This corrects a sentence *about* the calibration set, not the set or the
+bands.
+
+🔴 § 2 says the abstention region "holds the four cells where the two settings disagree". ⚠️ **It holds
+three cells — six cell-settings — and only two of the three disagree.** Computed by the scorer's own
+selftest: **6 below +0.15, 6 abstaining, 4 above +0.35.**
+
+| cell | R | gain, fixed / swept |
+|---|---:|---|
+| `text/mpnet_base` | +0.1923 | +0.0440 / **−0.0440** |
+| `text/minilm_l6` | +0.2253 | +0.1099 / **−0.0385** |
+| `image_sc/dinov2_vits14` | +0.1879 | +0.0606 / +0.3030 — **both positive** |
+
+🔑 **So the abstention band is conservative rather than tight**: one of the three cells inside it would
+have been predicted correctly at both settings had the rule been willing to speak. ⚠️ **That is a reason
+the band may be too wide, not too narrow**, and AV-2 bands the abstention rate for exactly this reason.
+🔒 **The thresholds stay where they were frozen** — moving them now, with the direction of the error
+known, is the move this project has declined twice today.
+
+---
+
+## Amendment 1 — the sealed predictions
+
+**Added 2026-10-08. 🔒 No fold has run on any of these four cells.** R was computed by
+`src/139 --embed-only`, which fits nothing, and `results/training_free_rule_sealed.json` asserts
+`no_fold_ran: true`. 🔒 **The commit adding this section precedes every fold**, which is the only thing
+separating a sealed prediction from a retrodiction.
+
+| cell | encoder | dim | R | 🔒 **sealed prediction** |
+|---|---|---:|---:|---|
+| `text/distilroberta` | all-distilroberta-v1 | 768 | **+0.0714** | **positive gain** — margin beats `nearest_positive` at both settings |
+| `image/vit_b16_sup` | google/vit-base-patch16-224 | 768 | **+0.1086** | **positive gain** at both settings |
+| `text/bge_base` | BAAI/bge-base-en-v1.5 | 768 | **+0.1593** | 🔒 **ABSTAIN** |
+| `text/minilm_l3` | paraphrase-MiniLM-L3-v2 | 384 | **+0.2473** | 🔒 **ABSTAIN** |
+
+### 🔴 P2 has already failed, before any fold
+
+**P2 (reasoned)** said the **supervised** image encoder would abstain or predict a *negative* gain, because
+ImageNet-label supervision should make a class's distance to the negative side track its distance to
+everything. 🔴 **R = +0.1086 predicts a positive gain**: on this measure the supervised ViT resembles
+DINOv2 (+0.1105) and not CLIP (+0.3825). ⚠️ **Scored now rather than later**, because it is a claim about R
+and R is settled.
+
+### 🔴 AV-1 cannot clear, and this is visible from the abstentions alone
+
+§ 4 bands **AV-1** at **≥ 6 of 8** cell-settings correct. 🔒 **Two of the four cells abstain, so only four
+cell-settings are scorable and the maximum attainable is 4.** 🔴 **A perfect record would therefore land
+in AV-1's *failure* band of "≤ 4 of 8".**
+
+⚠️ **This is recorded with no knowledge of any outcome.** The abstentions follow from R alone; not one
+gain has been computed. 🔑 **The defect is that AV-1 fixed a denominator which the rule's own abstention
+region can shrink** — the same shape as amendment 1 of `GENERALITY_GRID`, where AT-1b could not bind.
+
+🔒 **Both readings will be reported, and neither band is being moved:**
+
+- **Literal**, as frozen: ≥ 6 of 8. **Unattainable at 2 abstentions, so AV-1 is void by construction.**
+  This is the reading with no hindsight in it.
+- **Reduced denominator**, the convention AT-0 and AU-0 already use, where an abstained unit leaves the
+  numerator *and* the denominator and the reduced denominator is stated: **of 4**.
+
+🔑 **AV-3 is unaffected and is the live test.** It is a rank correlation over every cell-setting, old and
+new, and needs no thresholds — so the abstention region cannot reach it. ⚠️ **If AV-3 is the only band
+that survives, then the honest summary of this study is that the *continuous* relationship holds or does
+not, and that the thresholded rule was never testable at this sample size.**
+
+### ⚠️ And the abstention band's reach is now measured
+
+🔑 **Three of the seven text cell-pairs in this project sit inside [+0.15, +0.35]** — `minilm_l6`
+(+0.2253), `mpnet_base` (+0.1923), `bge_base` (+0.1593), `minilm_l3` (+0.2473) — against `distilroberta`
+at +0.0714. ⚠️ **The band swallows most sentence encoders**, which amendment 0 already suspected from the
+other direction. 🔒 **AV-2 reads 2 of 4: between bands, confirming nothing.**

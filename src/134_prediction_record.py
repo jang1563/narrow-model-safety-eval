@@ -97,6 +97,10 @@ UNRUN = {
     "GENERALITY_GRID": ("study AT, frozen 2026-10-06; its six cells require a second text "
                         "encoder, two image encoders and ProtT5 on DeepVIC, and no cell is "
                         "scored until all six land"),
+    "TRAINING_FREE_RULE": ("study AV, frozen 2026-10-07; its procedure embeds four encoders "
+                           "and SEALS the per-cell prediction before any fold runs, so the "
+                           "artifact cannot exist until the folds do. Remove this entry when "
+                           "results/training_free_rule_scored.json lands"),
 }
 
 
