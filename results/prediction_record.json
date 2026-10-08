@@ -184,6 +184,30 @@
       "held": false
     },
     {
+      "study": "image_axis_repair",
+      "prediction": "P1_spread_opens_up",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "image_axis_repair",
+      "prediction": "P2_margin_beats_nearest_positive_4_of_4",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "image_axis_repair",
+      "prediction": "P3_rho_clears_on_both_encoders",
+      "kind": "reasoned",
+      "held": true
+    },
+    {
+      "study": "image_axis_repair",
+      "prediction": "P4_second_draw_moves_more_than_fine_class",
+      "kind": "derived",
+      "held": false
+    },
+    {
       "study": "AO",
       "prediction": "P1_AO1_clears_6pp_both_arms",
       "kind": "derived",
@@ -259,14 +283,14 @@
   "tally": {
     "derived": {
       "held": 17,
-      "total": 30
+      "total": 33
     },
     "reasoned": {
-      "held": 3,
-      "total": 11
+      "held": 4,
+      "total": 12
     }
   },
-  "total_scored": 41,
+  "total_scored": 45,
   "total_withdrawn": 1,
   "by_study": {
     "AJ": {
@@ -349,6 +373,16 @@
         1
       ]
     },
+    "image_axis_repair": {
+      "derived": [
+        0,
+        3
+      ],
+      "reasoned": [
+        1,
+        1
+      ]
+    },
     "AO": {
       "derived": [
         1,
@@ -391,7 +425,7 @@
     }
   },
   "exposure": {
-    "preregistrations": 13,
+    "preregistrations": 14,
     "preregs_found": [
       "COMPOSITION_ARM",
       "COMPOSITION_RESIDUAL",
@@ -401,6 +435,7 @@
       "EXTERNAL_HAZARD_AXIS",
       "FAIR_COMPARISON",
       "GENERALITY_GRID",
+      "IMAGE_AXIS_REPAIR",
       "MUTATION_EXTENSION",
       "NESTED_MODEL",
       "REPRESENTATION_INCREMENT",
@@ -416,6 +451,7 @@
       "AP",
       "AH",
       "AQ",
+      "image_axis_repair",
       "AO",
       "AK",
       "second_draw",
@@ -429,10 +465,10 @@
       "MUTATION_EXTENSION": "a frozen design for work not yet run, per README",
       "GENERALITY_GRID": "study AT, frozen 2026-10-06; its six cells require a second text encoder, two image encoders and ProtT5 on DeepVIC, and no cell is scored until all six land"
     },
-    "declared_predictions": 51,
+    "declared_predictions": 55,
     "reconciliation": {
-      "declared": 51,
-      "scored": 41,
+      "declared": 55,
+      "scored": 45,
       "withdrawn": 1,
       "unrun": 10,
       "double_scored_surplus": 1,
@@ -442,7 +478,7 @@
     "preregs_scored_by_multiple_artifacts": [
       "DEEPVIC_BENCHMARK"
     ],
-    "amendments": 5,
+    "amendments": 8,
     "per_prereg": [
       {
         "prereg": "COMPOSITION_ARM",
@@ -509,6 +545,15 @@
       },
       {
         "prereg": "GENERALITY_GRID",
+        "exists": true,
+        "declared_predictions": 4,
+        "alpha_statements": [
+          "3"
+        ],
+        "amendments": 3
+      },
+      {
+        "prereg": "IMAGE_AXIS_REPAIR",
         "exists": true,
         "declared_predictions": 4,
         "alpha_statements": [

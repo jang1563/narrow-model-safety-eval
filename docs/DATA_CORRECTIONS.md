@@ -8964,3 +8964,104 @@ At the observed rate the gate's 296 sequences took ~850s, so DeepVIC's **46,445*
 cluster job stays queued; `scontrol` puts its start within about a day, and `sbatch --test-only` reports
 a slot the same evening, so the estimate is conservative. ⚠️ **Study AT therefore stands at five of six
 cells and its preregistration forbids a verdict** — which is the intended behaviour and not a stall.
+
+---
+
+## 2026-10-07 (one hundred and twenty-fourth entry) — The axis repair worked and its own band says it did not
+
+### 🔒 What study AU did
+
+One change from study AT: the held-out unit became the CIFAR-100 **superclass** rather than the fine
+class, so holding out `large_carnivores` removes bear, leopard, lion, tiger and wolf together instead of
+leaving forty-nine siblings in training. 🔒 **Same embedding caches, byte for byte**, same animal /
+non-animal split, same two encoders, same fold, both classifier settings.
+`docs/IMAGE_AXIS_REPAIR_PREREGISTRATION.md` was frozen before `src/141` existed.
+
+### 🟢 Every measurement moved the way § 1 said it would
+
+| | study AT (fine class) | study AU (superclass) |
+|---|---|---|
+| recovery sd | 3.58 – 6.62pp | **11.06 – 20.33pp** |
+| *ρ*, CLIP | +0.5231 / +0.5422 | **+0.6121 / +0.6848** |
+| *ρ*, DINOv2 | +0.6156 / +0.6425 | **+0.8667 / +0.9515** |
+| cells clearing +0.60 | 2 of 4 | **4 of 4** |
+
+🟢 **The spread tripled and all four cell-settings now clear the floor.** 🟢 **P3, a *reasoned* prediction,
+held** — *ρ* clears on both encoders — which the computed record makes a 4-of-12 event.
+
+### 🔴 And the frozen verdict reads AXIS NOT REPAIRED
+
+**AU-3** required mean recovery **below 90%** *and* sd **above 10pp** in **every** cell-setting. Three of
+four sit at 87.5–89.5%; `image_sc/dinov2_vits14` at the tuned classifier sits at **92.63%** — with sd
+**11.06pp** and a range spanning **64.9% to 99.7%**. 🔴 **One cell 2.6 points over a ceiling fails the
+whole condition**, and `AU3_spread_opened` is `False` while every sd in the study is double study AT's.
+
+🔴 **A second consequence of the same band.** AU-0 excludes a *cell* when **either** of its settings fails,
+so DINOv2 — the encoder with *ρ* +0.8667 and +0.9515 — leaves AU-1's denominator entirely, and AU-1 reads
+**2 of 2** on CLIP alone. 🔑 **The strongest cell in the study contributes nothing to its own primary
+test.**
+
+⚠️ **This is a band-design error, not a data problem.** AU-3 conflated a *per-cell* precondition, which
+AU-0a already was, with a *study-level* test of whether the axis change did anything.
+
+### 🔒 The band is not being relaxed, and the reason is the asymmetry
+
+🔴 **Earlier today amendment 3 of study AT DECLINED to add a recovery ceiling**, because adding one after
+seeing `image/clip_vit_b32` fail would have converted a failing cell into a non-result. 🔒 **Relaxing a
+ceiling that is sinking a succeeding cell is the same move in the opposite direction**, and it is the
+direction that flatters the hypothesis. ⚠️ **A rule that binds only when it costs nothing is not a rule.**
+
+- 🔒 **The verdict stands as frozen: AXIS NOT REPAIRED.**
+- 🔒 **The measurements are printed next to it** — every sd, every *ρ*, both axes — so a reader reaches
+  their own reading from the numbers rather than from an assurance.
+- 🔒 **The fix belongs to the next design**: AU-3 should be a per-cell flag that reports how many cells
+  opened up, not a conjunction over all of them, and AU-0 should exclude a *setting* rather than a whole
+  cell. ⚠️ **Named, not applied.**
+
+### 🟢 The mechanism result is independent of all of that, and it is the clearest version yet
+
+Study AT found the gain from subtracting the nearest-negative term tracking that term's own signal at
+Spearman **+0.7413** over twelve cell-settings. 🔑 **Study AU contains the case AT could not supply — a
+term with the WRONG SIGN.**
+
+| cell | *ρ*(nearest-negative) | *ρ*(margin) − *ρ*(nearest-positive) |
+|---|---:|---:|
+| CLIP, fixed | **+0.139** | **−0.218** |
+| CLIP, swept | **+0.103** | **−0.158** |
+| DINOv2, fixed | −0.224 | +0.061 |
+| DINOv2, swept | **−0.442** | **+0.303** |
+
+🔒 **Monotone across all four.** On CLIP, sitting closer to the negatives predicts *better* recovery — the
+opposite of the premise margin is built on — and subtracting that term costs **0.16 to 0.22**. On DINOv2
+the term has the expected sign and subtracting it buys **up to +0.303**. 🔑 **Two encoders over identical
+images and an identical fold disagree about whether the negative half of the formula carries signal at
+all, and margin's value tracks that exactly.** ⚠️ **P2 failed as a result — 2 of 4, not 4 of 4** — and the
+failure is the finding.
+
+### 🔴 P4 predicted the wrong kind of noise
+
+**P4 (derived)** said ten held-out units would make *ρ* move **more** between negative draws than study
+AT's fifty did, reasoning from unit **count**. 🔴 **It moved less**: 0.0000–0.0242 against AT's
+0.0029–0.0473. 🔑 **A superclass holds 2,500 members where a fine class holds 500**, so each unit's
+recovery is five times better resolved. ⚠️ **Draw-to-draw stability depends on unit SIZE as well as unit
+count, and the prediction read only one of the two.** 🔒 Taken with the swap quantum from entry 122 —
+which depends only on count — the two together say a *ρ* is coarse when its units are few **and** noisy
+when its units are small, and those are separate problems.
+
+**Study AU's record: derived 0 of 3, reasoned 1 of 1.** The computed record moves to **derived 17 of 33,
+reasoned 4 of 12**, with **55** declared across **14** preregistrations and the identity still balancing
+at 55 = 45 + 10 + 1 − 1.
+
+### ⚠️ Two instrument faults found while recording this
+
+🔴 **The second-draw artifact's filename had a hardcoded stem.** `OUT.with_name(f"generality_grid_draw…")`
+meant study AU's stability run wrote into study **AT's** stability file. ⚠️ **No data was lost**, because
+the merge is key-wise and the cell names differ, but one file then held two studies under AT's label; the
+files are split and each cell's own numbers are unchanged. 🔴 **And my first guard against it compared
+`Path.with_name` with itself** — restoring the hardcoded stem left the selftest green. 🔒 The name is a
+function now and the check calls it against a rebound `OUT`, which fails on both of the other stems.
+
+🔴 **The spelled-out preregistration count stopped at thirteen**, so the fourteenth failed the gate on the
+*word* rather than on anything substantive — the same shape of stall entry 119 recorded for the count
+itself. 🔒 Covered to twenty-five, and a count past the end yields `"?"`, which cannot match any sentence
+and so fails loudly instead of passing by accident.

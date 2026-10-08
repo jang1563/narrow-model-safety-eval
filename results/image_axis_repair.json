@@ -1,0 +1,697 @@
+{
+  "built": "2026-10-07 04:48:49",
+  "study": "AU -- the image axis had no room to move",
+  "preregistration": "docs/IMAGE_AXIS_REPAIR_PREREGISTRATION.md",
+  "one_change": "the held-out unit is the CIFAR-100 SUPERCLASS, not the fine class; same embeddings, same split, same fold, same encoders",
+  "does_not_touch": "study AT's verdicts stand as they fell; amendment 3 of AT declined to reclassify the fine-class cells",
+  "bands": {
+    "ok": 0.6,
+    "not": 0.2,
+    "alpha": 0.016666666666666666,
+    "AU0a_recovery": [
+      0.2,
+      0.9
+    ],
+    "AU0b_fpr": [
+      0.045,
+      0.056
+    ],
+    "AU3_mean_ceiling": 0.9,
+    "AU3_sd_floor": 0.1,
+    "AU3_sd_ceiling": 0.06
+  },
+  "seeds": 30,
+  "cells": {
+    "image_sc/clip_vit_b32": {
+      "cell": "image_sc/clip_vit_b32",
+      "draw": 12345,
+      "dim": 512,
+      "n_classes": 10,
+      "versions": {
+        "numpy": "2.3.5",
+        "scipy": "1.17.1",
+        "sklearn": "1.8.0",
+        "python": "3.13.11"
+      },
+      "rho_quantum_one_adjacent_swap": 0.012121212121212121,
+      "n_positives": 25000,
+      "n_negatives": 25000,
+      "margin": {
+        "aquatic_mammals": 0.03789954779777726,
+        "fish": 0.030466897804977112,
+        "insects": 0.021570069810105962,
+        "large_carnivores": 0.0373816047296448,
+        "large_omnivores_and_herbivores": 0.037599179936444994,
+        "medium_mammals": 0.03300330426364461,
+        "non-insect_invertebrates": 0.017943243403438645,
+        "people": 0.011260955096905936,
+        "reptiles": 0.027315050907721773,
+        "small_mammals": 0.030656217589003092
+      },
+      "nearest_positive": {
+        "aquatic_mammals": 0.9278595938763541,
+        "fish": 0.9190588487704364,
+        "insects": 0.9200421740404596,
+        "large_carnivores": 0.928367943666285,
+        "large_omnivores_and_herbivores": 0.9188852892050807,
+        "medium_mammals": 0.9298263850770323,
+        "non-insect_invertebrates": 0.921050387479817,
+        "people": 0.8662917339189342,
+        "reptiles": 0.9248427638030986,
+        "small_mammals": 0.9287723424344385
+      },
+      "nearest_negative": {
+        "aquatic_mammals": 0.8899600460785767,
+        "fish": 0.8885919509654592,
+        "insects": 0.8984721042303536,
+        "large_carnivores": 0.8909863389366401,
+        "large_omnivores_and_herbivores": 0.8812861092686357,
+        "medium_mammals": 0.8968230808133878,
+        "non-insect_invertebrates": 0.9031071440763783,
+        "people": 0.8550307788220282,
+        "reptiles": 0.8975277128953767,
+        "small_mammals": 0.8981161248454355
+      },
+      "class_size": {
+        "aquatic_mammals": 2500,
+        "fish": 2500,
+        "insects": 2500,
+        "large_carnivores": 2500,
+        "large_omnivores_and_herbivores": 2500,
+        "medium_mammals": 2500,
+        "non-insect_invertebrates": 2500,
+        "people": 2500,
+        "reptiles": 2500,
+        "small_mammals": 2500
+      },
+      "settings": {
+        "fixed": {
+          "recovery": {
+            "aquatic_mammals": {
+              "n": 2500,
+              "mean": 0.9533066666666665,
+              "sd": 0.0217075059850724
+            },
+            "fish": {
+              "n": 2500,
+              "mean": 0.8872,
+              "sd": 0.038219835976479086
+            },
+            "insects": {
+              "n": 2500,
+              "mean": 0.8666133333333335,
+              "sd": 0.0389993079808925
+            },
+            "large_carnivores": {
+              "n": 2500,
+              "mean": 0.9715866666666667,
+              "sd": 0.014754069767784197
+            },
+            "large_omnivores_and_herbivores": {
+              "n": 2500,
+              "mean": 0.8746666666666666,
+              "sd": 0.035546466271175484
+            },
+            "medium_mammals": {
+              "n": 2500,
+              "mean": 0.9603733333333334,
+              "sd": 0.013173822877031637
+            },
+            "non-insect_invertebrates": {
+              "n": 2500,
+              "mean": 0.8305199999999999,
+              "sd": 0.027843533267665335
+            },
+            "people": {
+              "n": 2500,
+              "mean": 0.48488000000000003,
+              "sd": 0.0959405218045948
+            },
+            "reptiles": {
+              "n": 2500,
+              "mean": 0.9553333333333335,
+              "sd": 0.01233300403412515
+            },
+            "small_mammals": {
+              "n": 2500,
+              "mean": 0.9670799999999998,
+              "sd": 0.014628512546063756
+            }
+          },
+          "chosen_C": {
+            "aquatic_mammals": 1.0,
+            "fish": 1.0,
+            "insects": 1.0,
+            "large_carnivores": 1.0,
+            "large_omnivores_and_herbivores": 1.0,
+            "medium_mammals": 1.0,
+            "non-insect_invertebrates": 1.0,
+            "people": 1.0,
+            "reptiles": 1.0,
+            "small_mammals": 1.0
+          },
+          "mean_recovery": 0.8751559999999999,
+          "AT1_rho": 0.6121212121212121,
+          "perm_p": 0.0648467576621169,
+          "significant": false,
+          "n_classes_scored": 10,
+          "test_fpr": {
+            "min": 0.049060075193984476,
+            "max": 0.0513798896088313
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": NaN,
+            "nearest_positive": 0.8303030303030302,
+            "nearest_negative": 0.13939393939393938
+          },
+          "AT2_beats_all_rivals": false,
+          "AT2_rivals_scored": [
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [
+            "class_size"
+          ],
+          "AT2_beaten_by": [
+            "nearest_positive"
+          ],
+          "verdict": "clears",
+          "spread": {
+            "mean": 0.8751559999999999,
+            "sd": 0.14608704552803822,
+            "min": 0.48488000000000003,
+            "max": 0.9715866666666667,
+            "n_at_99pct": 0,
+            "n": 10
+          },
+          "AU0a_recovery_in_band": true,
+          "AU0a_at_ceiling": false,
+          "AU0a_near_null": false,
+          "AU0b_fpr_in_band": true
+        },
+        "swept": {
+          "recovery": {
+            "aquatic_mammals": {
+              "n": 2500,
+              "mean": 0.98124,
+              "sd": 0.006076614302332375
+            },
+            "fish": {
+              "n": 2500,
+              "mean": 0.95108,
+              "sd": 0.010746046586600085
+            },
+            "insects": {
+              "n": 2500,
+              "mean": 0.9001333333333333,
+              "sd": 0.019073529831415192
+            },
+            "large_carnivores": {
+              "n": 2500,
+              "mean": 0.9924533333333334,
+              "sd": 0.002974342388441207
+            },
+            "large_omnivores_and_herbivores": {
+              "n": 2500,
+              "mean": 0.9435733333333333,
+              "sd": 0.017551636790424662
+            },
+            "medium_mammals": {
+              "n": 2500,
+              "mean": 0.9866800000000001,
+              "sd": 0.004236003321284228
+            },
+            "non-insect_invertebrates": {
+              "n": 2500,
+              "mean": 0.8808,
+              "sd": 0.020427162444090013
+            },
+            "people": {
+              "n": 2500,
+              "mean": 0.3239600000000001,
+              "sd": 0.07744565881290905
+            },
+            "reptiles": {
+              "n": 2500,
+              "mean": 0.9748666666666665,
+              "sd": 0.005578365434384908
+            },
+            "small_mammals": {
+              "n": 2500,
+              "mean": 0.9881733333333332,
+              "sd": 0.0022934589647492045
+            }
+          },
+          "chosen_C": {
+            "aquatic_mammals": 0.01,
+            "fish": 0.01,
+            "insects": 0.01,
+            "large_carnivores": 0.01,
+            "large_omnivores_and_herbivores": 0.01,
+            "medium_mammals": 0.01,
+            "non-insect_invertebrates": 0.01,
+            "people": 0.01,
+            "reptiles": 0.01,
+            "small_mammals": 0.01
+          },
+          "mean_recovery": 0.892296,
+          "AT1_rho": 0.6848484848484848,
+          "perm_p": 0.03479826008699565,
+          "significant": false,
+          "n_classes_scored": 10,
+          "test_fpr": {
+            "min": 0.047884169266458686,
+            "max": 0.050251979841612664
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": NaN,
+            "nearest_positive": 0.8424242424242423,
+            "nearest_negative": 0.10303030303030303
+          },
+          "AT2_beats_all_rivals": false,
+          "AT2_rivals_scored": [
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [
+            "class_size"
+          ],
+          "AT2_beaten_by": [
+            "nearest_positive"
+          ],
+          "verdict": "clears",
+          "spread": {
+            "mean": 0.892296,
+            "sd": 0.20334578058319194,
+            "min": 0.3239600000000001,
+            "max": 0.9924533333333334,
+            "n_at_99pct": 1,
+            "n": 10
+          },
+          "AU0a_recovery_in_band": true,
+          "AU0a_at_ceiling": false,
+          "AU0a_near_null": false,
+          "AU0b_fpr_in_band": true
+        }
+      },
+      "jobs": 8,
+      "interpretable_strict": true,
+      "interpretable": true,
+      "fpr_in_band": true,
+      "clears_both_settings": true,
+      "fails_both_settings": false,
+      "beats_rivals_both": false,
+      "tuning_gain": 0.017140000000000044
+    },
+    "image_sc/dinov2_vits14": {
+      "cell": "image_sc/dinov2_vits14",
+      "draw": 12345,
+      "dim": 384,
+      "n_classes": 10,
+      "versions": {
+        "numpy": "2.3.5",
+        "scipy": "1.17.1",
+        "sklearn": "1.8.0",
+        "python": "3.13.11"
+      },
+      "rho_quantum_one_adjacent_swap": 0.012121212121212121,
+      "n_positives": 25000,
+      "n_negatives": 25000,
+      "margin": {
+        "aquatic_mammals": 0.13930662669470226,
+        "fish": 0.11683556749169327,
+        "insects": 0.08568855952270055,
+        "large_carnivores": 0.1758008516762025,
+        "large_omnivores_and_herbivores": 0.1348826562811245,
+        "medium_mammals": 0.17221628595669392,
+        "non-insect_invertebrates": 0.10746414765740056,
+        "people": 0.03775817210743789,
+        "reptiles": 0.1462352203226201,
+        "small_mammals": 0.16399727350466128
+      },
+      "nearest_positive": {
+        "aquatic_mammals": 0.605156125689763,
+        "fish": 0.5684783289409325,
+        "insects": 0.5050194682210571,
+        "large_carnivores": 0.5648223900091839,
+        "large_omnivores_and_herbivores": 0.5525568693244839,
+        "medium_mammals": 0.5797846235173271,
+        "non-insect_invertebrates": 0.5581859770334873,
+        "people": 0.4694685251096034,
+        "reptiles": 0.5700806170876713,
+        "small_mammals": 0.585828944147095
+      },
+      "nearest_negative": {
+        "aquatic_mammals": 0.46584949899506073,
+        "fish": 0.4516427614492393,
+        "insects": 0.4193309086983565,
+        "large_carnivores": 0.38902153833298136,
+        "large_omnivores_and_herbivores": 0.4176742130433595,
+        "medium_mammals": 0.40756833756063315,
+        "non-insect_invertebrates": 0.4507218293760867,
+        "people": 0.43171035300216554,
+        "reptiles": 0.4238453967650512,
+        "small_mammals": 0.4218316706424337
+      },
+      "class_size": {
+        "aquatic_mammals": 2500,
+        "fish": 2500,
+        "insects": 2500,
+        "large_carnivores": 2500,
+        "large_omnivores_and_herbivores": 2500,
+        "medium_mammals": 2500,
+        "non-insect_invertebrates": 2500,
+        "people": 2500,
+        "reptiles": 2500,
+        "small_mammals": 2500
+      },
+      "settings": {
+        "fixed": {
+          "recovery": {
+            "aquatic_mammals": {
+              "n": 2500,
+              "mean": 0.9554933333333333,
+              "sd": 0.018775459649698883
+            },
+            "fish": {
+              "n": 2500,
+              "mean": 0.9335333333333332,
+              "sd": 0.033263683555465724
+            },
+            "insects": {
+              "n": 2500,
+              "mean": 0.7938266666666665,
+              "sd": 0.035255549167846414
+            },
+            "large_carnivores": {
+              "n": 2500,
+              "mean": 0.9649199999999999,
+              "sd": 0.024750595952421024
+            },
+            "large_omnivores_and_herbivores": {
+              "n": 2500,
+              "mean": 0.9173466666666666,
+              "sd": 0.031557541678362874
+            },
+            "medium_mammals": {
+              "n": 2500,
+              "mean": 0.9678133333333333,
+              "sd": 0.014414449965784068
+            },
+            "non-insect_invertebrates": {
+              "n": 2500,
+              "mean": 0.87644,
+              "sd": 0.034666068076176
+            },
+            "people": {
+              "n": 2500,
+              "mean": 0.5825600000000001,
+              "sd": 0.10465394402505813
+            },
+            "reptiles": {
+              "n": 2500,
+              "mean": 0.9802133333333333,
+              "sd": 0.0056702328197248755
+            },
+            "small_mammals": {
+              "n": 2500,
+              "mean": 0.97732,
+              "sd": 0.00860290247733188
+            }
+          },
+          "chosen_C": {
+            "aquatic_mammals": 1.0,
+            "fish": 1.0,
+            "insects": 1.0,
+            "large_carnivores": 1.0,
+            "large_omnivores_and_herbivores": 1.0,
+            "medium_mammals": 1.0,
+            "non-insect_invertebrates": 1.0,
+            "people": 1.0,
+            "reptiles": 1.0,
+            "small_mammals": 1.0
+          },
+          "mean_recovery": 0.8949466666666666,
+          "AT1_rho": 0.8666666666666665,
+          "perm_p": 0.0020998950052497373,
+          "significant": true,
+          "n_classes_scored": 10,
+          "test_fpr": {
+            "min": 0.051943844492440605,
+            "max": 0.054307655387568994
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": NaN,
+            "nearest_positive": 0.8060606060606059,
+            "nearest_negative": -0.22424242424242422
+          },
+          "AT2_beats_all_rivals": true,
+          "AT2_rivals_scored": [
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [
+            "class_size"
+          ],
+          "AT2_beaten_by": [],
+          "verdict": "clears",
+          "spread": {
+            "mean": 0.8949466666666666,
+            "sd": 0.12385984879374702,
+            "min": 0.5825600000000001,
+            "max": 0.9802133333333333,
+            "n_at_99pct": 0,
+            "n": 10
+          },
+          "AU0a_recovery_in_band": true,
+          "AU0a_at_ceiling": false,
+          "AU0a_near_null": false,
+          "AU0b_fpr_in_band": true
+        },
+        "swept": {
+          "recovery": {
+            "aquatic_mammals": {
+              "n": 2500,
+              "mean": 0.9734133333333334,
+              "sd": 0.0094065176719466
+            },
+            "fish": {
+              "n": 2500,
+              "mean": 0.9762799999999999,
+              "sd": 0.007493003633275222
+            },
+            "insects": {
+              "n": 2500,
+              "mean": 0.8251600000000002,
+              "sd": 0.023847411483906563
+            },
+            "large_carnivores": {
+              "n": 2500,
+              "mean": 0.9972933333333333,
+              "sd": 0.001074768085114924
+            },
+            "large_omnivores_and_herbivores": {
+              "n": 2500,
+              "mean": 0.94144,
+              "sd": 0.016400033641681234
+            },
+            "medium_mammals": {
+              "n": 2500,
+              "mean": 0.99316,
+              "sd": 0.001490568047238471
+            },
+            "non-insect_invertebrates": {
+              "n": 2500,
+              "mean": 0.9267199999999999,
+              "sd": 0.015730979757724275
+            },
+            "people": {
+              "n": 2500,
+              "mean": 0.6485200000000001,
+              "sd": 0.0698957765977809
+            },
+            "reptiles": {
+              "n": 2500,
+              "mean": 0.9910266666666667,
+              "sd": 0.0020522373549176826
+            },
+            "small_mammals": {
+              "n": 2500,
+              "mean": 0.9904133333333334,
+              "sd": 0.0018178678934842767
+            }
+          },
+          "chosen_C": {
+            "aquatic_mammals": 0.01,
+            "fish": 0.01,
+            "insects": 0.01,
+            "large_carnivores": 0.01,
+            "large_omnivores_and_herbivores": 0.01,
+            "medium_mammals": 0.01,
+            "non-insect_invertebrates": 0.01,
+            "people": 0.01,
+            "reptiles": 0.01,
+            "small_mammals": 0.01
+          },
+          "mean_recovery": 0.9263426666666665,
+          "AT1_rho": 0.9515151515151514,
+          "perm_p": 9.99950002499875e-05,
+          "significant": true,
+          "n_classes_scored": 10,
+          "test_fpr": {
+            "min": 0.052095832333413326,
+            "max": 0.05347972162227022
+          },
+          "AT0a_mean_recovery_over_20pct": true,
+          "AT0b_fpr_in_band": true,
+          "rivals": {
+            "class_size": NaN,
+            "nearest_positive": 0.6484848484848483,
+            "nearest_negative": -0.4424242424242424
+          },
+          "AT2_beats_all_rivals": true,
+          "AT2_rivals_scored": [
+            "nearest_negative",
+            "nearest_positive"
+          ],
+          "AT2_rivals_dropped_no_variance": [
+            "class_size"
+          ],
+          "AT2_beaten_by": [],
+          "verdict": "clears",
+          "spread": {
+            "mean": 0.9263426666666665,
+            "sd": 0.11062873157045994,
+            "min": 0.6485200000000001,
+            "max": 0.9972933333333333,
+            "n_at_99pct": 4,
+            "n": 10
+          },
+          "AU0a_recovery_in_band": false,
+          "AU0a_at_ceiling": true,
+          "AU0a_near_null": false,
+          "AU0b_fpr_in_band": true
+        }
+      },
+      "jobs": 8,
+      "interpretable_strict": true,
+      "interpretable": true,
+      "fpr_in_band": true,
+      "clears_both_settings": true,
+      "fails_both_settings": false,
+      "beats_rivals_both": true,
+      "tuning_gain": 0.03139599999999998
+    }
+  },
+  "verdict_block": {
+    "cells_run": 2,
+    "cells_expected": 2,
+    "complete": true,
+    "AU0_interpretable": [
+      "image_sc/clip_vit_b32"
+    ],
+    "AU0_uninterpretable": [
+      "image_sc/dinov2_vits14"
+    ],
+    "AU0_at_ceiling": [
+      "image_sc/dinov2_vits14/swept"
+    ],
+    "AU1_clears": 2,
+    "AU1_denominator": 2,
+    "AU1_fails": [],
+    "AU2_beats_rivals": 2,
+    "AU2_denominator": 4,
+    "AU3_spread_opened": false,
+    "AU3_failed": false,
+    "AU3_sd": {
+      "image_sc/clip_vit_b32/fixed": 0.14608704552803822,
+      "image_sc/clip_vit_b32/swept": 0.20334578058319194,
+      "image_sc/dinov2_vits14/fixed": 0.12385984879374702,
+      "image_sc/dinov2_vits14/swept": 0.11062873157045994
+    },
+    "AU3_mean": {
+      "image_sc/clip_vit_b32/fixed": 0.8751559999999999,
+      "image_sc/clip_vit_b32/swept": 0.892296,
+      "image_sc/dinov2_vits14/fixed": 0.8949466666666666,
+      "image_sc/dinov2_vits14/swept": 0.9263426666666665
+    },
+    "verdict": "AXIS NOT REPAIRED -- AU-3 did not open the spread, so AU-1 is uninterpretable by AU-0a rather than informative"
+  },
+  "predictions": {
+    "P1_spread_opens_up": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "mean_recovery": [
+          0.8751559999999999,
+          0.892296,
+          0.8949466666666666,
+          0.9263426666666665
+        ],
+        "sd": [
+          0.14608704552803822,
+          0.20334578058319194,
+          0.12385984879374702,
+          0.11062873157045994
+        ],
+        "study_AT_fine_class_sd": {
+          "image/clip_vit_b32/fixed": 0.06621858154931762,
+          "image/clip_vit_b32/swept": 0.0503364409366395,
+          "image/dinov2_vits14/fixed": 0.04528255557558321,
+          "image/dinov2_vits14/swept": 0.0358235480137053
+        }
+      }
+    },
+    "P2_margin_beats_nearest_positive_4_of_4": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "image_sc/clip_vit_b32/fixed": false,
+        "image_sc/clip_vit_b32/swept": false,
+        "image_sc/dinov2_vits14/fixed": true,
+        "image_sc/dinov2_vits14/swept": true
+      }
+    },
+    "P3_rho_clears_on_both_encoders": {
+      "kind": "reasoned",
+      "held": true,
+      "values": {
+        "image_sc/clip_vit_b32/fixed": 0.6121212121212121,
+        "image_sc/clip_vit_b32/swept": 0.6848484848484848,
+        "image_sc/dinov2_vits14/fixed": 0.8666666666666665,
+        "image_sc/dinov2_vits14/swept": 0.9515151515151514
+      }
+    },
+    "P4_second_draw_moves_more_than_fine_class": {
+      "kind": "derived",
+      "held": false,
+      "values": {
+        "study_AU_shifts": [
+          0.0,
+          0.012121212121212088,
+          0.01212121212121231,
+          0.024242424242424176
+        ],
+        "study_AT_fine_class_shifts": [
+          0.0029,
+          0.001,
+          0.0306,
+          0.0473
+        ],
+        "max_AU": 0.024242424242424176,
+        "max_AT": 0.0473,
+        "units": {
+          "AU": "10 superclasses x 2,500 members",
+          "AT": "50 fine classes x 500 members"
+        }
+      }
+    }
+  },
+  "seconds": 0.9
+}

@@ -1,0 +1,90 @@
+{
+  "built": "2026-10-07 00:46:54",
+  "study": "AU stability: study AR's second-draw test on the repaired image axis",
+  "exploratory": "not a band. The preregistration froze one negative partition; this re-draws it to measure how far rho moves, because the verdict turns on cells sitting within 0.05 of the floor and study AR measured this rho moving 0.105 between draws",
+  "draw": 67890,
+  "frozen_draw": 12345,
+  "cells": {
+    "image_sc/clip_vit_b32": {
+      "draw": 67890,
+      "settings": {
+        "fixed": {
+          "rho_draw2": 0.6363636363636362,
+          "rho_draw1": 0.6121212121212121,
+          "mean_recovery_draw2": 0.8738360000000001,
+          "mean_recovery_draw1": 0.8751559999999999,
+          "clears_draw2": true,
+          "clears_draw1": true,
+          "verdict_draw2": "clears",
+          "rivals_draw2": {
+            "class_size": NaN,
+            "nearest_positive": 0.8303030303030302,
+            "nearest_negative": 0.05454545454545454
+          },
+          "rho_shift": 0.024242424242424176,
+          "verdict_flipped": false
+        },
+        "swept": {
+          "rho_draw2": 0.6848484848484848,
+          "rho_draw1": 0.6848484848484848,
+          "mean_recovery_draw2": 0.8933333333333333,
+          "mean_recovery_draw1": 0.892296,
+          "clears_draw2": true,
+          "clears_draw1": true,
+          "verdict_draw2": "clears",
+          "rivals_draw2": {
+            "class_size": NaN,
+            "nearest_positive": 0.8424242424242423,
+            "nearest_negative": 0.006060606060606061
+          },
+          "rho_shift": 0.0,
+          "verdict_flipped": false
+        }
+      }
+    },
+    "image_sc/dinov2_vits14": {
+      "draw": 67890,
+      "settings": {
+        "fixed": {
+          "rho_draw2": 0.8787878787878788,
+          "rho_draw1": 0.8666666666666665,
+          "mean_recovery_draw2": 0.8926933333333331,
+          "mean_recovery_draw1": 0.8949466666666666,
+          "clears_draw2": true,
+          "clears_draw1": true,
+          "verdict_draw2": "clears",
+          "rivals_draw2": {
+            "class_size": NaN,
+            "nearest_positive": 0.7696969696969697,
+            "nearest_negative": -0.3939393939393939
+          },
+          "rho_shift": 0.01212121212121231,
+          "verdict_flipped": false
+        },
+        "swept": {
+          "rho_draw2": 0.9636363636363635,
+          "rho_draw1": 0.9515151515151514,
+          "mean_recovery_draw2": 0.9225160000000001,
+          "mean_recovery_draw1": 0.9263426666666665,
+          "clears_draw2": true,
+          "clears_draw1": true,
+          "verdict_draw2": "clears",
+          "rivals_draw2": {
+            "class_size": NaN,
+            "nearest_positive": 0.6727272727272726,
+            "nearest_negative": -0.5515151515151515
+          },
+          "rho_shift": 0.012121212121212088,
+          "verdict_flipped": false
+        }
+      }
+    }
+  },
+  "summary": {
+    "verdicts_flipped": [],
+    "mean_abs_rho_shift": 0.012121212121212144,
+    "max_abs_rho_shift": 0.024242424242424176,
+    "reading": "a cell whose verdict flips between two negative draws is not evidence either way, and the grid count should be read with it named rather than silently included"
+  },
+  "split_note": "separated from results/generality_grid_draw67890.json on 2026-10-07, where a hardcoded filename stem had merged study AT's and study AU's second draws into one file; each cell's own numbers were correct and are unchanged"
+}

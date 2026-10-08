@@ -24,6 +24,10 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
+# 🔒 `spawn` passes the parent's sys.path to each child, so putting src/ here is what lets a
+# worker child import `at_fold_worker` and unpickle the fold body.
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
 RES = ROOT / "results/v3"
 OUT = ROOT / "results/generality_grid.json"
 SEEDS, FLOOR, PERMS = 30, 7, 20000
@@ -43,6 +47,14 @@ CELLS = {
 # 🔒 ESM-2 35M is kept as a third protein cell and reported, but AT-1 is scored on the
 # two-FAMILY row: 650M and ProtT5. The preregistration says so.
 EXTRA = {"protein/esm2_35M": ("protein", "_esm2_35M")}
+
+# 🔒 Study AU (docs/IMAGE_AXIS_REPAIR_PREREGISTRATION.md): the SAME embeddings and the same
+# fold, with the held-out unit changed from fine class to SUPERCLASS. Kept out of CELLS so
+# study AT's frozen grid is untouched -- these are a different study, not extra AT cells.
+REPAIR = {
+    "image_sc/clip_vit_b32": ("image_sc", "openai/clip-vit-base-patch32"),
+    "image_sc/dinov2_vits14": ("image_sc", "facebook/dinov2-small"),
+}
 
 # CIFAR-100's own superclasses, split animal / not-animal. `people` is on the ANIMAL side
 # because people are animals; the alternative was considered and rejected before any
@@ -185,12 +197,35 @@ def data_image(encoder, cell):
     return z["P"].astype(np.float64), z["N"].astype(np.float64), z["y"]
 
 
+def data_image_superclass(encoder, cell):
+    """Study AU: the identical embedding cache, relabelled by SUPERCLASS.
+
+    🔒 Nothing is re-embedded. The fine-class cache built for study AT is reused and only `y`
+    changes, so the vectors underlying both studies are bit-identical and any difference in
+    the result is the axis and nothing else.
+    """
+    base = cell.replace("image_sc/", "image/")
+    z = np.load(cache_for(base), allow_pickle=True)
+    _, fine_name, sup_name = _cifar100()
+    is_pos = np.isin(sup_name, ANIMAL_SUPER)
+    fine_pos, sup_pos = fine_name[is_pos], sup_name[is_pos]
+    # 🔒 the cache stores y as the fine-class name in the SAME row order, so the mapping from
+    # fine class to superclass is enough -- and it is checked rather than assumed
+    cached = z["y"]
+    if len(cached) != len(fine_pos) or not np.array_equal(cached, fine_pos):
+        raise SystemExit(f"{cache_for(base).name}'s row order does not match CIFAR-100's; "
+                         "the superclass relabelling would be misaligned")
+    return z["P"].astype(np.float64), z["N"].astype(np.float64), sup_pos
+
+
 def get_data(cell):
-    modality, spec = {**CELLS, **EXTRA}[cell]
+    modality, spec = {**CELLS, **EXTRA, **REPAIR}[cell]
     if modality == "protein":
         return data_protein(spec)
     if modality == "text":
         return data_text(spec, cell)
+    if modality == "image_sc":
+        return data_image_superclass(spec, cell)
     return data_image(spec, cell)
 
 
@@ -219,49 +254,13 @@ def margin_parts(P, NEGU, y, m30):
 
 
 # ---- per-class parallelism -------------------------------------------------------------
-# 🔒 Each class's fold is EXACTLY independent: the same 30 seeds, the same union/test
-# partitions, no shared state and no cross-class ordering. So a per-class parallel map is
-# numerically identical to the serial loop, and `--verify-parallel` proves it on a scored
-# cell rather than asserting it.
-#
-# ⚠️ The embedding is passed as a memory-mapped file, not pickled. At 1280 x 46,445 float64
-# that is 475 MB per task, and pickling it per class would cost more than the fits.
-_W = {}
-
-
-def _winit(path, shape, dtype, union, test, seeds):
-    _W["X"] = np.memmap(path, dtype=dtype, mode="r", shape=tuple(shape))
-    _W["union"], _W["test"], _W["seeds"] = union, test, seeds
-    _W["m133"] = load("133_estimation_repair.py")
-
-
-def _winit_serial(X, union, test, seeds, m133):
-    """The serial path uses the SAME worker body, so there is one implementation of the fold
-    and not two that have to be kept in step."""
-    _W.update({"X": X, "union": union, "test": test, "seeds": seeds, "m133": m133})
-
-
-def _one_class(task):
-    """Returns (cat, recovery dict, mean test FPR, chosen C) for one held-out class."""
-    cat, ci, h, tri, setting = task
-    X, union, test = _W["X"], _W["union"], _W["test"]
-    m133 = _W["m133"]
-    cv = 1.0
-    if setting == "swept":
-        cv, _ = m133.select_C(X, tri, union, ci)
-    rr, ff = [], []
-    for seed in range(_W["seeds"]):
-        r = np.random.default_rng(seed)
-        p = r.permutation(len(union))
-        tr = union[p[:m133.N_TRAIN]]
-        ca = union[p[m133.N_TRAIN:m133.N_TRAIN + m133.N_CAL]]
-        mdl = m133.clf(cv).fit(np.vstack([X[tri], X[tr]]),
-                               np.r_[np.ones(len(tri)), np.zeros(len(tr))])
-        t = float(np.quantile(mdl.predict_proba(X[ca])[:, 1], m133.SPEC))
-        rr.append(float((mdl.predict_proba(X[h])[:, 1] >= t).mean()))
-        ff.append(float((mdl.predict_proba(X[test])[:, 1] >= t).mean()))
-    return (cat, {"n": int(len(h)), "mean": float(np.mean(rr)),
-                  "sd": float(np.std(rr, ddof=1))}, float(np.mean(ff)), cv)
+# 🔒 The worker body lives in `src/at_fold_worker.py`, which has an IMPORTABLE name. It was
+# in this file until 2026-10-07 and every spawned child died with
+# `ModuleNotFoundError: No module named '139_'` as soon as another file imported this one and
+# used the pool -- see that module's docstring. `--verify-parallel` re-checks bit-identity.
+from at_fold_worker import one_class as _one_class  # noqa: E402
+from at_fold_worker import winit as _winit  # noqa: E402
+from at_fold_worker import winit_serial as _winit_serial  # noqa: E402
 
 
 def score_cell(cell, seeds, m30, m133, jobs=1, draw=12345):
@@ -325,7 +324,8 @@ def score_cell(cell, seeds, m30, m133, jobs=1, draw=12345):
             try:
                 with cf.ProcessPoolExecutor(
                         max_workers=jobs, initializer=_winit,
-                        initargs=(str(mm), X.shape, np.float64, union, test, seeds)) as ex:
+                        initargs=(str(mm), X.shape, np.float64, union, test,
+                                  seeds)) as ex:
                     got = list(ex.map(_one_class, tasks))
             finally:
                 for k, was in keep.items():
@@ -416,6 +416,16 @@ def at2(rho, rivals):
         "AT2_rivals_dropped_no_variance": dropped,
         "AT2_beaten_by": sorted(k for k, x in live.items() if abs(x) >= abs(rho)),
     }
+
+
+def draw_artifact(seed):
+    """Where a second-draw run writes, DERIVED from the artifact it is measuring.
+
+    🔴 This was inline as `OUT.with_name(f"generality_grid_draw{seed}.json")` -- a hardcoded
+    stem. Study AU ran with `--out results/image_axis_repair.json` and its second draw still
+    wrote into study AT's stability file. It is a function now so a test can call it.
+    """
+    return OUT.with_name(f"{OUT.stem}_draw{seed}.json")
 
 
 def preconditions(F, S):
@@ -674,11 +684,29 @@ def selftest():
     if not v.get("AT1b_implied_by_AT1"):
         print("  XX the artifact does not record that AT-1b is implied")
         ok = False
+    # 🔒 The second-draw artifact's name must DERIVE from OUT, or one study's stability run
+    # lands in another's file -- which it did on 2026-10-07.
+    # ⚠️ The first version of this check compared `Path.with_name` against itself and so could
+    # not fail: restoring the hardcoded stem left the selftest green. It calls the real
+    # function now, against a rebound OUT.
+    global OUT
+    _keep = OUT
+    try:
+        for stem in ("generality_grid", "image_axis_repair", "zzz_other"):
+            OUT = ROOT / f"results/{stem}.json"
+            got = draw_artifact(67890).name
+            if got != f"{stem}_draw67890.json":
+                print(f"  XX second-draw artifact for {stem}.json is {got}")
+                ok = False
+    finally:
+        OUT = _keep
+
     # 🔒 save() must MERGE, not overwrite -- two processes scoring different cells dropped
     # each other's work before this. Checked against a real file, since the bug was that the
     # in-memory copy looked right.
     import tempfile
-    global OUT
+    # ⚠️ `global OUT` is declared once, above, in the second-draw-name check; Python allows
+    # only one declaration and it must precede every use in the function.
     keep = OUT
     try:
         with tempfile.TemporaryDirectory() as td:
@@ -886,6 +914,9 @@ def main():
     ap.add_argument("--jobs", type=int, default=1,
                     help="parallel workers over held-out classes; the folds are exactly "
                          "independent, and --verify-parallel checks that on a scored cell")
+    ap.add_argument("--out", metavar="PATH",
+                    help="write to PATH instead of results/generality_grid.json -- study AU "
+                         "uses this so the repaired axis cannot land in AT's frozen grid")
     ap.add_argument("--second-draw", type=int, metavar="SEED",
                     help="re-score the named cells with a different negative PARTITION seed "
                          "and write to results/generality_grid_draw<SEED>.json -- study AR's "
@@ -902,13 +933,23 @@ def main():
 
     t0 = time.time()
     m30, m133 = load("30_margin_across_arms.py"), load("133_estimation_repair.py")
+    if a.out:
+        # 🔒 Rebinding the module-level OUT is what `save()`, `verdict()` and the second-draw
+        # path all read, so one assignment keeps every write on the same artifact.
+        global OUT
+        OUT = Path(a.out) if Path(a.out).is_absolute() else ROOT / a.out
+        print(f"writing to {OUT.relative_to(ROOT)}", flush=True)
 
     if a.second_draw:
         # 🔒 A SEPARATE artifact, so a stability measurement cannot contaminate the verdict
         # it is measuring. The frozen draw stays 12345 in results/generality_grid.json.
         if a.second_draw == 12345:
             raise SystemExit("--second-draw 12345 is the frozen draw, not a second one")
-        alt = OUT.with_name(f"generality_grid_draw{a.second_draw}.json")
+        # 🔴 Was `OUT.with_name(f"generality_grid_draw{seed}.json")` -- a HARDCODED stem.
+        # With `--out results/image_axis_repair.json` study AU's second draw still wrote to
+        # study AT's stability artifact, merging two studies' cells under AT's label. No data
+        # was lost only because the merge is key-wise and the cell names differ.
+        alt = draw_artifact(a.second_draw)
         base = json.loads(OUT.read_text()) if OUT.exists() else {"cells": {}}
         got = json.loads(alt.read_text()) if alt.exists() else {
             "built": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -1053,8 +1094,9 @@ def main():
     todo = a.cell or [k for k in {**CELLS, **EXTRA} if k not in out["cells"]]
     done = []
     for cell in todo:
-        if cell not in {**CELLS, **EXTRA}:
-            raise SystemExit(f"unknown cell {cell!r}; known: {sorted({**CELLS, **EXTRA})}")
+        if cell not in {**CELLS, **EXTRA, **REPAIR}:
+            raise SystemExit(f"unknown cell {cell!r}; "
+                             f"known: {sorted({**CELLS, **EXTRA, **REPAIR})}")
         try:
             out["cells"][cell] = score_cell(cell, a.seeds, m30, m133, a.jobs)
         except FileNotFoundError as e:

@@ -2183,9 +2183,16 @@ def prediction_record():
         "paper_states_reasoned": r_str in man,
         # 🔒 Discovered, so this moves whenever a preregistration is added. The word form is
         # derived from the count rather than hard-coded, which is what let it go stale twice.
+        # ⚠️ The map stopped at thirteen and the fourteenth preregistration failed the gate on
+        # the WORD rather than on anything substantive -- the same shape of stall entry 119
+        # recorded for the count itself. Covered to twenty-five now, and a count past the end
+        # yields "?" which cannot match, so it fails loudly rather than passing by accident.
         "paper_states_prereg_count": (
             {8: "Eight", 9: "Nine", 10: "Ten", 11: "Eleven", 12: "Twelve",
-             13: "Thirteen"}.get(e["preregistrations"], "?")
+             13: "Thirteen", 14: "Fourteen", 15: "Fifteen", 16: "Sixteen",
+             17: "Seventeen", 18: "Eighteen", 19: "Nineteen", 20: "Twenty",
+             21: "Twenty-one", 22: "Twenty-two", 23: "Twenty-three",
+             24: "Twenty-four", 25: "Twenty-five"}.get(e["preregistrations"], "?")
             + " preregistrations") in man,
         "paper_states_no_correction": "no correction across them" in man,
         "within_only": e["bonferroni_within_study_only"],
@@ -2207,8 +2214,8 @@ def prediction_record():
         # count; excluded explicitly rather than relying on the reader to discount it.
         "gap_parts": {k: x for k, x in e.get("reconciliation", {}).items()
                       if isinstance(x, int) and not isinstance(x, bool)},
-        "paper_states_declared_word": "fifty-one frozen predictions" in man,
-        "paper_states_verdict_count": "**Forty-one carry a verdict.**" in man,
+        "paper_states_declared_word": "fifty-five frozen predictions" in man,
+        "paper_states_verdict_count": "**Forty-five carry a verdict.**" in man,
         "paper_names_the_balance_problem": (
             "do not reconcile by subtraction" in man
             and "seven** scored rows against" in man),
@@ -6706,7 +6713,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 127"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 128"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
