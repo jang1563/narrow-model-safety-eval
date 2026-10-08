@@ -1,7 +1,7 @@
 # An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 130 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
-`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 154 such
+`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 156 such
 claims. Section references without a document name are to `docs/MECHANISM_GENERALIZATION.md`.
 
 ---
@@ -1580,14 +1580,14 @@ the diagnosis was in the record before the repair was built; both times it named
   and **6.09pp** (Regulation), so the reasoned prediction that levels would move by more than 3pp
   **failed**. ⚠️ **Study AM's ordering AUROC and study AQ's fair comparison keep the original partition**,
   which is stated rather than implied.
-- 🔴 **Fifteen preregistrations, fifty-eight frozen predictions, and no correction across them.** Every
+- 🔴 **Sixteen preregistrations, sixty-two frozen predictions, and no correction across them.** Every
   preregistration here sets its own Bonferroni α over its own primary tests — α = 0.05/2, /3 or /4 — and
   **none of them corrects for the others.** With this many frozen bands, some verdicts are expected to
   fall by chance. ⚠️ **The exposure is stated rather than corrected retroactively**, because choosing a
   family-wise correction after seeing which bands were met is the error the bands exist to prevent.
-  ⚠️ **Forty-eight carry a verdict.** Ten belong to designs frozen for work not yet run — six to
-  `MUTATION_EXTENSION` and four to `GENERALITY_GRID`, study AT's three-modality grid, waiting on one
-  cell — and one was **withdrawn by amendment** when its referent moved to the other side of a
+  ⚠️ **Forty-eight carry a verdict.** Fourteen belong to designs frozen for work not yet run — six to
+  `MUTATION_EXTENSION`, four to `GENERALITY_GRID` (study AT's three-modality grid, waiting on one cell)
+  and four to `MARGIN_ROUTING`, whose mixture folds are still being fitted — and one was **withdrawn by amendment** when its referent moved to the other side of a
   redesigned axis; `results/prediction_record.json` holds the counts and discovers the studies
   rather than listing them. 🔒 **A withdrawn prediction is stored as unscored, not as a miss**, and the
   record now refuses to build if a withdrawal carries a scored verdict or a scored prediction carries
@@ -1595,7 +1595,7 @@ the diagnosis was in the record before the repair was built; both times it named
   structural**: `DEEPVIC_BENCHMARK` is scored by **two** artifacts — study AI-1's metadata baseline and
   study AI's verdicts — whose prediction numbers overlap, so it contributes **seven** scored rows against
   **six** declarations. 🔒 **The artifact reconciles the gap from its parts rather than asserting it** —
-  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **58 = 48 + 10 + 1 − 1** —
+  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **62 = 48 + 14 + 1 − 1** —
   and names the preregistration the surplus comes from. 🔴 **Until today the declared total read 49**, because the count
   matched *lines* beginning with a prediction label and an amendment that restates "P1 and P2 are
   unchanged" was counted as two further declarations; it now counts distinct prediction numbers.
@@ -1762,7 +1762,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**154 claims** and fails if any number in a public document drifts from the artifact that produced
+**156 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

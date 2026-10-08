@@ -2214,7 +2214,7 @@ def prediction_record():
         # count; excluded explicitly rather than relying on the reader to discount it.
         "gap_parts": {k: x for k, x in e.get("reconciliation", {}).items()
                       if isinstance(x, int) and not isinstance(x, bool)},
-        "paper_states_declared_word": "fifty-eight frozen predictions" in man,
+        "paper_states_declared_word": "sixty-two frozen predictions" in man,
         "paper_states_verdict_count": "**Forty-eight carry a verdict.**" in man,
         "paper_names_the_balance_problem": (
             "do not reconcile by subtraction" in man
@@ -5636,6 +5636,90 @@ def band_reachability():
     }
 
 
+def image_axis_repair():
+    """Study AU: the image axis had no room to move, and its own band says it still does not.
+
+    🟢 Changing the held-out unit from fine class to SUPERCLASS tripled the recovery spread
+    (sd 3.58-6.62pp -> 11.06-20.33pp) and raised rho from +0.52/+0.64 to +0.61/+0.95, with
+    all four cell-settings clearing +0.60 and the reasoned P3 holding.
+    🔴 And AU-3 required mean recovery below 90% in EVERY cell-setting, so one cell at 92.63%
+    -- with sd 11.06pp and a range of 64.9-99.7% -- vetoed the study-level reading.
+    🔒 The band is NOT relaxed: amendment 3 of study AT declined to ADD a ceiling that would
+    have rescued a failing cell, and relaxing one that sinks a succeeding cell is the same
+    move in the direction that flatters the hypothesis.
+    """
+    v = j("../results/image_axis_repair.json")
+    if v is None:
+        return None
+    cells = v["cells"]
+    sd = {f"{c}/{s}": cells[c]["settings"][s]["spread"]["sd"]
+          for c in cells for s in ("fixed", "swept")}
+    rho = {f"{c}/{s}": cells[c]["settings"][s]["AT1_rho"]
+           for c in cells for s in ("fixed", "swept")}
+    at = j("../results/generality_grid.json")
+    at_sd = {}
+    if at:
+        for c in ("image/clip_vit_b32", "image/dinov2_vits14"):
+            if c in at["cells"]:
+                for s in ("fixed", "swept"):
+                    r = at["cells"][c]["settings"][s]["recovery"]
+                    xs = [x["mean"] for x in r.values()]
+                    at_sd[f"{c}/{s}"] = float(np.std(xs, ddof=1))
+    vb = v["verdict_block"]
+    return {
+        "prereg": v["preregistration"], "n_cells": len(cells),
+        "one_change": "SUPERCLASS" in v["one_change"],
+        "does_not_touch_AT": "stand as they fell" in v["does_not_touch"],
+        "sd_min": min(sd.values()), "sd_max": max(sd.values()),
+        "at_sd_max": max(at_sd.values()) if at_sd else None,
+        "rho_min": min(rho.values()), "rho_max": max(rho.values()),
+        "all_four_clear_060": all(x >= 0.60 for x in rho.values()),
+        "AU3_spread_opened": vb["AU3_spread_opened"],
+        "at_ceiling": vb["AU0_at_ceiling"],
+        "verdict": vb["verdict"],
+        "preds": {k: x["held"] for k, x in v["predictions"].items()},
+        "kinds": {k: x["kind"] for k, x in v["predictions"].items()},
+    }
+
+
+def training_free_rule():
+    """Study AV: a training-free quantity ranks how much the subtraction is worth.
+
+    🔒 R = rho(nearest_positive, nearest_negative) across a cell's classes needs NO training.
+    The per-cell prediction was sealed and committed BEFORE any fold ran, and the scorer
+    refuses to score a cell whose R was not sealed first.
+    🟢 AV-3 holds: rho(R, gain) = -0.6610 over 24 cell-settings against a band frozen at
+    <= -0.60 before four of the eight encoders existed in this project.
+    🔴 The THRESHOLDED rule is not established: 3 of 4 scored cell-settings but 1 of 2 CELLS,
+    and the per-cell count is the independent one.
+    """
+    v = j("../results/training_free_rule_scored.json")
+    if v is None:
+        return None
+    return {
+        "prereg": v["preregistration"],
+        "sealed_ok": v["sealing"]["ok"],
+        "sealed_why": v["sealing"]["why"],
+        "n_cells": len(v["cells"]),
+        "AV1_hits": v["AV1_hits"], "AV1_scored": v["AV1_scored"],
+        "AV1_per_cell_hits": sum(1 for x in v["AV1_per_cell"].values() if x is True),
+        "AV1_per_cell_scored": sum(1 for x in v["AV1_per_cell"].values()
+                                   if x is not None),
+        "AV1_verdict": v["AV1_verdict"],
+        "AV2_abstained": v["AV2_n_abstained"],
+        "AV3_rho": v["AV3_rho_all_cells"], "AV3_n": v["AV3_n"],
+        "AV3_verdict": v["AV3_verdict"],
+        "independence_stated": "not independent" in v["independence_note"],
+        "preds": {k: x["held"] for k, x in v["predictions"].items()},
+        "kinds": {k: x["kind"] for k, x in v["predictions"].items()},
+        # ⚠️ the abstained cells must have gone in OPPOSITE directions, which is what makes
+        # the abstention band calibrated rather than merely wide
+        "abstained_directions": sorted(
+            {("pos" if x["settings"]["fixed"]["gain"] > 0 else "neg")
+             for c, x in v["cells"].items() if x["sealed_prediction"] == "ABSTAIN"}),
+    }
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -8921,6 +9005,60 @@ CLAIMS = [
      ["the bands are well calibrated",
       "a reachability check validates a threshold",
       "every preregistered band in this project is sound"]),
+    ("the image axis repair moved every measurement and its own band still says no",
+     image_axis_repair,
+     lambda v: v is None or (
+         "IMAGE_AXIS_REPAIR" in v["prereg"] and v["n_cells"] == 2
+         and v["one_change"] and v["does_not_touch_AT"]
+         # 🟢 the spread tripled against study AT's fine-class axis
+         and v["sd_min"] > 0.10 and v["at_sd_max"] is not None
+         and v["sd_min"] > v["at_sd_max"]
+         # 🟢 and all four cell-settings clear the floor
+         and v["all_four_clear_060"] and v["rho_max"] > 0.95
+         # 🔴 while AU-3 reads False and the verdict is the frozen one
+         and v["AU3_spread_opened"] is False
+         and v["at_ceiling"] == ["image_sc/dinov2_vits14/swept"]
+         and v["verdict"].startswith("AXIS NOT REPAIRED")
+         # ⭐ P3 reasoned held; P1 and P2 derived failed
+         and v["preds"]["P3_rho_clears_on_both_encoders"] is True
+         and v["kinds"]["P3_rho_clears_on_both_encoders"] == "reasoned"
+         and v["preds"]["P1_spread_opens_up"] is False
+         and v["preds"]["P2_margin_beats_nearest_positive_4_of_4"] is False),
+     {"paper/MANUSCRIPT.md":
+      "🔑 **The sharpest case is two encoders over identical images.**"},
+     # 🔴 Readings this does not license.
+     ["the image axis was repaired",
+      "AU-3 shows the spread did not open",
+      "margin orders the image cells as well as the protein ones"]),
+    ("a training-free quantity ranks the subtraction prospectively, and the rule on it does not",
+     training_free_rule,
+     lambda v: v is None or (
+         "TRAINING_FREE_RULE" in v["prereg"] and v["n_cells"] == 4
+         # 🔒 the seal is the whole study: a prediction written after the fold is not a test
+         and v["sealed_ok"] and "amendment 1" in v["sealed_why"]
+         # 🟢 AV-3 holds at the frozen floor over every cell-setting, old and new
+         and v["AV3_rho"] <= -0.60 and v["AV3_n"] == 24
+         and v["AV3_verdict"] == "holds"
+         # 🔴 and the thresholded rule does not: 3 of 4 settings, 1 of 2 CELLS
+         and (v["AV1_hits"], v["AV1_scored"]) == (3, 4)
+         and (v["AV1_per_cell_hits"], v["AV1_per_cell_scored"]) == (1, 2)
+         and v["AV1_verdict"] == "it does not"
+         and v["independence_stated"]
+         # 🔑 the two abstained cells went in OPPOSITE directions, so the band is calibrated
+         # rather than merely wide -- which is what amendment 0 suspected and this refutes
+         and v["AV2_abstained"] == 2
+         and v["abstained_directions"] == ["neg", "pos"]
+         # ⭐ P3 derived held; P1 derived and P2 reasoned failed, P2 before any fold ran
+         and v["preds"]["P3_three_layer_encoder_has_lowest_recovery"] is True
+         and v["preds"]["P1_AV1_at_least_6_of_8"] is False
+         and v["preds"]["P2_supervised_image_abstains_or_predicts_negative"] is False),
+     {"paper/MANUSCRIPT.md": [
+         "🟢 **And that much was then tested prospectively.**",
+         "🔴 **The thresholded form of the same rule was not established**"]},
+     # 🔴 Readings this does not license. The rule's thresholded form failed.
+     ["a training-free rule decides which form of the statistic to use",
+      "R predicts the magnitude of the gain",
+      "the thresholded rule was validated"]),
 ]
 
 
