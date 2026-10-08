@@ -1,0 +1,51 @@
+{
+  "study": "band reachability -- can every declared verdict happen?",
+  "why": "three studies in a row carried a band that could not do what it was written to do, all decidable from the band and the unit count alone",
+  "rows": [
+    {
+      "band": "AV-1 (TRAINING_FREE_RULE)",
+      "n_units": 8,
+      "pass_at_least": 6,
+      "fail_at_most": 4,
+      "max_unscorable": 4,
+      "attainable_max": 4,
+      "between_bands_region": [
+        5
+      ],
+      "per_unit_veto": false,
+      "problems": [
+        "PASS UNREACHABLE: needs 6 of 8 but at most 4 are scorable once 4 leave the pool",
+        "PERFECT SCORES AS FAILURE: a flawless 4/4 falls inside the failure region (<= 4)"
+      ],
+      "ok": false
+    },
+    {
+      "band": "AU-3 (IMAGE_AXIS_REPAIR)",
+      "n_units": 4,
+      "pass_at_least": 4,
+      "fail_at_most": 0,
+      "max_unscorable": 0,
+      "attainable_max": 4,
+      "between_bands_region": [
+        1,
+        2,
+        3
+      ],
+      "per_unit_veto": true,
+      "problems": [
+        "SINGLE-UNIT VETO: stated as a conjunction over all 4 units, so one marginal unit decides the study-level verdict"
+      ],
+      "ok": false
+    },
+    {
+      "band": "AT-1b (GENERALITY_GRID)",
+      "outer": "the 3-4 of 6 modality-dependent band",
+      "inner": "a modality dead on both its encoders",
+      "problems": [
+        "CLAUSE IS IMPLIED: a modality dead on both its encoders forces the count into the 3-4 of 6 modality-dependent band, so the conjunction adds nothing"
+      ],
+      "ok": false
+    }
+  ],
+  "n_flagged": 3
+}

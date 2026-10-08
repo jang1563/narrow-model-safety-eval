@@ -9095,3 +9095,26 @@ disagree.
 noticing, and masking it would remove the only signal that one has become slow. ⚠️ **What is recorded
 instead is that this gate is load-sensitive**: a green gate under light load and a red one under heavy
 load are both honest, and the time to read one is when the machine is otherwise idle.
+
+### 🔒 The pattern behind three band failures, and a check for it
+
+🔴 **Three preregistrations in a row carried a band that could not do what it was written to do.** All
+three share one root cause: **a band stated as an absolute count against a denominator that a later
+computation determines** — a precondition, an abstention, or the grid's own structure.
+
+| band | why it could not work | found |
+|---|---|---|
+| **AT-1b** | a dead modality is two non-clearing cells, leaving ≤ 4 clears, already inside the *modality-dependent* band — so the clause is implied by the count it was conjoined with | by **deleting the override and finding the selftest still green** |
+| **AU-3** | mean < 90% **and** sd > 10pp in *every* cell-setting: one cell 2.6 points over the ceiling vetoed a study in which **every** sd had doubled | after the results existed |
+| **AV-1** | ≥ 6 of **8**, where the rule's own abstention region removed four cell-settings — so a **perfect 4 of 4** lands in the failure band of "≤ 4 of 8" | from the **sealed R values alone**, before any fold |
+
+🔒 **All three are decidable from the band and the unit count, before any data.**
+`src/143_band_reachability.py` decides them and holds the three as a **regression set**: it reports an
+unreachable pass region, a flawless outcome that scores as a failure, overlapping regions, and a
+conjunction that lets one unit veto a study. ⚠️ **It does not judge whether a threshold is well chosen**,
+and claim 154 forbids the paper from saying it does.
+
+🔑 **The repair pattern is the one the preconditions already use**: band a **rate** with its denominator
+named, let an excluded unit leave the numerator *and* the denominator, state the reduced denominator, and
+band **coverage** separately. ⚠️ **None of the three bands is being moved** — the tool exists so the next
+one is checked before it is frozen, not so these can be rewritten after the fact.

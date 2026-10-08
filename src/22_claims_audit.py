@@ -5603,6 +5603,39 @@ def manuscript_is_the_live_file():
     }
 
 
+def band_reachability():
+    """Can every verdict the preregistrations declare actually happen?
+
+    🔴 Three studies in a row carried a band that could not: AT-1b was implied by AT-1,
+    AU-3 let one marginal cell veto a study-level reading, and AV-1 fixed a denominator of 8
+    that its own abstention region cut to 4 -- making a PERFECT record score as a failure.
+    🔒 All three are decidable from the band and the unit count alone, before any data.
+    """
+    v = j("../results/band_reachability.json")
+    if v is None:
+        return None
+    rows = {r["band"].split(" (")[0]: r for r in v["rows"]}
+    man = (ROOT / "paper/MANUSCRIPT.md").read_text()
+    return {
+        "n_rows": len(v["rows"]), "n_flagged": v["n_flagged"],
+        "bands": sorted(rows),
+        "all_three_flagged": all(not r["ok"] for r in v["rows"]),
+        "av1_perfect_scores_as_failure": any(
+            "PERFECT SCORES AS FAILURE" in p for p in rows["AV-1"]["problems"]),
+        "av1_pass_unreachable": any(
+            "PASS UNREACHABLE" in p for p in rows["AV-1"]["problems"]),
+        "av1_attainable_max": rows["AV-1"]["attainable_max"],
+        "au3_single_unit_veto": any(
+            "SINGLE-UNIT VETO" in p for p in rows["AU-3"]["problems"]),
+        "at1b_implied": any("CLAUSE IS IMPLIED" in p for p in rows["AT-1b"]["problems"]),
+        "paper_states_practice": (
+            "**Check that every verdict you declare can happen.**" in man),
+        "paper_names_the_tool": "src/143_band_reachability.py" in man,
+        # ⚠️ the paper must not claim the tool judges THRESHOLDS, which it does not
+        "paper_scopes_the_tool": "It does not judge whether a threshold is well chosen" in man,
+    }
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -8871,6 +8904,23 @@ CLAIMS = [
       "🔒 **This file is the live\ndocument and the only one the audit reads.**"},
      ["It is assembled from\nsections `paper/0*.md`; edit those, not this file",
       "edit those, not this file"]),
+    ("every verdict the preregistrations declare is reachable, or is named as not",
+     band_reachability,
+     lambda v: v is None or (
+         v["n_rows"] == 3 and v["n_flagged"] == 3 and v["all_three_flagged"]
+         # 🔒 the three specific diagnoses, not just a count of complaints
+         and v["av1_perfect_scores_as_failure"] and v["av1_pass_unreachable"]
+         and v["av1_attainable_max"] == 4
+         and v["au3_single_unit_veto"] and v["at1b_implied"]
+         and v["paper_states_practice"] and v["paper_names_the_tool"]
+         and v["paper_scopes_the_tool"]),
+     {"paper/MANUSCRIPT.md": [
+         "**Check that every verdict you declare can happen.**",
+         "the rule's own abstention region removed four cell-settings, capping the attainable count at four"]},
+     # 🔴 Readings this does not license. The tool checks reachability, not calibration.
+     ["the bands are well calibrated",
+      "a reachability check validates a threshold",
+      "every preregistered band in this project is sound"]),
 ]
 
 

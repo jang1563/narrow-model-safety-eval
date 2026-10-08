@@ -1,7 +1,7 @@
 # An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 129 corrections found
 
 **Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
-`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 153 such
+`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 154 such
 claims. Section references without a document name are to `docs/MECHANISM_GENERALIZATION.md`.
 
 ---
@@ -1623,6 +1623,28 @@ to fire in time**: a 650M-only ranking had already been written into § 6 before
 and nothing in the audit could have caught it, because every number in it was correct and traceable and
 what was wrong was the scope of the sentence built on them.
 
+**Check that every verdict you declare can happen.** 🔴 **Three preregistrations in a row carried a band
+that could not do what it was written to do**, and all three share one root cause: a band stated as an
+absolute **count** against a denominator that a *later* computation determines — a precondition, an
+abstention, or the grid's own structure.
+
+| band | what it said | why it could not work |
+|---|---|---|
+| **AT-1b** | ≥ 5 of 6 cells clear **and** no modality dead on both its encoders | a dead modality is two non-clearing cells, leaving at most four clears — already inside the *modality-dependent* band, so the second clause can never bind |
+| **AU-3** | mean recovery < 90% **and** sd > 10pp in **every** cell-setting | one cell 2.6 points over the ceiling vetoed a study in which **every** sd had doubled |
+| **AV-1** | ≥ 6 of **8** sealed predictions correct | the rule's own abstention region removed four cell-settings, capping the attainable count at four — so a **perfect** record falls in the failure band of "≤ 4 of 8" |
+
+🔒 **All three are decidable from the band and the unit count alone, before any data exists**, and
+`src/143_band_reachability.py` decides them: it reports whether the pass region is attainable, whether a
+flawless outcome can score as a failure, whether the regions overlap, and whether a conjunction lets one
+unit veto a study. ⚠️ **It does not judge whether a threshold is well chosen** — only that the verdicts
+declared are reachable. 🔑 **Two of the three were found after results existed, which is the expensive
+way**; the third was found by trying to break the check that guarded it and failing.
+
+🔑 **The repair pattern is to band a *rate* with its denominator named, as the preconditions already
+do** — an excluded unit leaves the numerator *and* the denominator and the reduced denominator is
+stated — **and to band coverage separately**, rather than fixing a count against a pool that can shrink.
+
 **Keep the log append-only, including the entries that hurt.** The log holds 129 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
@@ -1722,7 +1744,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**153 claims** and fails if any number in a public document drifts from the artifact that produced
+**154 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and
