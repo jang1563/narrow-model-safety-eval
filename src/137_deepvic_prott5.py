@@ -18,6 +18,8 @@ import hashlib
 import importlib.util
 import json
 import sys
+import re
+import time
 from pathlib import Path
 
 import numpy as np
@@ -38,6 +40,30 @@ def load(mod):
     sys.modules[mod[:4]] = m
     spec.loader.exec_module(m)
     return m
+
+
+def _pooling_is_shared():
+    """🔒 The check that actually carries the weight, and it needs no embedding.
+
+    The numerical gate is a same-environment check. What it is *meant* to establish -- that
+    this file uses src/02g's pooling and not a copy of it -- is structural: `embed` must be
+    CALLED from the src/02g module object, never redefined here. A numerical tolerance can be
+    defeated by library drift, as entry 129 records; an import cannot.
+    """
+    src = Path(__file__).read_text()
+    calls_m02g = "m02g.embed(" in src
+    # ⚠️ `^def embed\(` matched only a TOP-LEVEL redefinition; a nested one, which is how
+    # a wrapper would actually be introduced, slipped past. Any indentation now.
+    defines_own = bool(re.search(r"^\s*def embed\(", src, re.M))
+    g = Path(__file__).parent / "02g_prott5_embed.py"
+    g_src = g.read_text() if g.exists() else ""
+    return {
+        "calls_src02g_embed": calls_m02g,
+        "defines_its_own_embed": defines_own,
+        "src02g_does_the_masking": 'r"[UZOB]"' in g_src,
+        "src02g_means_residues_only": "hs[b, : len(s)].mean(0)" in g_src,
+        "shared_by_construction": calls_m02g and not defines_own,
+    }
 
 
 def selftest():
@@ -65,6 +91,14 @@ def selftest():
     if len(recs) != 46445 or meta["n_positives"] != 12989:
         print(f"  XX order gives {len(recs)} rows / {meta['n_positives']} positives")
         ok = False
+    # 🔒 the structural check, which a numerical tolerance cannot replace
+    sh = _pooling_is_shared()
+    if not sh["shared_by_construction"]:
+        print(f"  XX the pooling is not shared by construction: {sh}")
+        ok = False
+    if not (sh["src02g_does_the_masking"] and sh["src02g_means_residues_only"]):
+        print(f"  XX src/02g no longer does the masking or the residue-only mean: {sh}")
+        ok = False
     print("selftest PASS" if ok else "selftest FAIL")
     return 0 if ok else 1
 
@@ -73,6 +107,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--batch", type=int, default=4)
+    ap.add_argument("--gate-ref", metavar="PATH",
+                    help="compare against this reference instead of the 2026-09-26 one, "
+                         "whose environment was never recorded")
+    ap.add_argument("--rebuild-reference", action="store_true",
+                    help="embed the 296 gate negatives and write a NEW reference with full "
+                         "provenance, then stop")
     ap.add_argument("--no-half", action="store_true",
                     help="keep the checkpoint's mixed fp16/fp32 dtypes instead of matching "
                          "the gate reference's uniform fp16; for diagnosing the gate only")
@@ -104,13 +144,51 @@ def main():
     gate_recs = m02g.read_fasta(
         ROOT / "data/sequences/benign_negatives_v3.fasta")
     got = m02g.embed(gate_recs, model, tok, dev, a.batch)
-    ref = np.load(GATE)
+    if a.rebuild_reference:
+        # 🔒 A reference built here is compared against a run of the SAME code in the SAME
+        # session, so the numerical gate against it is a WEAK check and is labelled one. The
+        # strong check is structural and needs no embedding: this file IMPORTS src/02g.embed
+        # rather than copying it, so the pooling is shared by construction.
+        # 🔴 The 2026-09-26 reference is retired for this purpose. It records model, device,
+        # max_len and the pooling note but NO torch or transformers version, so the one
+        # surviving candidate for its 2.4-3.7e-04 discrepancy -- library drift -- cannot be
+        # checked against it. dtype, device, preprocessing and batch size were each ruled out
+        # by measurement; docs/DATA_CORRECTIONS.md entry 129 has the diagnosis.
+        newref = RES / "embeddings_negative_v3_prott5_xl_rebuilt.npy"
+        np.save(newref, got)
+        (RES / "embedding_manifest_v3_prott5_xl_rebuilt.json").write_text(json.dumps({
+            "model": MODEL, "n": int(got.shape[0]), "dim": int(got.shape[1]),
+            "device": devname, "half_precision": not a.no_half, "batch_size": a.batch,
+            "pooling": "src/02g's: mean over residue positions only, </s> excluded",
+            "versions": {"torch": torch.__version__,
+                         "transformers": __import__("transformers").__version__,
+                         "numpy": np.__version__},
+            "built": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "supersedes": "embeddings_negative_v3_prott5_xl.npy (2026-09-26)",
+            "why": ("the 2026-09-26 reference records no library versions, so library drift "
+                    "-- the one surviving candidate for its discrepancy -- cannot be checked "
+                    "against it"),
+            "what_this_gate_is_worth": (
+                "a SAME-ENVIRONMENT reproducibility check, and nothing more. The pooling is "
+                "shared by construction because this file imports src/02g.embed."),
+            "batch_size_sensitivity": (
+                "measured 1.221e-04 between batch 1 and batch >1, which EXCEEDS the 5e-05 "
+                "tolerance, so a reproduction must match the batch size -- which is why this "
+                "manifest records it and the 2026-09-26 one did not"),
+        }, indent=2) + "\n")
+        print(f"wrote {newref.name} + manifest  (device {devname}, batch {a.batch}, "
+              f"half {not a.no_half})", flush=True)
+        return 0
+
+    _gr = Path(a.gate_ref) if a.gate_ref else GATE
+    ref = np.load(_gr)
     delta = float(np.abs(got - ref).max())
     scale = float(np.abs(ref).mean())
-    refman = RES / "embedding_manifest_v3_prott5_xl.json"
+    refman = _gr.with_name(_gr.name.replace("embeddings_negative", "embedding_manifest")
+                           .replace(".npy", ".json"))
     refdev = (json.loads(refman.read_text()).get("device", "?")
               if refman.exists() else "?")
-    print(f"gate: max abs delta vs {GATE.name} = {delta:.3e} (tol {TOL:.0e}); "
+    print(f"gate: max abs delta vs {_gr.name} = {delta:.3e} (tol {TOL:.0e}); "
           f"{delta / scale * 100:.2f}% of mean|v| vs a {TOL / scale * 100:.2f}% tolerance",
           flush=True)
     print(f"  reference built on {refdev}; this run on {dev}", flush=True)

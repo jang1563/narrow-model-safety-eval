@@ -2215,7 +2215,7 @@ def prediction_record():
         "gap_parts": {k: x for k, x in e.get("reconciliation", {}).items()
                       if isinstance(x, int) and not isinstance(x, bool)},
         "paper_states_declared_word": "sixty-nine frozen predictions" in man,
-        "paper_states_verdict_count": "**Fifty-four carry a verdict.**" in man,
+        "paper_states_verdict_count": "**Fifty-eight carry a verdict.**" in man,
         "paper_names_the_balance_problem": (
             "do not reconcile by subtraction" in man
             and "seven** scored rows against" in man),
@@ -5780,6 +5780,49 @@ def triage_budget():
     }
 
 
+def generality_grid_complete():
+    """Study AT, all six cells: is the margin ordering general across modalities?
+
+    🟢 AT-1 lands at 5 of 6 against a floor frozen at 5, and AT-1b is clean -- no modality is
+    dead on both its encoders. The protein row is two FAMILIES, ESM-2 and ProtT5-XL, which is
+    what makes this a claim about representations rather than about scale.
+
+    🔴 `image/clip_vit_b32` clears nothing at either setting, and study AU established why:
+    on CIFAR-100's fine-class axis a held-out class keeps forty-nine siblings in training.
+
+    ⚠️ Two readings are reported. Under section 3 as frozen -- AT-0a AND AT-0b -- AT-1 is
+    3 of 4, because both text cells realize an FPR below the [4.5%, 5.6%] band. Amendment 2
+    scoped AT-0b to cross-cell LEVEL claims and was written with one cell's rho known, so the
+    strict count is the one with no hindsight in it.
+    """
+    v = j("../results/generality_grid.json")
+    if v is None:
+        return None
+    vb = v["verdict_block"]
+    cells = v["cells"]
+    fam = [c for c in cells if c != "protein/esm2_35M"]
+    return {
+        "prereg": v["preregistration"],
+        "cells_run": vb["cells_run"], "cells_total": vb["cells_total"],
+        "complete": vb["complete"],
+        "AT1": [vb["AT1_clears"], vb["AT1_denominator"]],
+        "AT1_strict": [vb["AT1_clears_strict"], vb["AT1_denominator_strict"]],
+        "AT2": vb["AT2_beats_rivals"],
+        "AT1b_dead": vb["AT1b_modalities_dead_on_both_encoders"],
+        "failing_AT0b": vb["cells_failing_AT0b"],
+        "verdict": vb["verdict"],
+        # 🔒 the protein row must be two FAMILIES, or the claim is about scale
+        "protein_families": sorted(c for c in fam if c.startswith("protein/")),
+        "extra_not_in_AT1": "protein/esm2_35M" in cells and "protein/esm2_35M" not in fam,
+        "prott5_rho": [cells["protein/prott5_xl"]["settings"][s]["AT1_rho"]
+                       for s in ("fixed", "swept")] if "protein/prott5_xl" in cells else None,
+        "clip_clears": (cells["image/clip_vit_b32"]["clears_both_settings"]
+                        if "image/clip_vit_b32" in cells else None),
+        "preds": {k: x["held"] for k, x in v["predictions"].items()},
+        "kinds": {k: x["kind"] for k, x in v["predictions"].items()},
+    }
+
+
 CLAIMS = [
     # 0.018 / 12-of-15 was the pre-2026-05-22 numbering. The tolerance is 1e-4 rather than the old
     # 0.002 because the sign test is exact: with n fixed at 15 the only reachable values near 0.0037
@@ -6890,7 +6933,7 @@ CLAIMS = [
          and len(v["count_statements"]) >= 3
          and all(x == v["headers"] for x in v["count_statements"])),
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 133"},
+      "written because it caught something. The evidence is a **dated, append-only corrections log of 134"},
      # 🔴 the stale count, in both the forms it appeared in
      ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
@@ -9133,16 +9176,18 @@ CLAIMS = [
      ["a training-free rule decides which form of the statistic to use",
       "R predicts the magnitude of the gain",
       "the thresholded rule was validated"]),
-    ("margin triages an evaluation budget at 5.7x chance, and that is its only working use",
+    ("margin triages an evaluation budget at 5.5x chance, and that is its only working use",
      triage_budget,
      lambda v: v is None or (
          "TRIAGE_BUDGET" in v["prereg"] and v["no_fitting"]
-         and v["n_cell_settings"] == 24
+         # ⚠️ was `== 24`, the population before study AT's ProtT5 cell landed; the count
+         # is read from the artifact and only required not to shrink
+         and v["n_cell_settings"] >= 24
          # 🟢 both bands clear
          and v["AX1_ratio"] >= 2.0 and v["AX1_verdict"] == "triage works"
-         and (v["AX2_beats"], v["AX2_denom"]) == (21, 24)
+         and v["AX2_beats"] >= 18 and v["AX2_denom"] == v["n_cell_settings"]
          and v["AX2_verdict"] == "triage works"
-         and abs(v["AX1_ratio"] - 5.6979) < 0.001
+         and abs(v["AX1_ratio"] - 5.5288) < 0.001
          # 🔑 the number a reader spending the budget experiences
          and v["recovery_lift"] < -0.20
          and v["ratio_note_stated"]
@@ -9163,6 +9208,38 @@ CLAIMS = [
      ["margin is a deployment score",
       "margin predicts the miss rate of an unseen class",
       "triage works equally across modalities"]),
+    ("the margin ordering is general across three modalities and six encoder families",
+     generality_grid_complete,
+     lambda v: v is None or (
+         "GENERALITY_GRID" in v["prereg"] and v["complete"]
+         and v["cells_run"] == 6 and v["cells_total"] == 6
+         # 🟢 the frozen floor is 5 of 6 and AT-1b must be clean
+         and v["AT1"] == [5, 6] and v["AT1b_dead"] == []
+         and v["verdict"] == "general"
+         # ⚠️ and the strict reading, which has no hindsight in it, is reported too
+         and v["AT1_strict"] == [3, 4]
+         and v["failing_AT0b"] == ["text/minilm_l6", "text/mpnet_base"]
+         # 🔒 two protein FAMILIES, and 35M excluded from the count
+         and v["protein_families"] == ["protein/esm2_650M", "protein/prott5_xl"]
+         and v["extra_not_in_AT1"]
+         and v["prott5_rho"] is not None
+         and min(v["prott5_rho"]) >= 0.60
+         # 🔴 clip fails and must stay failed
+         and v["clip_clears"] is False
+         # ⭐ three of four predictions held; P3, derived, did not
+         and v["preds"]["P1_AT1_at_least_5_of_6"] is True
+         and v["preds"]["P2_image_cells_are_the_weakest_modality"] is True
+         and v["kinds"]["P2_image_cells_are_the_weakest_modality"] == "reasoned"
+         and v["preds"]["P4_tuning_gain_tracks_embedding_dimension"] is True
+         and v["preds"][
+             "P3_floor_class_has_nonpositive_margin_and_bottom_third_recovery"] is False),
+     {"paper/MANUSCRIPT.md": [
+         "🟢 **The single-arm caveat below is discharged: the grid is complete and its verdict is `general`.**",
+         "🔑 **The protein row is two *families*, not one family"]},
+     # 🔴 Readings this does not license.
+     ["margin orders held-out classes in every representation",
+      "the image modality behaves like the others",
+      "all six cells clear the floor"]),
 ]
 
 

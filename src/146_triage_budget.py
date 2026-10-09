@@ -142,9 +142,26 @@ def selftest():
         print(f"  XX recovery_lift is not negative on a perfect pick: {r['m2']}")
         ok = False
     rows = collect()
-    if rows and len(rows) != 24:
-        print(f"  XX collected {len(rows)} cell-settings, expected 24")
-        ok = False
+    # 🔴 This asserted `== 24`, the population that existed when study AX was computed. It
+    # went stale the moment study AT's ProtT5 cell landed and made it 26 -- a hard-coded
+    # count against a population that other studies can grow, which is the sixth such number
+    # in this project. 🔒 The artifact records which cells were in, and the check now asserts
+    # that every cell carrying a margin contributed BOTH its settings.
+    if rows:
+        import json as _j
+        n_cells = 0
+        for f in SOURCES:
+            q = ROOT / f
+            if q.exists():
+                n_cells += sum(1 for cv in _j.loads(q.read_text()).get("cells", {}).values()
+                               if "margin" in cv)
+        if len(rows) != 2 * n_cells:
+            print(f"  XX collected {len(rows)} cell-settings from {n_cells} cells; "
+                  "every cell must contribute both settings")
+            ok = False
+        if len(rows) < 24:
+            print(f"  XX only {len(rows)} cell-settings; the study was computed on 24")
+            ok = False
     print("selftest PASS" if ok else "selftest FAIL")
     return 0 if ok else 1
 
@@ -178,6 +195,12 @@ def main():
         "bands": {"AX1_ok": AX1_OK, "AX1_not": AX1_NOT,
                   "AX2_ok": AX2_OK, "AX2_not": AX2_NOT},
         "n_cell_settings": len(rows),
+        "cells_included": sorted({f"{r['cell']}/{r['setting']}" for r in rows}),
+        "population_note": ("study AX was first computed on 24 cell-settings from 12 cells; "
+                            "study AT's ProtT5 cell later made it 26. Both figures are "
+                            "reported and the verdict is recomputed on the full population, "
+                            "because the added cell existed after the bands were frozen and "
+                            "excluding it would be a choice about which data to use"),
         "AX1_mean_ratio_at_m2": ax1,
         "AX1_verdict": ("triage works" if ax1 >= AX1_OK
                         else "it does not" if ax1 <= AX1_NOT else "between bands"),

@@ -1,0 +1,19 @@
+{
+  "model": "Rostlab/prot_t5_xl_half_uniref50-enc",
+  "n": 296,
+  "dim": 1024,
+  "device": "NVIDIA H100 NVL",
+  "half_precision": true,
+  "batch_size": 4,
+  "pooling": "src/02g's: mean over residue positions only, </s> excluded",
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1",
+    "numpy": "1.26.4"
+  },
+  "built": "2026-10-09 16:02:46",
+  "supersedes": "embeddings_negative_v3_prott5_xl.npy (2026-09-26)",
+  "why": "the 2026-09-26 reference records no library versions, so library drift -- the one surviving candidate for its discrepancy -- cannot be checked against it",
+  "what_this_gate_is_worth": "a SAME-ENVIRONMENT reproducibility check, and nothing more. The pooling is shared by construction because this file imports src/02g.embed.",
+  "batch_size_sensitivity": "measured 1.221e-04 between batch 1 and batch >1, which EXCEEDS the 5e-05 tolerance, so a reproduction must match the batch size -- which is why this manifest records it and the 2026-09-26 one did not"
+}

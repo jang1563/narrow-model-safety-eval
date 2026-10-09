@@ -9441,3 +9441,60 @@ not need it to: AT's protein row is ProtT5 on **DeepVIC**, not on the v3 panel.
 
 🔒 **Recorded now so the choice is visible**: the cluster runs `torch 2.5.1+cu121, transformers 4.48.1`;
 this machine runs `transformers 5.2.0`.
+
+---
+
+## 2026-10-09 (one hundred and thirtieth entry) — The grid is complete and general, and the blocker was the job's own time limit
+
+### 🟢 Study AT, all six cells
+
+| cell | dim | classes | *ρ* fixed | *ρ* swept | clears both |
+|---|---:|---:|---:|---:|:--:|
+| `protein/esm2_650M` | 1280 | 14 | +0.9473 | +0.8110 | ✅ |
+| `protein/prott5_xl` | 1024 | 14 | **+0.8505** | **+0.8154** | ✅ |
+| `text/minilm_l6` | 384 | 13 | +0.9231 | +0.7692 | ✅ |
+| `text/mpnet_base` | 768 | 13 | +0.8407 | +0.8516 | ✅ |
+| `image/dinov2_vits14` | 384 | 50 | +0.6156 | +0.6425 | ✅ |
+| `image/clip_vit_b32` | 512 | 50 | +0.5231 | +0.5422 | 🔴 no |
+
+🔒 **AT-1 is 5 of 6 against a floor frozen at 5, AT-1b is clean, and the verdict is `general`.**
+🔑 **The protein row is two FAMILIES** — ESM-2 and ProtT5-XL, different architectures on different
+corpora — so "the ordering survives a change of representation" is a claim about representations and not
+about scale. ⚠️ **ESM-2 35M is reported and not counted**, because the grid is scored on families.
+
+⚠️ **Under § 3 as frozen, AT-1 is 3 of 4**: both text cells realize 3.75–4.56% against AT-0b's
+[4.5%, 5.6%]. 🔒 **Amendment 2 scoped AT-0b to cross-cell *level* claims and was written with one cell's
+*ρ* already known**, so the strict count is the one with no hindsight and both appear.
+
+🟢 **P1, P2 and P4 held; P3 failed.** P4 reached *ρ* = **+1.00** between tuning gain and embedding
+dimension over the four AT-0b-admitted cells. 🔴 **P3's failure is the member/class distinction
+reappearing**: margin orders *classes*, and the single lowest-margin class is not where its signal lives.
+
+### 🔑 ProtT5 waited three days on its own time limit, not on the cluster
+
+🔴 **The job requested 10 hours and sat `PENDING` for three days.** The identical work with a **2-hour**
+request started on an H100 **within seconds**. ⚠️ **`sbatch --test-only` reports an optimistic start that
+a later submission does not get**, so it is a sanity check and not a schedule.
+
+🔒 **And the gate was resolved rather than relaxed.** Entry 129 ruled out dtype, device, preprocessing and
+batch size by measurement. The fix was a reference **rebuilt inside the same job**, recording `torch
+2.5.1+cu121`, `transformers 4.48.1`, `numpy 1.26.4`, device, dtype and **batch size** — the last because
+the probe measured **1.221e-04** between batch 1 and batch >1, which exceeds the 5e-05 tolerance.
+⚠️ **The gate against that reference reads 0.000e+00 and is labelled a WEAK check**: comparing a run to a
+reference built minutes earlier in the same job establishes little. 🔒 **The check that carries the weight
+is structural and needs no embedding** — `src/137` must *import* `src/02g.embed` and never redefine it, so
+the pooling is shared by construction. **A numerical tolerance can be defeated by library drift; an import
+cannot.** 🔴 **The first version of that check matched only a top-level `def embed(`**, so a nested
+wrapper passed; found by calibrating, not by reading.
+
+### 🔴 And completing the grid moved study AX, which had a hard-coded population
+
+`src/146`'s selftest asserted **24** cell-settings — the population that existed when study AX ran. ⚠️ **It
+went stale the moment ProtT5 landed and made it 26**, which is the sixth hand-coded count in this project
+to drift. 🔒 **Recomputed on the full population**: AX-1 **5.70× → 5.53×**, AX-2 **21 of 24 → 23 of 26**,
+recovery lift −22.44pp → **−22.89pp**, protein recall 0.625 → **0.583**. **Both verdicts unchanged.**
+
+🔑 **Both figures are stated in the paper rather than the newer one silently replacing the older**, and
+the artifact now records which cells it included and why the population changed. ⚠️ **Excluding the new
+cell would have been a choice about which data to use**, which is not a choice this project gets to make
+after a band is frozen.

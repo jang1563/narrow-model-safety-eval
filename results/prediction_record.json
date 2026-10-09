@@ -184,6 +184,30 @@
       "held": false
     },
     {
+      "study": "generality_grid",
+      "prediction": "P1_AT1_at_least_5_of_6",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "generality_grid",
+      "prediction": "P2_image_cells_are_the_weakest_modality",
+      "kind": "reasoned",
+      "held": true
+    },
+    {
+      "study": "generality_grid",
+      "prediction": "P3_floor_class_has_nonpositive_margin_and_bottom_third_recovery",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "generality_grid",
+      "prediction": "P4_tuning_gain_tracks_embedding_dimension",
+      "kind": "derived",
+      "held": true
+    },
+    {
       "study": "image_axis_repair",
       "prediction": "P1_spread_opens_up",
       "kind": "derived",
@@ -342,15 +366,15 @@
   ],
   "tally": {
     "derived": {
-      "held": 21,
-      "total": 39
+      "held": 23,
+      "total": 42
     },
     "reasoned": {
-      "held": 4,
-      "total": 15
+      "held": 5,
+      "total": 16
     }
   },
-  "total_scored": 54,
+  "total_scored": 58,
   "total_withdrawn": 2,
   "by_study": {
     "AJ": {
@@ -430,6 +454,16 @@
       ],
       "reasoned": [
         0,
+        1
+      ]
+    },
+    "generality_grid": {
+      "derived": [
+        2,
+        3
+      ],
+      "reasoned": [
+        1,
         1
       ]
     },
@@ -545,6 +579,7 @@
       "AP",
       "AH",
       "AQ",
+      "generality_grid",
       "image_axis_repair",
       "margin_routing",
       "AO",
@@ -556,20 +591,18 @@
     ],
     "preregs_with_no_scored_artifact": [
       "FINETUNE_RECOVERY",
-      "GENERALITY_GRID",
       "MUTATION_EXTENSION"
     ],
     "unscored_accounted_for": {
       "MUTATION_EXTENSION": "a frozen design for work not yet run, per README",
-      "GENERALITY_GRID": "study AT, frozen 2026-10-06; its six cells require a second text encoder, two image encoders and ProtT5 on DeepVIC, and no cell is scored until all six land",
       "FINETUNE_RECOVERY": "study AY, frozen 2026-10-08; amendment 2 added two mean-pooling recipes after P3's failure localized a head confound, so the five-recipe array is still fitting on the cluster. Remove this entry when results/finetune_recovery.json lands"
     },
     "declared_predictions": 69,
     "reconciliation": {
       "declared": 69,
-      "scored": 54,
+      "scored": 58,
       "withdrawn": 2,
-      "unrun": 14,
+      "unrun": 10,
       "double_scored_surplus": 1,
       "balances": true,
       "identity": "declared = scored + unrun + withdrawn - double_scored_surplus"

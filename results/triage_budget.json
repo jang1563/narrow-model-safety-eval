@@ -1,5 +1,5 @@
 {
-  "built": "2026-10-08 16:50:19",
+  "built": "2026-10-09 17:11:25",
   "study": "AX -- does margin triage an evaluation budget?",
   "preregistration": "docs/TRIAGE_BUDGET_PREREGISTRATION.md",
   "no_fitting": "every recovery and margin already existed in the artifacts of studies AT, AU and AV; nothing was trained for this",
@@ -9,20 +9,49 @@
     "AX2_ok": 18,
     "AX2_not": 12
   },
-  "n_cell_settings": 24,
-  "AX1_mean_ratio_at_m2": 5.697916666666667,
+  "n_cell_settings": 26,
+  "cells_included": [
+    "image/clip_vit_b32/fixed",
+    "image/clip_vit_b32/swept",
+    "image/dinov2_vits14/fixed",
+    "image/dinov2_vits14/swept",
+    "image/vit_b16_sup/fixed",
+    "image/vit_b16_sup/swept",
+    "image_sc/clip_vit_b32/fixed",
+    "image_sc/clip_vit_b32/swept",
+    "image_sc/dinov2_vits14/fixed",
+    "image_sc/dinov2_vits14/swept",
+    "protein/esm2_35M/fixed",
+    "protein/esm2_35M/swept",
+    "protein/esm2_650M/fixed",
+    "protein/esm2_650M/swept",
+    "protein/prott5_xl/fixed",
+    "protein/prott5_xl/swept",
+    "text/bge_base/fixed",
+    "text/bge_base/swept",
+    "text/distilroberta/fixed",
+    "text/distilroberta/swept",
+    "text/minilm_l3/fixed",
+    "text/minilm_l3/swept",
+    "text/minilm_l6/fixed",
+    "text/minilm_l6/swept",
+    "text/mpnet_base/fixed",
+    "text/mpnet_base/swept"
+  ],
+  "population_note": "study AX was first computed on 24 cell-settings from 12 cells; study AT's ProtT5 cell later made it 26. Both figures are reported and the verdict is recomputed on the full population, because the added cell existed after the bands were frozen and excluding it would be a choice about which data to use",
+  "AX1_mean_ratio_at_m2": 5.528846153846154,
   "AX1_verdict": "triage works",
-  "AX2_beats_chance": 21,
-  "AX2_denominator": 24,
+  "AX2_beats_chance": 23,
+  "AX2_denominator": 26,
   "AX2_verdict": "triage works",
   "mean_recall_at_m2_by_modality": {
     "text": 0.95,
-    "protein": 0.625,
+    "protein": 0.5833333333333334,
     "image": 0.55
   },
-  "mean_ratio_at_m1": 6.166666666666667,
-  "mean_recall_at_m2": 0.7291666666666666,
-  "mean_recovery_lift_at_m2": -0.22437494002892255,
+  "mean_ratio_at_m1": 6.769230769230769,
+  "mean_recall_at_m2": 0.7115384615384616,
+  "mean_recovery_lift_at_m2": -0.22887366387124056,
   "ratio_note": "chance varies with k (2/14, 2/13, 2/10, 2/50), so AX-1 is the mean of per-cell ratios and not a ratio of pooled counts",
   "rows": [
     {
@@ -1050,6 +1079,152 @@
       }
     },
     {
+      "cell": "protein/prott5_xl",
+      "setting": "fixed",
+      "source": "results/generality_grid.json",
+      "modality": "protein",
+      "k": 14,
+      "rho": 0.8505494505494505,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 14,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.07142857142857142,
+          "ratio": 14.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.07142857142857142,
+          "mean_recovery_picked": 0.1388888888888889,
+          "mean_recovery_all": 0.42120804686649205,
+          "recovery_lift": -0.28231915797760315,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 14,
+          "hits": 1,
+          "recall": 0.5,
+          "chance": 0.14285714285714285,
+          "ratio": 3.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.27472527472527475,
+          "mean_recovery_picked": 0.1691840277777778,
+          "mean_recovery_all": 0.42120804686649205,
+          "recovery_lift": -0.25202401908871425,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage",
+            "Regulation"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage",
+            "Post-translational modification"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 14,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.21428571428571427,
+          "ratio": 4.666666666666667,
+          "beats_chance": true,
+          "p_hypergeom": 0.0027472527472527475,
+          "mean_recovery_picked": 0.16952335858585857,
+          "mean_recovery_all": 0.42120804686649205,
+          "recovery_lift": -0.2516846882806335,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage",
+            "Regulation",
+            "Post-translational modification"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage",
+            "Post-translational modification",
+            "Regulation"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "protein/prott5_xl",
+      "setting": "swept",
+      "source": "results/generality_grid.json",
+      "modality": "protein",
+      "k": 14,
+      "rho": 0.8153846153846154,
+      "budgets": {
+        "m1": {
+          "m": 1,
+          "k": 14,
+          "hits": 1,
+          "recall": 1.0,
+          "chance": 0.07142857142857142,
+          "ratio": 14.0,
+          "beats_chance": true,
+          "p_hypergeom": 0.07142857142857142,
+          "mean_recovery_picked": 0.1736111111111111,
+          "mean_recovery_all": 0.5366961530916219,
+          "recovery_lift": -0.3630850419805108,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage"
+          ]
+        },
+        "m2": {
+          "m": 2,
+          "k": 14,
+          "hits": 1,
+          "recall": 0.5,
+          "chance": 0.14285714285714285,
+          "ratio": 3.5,
+          "beats_chance": true,
+          "p_hypergeom": 0.27472527472527475,
+          "mean_recovery_picked": 0.22300347222222222,
+          "mean_recovery_all": 0.5366961530916219,
+          "recovery_lift": -0.31369268086939966,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage",
+            "Regulation"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage",
+            "Post-translational modification"
+          ]
+        },
+        "m3": {
+          "m": 3,
+          "k": 14,
+          "hits": 3,
+          "recall": 1.0,
+          "chance": 0.21428571428571427,
+          "ratio": 4.666666666666667,
+          "beats_chance": true,
+          "p_hypergeom": 0.0027472527472527475,
+          "mean_recovery_picked": 0.23856797138047137,
+          "mean_recovery_all": 0.5366961530916219,
+          "recovery_lift": -0.2981281817111505,
+          "picked": [
+            "Antimicrobial activity/Competitive advantage",
+            "Regulation",
+            "Post-translational modification"
+          ],
+          "truth": [
+            "Antimicrobial activity/Competitive advantage",
+            "Post-translational modification",
+            "Regulation"
+          ]
+        }
+      }
+    },
+    {
       "cell": "image_sc/clip_vit_b32",
       "setting": "fixed",
       "source": "results/image_axis_repair.json",
@@ -2005,7 +2180,7 @@
       "kind": "derived",
       "held": true,
       "values": {
-        "mean_ratio": 5.697916666666667,
+        "mean_ratio": 5.528846153846154,
         "band": 2.0
       }
     },
@@ -2014,7 +2189,7 @@
       "held": true,
       "values": {
         "text": 0.95,
-        "protein": 0.625,
+        "protein": 0.5833333333333334,
         "image": 0.55
       }
     },
@@ -2022,11 +2197,11 @@
       "kind": "reasoned",
       "held": false,
       "values": {
-        "ratio_at_m1": 6.166666666666667,
-        "ratio_at_m2": 5.697916666666667
+        "ratio_at_m1": 6.769230769230769,
+        "ratio_at_m2": 5.528846153846154
       }
     }
   },
-  "verdict": "AX-1 triage works (mean ratio 5.70x), AX-2 triage works (21/24)",
+  "verdict": "AX-1 triage works (mean ratio 5.53x), AX-2 triage works (23/26)",
   "seconds": 0.0
 }
