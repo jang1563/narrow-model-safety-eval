@@ -9235,7 +9235,11 @@ CLAIMS = [
              "P3_floor_class_has_nonpositive_margin_and_bottom_third_recovery"] is False),
      {"paper/MANUSCRIPT.md": [
          "🟢 **The single-arm caveat below is discharged: the grid is complete and its verdict is `general`.**",
-         "🔑 **The protein row is two *families*, not one family"]},
+         "🔑 **The protein row is two *families*, not one family",
+         # 🔒 the abstract is what a reader sees, so the verdict must be stated there too,
+         # with the strict count beside it rather than only the amended one
+         "clears a floor frozen at **5 of 6** cells, with no modality dead on both",
+         "⚠️ **Read under the preconditions exactly as frozen the count is 3 of 4**"]},
      # 🔴 Readings this does not license.
      ["margin orders held-out classes in every representation",
       "the image modality behaves like the others",

@@ -45,11 +45,26 @@ survives **fourteen model arms** and **fifteen re-poolings** of one arm (*ρ* +0
 significant). It replicated across **every internal variation we tried**, and it is the only result here
 that did. 🔒 **It now also replicates on a published benchmark with someone else's labels** — *ρ* =
 **+0.947** and **+0.886** over DeepVIC's fourteen curator categories and 12,989 proteins, both arms, both
-clearing a floor frozen in advance (§ 4). 🔒 **And it is not a fact about protein language models**: the
-identical fold on **20 Newsgroups** with a frozen sentence encoder orders **13** held-out text classes at
-*ρ* = **+0.951** and **+0.813** at the two classifier settings, both clearing the same floor, so what the
-quantity indexes is frozen-representation geometry and proteins are one domain of it — ⚠️ **on one text
-encoder, which is one arm.** ⚠️ **Its external record is otherwise mixed and is three further
+clearing a floor frozen in advance (§ 4). 🔒 **And it is not a fact about protein language models.** A
+preregistered **3-modality × 2-encoder-family grid** — proteins, text and images; ESM-2, ProtT5-XL,
+MiniLM, MPNet, DINOv2 and CLIP — clears a floor frozen at **5 of 6** cells, with no modality dead on both
+its encoders, and returns `general`. 🔑 **The protein row is two *families*, not one family at two sizes**,
+so what survives is a change of representation and not a change of scale. ⚠️ **One cell fails outright**,
+CLIP on CIFAR-100's fine-class axis at *ρ* +0.523 and +0.542, and a follow-up shows why: a held-out fine
+class keeps forty-nine siblings in training, recoveries compress to sd 5–6.6pp against 12–19pp elsewhere,
+and holding out the whole superclass instead moves that cell to +0.612 and +0.685 and DINOv2 to **+0.952**.
+⚠️ **Read under the preconditions exactly as frozen the count is 3 of 4**, because both text cells realize
+a false-positive rate just below the matched band; the amendment that scopes that precondition to
+cross-cell *level* claims was written with one cell's *ρ* already known, and **both counts are reported**.
+
+🔑 **What does *not* generalize is the formula.** `margin` and its own first term each clear the floor in
+**10 of 12** cell-settings and fail on *different* cells, and the subtraction is earned only where the
+negative term carries signal: *ρ* = **+0.8118** between that term's own correlation with recovery and the
+gain from subtracting it. 🔒 **A quantity needing no training predicts which** — *ρ*(nearest-positive,
+nearest-negative) across a cell's classes, sealed before the folds ran on four unseen encoders, at
+*ρ* = **−0.661** over 24 cell-settings. ⚠️ **Its thresholded form was not established** (1 of 2
+independent cells), and **no training-free quantity predicts the gain's magnitude** — nine candidates
+against a permutation p95 of 0.551, best 0.360. ⚠️ **Its external record is otherwise mixed and is three further
 tests.** The **member-level** version was
 preregistered and **failed** externally. The **class-level** version — the one this paper claims — was
 preregistered on **VFDB's 13 categories** and came back at *ρ* **+0.681** (*p* = 0.0059), where a frozen
