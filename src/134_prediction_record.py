@@ -97,6 +97,10 @@ UNRUN = {
     "GENERALITY_GRID": ("study AT, frozen 2026-10-06; its six cells require a second text "
                         "encoder, two image encoders and ProtT5 on DeepVIC, and no cell is "
                         "scored until all six land"),
+    "FINETUNE_RECOVERY": ("study AY, frozen 2026-10-08; amendment 2 added two mean-pooling "
+                          "recipes after P3's failure localized a head confound, so the "
+                          "five-recipe array is still fitting on the cluster. Remove this "
+                          "entry when results/finetune_recovery.json lands"),
 }
 
 

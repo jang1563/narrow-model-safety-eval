@@ -2214,7 +2214,7 @@ def prediction_record():
         # count; excluded explicitly rather than relying on the reader to discount it.
         "gap_parts": {k: x for k, x in e.get("reconciliation", {}).items()
                       if isinstance(x, int) and not isinstance(x, bool)},
-        "paper_states_declared_word": "sixty-five frozen predictions" in man,
+        "paper_states_declared_word": "sixty-nine frozen predictions" in man,
         "paper_states_verdict_count": "**Fifty-four carry a verdict.**" in man,
         "paper_names_the_balance_problem": (
             "do not reconcile by subtraction" in man

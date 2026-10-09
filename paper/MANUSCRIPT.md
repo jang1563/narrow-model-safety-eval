@@ -1600,14 +1600,15 @@ the diagnosis was in the record before the repair was built; both times it named
   and **6.09pp** (Regulation), so the reasoned prediction that levels would move by more than 3pp
   **failed**. ⚠️ **Study AM's ordering AUROC and study AQ's fair comparison keep the original partition**,
   which is stated rather than implied.
-- 🔴 **Seventeen preregistrations, sixty-five frozen predictions, and no correction across them.** Every
+- 🔴 **Eighteen preregistrations, sixty-nine frozen predictions, and no correction across them.** Every
   preregistration here sets its own Bonferroni α over its own primary tests — α = 0.05/2, /3 or /4 — and
   **none of them corrects for the others.** With this many frozen bands, some verdicts are expected to
   fall by chance. ⚠️ **The exposure is stated rather than corrected retroactively**, because choosing a
   family-wise correction after seeing which bands were met is the error the bands exist to prevent.
-  ⚠️ **Fifty-four carry a verdict.** Ten belong to designs frozen for work not yet run — six to
-  `MUTATION_EXTENSION` and four to `GENERALITY_GRID`, study AT's three-modality grid, waiting on one
-  cell — and **two** were **withdrawn for want of a referent**: one when an amendment moved its subject to
+  ⚠️ **Fifty-four carry a verdict.** Fourteen belong to designs frozen for work not yet run — six to
+  `MUTATION_EXTENSION`, four to `GENERALITY_GRID` (study AT's three-modality grid, blocked on a
+  reproducibility gap in its ProtT5 cell) and four to `FINETUNE_RECOVERY`, whose five-recipe array is
+  still fitting — and **two** were **withdrawn for want of a referent**: one when an amendment moved its subject to
   the other side of a redesigned axis, and one that named two of this project's **own panel classes** in a
   prediction about a third-party benchmark whose fourteen curator categories contain neither; `results/prediction_record.json` holds the counts and discovers the studies
   rather than listing them. 🔒 **A withdrawn prediction is stored as unscored, not as a miss**, and the
@@ -1616,7 +1617,7 @@ the diagnosis was in the record before the repair was built; both times it named
   structural**: `DEEPVIC_BENCHMARK` is scored by **two** artifacts — study AI-1's metadata baseline and
   study AI's verdicts — whose prediction numbers overlap, so it contributes **seven** scored rows against
   **six** declarations. 🔒 **The artifact reconciles the gap from its parts rather than asserting it** —
-  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **65 = 54 + 10 + 2 − 1** —
+  *declared = scored + unrun + withdrawn − double-scored surplus*, which reads **69 = 54 + 14 + 2 − 1** —
   and names the preregistration the surplus comes from. 🔴 **Until today the declared total read 49**, because the count
   matched *lines* beginning with a prediction label and an amendment that restates "P1 and P2 are
   unchanged" was counted as two further declarations; it now counts distinct prediction numbers.
