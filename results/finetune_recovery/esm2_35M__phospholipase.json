@@ -1,0 +1,97 @@
+{
+  "arm": "esm2_35M",
+  "class": "phospholipase",
+  "n_held_out": 2,
+  "n_trained_pos": 147,
+  "seeds": 10,
+  "recipes": {
+    "head_only": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.9006428988895383,
+      "mean": 0.0,
+      "sd": 0.0,
+      "per_seed": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": -0.95
+    },
+    "last2": {
+      "lr": 5e-05,
+      "epochs": 10,
+      "inner_recall": 0.9769140853302163,
+      "mean": 0.95,
+      "sd": 0.15811388300841897,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.0
+    },
+    "full": {
+      "lr": 1e-05,
+      "epochs": 3,
+      "inner_recall": 0.9684395090590298,
+      "mean": 0.7,
+      "sd": 0.4216370213557839,
+      "per_seed": [
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.5,
+        1.0,
+        0.5,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": -0.25
+    }
+  },
+  "frozen": {
+    "mean": 0.95,
+    "sd": 0.15811388300841897,
+    "per_seed": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.5
+    ]
+  },
+  "device": "cpu",
+  "seconds": 23745.0,
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  }
+}

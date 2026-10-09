@@ -9389,3 +9389,55 @@ failure**, which is the distinction § 4 draws two paragraphs earlier.
 tuned probe on either arm. Spending an evaluation budget with it is worth about **5.7× chance** with a
 **−22pp** recovery lift. 🔑 **§ 4's framing was right and is now measured rather than asserted**, and the
 record moves to **derived 21 of 39, reasoned 4 of 15**.
+
+---
+
+## 2026-10-09 (one hundred and twenty-ninth entry) — The ProtT5 gate asks for a reproduction tighter than its own pipeline is stable to
+
+### 🔒 Four candidates, three ruled out by measurement
+
+`src/137`'s gate compares 296 embeddings against `embeddings_negative_v3_prott5_xl.npy` at a tolerance of
+**5e-05** before writing anything, and it has now failed three times: **2.441e-04** locally on MPS,
+**2.441e-04** again after matching the reference's dtype, and **3.662e-04** on the cluster on CUDA.
+
+| candidate | how it was tested | verdict |
+|---|---|---|
+| model **dtype** | halved the model to match the reference's uniform fp16 | 🔴 **ruled out** — delta unchanged to four figures |
+| **device** | ran on the cluster where the reference's manifest says it was built (`device: cuda`) | 🔴 **ruled out** — 3.662e-04 on CUDA |
+| **preprocessing** | read the source: the `[UZOB]→X` mapping and the residue-only mean are inside `src/02g.embed`, which both callers import | 🔴 **ruled out** — shared by construction |
+| **batch size** | `src/02g.main()` defaults to 4; both failing runs used 8 | 🔴 **ruled out** — see below |
+
+### 🔑 And the batch-size probe found something worth more than the hypothesis it killed
+
+🔒 **Twelve negatives embedded at three batch sizes:**
+
+    bs=1 vs bs=4:  1.221e-04   DIFFERENT
+    bs=4 vs bs=8:  0.000e+00   IDENTICAL
+    bs=1 vs bs=8:  1.221e-04   DIFFERENT
+
+🔴 **The hypothesis is refuted** — 4 and 8 are bit-identical, so the batch-size difference between the
+reference and the failing runs explains nothing. 🔑 **But batch size DOES move this pipeline by
+1.221e-04**, between one and more-than-one, because `padding="longest"` changes the padded length and
+fp16 attention is not exactly padding-invariant.
+
+🔴 **That is 2.4× the gate's own 5e-05 tolerance.** ⚠️ **So the gate demands a reproduction more exact
+than the pipeline is stable to under a choice its manifest does not record** — it records model, device,
+`max_len` and the pooling note, and not the batch size. 🔑 **This is study AW's band-resolution defect in
+another guise: a threshold narrower than the variability of the thing it measures.**
+
+### ⚠️ What this does and does not license
+
+🔒 **The tolerance is not being relaxed**, and study AT stays at five of six cells. ⚠️ **A relaxation
+argued from "the test is inconvenient" is the move this project refuses**; one argued from a measured
+instability would be defensible, but it would also be a change made while the result it unblocks is
+unknown, so it is named and not taken.
+
+🔑 **The constructive path is a new reference, not a looser gate.** The 2026-09-26 reference records no
+`torch` or `transformers` version — the same gap entries 122 and 123 hit — so the remaining candidate,
+library drift, **cannot be checked against it**. A reference rebuilt now, with versions, batch size and
+device recorded, would make the ProtT5 cell obtainable by a *same-environment* check, which is what the
+gate was always meant to be. ⚠️ **It would not reproduce the September panel numbers**, and study AT does
+not need it to: AT's protein row is ProtT5 on **DeepVIC**, not on the v3 panel.
+
+🔒 **Recorded now so the choice is visible**: the cluster runs `torch 2.5.1+cu121, transformers 4.48.1`;
+this machine runs `transformers 5.2.0`.
