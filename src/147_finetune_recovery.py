@@ -233,7 +233,7 @@ def select_hp(model_id, recipe, pseq, pcls, nseq, hi, tri, dev):
     return best, best_score
 
 
-def run_class(cell, cls_name, seeds, dev):
+def run_class(cell, cls_name, seeds, dev, only_recipe=None):
     import torch
     d = panel()
     pcls, pseq, nseq = d["pcls"], d["pseq"], d["nseq"]
@@ -248,7 +248,7 @@ def run_class(cell, cls_name, seeds, dev):
     out["frozen"] = {"mean": float(np.mean(frozen)), "sd": float(np.std(frozen, ddof=1)),
                      "per_seed": [float(x) for x in frozen]}
     print(f"  {cls_name}: n={len(hi)}  frozen {np.mean(frozen)*100:.2f}%", flush=True)
-    for recipe in RECIPES:
+    for recipe in ([only_recipe] if only_recipe else RECIPES):
         (lr, ep), inner = select_hp(model_id, recipe, pseq, pcls, nseq, hi, tri, dev)
         rr, ff = [], []
         for s in range(seeds):
@@ -277,6 +277,42 @@ def run_class(cell, cls_name, seeds, dev):
               f"delta {r['delta_vs_frozen']*100:+6.2f}pp  fpr {r['realized_fpr']*100:.2f}%"
               f"{'' if r['AY3_fpr_in_band'] else '  AY-3 FAIL'}", flush=True)
     return out
+
+
+def merge():
+    """Assemble per-(class, recipe) files into one per class.
+
+    🔒 The frozen arm is recomputed identically in every per-recipe run -- same fold, same
+    seeds -- so the merge ASSERTS they agree rather than taking the first. A disagreement
+    would mean the fold is not deterministic, which is the one thing this comparison rests on.
+    """
+    import collections
+    by = collections.defaultdict(dict)
+    frozen = {}
+    for f in sorted(OUTDIR.glob("*__*__*.json")):
+        d = json.loads(f.read_text())
+        key = (d["arm"], d["class"])
+        for r, v in d["recipes"].items():
+            by[key][r] = v
+        fm = d["frozen"]["mean"]
+        if key in frozen and abs(frozen[key] - fm) > 1e-12:
+            raise SystemExit(f"XX {key} frozen arm differs between per-recipe runs: "
+                             f"{frozen[key]} vs {fm} -- the fold is not deterministic")
+        frozen[key] = fm
+        by[key]["__meta"] = {k: d[k] for k in
+                             ("arm", "class", "n_held_out", "n_trained_pos", "seeds",
+                              "frozen", "device", "versions") if k in d}
+    n = 0
+    for (arm, cls_name), recipes in by.items():
+        meta = recipes.pop("__meta")
+        out = dict(meta)
+        out["recipes"] = recipes
+        out["assembled_from_per_recipe_runs"] = sorted(recipes)
+        (OUTDIR / f"{arm}__{cls_name}.json").write_text(json.dumps(out, indent=2) + "\n")
+        n += 1
+        print(f"  {arm}__{cls_name}: {len(recipes)} recipe(s)")
+    print(f"assembled {n} class file(s)")
+    return 0
 
 
 def selftest():
@@ -335,15 +371,29 @@ def selftest():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--merge", action="store_true",
+                    help="assemble per-(class, recipe) files into per-class ones")
     ap.add_argument("--arm", default="esm2_35M", choices=sorted(MODELS))
     ap.add_argument("--class-index", type=int,
                     help="index into the sorted class list -- for a slurm array")
     ap.add_argument("--class-name")
+    ap.add_argument("--task-index", type=int,
+                    help="index into the (class x recipe) product, for a slurm array")
     ap.add_argument("--seeds", type=int, default=SEEDS)
+    ap.add_argument("--recipe", choices=RECIPES,
+                    help="run ONE recipe, so a slurm array can be (class x recipe). "
+                         "🔴 Three tasks of the per-class array timed out at 16h -- 80 "
+                         "fine-tunes is 11-16h on 32 CPUs -- and one of them was "
+                         "beta_lactamase, the class the paper's headline turns on. Sixteen "
+                         "fine-tunes per task is ~3h and isolates failures.")
     ap.add_argument("--list-classes", action="store_true")
+    ap.add_argument("--list-tasks", action="store_true",
+                    help="print the (class, recipe) task list for an array")
     a = ap.parse_args()
     if a.selftest:
         return selftest()
+    if a.merge:
+        return merge()
 
     import torch
     d = panel()
@@ -352,18 +402,28 @@ def main():
         for i, c in enumerate(classes):
             print(f"{i}\t{c}\t{(d['pcls'] == c).sum()}")
         return 0
+    if a.list_tasks:
+        for i, (c, r) in enumerate([(c, r) for c in classes for r in RECIPES]):
+            print(f"{i}\t{c}\t{r}")
+        return 0
+    if a.task_index is not None:
+        pairs = [(c, r) for c in classes for r in RECIPES]
+        if not 0 <= a.task_index < len(pairs):
+            raise SystemExit(f"--task-index {a.task_index} outside 0..{len(pairs) - 1}")
+        a.class_name, a.recipe = pairs[a.task_index]
     name = a.class_name or classes[a.class_index]
     dev = ("cuda" if torch.cuda.is_available()
            else "mps" if torch.backends.mps.is_available() else "cpu")
     t0 = time.time()
     print(f"arm={a.arm} class={name} device={dev} seeds={a.seeds}", flush=True)
-    res = run_class(a.arm, name, a.seeds, dev)
+    res = run_class(a.arm, name, a.seeds, dev, a.recipe)
     res["device"] = dev
     res["seconds"] = round(time.time() - t0, 1)
     res["versions"] = {"torch": torch.__version__,
                        "transformers": __import__("transformers").__version__}
     OUTDIR.mkdir(parents=True, exist_ok=True)
-    f = OUTDIR / f"{a.arm}__{name}.json"
+    f = OUTDIR / (f"{a.arm}__{name}__{a.recipe}.json" if a.recipe
+                  else f"{a.arm}__{name}.json")
     f.write_text(json.dumps(res, indent=2) + "\n")
     print(f"wrote {f.relative_to(ROOT)} in {res['seconds']}s")
     return 0

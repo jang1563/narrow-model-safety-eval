@@ -9498,3 +9498,49 @@ recovery lift −22.44pp → **−22.89pp**, protein recall 0.625 → **0.583**.
 the artifact now records which cells it included and why the population changed. ⚠️ **Excluding the new
 cell would have been a choice about which data to use**, which is not a choice this project gets to make
 after a band is frozen.
+
+---
+
+## 2026-10-10 (one hundred and thirty-first entry) — Three tasks timed out on the class the headline turns on, and I nearly read two runs as one table
+
+### 🔴 The array was sized wrong twice, and the second time it cost results
+
+🔒 **First sizing**: 16 CPUs, 6-hour limit, measured at ~11 minutes per fine-tune — **8.8 hours of work**.
+Caught before the deadline and resubmitted at 32 CPUs with 16 hours.
+🔴 **Second sizing**: amendment 2 added two recipes, taking each task from 48 fine-tunes to **80**. At
+11–16 hours observed, **three tasks hit the 16-hour wall and produced nothing** — tasks 1, 2 and 4, and
+**task 2 is `beta_lactamase`**, the class the paper's headline turns on.
+
+⚠️ **Adding two recipes raised the per-task cost by 67% and I did not re-size the limit.** 🔑 **The
+amendment was reasoned about on its merits and not on its compute**, which is how a design change becomes
+a wall-clock failure.
+
+🔒 **Restructured to one task per (class × recipe)**: 16 fine-tunes, about 3 hours, 80 tasks instead of
+16. 🔑 **Failures are now isolated to a single recipe of a single class** instead of destroying a whole
+class's run, and the merge step **asserts the frozen arm agrees across per-recipe runs** rather than
+taking the first — a disagreement would mean the fold is not deterministic, which is the one thing the
+comparison rests on.
+
+### 🔴 And I built a table out of two different runs
+
+The nine three-recipe results were moved aside **on the cluster** when amendment 2 landed, and their
+**local copies were not**. A later `rsync` added five five-recipe files beside nine stale ones, and the
+first table I printed mixed them — ⚠️ **showing `beta_lactamase` at 0.00% from the superseded run while
+its five-recipe result did not exist.** 🔑 **`NaN` in the two new columns is what gave it away**, and the
+files are separated by recipe count now, not by which directory a human remembered to clean.
+
+🔴 **Had the mean-pooling recipes happened to be absent for a different reason, that table would have
+been reported.** ⚠️ **The lesson is that moving superseded results aside is not a one-sided operation**:
+it has to happen everywhere they were copied.
+
+### ⚠️ A quoting fault that killed eighty tasks in one second each
+
+The slurm script was written through a **double-quoted** `ssh` payload, so `${CONDA_SETUP}` was expanded
+by the **local** shell, to empty, before it ever reached the cluster:
+
+    source: usage: source filename [arguments]
+    conda: command not found
+
+🔒 **The script is written locally and rsynced now**, which removes the hazard rather than escaping around
+it. ⚠️ **An earlier version of the same command had the escapes right**, so this was a regression in a
+detail that a working example two hours old would have prevented.
