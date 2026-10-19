@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
-#SBATCH --time=12:00:00
+#SBATCH --time=06:00:00
 #SBATCH --output=logs/ft650p_%j.log
 # 🔒 A SIZING PROBE, not a result run. The 650M arm is the arm the paper's headline rests on
 # (frozen beta_lactamase 21.19%), and it has never run. This measures ONE cell so the 80-task
@@ -13,6 +13,9 @@
 # figure applied to a CPU run (amendment 1), once by putting 80 fine-tunes in one task.
 # ⚠️ The cell chosen is the WORST CASE on purpose -- `full` trains every parameter, so no other
 # recipe can be slower, and `beta_lactamase` is the decisive class.
+# ⚠️ 6h, not 12h. A long walltime is hard for the scheduler to BACKFILL, and at 12h this job sat
+# at (Priority) while an A40 stood free on g0004. One cell is 16 fine-tunes of ~315 sequences;
+# 35M needed ~8 min each on 16 CPUs, so an A40 has a wide margin inside 6h.
 # ⚠️ Written locally and rsynced. A double-quoted ssh payload expands ${CONDA_SETUP} on the
 # LOCAL shell, to empty, and every task dies in one second.
 set -uo pipefail
