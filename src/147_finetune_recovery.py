@@ -352,6 +352,18 @@ def band(delta, artifact_floor, survive_ceiling):
     return "neither"
 
 
+def panel_classes():
+    """The panel's authoritative class list, without loading the embeddings.
+
+    🔒 AY-2 is defined over ALL sixteen mechanism classes, so its denominator has to come from
+    the panel and not from whichever classes an arm happens to have finished.
+    """
+    man = json.load(open(V3 / "embedding_manifest_v3.json"))
+    mech = json.load(open(ROOT / "data/annotations/mechanism_classes_v3.json"))
+    cls = {e["fasta_id"]: e["mechanism_class"] for e in mech["proteins"]}
+    return sorted({cls[r["acc"]] for r in man["positive_rows"]})
+
+
 def load_merged():
     """The merged per-class files carry ONE `__`; the per-recipe files carry two."""
     arms = {}
@@ -378,10 +390,20 @@ def matched_mean(cells, r1, r2):
             r2: float(np.mean([cells[c]["recipes"][r2]["delta_vs_frozen"] for c in common]))}
 
 
-def score_arm(cells):
-    """AY-1, AY-2 and the AY-3 precondition, per recipe, for one arm."""
+def score_arm(cells, all_classes):
+    """AY-1, AY-2 and the AY-3 precondition, per recipe, for one arm.
+
+    🔴 `all_classes` is the PANEL's class list, not this arm's. AY-2 is a mean over all
+    sixteen, so an arm staged on a subset -- as the 650M arm is, on the two classes AY-1
+    reads -- must report AY-2 as unavailable rather than as a two-class mean wearing AY-2's
+    name. Computing it over whatever finished would be a silent wrong number, which is worse
+    than a missing one because it reads as a result.
+    """
     recipes = sorted({r for d in cells.values() for r in d["recipes"]})
-    out = {"n_classes": len(cells), "recipes": {}}
+    out = {"n_classes": len(cells), "n_panel_classes": len(all_classes),
+           "panel_complete": set(cells) == set(all_classes),
+           "classes_absent_from_arm": sorted(set(all_classes) - set(cells)),
+           "recipes": {}}
     for r in recipes:
         have = [c for c, d in cells.items() if r in d["recipes"]]
         # 🔒 AY-3 is a PRECONDITION, not a result: a recovery figure at an unmatched
@@ -395,7 +417,10 @@ def score_arm(cells):
 
         dead = [c for c in DEAD if c in use]
         ay1 = float(np.mean([dl(c) for c in dead])) if len(dead) == len(DEAD) else None
-        ay2 = float(np.mean([dl(c) for c in use])) if use else None
+        # 🔒 AY-2 needs every panel class present AND past AY-3 on this recipe. A subset mean
+        # is not AY-2 and is not reported as one.
+        ay2 = (float(np.mean([dl(c) for c in use]))
+               if set(use) == set(all_classes) else None)
         out["recipes"][r] = {
             "AY1": ay1,
             "AY1_band": band(ay1, *AY1_BAND) if ay1 is not None else "unavailable",
@@ -421,7 +446,9 @@ def score():
     if not arms:
         raise SystemExit("XX no merged class files -- run --merge first")
     out = {"bands": {"AY1": list(AY1_BAND), "AY2": list(AY2_BAND)},
-           "arms": {a: score_arm(c) for a, c in sorted(arms.items())},
+           "panel_classes": panel_classes(),
+           "arms": {a: score_arm(c, panel_classes())
+                    for a, c in sorted(arms.items())},
            # ⚠️ The preregistration states the bands once and does NOT name which recipe
            # carries them; amendment 2 then added the mean_* recipes. Reported per recipe
            # with the ambiguity stated, never resolved by picking one after the fact.
@@ -644,6 +671,29 @@ def selftest():
     m2 = matched_mean(fake, "full", "last2")
     if m2 is None or m2["n"] != 1:
         print(f"  XX an AY-3 failure did not leave the matched comparison: {m2}")
+        ok = False
+    # 🔴 AY-2 is a mean over ALL panel classes, and the 650M arm is staged on two of them.
+    # A subset mean must come back as unavailable, not as AY-2 with a smaller denominator.
+    sub = {c: {"frozen": {"mean": 0.0},
+               "recipes": {"last2": {"delta_vs_frozen": 0.05, "mean": 0.05,
+                                     "AY3_fpr_in_band": True}}}
+           for c in DEAD}
+    staged = score_arm(sub, sorted(set(DEAD) | {"a_third_class"}))
+    if staged["recipes"]["last2"]["AY2"] is not None:
+        print("  XX a staged arm reported AY-2 over a subset of the panel")
+        ok = False
+    if staged["panel_complete"] or staged["classes_absent_from_arm"] != ["a_third_class"]:
+        print(f"  XX staged-arm completeness not recorded: {staged['panel_complete']}, "
+              f"{staged['classes_absent_from_arm']}")
+        ok = False
+    # 🔒 and AY-1 must still be available, because that is the point of staging
+    if staged["recipes"]["last2"]["AY1"] is None:
+        print("  XX a staged arm on the two dead classes could not compute AY-1")
+        ok = False
+    # and with the panel complete, AY-2 must come back
+    whole = score_arm(sub, sorted(DEAD))
+    if whole["recipes"]["last2"]["AY2"] is None or not whole["panel_complete"]:
+        print("  XX a complete arm did not report AY-2")
         ok = False
     # 🔒 Amendment 3: the diagnostic must be in RECIPES, must take the masked-mean model,
     # and must NOT be able to move the verdict or a scored prediction.

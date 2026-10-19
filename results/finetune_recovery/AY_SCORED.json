@@ -9,15 +9,36 @@
       0.03
     ]
   },
+  "panel_classes": [
+    "adp_ribosyl_ab_toxin",
+    "bacteriocin",
+    "beta_lactamase",
+    "clostridial_neurotoxin",
+    "contact_dependent_inhibition",
+    "cry_insecticidal",
+    "nuclease_dnase_rnase",
+    "other_toxin_mechanism",
+    "phage_peptidoglycan_hydrolase",
+    "phospholipase",
+    "pore_forming_cytolysin",
+    "rip_rrna_glycosidase",
+    "secreted_protease",
+    "superantigen_enterotoxin",
+    "t3ss_effector_apparatus",
+    "virulence_associated_non_toxin"
+  ],
   "arms": {
     "esm2_35M": {
       "n_classes": 16,
+      "n_panel_classes": 16,
+      "panel_complete": true,
+      "classes_absent_from_arm": [],
       "recipes": {
         "full": {
           "AY1": 0.032142857142857154,
           "AY1_band": "survive",
-          "AY2": -0.10478045763760051,
-          "AY2_band": "survive",
+          "AY2": null,
+          "AY2_band": "unavailable",
           "AY2_n": 14,
           "AY3_failed": [],
           "classes_missing": [
@@ -187,7 +208,7 @@
         "claim": "AY-2 is positive",
         "holds": false,
         "per_recipe": {
-          "full": -0.10478045763760051,
+          "full": null,
           "head_only": -0.33535562094155846,
           "last2": -0.03225564799783551,
           "mean_full": -0.13430735930735932,
