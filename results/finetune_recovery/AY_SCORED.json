@@ -134,6 +134,9 @@
   "verdict_reason": "the preregistration requires both arms to agree; esm2_650M has not run",
   "predictions": {
     "provisional": true,
+    "excludes": [
+      "mean_head_only"
+    ],
     "esm2_35M": {
       "P1": {
         "kind": "reasoned",
@@ -191,6 +194,11 @@
           "mean_last2": -0.04126555735930735
         }
       }
+    }
+  },
+  "amendment3_diagnostic": {
+    "esm2_35M": {
+      "status": "mean_head_only has not run"
     }
   }
 }

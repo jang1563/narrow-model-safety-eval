@@ -4,13 +4,17 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=48G
 #SBATCH --time=10:00:00
-#SBATCH --array=0-79
+#SBATCH --array=0-95
 #SBATCH --output=logs/ft_rec_%A_%a.log
 # 🔴 The per-class array put 80 fine-tunes in one task: 11-16h on 32 CPUs, and three tasks
 # timed out at the 16h limit -- one of them beta_lactamase, the class the paper's headline
 # turns on. 🔒 One task per (class x recipe) is 16 fine-tunes, about 3h, and isolates failures.
 # ⚠️ This file is written locally and rsynced. Writing it through a double-quoted ssh payload
 # expanded ${CONDA_SETUP} on the LOCAL shell, to empty, and every task died in one second.
+# 🔒 Amendment 3 took RECIPES from five to six, so the (class x recipe) product is 96, not 80.
+# ⚠️ The array is submitted WHOLE rather than at the 18 outstanding indices: --task-index
+# maps the product, so a hand-computed index range is a silent mis-mapping waiting to happen,
+# and the idempotent skip exits the 78 finished cells in seconds.
 set -uo pipefail
 cd "$PROJECT_DIR"
 source "${CONDA_SETUP}"

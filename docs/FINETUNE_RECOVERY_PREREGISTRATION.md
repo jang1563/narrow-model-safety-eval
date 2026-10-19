@@ -193,3 +193,64 @@ CLS handicap rather than a sanity anchor**, which is a more useful thing than wh
 per-class split printed beside it. 🔴 **Whatever the mean does, the composition is the finding**: `phage`
 moves **+23.75pp** and `beta_lactamase` collapses from 19.29% to **0.00%** on all three original recipes.
 🔑 **The two dead classes do not survive identically — they trade**, and no mean can show that.
+
+---
+
+## Amendment 3 — the frozen-trunk mean-pooled cell is missing, and without it the CLS handicap and the fine-tuning path stay confounded
+
+**Added 2026-10-19, AFTER the 35M arm was scored.** 🔴 **This amendment was written with AY-1, AY-2 and
+P1–P4 already read on `esm2_35M`**, and says so rather than implying otherwise. 🔒 **It therefore touches
+no band, no prediction and no verdict**: AY-1 and AY-2 keep their definitions and their frozen edges,
+P1–P4 keep their wording and their already-computed outcomes, and the recipe added below is declared a
+**diagnostic that is excluded from the verdict's recipe set**.
+
+### 🔴 What the scored table shows
+
+| recipe | pooling | trunk | AY-2 |
+|---|---|---|---:|
+| `head_only` | `<cls>` | frozen | **−33.54pp** |
+| `last2` | `<cls>` | final two blocks trainable | −3.23pp |
+| `mean_last2` | masked mean | final two blocks trainable | −4.13pp |
+
+⚠️ **With the trunk trainable, pooling is worth about 1pp** (−3.23 against −4.13). 🔴 **With the trunk
+frozen, the only pooling present is `<cls>`.** 🔑 **So the ~30pp between `head_only` and `last2` cannot
+be decomposed**: it is some mixture of "the final two blocks carry real signal" and "training anything
+at all repairs a `<cls>` token that masked-LM pretraining barely populates", and amendment 2's `mean_*`
+recipes cannot separate them because they move pooling and the trunk together.
+
+### 🔒 `mean_head_only`: masked mean, frozen trunk, trained head
+
+🔒 **The head architecture is `head_only`'s** — dense → tanh → output, same dropout — and the trunk is
+frozen exactly as `head_only` freezes it. 🔑 **Only the pooling differs, so the pair isolates pooling at
+a frozen trunk**, and `mean_head_only` against the frozen arm isolates everything the fine-tuning path
+contributes that `sklearn` does not.
+
+| contrast | what it measures |
+|---|---|
+| `mean_head_only` − `head_only` | the `<cls>` handicap, at a frozen trunk |
+| `mean_head_only` − frozen arm | what the head, the optimiser and the absence of standardisation cost |
+
+### ⚠️ It is a NEAR anchor, not an exact one
+
+⚠️ **This will not reproduce the frozen arm exactly and is not expected to.** The frozen arm is
+`StandardScaler` → `LogisticRegression(C, max_iter=5000)` with `C` selected by nested rule; this is a
+one-hidden-layer head with dropout and no standardisation, fitted by AdamW at batch 4 over the nested
+LR/epoch grid. 🔑 **Agreement establishes that the two arms are comparable; it does not make them the
+same estimator.**
+
+🔒 **The threshold is the one the preregistration already set for this exact quantity** — P3's **10pp**
+on the all-class mean against the frozen arm. ⚠️ **No new edge is being invented after the fact**; the
+existing one is being applied to the cell that should have carried it.
+
+### 🔒 What each outcome changes
+
+- **`mean_head_only` within 10pp of frozen** ⇒ 🔑 **the ~33.54pp is pooling, and the fine-tuning path is
+  sound.** `last2`'s advantage over `head_only` is then mostly `<cls>` repair rather than representation
+  change, and that reading goes in the paper beside AY-1.
+- **`mean_head_only` also ~30pp below frozen** ⇒ 🔴 **the fine-tuning path itself is weaker than the
+  frozen arm's estimator**, and every recipe's comparison to frozen is then partly a comparison of
+  optimisers. ⚠️ **That would not move AY-1's verdict, which is already "they survive" on both edges of
+  every recipe, but it would become a stated limitation of the whole study** rather than a footnote about
+  one recipe.
+- **Either way the trade stands.** 🔑 **`beta_lactamase` reaches 0.00% or 0.71% on all five scored
+  recipes while `phage` gains 13–26pp**, and a sixth recipe cannot unmake five.

@@ -35,7 +35,11 @@ MODELS = {"esm2_35M": "facebook/esm2_t12_35M_UR50D",
           "esm2_650M": "facebook/esm2_t33_650M_UR50D"}
 # 🔒 Amendment 2: the mean_* recipes hold POOLING to the frozen arm's and move only the
 # representation. The original three stay; `head_only` measures the CLS handicap.
-RECIPES = ("head_only", "last2", "full", "mean_last2", "mean_full")
+# 🔒 Amendment 3: `mean_head_only` is masked mean at a FROZEN trunk -- the cell that
+# decomposes `head_only`'s -33.54pp into a pooling part and a path part. Added after the
+# 35M arm was scored, so it is a DIAGNOSTIC and is excluded from the verdict's recipe set.
+RECIPES = ("head_only", "last2", "full", "mean_last2", "mean_full", "mean_head_only")
+DIAGNOSTIC = ("mean_head_only",)
 LR_GRID = (1e-5, 5e-5, 1e-4)
 EPOCH_GRID = (3, 10)
 SEEDS, FRAC, SPEC, MAX_LEN = 10, 0.40, 0.95, 1022
@@ -133,6 +137,28 @@ def _build(model_id, recipe, dev):
     return mdl, fwd
 
 
+def set_trainable(mdl, recipe):
+    """🔒 Which parameters move, per recipe. Returns (trainable, frozen) parameter counts.
+
+    🔴 Amendment 3: this test was `recipe == "head_only"`, which would have left a NEW
+    frozen-trunk recipe fully trainable -- `mean_head_only` would have been `mean_full`
+    under another name, and the diagnostic would have "shown" that pooling costs nothing.
+    🔒 A membership test, lifted out of the fit loop so the selftest can check it on a stub
+    instead of trusting it.
+    """
+    head_only = recipe in ("head_only", "mean_head_only")
+    last2_only = recipe in ("last2", "mean_last2")
+    if head_only or last2_only:
+        for p in mdl.esm.parameters():
+            p.requires_grad = False
+        if last2_only:
+            for blk in mdl.esm.encoder.layer[-2:]:
+                for p in blk.parameters():
+                    p.requires_grad = True
+    return (sum(p.numel() for p in mdl.parameters() if p.requires_grad),
+            sum(p.numel() for p in mdl.parameters() if not p.requires_grad))
+
+
 def finetune_scores(model_id, recipe, lr, epochs, train_seq, train_y, score_sets, dev):
     """Fit once, score every row set. Returns {name: probability vector}.
 
@@ -143,14 +169,7 @@ def finetune_scores(model_id, recipe, lr, epochs, train_seq, train_y, score_sets
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(model_id)
     mdl, fwd = _build(model_id, recipe, dev)
-    last2_only = recipe in ("last2", "mean_last2")
-    if recipe == "head_only" or last2_only:
-        for p in mdl.esm.parameters():
-            p.requires_grad = False
-        if last2_only:
-            for blk in mdl.esm.encoder.layer[-2:]:
-                for p in blk.parameters():
-                    p.requires_grad = True
+    set_trainable(mdl, recipe)
     mdl = mdl.to(dev).train()
     opt = torch.optim.AdamW([p for p in mdl.parameters() if p.requires_grad], lr=lr)
     prep = [" ".join(re.sub(r"[UZOB]", "X", s[:MAX_LEN])) for s in train_seq]
@@ -418,10 +437,16 @@ def score():
                                  f"{', '.join(absent)} has not run")
     else:
         labels = {}
+        # 🔒 Amendment 3's diagnostic recipe is reported but does NOT enter the verdict: it
+        # was added after the 35M arm was scored, and a recipe chosen post-read must not be
+        # able to move a verdict. ⚠️ Excluded here, printed by report() all the same.
         for r in sorted({r for a in out["arms"].values() for r in a["recipes"]}):
+            if r in DIAGNOSTIC:
+                continue
             labels[r] = {a: out["arms"][a]["recipes"].get(r, {}).get("AY1_band")
                          for a in out["arms"]}
         out["per_recipe_arm_labels"] = labels
+        out["verdict_excludes"] = sorted(DIAGNOSTIC)
         if any(len(set(v.values())) != 1 or None in v.values() for v in labels.values()):
             out["verdict"] = "arms disagree"
             out["verdict_reason"] = "one arm vetoes: the AY-1 band label differs by arm"
@@ -430,17 +455,49 @@ def score():
             out["verdict"] = seen.pop() if len(seen) == 1 else "recipes disagree"
 
     out["predictions"] = score_predictions(out, arms, provisional=bool(absent))
-    (OUTDIR / "AY_SCORED.json").write_text(json.dumps(out, indent=2) + "\n")
+    out["amendment3_diagnostic"] = {a: diagnostic(c, out["arms"][a]["recipes"])
+                                    for a, c in sorted(arms.items())}
+    # 🔒 Report FIRST, then write. The other order left a written artifact behind when
+    # report() raised, and an artifact on disk that no run ever printed is the kind of thing
+    # a later session reads as a result.
     report(out)
+    (OUTDIR / "AY_SCORED.json").write_text(json.dumps(out, indent=2) + "\n")
     return 0
+
+
+def diagnostic(cells, rec):
+    """🔒 Amendment 3: decompose `head_only`'s gap into a pooling part and a path part.
+
+    🔒 The threshold is P3's existing 10pp on the all-class mean against the frozen arm --
+    no new edge invented after the fact, the existing one applied to the cell that should
+    have carried it. ⚠️ A NEAR anchor: the frozen arm is StandardScaler + LogisticRegression
+    and this is a dropout MLP head fitted by AdamW, so agreement establishes that the arms
+    are comparable, not that they are the same estimator.
+    """
+    mh = rec.get("mean_head_only", {}).get("AY2")
+    if mh is None:
+        return {"status": "mean_head_only has not run"}
+    pool = matched_mean(cells, "mean_head_only", "head_only")
+    d = {"AY2_mean_head_only": mh,
+         "within_10pp_of_frozen": bool(abs(mh) <= 0.10),
+         "pooling_at_frozen_trunk": pool,
+         "reading": ("the gap is pooling, and the fine-tuning path is sound"
+                     if abs(mh) <= 0.10 else
+                     "the path itself is weaker than the frozen arm's estimator, and every "
+                     "recipe's comparison to frozen is partly a comparison of optimisers")}
+    if pool:
+        d["pooling_worth"] = pool["mean_head_only"] - pool["head_only"]
+    return d
 
 
 def score_predictions(out, arms, provisional):
     """⚠️ Marked provisional while an arm is missing: the study verdict is undeclarable,
     so these are the numbers the present arm gives, not the study's scored record."""
-    p = {"provisional": provisional}
+    p = {"provisional": provisional, "excludes": sorted(DIAGNOSTIC)}
     for arm, cells in sorted(arms.items()):
-        rec = out["arms"][arm]["recipes"]
+        # 🔴 P1 and P4 quantify over the recipe set, so amendment 3's post-read diagnostic
+        # must be excluded or it would silently move predictions that are already scored.
+        rec = {r: v for r, v in out["arms"][arm]["recipes"].items() if r not in DIAGNOSTIC}
         got = {}
         avail = [v["AY1_band"] for v in rec.values() if v["AY1"] is not None]
         got["P1"] = {"kind": "reasoned",
@@ -482,9 +539,23 @@ def report(out):
                 print(f"    AY-3 left the comparison: {', '.join(v['AY3_failed'])}")
             if v["classes_missing"]:
                 print(f"    never ran: {', '.join(v['classes_missing'])}")
+    for arm, d in out.get("amendment3_diagnostic", {}).items():
+        print(f"\namendment 3 diagnostic -- {arm}")
+        if "status" in d:
+            print(f"  {d['status']}")
+            continue
+        print(f"  mean_head_only vs frozen   {100*d['AY2_mean_head_only']:+7.2f}pp"
+              f"   within 10pp: {d['within_10pp_of_frozen']}")
+        if d.get("pooling_worth") is not None:
+            p = d["pooling_at_frozen_trunk"]
+            print(f"  pooling at a frozen trunk  {100*d['pooling_worth']:+7.2f}pp"
+                  f"   (matched on n={p['n']})")
+        print(f"  reading: {d['reading']}")
     pr = out["predictions"]
     print(f"\npredictions{'  (PROVISIONAL -- an arm is missing)' if pr['provisional'] else ''}")
-    for arm in [k for k in pr if k != "provisional"]:
+    # ⚠️ Iterate the ARMS, not "every key that is not `provisional`": that spelling broke the
+    # moment a second metadata key was added, and it broke AFTER the artifact was written.
+    for arm in [a for a in out["arms"] if a in pr]:
         for name, v in pr[arm].items():
             mark = {True: "holds", False: "FAILS", None: "unavailable"}[v["holds"]]
             print(f"  {arm}  {name} ({v['kind']:<8}) {mark:<11} {v['claim']}")
@@ -574,6 +645,60 @@ def selftest():
     if m2 is None or m2["n"] != 1:
         print(f"  XX an AY-3 failure did not leave the matched comparison: {m2}")
         ok = False
+    # 🔒 Amendment 3: the diagnostic must be in RECIPES, must take the masked-mean model,
+    # and must NOT be able to move the verdict or a scored prediction.
+    for r in DIAGNOSTIC:
+        if r not in RECIPES:
+            print(f"  XX {r} is marked diagnostic but is not in RECIPES")
+            ok = False
+        if not r.startswith("mean_"):
+            print(f"  XX {r} would not take the masked-mean model in _build")
+            ok = False
+    # 🔴 and the freeze must actually freeze. A stub, so no weights are downloaded: a new
+    # frozen-trunk recipe left trainable would be `mean_full` under another name.
+    import torch
+    from torch import nn
+
+    def stub():
+        m = nn.Module()
+        m.esm = nn.Module()
+        m.esm.encoder = nn.Module()
+        m.esm.encoder.layer = nn.ModuleList([nn.Linear(2, 2) for _ in range(4)])
+        m.esm.embed = nn.Linear(2, 2)
+        m.head = nn.Linear(2, 2)
+        return m
+
+    # ⚠️ `last2` freezes the trunk and re-enables only the final two BLOCKS, so the
+    # embedding layer stays frozen there too; only `full`/`mean_full` train it.
+    head_n = None
+    for r, want_embed_frozen in (("head_only", True), ("mean_head_only", True),
+                                 ("last2", True), ("mean_last2", True),
+                                 ("full", False), ("mean_full", False)):
+        m = stub()
+        tr, fr = set_trainable(m, r)
+        embed_frozen = all(not p.requires_grad for p in m.esm.embed.parameters())
+        if embed_frozen != want_embed_frozen:
+            print(f"  XX {r}: embedding frozen is {embed_frozen}, "
+                  f"expected {want_embed_frozen}")
+            ok = False
+        if not all(p.requires_grad for p in m.head.parameters()):
+            print(f"  XX {r}: the head is not trainable")
+            ok = False
+        if r in ("head_only", "mean_head_only"):
+            # 🔑 the pair must freeze IDENTICALLY, or the contrast is not pooling alone
+            if head_n is None:
+                head_n = (tr, fr)
+            elif (tr, fr) != head_n:
+                print(f"  XX head_only and mean_head_only freeze differently: "
+                      f"{head_n} vs {(tr, fr)}")
+                ok = False
+        if r in ("last2", "mean_last2"):
+            late = all(p.requires_grad for p in m.esm.encoder.layer[-2:].parameters())
+            early = any(p.requires_grad for p in m.esm.encoder.layer[:-2].parameters())
+            if not late or early:
+                print(f"  XX {r}: expected only the final two blocks trainable")
+                ok = False
+    del torch
     print("selftest PASS" if ok else "selftest FAIL")
     return 0 if ok else 1
 
