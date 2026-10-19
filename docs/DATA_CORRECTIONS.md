@@ -9544,3 +9544,57 @@ by the **local** shell, to empty, before it ever reached the cluster:
 🔒 **The script is written locally and rsynced now**, which removes the hazard rather than escaping around
 it. ⚠️ **An earlier version of the same command had the escapes right**, so this was a regression in a
 detail that a working example two hours old would have prevented.
+
+---
+
+## 2026-10-19 (one hundred and thirty-second entry) — Restructuring the paper exposed a retracted number living in two documents, and my own retraction reproduced the string it retracted
+
+The paper was restructured to lead with the transfer-prediction result rather than with the screen's
+AUROC, on the reasoning in `Conferences/2026_AI/CONFERENCE_SUBMISSION_STRATEGY_2026-10-17.md` §B and
+`docs/ICML_CANDIDATE_ONE_PAGER.md`. 🔒 **No measurement changed**; the gate stayed green at 158 claims
+through every edit. What the restructure exposed is below, and it is the reason the restructure was
+worth doing as an audited operation rather than as prose.
+
+### 🔴 A retracted recovery floor was still being asserted in two live documents
+
+The abstract has recorded for weeks that **10% and 15.5% are figures this project published for two
+months and withdrew** — each is the *minimum* of its row in a panel × seed-count grid that had already
+been computed and never printed, and the internally consistent comparison is one panel at thirty seeds.
+
+🔴 **Section 1 was still stating the withdrawn floor as current**, in a document whose own abstract
+refutes it four paragraphs earlier. 🔴 **So was `docs/DETECTOR_EVALUATION_SUMMARY.md`**, which the
+`PUBLIC` list describes as the surface most likely to be quoted. 🔴 **So was
+`docs/BIOHUB_RESEARCH_BRIEF.md`**, which the same list describes as the surface where a number is most
+likely to be **spoken aloud**.
+
+⚠️ **A document that contains its own refutation is worse than a stale one.** Three surfaces, none of
+them audited for this string, for as long as the withdrawal has been on record.
+
+### 🔴 And the brief carried a scorecard tally superseded three weeks earlier
+
+`docs/BIOHUB_RESEARCH_BRIEF.md` read **three fails, three partials, one mixed**. Criterion 1 moved from
+fail to partial on 2026-09-27, making it **two fails, four partials, one mixed** — the value
+`docs/DETECTOR_CRITERIA.md` computes from its own table and the value the README carries. 🔴 **The tally
+was checked in two documents and nowhere else**, so a third drifted unpoliced for three weeks.
+
+🔒 **Every surface stating a tally is now collected and all must agree with the table's own counts**,
+and the check fires when the superseded tally is restored.
+
+### 🔴 The count-of-entries check had a fourth hole, and I walked straight into it
+
+`count_statements` collected three phrasings of the corrections count and the note beside it said a
+fourth phrasing would fail too. 🔴 **The restructure wrote `**135** dated corrections` into section 1 —
+a fourth phrasing none of the three patterns matched — so the count was unpoliced in a new place the
+moment it was written. 🔒 The pattern is added and the minimum is four.
+
+⚠️ **Section 1 had also been carrying `sixty dated corrections`** against an audited 135, since
+whenever the log passed sixty. The two checks that policed the count named the two places it appeared
+and were blind to the third, which is entry 112's defect in a different document.
+
+### 🔴 For the eighth time, a forbid matched its own retraction
+
+The sentence written to retract the withdrawn floor in `docs/DETECTOR_EVALUATION_SUMMARY.md` **quoted
+the banned string in order to say it was banned**, and failed the gate. 🔑 **This is this project's
+single most recurrent defect** and the count is now eight. 🔒 **Fixed on the prose side** — the
+retraction describes the old figure without restating the forbidden range — which is the second time
+the prose side rather than the forbid has been the thing that moved.

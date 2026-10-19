@@ -22,8 +22,15 @@ they should change a reader's practice:
    pipeline had already seen. Measured out of sample, a nominal 5% false-positive budget really costs
    **about 8%**, and about **10%** once the benign pool is collapsed to distinct names.
 2. **Aggregate recovery hides everything that matters.** Across held-out mechanism classes recovery
-   spans **100% to 10%** at the same operating point on the same panel, and plain Smith-Waterman
-   alignment beats the embedding probe on the class the probe is worst at.
+   spans **100% to 12%** at the same operating point on the same panel, and plain Smith-Waterman
+   alignment beats the embedding probe on the class the probe is worst at. ⚠️ **This line carried a
+   floor of 10% until 2026-10-19**, and the sentence retracting it deliberately does not restate the
+   old range, because the audit forbids that string and a retraction that quotes it fails the gate —
+   which is this project's most recurrent defect and happened an eighth time here. 10% and 15.5%
+   are the figures published for two months and withdrawn: each is the *minimum* of its row in a
+   panel × seed-count grid that had already been computed and never printed. The internally
+   consistent comparison is one panel at thirty seeds, giving **12.3%** on the phage class and
+   **21.0%** on beta-lactamase.
 3. **The failures are geometric and locatable in advance, but the location is not a calibration.**
    Embedding margin ranks the unreachable classes correctly (Spearman **+0.894**, permutation
    *p* = 0.0001, holding in 12 of 14 representations) and **mis-states the miss rate of an unseen

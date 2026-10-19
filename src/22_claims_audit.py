@@ -3368,10 +3368,16 @@ def corrections_log_census():
             # Every statement of the count is now collected and all must agree, so a fourth
             # phrasing fails too. "BSL-1 entries" is why the patterns are anchored and the bare
             # r"(\d+) entries" is not used.
+            # 🔴 Added 2026-10-19, and it is the FOURTH phrasing -- exactly what the note above
+            # said would happen. The 2026-10-19 restructure wrote "**135** dated corrections" into
+            # section 1, a form none of the three patterns matched, so the count was unpoliced in a
+            # fourth place the moment it was written. Section 1 had also been carrying "sixty dated
+            # corrections" against an audited 135 since the log passed sixty.
             "count_statements": [int(x) for x in (
                 re.findall(r"corrections log of (\d+)", man)
                 + re.findall(r"and (\d+) corrections found", man)
-                + re.findall(r"log holds (\d+) entries", man))],
+                + re.findall(r"log holds (\d+) entries", man)
+                + re.findall(r"\*\*(\d+)\*\* dated corrections", man))],
             # 🔴 the stale word this replaced, which must not come back
             "stale_word_gone": "corrections log of sixty" not in man}
 
@@ -5311,6 +5317,17 @@ def criteria_scorecard_consistency():
             "mixed": sorted(int(n) for n, v in rows if "Mixed" in v),
             "doc_says_18": "on eighteen criteria" in t,
             # 🔴 Both tally strings updated 2026-09-27 when criterion 1 moved fail -> partial.
+            # 🔴 And on 2026-10-19 `docs/BIOHUB_RESEARCH_BRIEF.md` was found still carrying the
+            # PRE-2026-09-27 tally -- "three fails, three partials, one mixed" -- three weeks after
+            # the move, in the one document the PUBLIC list calls the surface where a number is most
+            # likely to be spoken aloud. The tally was checked in the criteria document and the
+            # README and nowhere else, so a third surface drifted unpoliced. Every surface that
+            # states a tally is collected now.
+            "tally_statements": sorted({
+                m for d in ("docs/DETECTOR_CRITERIA.md", "README.md",
+                            "docs/BIOHUB_RESEARCH_BRIEF.md")
+                for m in re.findall(r"(\w+) fails?, (\w+) partials?",
+                                    (ROOT / d).read_text())}),
             "doc_tally": "Two fails (3, 12), four partials (1, 4, 5, 18) and one mixed (7)" in t,
             "readme_says_18": "states eighteen criteria" in r,
             "readme_tally": "two fails, four partials, one mixed" in r}
@@ -6930,12 +6947,22 @@ CLAIMS = [
          and v["highest_ordinal"] < v["headers"]
          # 🔒 every place the paper states the count must agree with it, and there must be at
          # least the three that exist now -- so deleting one is a failure as well as staling one
-         and len(v["count_statements"]) >= 3
+         and len(v["count_statements"]) >= 4
          and all(x == v["headers"] for x in v["count_statements"])),
+     # 🔴 This pin read "...corrections log of 135" and went stale the moment entry 132 was
+     # written, failing the gate for the wrong reason -- the same hard-coding the lambda above
+     # exists to avoid. It stops before the numeral now; the numeral's agreement is enforced by
+     # `count_statements`, which is the check that should own it.
      {"paper/MANUSCRIPT.md":
-      "written because it caught something. The evidence is a **dated, append-only corrections log of 135"},
-     # 🔴 the stale count, in both the forms it appeared in
-     ["and sixty corrections found", "corrections log of sixty", "Sixty entries"]),
+      "written because it caught something. The evidence is a **dated, append-only corrections log of"},
+     # 🔴 the stale count, in every form it has appeared in. "sixty dated corrections" sat in
+     # section 1 unnoticed while the title and abstract were audited at 135, and "100% to 10%"
+     # is the RETRACTED recovery floor -- the abstract records 10% and 15.5% as figures this
+     # project published for two months and withdrew, and section 1 was still asserting the
+     # first one as current. A retracted number restated elsewhere in the same document is
+     # worse than a stale one, because the document contains its own refutation.
+     ["and sixty corrections found", "corrections log of sixty", "Sixty entries",
+      "sixty dated corrections", "100% to 10%"]),
     ("on an unseen pool the localization finding grows and the registration one shrinks, both arms",
      independent_pool,
      lambda v: v is None or (
@@ -8139,7 +8166,12 @@ CLAIMS = [
                 and v["fails"] == [3, 12] and v["partials"] == [1, 4, 5, 18]
                 and v["mixed"] == [7]
                 and v["doc_says_18"] and v["doc_tally"]
-                and v["readme_says_18"] and v["readme_tally"]),
+                and v["readme_says_18"] and v["readme_tally"]
+                # 🔒 Every surface that states a tally must state the SAME one, and it must be the
+                # one the table computes -- so a third document carrying a superseded tally fails
+                # here instead of surviving three weeks as `BIOHUB_RESEARCH_BRIEF.md` did.
+                and v["tally_statements"] == [("two", "four")]
+                and len(v["fails"]) == 2 and len(v["partials"]) == 4),
      {"README.md": "states eighteen criteria for evaluating a hazard detector"},
      # the counts either document carried while the scorecard said otherwise. "five partials" was
      # briefly written into both on 2026-09-21 and the table never had five, so it is forbidden too.

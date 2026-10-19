@@ -1,6 +1,8 @@
-# An embedding hazard screen at AUROC 0.974 and precision 1.2%: what eighteen criteria and 135 corrections found
+# Proximity in a frozen representation predicts which class a detector will miss — and what eighteen criteria and 136 corrections found in the screen that showed it
 
-**Draft, 2026-09-28.** Every figure below is recomputed from an artifact by
+**Draft, 2026-10-19** — restructured on this date to lead with the transfer-prediction result; the
+hazard screen is now presented as the case that produced it, and the eighteen criteria and the
+corrections log as apparatus. No number moved in that restructure. Every figure below is recomputed from an artifact by
 `src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 158 such
 claims. Section references without a document name are to `docs/MECHANISM_GENERALIZATION.md`.
 
@@ -8,7 +10,25 @@ claims. Section references without a document name are to `docs/MECHANISM_GENERA
 
 ## Abstract
 
-A protein-language-model embedding separates a curated hazard panel from its negatives at **AUROC
+A detector built on a frozen representation does not fail uniformly. It fails on particular classes,
+and **which classes it will fail on is predictable from the representation's geometry before any
+classifier is fitted** — from how close a class sits to other positives relative to the nearest
+negative. We establish that ordering on a protein hazard panel, replicate it on a published
+benchmark with someone else's labels, and then show it is not a fact about protein language models
+at all: it survives a preregistered grid over three modalities and two encoder families each. What
+does **not** transfer is the arithmetic. The specific functional form is conditional, and a second
+quantity — also computable without training — says which form a given representation needs.
+
+🔑 **Three limits are stated here rather than in the discussion.** The prediction is an **ordering**,
+not an improvement size: no training-free quantity we tried predicts the magnitude of the gain. It is
+**mis-calibrated**, over-predicting beta-lactamase recovery by 34 points. And the two uses must be
+kept apart: as an **alerting deployment** the screen that motivated this is not useful — at the
+operating point a deployment would choose its precision is about **1%**, and nothing we tried moved
+it — whereas **triage**, deciding which mechanism families need their own validation, is the one
+application here with a usable number, at **5.53× chance** over 26 cell-settings. The prediction
+earns the second use, not the first.
+
+**The case that produced it.** A protein-language-model embedding separates a curated hazard panel from its negatives at **AUROC
 0.974 ± 0.014**. Screened against 8,258 held-out benign proteins at a nominal 5% false-positive budget
 the same probe returns **7.87%** with the interpolating `np.quantile` estimator and **5.98%** with the
 conformal one, and translated into a deployment of ten thousand sequences at a one-in-a-thousand hazard rate
@@ -17,12 +37,9 @@ the conformal figure produces **605 alerts of which about 7 are real — a preci
 the interpolating estimator and 605 alerts is the conformal one, so 7.87% × 9,990 gives 786 and not 605.
 🔒 The gap is a calibration-size effect — it is 2.9 points on the 118-point panel fold and **0.6–2.4%** on
 the 484-point fold every contrast in this paper uses, where the headline ratios are unchanged
-(`docs/CONFORMAL_CONTRAST_PREREGISTRATION.md`). This paper is about the distance between those two numbers, and about what it takes to see it.
-
-We state **eighteen criteria** a hazard-screening claim should meet, score our own probe against them,
-and report the result: **two fails, four partials and one mixed**. We then show that each criterion was
-written because it caught something. The evidence is a **dated, append-only corrections log of 135
-entries** in which a published number moved, including entries that retract our own findings.
+(`docs/CONFORMAL_CONTRAST_PREREGISTRATION.md`). 🔑 **The distance between those two numbers is what sent
+us looking for the geometry**: an aggregate that good over a deployment that poor means the aggregate is
+averaging over classes it handles and classes it cannot see, and the question becomes which is which.
 
 Five results matter beyond this panel.
 
@@ -57,7 +74,9 @@ and holding out the whole superclass instead moves that cell to +0.612 and +0.68
 a false-positive rate just below the matched band; the amendment that scopes that precondition to
 cross-cell *level* claims was written with one cell's *ρ* already known, and **both counts are reported**.
 
-🔑 **What does *not* generalize is the formula.** `margin` and its own first term each clear the floor in
+🔑 **When a plain nearest-positive distance is enough is itself predictable, and that is the second
+half of the result rather than a caveat on the first.** The formula does not transfer: `margin` and its
+own first term each clear the floor in
 **10 of 12** cell-settings and fail on *different* cells, and the subtraction is earned only where the
 negative term carries signal: *ρ* = **+0.8118** between that term's own correlation with recovery and the
 gain from subtracting it. 🔒 **A quantity needing no training predicts which** — *ρ*(nearest-positive,
@@ -115,6 +134,13 @@ between the two representations while the fourteen-category means differ by 0.3.
 order toxins above matched non-toxins inside a fold; whether it recovers a held-out toxin category more
 or less than a non-toxin one depends on which representation you ask.**
 
+**How the above was kept honest**, reported here because the method is reusable and not because it is
+the contribution. We state **eighteen criteria** a hazard-screening claim should meet, score our own
+probe against them, and report the result: **two fails, four partials and one mixed**. Each criterion
+was written because it caught something. The evidence is a **dated, append-only corrections log of 136
+entries** in which a published number moved, including entries that retract our own findings. Readers
+interested only in the transfer result can stop at the paragraph above; § 3 and § 8 are the apparatus.
+
 We close on a structural observation about evaluation rather than about protein models. Twice we
 diagnosed a limit, built the repair, and found the limit was on the other side of the comparison: both
 times we grew the negative set when the binding constraint was **panel annotation** — fifteen proteins,
@@ -126,25 +152,32 @@ ceiling down before the run.
 
 ## 1. Introduction
 
-A protein language model's embedding space separates toxins from benign proteins well enough that a
-linear probe reaches AUROC 0.974 on a curated panel. It is a short step from there to a claim about
-biosecurity screening, and the step is where the trouble is. This paper is an attempt to take that step
-slowly, in public, with the failures written down as they were found.
+A detector on a frozen representation fails by class, not uniformly, and the geometry of the
+representation says in advance which classes those will be. That is this paper's result. We arrived at
+it the long way: a protein language model's embedding space separates toxins from benign proteins well
+enough that a linear probe reaches AUROC 0.974 on a curated panel, and it is a short step from there to
+a claim about biosecurity screening. The step is where the trouble is, and taking it slowly is what
+exposed the geometry.
 
-Our contribution is not a better classifier. It is an account of what an evaluation has to do before a
-separability number licenses a screening claim, together with the record of what that account cost us:
-sixty dated corrections, two preregistrations of which one returned NOT SUPPORTED, and three findings
-that looked clean on one representation and vanished on a second.
+Our contribution is therefore two things, in this order. **A quantity computable before any classifier
+is fitted ranks classes by how well a detector will recover them**, it transfers across modalities and
+encoder families, and a second training-free quantity says when its subtraction term is earned at all.
+And **an account of what an evaluation has to do before a separability number licenses a screening
+claim**, together with the record of what that account cost: **136** dated corrections, a prediction
+record scored honestly at **23 of 42** derived and **5 of 16** reasoned, and findings that looked clean
+on one representation and vanished on a second.
 
 We make three empirical claims and one methodological one.
 
-1. **The aggregate hides a bimodal failure structure.** Leave-one-mechanism-out recovery spans 100% to
-   10%, and the classes that fail are not the small ones (§ 2).
-2. **The failures are locatable in advance.** Class-level margin ranks them at *ρ* = +0.894 and
-   transfers across representations and re-poolings, while over-predicting the hardest class by 34
-   points (§ 4).
+1. **The failures are locatable in advance, and not only in protein models.** Class-level margin ranks
+   them at *ρ* = +0.894, transfers across representations and re-poolings, replicates on a published
+   benchmark with someone else's labels, and clears a preregistered three-modality grid — while
+   over-predicting the hardest class by 34 points, and predicting an ordering rather than a magnitude
+   (§ 4).
+2. **The aggregate hides the bimodal failure structure it predicts.** Leave-one-mechanism-out recovery
+   spans 100% to 12%, and the classes that fail are not the small ones (§ 2).
 3. **Nothing we tried improved the screen.** Precision is flat at about 1% across every configuration
-   tested (§ 5).
+   tested, which is why the usable application is triage and not alerting (§ 5).
 4. **Methodologically: the ordering of criteria matters more than the tally.** The split between
    calibration and test negatives is first because the other seventeen are measured through it (§ 3).
 
@@ -1735,7 +1768,7 @@ way**; the third was found by trying to break the check that guarded it and fail
 do** — an excluded unit leaves the numerator *and* the denominator and the reduced denominator is
 stated — **and to band coverage separately**, rather than fixing a count against a pool that can shrink.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 135 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 136 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
