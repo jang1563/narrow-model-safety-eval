@@ -974,6 +974,16 @@ def manuscript_headline():
         "recall": round(recall, 4),
         "alerts": round(alerts, 1), "real": round(real, 1),
         "precision": round(real / alerts, 4),
+        # 🔒 Added 2026-10-19 with § 5's usage-criterion paragraph. Those three figures are
+        # ARITHMETIC on the four inputs above, so if any input moves they go stale in the prose
+        # while every pinned measurement still agrees -- the silent-derived-number defect.
+        # "alerts per real hazard" is the reciprocal of precision; the required false-positive
+        # rate for half the alerts to be real is real/(n - hz), because at 50% precision the
+        # false alerts must equal the true ones; the fold is the measured rate over that.
+        "alerts_per_real": round(alerts / real, 1),
+        "fpr_for_half_real": round(real / (n - hz), 6),
+        "fold_reduction_needed": round(
+            fp["shift"]["conformal"]["mean"] / (real / (n - hz)), 1),
         "pool_tested": ext["pool_n"], "calibration_n": ext["calibration_n"],
     }
 
@@ -7300,9 +7310,15 @@ CLAIMS = [
          # the abstract's figure, from the PUBLISHED canonical arm; section 5's table uses the
          # residue-only control and says 603, two alerts lower, which that section states
          and abs(v["alerts"] - 604.5) < 1.0 and 7.2 <= v["real"] <= 7.4
-         and abs(v["precision"] - 0.0121) < 0.0005),
+         and abs(v["precision"] - 0.0121) < 0.0005
+         # 🔒 § 5's usage criterion, recomputed rather than trusted to the prose
+         and v["alerts_per_real"] == 82.7
+         and abs(v["fpr_for_half_real"] - 0.000732) < 5e-6
+         and abs(v["fold_reduction_needed"] - 81.7) < 0.5),
+     # 🔒 One pin per document. § 5's derived figures are pinned through the fold, which is the
+     # figure a changed input would move most visibly; the other two are asserted above.
      {"paper/MANUSCRIPT.md":
-      "**605 alerts of which about 7 are real — a precision of\n1.2%**",
+      "**An 82-fold reduction in false-positive rate, at no cost in recall.**",
       "docs/DETECTOR_CRITERIA.md": "headline aggregate number is **0.974 ± 0.014**"},
      # the superseded v1 separability, which must not return unlabelled
      ["framework whose\nheadline aggregate number is 0.981"]),

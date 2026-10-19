@@ -1585,6 +1585,18 @@ deployment fixes neither. ⭐ **The flatness is strengthened, not weakened, by t
 stays inside **[0.76%, 1.26%]** across reductions, estimators *and* weightings. ⚠️ **The headline 1.2% is
 the corner of that box most favourable to the screen.**
 
+🔑 **What that box means at a usage criterion, since a percentage on its own does not settle anything.**
+On the published canonical arm § 1 quotes — 605 alerts containing 7.3 real hazards — that is
+**83 alerts per real hazard**, so a reviewer clearing the queue reads 82 benign sequences for every
+hazardous one.
+Asking instead what it would take for **half** the alerts to be real, at the same 73.1% recall and the
+same one-in-a-thousand prevalence: 7.3 true hits would have to arrive beside 7.3 false ones, which is
+7.3 false alerts out of 9,990 benign sequences, a false-positive rate of **0.073%** against the
+measured **5.98%**. 🔴 **An 82-fold reduction in false-positive rate, at no cost in recall.** That is
+the gap, stated as a requirement rather than as a percentage, and nothing in § 5 moves it by more than
+a factor of 1.7. ⚠️ **It is also why § 7 does not offer a threshold recommendation**: every operating
+point on this curve is far outside the range where the choice between them would matter.
+
 ---
 
 ## 6. Two repairs that grew the wrong side
