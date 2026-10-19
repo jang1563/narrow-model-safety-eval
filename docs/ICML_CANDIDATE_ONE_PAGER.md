@@ -93,23 +93,37 @@ shipped `.keras` weights cannot be run.
 
 ## 4. Against the document's own six criteria
 
-| criterion | honest score |
-|---|---|
-| New scientific question | **Strong.** "What predicts transfer in a frozen representation" is not the hazard-screening literature's question. |
-| Independent evaluation unit | **Strong.** Class-level, leave-one-mechanism-out, plus two external label sets (DeepVIC, VFDB) and three modalities. |
-| **Strong simple baseline** | **Mixed — and this is the weak one.** Nearest-positive alone matches `margin` in 10 of 12 cell-settings. The honest resolution is that the simple baseline *is* a result (ρ +0.8118 says when subtraction is earned), not a threat to be minimised. |
-| Real usage meaning | **Weak as written.** Deployment precision sits in a **0.76%–1.26%** box and 1.2% is its most favourable corner. Must be stated at a usage criterion, not as a headline. |
-| Generalization matching claim scope | **Adequate if restructured.** Ordering yes, magnitude no, calibration no. The paper must claim exactly that. |
-| Completed reading flow | **Fails today.** 158 audited claims and a 135-entry corrections log are apparatus; by JK's own standing rule they are not the paper. |
+Scored before the 2026-10-19 restructure, and again after it.
 
-## 5. What the restructure is
+| criterion | before | after |
+|---|---|---|
+| New scientific question | **Strong.** "What predicts transfer in a frozen representation" is not the hazard-screening literature's question. | unchanged |
+| Independent evaluation unit | **Strong.** Class-level, leave-one-mechanism-out, plus two external label sets (DeepVIC, VFDB) and three modalities. | unchanged |
+| **Strong simple baseline** | **Mixed, and the weak one.** Nearest-positive alone matches `margin` in 10 of 12 cell-settings. | **Adequate.** The simple baseline is now presented *as the result* — ρ +0.8118 for when subtraction is earned, ρ −0.661 for which form a representation needs — rather than as a caveat headed "what does not generalize". No new measurement; the science was already there. |
+| Real usage meaning | **Weak as written.** Precision sits in a **0.76%–1.26%** box and 1.2% is its most favourable corner. | **Adequate.** § 5 now states the gap as a requirement: **83 alerts per real hazard**, and **an 82-fold** false-positive reduction needed for half the alerts to be real at the same recall. All three figures recomputed by the audit and pinned. |
+| Generalization matching claim scope | **Adequate if restructured.** | **Adequate.** Ordering-not-magnitude, mis-calibration by 34 points, and the alerting/triage split are now in the abstract rather than the discussion. |
+| Completed reading flow | **Fails.** 158 audited claims and the corrections log are apparatus; by JK's standing rule they are not the paper. | **Improved, not closed.** The apparatus is labelled as such and moved after the results, with an explicit stopping point for readers who want only the transfer result. Whether it reads as one paper is a judgement to make on the next full read, not a box to tick here. |
 
-Lead with (b) and (c): proximity in a frozen representation predicts per-class transfer, the
-functional form is conditional, and a training-free quantity selects the form. Demote the hazard
-screen to the motivating case and the source of (a). Keep the eighteen criteria and the corrections
-log as an appendix and a methods statement, not as the spine. State three limits in the abstract
-rather than the discussion: **ordering not magnitude**, **mis-calibrated**, and **precision at a
-usage criterion**.
+## 5. The restructure, as executed on 2026-10-19
+
+Done, in commits `82cef07` and `c878bb3`, gate green at 158 claims throughout and **no measurement
+changed**:
+
+- Title and abstract lead with the transfer result; the screen is labelled "the case that produced it"
+- The formula paragraph is reframed into the answer to *when a plain nearest-positive distance is enough*
+- Three limits moved into the abstract; the alerting/triage distinction stated so the ~1% precision and
+  the 5.53× triage figure are not read as the same claim
+- The eighteen criteria and the corrections log moved after the results and labelled apparatus
+- § 5 states precision at a usage criterion, with the derived figures audited
+
+**What the restructure exposed**, and the reason to do it as an audited operation: the withdrawn
+recovery floor was still asserted as current in **three** live documents, one of which refutes it in its
+own abstract; the Biohub brief carried a scorecard tally superseded three weeks earlier; the
+corrections-count check had a fourth phrasing hole that the restructure walked straight into; and a
+forbid matched its own retraction for the eighth time. Corrections entry 132.
+
+**Still open and not closable by editing:** the three comparisons in § 3. Only the first can move before
+2026-11-15.
 
 **Do not** inflate any of this into a safety guarantee or a direct measurement of biological hazard.
 The strategy document says so explicitly and it is right.
