@@ -1,0 +1,53 @@
+{
+  "arm": "esm2_35M",
+  "class": "clostridial_neurotoxin",
+  "n_held_out": 6,
+  "n_trained_pos": 143,
+  "seeds": 10,
+  "recipes": {
+    "last2": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.9736682808716707,
+      "mean": 1.0,
+      "sd": 0.0,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.0
+    }
+  },
+  "frozen": {
+    "mean": 1.0,
+    "sd": 0.0,
+    "per_seed": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "device": "cpu",
+  "seconds": 15238.1,
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  }
+}

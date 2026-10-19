@@ -1,0 +1,53 @@
+{
+  "arm": "esm2_35M",
+  "class": "nuclease_dnase_rnase",
+  "n_held_out": 2,
+  "n_trained_pos": 147,
+  "seeds": 10,
+  "recipes": {
+    "mean_last2": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.962010520163647,
+      "mean": 1.0,
+      "sd": 0.0,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.4
+    }
+  },
+  "frozen": {
+    "mean": 0.6,
+    "sd": 0.21081851067789195,
+    "per_seed": [
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      1.0,
+      1.0,
+      0.5
+    ]
+  },
+  "device": "cpu",
+  "seconds": 17735.9,
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  }
+}

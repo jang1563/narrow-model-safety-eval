@@ -1,0 +1,147 @@
+{
+  "arm": "esm2_35M",
+  "class": "contact_dependent_inhibition",
+  "n_held_out": 4,
+  "n_trained_pos": 145,
+  "seeds": 10,
+  "frozen": {
+    "mean": 0.725,
+    "sd": 0.07905694150420949,
+    "per_seed": [
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.5
+    ]
+  },
+  "device": "cpu",
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  },
+  "recipes": {
+    "full": {
+      "lr": 5e-05,
+      "epochs": 10,
+      "inner_recall": 0.978375219170076,
+      "mean": 0.725,
+      "sd": 0.21889875894272828,
+      "per_seed": [
+        1.0,
+        0.75,
+        0.5,
+        0.25,
+        0.75,
+        1.0,
+        0.75,
+        0.75,
+        0.75,
+        0.75
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.0
+    },
+    "head_only": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.8886616014026885,
+      "mean": 0.5,
+      "sd": 0.0,
+      "per_seed": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": -0.22499999999999998
+    },
+    "last2": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.9710695499707773,
+      "mean": 0.975,
+      "sd": 0.07905694150420949,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.25
+    },
+    "mean_full": {
+      "lr": 1e-05,
+      "epochs": 10,
+      "inner_recall": 0.9652250146113384,
+      "mean": 0.825,
+      "sd": 0.1687371394276382,
+      "per_seed": [
+        1.0,
+        1.0,
+        0.75,
+        0.75,
+        0.75,
+        0.5,
+        0.75,
+        1.0,
+        1.0,
+        0.75
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.09999999999999998
+    },
+    "mean_last2": {
+      "lr": 5e-05,
+      "epochs": 10,
+      "inner_recall": 0.9579193454120397,
+      "mean": 1.0,
+      "sd": 0.0,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.275
+    }
+  },
+  "assembled_from_per_recipe_runs": [
+    "full",
+    "head_only",
+    "last2",
+    "mean_full",
+    "mean_last2"
+  ]
+}

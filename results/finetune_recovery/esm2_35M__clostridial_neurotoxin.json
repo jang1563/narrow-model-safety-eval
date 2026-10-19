@@ -4,13 +4,56 @@
   "n_held_out": 6,
   "n_trained_pos": 143,
   "seeds": 10,
+  "frozen": {
+    "mean": 1.0,
+    "sd": 0.0,
+    "per_seed": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "device": "cpu",
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  },
   "recipes": {
+    "full": {
+      "lr": 1e-05,
+      "epochs": 10,
+      "inner_recall": 0.9679176755447942,
+      "mean": 0.9333333333333333,
+      "sd": 0.21081851067789198,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.3333333333333333,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": -0.06666666666666665
+    },
     "head_only": {
       "lr": 0.0001,
       "epochs": 10,
-      "inner_recall": 0.9040556900726392,
-      "mean": 0.8833333333333334,
-      "sd": 0.27273194908074616,
+      "inner_recall": 0.9007263922518159,
+      "mean": 0.8666666666666668,
+      "sd": 0.29186501192363773,
       "per_seed": [
         1.0,
         1.0,
@@ -20,61 +63,17 @@
         1.0,
         1.0,
         1.0,
-        0.6666666666666666,
+        0.5,
         1.0
       ],
       "realized_fpr": 0.05084745762711864,
       "AY3_fpr_in_band": true,
-      "delta_vs_frozen": -0.11666666666666659
+      "delta_vs_frozen": -0.1333333333333332
     },
     "last2": {
-      "lr": 5e-05,
-      "epochs": 10,
-      "inner_recall": 0.9797215496368039,
-      "mean": 1.0,
-      "sd": 0.0,
-      "per_seed": [
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0
-      ],
-      "realized_fpr": 0.05084745762711864,
-      "AY3_fpr_in_band": true,
-      "delta_vs_frozen": 0.0
-    },
-    "full": {
-      "lr": 1e-05,
-      "epochs": 10,
-      "inner_recall": 0.9803268765133172,
-      "mean": 1.0,
-      "sd": 0.0,
-      "per_seed": [
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0,
-        1.0
-      ],
-      "realized_fpr": 0.05084745762711864,
-      "AY3_fpr_in_band": true,
-      "delta_vs_frozen": 0.0
-    },
-    "mean_last2": {
       "lr": 0.0001,
       "epochs": 10,
-      "inner_recall": 0.9766949152542372,
+      "inner_recall": 0.9736682808716707,
       "mean": 1.0,
       "sd": 0.0,
       "per_seed": [
@@ -96,7 +95,29 @@
     "mean_full": {
       "lr": 5e-05,
       "epochs": 10,
-      "inner_recall": 0.9651937046004843,
+      "inner_recall": 0.9700363196125908,
+      "mean": 1.0,
+      "sd": 0.0,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.0
+    },
+    "mean_last2": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.9688256658595642,
       "mean": 1.0,
       "sd": 0.0,
       "per_seed": [
@@ -116,26 +137,11 @@
       "delta_vs_frozen": 0.0
     }
   },
-  "frozen": {
-    "mean": 1.0,
-    "sd": 0.0,
-    "per_seed": [
-      1.0,
-      1.0,
-      1.0,
-      1.0,
-      1.0,
-      1.0,
-      1.0,
-      1.0,
-      1.0,
-      1.0
-    ]
-  },
-  "device": "cpu",
-  "seconds": 56435.6,
-  "versions": {
-    "torch": "2.5.1+cu121",
-    "transformers": "4.48.1"
-  }
+  "assembled_from_per_recipe_runs": [
+    "full",
+    "head_only",
+    "last2",
+    "mean_full",
+    "mean_last2"
+  ]
 }

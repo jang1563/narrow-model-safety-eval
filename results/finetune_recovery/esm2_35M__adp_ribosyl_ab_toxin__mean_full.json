@@ -1,0 +1,53 @@
+{
+  "arm": "esm2_35M",
+  "class": "adp_ribosyl_ab_toxin",
+  "n_held_out": 7,
+  "n_trained_pos": 142,
+  "seeds": 10,
+  "recipes": {
+    "mean_full": {
+      "lr": 1e-05,
+      "epochs": 10,
+      "inner_recall": 0.9636803874092009,
+      "mean": 0.9571428571428571,
+      "sd": 0.06900655593423545,
+      "per_seed": [
+        1.0,
+        1.0,
+        0.8571428571428571,
+        1.0,
+        1.0,
+        1.0,
+        0.8571428571428571,
+        0.8571428571428571,
+        1.0,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": -0.04285714285714293
+    }
+  },
+  "frozen": {
+    "mean": 1.0,
+    "sd": 0.0,
+    "per_seed": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "device": "cpu",
+  "seconds": 31932.4,
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  }
+}

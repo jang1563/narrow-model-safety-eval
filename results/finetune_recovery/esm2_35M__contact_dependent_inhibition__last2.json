@@ -1,0 +1,53 @@
+{
+  "arm": "esm2_35M",
+  "class": "contact_dependent_inhibition",
+  "n_held_out": 4,
+  "n_trained_pos": 145,
+  "seeds": 10,
+  "recipes": {
+    "last2": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.9710695499707773,
+      "mean": 0.975,
+      "sd": 0.07905694150420949,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.25
+    }
+  },
+  "frozen": {
+    "mean": 0.725,
+    "sd": 0.07905694150420949,
+    "per_seed": [
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.75,
+      0.5
+    ]
+  },
+  "device": "cpu",
+  "seconds": 16836.1,
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  }
+}

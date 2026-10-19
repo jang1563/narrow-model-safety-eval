@@ -1,0 +1,53 @@
+{
+  "arm": "esm2_35M",
+  "class": "virulence_associated_non_toxin",
+  "n_held_out": 10,
+  "n_trained_pos": 139,
+  "seeds": 10,
+  "recipes": {
+    "last2": {
+      "lr": 0.0001,
+      "epochs": 3,
+      "inner_recall": 0.9883866917765223,
+      "mean": 0.24999999999999994,
+      "sd": 0.05270462766947298,
+      "per_seed": [
+        0.2,
+        0.2,
+        0.3,
+        0.2,
+        0.3,
+        0.2,
+        0.2,
+        0.3,
+        0.3,
+        0.3
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": -0.06
+    }
+  },
+  "frozen": {
+    "mean": 0.30999999999999994,
+    "sd": 0.11005049346146119,
+    "per_seed": [
+      0.3,
+      0.5,
+      0.3,
+      0.3,
+      0.3,
+      0.2,
+      0.3,
+      0.4,
+      0.4,
+      0.1
+    ]
+  },
+  "device": "cpu",
+  "seconds": 7311.5,
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  }
+}

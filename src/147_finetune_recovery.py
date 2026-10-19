@@ -315,6 +315,181 @@ def merge():
     return 0
 
 
+AY1_BAND = (0.20, 0.07)                    # (artifact floor, survive ceiling)
+AY2_BAND = (0.10, 0.03)
+
+
+def band(delta, artifact_floor, survive_ceiling):
+    """🔒 Two-sided, so BOTH readings are declarable.
+
+    ⚠️ A band with only a floor can never fail and a band with only a ceiling can never
+    pass. Study AW banded a difference at 1pp against intervals 4-9pp wide and its verdict
+    became an artifact of that; these two came from the measured sd instead.
+    """
+    if delta >= artifact_floor:
+        return "artifact"
+    if delta <= survive_ceiling:
+        return "survive"
+    return "neither"
+
+
+def load_merged():
+    """The merged per-class files carry ONE `__`; the per-recipe files carry two."""
+    arms = {}
+    for f in sorted(OUTDIR.glob("*__*.json")):
+        if f.stem.count("__") != 1:
+            continue
+        d = json.loads(f.read_text())
+        arms.setdefault(d["arm"], {})[d["class"]] = d
+    return arms
+
+
+def matched_mean(cells, r1, r2):
+    """🔴 `full` has 14 classes against `last2`'s 16, so their raw all-class means are not
+    a comparison at all. Both are recomputed on the intersection, and the denominator is
+    reported with them."""
+    common = sorted(c for c, d in cells.items()
+                    if r1 in d["recipes"] and r2 in d["recipes"]
+                    and d["recipes"][r1]["AY3_fpr_in_band"]
+                    and d["recipes"][r2]["AY3_fpr_in_band"])
+    if not common:
+        return None
+    return {"n": len(common), "classes": common,
+            r1: float(np.mean([cells[c]["recipes"][r1]["delta_vs_frozen"] for c in common])),
+            r2: float(np.mean([cells[c]["recipes"][r2]["delta_vs_frozen"] for c in common]))}
+
+
+def score_arm(cells):
+    """AY-1, AY-2 and the AY-3 precondition, per recipe, for one arm."""
+    recipes = sorted({r for d in cells.values() for r in d["recipes"]})
+    out = {"n_classes": len(cells), "recipes": {}}
+    for r in recipes:
+        have = [c for c, d in cells.items() if r in d["recipes"]]
+        # 🔒 AY-3 is a PRECONDITION, not a result: a recovery figure at an unmatched
+        # operating point is not comparable, so a failing cell LEAVES the comparison and
+        # the reduced denominator is stated rather than silently absorbed.
+        bad = sorted(c for c in have if not cells[c]["recipes"][r]["AY3_fpr_in_band"])
+        use = [c for c in have if c not in bad]
+
+        def dl(c):
+            return cells[c]["recipes"][r]["delta_vs_frozen"]
+
+        dead = [c for c in DEAD if c in use]
+        ay1 = float(np.mean([dl(c) for c in dead])) if len(dead) == len(DEAD) else None
+        ay2 = float(np.mean([dl(c) for c in use])) if use else None
+        out["recipes"][r] = {
+            "AY1": ay1,
+            "AY1_band": band(ay1, *AY1_BAND) if ay1 is not None else "unavailable",
+            "AY2": ay2,
+            "AY2_band": band(ay2, *AY2_BAND) if ay2 is not None else "unavailable",
+            "AY2_n": len(use),
+            "AY3_failed": bad,
+            "classes_missing": sorted(set(cells) - set(have)),
+            # 🔑 the mean of two classes hides its own mechanism -- one class can be
+            # destroyed while the other triples -- so the parts go beside the mean, always.
+            "per_dead_class": {c: {"frozen": cells[c]["frozen"]["mean"],
+                                   "finetuned": cells[c]["recipes"][r]["mean"],
+                                   "delta": dl(c)} for c in dead},
+            "dead_spread": (abs(dl(dead[0]) - dl(dead[1]))
+                            if len(dead) == len(DEAD) else None),
+        }
+    return out
+
+
+def score():
+    """Score AY-1..AY-3 and P1-P4 against the bands frozen on 2026-10-08."""
+    arms = load_merged()
+    if not arms:
+        raise SystemExit("XX no merged class files -- run --merge first")
+    out = {"bands": {"AY1": list(AY1_BAND), "AY2": list(AY2_BAND)},
+           "arms": {a: score_arm(c) for a, c in sorted(arms.items())},
+           # ⚠️ The preregistration states the bands once and does NOT name which recipe
+           # carries them; amendment 2 then added the mean_* recipes. Reported per recipe
+           # with the ambiguity stated, never resolved by picking one after the fact.
+           "bands_name_no_recipe": True}
+
+    # 🔒 Both arms must agree. `src/143_band_reachability.py` flags that two-unit
+    # conjunction as a single-unit veto, accepted for study AW's reason: the second-arm
+    # rule exists precisely so that one arm can veto.
+    absent = sorted(set(MODELS) - set(arms))
+    if absent:
+        out["verdict"] = "undeclarable"
+        out["verdict_reason"] = ("the preregistration requires both arms to agree; "
+                                 f"{', '.join(absent)} has not run")
+    else:
+        labels = {}
+        for r in sorted({r for a in out["arms"].values() for r in a["recipes"]}):
+            labels[r] = {a: out["arms"][a]["recipes"].get(r, {}).get("AY1_band")
+                         for a in out["arms"]}
+        out["per_recipe_arm_labels"] = labels
+        if any(len(set(v.values())) != 1 or None in v.values() for v in labels.values()):
+            out["verdict"] = "arms disagree"
+            out["verdict_reason"] = "one arm vetoes: the AY-1 band label differs by arm"
+        else:
+            seen = {next(iter(v.values())) for v in labels.values()}
+            out["verdict"] = seen.pop() if len(seen) == 1 else "recipes disagree"
+
+    out["predictions"] = score_predictions(out, arms, provisional=bool(absent))
+    (OUTDIR / "AY_SCORED.json").write_text(json.dumps(out, indent=2) + "\n")
+    report(out)
+    return 0
+
+
+def score_predictions(out, arms, provisional):
+    """⚠️ Marked provisional while an arm is missing: the study verdict is undeclarable,
+    so these are the numbers the present arm gives, not the study's scored record."""
+    p = {"provisional": provisional}
+    for arm, cells in sorted(arms.items()):
+        rec = out["arms"][arm]["recipes"]
+        got = {}
+        avail = [v["AY1_band"] for v in rec.values() if v["AY1"] is not None]
+        got["P1"] = {"kind": "reasoned",
+                     "claim": 'AY-1 lands in "they survive", <= +7pp',
+                     "holds": bool(avail) and all(b == "survive" for b in avail),
+                     "per_recipe": {r: v["AY1_band"] for r, v in rec.items()}}
+        m = matched_mean(cells, "full", "last2")
+        got["P2"] = {"kind": "derived",
+                     "claim": "`full` underperforms `last2` on the all-class mean",
+                     "holds": None if m is None else bool(m["full"] < m["last2"]),
+                     "matched": m}
+        h = rec.get("head_only", {}).get("AY2")
+        got["P3"] = {"kind": "derived",
+                     "claim": "`head_only`'s all-class mean lands within 10pp of frozen",
+                     "holds": None if h is None else bool(abs(h) <= 0.10),
+                     "AY2_head_only": h}
+        pos = [v["AY2"] for v in rec.values() if v["AY2"] is not None]
+        got["P4"] = {"kind": "derived", "claim": "AY-2 is positive",
+                     "holds": bool(pos) and all(x > 0 for x in pos),
+                     "per_recipe": {r: v["AY2"] for r, v in rec.items()}}
+        p[arm] = got
+    return p
+
+
+def report(out):
+    print(f"verdict: {out['verdict']}"
+          + (f"  ({out['verdict_reason']})" if "verdict_reason" in out else ""))
+    for arm, a in out["arms"].items():
+        print(f"\n{arm}  ({a['n_classes']} classes)")
+        print(f"  {'recipe':<12}{'AY-1':>10} {'band':<12}{'AY-2':>10} {'band':<12}{'n':>3}"
+              f"  {'spread':>8}")
+        for r, v in a["recipes"].items():
+            a1 = "   n/a" if v["AY1"] is None else f"{100*v['AY1']:+9.2f}pp"
+            a2 = "   n/a" if v["AY2"] is None else f"{100*v['AY2']:+9.2f}pp"
+            sp = "     n/a" if v["dead_spread"] is None else f"{100*v['dead_spread']:7.1f}pp"
+            print(f"  {r:<12}{a1:>10} {v['AY1_band']:<12}{a2:>10} {v['AY2_band']:<12}"
+                  f"{v['AY2_n']:>3}  {sp:>8}")
+            if v["AY3_failed"]:
+                print(f"    AY-3 left the comparison: {', '.join(v['AY3_failed'])}")
+            if v["classes_missing"]:
+                print(f"    never ran: {', '.join(v['classes_missing'])}")
+    pr = out["predictions"]
+    print(f"\npredictions{'  (PROVISIONAL -- an arm is missing)' if pr['provisional'] else ''}")
+    for arm in [k for k in pr if k != "provisional"]:
+        for name, v in pr[arm].items():
+            mark = {True: "holds", False: "FAILS", None: "unavailable"}[v["holds"]]
+            print(f"  {arm}  {name} ({v['kind']:<8}) {mark:<11} {v['claim']}")
+
+
 def selftest():
     ok = True
     d = panel()
@@ -364,6 +539,41 @@ def selftest():
     if len(DEAD) != 2 or not all(c in set(d["pcls"]) for c in DEAD):
         print(f"  XX the two dead classes are not in the panel: {DEAD}")
         ok = False
+    # 🔒 Null calibration on the bands: each edge must FIRE, and the gap between the two
+    # edges must be non-empty -- otherwise one reading is unreachable and the band is the
+    # AW failure again. A check that cannot fail is not a check.
+    for nm, (af, sc) in (("AY1", AY1_BAND), ("AY2", AY2_BAND)):
+        if af <= sc:
+            print(f"  XX {nm}'s artifact floor {af} is not above its survive ceiling {sc}")
+            ok = False
+        for val, want in ((af, "artifact"), (af + 0.01, "artifact"), (sc, "survive"),
+                          (sc - 0.01, "survive"), ((af + sc) / 2, "neither")):
+            if band(val, af, sc) != want:
+                print(f"  XX {nm} band({val}) is {band(val, af, sc)}, expected {want}")
+                ok = False
+    # 🔒 and the verdict must refuse to declare on one arm, since the prereg requires both
+    if len(MODELS) < 2:
+        print(f"  XX MODELS holds {len(MODELS)} arm(s); the second-arm rule needs two")
+        ok = False
+    # 🔴 `full` ran on 14 classes against `last2`'s 16, so P2 must compare on the
+    # intersection. A synthetic pair where the counts differ must come back matched.
+    fake = {f"c{i}": {"frozen": {"mean": 0.0},
+                      "recipes": {"last2": {"delta_vs_frozen": 0.10, "mean": 0.10,
+                                            "AY3_fpr_in_band": True}}}
+            for i in range(4)}
+    for i in range(2):
+        fake[f"c{i}"]["recipes"]["full"] = {"delta_vs_frozen": 0.02, "mean": 0.02,
+                                           "AY3_fpr_in_band": True}
+    m = matched_mean(fake, "full", "last2")
+    if m is None or m["n"] != 2 or abs(m["last2"] - 0.10) > 1e-12:
+        print(f"  XX matched_mean did not restrict to the intersection: {m}")
+        ok = False
+    # and a cell that failed AY-3 must leave the comparison
+    fake["c0"]["recipes"]["full"]["AY3_fpr_in_band"] = False
+    m2 = matched_mean(fake, "full", "last2")
+    if m2 is None or m2["n"] != 1:
+        print(f"  XX an AY-3 failure did not leave the matched comparison: {m2}")
+        ok = False
     print("selftest PASS" if ok else "selftest FAIL")
     return 0 if ok else 1
 
@@ -373,6 +583,10 @@ def main():
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--merge", action="store_true",
                     help="assemble per-(class, recipe) files into per-class ones")
+    ap.add_argument("--score", action="store_true",
+                    help="score AY-1..AY-3 and P1-P4 against the bands frozen 2026-10-08. "
+                         "🔒 Refuses to declare a verdict while an arm is missing, because "
+                         "the preregistration requires both arms to agree.")
     ap.add_argument("--arm", default="esm2_35M", choices=sorted(MODELS))
     ap.add_argument("--class-index", type=int,
                     help="index into the sorted class list -- for a slurm array")
@@ -394,6 +608,8 @@ def main():
         return selftest()
     if a.merge:
         return merge()
+    if a.score:
+        return score()
 
     import torch
     d = panel()
@@ -412,6 +628,16 @@ def main():
             raise SystemExit(f"--task-index {a.task_index} outside 0..{len(pairs) - 1}")
         a.class_name, a.recipe = pairs[a.task_index]
     name = a.class_name or classes[a.class_index]
+    # 🔒 Idempotent: a task whose output already exists exits 0 without refitting, so the
+    # array can be resubmitted at a different CPU count without redoing finished work.
+    # ⚠️ Measured, after two mis-sizings and a wrong hypothesis: ~10-11 min per fine-tune at
+    # 16 and at 32 CPUs, ~20 min at 8. Flat from 16 to 32, so 32 spends 4x the cpu=300 cap
+    # for nothing; 16 gives 18 concurrent tasks instead of 9.
+    done = OUTDIR / (f"{a.arm}__{name}__{a.recipe}.json" if a.recipe
+                     else f"{a.arm}__{name}.json")
+    if done.exists():
+        print(f"{done.name} already exists; nothing to do")
+        return 0
     dev = ("cuda" if torch.cuda.is_available()
            else "mps" if torch.backends.mps.is_available() else "cpu")
     t0 = time.time()

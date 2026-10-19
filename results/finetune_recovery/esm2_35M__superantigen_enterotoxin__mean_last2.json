@@ -1,0 +1,53 @@
+{
+  "arm": "esm2_35M",
+  "class": "superantigen_enterotoxin",
+  "n_held_out": 7,
+  "n_trained_pos": 142,
+  "seeds": 10,
+  "recipes": {
+    "mean_last2": {
+      "lr": 5e-05,
+      "epochs": 10,
+      "inner_recall": 0.9785108958837773,
+      "mean": 1.0,
+      "sd": 0.0,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.05714285714285716
+    }
+  },
+  "frozen": {
+    "mean": 0.9428571428571428,
+    "sd": 0.07377111135633178,
+    "per_seed": [
+      0.8571428571428571,
+      1.0,
+      0.8571428571428571,
+      0.8571428571428571,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.8571428571428571
+    ]
+  },
+  "device": "cpu",
+  "seconds": 16473.1,
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  }
+}
