@@ -1,0 +1,65 @@
+{
+  "preregistration": "docs/FINETUNE_RECOVERY_PREREGISTRATION.md",
+  "verdict": "survive",
+  "predictions": {
+    "P1": {
+      "kind": "reasoned",
+      "held": true,
+      "claim": "AY-1 lands in \"they survive\", <= +7pp",
+      "arms_scored": [
+        "esm2_35M",
+        "esm2_650M"
+      ],
+      "arms_unavailable": [],
+      "values": {
+        "esm2_35M": true,
+        "esm2_650M": true
+      }
+    },
+    "P2": {
+      "kind": "derived",
+      "held": true,
+      "claim": "`full` underperforms `last2` on the all-class mean",
+      "arms_scored": [
+        "esm2_35M"
+      ],
+      "arms_unavailable": [
+        "esm2_650M"
+      ],
+      "values": {
+        "esm2_35M": true,
+        "esm2_650M": null
+      }
+    },
+    "P3": {
+      "kind": "derived",
+      "held": false,
+      "claim": "`head_only`'s all-class mean lands within 10pp of frozen",
+      "arms_scored": [
+        "esm2_35M"
+      ],
+      "arms_unavailable": [
+        "esm2_650M"
+      ],
+      "values": {
+        "esm2_35M": false,
+        "esm2_650M": null
+      }
+    },
+    "P4": {
+      "kind": "derived",
+      "held": false,
+      "claim": "AY-2 is positive",
+      "arms_scored": [
+        "esm2_35M"
+      ],
+      "arms_unavailable": [
+        "esm2_650M"
+      ],
+      "values": {
+        "esm2_35M": false,
+        "esm2_650M": null
+      }
+    }
+  }
+}

@@ -94,10 +94,10 @@ def read(name):
 # the check, which is deliberate: it makes the omission a written claim.
 UNRUN = {
     "MUTATION_EXTENSION": "a frozen design for work not yet run, per README",
-    "FINETUNE_RECOVERY": ("study AY, frozen 2026-10-08; amendment 2 added two mean-pooling "
-                          "recipes after P3's failure localized a head confound, so the "
-                          "five-recipe array is still fitting on the cluster. Remove this "
-                          "entry when results/finetune_recovery.json lands"),
+    # 🔒 FINETUNE_RECOVERY removed 2026-10-31: `results/finetune_recovery.json` landed, which
+    # is the condition the entry named. Study AY is declared, verdict `survive`, with P1
+    # scored on both arms and P2-P4 on the complete arm only -- the 650M arm is staged on the
+    # two classes AY-1 reads, so an all-class prediction is unavailable there, not failed.
 }
 
 
@@ -304,8 +304,13 @@ def main():
         },
     }
     OUT.write_text(json.dumps(res, indent=2) + "\n")
-    print(f"  scored {len(rows)} predictions across "
-          f"{len({r['study'] for r in rows})} studies")
+    # 🔴 This said "scored {len(rows)}", and `rows` includes the WITHDRAWN predictions, which
+    # are stored unscored by design. It printed 64 beside a derived+reasoned total of 62 for
+    # as long as a withdrawal has existed. The two counts are now named separately, and the
+    # artifact's `total_scored` was always the correct one.
+    print(f"  {len(rows)} prediction rows across "
+          f"{len({r['study'] for r in rows})} studies: "
+          f"{res['total_scored']} scored, {res['total_withdrawn']} withdrawn")
     print(f"  derived {tal['derived']['held']}/{tal['derived']['total']}   "
           f"reasoned {tal['reasoned']['held']}/{tal['reasoned']['total']}")
     for tag, v in by_study.items():

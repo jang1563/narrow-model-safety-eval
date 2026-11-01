@@ -184,6 +184,30 @@
       "held": false
     },
     {
+      "study": "finetune_recovery",
+      "prediction": "P1",
+      "kind": "reasoned",
+      "held": true
+    },
+    {
+      "study": "finetune_recovery",
+      "prediction": "P2",
+      "kind": "derived",
+      "held": true
+    },
+    {
+      "study": "finetune_recovery",
+      "prediction": "P3",
+      "kind": "derived",
+      "held": false
+    },
+    {
+      "study": "finetune_recovery",
+      "prediction": "P4",
+      "kind": "derived",
+      "held": false
+    },
+    {
       "study": "generality_grid",
       "prediction": "P1_AT1_at_least_5_of_6",
       "kind": "derived",
@@ -366,15 +390,15 @@
   ],
   "tally": {
     "derived": {
-      "held": 23,
-      "total": 42
+      "held": 24,
+      "total": 45
     },
     "reasoned": {
-      "held": 5,
-      "total": 16
+      "held": 6,
+      "total": 17
     }
   },
-  "total_scored": 58,
+  "total_scored": 62,
   "total_withdrawn": 2,
   "by_study": {
     "AJ": {
@@ -454,6 +478,16 @@
       ],
       "reasoned": [
         0,
+        1
+      ]
+    },
+    "finetune_recovery": {
+      "derived": [
+        1,
+        3
+      ],
+      "reasoned": [
+        1,
         1
       ]
     },
@@ -579,6 +613,7 @@
       "AP",
       "AH",
       "AQ",
+      "finetune_recovery",
       "generality_grid",
       "image_axis_repair",
       "margin_routing",
@@ -590,19 +625,17 @@
       "AM"
     ],
     "preregs_with_no_scored_artifact": [
-      "FINETUNE_RECOVERY",
       "MUTATION_EXTENSION"
     ],
     "unscored_accounted_for": {
-      "MUTATION_EXTENSION": "a frozen design for work not yet run, per README",
-      "FINETUNE_RECOVERY": "study AY, frozen 2026-10-08; amendment 2 added two mean-pooling recipes after P3's failure localized a head confound, so the five-recipe array is still fitting on the cluster. Remove this entry when results/finetune_recovery.json lands"
+      "MUTATION_EXTENSION": "a frozen design for work not yet run, per README"
     },
     "declared_predictions": 69,
     "reconciliation": {
       "declared": 69,
-      "scored": 58,
+      "scored": 62,
       "withdrawn": 2,
-      "unrun": 10,
+      "unrun": 6,
       "double_scored_surplus": 1,
       "balances": true,
       "identity": "declared = scored + unrun + withdrawn - double_scored_surplus"
@@ -610,7 +643,7 @@
     "preregs_scored_by_multiple_artifacts": [
       "DEEPVIC_BENCHMARK"
     ],
-    "amendments": 12,
+    "amendments": 13,
     "per_prereg": [
       {
         "prereg": "COMPOSITION_ARM",
@@ -680,7 +713,7 @@
         "exists": true,
         "declared_predictions": 4,
         "alpha_statements": [],
-        "amendments": 2
+        "amendments": 3
       },
       {
         "prereg": "GENERALITY_GRID",

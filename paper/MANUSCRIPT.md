@@ -1,9 +1,9 @@
-# Proximity in a frozen representation predicts which class a detector will miss — and what eighteen criteria and 136 corrections found in the screen that showed it
+# Proximity in a frozen representation predicts which class a detector will miss — and what eighteen criteria and 137 corrections found in the screen that showed it
 
 **Draft, 2026-10-19** — restructured on this date to lead with the transfer-prediction result; the
 hazard screen is now presented as the case that produced it, and the eighteen criteria and the
 corrections log as apparatus. No number moved in that restructure. Every figure below is recomputed from an artifact by
-`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 158 such
+`src/22_claims_audit.py` and pinned to the sentence that states it; the gate currently checks 159 such
 claims. Section references without a document name are to `docs/MECHANISM_GENERALIZATION.md`.
 
 ---
@@ -54,6 +54,18 @@ recovery is a property of the panel. ⚠️ Member-level
 resampling puts beta-lactamase at **[0, 36]**, so the *bimodality* is what survives — 100% and [0, 36] are
 disjoint — while the precision of any single low number is limited by class size. An AUROC of 0.974 is
 compatible with a screen that cannot see two whole families.
+
+🔒 **And the two failures are not an artifact of probing a frozen model.** Every number in this paper
+comes from a frozen representation, so the first question a reader should ask is whether fine-tuning
+the encoder would fix them. It does not. Against bands frozen before the code existed — **≥ +20pp** to
+read the failures as a frozen-probing artifact, **≤ +7pp** to read them as surviving — six recipes from
+a trained head alone to every parameter, on **two** model arms as the preregistration required, land
+between **−12.79pp and +4.04pp**: all inside the surviving band, none near the artifact band. 🔑 **What
+fine-tuning does instead is move the failure around.** On ESM-2 35M all six recipes take beta-lactamase
+from 19.29% to **0.00% or 0.71%** while the phage class gains **13 to 26 points**, so a mean near zero
+is a −18.57pp and a +26.25pp averaged together; on 650M that trade holds for four recipes and the other
+two lose *both* classes. ⚠️ **The 650M arm is staged on the two failing classes**, which is what the
+deciding band reads, so the all-class comparison exists on one arm only and is reported as such (§ 3).
 
 **Second, a quantity computable before training predicts which class will fail.** Class-level
 **margin** — nearest other-class hazard minus nearest negative in embedding space — ranks classes by
@@ -137,7 +149,7 @@ or less than a non-toxin one depends on which representation you ask.**
 **How the above was kept honest**, reported here because the method is reusable and not because it is
 the contribution. We state **eighteen criteria** a hazard-screening claim should meet, score our own
 probe against them, and report the result: **two fails, four partials and one mixed**. Each criterion
-was written because it caught something. The evidence is a **dated, append-only corrections log of 136
+was written because it caught something. The evidence is a **dated, append-only corrections log of 137
 entries** in which a published number moved, including entries that retract our own findings. Readers
 interested only in the transfer result can stop at the paragraph above; § 3 and § 8 are the apparatus.
 
@@ -163,8 +175,8 @@ Our contribution is therefore two things, in this order. **A quantity computable
 is fitted ranks classes by how well a detector will recover them**, it transfers across modalities and
 encoder families, and a second training-free quantity says when its subtraction term is earned at all.
 And **an account of what an evaluation has to do before a separability number licenses a screening
-claim**, together with the record of what that account cost: **136** dated corrections, a prediction
-record scored honestly at **23 of 42** derived and **5 of 16** reasoned, and findings that looked clean
+claim**, together with the record of what that account cost: **137** dated corrections, a prediction
+record scored honestly at **24 of 45** derived and **6 of 17** reasoned, and findings that looked clean
 on one representation and vanished on a second.
 
 We make three empirical claims and one methodological one.
@@ -1701,9 +1713,9 @@ the diagnosis was in the record before the repair was built; both times it named
   **none of them corrects for the others.** With this many frozen bands, some verdicts are expected to
   fall by chance. ⚠️ **The exposure is stated rather than corrected retroactively**, because choosing a
   family-wise correction after seeing which bands were met is the error the bands exist to prevent.
-  ⚠️ **Fifty-eight carry a verdict.** Fourteen belong to designs frozen for work not yet run — six to
-  `MUTATION_EXTENSION` and four to `FINETUNE_RECOVERY`, whose five-recipe array is still fitting —
-  and **two** were **withdrawn for want of a referent**: one when an amendment moved its subject to
+  ⚠️ **Sixty-two carry a verdict.** Six belong to a design frozen for work not yet run, all of them
+  `MUTATION_EXTENSION`'s — `FINETUNE_RECOVERY`'s four were scored on 2026-10-31 when its second arm
+  landed — and **two** were **withdrawn for want of a referent**: one when an amendment moved its subject to
   the other side of a redesigned axis, and one that named two of this project's **own panel classes** in a
   prediction about a third-party benchmark whose fourteen curator categories contain neither; `results/prediction_record.json` holds the counts and discovers the studies
   rather than listing them. 🔒 **A withdrawn prediction is stored as unscored, not as a miss**, and the
@@ -1717,7 +1729,7 @@ the diagnosis was in the record before the repair was built; both times it named
   matched *lines* beginning with a prediction label and an amendment that restates "P1 and P2 are
   unchanged" was counted as two further declarations; it now counts distinct prediction numbers.
 - ⚠️ **The prediction record, computed rather than carried.** Across those studies the frozen predictions
-  held **23 of 42** where they were *derived* from a measurement and **5 of 16** where they were
+  held **24 of 45** where they were *derived* from a measurement and **6 of 17** where they were
   *reasoned* — so a derived prediction here is about a coin flip, and the paper's earlier reading that
   derived predictions reliably hold (§ 4) does not survive leaving the panel they were derived on. 🔴 **Two
   entries of the corrections log stated this tally wrongly** because it was maintained by hand; it is now
@@ -1780,7 +1792,7 @@ way**; the third was found by trying to break the check that guarded it and fail
 do** — an excluded unit leaves the numerator *and* the denominator and the reduced denominator is
 stated — **and to band coverage separately**, rather than fixing a count against a pool that can shrink.
 
-**Keep the log append-only, including the entries that hurt.** The log holds 136 entries, many retracting
+**Keep the log append-only, including the entries that hurt.** The log holds 137 entries, many retracting
 our own conclusions — a benchmark attributed to the wrong paper, a false-positive check that turned out to be
 4/61 by construction and therefore identical for random scores, a cross-reduction comparison made across
 geometries whose cosine distributions differ by a factor of three. ⚠️ **The pattern across those is one
@@ -1879,7 +1891,7 @@ it represents virulence" is an assumption that can be checked, and here it did n
 ## 9. Reproduction
 
 Every figure above is recomputed from an artifact by `src/22_claims_audit.py`, which currently checks
-**158 claims** and fails if any number in a public document drifts from the artifact that produced
+**159 claims** and fails if any number in a public document drifts from the artifact that produced
 it. ⚠️ **This sentence said 90 until 2026-09-30**, because the audit had no claim about its own size — the
 same unaudited-number defect it exists to catch, in its own description. It is audited now. The
 panels, the protocol and the per-class tables are in `docs/MECHANISM_GENERALIZATION.md`; the criteria and

@@ -489,7 +489,47 @@ def score():
     # a later session reads as a result.
     report(out)
     (OUTDIR / "AY_SCORED.json").write_text(json.dumps(out, indent=2) + "\n")
+    emit_record(out)
     return 0
+
+
+def emit_record(out):
+    """Also write the flat artifact `src/134`'s discovery expects.
+
+    🔒 `discover_studies()` globs `results/*.json` at the top level for a `predictions` dict,
+    and AY's own artifact is nested per arm in a subdirectory, so it would never be found.
+    The UNRUN note in `src/134` names this exact path as the condition for removing AY from
+    the allowlist, so this is the file it was waiting for.
+
+    ⚠️ A prediction is scored on the arm or arms where it is COMPUTABLE, and the coverage is
+    written down beside it. P1 reads AY-1 and is available on both arms; P2, P3 and P4 all
+    read an all-class mean, which exists only on an arm holding the whole panel -- so on the
+    staged 650M arm they are unavailable rather than failed. The preregistration's
+    both-arms-must-agree rule is attached to the BANDS, not to these four, so collapsing a
+    one-arm prediction to a miss would invent a verdict the document never asked for.
+    """
+    rec = {"preregistration": "docs/FINETUNE_RECOVERY_PREREGISTRATION.md",
+           "verdict": out["verdict"], "predictions": {}}
+    arms = [a for a in out["arms"] if a in out["predictions"]]
+    for name in ("P1", "P2", "P3", "P4"):
+        per_arm = {a: out["predictions"][a][name] for a in arms
+                   if name in out["predictions"][a]}
+        if not per_arm:
+            continue
+        scored = {a: p["holds"] for a, p in per_arm.items() if p["holds"] is not None}
+        kind = next(iter(per_arm.values()))["kind"]
+        rec["predictions"][name] = {
+            "kind": kind,
+            # 🔑 all(), so a prediction holding on one arm and failing on another is a MISS
+            "held": (all(scored.values()) if scored else None),
+            "claim": next(iter(per_arm.values()))["claim"],
+            "arms_scored": sorted(scored),
+            "arms_unavailable": sorted(set(per_arm) - set(scored)),
+            "values": {a: p["holds"] for a, p in per_arm.items()},
+        }
+    (ROOT / "results/finetune_recovery.json").write_text(json.dumps(rec, indent=2) + "\n")
+    print(f"\nwrote results/finetune_recovery.json "
+          f"({len(rec['predictions'])} predictions, verdict {rec['verdict']})")
 
 
 def diagnostic(cells, rec):

@@ -9600,3 +9600,55 @@ the banned string in order to say it was banned**, and failed the gate. 🔑 **T
 single most recurrent defect** and the count is now eight. 🔒 **Fixed on the prose side** — the
 retraction describes the old figure without restating the forbidden range — which is the second time
 the prose side rather than the forbid has been the thing that moved.
+
+---
+
+## 2026-11-01 (one hundred and thirty-third entry) — The study was declared for two weeks before the paper said so, and three hand-maintained counts went stale together
+
+Study AY's second arm landed and the verdict was scored, committed and reported — and **the manuscript
+said none of it**. § 8 still read that `FINETUNE_RECOVERY`'s array was "still fitting", in a paper whose
+own results directory held the declared verdict. 🔴 **A scored study that the paper does not state is
+indistinguishable, to a reader, from a study that was never run.**
+
+### 🔒 What the paper now states, and what polices it
+
+The verdict is **`survive`**: six recipes from a trained head alone to every parameter, on both arms,
+land between **−12.79pp and +4.04pp** against bands frozen before the code existed at **≥ +20pp** for
+a frozen-probing artifact and **≤ +7pp** for surviving. 🔑 **The failure moves rather than closing** —
+on 35M all six recipes take beta-lactamase to 0.00% or 0.71% while the phage class gains 13.44 to 26.25
+points; on 650M that trade holds for four recipes and **two lose both classes**, which the prose must
+not flatten into "it trades them".
+
+🔒 **The trade counts are DERIVED in the claim, not pinned**: a recipe trades when one dead class falls
+and the other rises. An arm whose behaviour changed moves the number instead of leaving the sentence
+standing.
+
+### 🔴 Three counts went stale at once, and two were hard-coded numerals
+
+- **`src/134`'s UNRUN allowlist** still held `FINETUNE_RECOVERY`, whose own note named the exact
+  condition for removal — `results/finetune_recovery.json` — a file nothing wrote. 🔒 `score()` now
+  emits it, because `discover_studies()` globs top-level `results/*.json` and AY's artifact is nested
+  per arm in a subdirectory where discovery could never find it.
+- **"Fifty-eight carry a verdict"** was checked by `"**Fifty-eight carry a verdict.**" in man`, a
+  hard-coded spelled numeral that failed for the wrong reason the moment the count moved to sixty-two.
+  🔒 Derived from the artifact now, via a `_spell` helper that **raises** past its vocabulary rather
+  than returning something wrong — the lesson the corrections-log census learned at seventy.
+- **The claim count and the derived/reasoned tallies** moved together: 158 → 159 claims, derived
+  23 of 42 → **24 of 45**, reasoned 5 of 16 → **6 of 17**.
+
+### ⚠️ And the record printed a count that included what it does not score
+
+`src/134` printed `scored {len(rows)}` where `rows` includes the **withdrawn** predictions, which are
+stored unscored by design. It has printed **64** beside a derived-plus-reasoned total of **62** for as
+long as a withdrawal has existed, and the artifact's own `total_scored` was correct the whole time.
+🔒 The two are named separately now: 64 rows, 62 scored, 2 withdrawn.
+
+### 🔒 On scoring a prediction when one arm cannot carry it
+
+The 650M arm is **staged** on the two classes AY-1 reads, so P2, P3 and P4 — all claims about an
+all-class mean — are **unavailable** there rather than failed. ⚠️ **Two of them were briefly scored as
+FAILS on that arm**: P2 computed over two classes and reported as an all-class result, and P4 reading
+its own empty list as false. 🔴 **A false miss corrupts the prediction record in the direction that
+looks modest and is simply wrong.** Both return unavailable with the reason recorded, and the
+preregistration's both-arms rule is attached to the bands, not to these four, so collapsing a one-arm
+prediction to a miss would have invented a verdict the document never asked for.

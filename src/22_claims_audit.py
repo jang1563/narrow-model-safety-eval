@@ -2225,7 +2225,12 @@ def prediction_record():
         "gap_parts": {k: x for k, x in e.get("reconciliation", {}).items()
                       if isinstance(x, int) and not isinstance(x, bool)},
         "paper_states_declared_word": "sixty-nine frozen predictions" in man,
-        "paper_states_verdict_count": "**Fifty-eight carry a verdict.**" in man,
+        # 🔴 This read `"**Fifty-eight carry a verdict.**" in man` -- a hard-coded spelled
+        # numeral, so it failed for the wrong reason the moment study AY's four predictions
+        # were scored and the count moved to sixty-two. Derived from the artifact now, the
+        # self-maintaining form entries 100 and 119 arrived at for the other two counts.
+        "paper_states_verdict_count": f"**{_spell(v['total_scored'])} carry a verdict.**" in man,
+        "verdict_count_word": _spell(v["total_scored"]),
         "paper_names_the_balance_problem": (
             "do not reconcile by subtraction" in man
             and "seven** scored rows against" in man),
@@ -5645,6 +5650,80 @@ def manuscript_is_the_live_file():
         # numbers would be policed as though they were current
         "sections_not_audited": not any(str(f.relative_to(ROOT)) in PUBLIC for f in secs),
     }
+
+
+def _spell(n):
+    """Capitalised cardinal for 1-99, so a spelled count in the prose can be DERIVED.
+
+    🔴 Raises past its vocabulary rather than returning something wrong, because a silent
+    fallback here would make a count-agreement check pass on a word it never built. The
+    corrections-log census learned this when its ordinal map stopped at seventy and the
+    eightieth entry was one away from reporting a crash as a failed claim.
+    """
+    ones = ("One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Thirteen Fourteen "
+            "Fifteen Sixteen Seventeen Eighteen Nineteen").split()
+    tens = {2: "Twenty", 3: "Thirty", 4: "Forty", 5: "Fifty", 6: "Sixty", 7: "Seventy",
+            8: "Eighty", 9: "Ninety"}
+    if not 1 <= n <= 99:
+        raise ValueError(f"_spell has no word for {n}; extend it rather than guessing")
+    if n < 20:
+        return ones[n - 1]
+    t, u = divmod(n, 10)
+    return tens[t] if u == 0 else f"{tens[t]}-{ones[u - 1].lower()}"
+
+
+def finetune_recovery():
+    """Study AY: do the two dead classes survive fine-tuning the encoder?
+
+    🔒 Declared 2026-10-31 when the second arm landed. The preregistration froze two-sided
+    bands -- >= +20pp to read the failures as a frozen-probing artifact, <= +7pp to read them
+    as surviving -- and required BOTH arms to agree, accepted as a single-unit veto for study
+    AW's reason.
+
+    🔑 The trade counts are DERIVED here, not pinned: on each arm, a recipe "trades" when one
+    dead class falls and the other rises, and "loses both" when neither rises. The paper says
+    six of six on 35M and four of six on 650M, and an arm whose behaviour changed would move
+    these rather than leave the prose standing.
+    """
+    v = j("../results/finetune_recovery/AY_SCORED.json")
+    rec = j("../results/finetune_recovery.json")
+    if None in (v, rec):
+        return None
+    out = {"verdict": v["verdict"], "bands": v["bands"],
+           "arms": sorted(v["arms"]), "n_arms": len(v["arms"])}
+    ay1 = [r["AY1"] for a in v["arms"].values() for r in a["recipes"].values()
+           if r["AY1"] is not None]
+    out["AY1_min"], out["AY1_max"] = round(min(ay1), 4), round(max(ay1), 4)
+    out["AY1_all_survive"] = all(
+        r["AY1_band"] == "survive" for a in v["arms"].values()
+        for r in a["recipes"].values() if r["AY1"] is not None)
+    for arm, a in v["arms"].items():
+        trade = lose = 0
+        ends, gains = [], []
+        for r in a["recipes"].values():
+            pc = r.get("per_dead_class") or {}
+            if len(pc) != 2:
+                continue
+            bl, ph = pc["beta_lactamase"], pc["phage_peptidoglycan_hydrolase"]
+            if (bl["delta"] < 0) != (ph["delta"] < 0):
+                trade += 1
+            else:
+                lose += 1
+            ends.append(round(100 * bl["finetuned"], 2))
+            gains.append(round(100 * ph["delta"], 2))
+        out[f"{arm}_trade"] = trade
+        out[f"{arm}_lose_both"] = lose
+        out[f"{arm}_beta_endpoints"] = sorted(set(ends))
+        out[f"{arm}_phage_gain_range"] = [min(gains), max(gains)] if gains else None
+    d = v.get("amendment3_diagnostic", {}).get("esm2_35M", {})
+    out["mean_head_only_vs_frozen"] = d.get("AY2_mean_head_only")
+    out["mean_head_only_within_10pp"] = d.get("within_10pp_of_frozen")
+    out["pooling_at_frozen_trunk"] = (round(d["pooling_worth"], 4)
+                                      if d.get("pooling_worth") is not None else None)
+    out["predictions"] = {k: p["held"] for k, p in rec["predictions"].items()}
+    out["P2_P4_one_arm_only"] = all(
+        rec["predictions"][p]["arms_unavailable"] == ["esm2_650M"] for p in ("P2", "P3", "P4"))
+    return out
 
 
 def band_reachability():
@@ -9150,6 +9229,34 @@ CLAIMS = [
       "🔒 **This file is the live\ndocument and the only one the audit reads.**"},
      ["It is assembled from\nsections `paper/0*.md`; edit those, not this file",
       "edit those, not this file"]),
+    ("the two dead classes survive fine-tuning on both arms, and the failure moves rather than closing",
+     finetune_recovery,
+     lambda v: v is None or (
+         v["verdict"] == "survive"
+         # 🔒 both arms, which the preregistration required as a single-unit veto
+         and v["n_arms"] == 2 and v["arms"] == ["esm2_35M", "esm2_650M"]
+         # 🔒 the bands as frozen, and every AY-1 inside the surviving one
+         and v["bands"]["AY1"] == [0.20, 0.07]
+         and v["AY1_all_survive"]
+         and abs(v["AY1_min"] - (-0.1279)) < 5e-4
+         and abs(v["AY1_max"] - 0.0404) < 5e-4
+         # 🔑 the trade, derived per arm: six of six on 35M, four of six on 650M with two
+         # recipes losing BOTH classes -- the asymmetry the prose must not flatten
+         and v["esm2_35M_trade"] == 6 and v["esm2_35M_lose_both"] == 0
+         and v["esm2_650M_trade"] == 4 and v["esm2_650M_lose_both"] == 2
+         and v["esm2_35M_beta_endpoints"] == [0.0, 0.71]
+         and v["esm2_35M_phage_gain_range"] == [13.44, 26.25]
+         # 🔒 amendment 3's diagnostic: the CLS gap is pooling, so the path is sound
+         and v["mean_head_only_within_10pp"] is True
+         and abs(v["mean_head_only_vs_frozen"] - (-0.0634)) < 5e-4
+         and abs(v["pooling_at_frozen_trunk"] - 0.2720) < 5e-4
+         # 🔒 P1 on both arms; P2-P4 read an all-class mean and so exist on one arm only
+         and v["predictions"] == {"P1": True, "P2": True, "P3": False, "P4": False}
+         and v["P2_P4_one_arm_only"]),
+     {"paper/MANUSCRIPT.md":
+      "between **−12.79pp and +4.04pp**: all inside the surviving band, none near the artifact band."},
+     # 🔴 the stale statement this replaced, from before the second arm landed
+     ["whose five-recipe array is still fitting", "Fifty-eight carry a verdict"]),
     ("every verdict the preregistrations declare is reachable, or is named as not",
      band_reachability,
      lambda v: v is None or (
