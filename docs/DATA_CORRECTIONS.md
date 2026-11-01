@@ -9550,8 +9550,10 @@ detail that a working example two hours old would have prevented.
 ## 2026-10-19 (one hundred and thirty-second entry) — Restructuring the paper exposed a retracted number living in two documents, and my own retraction reproduced the string it retracted
 
 The paper was restructured to lead with the transfer-prediction result rather than with the screen's
-AUROC, on the reasoning in `Conferences/2026_AI/CONFERENCE_SUBMISSION_STRATEGY_2026-10-17.md` §B and
-`docs/ICML_CANDIDATE_ONE_PAGER.md`. 🔒 **No measurement changed**; the gate stayed green at 158 claims
+AUROC, on an external read of the draft that found the central result buried under its own controls.
+⚠️ **The two documents that reasoning lives in are private** and were named here by path in the first
+version of this entry, which would have published a private path and the existence of venue strategy
+the moment the repository was pushed. 🔒 **No measurement changed**; the gate stayed green at 158 claims
 through every edit. What the restructure exposed is below, and it is the reason the restructure was
 worth doing as an audited operation rather than as prose.
 

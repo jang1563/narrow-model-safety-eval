@@ -159,3 +159,6 @@ results/v3/at_*.npz
 results/v3/.at_mm_*.dat
 data/external/cifar100/
 .gate/
+
+# planning notes kept outside the repo
+docs/*_ONE_PAGER.md
