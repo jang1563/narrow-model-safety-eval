@@ -1,0 +1,53 @@
+{
+  "arm": "esm2_35M",
+  "class": "phage_peptidoglycan_hydrolase",
+  "n_held_out": 32,
+  "n_trained_pos": 117,
+  "seeds": 10,
+  "recipes": {
+    "mean_head_only": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.8890935887988209,
+      "mean": 0.359375,
+      "sd": 0.07967217989988726,
+      "per_seed": [
+        0.40625,
+        0.46875,
+        0.1875,
+        0.40625,
+        0.375,
+        0.3125,
+        0.34375,
+        0.4375,
+        0.34375,
+        0.3125
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.240625
+    }
+  },
+  "frozen": {
+    "mean": 0.11875,
+    "sd": 0.04841229182759271,
+    "per_seed": [
+      0.125,
+      0.125,
+      0.03125,
+      0.125,
+      0.09375,
+      0.09375,
+      0.09375,
+      0.21875,
+      0.125,
+      0.15625
+    ]
+  },
+  "device": "cpu",
+  "seconds": 8783.1,
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  }
+}

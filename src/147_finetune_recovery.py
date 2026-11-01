@@ -501,9 +501,18 @@ def diagnostic(cells, rec):
     and this is a dropout MLP head fitted by AdamW, so agreement establishes that the arms
     are comparable, not that they are the same estimator.
     """
-    mh = rec.get("mean_head_only", {}).get("AY2")
-    if mh is None:
+    # ⚠️ "has not run" and "ran, but its all-class mean is unavailable on a staged arm" are
+    # different facts and were being reported with the same sentence. On the 650M arm
+    # `mean_head_only` HAS run -- it is one of the twelve staged cells -- and the diagnostic
+    # is unavailable because the 10pp threshold is on the all-class mean.
+    cell = rec.get("mean_head_only")
+    mh = (cell or {}).get("AY2")
+    if cell is None:
         return {"status": "mean_head_only has not run"}
+    if mh is None:
+        return {"status": "mean_head_only ran, but the all-class mean it is read against is "
+                          "unavailable on this arm",
+                "AY1_mean_head_only": cell.get("AY1")}
     pool = matched_mean(cells, "mean_head_only", "head_only")
     d = {"AY2_mean_head_only": mh,
          "within_10pp_of_frozen": bool(abs(mh) <= 0.10),
@@ -531,10 +540,18 @@ def score_predictions(out, arms, provisional):
                      "claim": 'AY-1 lands in "they survive", <= +7pp',
                      "holds": bool(avail) and all(b == "survive" for b in avail),
                      "per_recipe": {r: v["AY1_band"] for r, v in rec.items()}}
-        m = matched_mean(cells, "full", "last2")
+        # 🔴 P2 and P4 are claims about the ALL-CLASS mean, so on an arm staged over a subset
+        # they are UNAVAILABLE, not failed. Computing P2 over two classes and reporting
+        # "FAILS", or letting P4's empty list read as false, would record a miss against a
+        # test that was never run -- and a false miss corrupts the prediction record in the
+        # direction that flatters nothing and misleads everything. Same defect as AY-2's
+        # denominator, one level up.
+        whole = out["arms"][arm]["panel_complete"]
+        m = matched_mean(cells, "full", "last2") if whole else None
         got["P2"] = {"kind": "derived",
                      "claim": "`full` underperforms `last2` on the all-class mean",
                      "holds": None if m is None else bool(m["full"] < m["last2"]),
+                     "unavailable_reason": None if whole else "arm is staged over a subset",
                      "matched": m}
         h = rec.get("head_only", {}).get("AY2")
         got["P3"] = {"kind": "derived",
@@ -543,7 +560,9 @@ def score_predictions(out, arms, provisional):
                      "AY2_head_only": h}
         pos = [v["AY2"] for v in rec.values() if v["AY2"] is not None]
         got["P4"] = {"kind": "derived", "claim": "AY-2 is positive",
-                     "holds": bool(pos) and all(x > 0 for x in pos),
+                     "holds": (all(x > 0 for x in pos) if pos and whole else None),
+                     "unavailable_reason": (None if pos and whole
+                                            else "no AY-2 on this arm"),
                      "per_recipe": {r: v["AY2"] for r, v in rec.items()}}
         p[arm] = got
     return p

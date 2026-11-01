@@ -114,6 +114,28 @@
       "AY3_fpr_in_band": true,
       "delta_vs_frozen": 0.09999999999999998
     },
+    "mean_head_only": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.9222676797194623,
+      "mean": 0.875,
+      "sd": 0.13176156917368248,
+      "per_seed": [
+        0.75,
+        1.0,
+        0.75,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        0.75
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.15000000000000002
+    },
     "mean_last2": {
       "lr": 5e-05,
       "epochs": 10,
@@ -142,6 +164,7 @@
     "head_only",
     "last2",
     "mean_full",
+    "mean_head_only",
     "mean_last2"
   ]
 }

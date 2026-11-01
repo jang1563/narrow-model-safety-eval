@@ -26,6 +26,28 @@
     "transformers": "4.48.1"
   },
   "recipes": {
+    "full": {
+      "lr": 1e-05,
+      "epochs": 10,
+      "inner_recall": 0.9655172413793104,
+      "mean": 1.0,
+      "sd": 0.0,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.4
+    },
     "head_only": {
       "lr": 0.0001,
       "epochs": 10,
@@ -92,6 +114,28 @@
       "AY3_fpr_in_band": true,
       "delta_vs_frozen": 0.0
     },
+    "mean_head_only": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.9143775569842197,
+      "mean": 1.0,
+      "sd": 0.0,
+      "per_seed": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": 0.4
+    },
     "mean_last2": {
       "lr": 0.0001,
       "epochs": 10,
@@ -116,9 +160,11 @@
     }
   },
   "assembled_from_per_recipe_runs": [
+    "full",
     "head_only",
     "last2",
     "mean_full",
+    "mean_head_only",
     "mean_last2"
   ]
 }

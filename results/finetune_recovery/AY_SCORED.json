@@ -37,14 +37,11 @@
         "full": {
           "AY1": 0.032142857142857154,
           "AY1_band": "survive",
-          "AY2": null,
-          "AY2_band": "unavailable",
-          "AY2_n": 14,
+          "AY2": -0.07501623376623379,
+          "AY2_band": "survive",
+          "AY2_n": 16,
           "AY3_failed": [],
-          "classes_missing": [
-            "nuclease_dnase_rnase",
-            "other_toxin_mechanism"
-          ],
+          "classes_missing": [],
           "per_dead_class": {
             "beta_lactamase": {
               "frozen": 0.19285714285714284,
@@ -125,6 +122,28 @@
           },
           "dead_spread": 0.3928571428571428
         },
+        "mean_head_only": {
+          "AY1": 0.023883928571428584,
+          "AY1_band": "survive",
+          "AY2": -0.06335920589826839,
+          "AY2_band": "survive",
+          "AY2_n": 16,
+          "AY3_failed": [],
+          "classes_missing": [],
+          "per_dead_class": {
+            "beta_lactamase": {
+              "frozen": 0.19285714285714284,
+              "finetuned": 0.0,
+              "delta": -0.19285714285714284
+            },
+            "phage_peptidoglycan_hydrolase": {
+              "frozen": 0.11875,
+              "finetuned": 0.359375,
+              "delta": 0.240625
+            }
+          },
+          "dead_spread": 0.4334821428571428
+        },
         "mean_last2": {
           "AY1": 0.03839285714285713,
           "AY1_band": "survive",
@@ -148,13 +167,192 @@
           "dead_spread": 0.4482142857142857
         }
       }
+    },
+    "esm2_650M": {
+      "n_classes": 2,
+      "n_panel_classes": 16,
+      "panel_complete": false,
+      "classes_absent_from_arm": [
+        "adp_ribosyl_ab_toxin",
+        "bacteriocin",
+        "clostridial_neurotoxin",
+        "contact_dependent_inhibition",
+        "cry_insecticidal",
+        "nuclease_dnase_rnase",
+        "other_toxin_mechanism",
+        "phospholipase",
+        "pore_forming_cytolysin",
+        "rip_rrna_glycosidase",
+        "secreted_protease",
+        "superantigen_enterotoxin",
+        "t3ss_effector_apparatus",
+        "virulence_associated_non_toxin"
+      ],
+      "recipes": {
+        "full": {
+          "AY1": -0.06830357142857142,
+          "AY1_band": "survive",
+          "AY2": null,
+          "AY2_band": "unavailable",
+          "AY2_n": 2,
+          "AY3_failed": [],
+          "classes_missing": [],
+          "per_dead_class": {
+            "beta_lactamase": {
+              "frozen": 0.19285714285714284,
+              "finetuned": 0.0,
+              "delta": -0.19285714285714284
+            },
+            "phage_peptidoglycan_hydrolase": {
+              "frozen": 0.11875,
+              "finetuned": 0.175,
+              "delta": 0.056249999999999994
+            }
+          },
+          "dead_spread": 0.24910714285714283
+        },
+        "head_only": {
+          "AY1": -0.1279017857142857,
+          "AY1_band": "survive",
+          "AY2": null,
+          "AY2_band": "unavailable",
+          "AY2_n": 2,
+          "AY3_failed": [],
+          "classes_missing": [],
+          "per_dead_class": {
+            "beta_lactamase": {
+              "frozen": 0.19285714285714284,
+              "finetuned": 0.02142857142857143,
+              "delta": -0.1714285714285714
+            },
+            "phage_peptidoglycan_hydrolase": {
+              "frozen": 0.11875,
+              "finetuned": 0.034375,
+              "delta": -0.08437499999999999
+            }
+          },
+          "dead_spread": 0.08705357142857141
+        },
+        "last2": {
+          "AY1": -0.08683035714285713,
+          "AY1_band": "survive",
+          "AY2": null,
+          "AY2_band": "unavailable",
+          "AY2_n": 2,
+          "AY3_failed": [],
+          "classes_missing": [],
+          "per_dead_class": {
+            "beta_lactamase": {
+              "frozen": 0.19285714285714284,
+              "finetuned": 0.02857142857142857,
+              "delta": -0.16428571428571426
+            },
+            "phage_peptidoglycan_hydrolase": {
+              "frozen": 0.11875,
+              "finetuned": 0.109375,
+              "delta": -0.009374999999999994
+            }
+          },
+          "dead_spread": 0.15491071428571426
+        },
+        "mean_full": {
+          "AY1": -0.007366071428571416,
+          "AY1_band": "survive",
+          "AY2": null,
+          "AY2_band": "unavailable",
+          "AY2_n": 2,
+          "AY3_failed": [],
+          "classes_missing": [],
+          "per_dead_class": {
+            "beta_lactamase": {
+              "frozen": 0.19285714285714284,
+              "finetuned": 0.0,
+              "delta": -0.19285714285714284
+            },
+            "phage_peptidoglycan_hydrolase": {
+              "frozen": 0.11875,
+              "finetuned": 0.296875,
+              "delta": 0.178125
+            }
+          },
+          "dead_spread": 0.3709821428571428
+        },
+        "mean_head_only": {
+          "AY1": -0.008482142857142841,
+          "AY1_band": "survive",
+          "AY2": null,
+          "AY2_band": "unavailable",
+          "AY2_n": 2,
+          "AY3_failed": [],
+          "classes_missing": [],
+          "per_dead_class": {
+            "beta_lactamase": {
+              "frozen": 0.19285714285714284,
+              "finetuned": 0.15714285714285714,
+              "delta": -0.0357142857142857
+            },
+            "phage_peptidoglycan_hydrolase": {
+              "frozen": 0.11875,
+              "finetuned": 0.1375,
+              "delta": 0.018750000000000017
+            }
+          },
+          "dead_spread": 0.054464285714285715
+        },
+        "mean_last2": {
+          "AY1": 0.04040178571428572,
+          "AY1_band": "survive",
+          "AY2": null,
+          "AY2_band": "unavailable",
+          "AY2_n": 2,
+          "AY3_failed": [],
+          "classes_missing": [],
+          "per_dead_class": {
+            "beta_lactamase": {
+              "frozen": 0.19285714285714284,
+              "finetuned": 0.16428571428571428,
+              "delta": -0.028571428571428553
+            },
+            "phage_peptidoglycan_hydrolase": {
+              "frozen": 0.11875,
+              "finetuned": 0.228125,
+              "delta": 0.109375
+            }
+          },
+          "dead_spread": 0.13794642857142855
+        }
+      }
     }
   },
   "bands_name_no_recipe": true,
-  "verdict": "undeclarable",
-  "verdict_reason": "the preregistration requires both arms to agree; esm2_650M has not run",
+  "per_recipe_arm_labels": {
+    "full": {
+      "esm2_35M": "survive",
+      "esm2_650M": "survive"
+    },
+    "head_only": {
+      "esm2_35M": "survive",
+      "esm2_650M": "survive"
+    },
+    "last2": {
+      "esm2_35M": "survive",
+      "esm2_650M": "survive"
+    },
+    "mean_full": {
+      "esm2_35M": "survive",
+      "esm2_650M": "survive"
+    },
+    "mean_last2": {
+      "esm2_35M": "survive",
+      "esm2_650M": "survive"
+    }
+  },
+  "verdict_excludes": [
+    "mean_head_only"
+  ],
+  "verdict": "survive",
   "predictions": {
-    "provisional": true,
+    "provisional": false,
     "excludes": [
       "mean_head_only"
     ],
@@ -175,8 +373,9 @@
         "kind": "derived",
         "claim": "`full` underperforms `last2` on the all-class mean",
         "holds": true,
+        "unavailable_reason": null,
         "matched": {
-          "n": 14,
+          "n": 16,
           "classes": [
             "adp_ribosyl_ab_toxin",
             "bacteriocin",
@@ -184,6 +383,8 @@
             "clostridial_neurotoxin",
             "contact_dependent_inhibition",
             "cry_insecticidal",
+            "nuclease_dnase_rnase",
+            "other_toxin_mechanism",
             "phage_peptidoglycan_hydrolase",
             "phospholipase",
             "pore_forming_cytolysin",
@@ -193,8 +394,8 @@
             "t3ss_effector_apparatus",
             "virulence_associated_non_toxin"
           ],
-          "full": -0.10478045763760051,
-          "last2": -0.05710169294990724
+          "full": -0.07501623376623379,
+          "last2": -0.03225564799783551
         }
       },
       "P3": {
@@ -207,19 +408,90 @@
         "kind": "derived",
         "claim": "AY-2 is positive",
         "holds": false,
+        "unavailable_reason": null,
         "per_recipe": {
-          "full": null,
+          "full": -0.07501623376623379,
           "head_only": -0.33535562094155846,
           "last2": -0.03225564799783551,
           "mean_full": -0.13430735930735932,
           "mean_last2": -0.04126555735930735
         }
       }
+    },
+    "esm2_650M": {
+      "P1": {
+        "kind": "reasoned",
+        "claim": "AY-1 lands in \"they survive\", <= +7pp",
+        "holds": true,
+        "per_recipe": {
+          "full": "survive",
+          "head_only": "survive",
+          "last2": "survive",
+          "mean_full": "survive",
+          "mean_last2": "survive"
+        }
+      },
+      "P2": {
+        "kind": "derived",
+        "claim": "`full` underperforms `last2` on the all-class mean",
+        "holds": null,
+        "unavailable_reason": "arm is staged over a subset",
+        "matched": null
+      },
+      "P3": {
+        "kind": "derived",
+        "claim": "`head_only`'s all-class mean lands within 10pp of frozen",
+        "holds": null,
+        "AY2_head_only": null
+      },
+      "P4": {
+        "kind": "derived",
+        "claim": "AY-2 is positive",
+        "holds": null,
+        "unavailable_reason": "no AY-2 on this arm",
+        "per_recipe": {
+          "full": null,
+          "head_only": null,
+          "last2": null,
+          "mean_full": null,
+          "mean_last2": null
+        }
+      }
     }
   },
   "amendment3_diagnostic": {
     "esm2_35M": {
-      "status": "mean_head_only has not run"
+      "AY2_mean_head_only": -0.06335920589826839,
+      "within_10pp_of_frozen": true,
+      "pooling_at_frozen_trunk": {
+        "n": 16,
+        "classes": [
+          "adp_ribosyl_ab_toxin",
+          "bacteriocin",
+          "beta_lactamase",
+          "clostridial_neurotoxin",
+          "contact_dependent_inhibition",
+          "cry_insecticidal",
+          "nuclease_dnase_rnase",
+          "other_toxin_mechanism",
+          "phage_peptidoglycan_hydrolase",
+          "phospholipase",
+          "pore_forming_cytolysin",
+          "rip_rrna_glycosidase",
+          "secreted_protease",
+          "superantigen_enterotoxin",
+          "t3ss_effector_apparatus",
+          "virulence_associated_non_toxin"
+        ],
+        "mean_head_only": -0.06335920589826839,
+        "head_only": -0.33535562094155846
+      },
+      "reading": "the gap is pooling, and the fine-tuning path is sound",
+      "pooling_worth": 0.2719964150432901
+    },
+    "esm2_650M": {
+      "status": "mean_head_only ran, but the all-class mean it is read against is unavailable on this arm",
+      "AY1_mean_head_only": -0.008482142857142841
     }
   }
 }

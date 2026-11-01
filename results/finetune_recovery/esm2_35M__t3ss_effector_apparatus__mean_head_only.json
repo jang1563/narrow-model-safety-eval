@@ -1,0 +1,53 @@
+{
+  "arm": "esm2_35M",
+  "class": "t3ss_effector_apparatus",
+  "n_held_out": 10,
+  "n_trained_pos": 139,
+  "seeds": 10,
+  "recipes": {
+    "mean_head_only": {
+      "lr": 0.0001,
+      "epochs": 10,
+      "inner_recall": 0.9309478970495919,
+      "mean": 0.5700000000000001,
+      "sd": 0.08232726023485644,
+      "per_seed": [
+        0.5,
+        0.5,
+        0.5,
+        0.6,
+        0.5,
+        0.7,
+        0.6,
+        0.6,
+        0.7,
+        0.5
+      ],
+      "realized_fpr": 0.05084745762711864,
+      "AY3_fpr_in_band": true,
+      "delta_vs_frozen": -0.22999999999999998
+    }
+  },
+  "frozen": {
+    "mean": 0.8,
+    "sd": 0.0,
+    "per_seed": [
+      0.8,
+      0.8,
+      0.8,
+      0.8,
+      0.8,
+      0.8,
+      0.8,
+      0.8,
+      0.8,
+      0.8
+    ]
+  },
+  "device": "cpu",
+  "seconds": 5212.3,
+  "versions": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.48.1"
+  }
+}
